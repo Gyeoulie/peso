@@ -52,30 +52,6 @@ class AuthenticatedSessionController extends Controller
                 return redirect(RouteServiceProvider::HOME);
         }
     }
-
-    //     // Check the userType
-    //     switch ($user->usertype) {
-    //         case 2:
-    //             //dd($user->usertype);
-    //             return redirect()->route('fill_profile');
-
-    //         case 3:
-    //             // Redirect to the fill profile route
-    //             return redirect()->route('fill_employer');
-    //         case 8:
-    //             // Redirect to the fill profile route
-    //             return redirect()->route('admintables');
-    //         default:
-    //             // Redirect to the dashboard
-    //             return redirect(RouteServiceProvider::HOME);
-    //     }
-    //     // $request->authenticate();
-
-    //     // $request->session()->regenerate();
-
-    //     // return redirect()->intended(RouteServiceProvider::HOME);
-    // }
-
     /**
      * Destroy an authenticated session.
      */

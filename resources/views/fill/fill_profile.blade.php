@@ -187,8 +187,6 @@
     }
 
 
-
-
     // Function to switch to the next section
     function nextSection(sectionnum) {
         // Hide all sections

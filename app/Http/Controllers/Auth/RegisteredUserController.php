@@ -46,8 +46,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // dd($user->usertype);
-
         return $this->redirectBasedOnRole($user->usertype);
     }
 

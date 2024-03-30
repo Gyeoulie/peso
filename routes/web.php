@@ -3,10 +3,8 @@
 use App\Http\Controllers\AdminTable;
 use App\Http\Controllers\CompanyProfile;
 use App\Http\Controllers\EmployeeProfile;
-use App\Http\Controllers\FillProfileController;
 use App\Http\Controllers\NSRP;
 use App\Http\Controllers\ProfileController;
-use App\Models\Company;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,33 +22,32 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/fill', function () {
-//     return view('fill.fill_profile');
-// })->name('fill_profile');
-
+//JOBSEEKER FILL INFORMATION
 Route::get('/fill', [NSRP::class, 'loadData'])->name('fill_profile');
-Route::get('/fill/employer', [NSRP::class, 'loadEmployer'])->name('fill_employer');
-
 Route::post('/fill', [NSRP::class, 'storeInfo'])->name('postInfo');
+
+//EMPLOYER FILL INFORMATION
+Route::get('/fill/employer', [NSRP::class, 'loadEmployer'])->name('fill_employer');
 Route::post('/fill/employer', [NSRP::class, 'postEmployer'])->name('postEmployer');
 
-
+//PESO ADMIN ADD
 Route::post('/admin/add', [AdminTable::class, 'addData'])->name('addDataAdmin');
 Route::post('/admin/addPeso', [AdminTable::class, 'addPeso'])->name('addPesoAdmin');
 
 
+//ADMIN LOGIN REDIRECT
 Route::get('/admin', [AdminTable::class, 'index'])->name('admintables');
 
-
-// Route::get('/admin', function () {
-//     return view('admin.tables');
-// })->name('admintables');
-
+//JOBSEEKER PROFILE
 Route::get('/employee', [EmployeeProfile::class, 'employeeProfile'])->name('employeeProfile');
-Route::get('/company', [CompanyProfile::class, 'companyProfile'])->name('companyProfile');
 Route::post('/employee/update', [EmployeeProfile::class, 'updateDescEmp'])->name('updateDescEmp');
+
+//EMPLOYER PROFILE
+Route::get('/company', [CompanyProfile::class, 'companyProfile'])->name('companyProfile');
 Route::post('/company/update', [CompanyProfile::class, 'updateDescCompany'])->name('updateDescCompany');
 
+
+//LARAVEL DEFAULT ROUTES
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -60,13 +57,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-Route::post('/fillpro', [FillProfileController::class, 'store'])->name('fillReg');
-
-
-// Define routes
-Route::get('/fetch-municipalities/{province}', [NSRP::class, 'fetchMunicipalities']);
-Route::get('/fetch-barangays/{municipality}', [NSRP::class, 'fetchBarangays']);
 
 
 
