@@ -33,7 +33,7 @@
         <a :href="route('logout')"
             onclick="event.preventDefault();
                         this.closest('form').submit();" id="logout-link"
-            class="ml-4 font-semibold text-gray-600 hover:text-gray-900  focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Logout</a>
+            class="ml-4 font-semibold text-gray-600 hover:text-gray-900  focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500" style="cursor: pointer;">Logout</a>
 
     </form>
 

@@ -48,13 +48,20 @@ class RegisteredUserController extends Controller
 
         // dd($user->usertype);
 
-        switch ($user->usertype) {
+        return $this->redirectBasedOnRole($user->usertype);
+    }
+
+    /**
+     * Redirect based on user role.
+     */
+    private function redirectBasedOnRole(int $usertype): RedirectResponse
+    {
+        switch ($usertype) {
             case 2:
                 return redirect()->route('fill_profile');
             case 3:
                 return redirect()->route('fill_employer');
             default:
-                // Redirect to HOME for other user types
                 return redirect(RouteServiceProvider::HOME);
         }
     }
