@@ -79,6 +79,8 @@ class NSRP extends Controller
     public function storeInfo(Request $request)
     {
         //dd($request);
+
+
         $user = Auth::user();
 
         if ($request->hasFile('pimagePost')) {
