@@ -7,203 +7,526 @@
 
 
     {{-- @include('dashboard.partials.job-dash') --}}
+    {{-- @include('dashboard.partials.employer-dash') --}}
 
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="flex flex-col w-full">
-                    <div class="flex flex-row w-full">
-                        <div class="flex flex-row">
-                            <div class="p-6 text-xl text-gray-900">
-                                Welcome, Come hire now!
-                            </div>
-                        </div>
-                        <div class="flex flex-col ml-auto mr-2 justify-center">
-                            <button type="button"
-                                class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-10 border border-red-500 hover:border-transparent rounded "
-                                onclick="">
-                                Post Job
-                            </button>
-                        </div>
-                    </div>
 
 
-                </div>
-            </div>
+
+    <div class="mt-12">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+
+            <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500  sm:text-base">
+                <li
+                    class="flex md:w-full items-center text-blue-600  sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 ">
+                    <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 ">
+                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                        </svg>
+                        Job <span class="hidden sm:inline-flex sm:ms-2">Information</span>
+                    </span>
+                </li>
+                <li
+                    class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 ">
+                    <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 ">
+                        <span class="me-2">2</span>
+                        Requirements <span class="hidden sm:inline-flex sm:ms-2"></span>
+                    </span>
+                </li>
+                <li class="flex items-center">
+                    <span class="me-2">3</span>
+                    Confirmation
+                </li>
+            </ol>
+
         </div>
     </div>
+    <div class="py-3">
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
 
-    <div class="table-container">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <h1 class="text-3xl font-bold p-2">Fill in the Details</h1>
+                <div class="flex flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col w-full">
 
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <div
-                        class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white px-4 pt-4">
-                        <div>
-                            <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
-                                class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 "
-                                type="button">
-                                <span class="sr-only">Action button</span>
-                                Action
-                                <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg>
-                            </button>
-                            <!-- Dropdown menu -->
-                            <div id="dropdownAction"
-                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 ">
-                                <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownActionButton">
-                                    <li>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 ">Reward</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 ">Promote</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Activate account</a>
-                                    </li>
-                                </ul>
-                                <div class="py-1">
-                                    <a href="#" 
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Delete User</a>
+                        <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Select Job Title
+                        </x-input-label>
+                        <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost" />
+
+
+
+                    </div>
+
+                    <div class="flex flex-col w-full">
+
+                        <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Select Job Industry
+                        </x-input-label>
+                        <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost" />
+
+
+
+                    </div>
+
+                </div>
+                <div class="flex flex-col w-full my-5">
+                    <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job Description
+                    </x-input-label>
+                    <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
+                        <div class="flex items-center justify-between px-3 py-2 border-b">
+                            <div
+                                class="flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse ">
+                                <div class="flex items-center space-x-1 rtl:space-x-reverse sm:pe-4">
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 12 20">
+                                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                                                d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6" />
+                                        </svg>
+                                        <span class="sr-only">Attach file</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+                                        </svg>
+                                        <span class="sr-only">Embed map</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+                                            <path
+                                                d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+                                        </svg>
+                                        <span class="sr-only">Upload image</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
+                                            <path
+                                                d="M14.067 0H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2ZM6.709 13.809a1 1 0 1 1-1.418 1.409l-2-2.013a1 1 0 0 1 0-1.412l2-2a1 1 0 0 1 1.414 1.414L5.412 12.5l1.297 1.309Zm6-.6-2 2.013a1 1 0 1 1-1.418-1.409l1.3-1.307-1.295-1.295a1 1 0 0 1 1.414-1.414l2 2a1 1 0 0 1-.001 1.408v.004Z" />
+                                        </svg>
+                                        <span class="sr-only">Format code</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM13.5 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm3.5 9.5A5.5 5.5 0 0 1 4.6 11h10.81A5.5 5.5 0 0 1 10 15.5Z" />
+                                        </svg>
+                                        <span class="sr-only">Add emoji</span>
+                                    </button>
+                                </div>
+                                <div class="flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:ps-4">
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 21 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M9.5 3h9.563M9.5 9h9.563M9.5 15h9.563M1.5 13a2 2 0 1 1 3.321 1.5L1.5 17h5m-5-15 2-1v6m-2 0h4" />
+                                        </svg>
+                                        <span class="sr-only">Add list</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 d">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z" />
+                                        </svg>
+                                        <span class="sr-only">Settings</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M18 2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM2 18V7h6.7l.4-.409A4.309 4.309 0 0 1 15.753 7H18v11H2Z" />
+                                            <path
+                                                d="M8.139 10.411 5.289 13.3A1 1 0 0 0 5 14v2a1 1 0 0 0 1 1h2a1 1 0 0 0 .7-.288l2.886-2.851-3.447-3.45ZM14 8a2.463 2.463 0 0 0-3.484 0l-.971.983 3.468 3.468.987-.971A2.463 2.463 0 0 0 14 8Z" />
+                                        </svg>
+                                        <span class="sr-only">Timeline</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
+                                            <path
+                                                d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
+                                        </svg>
+                                        <span class="sr-only">Download</span>
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                        <label for="table-search" class="sr-only">Search</label>
-                        <div class="relative">
-                            <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 " aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <button type="button" data-tooltip-target="tooltip-fullscreen"
+                                class="p-2 text-gray-500 rounded cursor-pointer sm:ms-auto hover:text-gray-900 hover:bg-gray-100 ">
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 19 19">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                        stroke-width="2"
+                                        d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5" />
                                 </svg>
+                                <span class="sr-only">Full screen</span>
+                            </button>
+                            <div id="tooltip-fullscreen" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip ">
+                                Show full screen
+                                <div class="tooltip-arrow" data-popper-arrow></div>
                             </div>
-                            <input type="text" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Search for users">
+                        </div>
+                        <div class="px-4 py-2 bg-white rounded-b-lg ">
+                            <label for="editor" class="sr-only">Publish post</label>
+                            <textarea id="editor" rows="8" class="block w-full px-0 text-sm text-gray-800 bg-white border-0 "
+                                placeholder="Write an article..." required></textarea>
                         </div>
                     </div>
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 lg:table-fixed">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
-                            <tr>
-                                <th scope="col" class="p-4 w-12">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-all-search" type="checkbox"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-6 py-3 md:w-96">
-                                    Job Title
-                                </th>
-                                <th scope="col" class="px-6 py-3 md:w-96">
-                                    Candidates
-                                </th>
-                                <th scope="col" class="px-6 py-3 w-md">
-                                    Status
-                                </th>
-                                <th scope="col" class="px-6 py-3 w-md">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="bg-white border-b ">
-                                <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-table-search-1" type="checkbox"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                    </div>
-                                </td>
-                                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 ">
-                                    <div class="ps-3">
-                                        <div class="text-base font-semibold">Information Technology Professor</div>
-                                        <div class="font-normal text-gray-500 text-sm">SM Baliwag
-                                            Complex, Doña
-                                            Remedios Trinidad, Highway, Brgy. Pagala, Baliuag, Bulacan 3006</div>
-                                    </div>
-                                </th>
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-row gap-1">
-                                        <div class="max-w-auto bg-red-300 rounded-lg p-1">
-                                            <div class="text-base font-semibold">25</div>
-                                            <div class="text-base font-semibold">Approved</div>
-                                        </div>
-                                        <div class="max-w-auto bg-red-300 rounded-lg p-1">
-                                            <div class="text-base font-semibold">5</div>
-                                            <div class="text-base font-semibold">Pending</div>
-                                        </div>
-                                        <div class="max-w-auto bg-red-300 rounded-lg p-1">
-                                            <div class="text-base font-semibold">5</div>
-                                            <div class="text-base font-semibold">Hired</div>
-                                        </div>
-                                    </div>
-                                </td>
+
+                </div>
 
 
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> ACTIVE
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <a href="#" class="font-medium text-blue-600  hover:underline">View Post</a>
-                                </td>
-                            </tr>
+                <div class="flex flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col w-full">
 
-                        </tbody>
-                    </table>
-                    <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between py-4 px-5"
-                        aria-label="Table navigation">
-                        <span
-                            class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing
-                            <span class="font-semibold text-gray-900 ">1-10</span> of <span
-                                class="font-semibold text-gray-900 ">1000</span></span>
-                        <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">1</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">2</a>
-                            </li>
-                            <li>
-                                <a href="#" aria-current="page"
-                                    class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">4</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">5</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
+                        <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Sample Wage
+                        </x-input-label>
+                        <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost" />
+
+
+
+                    </div>
+
+                    <div class="flex flex-col ml w-full">
+                        <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Educational Attainment
+                        </x-input-label>
+                        <select id="suffix" name="suffixPost" class="block mt-1 w-full rounded">
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="mr">None</option>
+                            <option value="mrs">Full-Time</option>
+                            <option value="ms">Contractual/Part-Time</option>
+
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col ml w-full">
+                        <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job Type
+                        </x-input-label>
+                        <select id="suffix" name="suffixPost" class="block mt-1 w-full rounded">
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="mr">None</option>
+                            <option value="mrs">Full-Time</option>
+                            <option value="ms">Contractual/Part-Time</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="flex flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col w-1/2">
+
+                        <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job Posting Duration
+                        </x-input-label>
+                        <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost" />
+
+
+
+                    </div>
+                    <div class="flex flex-col w-1/3">
+
+                        <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job Slots
+                        </x-input-label>
+                        <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost" />
+
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="flex flex-col w-full my-5">
+                    <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job Qualification
+                    </x-input-label>
+                    <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
+                        <div class="flex items-center justify-between px-3 py-2 border-b">
+                            <div
+                                class="flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse ">
+                                <div class="flex items-center space-x-1 rtl:space-x-reverse sm:pe-4">
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 12 20">
+                                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                                                d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6" />
+                                        </svg>
+                                        <span class="sr-only">Attach file</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+                                        </svg>
+                                        <span class="sr-only">Embed map</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+                                            <path
+                                                d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+                                        </svg>
+                                        <span class="sr-only">Upload image</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
+                                            <path
+                                                d="M14.067 0H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2ZM6.709 13.809a1 1 0 1 1-1.418 1.409l-2-2.013a1 1 0 0 1 0-1.412l2-2a1 1 0 0 1 1.414 1.414L5.412 12.5l1.297 1.309Zm6-.6-2 2.013a1 1 0 1 1-1.418-1.409l1.3-1.307-1.295-1.295a1 1 0 0 1 1.414-1.414l2 2a1 1 0 0 1-.001 1.408v.004Z" />
+                                        </svg>
+                                        <span class="sr-only">Format code</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM13.5 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm3.5 9.5A5.5 5.5 0 0 1 4.6 11h10.81A5.5 5.5 0 0 1 10 15.5Z" />
+                                        </svg>
+                                        <span class="sr-only">Add emoji</span>
+                                    </button>
+                                </div>
+                                <div class="flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:ps-4">
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 21 18">
+                                            <path stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2"
+                                                d="M9.5 3h9.563M9.5 9h9.563M9.5 15h9.563M1.5 13a2 2 0 1 1 3.321 1.5L1.5 17h5m-5-15 2-1v6m-2 0h4" />
+                                        </svg>
+                                        <span class="sr-only">Add list</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 d">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z" />
+                                        </svg>
+                                        <span class="sr-only">Settings</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M18 2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM2 18V7h6.7l.4-.409A4.309 4.309 0 0 1 15.753 7H18v11H2Z" />
+                                            <path
+                                                d="M8.139 10.411 5.289 13.3A1 1 0 0 0 5 14v2a1 1 0 0 0 1 1h2a1 1 0 0 0 .7-.288l2.886-2.851-3.447-3.45ZM14 8a2.463 2.463 0 0 0-3.484 0l-.971.983 3.468 3.468.987-.971A2.463 2.463 0 0 0 14 8Z" />
+                                        </svg>
+                                        <span class="sr-only">Timeline</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
+                                            <path
+                                                d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
+                                        </svg>
+                                        <span class="sr-only">Download</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" data-tooltip-target="tooltip-fullscreen"
+                                class="p-2 text-gray-500 rounded cursor-pointer sm:ms-auto hover:text-gray-900 hover:bg-gray-100 ">
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 19 19">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5" />
+                                </svg>
+                                <span class="sr-only">Full screen</span>
+                            </button>
+                            <div id="tooltip-fullscreen" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip ">
+                                Show full screen
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-2 bg-white rounded-b-lg ">
+                            <label for="editor" class="sr-only">Publish post</label>
+                            <textarea id="editor" rows="8" class="block w-full px-0 text-sm text-gray-800 bg-white border-0 "
+                                placeholder="Write an article..." required></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex flex-col w-full my-5">
+                    <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Remarks
+                    </x-input-label>
+                    <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
+                        <div class="flex items-center justify-between px-3 py-2 border-b">
+                            <div
+                                class="flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse ">
+                                <div class="flex items-center space-x-1 rtl:space-x-reverse sm:pe-4">
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 12 20">
+                                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                                                d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6" />
+                                        </svg>
+                                        <span class="sr-only">Attach file</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+                                        </svg>
+                                        <span class="sr-only">Embed map</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+                                            <path
+                                                d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+                                        </svg>
+                                        <span class="sr-only">Upload image</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
+                                            <path
+                                                d="M14.067 0H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2ZM6.709 13.809a1 1 0 1 1-1.418 1.409l-2-2.013a1 1 0 0 1 0-1.412l2-2a1 1 0 0 1 1.414 1.414L5.412 12.5l1.297 1.309Zm6-.6-2 2.013a1 1 0 1 1-1.418-1.409l1.3-1.307-1.295-1.295a1 1 0 0 1 1.414-1.414l2 2a1 1 0 0 1-.001 1.408v.004Z" />
+                                        </svg>
+                                        <span class="sr-only">Format code</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM13.5 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm3.5 9.5A5.5 5.5 0 0 1 4.6 11h10.81A5.5 5.5 0 0 1 10 15.5Z" />
+                                        </svg>
+                                        <span class="sr-only">Add emoji</span>
+                                    </button>
+                                </div>
+                                <div class="flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:ps-4">
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 21 18">
+                                            <path stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2"
+                                                d="M9.5 3h9.563M9.5 9h9.563M9.5 15h9.563M1.5 13a2 2 0 1 1 3.321 1.5L1.5 17h5m-5-15 2-1v6m-2 0h4" />
+                                        </svg>
+                                        <span class="sr-only">Add list</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 d">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z" />
+                                        </svg>
+                                        <span class="sr-only">Settings</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M18 2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM2 18V7h6.7l.4-.409A4.309 4.309 0 0 1 15.753 7H18v11H2Z" />
+                                            <path
+                                                d="M8.139 10.411 5.289 13.3A1 1 0 0 0 5 14v2a1 1 0 0 0 1 1h2a1 1 0 0 0 .7-.288l2.886-2.851-3.447-3.45ZM14 8a2.463 2.463 0 0 0-3.484 0l-.971.983 3.468 3.468.987-.971A2.463 2.463 0 0 0 14 8Z" />
+                                        </svg>
+                                        <span class="sr-only">Timeline</span>
+                                    </button>
+                                    <button type="button"
+                                        class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 ">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
+                                            <path
+                                                d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
+                                        </svg>
+                                        <span class="sr-only">Download</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" data-tooltip-target="tooltip-fullscreen"
+                                class="p-2 text-gray-500 rounded cursor-pointer sm:ms-auto hover:text-gray-900 hover:bg-gray-100 ">
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 19 19">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5" />
+                                </svg>
+                                <span class="sr-only">Full screen</span>
+                            </button>
+                            <div id="tooltip-fullscreen" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip ">
+                                Show full screen
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-2 bg-white rounded-b-lg ">
+                            <label for="editor" class="sr-only">Publish post</label>
+                            <textarea id="editor" rows="3"
+                                class="block w-full px-0 text-sm text-gray-800 bg-white border-0 focus:outline-none"
+                                placeholder="Write an article..." required></textarea>
+                        </div>
+                    </div>
+
                 </div>
 
 
 
+                <button type="submit"
+                    class="flex mr-5 mb-5 ml-auto items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                    Next
+                </button>
 
             </div>
         </div>
     </div>
+    </div>
+
+
+
 
 
 
