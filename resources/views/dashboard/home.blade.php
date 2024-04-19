@@ -137,30 +137,204 @@
 
                             <div id="animation-carousel" class="relative w-full" data-carousel="static">
                                 <!-- Carousel wrapper -->
-                                <div class="relative h-24 overflow-hidden rounded-lg md:h-24">
+                                <div class="relative h-24 overflow-hidden rounded-lg md:h-96">
                                     <!-- Item 1 -->
 
-                                    <div class="hidden  duration-200 ease-linear container bg-red-200 p-2 rounded-lg w-full h-48" 
+
+
+
+                                    <div class="grid grid-cols-2 gap-4 hidden duration-200 ease-linear h-96"
                                         data-carousel-item>
-                                        <div class="mb-6">
-                                            <div class="flex flex- justify-between flex-wrap gap-2 ">
-                                                <span class="text-gray-700 font-bold">Web Developer</span>
-                                                <p>
-                                                    <span class="text-gray-700 mr-2">at ABC Company</span>
-                                                    <span class="text-gray-700">2017 - 2019</span>
+                                        <div class="container bg-red-200 p-2 rounded-lg">
+                                            <div class="mb-6">
+                                                <div class="flex flex- justify-between flex-wrap gap-2 w-full">
+                                                    <span class="text-gray-700 font-bold">Web Developer</span>
+                                                    <p>
+                                                        <span class="text-gray-700 mr-2">at ABC Company</span>
+                                                        <span class="text-gray-700">2017 - 2019</span>
+                                                    </p>
+                                                </div>
+                                                <p class="mt-2">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus
+                                                    est
+                                                    vitae
+                                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere
+                                                    risus
+                                                    non
+                                                    velit
+                                                    egestas
+                                                    suscipit.
                                                 </p>
                                             </div>
-                                            <p class="mt-2">
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est
-                                                vitae
-                                                tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus
-                                                non
-                                                velit
-                                                egestas
-                                                suscipit.
-                                            </p>
+                                        </div>
+                                        <div class="container bg-red-200 p-2 rounded-lg">
+                                            <div class="mb-6">
+                                                <div class="flex flex- justify-between flex-wrap gap-2 w-full">
+                                                    <span class="text-gray-700 font-bold">Web Developer</span>
+                                                    <p>
+                                                        <span class="text-gray-700 mr-2">at ABC Company</span>
+                                                        <span class="text-gray-700">2017 - 2019</span>
+                                                    </p>
+                                                </div>
+                                                <p class="mt-2">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus
+                                                    est
+                                                    vitae
+                                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere
+                                                    risus
+                                                    non
+                                                    velit
+                                                    egestas
+                                                    suscipit.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="container bg-red-200 p-2 rounded-lg">
+                                            <div class="mb-6">
+                                                <div class="flex flex- justify-between flex-wrap gap-2 w-full">
+                                                    <span class="text-gray-700 font-bold">Web Developer</span>
+                                                    <p>
+                                                        <span class="text-gray-700 mr-2">at ABC Company</span>
+                                                        <span class="text-gray-700">2017 - 2019</span>
+                                                    </p>
+                                                </div>
+                                                <p class="mt-2">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus
+                                                    est
+                                                    vitae
+                                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere
+                                                    risus
+                                                    non
+                                                    velit
+                                                    egestas
+                                                    suscipit.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="container bg-red-200 p-2 rounded-lg">
+                                            <div class="mb-6">
+                                                <div class="flex flex- justify-between flex-wrap gap-2 w-full">
+                                                    <span class="text-gray-700 font-bold">Web Developer</span>
+                                                    <p>
+                                                        <span class="text-gray-700 mr-2">at ABC Company</span>
+                                                        <span class="text-gray-700">2017 - 2019</span>
+                                                    </p>
+                                                </div>
+                                                <p class="mt-2">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus
+                                                    est
+                                                    vitae
+                                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere
+                                                    risus
+                                                    non
+                                                    velit
+                                                    egestas
+                                                    suscipit.
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
+
+
+
+
+
+                                    <div class="grid grid-cols-2 gap-4 hidden duration-200 ease-linear h-96"
+                                        data-carousel-item>
+                                        <div class="container bg-red-200 p-2 rounded-lg">
+                                            <div class="mb-6">
+                                                <div class="flex flex- justify-between flex-wrap gap-2 w-full">
+                                                    <span class="text-gray-700 font-bold">Web Developer</span>
+                                                    <p>
+                                                        <span class="text-gray-700 mr-2">at ABC Company</span>
+                                                        <span class="text-gray-700">2017 - 2019</span>
+                                                    </p>
+                                                </div>
+                                                <p class="mt-2">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus
+                                                    est
+                                                    vitae
+                                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere
+                                                    risus
+                                                    non
+                                                    velit
+                                                    egestas
+                                                    suscipit.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="container bg-red-200 p-2 rounded-lg">
+                                            <div class="mb-6">
+                                                <div class="flex flex- justify-between flex-wrap gap-2 w-full">
+                                                    <span class="text-gray-700 font-bold">Web Developer</span>
+                                                    <p>
+                                                        <span class="text-gray-700 mr-2">at ABC Company</span>
+                                                        <span class="text-gray-700">2017 - 2019</span>
+                                                    </p>
+                                                </div>
+                                                <p class="mt-2">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus
+                                                    est
+                                                    vitae
+                                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere
+                                                    risus
+                                                    non
+                                                    velit
+                                                    egestas
+                                                    suscipit.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="container bg-red-200 p-2 rounded-lg">
+                                            <div class="mb-6">
+                                                <div class="flex flex- justify-between flex-wrap gap-2 w-full">
+                                                    <span class="text-gray-700 font-bold">Web Developer</span>
+                                                    <p>
+                                                        <span class="text-gray-700 mr-2">at ABC Company</span>
+                                                        <span class="text-gray-700">2017 - 2019</span>
+                                                    </p>
+                                                </div>
+                                                <p class="mt-2">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus
+                                                    est
+                                                    vitae
+                                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere
+                                                    risus
+                                                    non
+                                                    velit
+                                                    egestas
+                                                    suscipit.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="container bg-red-200 p-2 rounded-lg">
+                                            <div class="mb-6">
+                                                <div class="flex flex- justify-between flex-wrap gap-2 w-full">
+                                                    <span class="text-gray-700 font-bold">Web Developer</span>
+                                                    <p>
+                                                        <span class="text-gray-700 mr-2">at ABC Company</span>
+                                                        <span class="text-gray-700">2017 - 2019</span>
+                                                    </p>
+                                                </div>
+                                                <p class="mt-2">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus
+                                                    est
+                                                    vitae
+                                                    tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere
+                                                    risus
+                                                    non
+                                                    velit
+                                                    egestas
+                                                    suscipit.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    
 
 
 
@@ -188,6 +362,8 @@
                                             class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                             alt="...">
                                     </div>
+
+
                                 </div>
                                 <!-- Slider controls -->
                                 <button type="button"
@@ -223,7 +399,7 @@
 
 
 
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-2 gap-4 mt-20">
                                 <div class="container bg-red-200 p-2 rounded-lg">
                                     <div class="mb-6">
                                         <div class="flex flex- justify-between flex-wrap gap-2 w-full">
