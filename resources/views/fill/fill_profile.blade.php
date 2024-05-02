@@ -39,7 +39,6 @@
 
 </div>
 
-
 <body class="font-sans">
     <div class="min-h-screen flex flex-col text-gray-900 antialiased bg-gray-100">
 
@@ -51,6 +50,7 @@
 
             <h1 class="text-3xl p-6">Complete your Details</h1>
         </div>
+    
 
         <div class="flex flex-row justify-center">
             <ul class="border border-gray-200 rounded overflow-hidden shadow-md">
@@ -171,9 +171,10 @@
 
     </div>
 
+    
 </body>
-
 </html>
+    
 <script>
     function toggleTableVisibility(dispTable) {
         const table = document.getElementById(dispTable);
@@ -220,3 +221,6 @@
         }
     }
 </script>
+
+
+
