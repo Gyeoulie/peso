@@ -5,10 +5,42 @@
         </div>
 
         <div class="col-span-12">
+            
             <div class="bg-white shadow rounded-lg p-6">
 
 
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <div class="relative overflow-x-auto ">
+                    <div class="sm:hidden">
+                        <label for="tabs" class="sr-only">Select your country</label>
+                        <select id="tabs"
+                            class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option>All</option>
+                            <option>Pending</option>
+                            <option>Approved</option>
+                            <option>Others</option>
+                        </select>
+                    </div>
+                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                        <li class="w-full focus-within:z-10">
+                            <a href="#"
+                                class="inline-block w-full p-4 text-gray-900 bg-gray-400 border border-gray-200 rounded-s-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none"
+                                aria-current="page">All</a>
+                        </li>
+                        <li class="w-full focus-within:z-10">
+                            <a href="#"
+                                class="inline-block w-full p-4 bg-white border border-gray-200  hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none ">Pending</a>
+                        </li>
+                        <li class="w-full focus-within:z-10">
+                            <a href="#"
+                                class="inline-block w-full p-4 bg-white border border-gray-200  hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none ">Active</a>
+                        </li>
+                        <li class="w-full focus-within:z-10">
+                            <a href="#"
+                                class="inline-block w-full p-4 bg-white border border-gray-200  hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none">Others</a>
+                        </li>
+        
+                    </ul>
+
                     <div
                         class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
                         <div>

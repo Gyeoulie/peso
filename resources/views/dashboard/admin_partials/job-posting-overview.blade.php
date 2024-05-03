@@ -384,16 +384,16 @@
                     placeholder="Write your thoughts here..."></textarea>
             </div>
 
-
-
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button type="button" onclick="eligibilityReset()">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
-
-                <x-danger-button class="ms-3" type="button" id="eligibilityAdd">
-                    {{ __('Reject Application') }}
-                </x-danger-button>
-            </div>
         </div>
+
+        <div class="mt-6 flex justify-end">
+            <x-secondary-button type="button" onclick="eligibilityReset()">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-danger-button class="ms-3" type="button" id="eligibilityAdd">
+                {{ __('Reject Application') }}
+            </x-danger-button>
+        </div>
+    </div>
 </x-modal>

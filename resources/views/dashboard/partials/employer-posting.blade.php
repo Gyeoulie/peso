@@ -61,18 +61,24 @@
 
 
 
-            <div class="flex flex-row mt-4 w-full gap-4">
-                <div class="flex flex-col w-full">
-
-                    <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Sample Wage
-                    </x-input-label>
-                    <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost" />
-
-
+            <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
+                
+                <div class="flex flex-row gap-4 w-1/2">
+                    <div class="flex flex-col w-full">
+                        <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Sample Wage
+                        </x-input-label>
+                        <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost" />
+                    </div>
+                    <div class="flex flex-col w-full">
+                        <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Sample Wage
+                        </x-input-label>
+                        <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost" />
+                    </div>
 
                 </div>
+                
 
-                <div class="flex flex-col ml w-full">
+                <div class="flex flex-col ml sm:w-1/4">
                     <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Educational Attainment
                     </x-input-label>
                     <select id="suffix" name="suffixPost" class="block mt-1 w-full rounded">
@@ -84,7 +90,7 @@
                     </select>
                 </div>
 
-                <div class="flex flex-col ml w-full">
+                <div class="flex flex-col ml sm:w-1/4">
                     <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job Type
                     </x-input-label>
                     <select id="suffix" name="suffixPost" class="block mt-1 w-full rounded">
@@ -119,8 +125,28 @@
                 </div>
 
             </div>
+            
         </div>
 
+    </div>
+
+    <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 mt-3">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
+            <div class="flex flex-row my-4 w-full gap-4">
+                <div class="flex flex-col ml w-1/2">
+                    <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> PESO Branch
+                    </x-input-label>
+                    <select id="suffix" name="suffixPost" class="block mt-1 w-full rounded">
+                        <option value="" disabled selected>Select Type</option>
+                        <option value="mr">None</option>
+                        <option value="mrs">Full-Time</option>
+                        <option value="ms">Contractual/Part-Time</option>
+
+                    </select>
+                </div>
+
+            </div>
+        </div>
     </div>
     <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 mt-3">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
