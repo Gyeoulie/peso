@@ -12,11 +12,16 @@ export default {
     ],
 
     theme: {
-        
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                poppins: ["Poppins", "sans-serif"],
+                ubuntu: ['Ubuntu', 'ui-sans-serif', 'system-ui'],
                 
+                
+            },
+            fontSize: {
+                xs: "0.625rem", // Define the font size for xs
             },
         },
     },

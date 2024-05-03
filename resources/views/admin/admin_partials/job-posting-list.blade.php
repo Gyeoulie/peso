@@ -1,3 +1,5 @@
+<x-admin-layout>
+
 <div class="container mx-auto py-8">
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4">
         <div class="col-span-12">
@@ -501,3 +503,4 @@
 
     </div>
 </div>
+</x-admin-layout>

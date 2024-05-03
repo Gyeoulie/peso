@@ -14,7 +14,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-{{-- 
+    {{-- 
     <style>
         .custom-btn {
             width: 5rem;
@@ -60,7 +60,7 @@
             <div class="custom-btn">Other Skills</div>
             <div class="custom-btn">Certification/Authorization</div>
         </div> --}}
-        
+
         <div {{ $attributes }}
             class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 

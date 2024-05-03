@@ -31,12 +31,11 @@ Route::get('/fill/employer', [NSRP::class, 'loadEmployer'])->name('fill_employer
 Route::post('/fill/employer', [NSRP::class, 'postEmployer'])->name('postEmployer');
 
 //PESO ADMIN ADD
-Route::post('/admin/add', [AdminTable::class, 'addData'])->name('addDataAdmin');
-Route::post('/admin/addPeso', [AdminTable::class, 'addPeso'])->name('addPesoAdmin');
-
+// Route::post('/admin/add', [AdminTable::class, 'addData'])->name('addDataAdmin');
+// Route::post('/admin/addPeso', [AdminTable::class, 'addPeso'])->name('addPesoAdmin');
 
 //ADMIN LOGIN REDIRECT
-Route::get('/admin', [AdminTable::class, 'index'])->name('admintables');
+// Route::get('/admin', [AdminTable::class, 'index'])->name('admintables');
 
 //JOBSEEKER PROFILE
 Route::get('/employee', [EmployeeProfile::class, 'employeeProfile'])->name('employeeProfile');
@@ -45,7 +44,6 @@ Route::post('/employee/update', [EmployeeProfile::class, 'updateDescEmp'])->name
 //EMPLOYER PROFILE
 Route::get('/company', [CompanyProfile::class, 'companyProfile'])->name('companyProfile');
 Route::post('/company/update', [CompanyProfile::class, 'updateDescCompany'])->name('updateDescCompany');
-
 
 //LARAVEL DEFAULT ROUTES
 Route::get('/dashboard', function () {
@@ -61,6 +59,57 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+
+
+
+
+
+
+
+
+
+// ADMIN TESTING NAV
+Route::get('/admin', function () {
+    return view('admin.admin_partials.admin-dashboard');
+})->name('admin');
+
+Route::get('admin/job/applicants', function () {
+    return view('admin.admin_partials.applicant-list');
+})->name('admin-applicants');
+
+Route::get('admin/job/overview', function () {
+    return view('admin.admin_partials.applicant-overview');
+})->name('admin-appoverview');
+
+Route::get('/admin/eligibility', function () {
+    return view('admin.admin_partials.eligibility-license');
+})->name('admin-eligibility');
+
+Route::get('/admin/jobs', function () {
+    return view('admin.admin_partials.job-posting-list');
+})->name('admin-joblist');
+
+Route::get('/admin/jobs/overview', function () {
+    return view('admin.admin_partials.job-posting-overview');
+})->name('admin-jobs');
+
+Route::get('/admin/account/overview', function () {
+    return view('admin.admin_partials.jobseeker-overview');
+})->name('admin-overview');
+
+Route::get('/admin/location', function () {
+    return view('admin.admin_partials.location-management');
+})->name('admin-location');
+
+Route::get('/admin/industry', function () {
+    return view('admin.admin_partials.position-industry');
+})->name('admin-industry');
+
+Route::get('/admin/requirements', function () {
+    return view('admin.admin_partials.requirements');
+})->name('admin-req');
 
 
 
