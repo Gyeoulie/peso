@@ -9,8 +9,10 @@
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex flex-row mb-4">
                     <div class="flex items-center">
-                    <h1 class="text-xl font-bold ">Eligibility List</h1>
+                        <h1 class="text-xl font-bold ">Eligibility List</h1>
                     </div>
+
+                    {{-- PHONE BUTTON (SMALL SCREEN) --}}
                     <div class="mr-0 ml-auto">
                         <button type="button"
                             class="sm:hidden sm:inline-flex text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
@@ -33,11 +35,14 @@
                                         stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
+
+                            {{-- ELIGIBILITY SEARCH --}}
                             <input type="text" id="table-search-users"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search eligibility">
                         </div>
 
+                        {{-- WEB BUTTON --}}
                         <div>
                             <button type="button"
                                 class="hidden sm:inline-flex text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 focus:outline-none"
@@ -46,6 +51,8 @@
                                 Eligibility</button>
                         </div>
                     </div>
+
+                    {{-- ELIGIBILITY TABLE --}}
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
@@ -80,6 +87,8 @@
                         </tbody>
                     </table>
                 </div>
+
+                {{-- PAGINATION --}}
                 <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
                     aria-label="Table navigation">
                     <span
@@ -130,8 +139,10 @@
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex flex-row mb-4">
                     <div class="flex items-center">
-                    <h1 class="text-xl font-bold ">License List</h1>
+                        <h1 class="text-xl font-bold ">License List</h1>
                     </div>
+
+                    {{-- PHONE BUTTON (SMALL SCREEN) --}}
                     <div class="mr-0 ml-auto">
                         <button type="button"
                             class="sm:hidden sm:inline-flex text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
@@ -139,6 +150,7 @@
                             x-on:click.prevent="$dispatch('open-modal', 'eligibility-modal')">Add
                             License</button>
                     </div>
+
                 </div>
 
                 <div class="relative overflow-x-auto">
@@ -155,11 +167,14 @@
                                         stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
+
+                            {{-- LICENSE SEARCH --}}
                             <input type="text" id="table-search-users"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search license">
                         </div>
 
+                        {{-- WEB BUTTON --}}
                         <div>
                             <button type="button"
                                 class="hidden sm:inline-flex text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 focus:outline-none"
@@ -168,6 +183,8 @@
                                 License</button>
                         </div>
                     </div>
+
+                    {{-- LICENSE MODAL --}}
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
@@ -204,6 +221,8 @@
                         </tbody>
                     </table>
                 </div>
+
+                {{-- PAGINATION --}}
                 <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
                     aria-label="Table navigation">
                     <span
@@ -250,7 +269,7 @@
 </div>
 
 
-
+{{-- ELIGIBILITY MODAL --}}
 <x-modal name="eligibility-modal" focusable>
     <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
         <h2 class="text-lg font-medium text-gray-900">
@@ -291,6 +310,8 @@
     </div>
 </x-modal>
 
+
+{{-- LICENSE MODAL --}}
 <x-modal name="license-modal" focusable>
     <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
         <h2 class="text-lg font-medium text-gray-900">
