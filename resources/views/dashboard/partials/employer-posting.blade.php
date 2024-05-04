@@ -16,7 +16,7 @@
             <li
                 class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 ">
                 <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 ">
-                    <span class="me-2">2</span> 
+                    <span class="me-2">2</span>
                     Requirements <span class="hidden sm:inline-flex sm:ms-2"></span>
                 </span>
             </li>
@@ -62,7 +62,7 @@
 
 
             <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
-                
+
                 <div class="flex flex-row gap-4 w-1/2">
                     <div class="flex flex-col w-full">
                         <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Sample Wage
@@ -76,7 +76,7 @@
                     </div>
 
                 </div>
-                
+
 
                 <div class="flex flex-col ml sm:w-1/4">
                     <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Educational Attainment
@@ -125,7 +125,7 @@
                 </div>
 
             </div>
-            
+
         </div>
 
     </div>
@@ -673,12 +673,11 @@
                     </div>
                 </div>
 
-                <button type="submit"
-                    class="flex mr-5 mb-4 ml-auto items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
-                    style="width: 100px"
-                    onclick="nextSection(2)">
-                    Next
-                </button>
+                <div class="flex ml-auto mr-4 mb-4">
+                    <button type="button"
+                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+                        style="width: 100px;" onclick="nextSection(2)">Next</button>
+                </div>
 
             </div>
         </div>
