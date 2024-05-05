@@ -111,6 +111,10 @@ Route::get('/admin/requirements', function () {
     return view('admin.admin_partials.requirements');
 })->name('admin-req');
 
+Route::get('/admin/manage-admin', function () {
+    return view('admin.admin_partials.admin-accounts');
+})->name('admin-admin');
+
 
 
 require __DIR__ . '/auth.php';

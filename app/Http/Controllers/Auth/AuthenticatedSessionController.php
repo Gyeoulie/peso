@@ -34,6 +34,7 @@ class AuthenticatedSessionController extends Controller
         $user = $request->user();
 
         return $this->redirectBasedOnRole($user->usertype);
+
     }
 
     /**
@@ -41,13 +42,14 @@ class AuthenticatedSessionController extends Controller
      */
     private function redirectBasedOnRole(int $usertype): RedirectResponse
     {
+
         switch ($usertype) {
             case 2:
                 return redirect()->route('fill_profile');
             case 3:
                 return redirect()->route('fill_employer');
-            case 8:
-                return redirect()->route('admintables');
+            case 10:
+                return redirect()->route('admin');
             default:
                 return redirect(RouteServiceProvider::HOME);
         }
