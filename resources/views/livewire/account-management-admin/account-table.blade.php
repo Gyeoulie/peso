@@ -100,5 +100,5 @@
 
         {{ $adminAccounts->links() }}
     </div>
-    
+
 </div>

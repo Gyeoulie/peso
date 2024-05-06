@@ -21,6 +21,7 @@
     <link href="https://pagecdn.io/lib/easyfonts/fonts.css" rel="stylesheet" />
 
     <!-- Scripts -->
+    @livewireScripts
     @vite(['resources/css/app.css'])
 </head>
 

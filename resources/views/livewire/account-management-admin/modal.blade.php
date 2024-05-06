@@ -1,7 +1,7 @@
 <x-modal name="admin-modal" focusable>
     <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Create an Admin ACcount') }}
+            {{ __('Create an Admin Account') }}
         </h2>
         <hr>
         <form wire:submit="create">

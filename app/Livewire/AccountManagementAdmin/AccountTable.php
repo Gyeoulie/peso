@@ -13,6 +13,7 @@ class AccountTable extends Component
     use WithPagination;
 
     public $search;
+    public $filterProv = "";
 
     public function editUser($userId)
     {
@@ -24,6 +25,19 @@ class AccountTable extends Component
     public function render()
     {
 
+        // $query = User::whereIn('usertype', [8, 9, 10])
+        //     ->select('id', 'email', 'usertype', 'created_at', 'updated_at')
+        //     ->where(function ($query) {
+        //         $query->where('email', 'like', '%' . $this->search . '%')
+        //             ->orWhere('usertype', 'like', '%' . $this->search . '%');
+        //     });
+
+        // if ($this->userType) {
+        //     $query->where('usertype', $this->userType);
+        // }
+
+        // $adminAccounts = $query->paginate(5);
+
         $adminAccounts = User::whereIn('usertype', [8, 9, 10])
             ->select('id', 'email', 'usertype', 'created_at', 'updated_at')
             ->where(function ($query) {
@@ -31,6 +45,7 @@ class AccountTable extends Component
                     ->orWhere('usertype', 'like', '%' . $this->search . '%');
             })
             ->paginate(5);
+
         return view('livewire.account-management-admin.account-table', compact('adminAccounts'));
     }
 }
