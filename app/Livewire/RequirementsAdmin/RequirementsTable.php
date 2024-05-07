@@ -28,10 +28,10 @@ class RequirementsTable extends Component
     #[On('reload-table')]
     public function render()
     {
-        $query = Requirements::where('requirement_Description', 'like', '%' . $this->search . '%');
+        $query = Requirements::where('requirement_Title', 'like', '%' . $this->search . '%');
 
         if (!empty($this->filter)) {
-            $query->where('requirement_Type', '=', $this->filter);
+            $query->where('requirement_Status', '=', $this->filter);
         }
 
         $requirements = $query->paginate($this->rows);

@@ -15,11 +15,11 @@ class License extends Model
     protected $fillable = [
         'employee_id',
         'license_type_id',
-        'license_validity',
+        'license_Validity',
     ];
 
     protected $casts = [
-        'license_validity' => 'date',
+        'license_Validity' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

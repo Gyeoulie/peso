@@ -17,12 +17,18 @@ class Job_Posting extends Model
         'industry_id',
         'position_id',
         'job_Description',
-        'job_Wage',
+        'job_Qualifications',
+        'job_Remarks',
+        'job_MinWage',
+        'job_MaxWage',
         'job_Slots',
         'job_Address',
         'barangay_id',
         'job_Duration',
         'job_Status',
+        'peso_id',
+        'peso_municipality_id',
+        'peso_Remarks',
     ];
 
     protected $casts = [
@@ -49,5 +55,15 @@ class Job_Posting extends Model
     public function barangay()
     {
         return $this->belongsTo(Barangay::class, 'barangay_id');
+    }
+
+    public function peso()
+    {
+        return $this->belongsTo(PESO::class, 'peso_id');
+    }
+
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class, 'peso_municipality_id');
     }
 }

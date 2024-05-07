@@ -106,13 +106,13 @@
                         <th scope="row" class="text-gray-900 whitespace-nowrap">
 
                             <div class="ps-3 uppercase">
-                                <div class="text-base font-semibold">{{ $data->requirement_Description }}</div>
+                                <div class="text-base font-semibold">{{ $data->requirement_Title }}</div>
                             </div>
 
                         </th>
                         <td class="px-6 py-4">
                             <div class="flex items-center uppercase">
-                                @if ($data->requirement_Type == 1)
+                                @if ($data->requirement_Status == 1)
                                     <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> ACTIVE
                                 @else
                                     <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> DISABLED

@@ -13,8 +13,8 @@ class Requirements extends Model
     protected $primaryKey = 'requirement_id';
 
     protected $fillable = [
-        'requirement_Description',
-        'requirement_Type',
+        'requirement_Title',
+        'requirement_Status',
     ];
 
     protected $casts = [

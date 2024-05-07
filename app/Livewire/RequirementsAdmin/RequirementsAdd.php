@@ -15,7 +15,7 @@ class RequirementsAdd extends Component
     public function rules()
     {
         return [
-            'reqPost' => ['required', 'string', Rule::unique('requirements', 'requirement_Description')],
+            'reqPost' => ['required', 'string', Rule::unique('requirements', 'requirement_Title')],
             'statusPost' => ['required', 'string'],
         ];
     }
@@ -28,8 +28,8 @@ class RequirementsAdd extends Component
         try {
             // Create the user record
             Requirements::create([
-                'requirement_Description' => strtoupper($this->reqPost),
-                'requirement_Type' => $this->statusPost,
+                'requirement_Title' => strtoupper($this->reqPost),
+                'requirement_Status' => $this->statusPost,
             ]);
 
             $this->reset();

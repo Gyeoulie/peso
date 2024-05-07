@@ -18,8 +18,8 @@ class License_Type extends Model
      * @var array
      */
     protected $fillable = [
-        'license_name',
-        'license_code',
+        'license_Name',
+        'license_Code',
     ];
 
     /**

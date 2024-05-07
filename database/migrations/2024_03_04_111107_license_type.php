@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('license_type', function (Blueprint $table) {
             $table->id('license_type_id');
-            $table->string('license_name', 255);
-            $table->string('license_code', 10);
+            $table->string('license_Name', 255);
+            $table->string('license_Code', 10);
             $table->timestamps(); // Adds created_at and updated_at columns
         });
     }

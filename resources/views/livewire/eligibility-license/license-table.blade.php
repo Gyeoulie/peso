@@ -58,20 +58,21 @@
                 </thead>
                 <tbody>
                     @if ($license->isEmpty())
-                    <tr> <!-- Adjust the value as needed -->
-                        <td colspan="3" class="text-black font-bold text-lg uppercase text-center mt-5">No Records
-                            Found</td>
-                    </tr>
-                @endif
+                        <tr> <!-- Adjust the value as needed -->
+                            <td colspan="3" class="text-black font-bold text-lg uppercase text-center mt-5">No
+                                Records
+                                Found</td>
+                        </tr>
+                    @endif
                     @foreach ($license as $data)
                         <tr class="bg-white border-b hover:bg-gray-50">
                             <td class="px-6 py-4">
-                                <div class="text-gray-500 font-medium text-lg uppercase">{{ $data->license_code }}
+                                <div class="text-gray-500 font-medium text-lg uppercase">{{ $data->license_Code }}
                                 </div>
                             </td>
 
                             <td class="px-6 py-4">
-                                <div class="text-black font-bold text-lg uppercase">{{ $data->license_name }}
+                                <div class="text-black font-bold text-lg uppercase">{{ $data->license_Name }}
                                 </div>
                             </td>
 

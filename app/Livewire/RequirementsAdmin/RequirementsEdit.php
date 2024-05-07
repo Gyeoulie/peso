@@ -18,7 +18,7 @@ class RequirementsEdit extends Component
     {
         return [
             'reqId' => ['required'],
-            'reqPost' => ['required', 'string', Rule::unique('requirements', 'requirement_Description')->ignore($this->reqId, 'requirement_id')],
+            'reqPost' => ['required', 'string', Rule::unique('requirements', 'requirement_Title')->ignore($this->reqId, 'requirement_id')],
             'statusPost' => ['required'],
         ];
     }
@@ -30,8 +30,8 @@ class RequirementsEdit extends Component
         try {
             // Create the user record
             Requirements::where('requirement_id', $this->reqId)->update([
-                'requirement_Description' => strtoupper($this->reqPost),
-                'requirement_Type' => $this->statusPost,
+                'requirement_Title' => strtoupper($this->reqPost),
+                'requirement_Status' => $this->statusPost,
             ]);
 
             toastr()->success('Requirement Updated!');
@@ -59,8 +59,8 @@ class RequirementsEdit extends Component
 
         if ($requirement) {
             $this->reqId = $requirement->requirement_id;
-            $this->reqPost = $requirement->requirement_Description;
-            $this->statusPost = $requirement->requirement_Type;
+            $this->reqPost = $requirement->requirement_Title;
+            $this->statusPost = $requirement->requirement_Status;
             $this->dispatch('open-modal', 'edit-requirement-modal');
         } else {
             toastr()->error('Could not fetch data');

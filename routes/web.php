@@ -59,6 +59,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// EMPLOYER
+Route::get('/jobpost/application', function () {
+    return view('dashboard.partials.employer-jobpost');
+})->name('jobpost');
+
 // ADMIN TESTING NAV
 Route::get('/admin', function () {
     return view('admin.admin_partials.admin-dashboard');

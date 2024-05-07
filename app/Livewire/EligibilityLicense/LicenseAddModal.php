@@ -14,8 +14,8 @@ class LicenseAddModal extends Component
     public function rules()
     {
         return [
-            'licensePost' => ['required', 'string', Rule::unique('license_type', 'license_name')],
-            'lcodePost' => ['required', 'string', Rule::unique('license_type', 'license_code')],
+            'licensePost' => ['required', 'string', Rule::unique('license_type', 'license_Name')],
+            'lcodePost' => ['required', 'string', Rule::unique('license_type', 'license_Code')],
         ];
     }
 
@@ -27,8 +27,8 @@ class LicenseAddModal extends Component
         try {
             // Create the user record
             License_Type::create([
-                'license_name' => strtoupper($this->licensePost),
-                'license_code' => strtoupper($this->lcodePost),
+                'license_Name' => strtoupper($this->licensePost),
+                'license_Code' => strtoupper($this->lcodePost),
             ]);
 
             $this->close();
