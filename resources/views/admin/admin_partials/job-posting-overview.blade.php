@@ -2,7 +2,7 @@
 
     <div class="container mx-10 py-8">
         {{-- GRID --}}
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4  sm:p-0">
+        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4  p- sm:p-0">
             <div class="col-span-4 sm:col-span-12">
 
                 {{-- TITLE --}}
@@ -281,7 +281,7 @@
 
 
 
-        
+
 
     </div>
 

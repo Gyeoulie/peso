@@ -32,8 +32,8 @@ class BareditModal extends Component
             // Create the user record
             Barangay::where('barangay_id', $this->barID)->update([
                 'municipality_id' => $this->munHidden,
-                'barangay_Name' => $this->barPost,
-                'barangay_Code' => $this->bcodePost,
+                'barangay_Name' => strtoupper($this->barPost),
+                'barangay_Code' => strtoupper($this->bcodePost),
             ]);
 
             toastr()->success('Barangay Updated!');

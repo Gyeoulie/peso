@@ -5,7 +5,7 @@
     <div class="container mx-auto py-8">
 
         {{-- GRID --}}
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4">
+        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
             {{-- TITLE --}}
             <div class="col-span-12">

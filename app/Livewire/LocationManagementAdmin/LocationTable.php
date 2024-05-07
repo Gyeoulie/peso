@@ -21,20 +21,10 @@ class LocationTable extends Component
         $this->defaultFilter = 'Barangay';
     }
 
-    public function editProv($id)
+    public function editModal($modal, $id)
     {
 
-        $this->dispatch('edit-prov', $id);
-    }
-    public function editMun($id)
-    {
-
-        $this->dispatch('edit-mun', $id);
-    }
-    public function editBar($id)
-    {
-
-        $this->dispatch('edit-bar', $id);
+        $this->dispatch($modal, $id);
     }
 
     public function updatePublicKey($newValue)
@@ -46,6 +36,15 @@ class LocationTable extends Component
     #[On('reload-table')]
     public function render()
     {
+
+        // $locationData = Barangay::with('municipality.province')
+        // ->join('municipality', 'barangay.municipality_id', '=', 'municipality.municipality_id')
+        // ->leftJoin('province', 'municipality.province_id', '=', 'province.province_id')
+        // ->where('barangay.barangay_Name', 'like', '%' . $this->search . '%')
+        // ->orWhere('municipality.municipality_Name', 'like', '%' . $this->search . '%')
+        // ->orWhere('province.province_Name', 'like', '%' . $this->search . '%')
+        // ->orderBy('province.province_Name', 'asc')
+        // ->paginate(20);
 
         if ($this->defaultFilter === 'Barangay') {
             $locationData = Barangay::with('municipality.province')

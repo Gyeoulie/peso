@@ -2,7 +2,7 @@
 
 
     <div class="container mx-auto py-8">
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4">
+        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
             <div class="col-span-4 sm:col-span-3">
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col">
                     <div class="flex flex-row justify-start">

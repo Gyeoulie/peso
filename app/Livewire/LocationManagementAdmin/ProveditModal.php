@@ -25,8 +25,8 @@ class ProveditModal extends Component
         try {
             // Create the user record
             Province::where('province_id', $this->provID)->update([
-                'province_Name' => $this->provPost,
-                'province_Code' => $this->pcodePost,
+                'province_Name' => strtoupper($this->provPost),
+                'province_Code' => strtoupper($this->pcodePost),
             ]);
 
             toastr()->success('Province Updated!');

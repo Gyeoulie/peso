@@ -38,16 +38,6 @@ class AddLocations extends Component
     #[Rule('required', 'string')]
     public $pcodePost;
 
-
-
-
-
-
-
-
-
-
-
     #[On('setMun')]
     public function setMun($id)
     {
@@ -93,8 +83,8 @@ class AddLocations extends Component
         try {
             // Create the user record
             Province::create([
-                'province_Name' => $this->provPost,
-                'province_Code' => $this->pcodePost,
+                'province_Name' => strtoupper($this->provPost),
+                'province_Code' => strtoupper($this->pcodePost),
             ]);
 
             $this->reset();
@@ -121,8 +111,8 @@ class AddLocations extends Component
             // Create the user record
             Municipality::create([
                 'province_id' => $this->provHidden,
-                'municipality_Name' => $this->munPost,
-                'municipality_Code' => $this->mcodePost,
+                'municipality_Name' => strtoupper($this->munPost),
+                'municipality_Code' => strtoupper($this->mcodePost),
             ]);
 
             $this->reset();
@@ -149,8 +139,8 @@ class AddLocations extends Component
             // Create the user record
             Barangay::create([
                 'municipality_id' => $this->munHidden,
-                'barangay_Name' => $this->barPost,
-                'barangay_Code' => $this->bcodePost,
+                'barangay_Name' => strtoupper($this->barPost),
+                'barangay_Code' => strtoupper($this->bcodePost),
             ]);
 
             $this->reset();

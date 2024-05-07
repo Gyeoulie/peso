@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AdminTable;
 use App\Http\Controllers\CompanyProfile;
 use App\Http\Controllers\EmployeeProfile;
 use App\Http\Controllers\NSRP;
@@ -60,16 +59,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-
-
-
-
-
-
-
-
-
 // ADMIN TESTING NAV
 Route::get('/admin', function () {
     return view('admin.admin_partials.admin-dashboard');
@@ -107,6 +96,10 @@ Route::get('/admin/industry', function () {
     return view('admin.admin_partials.position-industry');
 })->name('admin-industry');
 
+Route::get('/admin/certificate', function () {
+    return view('admin.admin_partials.admin-certificates');
+})->name('admin-certificate');
+
 Route::get('/admin/requirements', function () {
     return view('admin.admin_partials.requirements');
 })->name('admin-req');
@@ -114,7 +107,5 @@ Route::get('/admin/requirements', function () {
 Route::get('/admin/manage-admin', function () {
     return view('admin.admin_partials.admin-accounts');
 })->name('admin-admin');
-
-
 
 require __DIR__ . '/auth.php';

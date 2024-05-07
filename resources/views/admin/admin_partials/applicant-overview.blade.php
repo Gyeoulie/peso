@@ -4,7 +4,7 @@
     <div class="container mx-auto py-8">
 
         {{-- GRID --}}
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4">
+        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
             <div class="col-span-4 sm:col-span-12">
 
                 {{-- TITLE --}}
@@ -12,7 +12,7 @@
             </div>
 
             {{-- ALERT MESSAGE FOR MATCH --}}
-            <div class="col-span-12">
+            <div class="col-span-4 sm:col-span-12">
 
                 <div class="bg-green-100 shadow rounded-lg p-6">
                     <div class="flex flex-row items-center justify-between">

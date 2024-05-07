@@ -1,8 +1,9 @@
 <h1 class="text-2xl font-bold">Certification and Training</h1>
 <div class="flex flex-col mt-4 ">
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg  mx-auto" >
-        <table id="certificationTable" class="w-full text-sm text-center rtl:text-center text-gray-500" style="display: none">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg  mx-auto">
+        <table id="certificationTable" class="w-full text-sm text-center rtl:text-center text-gray-500"
+            style="display: none">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                 <tr>
                     <th scope="col" class="border px-6 py-3">
@@ -119,7 +120,8 @@
 
 <div class="flex flex-col mt-4 ">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
-        <table id="trainingTable" class="w-full text-sm text-center rtl:text-center text-gray-500" style="display: none;">
+        <table id="trainingTable" class="w-full text-sm text-center rtl:text-center text-gray-500"
+            style="display: none;">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                 <tr>
                     <th scope="col" class="border px-6 py-3">
@@ -271,9 +273,6 @@
 
 
 <script>
-
-
-
     var trainingEditMode = false;
     var trainingIndex = 0; // Initialize eduindexedit variable
     var trainingRowCounter = 0;
@@ -445,7 +444,6 @@
 
 
 <script>
-
     // CERTIFICATION 
     var certEditMode = false;
     var certIndex = 0; // Initialize eduindexedit variable

@@ -32,8 +32,8 @@ class MuneditModal extends Component
             // Create the user record
             Municipality::where('municipality_id', $this->munID)->update([
                 'province_id' => $this->provHidden,
-                'municipality_Name' => $this->munPost,
-                'municipality_Code' => $this->mcodePost,
+                'municipality_Name' => strtoupper($this->munPost),
+                'municipality_Code' => strtoupper($this->mcodePost),
             ]);
 
             toastr()->success('Municipality Updated!');

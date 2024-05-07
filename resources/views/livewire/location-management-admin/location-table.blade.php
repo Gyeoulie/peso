@@ -1,5 +1,5 @@
 <div>
-    <div class="relative ">
+    <div class="relative overflow-x-auto">
 
         <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
 
@@ -23,7 +23,7 @@
             {{-- ADD BUTTON --}}
             <div class="mr-3">
 
-                <div class="flex flex-row">
+                <div class="flex flex-row items-center">
                     <h1 class="text-md font-semibold mr-2">Filter by:</h1>
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -91,6 +91,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if ($locationData->isEmpty())
+                        <tr> <!-- Adjust the value as needed -->
+                            <td colspan="3" class="text-black font-bold text-lg uppercase text-center mt-5">No
+                                Records
+                                Found</td>
+                        </tr>
+                    @endif
 
 
 
@@ -113,7 +120,8 @@
 
                                 <div class="flex flex-row items-center justify-end gap-6 mr-2">
 
-                                    <button type="button" wire:click.prevent='editBar({{ $data->barangay_id }})'> <svg
+                                    <button type="button"
+                                        wire:click.prevent='editModal("edit-bar",{{ $data->barangay_id }})'> <svg
                                             class="w-6 h-6 text-gray-800 text-blue-600" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="currentColor" viewBox="0 0 24 24">
@@ -156,7 +164,13 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    @if ($locationData->isEmpty())
+                        <tr> <!-- Adjust the value as needed -->
+                            <td colspan="3" class="text-black font-bold text-lg uppercase text-center mt-5">No
+                                Records
+                                Found</td>
+                        </tr>
+                    @endif
 
 
                     @foreach ($locationData as $data)
@@ -173,7 +187,8 @@
 
                             <td class="px-6 py-4">
                                 <div class="flex flex-row items-center justify-end gap-6">
-                                    <button type="button" wire:click.prevent='editMun({{ $data->municipality_id }})'>
+                                    <button type="button"
+                                        wire:click.prevent='editModal("edit-mun",{{ $data->municipality_id }})'>
 
                                         <svg class="w-6 h-6 text-gray-800 text-blue-600" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -215,7 +230,13 @@
                 </thead>
                 <tbody>
 
-
+                    @if ($locationData->isEmpty())
+                        <tr> <!-- Adjust the value as needed -->
+                            <td colspan="3" class="text-black font-bold text-lg uppercase text-center mt-5">No
+                                Records
+                                Found</td>
+                        </tr>
+                    @endif
 
                     @foreach ($locationData as $data)
                         <tr class="bg-white border-b hover:bg-gray-50">
@@ -227,7 +248,8 @@
 
                             <td class="px-6 py-4">
                                 <div class="flex flex-row items-center justify-end gap-6">
-                                    <button type="button" wire:click.prevent='editProv({{ $data->province_id }})'>
+                                    <button type="button"
+                                        wire:click.prevent='editModal("edit-prov",{{ $data->province_id }})'>
                                         <svg class="w-6 h-6 text-gray-800 text-blue-600" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="currentColor" viewBox="0 0 24 24">
