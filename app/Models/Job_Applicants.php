@@ -28,7 +28,7 @@ class Job_Applicants extends Model
         return $this->belongsTo(Employee::class, 'employee_id');
     }
 
-    public function job()
+    public function job_posting()
     {
         return $this->belongsTo(Job_Posting::class, 'job_id');
     }

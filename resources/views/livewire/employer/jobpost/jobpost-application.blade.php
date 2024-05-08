@@ -14,17 +14,50 @@
                         Job <span class="hidden sm:inline-flex sm:ms-2">Information</span>
                     </span>
                 </li>
-                <li
-                    class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 ">
-                    <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 ">
-                        <span class="me-2">2</span>
-                        Requirements <span class="hidden sm:inline-flex sm:ms-2"></span>
-                    </span>
-                </li>
-                <li class="flex items-center">
-                    <span class="me-2">3</span>
-                    Confirmation
-                </li>
+
+                @if ($currentSlide < 2)
+                    <li
+                        class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
+                        <span
+                            class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
+                            <span class="me-2">2</span>
+                            Requirements
+                            <span class="hidden sm:inline-flex sm:ms-2"></span>
+                        </span>
+                    </li>
+                @else
+                    <li
+                        class="flex md:w-full items-center text-blue-600 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
+                        <span
+                            class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                            </svg>
+                            Requirements
+                        </span>
+                    </li>
+                @endif
+                @if ($currentSlide < 3)
+                    <li class="flex items-center">
+                        <span class="me-2">3</span>
+                        Confirmation
+                    </li>
+                @else
+                    <li class="flex items-center text-blue-600">
+                        <span
+                            class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                            </svg>
+                            Confirmation
+                        </span>
+                    </li>
+                @endif
+
             </ol>
 
         </div>
@@ -32,7 +65,7 @@
 
 
 
-    <div class="post-section py-3" id="step1">
+    <div class=" {{ $currentSlide != 1 ? 'hidden' : '' }} post-section py-3" id="step1">
         <div class="max-w-6xl mx-auto p-2 sm:px-6 lg:px-8">
 
 
@@ -54,7 +87,9 @@
                     <div class="flex flex-col w-full">
                         <x-input-label for="jobIndustryPost"> <i class="fa-solid fa-briefcase"></i> Job Industry
                         </x-input-label>
-                        <x-text-input wire:model='jobIndustryPost' class="block mt-1 w-full" type="text" />
+                        <x-text-input wire:model='jobIndustryPost' class="block mt-1 w-full" type="text" readonly
+                            x-data="" x-on:click.prevent="$dispatch('open-modal', 'industry-modal')"
+                            x-on:focus="$dispatch('open-modal', 'industry-modal')" />
                         <x-input-error :messages="$errors->get('jobIndustryPost')" class="mt-2" />
                     </div>
 
@@ -86,9 +121,8 @@
                         </x-input-label>
                         <select wire:model='eduPost' class="block mt-1 w-full rounded">
                             <option value="" disabled selected>Select Type</option>
-                            <option value="mr">None</option>
-                            <option value="mrs">Full-Time</option>
-                            <option value="ms">Contractual/Part-Time</option>
+                            <option value="1">Highschool Graduate</option>
+                            <option value="2">College Graduate</option>
 
                         </select>
                         <x-input-error :messages="$errors->get('eduPost')" class="mt-2" />
@@ -99,9 +133,8 @@
                         </x-input-label>
                         <select wire:model='jtypePost' class="block mt-1 w-full rounded">
                             <option value="" disabled selected>Select Type</option>
-                            <option value="mr">None</option>
-                            <option value="mrs">Full-Time</option>
-                            <option value="ms">Contractual/Part-Time</option>
+                            <option value="1">Full-Time</option>
+                            <option value="2">Contractual/Part-Time</option>
                         </select>
                         <x-input-error :messages="$errors->get('jtypePost')" class="mt-2" />
                     </div>
@@ -115,27 +148,30 @@
                             <x-input-label for="wAddPost"> <i class="fa-solid fa-briefcase"></i> Work Address
                             </x-input-label>
                             <x-text-input wire:model='wAddPost' class="block mt-1 w-full" type="text" />
+                            <x-input-error :messages="$errors->get('wAddPost')" class="mt-2" />
                         </div>
-                        <x-input-error :messages="$errors->get('wAddPost')" class="mt-2" />
+
                     </div>
 
                     <div class="flex flex-row gap-4 w-full sm:w-2/3">
                         <div class="flex flex-col w-full">
                             <x-input-label for="barPost"> <i class="fa-solid fa-briefcase"></i> Barangay
                             </x-input-label>
-                            <x-text-input wire:model='barPost' class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model='barPost' class="block mt-1 w-full" type="text" readonly
+                                x-data="" x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')"
+                                x-on:focus="$dispatch('open-modal', 'barangay-modal')" />
                             <x-input-error :messages="$errors->get('barPost')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="mun"> <i class="fa-solid fa-briefcase"></i> Province
                             </x-input-label>
-                            <x-text-input class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
                             <x-input-error :messages="$errors->get('mun')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="prov"> <i class="fa-solid fa-briefcase"></i> Municipallity
                             </x-input-label>
-                            <x-text-input class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
                             <x-input-error :messages="$errors->get('prov')" class="mt-2" />
                         </div>
                     </div>
@@ -147,7 +183,7 @@
 
         </div>
 
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 mt-3">
+        <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 mt-3">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
 
                 <div class="flex flex-row my-4 w-full gap-4">
@@ -156,10 +192,12 @@
                         <x-input-label for="pesoPost"> <i class="fa-solid fa-briefcase"></i> PESO Branch
                         </x-input-label>
                         <select wire:model='pesoPost' class="block mt-1 w-full rounded">
-                            <option value="" disabled selected>Select Type</option>
-                            <option value="mr">None</option>
-                            <option value="mrs">Full-Time</option>
-                            <option value="ms">Contractual/Part-Time</option>
+                            <option value="" disabled selected>Select Branch</option>
+
+                            @foreach ($pesoBranches as $pesoData)
+                                <option value="{{ $pesoData->municipality->municipality_id }}">
+                                    {{ $pesoData->municipality->municipality_Name }}</option>
+                            @endforeach
                         </select>
                         <x-input-error :messages="$errors->get('pesoPost')" class="mt-2" />
                     </div>
@@ -190,7 +228,7 @@
 
 
 
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 mt-3">
+        <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 mt-3">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
 
                 <div class="flex flex-row my-4 w-full gap-4">
@@ -209,24 +247,28 @@
 
                         </div>
 
-                        <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2">
+                        <div
+                            class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($jobTags)) h-[40px] @endif ">
 
-                            <span
-                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                Professor
-                                <button type="button"
-                                    class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
-                                    <span class="sr-only">Remove badge</span>
-                                    <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path d="M18 6 6 18" />
-                                        <path d="m6 6 12 12" />
-                                    </svg>
-                                </button>
-                            </span>
 
+                            @foreach ($jobTags as $jobData)
+                                <span
+                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
+                                    {{ $jobData['position_Title'] }}
+                                    <button wire:click.prevent='removeTag( {{ $jobData['position_id'] }})'
+                                        type="button"
+                                        class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                        <span class="sr-only">Remove badge</span>
+                                        <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
+                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M18 6 6 18" />
+                                            <path d="m6 6 12 12" />
+                                        </svg>
+                                    </button>
+                                </span>
+                            @endforeach
                         </div>
                         <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
 
@@ -237,10 +279,10 @@
         </div>
 
 
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 mt-3">
+        <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 mt-3">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
 
-                <div class="flex flex-col sm:flex-row w-full sm:space-x-4 mt-4">
+                <div class="flex flex-col sm:flex-row w-full space-y-5 sm:sm:space-y-0 sm:space-x-5 mt-4">
 
                     <div class="flex flex-col w-full ">
                         <x-input-label for="descPost"> <i class="fa-solid fa-briefcase"></i> Job Description
@@ -272,8 +314,8 @@
                 </div>
 
                 <div class="flex flex-row mt-4 mb-4 ">
-                    <button type="button"
-                        class="ml-auto mr-4 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+                    <button wire:click.prevent='nextSection(2)' type="button"
+                        class="ml-auto mr-0 sm:mr-4 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
                         style="width: 100px;">Next</button>
                 </div>
 
@@ -286,41 +328,105 @@
 
 
 
-    <div class="post-section py-3" id="step2">
+    <div class=" {{ $currentSlide != 2 ? 'hidden' : '' }} post-section py-3" id="step2">
 
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
 
                 <h1 class="text-3xl py-4 font-bold">Upload the Requirements</h1>
-
-                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 w-full">
-
-                    <div class="flex flex-col w-full">
-                        <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Upload
-                            file</label>
-                        <input
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                            aria-describedby="file_input_help" type="file">
-                        <p class="mt-1 text-sm text-gray-500 0">SVG, PNG, JPG or GIF (MAX.
-                            800x400px).</p>
+                @foreach ($requirements->chunk(2) as $chunk)
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 w-full mt-4">
+                        @foreach ($chunk as $requirement)
+                            <div class="flex flex-col w-full sm:w-1/2">
+                                <label class="block text-sm font-medium text-gray-900"
+                                    for="file_input">{{ $requirement->requirement_Title }}</label>
+                                <input wire:model='req.{{ $requirement->requirement_id }}'
+                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                                    aria-describedby="file_input_help" type="file">
+                                <p class="mt-1 text-sm text-gray-500 0">PDF ONLY.</p>
+                                <x-input-error :messages="$errors->get('req.' . $requirement->requirement_id)" class="mt-2" />
+                            </div>
+                        @endforeach
                     </div>
+                @endforeach
 
-                    <div class="flex flex-col w-full">
-                        <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Upload
-                            file</label>
-                        <input
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                            aria-describedby="file_input_help" type="file">
-                        <p class="mt-1 text-sm text-gray-500">SVG, PNG, JPG or GIF (MAX.
-                            800x400px).</p>
-                    </div>
-
+                <div class="flex flex-row mt-12 mb-4 ">
+                    <button wire:click.prevent='prevSection(1)' type="button"
+                        class=" text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+                        style="width: 100px;">Previous</button>
+                    <button wire:click.prevent='nextSection(3)' type="button"
+                        class="ml-auto mr-0  text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+                        style="width: 100px;">Next</button>
                 </div>
 
-                <div class="flex flex-row mt-4 mb-4 ">
-                    <button type="button"
-                        class="ml-auto mr-4 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
-                        style="width: 100px;">Next</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class=" {{ $currentSlide != 3 ? 'hidden' : '' }} post-section py-3" id="step3">
+
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
+                <div class="flex flex-row w-full justify-center items-center mt-10">
+                    <x-profile-logo class="h-36 w-36">
+
+                    </x-profile-logo>
+                </div>
+                <div class="flex flex-col px-2 sm:px-20 mt-4 justify-center w-full">
+                    <div>
+                        <p>By checking the box provided, you acknowledge that the information contained in this job
+                            posting
+                            is intended for the consideration of potential job seekers and is subject to approval by the
+                            Public Employment Services Office (PESO). You agree that the details provided herein are for
+                            informational purposes only and do not constitute any form of contractual agreement between
+                            you
+                            and the job seekers.</p>
+                        <br>
+                        <p>Please be aware that this job posting may undergo revisions or amendments by PESO to ensure
+                            compliance with regulatory standards. While efforts are made to ensure the accuracy and
+                            authenticity of the information presented, we cannot guarantee the completeness,
+                            reliability, or
+                            timeliness of the content.</p>
+                        <p>You, as the employer, are solely responsible for reviewing and selecting suitable job seekers
+                            for
+                            your employment needs. PESO reserves the right to modify, update, or withdraw this posting
+                            if it
+                            does not adhere to established rules or guidelines.</p>
+                        <br>
+                        <p>By checking this box, you acknowledge and accept that your confirmation of this disclaimer
+                            affirms your role as the employer, responsible for engaging with potential job seekers based
+                            on
+                            the information provided in this posting.</p>
+                        <p>For any inquiries or clarifications regarding this job posting, please contact the Public
+                            Employment Services Office or the designated employer representative.</p>
+                        <br>
+                        <p>Thank you for your understanding and cooperation.</p>
+                    </div>
+                    <div class="flex justify-center items-center w-full mt-12">
+                        <input wire:model='agreePost' id="link-checkbox" type="checkbox" value=""
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 ">
+                        <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 ">I
+                            agree with the <a href="#" class="text-blue-600 hover:underline">terms and
+                                conditions.</a></label>
+                        <x-input-error :messages="$errors->get('agreePost')" class="mt-2" />
+                    </div>
+                </div>
+
+
+
+
+                <div class="flex flex-row mt-24 mb-4 ">
+                    <button wire:click.prevent='prevSection(2)' type="button"
+                        class=" text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+                        style="width: 100px;">Previous</button>
+                    <button wire:click.prevent='createApplication()' type="button"
+                        class="ml-auto mr-0 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+                        style="width: 100px;">Confirm</button>
                 </div>
 
             </div>

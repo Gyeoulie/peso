@@ -46,5 +46,48 @@ class Employee extends Model
     {
         return $this->belongsTo(Barangay::class, 'barangay');
     }
-
+    public function certificate()
+    {
+        return $this->hasMany(Certificate::class, 'employee_id');
+    }
+    public function disability()
+    {
+        return $this->hasMany(Disability::class, 'employee_id');
+    }
+    public function education()
+    {
+        return $this->hasMany(Education::class, 'employee_id');
+    }
+    public function eligibility()
+    {
+        return $this->hasMany(Eligibility::class, 'employee_id');
+    }
+    public function job_applicants()
+    {
+        return $this->hasMany(Job_Applicants::class, 'employee_id');
+    }
+    public function job_preference()
+    {
+        return $this->hasMany(Job_Preference::class, 'employee_id');
+    }
+    public function license()
+    {
+        return $this->hasMany(License::class, 'employee_id');
+    }
+    public function program_reg()
+    {
+        return $this->hasMany(Job_Posting::class, 'employee_id');
+    }
+    public function skills()
+    {
+        return $this->hasMany(Skills::class, 'employee_id');
+    }
+    public function training()
+    {
+        return $this->hasMany(Training::class, 'employee_id');
+    }
+    public function work_exp()
+    {
+        return $this->hasMany(Work_Exp::class, 'employee_id');
+    }
 }

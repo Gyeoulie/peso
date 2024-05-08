@@ -34,9 +34,8 @@
 
         </ul>
 
-        <div x-show="openTab === 1"  x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 scale-90"
-        x-transition:enter-end="opacity-100 scale-100">
+        <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
 
             <div class="flex flex-row w-full mt-6 gap-6 ">
 
@@ -77,9 +76,8 @@
 
         </div>
 
-        <div x-show="openTab === 2"  x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 scale-90"
-        x-transition:enter-end="opacity-100 scale-100" x-cloak>
+        <div x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
             <div class="flex flex-col w-full ">
                 <div class="flex flex-row w-full mt-6 gap-6 ">
 
@@ -117,9 +115,8 @@
             </div>
         </div>
 
-        <div x-show="openTab === 3"  x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 scale-90"
-        x-transition:enter-end="opacity-100 scale-100" x-cloak>
+        <div x-show="openTab === 3" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
             <div class="flex flex-col w-full">
                 <div class="flex flex-row w-full mt-6 gap-6 ">
 
@@ -148,7 +145,7 @@
             </div>
         </div>
 
-        
+
 
 
 

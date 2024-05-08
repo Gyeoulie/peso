@@ -31,4 +31,8 @@ class Certificate_Type extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+    public function certificate()
+    {
+        return $this->hasMany(Certificate::class, 'cert_type_id');
+    }
 }

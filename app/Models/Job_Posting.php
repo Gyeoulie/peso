@@ -15,12 +15,14 @@ class Job_Posting extends Model
     protected $fillable = [
         'company_id',
         'industry_id',
-        'position_id',
+        'job_Title',
         'job_Description',
         'job_Qualifications',
         'job_Remarks',
         'job_MinWage',
         'job_MaxWage',
+        'job_Type',
+        'job_Edu',
         'job_Slots',
         'job_Address',
         'barangay_id',
@@ -47,11 +49,6 @@ class Job_Posting extends Model
         return $this->belongsTo(Job_Industry::class, 'industry_id');
     }
 
-    public function position()
-    {
-        return $this->belongsTo(Job_Positions::class, 'position_id');
-    }
-
     public function barangay()
     {
         return $this->belongsTo(Barangay::class, 'barangay_id');
@@ -66,4 +63,5 @@ class Job_Posting extends Model
     {
         return $this->belongsTo(Municipality::class, 'peso_municipality_id');
     }
+
 }

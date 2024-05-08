@@ -1,7 +1,7 @@
-<x-modal name="jobTag-modal" focusable>
+<x-modal name="barangay-modal" focusable>
     <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Choose Job Tags') }}
+            {{ __('Choose a Barangay') }}
         </h2>
         <hr>
 
@@ -19,9 +19,9 @@
                     </div>
 
                     {{-- LICENSE SEARCH --}}
-                    <input type="text"
+                    <input wire:modal.live.prevent='search' type="text" id="table-search-users"
                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Search municipality">
+                        placeholder="Search">
                 </div>
 
                 {{-- WEB BUTTON --}}
@@ -35,37 +35,40 @@
 
                         </th>
                         <th scope="col" class="px-6 py-3 uppercase">
-                            Job Position
+                            Barangay
                         </th>
                         <th scope="col" class="px-6 py-3 uppercase">
-                            Code
+                            Municipality, Province
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($jobposition as $data)
+                    @foreach ($barangay as $data)
                         <tr class="bg-white border-b hover:bg-gray-50">
                             <td class="px-6 py-4 text-center">
 
-                                <button wire:click.prevent='tagSelect({{ $data->position_id }})'
+                                <button wire:click.prevent='barSelect({{ $data->barangay_id }})'
                                     class="text-blue-500 hover:underline">Select</button>
 
                             </td>
                             <td class="px-6 py-4">
-                                <div class="font-semibold text-base uppercase"> {{ $data->position_Title }}</div>
+                                <div class="font-semibold text-base uppercase">{{ $data->barangay_Name }}</div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="font-semibold text-base uppercase">{{ $data->position_Code }}</div>
+                                <div class="font-semibold text-base uppercase">
+                                    {{ $data->municipality->municipality_Name }},
+                                    {{ $data->municipality->province->province_Name }}</div>
                             </td>
                         </tr>
                     @endforeach
+
                 </tbody>
             </table>
         </div>
 
         {{-- PAGINATION --}}
         <div>
-            {{ $jobposition->links() }}
+            {{ $barangay->links() }}
         </div>
 
 

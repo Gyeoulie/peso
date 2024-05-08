@@ -38,4 +38,8 @@ class Programs extends Model
     {
         return $this->belongsTo(Barangay::class, 'barangay_id');
     }
+    public function program_reg()
+    {
+        return $this->hasMany(Program_Reg::class, 'program_id');
+    }
 }

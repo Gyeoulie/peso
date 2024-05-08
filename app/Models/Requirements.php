@@ -21,4 +21,8 @@ class Requirements extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+    public function requirements_passed()
+    {
+        return $this->hasMany(Requirements_Passed::class, 'requirement_id');
+    }
 }

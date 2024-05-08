@@ -2,12 +2,33 @@
 
 namespace App\Livewire\Employer\Jobpost;
 
+use App\Models\Job_Positions;
+use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class JobPositionsModal extends Component
 {
+    use WithPagination;
+    public $search;
+
+    public function tagSelect($id)
+    {
+        $this->dispatch('tagSelect', $id);
+
+    }
+    #[On('close-modal')]
+    public function closeModal()
+    {
+        $this->dispatch('close');
+
+    }
+
     public function render()
     {
-        return view('livewire.employer.jobpost.job-positions-modal');
+        $jobposition = Job_Positions::where('position_Title', 'like', '%' . $this->search . '%')
+            ->paginate(8, ['*'], 'jobTags');
+
+        return view('livewire.employer.jobpost.job-positions-modal', compact('jobposition'));
     }
 }

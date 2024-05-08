@@ -31,4 +31,8 @@ class Province extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+    public function municipality()
+    {
+        return $this->hasMany(Municipality::class, 'province_id');
+    }
 }

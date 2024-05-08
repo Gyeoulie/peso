@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requirements_passed', function (Blueprint $table) {
-            $table->id('req_passed_id');
+        Schema::create('job_tags', function (Blueprint $table) {
+            $table->id('job_tags_id');
             $table->unsignedBigInteger('job_id');
-            $table->unsignedBigInteger('requirement_id');
-            $table->string('req_passed_Input', 255);
+            $table->unsignedBigInteger('position_id');
             $table->timestamps();
 
             $table->foreign('job_id')->references('job_id')->on('job_posting')->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->foreign('requirement_id')->references('requirement_id')->on('requirements')->onDelete('cascade')
+            $table->foreign('position_id')->references('position_id')->on('job_positions')->onDelete('cascade')
                 ->onUpdate('cascade');
         });
-
     }
 
     /**
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requirements_passed');
+        Schema::dropIfExists('job_tag');
     }
 };

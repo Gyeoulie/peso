@@ -38,6 +38,11 @@ class Barangay extends Model
      */
     public function municipality()
     {
-        return $this->belongsTo(Municipality::class,'municipality_id');
+        return $this->belongsTo(Municipality::class, 'municipality_id');
     }
+    public function job_posting()
+    {
+        return $this->hasMany(Job_Posting::class, 'barangay_id');
+    }
+
 }

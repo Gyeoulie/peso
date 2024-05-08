@@ -9,7 +9,6 @@ class Job_Positions extends Model
 {
     use HasFactory;
 
-
     protected $table = 'job_positions';
     protected $primaryKey = 'position_id';
     /**
@@ -31,4 +30,12 @@ class Job_Positions extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+    public function job_preference()
+    {
+        return $this->hasMany(Job_Preference::class, 'position_id');
+    }
+    public function job_tags()
+    {
+        return $this->hasMany(Job_Tags::class, 'position_id');
+    }
 }

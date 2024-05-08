@@ -35,4 +35,8 @@ class PESO extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function job_posting()
+    {
+        return $this->hasMany(Job_Posting::class, 'peso_id');
+    }
 }
