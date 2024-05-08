@@ -122,6 +122,8 @@ class JobpostApplication extends Component
         $companyId = $user->company->company_id;
 
         $jobposting = Job_Posting::create([
+            'company_id' => $companyId,
+            'industry_id' => $this->jobIndustryHidden,
             'job_Title' => $this->jobTitlePost,
             'job_Description' => $this->descPost,
             'job_Qualifications' => $this->qualPost,
@@ -132,12 +134,11 @@ class JobpostApplication extends Component
             'job_Edu' => $this->eduPost,
             'job_Slots' => $this->slotsPost,
             'job_Address' => $this->wAddPost,
+            'barangay_id' => $this->barHidden,
             'job_Duration' => $this->durationPost,
             'job_Status' => 'PENDING',
-            'peso_municipality_id ' => $this->pesoPost,
-            'company_id ' => $companyId,
-            'industry_id ' => $this->jobIndustryHidden,
-            'barangay_id ' => $this->barHidden,
+            'peso_municipality_id' => $this->pesoPost,
+
         ]);
 
         if ($jobposting) {
@@ -151,7 +152,7 @@ class JobpostApplication extends Component
 
             foreach ($this->req as $requirementId => $file) {
                 if ($file) {
-                    $fileName = $file->store('images/requirements', 'public');
+                    $fileName = $file->store('files/requirements', 'public');
 
                     Requirements_Passed::create([
                         'job_id' => $jobposting->job_id,

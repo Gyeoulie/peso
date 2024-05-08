@@ -13,7 +13,7 @@
 
             {{-- JOB POSITION CONTAINER --}}
             <div class="col-span-4 sm:col-span-6">
-                @livewire('position-industry.position-table')
+                @livewire('admin.position-industry.position-table')
 
             </div>
 
@@ -21,7 +21,7 @@
 
             {{-- INDUSTRY CONTAINER --}}
             <div class="col-span-4 sm:col-span-6">
-                @livewire('position-industry.industry-table')
+                @livewire('admin.position-industry.industry-table')
 
             </div>
 
@@ -32,12 +32,12 @@
 
 
     {{-- JOB POSITION MODAL --}}
-    @livewire('position-industry.position-add-modal')
-    @livewire('position-industry.position-edit-modal')
+    @livewire('admin.position-industry.position-add-modal')
+    @livewire('admin.position-industry.position-edit-modal')
 
     {{-- INDUSTRY MODAL --}}
-    @livewire('position-industry.industry-add-modal')
-    @livewire('position-industry.industry-edit-modal')
+    @livewire('admin.position-industry.industry-add-modal')
+    @livewire('admin.position-industry.industry-edit-modal')
 
 
 
