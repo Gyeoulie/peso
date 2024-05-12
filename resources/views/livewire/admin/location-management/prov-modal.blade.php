@@ -70,7 +70,5 @@
 
         </div>
 
-</div>
-</x-modal>
-
+    </x-modal>
 </div>

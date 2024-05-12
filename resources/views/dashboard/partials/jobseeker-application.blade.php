@@ -1,3 +1,5 @@
+<x-app-layout>
+
 <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
     <div class="col-span-4 sm:col-span-5">
 
@@ -426,3 +428,5 @@
         </div>
     </div>
 </div>
+
+</x-app-layout>

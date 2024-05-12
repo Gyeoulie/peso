@@ -152,7 +152,7 @@ class JobpostApplication extends Component
 
             foreach ($this->req as $requirementId => $file) {
                 if ($file) {
-                    $fileName = $file->store('files/requirements', 'public');
+                    $fileName = $file->store('requirements', 'public');
 
                     Requirements_Passed::create([
                         'job_id' => $jobposting->job_id,
@@ -161,6 +161,9 @@ class JobpostApplication extends Component
                     ]);
                 }
             }
+
+            toastr()->success('You have successfully submitted an application!');
+            return redirect()->route('jobpost.show', ['id' => $jobposting->id]);
 
         }
     }
@@ -182,10 +185,10 @@ class JobpostApplication extends Component
                 'position_id' => $jobposition->position_id,
                 'position_Title' => $jobposition->position_Title,
             ];
-            $this->dispatch('close-modal');
+            $this->dispatch('close-modal', 'jobTag-modal');
         } else {
             toastr()->error('Could not fetch data');
-            $this->dispatch('close-modal');
+            $this->dispatch('close-modal', 'jobTag-modal');
         }
     }
 

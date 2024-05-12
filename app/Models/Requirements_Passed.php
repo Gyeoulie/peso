@@ -23,7 +23,7 @@ class Requirements_Passed extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function job()
+    public function job_posting()
     {
         return $this->belongsTo(Job_Posting::class, 'job_id');
     }

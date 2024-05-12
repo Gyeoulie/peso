@@ -172,8 +172,6 @@
 </x-modal>
 
 <script>
-
-
     var eduEditMode = false;
     var eduIndex = 0; // Initialize eduIndex variable
     var eduCounter = 0;

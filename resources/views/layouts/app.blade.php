@@ -15,7 +15,11 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
 
+
+
     <!-- Scripts -->
+
+    @livewireStyles
     @livewireScripts
     @vite(['resources/css/app.css'])
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}

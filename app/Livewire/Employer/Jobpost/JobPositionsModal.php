@@ -20,7 +20,7 @@ class JobPositionsModal extends Component
     #[On('close-modal')]
     public function closeModal()
     {
-        $this->dispatch('close');
+        // $this->dispatch('close');
 
     }
 

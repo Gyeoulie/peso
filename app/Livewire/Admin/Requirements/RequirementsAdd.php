@@ -40,7 +40,9 @@ class RequirementsAdd extends Component
             // Show error toastr notification
             toastr()->error('There was an Error');
         }
-        $this->dispatch('reload-table');
+
+        
+        $this->dispatch('hello');
     }
 
     public function render()

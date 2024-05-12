@@ -22,9 +22,24 @@
                             {{ __('Profile') }}
                         </x-nav-link>
                     @endif
-                    @if (auth()->user()->usertype == 5)
-                        <x-nav-link :href="route('companyProfile')" :active="request()->routeIs('companyProfile')">
-                            {{ __('Profile') }}
+                    @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                        <x-nav-link :href="route('employer.dashboard')" :active="request()->routeIs('companyProfile')">
+                            {{ __('Job Postings') }}
+                        </x-nav-link>
+                    @endif
+                    @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                        <x-nav-link :href="route('jobpost.applicants')" :active="request()->routeIs('companyProfile')">
+                            {{ __('Job Applicants') }}
+                        </x-nav-link>
+                    @endif
+                    @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
+                        <x-nav-link :href="route('jobseeker.application')" :active="request()->routeIs('companyProfile')">
+                            {{ __('My Applications') }}
+                        </x-nav-link>
+                    @endif
+                    @if (auth()->user()->usertype >= 8)
+                        <x-nav-link :href="route('admin')" :active="request()->routeIs('companyProfile')">
+                            {{ __('Admin Tools') }}
                         </x-nav-link>
                     @endif
                 </div>

@@ -11,14 +11,14 @@
             </div>
 
             <div class="col-span-4 sm:col-span-6">
-                @livewire('admin.certificates-admin.certificates-table')
+                @livewire('admin.certificates.certificates-table')
             </div>
 
 
 
 
             <div class="col-span-4 sm:col-span-6">
-                @livewire('admin.certificates-admin.certificates-add')
+                @livewire('admin.certificates.certificates-add')
             </div>
 
 
@@ -27,6 +27,6 @@
         </div>
     </div>
 
-    @livewire('admin.certificates-admin.certificates-edit-modal')
+    @livewire('admin.certificates.certificates-edit-modal')
 
 </x-admin-layout>

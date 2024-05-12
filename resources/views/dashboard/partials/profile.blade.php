@@ -7,7 +7,7 @@
 
 
 
-<div class="bg-gray-100">
+
     <div class="container mx-auto py-8">
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
 
@@ -277,8 +277,7 @@
                         </div>
                     </div>
 
-                </div>
-
+               
             </div>
 
         </div>

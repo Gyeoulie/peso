@@ -22,6 +22,7 @@
 
     <!-- Scripts -->
     @livewireScripts
+    @livewireStyles
     @vite(['resources/css/app.css'])
 </head>
 
@@ -30,7 +31,7 @@
     @include('layouts.navigation')
 
     <!-- Page Heading -->
-    @if (isset($header))
+    {{-- @if (isset($header))
         <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 {{ $header }}
@@ -47,7 +48,7 @@
         </button>
     </div>
 
-
+ --}}
 
     <div class="flex flex-row">
         @include('admin.admin_partials.admin-navbar')

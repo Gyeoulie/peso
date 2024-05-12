@@ -2,8 +2,14 @@
 
 use App\Http\Controllers\CompanyProfile;
 use App\Http\Controllers\EmployeeProfile;
+use App\Http\Controllers\JobPost\JobPostView;
 use App\Http\Controllers\NSRP;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Admin\JobPosting\JobPostApplicants;
+use App\Livewire\Admin\JobPosting\JobPostOverview;
+use App\Livewire\Employer\Dashboard\JobPostList;
+use App\Livewire\Employer\Jobpost\JobApplicants;
+use App\Livewire\Jobseeker\Dashboard;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,9 +51,9 @@ Route::get('/company', [CompanyProfile::class, 'companyProfile'])->name('company
 Route::post('/company/update', [CompanyProfile::class, 'updateDescCompany'])->name('updateDescCompany');
 
 //LARAVEL DEFAULT ROUTES
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard/home', function () {
     return view('dashboard.home');
@@ -59,10 +65,59 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// EMPLOYER
 Route::get('/jobpost/application', function () {
+    return view('dashboard.partials.jobseeker-application');
+})->name('jobseeker.application');
+
+Route::get('/myapplication', function () {
     return view('dashboard.partials.employer-jobpost');
 })->name('jobpost');
+
+Route::get('/jobpost/list', JobPostList::class)->name('employer.dashboard');
+
+Route::get('/jobpost/{id}', [JobPostView::class, 'show'])->name('jobpost.show');
+
+Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
+
+Route::get('/admin/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
+
+
+Route::get('/admin/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
+
+Route::get('/dashboard', Dashboard::class)->name('dashboard');
+
+
+// EMPLOYER
+Route::get('/test2', function () {
+    return view('admin.admin_partials.applicant-list');
+})->name('213');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// EMPLOYER
+Route::get('/apply', function () {
+    return view('dashboard.partials.employer-jobpost');
+})->name('jobpost.apply');
 
 // ADMIN TESTING NAV
 Route::get('/admin', function () {

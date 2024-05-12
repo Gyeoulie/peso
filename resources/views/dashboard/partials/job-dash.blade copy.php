@@ -166,7 +166,7 @@
                                         <div class="flex flex-col">
                                             <div class="flex flex-col md:flex-row  text-left">
                                                 <div class="flex flex-col md:w-3/4">
-                                                    <h1 class="text-blue-500 text-5xl font-semibold">IT Professor</h1>
+                                                    <h1 class="text-blue-500 text-xl font-semibold">IT Professor</h1>
                                                 </div>
                                                 <div class="flex flex-col md:w-1/4">
                                                     <h1 class="text-black text-xl text-left md:text-center font-medium">
@@ -178,7 +178,7 @@
 
                                         <div class="flex flex-col">
                                             <div class="flex-row w-3/4 text-left">
-                                                <h2 class="text-2xl font-bold">National University Baliwag</h2>
+                                                <h2 class="text-xl font-bold">National University Baliwag</h2>
                                             </div>
                                         </div>
 
@@ -213,6 +213,7 @@
                                 <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-3">
                             </td>
                         </tr>
+                        
 
 
                     </tbody>

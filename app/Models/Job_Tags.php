@@ -22,12 +22,12 @@ class Job_Tags extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function job()
+    public function job_posting()
     {
-        return $this->belongsTo(Employee::class, 'job_id');
+        return $this->belongsTo(Job_Posting::class, 'job_id');
     }
 
-    public function position()
+    public function job_positions()
     {
         return $this->belongsTo(Job_Positions::class, 'position_id');
     }

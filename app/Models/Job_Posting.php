@@ -64,4 +64,18 @@ class Job_Posting extends Model
         return $this->belongsTo(Municipality::class, 'peso_municipality_id');
     }
 
+    public function job_tags()
+    {
+        return $this->hasMany(Job_Tags::class, 'job_id');
+    }
+
+    public function job_applicants()
+    {
+        return $this->hasMany(Job_Applicants::class, 'job_id');
+    }
+    public function requirements_passed()
+    {
+        return $this->hasMany(Requirements_Passed::class, 'job_id');
+    }
+
 }
