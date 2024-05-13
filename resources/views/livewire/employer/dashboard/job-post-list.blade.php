@@ -106,7 +106,7 @@
                                         stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            <input type="text" id="table-search-users"
+                            <input wire:model.live.prevent='search' type="text" id="table-search-users"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for users">
                         </div>
@@ -132,6 +132,28 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if ($applicants->isEmpty())
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="flex flex-col items-center justify-center mt-10">
+                                                <div class="p-6 bg-gray-100 rounded-full">
+                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-width="2"
+                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                    </svg>
+
+                                                </div>
+                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                    No Job Posting Found
+                                                </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                @else
                             @foreach ($applicants as $data)
                                 <tr class="bg-white border-b ">
                                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 ">
@@ -190,6 +212,7 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            @endif
                         </tbody>
                     </table>
                     {{-- navbar --}}

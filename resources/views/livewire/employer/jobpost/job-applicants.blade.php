@@ -252,7 +252,7 @@
                                                     </svg>
 
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                <p class="text-xl font-bold text-black text-center mt-2 mb-20">
                                                     No Applicants Found
                                                 </p>
                                             </div>
