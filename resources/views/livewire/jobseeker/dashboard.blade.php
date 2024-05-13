@@ -157,85 +157,106 @@
                     <table class="w-full ">
 
                         <tbody>
+                            @if ($joblist->isEmpty())
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="flex flex-col items-center justify-center mt-10 mb-10">
+                                            <div class="p-6 bg-gray-100 rounded-full">
+                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                </svg>
 
-
-                            @foreach ($joblist as $data)
-                                <tr class="text-center hover:bg-gray-100">
-
-                                    <td class="p-2 rounded-lg">
-
-                                        <a href="{{ route('jobpost.show', ['id' => $data->job_id]) }}">
-                                            <div class="flex flex-row w-full">
-                                                <div
-                                                    class="flex flex-col justify-center items-center h-full  flex-shrink-0">
-                                                    <img src="{{ asset('storage/' . $data->company->company_img) }}" alt="Default Image"
-                                                        class="w-48 h-48 bg-gray-300 rounded object-contain">
-                                                </div>
-                                                <div class="flex-col w-full ml-5 space-y-1 md:space-y-8">
-                                                    <div class="flex flex-col">
-                                                        <div class="flex flex-col md:flex-row  text-left">
-                                                            <div class="flex flex-col md:w-3/4">
-                                                                <h1 class="text-blue-500 text-5xl font-semibold">
-                                                                    {{ $data->job_Title }}
-                                                                </h1>
-                                                            </div>
-                                                            <div class="flex flex-col md:w-1/4">
-                                                                <h1
-                                                                    class="text-black text-xl text-left md:text-center font-medium">
-                                                                    ₱{{ number_format($data->job_MinWage) }} -
-                                                                    ₱{{ number_format($data->job_MaxWage) }}</h1>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="flex flex-col">
-                                                        <div class="flex-row w-3/4 text-left">
-                                                            <h2 class="text-2xl font-bold">
-                                                                {{ $data->company->bussines_Name }}</h2>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="flex flex-col w-full">
-                                                        <div class="flex flex-col md:flex-row">
-                                                            <div class="md:w-1/4 text-left">
-
-                                                                <h3 class="text-sm"> <i
-                                                                        class="fa-solid fa-location-dot"></i>
-                                                                    {{ $data->job_Address }},
-                                                                    {{ $data->barangay->barangay_Name }},
-                                                                    {{ $data->barangay->municipality->municipality_Name }},
-                                                                    {{ $data->barangay->municipality->province->province_Name }}
-                                                                </h3>
-                                                            </div>
-                                                            <div class="md:w-1/4 text-left md:text-center">
-                                                                <h3 class="text-sm"> <i
-                                                                        class="fa-solid fa-graduation-cap"></i>
-                                                                    {{ $eduLevels[$data->job_Edu] }}
-                                                                </h3>
-                                                            </div>
-                                                            <div class="md:w-1/4 text-left md:text-center">
-                                                                <h3 class="text-sm uppercase"> <i
-                                                                        class="fa-solid fa-briefcase uppercase"></i>
-                                                                    {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
-                                                                </h3>
-                                                            </div>
-                                                            <div class="md:w-1/4 text-left md:text-center">
-                                                                <h3 class="text-sm uppercase"> <i
-                                                                        class="fa-solid fa-calendar"></i>
-                                                                    {{ $data->job_Duration->format('F j, Y') }}
-                                                                </h3>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
-                                        </a>
-                                        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-3">
-                                    </td>
+                                            <p class="text-xl font-bold text-black text-center mt-2">
+                                                No Job Posting Found!
+                                            </p>
+                                        </div>
 
+                                    </td>
                                 </tr>
-                            @endforeach
+                            @else
+                                @foreach ($joblist as $data)
+                                    <tr class="text-center hover:bg-gray-100">
+
+                                        <td class="p-2 rounded-lg">
+
+                                            <a href="{{ route('jobpost.show', ['id' => $data->job_id]) }}">
+                                                <div class="flex flex-row w-full">
+                                                    <div
+                                                        class="flex flex-col justify-center items-center h-full  flex-shrink-0">
+                                                        <img src="{{ asset('storage/' . $data->company->company_img) }}"
+                                                            alt="Default Image"
+                                                            class="w-48 h-48 bg-gray-300 rounded object-contain">
+                                                    </div>
+                                                    <div class="flex-col w-full ml-5 space-y-1 md:space-y-8">
+                                                        <div class="flex flex-col">
+                                                            <div class="flex flex-col md:flex-row  text-left">
+                                                                <div class="flex flex-col md:w-3/4">
+                                                                    <h1 class="text-blue-500 text-5xl font-semibold">
+                                                                        {{ $data->job_Title }}
+                                                                    </h1>
+                                                                </div>
+                                                                <div class="flex flex-col md:w-1/4">
+                                                                    <h1
+                                                                        class="text-black text-xl text-left md:text-center font-medium">
+                                                                        ₱{{ number_format($data->job_MinWage) }} -
+                                                                        ₱{{ number_format($data->job_MaxWage) }}</h1>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="flex flex-col">
+                                                            <div class="flex-row w-3/4 text-left">
+                                                                <h2 class="text-2xl font-bold">
+                                                                    {{ $data->company->bussines_Name }}</h2>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex flex-col w-full">
+                                                            <div class="flex flex-col md:flex-row">
+                                                                <div class="md:w-1/4 text-left">
+
+                                                                    <h3 class="text-sm text-blue-900 uppercase"> <i
+                                                                            class="fa-solid fa-location-dot"></i>
+                                                                        {{ $data->job_Address }},
+                                                                        {{ $data->barangay->barangay_Name }},
+                                                                        {{ $data->barangay->municipality->municipality_Name }},
+                                                                        {{ $data->barangay->municipality->province->province_Name }}
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="md:w-1/4 text-left md:text-center">
+                                                                    <h3 class="text-sm text-blue-900 uppercase"> <i
+                                                                            class="fa-solid fa-graduation-cap"></i>
+                                                                        {{ $eduLevels[$data->job_Edu] }}
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="md:w-1/4 text-left md:text-center">
+                                                                    <h3 class="text-sm uppercase text-blue-900"> <i
+                                                                            class="fa-solid fa-briefcase uppercase"></i>
+                                                                        {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="md:w-1/4 text-left md:text-center">
+                                                                    <h3 class="text-sm uppercase text-blue-900"> <i
+                                                                            class="fa-solid fa-calendar"></i>
+                                                                        {{ $data->job_Duration->format('F j, Y') }}
+                                                                    </h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-3">
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                     {{-- PAGINATION --}}

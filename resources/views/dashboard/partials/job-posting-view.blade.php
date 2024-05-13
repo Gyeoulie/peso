@@ -10,27 +10,28 @@
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg">
 
 
-                    <div class="flex flex-row w-full h-full justify-center items-center">
+                    <div class="flex flex-row w-full h-full ">
                         <div class="flex flex-row justify-center items-center h-full p-5 flex-shrink-0">
                             <img src="{{ asset('storage/' . $JobPost->company->company_img) }}" alt="Default I mage"
-                                class="w-36 h-36    md:w-48 md:h-48 bg-gray-300 rounded object-contain">
+                                class="w-36 h-36    sm:w-48 sm:h-48 bg-gray-300 rounded object-contain">
                         </div>
-                        <div class="flex flex-col w-full max-h-full ml-5 space-y-1 justify-center ">
+                        <div class="flex flex-col w-full h-full sm:ml-5 py-5 sm:mt-5">
 
-                            <div class="flex flex-row h-full">
-                                <h1 class=" text-4xl text-blue-500 md:text-6xl font-semibold">{{ $JobPost->job_Title }}
+                            <div class="flex flex-row">
+                                <h1 class=" text-4xl text-blue-500 sm:text-6xl font-bold">{{ $JobPost->job_Title }}
                                 </h1>
                             </div>
 
-                            <div class="flex-row h-full">
-                                <h2 class="text-md md:text-2xl font-bold">{{ $JobPost->company->bussines_Name }}
+                            <div class="flex-row sm:mt-5">
+                                <h2 class="text-md sm:text-3xl font-semibold">{{ $JobPost->company->bussines_Name }}
                                 </h2>
                             </div>
 
 
-                            <div class="flex flex-col md:flex-row md:space-x-2 h-full ">
+                            <div class="flex flex-col sm:flex-row sm:space-x-4  sm:mt-8">
                                 <div class="">
-                                    <h3 class="text-xs md:text-sm"> <i class="fa-solid fa-location-dot"></i>
+                                    <h3 class="text-xs sm:text-lg text-blue-500"> <i
+                                            class="fa-solid fa-location-dot"></i>
                                         {{ $JobPost->barangay->municipality->municipality_Name }},
                                         {{ $JobPost->barangay->municipality->province->province_Name }}
                                     </h3>
@@ -41,7 +42,8 @@
                                 </div>
 
                                 <div class="">
-                                    <h3 class="text-xs md:text-sm"> <i class="fa-solid fa-graduation-cap"></i>
+                                    <h3 class="text-xs sm:text-lg text-blue-500"> <i
+                                            class="fa-solid fa-graduation-cap"></i>
                                         @if ($JobPost->job_Edu == 1)
                                             Highschool Graduate
                                         @elseif ($JobPost->job_Edu == 2)
@@ -49,12 +51,12 @@
                                         @endif
                                     </h3>
                                 </div>
-                                <div class="hidden md:flex items-center justify-center">
+                                <div class="hidden sm:flex items-center justify-center">
                                     <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
                                 </div>
 
                                 <div class="">
-                                    <h3 class="text-xs     md:text-sm"> <i class="fa-solid fa-briefcase"></i>
+                                    <h3 class="text-xs sm:text-lg text-blue-500"> <i class="fa-solid fa-briefcase"></i>
                                         @if ($JobPost->job_Type == 1)
                                             Full Time
                                         @elseif ($JobPost->job_Type == 2)
@@ -63,12 +65,12 @@
                                     </h3>
                                 </div>
 
-                                <div class="hidden md:flex items-center justify-center">
+                                <div class="hidden sm:flex items-center justify-center">
                                     <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
                                 </div>
 
                                 <div class="">
-                                    <h3 class="text-xs     md:text-sm"> <i class="fa-solid fa-calendar"></i>
+                                    <h3 class="text-xs sm:text-lg text-blue-500"> <i class="fa-solid fa-calendar"></i>
                                         {{ $JobPost->created_at->format('F j, Y') }}
                                     </h3>
                                 </div>
@@ -81,7 +83,7 @@
             </div>
 
 
-            
+
 
 
 
@@ -191,11 +193,13 @@
 
                             @if (auth()->user()->usertype >= 8 && auth()->user()->peso->municipality_id == $JobPost->peso_municipality_id)
                                 <div class="flex flex-row items-center justify-center mt-2">
-                                    <x-primary-button class="w-[350px] h-[40px] justify-center">
-                                        <a href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
+                                    <a href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
+                                        <x-primary-button class="w-[350px] h-[40px] justify-center">
+
                                             View Job Applicants
-                                        </a>
-                                    </x-primary-button>
+
+                                        </x-primary-button>
+                                    </a>
                                 </div>
                             @endif
                             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-4">

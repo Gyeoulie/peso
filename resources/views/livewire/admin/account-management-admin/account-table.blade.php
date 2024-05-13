@@ -55,46 +55,67 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($adminAccounts as $account)
-                    <tr class="bg-white border-b hover:bg-gray-50">
-                        <td scope="row" class="px-6 py-4 text-gray-900 text-center w-1/6">
+                @if ($adminAccounts->isEmpty())
+                    <tr>
+                        <td colspan="6">
+                            <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                <div class="p-6 bg-gray-100 rounded-full">
+                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                    </svg>
 
-                            <div class="ps-3 text-wrap text-center ">
-                                <div class="text-base font-semibold text-center">{{ $account->email }}</div>
-
+                                </div>
+                                <p class="text-xl font-bold text-black text-center mt-2">
+                                    No Accounts Found!
+                                </p>
                             </div>
 
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="text-base font-semibold text-center">{{ $account->id }}</div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="text-base font-semibold text-center">{{ $account->usertype }}</div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="text-base font-semibold text-center">
-                                {{ $account->created_at->format('h:i A ') }}
-                            </div>
-                            <div class="text-base font-semibold text-center">
-                                {{ $account->created_at->format('F j Y') }}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="text-base font-semibold text-center">
-                                {{ $account->updated_at->format('h:i A') }}
-
-                            </div>
-                            <div class="text-base font-semibold text-center">
-                                {{ $account->updated_at->format('F j Y') }}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <a href="" wire:click.prevent="editUser({{ $account->id }})"
-                                class="font-medium text-blue-600 hover:underline">Edit</a>
                         </td>
                     </tr>
-                @endforeach
+                @else
+                    @foreach ($adminAccounts as $account)
+                        <tr class="bg-white border-b hover:bg-gray-50">
+                            <td scope="row" class="px-6 py-4 text-gray-900 text-center w-1/6">
 
+                                <div class="ps-3 text-wrap text-center ">
+                                    <div class="text-base font-semibold text-center">{{ $account->email }}</div>
+
+                                </div>
+
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-base font-semibold text-center">{{ $account->id }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-base font-semibold text-center">{{ $account->usertype }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-base font-semibold text-center">
+                                    {{ $account->created_at->format('h:i A ') }}
+                                </div>
+                                <div class="text-base font-semibold text-center">
+                                    {{ $account->created_at->format('F j Y') }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-base font-semibold text-center">
+                                    {{ $account->updated_at->format('h:i A') }}
+
+                                </div>
+                                <div class="text-base font-semibold text-center">
+                                    {{ $account->updated_at->format('F j Y') }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <a href="" wire:click.prevent="editUser({{ $account->id }})"
+                                    class="font-medium text-blue-600 hover:underline">Edit</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
 

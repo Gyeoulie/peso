@@ -63,66 +63,89 @@
             </div>
             <table class="">
                 <tbody class="">
-
-                    @foreach ($jobs as $data)
+                    @if ($jobs->isEmpty())
                         <tr>
-                            <a wire:click.prevent='getJob({{ $data->job_id }})' class="cursor-pointer">
-                                <div
-                                    class="bg-white shadow rounded-lg p-6 flex flex-col mb-4 hover:scale-105 transition-transform">
+                            <div class="w-full bg-white shadow rounded-lg p-10">
+                                <div class="flex flex-col items-center justify-center  ">
+                                    <div class="p-6 bg-gray-100 rounded-full">
+                                        <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                        </svg>
 
-                                    <div class="flex flex-row">
-
-                                        <div class="flex flex-col  w-full">
-                                            <h1 class="text-3xl font-bold underline">{{ $data->job_Title }}</h1>
-                                            <h1 class="text-l text-gray-600">{{ $data->company->bussines_Name }}</h1>
-                                            <div class="flex flex-row">
-
-                                            </div>
-
-                                        </div>
-                                        <div class="flex w-full justify-end  ml-auto mr-0 mb-auto mt-0">
-                                            <span
-                                                class="bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
-                                                PESO {{ $data->municipality->municipality_Name }}
-                                            </span>
-                                        </div>
                                     </div>
-
-
-                                    <div class="flex flex-row">
-                                        <p class="mb-2 font-bold">Applicants:</p>
-                                        <p class="ms-4">{{ $data->job_applicants_count }}</p>
-                                    </div>
-
-
-                                    <div class="flex flex-col w-full mt-4">
-                                        <div class="flex flex-col md:flex-row">
-                                            <div class="md:w-1/4 text-left">
-
-                                                <h3 class="text-sm uppercase"> <i class="fa-solid fa-location-dot"></i>
-                                                    {{ $data->barangay->municipality->municipality_Name }},
-                                                    {{ $data->barangay->municipality->province->province_Name }}
-                                            </div>
-                                            <div class="md:w-1/4 text-left md:text-center uppercase">
-                                                <h3 class="text-sm"> <i class="fa-solid fa-graduation-cap"></i>
-                                                    {{ $eduLevels[$data->job_Edu] }}</h3>
-                                            </div>
-                                            <div class="md:w-1/4 text-left md:text-center">
-                                                <h3 class="text-sm uppercase"> <i class="fa-solid fa-briefcase"></i>
-                                                    {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
-                                                </h3>
-                                            </div>
-                                            <div class="md:w-1/4 text-left md:text-center">
-                                                <h3 class="text-sm uppercase"> <i class="fa-solid fa-calendar"></i>
-                                                    {{ $data->created_at->format('F j, Y') }}
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                        No Job Posting Found!
+                                    </p>
                                 </div>
-                            </a>
+                            </div>
+
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($jobs as $data)
+                            <tr>
+                                <a wire:click.prevent='getJob({{ $data->job_id }})' class="cursor-pointer">
+                                    <div
+                                        class="bg-white shadow rounded-lg p-6 flex flex-col mb-4 hover:scale-105 transition-transform">
+
+                                        <div class="flex flex-row">
+
+                                            <div class="flex flex-col  w-full">
+                                                <h1 class="text-3xl font-bold underline">{{ $data->job_Title }}</h1>
+                                                <h1 class="text-l text-gray-600">{{ $data->company->bussines_Name }}
+                                                </h1>
+                                                <div class="flex flex-row">
+
+                                                </div>
+
+                                            </div>
+                                            <div class="flex w-full justify-end  ml-auto mr-0 mb-auto mt-0">
+                                                <span
+                                                    class="bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
+                                                    PESO {{ $data->municipality->municipality_Name }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="flex flex-row">
+                                            <p class="mb-2 font-bold">Applicants:</p>
+                                            <p class="ms-4">{{ $data->job_applicants_count }}</p>
+                                        </div>
+
+
+                                        <div class="flex flex-col w-full mt-4">
+                                            <div class="flex flex-col md:flex-row">
+                                                <div class="md:w-1/4 text-left">
+
+                                                    <h3 class="text-sm uppercase"> <i
+                                                            class="fa-solid fa-location-dot"></i>
+                                                        {{ $data->barangay->municipality->municipality_Name }},
+                                                        {{ $data->barangay->municipality->province->province_Name }}
+                                                </div>
+                                                <div class="md:w-1/4 text-left md:text-center uppercase">
+                                                    <h3 class="text-sm"> <i class="fa-solid fa-graduation-cap"></i>
+                                                        {{ $eduLevels[$data->job_Edu] }}</h3>
+                                                </div>
+                                                <div class="md:w-1/4 text-left md:text-center">
+                                                    <h3 class="text-sm uppercase"> <i class="fa-solid fa-briefcase"></i>
+                                                        {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
+                                                    </h3>
+                                                </div>
+                                                <div class="md:w-1/4 text-left md:text-center">
+                                                    <h3 class="text-sm uppercase"> <i class="fa-solid fa-calendar"></i>
+                                                        {{ $data->created_at->format('F j, Y') }}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
 
@@ -144,7 +167,8 @@
                                 <option>Pending (1)</option>
                             </select>
                         </div>
-                        <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                        <ul
+                            class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
                             <li class="w-full focus-within:z-10">
                                 <a href="#"
                                     class="inline-block w-full p-4 text-gray-900 bg-gray-400 border border-gray-200 rounded-s-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none"

@@ -7,7 +7,7 @@ use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Job_Tags;
-use App\Models\PESO;
+use App\Models\Municipality;
 use App\Models\Requirements;
 use App\Models\Requirements_Passed;
 use App\Models\User;
@@ -241,7 +241,7 @@ class JobpostApplication extends Component
     {
 
         $requirements = Requirements::All();
-        $pesoBranches = PESO::with('municipality')->distinct('municipality_id')->get();
+        $pesoBranches = Municipality::whereHas('peso')->with('peso')->get();
 
         return view('livewire.employer.jobpost.jobpost-application', [
             'requirements' => $requirements,

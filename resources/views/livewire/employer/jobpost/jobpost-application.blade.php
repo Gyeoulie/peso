@@ -219,8 +219,8 @@
                             <option value="" disabled selected>Select Branch</option>
 
                             @foreach ($pesoBranches as $pesoData)
-                                <option value="{{ $pesoData->municipality->municipality_id }}">
-                                    {{ $pesoData->municipality->municipality_Name }}</option>
+                                <option value="{{ $pesoData->municipality_id }}">
+                                    {{ $pesoData->municipality_Name }}</option>
                             @endforeach
                         </select>
                         <x-input-error :messages="$errors->get('pesoPost')" class="mt-2" />

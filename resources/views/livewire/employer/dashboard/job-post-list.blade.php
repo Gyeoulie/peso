@@ -5,16 +5,19 @@
                 <div class="flex flex-col w-full">
                     <div class="flex flex-row w-full">
                         <div class="flex flex-row">
-                            <div class="p-6 text-xl text-gray-900">
-                                Welcome, Come hire now!
+                            <div class="p-6 text-xl font-medium text-gray-900">
+                                Welcome, <span class="text-black font-bold">
+                                    {{ auth()->user()->company->bussines_Name }}!</span>
                             </div>
                         </div>
                         <div class="flex flex-col ml-auto mr-2 justify-center">
-                            <x-primary-button type="button" class="w-[150px] mr-2 justify-center">
-                                <a href="{{route('jobpost.apply')}}">
-                                Post Job
+                            <a href="{{ route('jobpost.apply') }}">
+                                <x-primary-button type="button" class="w-[150px] mr-2 justify-center">
+
+                                    Post Job
+
+                                </x-primary-button>
                             </a>
-                            </x-primary-button>
                         </div>
                     </div>
 
@@ -133,85 +136,88 @@
                         </thead>
                         <tbody>
                             @if ($applicants->isEmpty())
-                                    <tr>
-                                        <td colspan="5">
-                                            <div class="flex flex-col items-center justify-center mt-10">
-                                                <div class="p-6 bg-gray-100 rounded-full">
-                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                        height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-width="2"
-                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                                    </svg>
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                            <div class="p-6 bg-gray-100 rounded-full">
+                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-width="2"
+                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                </svg>
 
+                                            </div>
+                                            <p class="text-xl font-bold text-black text-center mt-2">
+                                                No Job Posting Found
+                                            </p>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            @else
+                                @foreach ($applicants as $data)
+                                    <tr class="bg-white border-b ">
+                                        <th scope="row" class="flex items-center px-6 py-4 text-gray-900 ">
+                                            <div class="ps-3">
+                                                <div class="text-base font-semibold">{{ $data->job_Title }}</div>
+                                                <div class="font-normal text-gray-500 text-sm">
+                                                    {{ $data->job_Address }},
+                                                    {{ $data->barangay->barangay_Name }},
+                                                    {{ $data->barangay->municipality->municipality_Name }},
+                                                    {{ $data->barangay->municipality->province->province_Name }}</div>
+                                            </div>
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-row gap-1">
+                                                <div class="w-[85px] bg-gray-300 rounded-lg p-1 text">
+                                                    <div class="text-base font-semibold">{{ $data->approved_count }}
+                                                    </div>
+                                                    <div class="text-base text-sm font-semibold">Approved</div>
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
-                                                    No Job Posting Found
-                                                </p>
+                                                <div class="w-[85px] bg-yellow-300 rounded-lg p-1">
+                                                    <div class="text-base font-semibold">{{ $data->pending_count }}
+                                                    </div>
+                                                    <div class="text-base font-semibold">Pending</div>
+                                                </div>
+                                                <div class="w-[85px] bg-green-300 rounded-lg p-1">
+                                                    <div class="text-base font-semibold">{{ $data->hired_count }}</div>
+                                                    <div class="text-base font-semibold">Hired</div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center">
+                                                @if ($data->job_Status == 'ACTIVE')
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2 uppercase">
+                                                    </div> ACTIVE
+                                                @elseif ($data->job_Status == 'PENDING')
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2 uppercase">
+                                                    </div> PENDING
+                                                @else
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2 uppercase">
+                                                    </div>
+                                                    {{ $data->job_Status }}
+                                                @endif
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="font-normal text-gray-500 text-sm">
+                                                {{ $data->created_at->format('F j, Y') }}
+
                                             </div>
 
                                         </td>
+                                        <td class="px-6 py-4">
+                                            <a href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
+                                                class="font-medium text-blue-600  hover:underline">View
+                                                Post</a>
+                                        </td>
                                     </tr>
-                                @else
-                            @foreach ($applicants as $data)
-                                <tr class="bg-white border-b ">
-                                    <th scope="row" class="flex items-center px-6 py-4 text-gray-900 ">
-                                        <div class="ps-3">
-                                            <div class="text-base font-semibold">{{ $data->job_Title }}</div>
-                                            <div class="font-normal text-gray-500 text-sm">{{ $data->job_Address }},
-                                                {{ $data->barangay->barangay_Name }},
-                                                {{ $data->barangay->municipality->municipality_Name }},
-                                                {{ $data->barangay->municipality->province->province_Name }}</div>
-                                        </div>
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        <div class="flex flex-row gap-1">
-                                            <div class="w-[85px] bg-gray-300 rounded-lg p-1 text">
-                                                <div class="text-base font-semibold">{{ $data->approved_count }}</div>
-                                                <div class="text-base text-sm font-semibold">Approved</div>
-                                            </div>
-                                            <div class="w-[85px] bg-yellow-300 rounded-lg p-1">
-                                                <div class="text-base font-semibold">{{ $data->pending_count }}</div>
-                                                <div class="text-base font-semibold">Pending</div>
-                                            </div>
-                                            <div class="w-[85px] bg-green-300 rounded-lg p-1">
-                                                <div class="text-base font-semibold">{{ $data->hired_count }}</div>
-                                                <div class="text-base font-semibold">Hired</div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center">
-                                            @if ($data->job_Status == 'ACTIVE')
-                                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2 uppercase">
-                                                </div> ACTIVE
-                                            @elseif ($data->job_Status == 'PENDING')
-                                                <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2 uppercase">
-                                                </div> PENDING
-                                            @else
-                                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2 uppercase">
-                                                </div>
-                                                {{ $data->job_Status }}
-                                            @endif
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="font-normal text-gray-500 text-sm">
-                                            {{ $data->created_at->format('F j, Y') }}
-
-                                        </div>
-
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <a href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
-                                            class="font-medium text-blue-600  hover:underline">View
-                                            Post</a>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                @endforeach
                             @endif
                         </tbody>
                     </table>
