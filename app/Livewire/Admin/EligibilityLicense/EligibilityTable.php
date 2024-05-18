@@ -28,6 +28,9 @@ class EligibilityTable extends Component
             ->orderBy('eligibility_Name', 'asc')
             ->paginate($this->rows);
 
+
+
+            
         return view('livewire.admin.eligibility-license.eligibility-table', compact('eligibility'));
     }
 }

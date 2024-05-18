@@ -30,7 +30,7 @@
 
                             <div class="flex flex-col sm:flex-row sm:space-x-4  sm:mt-8">
                                 <div class="">
-                                    <h3 class="text-xs sm:text-lg text-blue-500"> <i
+                                    <h3 class="text-xs sm:text-lg text-blue-900"> <i
                                             class="fa-solid fa-location-dot"></i>
                                         {{ $JobPost->barangay->municipality->municipality_Name }},
                                         {{ $JobPost->barangay->municipality->province->province_Name }}
@@ -42,13 +42,9 @@
                                 </div>
 
                                 <div class="">
-                                    <h3 class="text-xs sm:text-lg text-blue-500"> <i
+                                    <h3 class="text-xs sm:text-lg text-blue-900"> <i
                                             class="fa-solid fa-graduation-cap"></i>
-                                        @if ($JobPost->job_Edu == 1)
-                                            Highschool Graduate
-                                        @elseif ($JobPost->job_Edu == 2)
-                                            Master's Graduate
-                                        @endif
+                                            {{$eduLevels[$JobPost->job_Edu]}}
                                     </h3>
                                 </div>
                                 <div class="hidden sm:flex items-center justify-center">
@@ -56,7 +52,7 @@
                                 </div>
 
                                 <div class="">
-                                    <h3 class="text-xs sm:text-lg text-blue-500"> <i class="fa-solid fa-briefcase"></i>
+                                    <h3 class="text-xs sm:text-lg text-blue-900"> <i class="fa-solid fa-briefcase"></i>
                                         @if ($JobPost->job_Type == 1)
                                             Full Time
                                         @elseif ($JobPost->job_Type == 2)
@@ -70,7 +66,7 @@
                                 </div>
 
                                 <div class="">
-                                    <h3 class="text-xs sm:text-lg text-blue-500"> <i class="fa-solid fa-calendar"></i>
+                                    <h3 class="text-xs sm:text-lg text-blue-900"> <i class="fa-solid fa-calendar"></i>
                                         {{ $JobPost->created_at->format('F j, Y') }}
                                     </h3>
                                 </div>
@@ -313,11 +309,12 @@
                                                 Education Level
                                             </div>
                                             <div class="text-md font-medium">
-                                                @if ($JobPost->job_Edu == 1)
+                                                {{$eduLevels[$JobPost->job_Edu]}}
+                                                {{-- @if ($JobPost->job_Edu == 1)
                                                     Highschool Graduate
                                                 @elseif ($JobPost->job_Edu == 2)
                                                     Master's Graduate
-                                                @endif
+                                                @endif --}}
                                             </div>
                                         </div>
                                     </div>
