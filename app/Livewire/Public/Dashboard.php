@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Jobseeker;
+namespace App\Livewire\Public;
 
 use App\Models\Job_Posting;
 use Livewire\Attributes\Layout;
@@ -96,6 +96,6 @@ class Dashboard extends Component
 
         // dd($joblist);
 
-        return view('livewire.jobseeker.dashboard', compact('joblist'));
+        return view('livewire.public.dashboard', compact('joblist'));
     }
 }

@@ -18,27 +18,27 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if (auth()->user()->usertype == 4)
-                        <x-nav-link :href="route('employeeProfile')" :active="request()->routeIs('employeeProfile')">
+                        <x-nav-link :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
                             {{ __('Profile') }}
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                        <x-nav-link :href="route('employer.dashboard')" :active="request()->routeIs('companyProfile')">
+                        <x-nav-link :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
                             {{ __('Job Postings') }}
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                        <x-nav-link :href="route('jobpost.applicants')" :active="request()->routeIs('companyProfile')">
+                        <x-nav-link :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
                             {{ __('Job Applicants') }}
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
-                        <x-nav-link :href="route('jobseeker.application')" :active="request()->routeIs('companyProfile')">
+                        <x-nav-link :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
                             {{ __('My Applications') }}
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 8)
-                        <x-nav-link :href="route('admin')" :active="request()->routeIs('companyProfile')">
+                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
                             {{ __('Admin Tools') }}
                         </x-nav-link>
                     @endif
@@ -129,6 +129,31 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @if (auth()->user()->usertype == 4)
+                <x-responsive-nav-link :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
+                    {{ __('Profile') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                <x-responsive-nav-link :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
+                    {{ __('Job Postings') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                <x-responsive-nav-link :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
+                    {{ __('Job Applicants') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
+                <x-responsive-nav-link :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
+                    {{ __('My Applications') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (auth()->user()->usertype >= 8)
+                <x-responsive-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                    {{ __('Admin Tools') }}
+                </x-responsive-nav-link>
+            @endif
 
 
         </div>

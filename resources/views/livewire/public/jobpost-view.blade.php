@@ -1,4 +1,4 @@
-<x-app-layout>
+<div>
     <div class="container mx-auto py-8">
 
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
@@ -10,7 +10,7 @@
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg">
 
 
-                    <div class="flex flex-row w-full h-full ">
+                    <div class="flex flex-row w-full h-full">
                         <div class="flex flex-row justify-center items-center h-full p-5 flex-shrink-0">
                             <img src="{{ asset('storage/' . $JobPost->company->company_img) }}" alt="Default I mage"
                                 class="w-36 h-36    sm:w-48 sm:h-48 bg-gray-300 rounded object-contain">
@@ -132,29 +132,29 @@
 
 
                 {{-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="flex flex-col w-full h-full p-5">
-
-
-                        <div class="About-Company">
-
-                            <h1 class="text-xl text-blue-900 font-bold">About National University Baliwag</h1>
-
-
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
-
-                            <div class="mt-2">
-                                National University (NU) Baliwag is a distinguished institution of higher education
-                                situated
-                                in Baliwag, Bulacan, Philippines. Committed to academic excellence, innovation, and
-                                social
-                                responsibility, NU Baliwag aims to empower minds and transform lives through quality
-                                education and holistic development.
-
+                        <div class="flex flex-col w-full h-full p-5">
+    
+    
+                            <div class="About-Company">
+    
+                                <h1 class="text-xl text-blue-900 font-bold">About National University Baliwag</h1>
+    
+    
+                                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+    
+                                <div class="mt-2">
+                                    National University (NU) Baliwag is a distinguished institution of higher education
+                                    situated
+                                    in Baliwag, Bulacan, Philippines. Committed to academic excellence, innovation, and
+                                    social
+                                    responsibility, NU Baliwag aims to empower minds and transform lives through quality
+                                    education and holistic development.
+    
+                                </div>
                             </div>
+    
                         </div>
-
-                    </div>
-                </div> --}}
+                    </div> --}}
             </div>
 
 
@@ -311,10 +311,10 @@
                                             <div class="text-md font-medium">
                                                 {{ $eduLevels[$JobPost->job_Edu] }}
                                                 {{-- @if ($JobPost->job_Edu == 1)
-                                                    Highschool Graduate
-                                                @elseif ($JobPost->job_Edu == 2)
-                                                    Master's Graduate
-                                                @endif --}}
+                                                        Highschool Graduate
+                                                    @elseif ($JobPost->job_Edu == 2)
+                                                        Master's Graduate
+                                                    @endif --}}
                                             </div>
                                         </div>
                                     </div>
@@ -408,67 +408,67 @@
 
 
     {{-- <div class="mobile-apply md:hidden mt-3">
-            <div class="col-span-4 sm:col-span-12">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-
-                    <div class="flex flex-col w-full h-full p-5">
-                        <div class="flex flex-row space-x-2 ">
-                            <div class="flex items-center justify-center ">
-                                <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
+                <div class="col-span-4 sm:col-span-12">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    
+                        <div class="flex flex-col w-full h-full p-5">
+                            <div class="flex flex-row space-x-2 ">
+                                <div class="flex items-center justify-center ">
+                                    <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
+                                </div>
+                                <div class="w-1/2 justify-">
+                                    <h3 class="text-md "> <i class="fa-solid fa-location-dot"></i>
+                                        Baliuag, Bulacan
+                                    </h3>
+                                </div>
+    
+                                <div class="flex items-center justify-center">
+                                    <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
+                                </div>
+    
+                                <div class="w-1/2">
+                                    <h3 class="text-md "> <i class="fa-solid fa-graduation-cap"></i>
+                                        Master's
+                                        Graduate</h3>
+                                </div>
                             </div>
-                            <div class="w-1/2 justify-">
-                                <h3 class="text-md "> <i class="fa-solid fa-location-dot"></i>
-                                    Baliuag, Bulacan
-                                </h3>
+                            <div class="flex flex-row space-x-2">
+    
+    
+                                <div class="flex items-center justify-center">
+                                    <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
+                                </div>
+    
+                                <div class="w-1/2">
+                                    <h3 class="text-md "> <i class="fa-solid fa-briefcase"></i>
+                                        Full Time
+                                    </h3>
+                                </div>
+    
+                                <div class="flex items-center justify-center">
+                                    <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
+                                </div>
+    
+                                <div class="w-1/2">
+                                    <h3 class="text-md"><i class="fa-solid fa-money-bill"></i>
+                                        ₱50,000 - ₱70,000
+                                    </h3>
+                                </div>
+    
                             </div>
-
-                            <div class="flex items-center justify-center">
-                                <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
+    
+                            <div class="flex flex-col ml-auto mr-10 justify-center w-full mt-3 items-center md:hidden">
+                                <button type="button"
+                                    class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-10 border border-red-500 hover:border-transparent rounded "
+                                    onclick="">
+                                    Apply Now
+                                </button>
                             </div>
-
-                            <div class="w-1/2">
-                                <h3 class="text-md "> <i class="fa-solid fa-graduation-cap"></i>
-                                    Master's
-                                    Graduate</h3>
-                            </div>
+    
                         </div>
-                        <div class="flex flex-row space-x-2">
-
-
-                            <div class="flex items-center justify-center">
-                                <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
-                            </div>
-
-                            <div class="w-1/2">
-                                <h3 class="text-md "> <i class="fa-solid fa-briefcase"></i>
-                                    Full Time
-                                </h3>
-                            </div>
-
-                            <div class="flex items-center justify-center">
-                                <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
-                            </div>
-
-                            <div class="w-1/2">
-                                <h3 class="text-md"><i class="fa-solid fa-money-bill"></i>
-                                    ₱50,000 - ₱70,000
-                                </h3>
-                            </div>
-
-                        </div>
-
-                        <div class="flex flex-col ml-auto mr-10 justify-center w-full mt-3 items-center md:hidden">
-                            <button type="button"
-                                class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-10 border border-red-500 hover:border-transparent rounded "
-                                onclick="">
-                                Apply Now
-                            </button>
-                        </div>
-
                     </div>
                 </div>
-            </div>
-        </div> --}}
+            </div> --}}
 
 
-</x-app-layout>
+</div>

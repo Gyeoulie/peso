@@ -2,14 +2,16 @@
 
 use App\Http\Controllers\CompanyProfile;
 use App\Http\Controllers\EmployeeProfile;
-use App\Http\Controllers\JobPost\JobPostView;
 use App\Http\Controllers\NSRP;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\JobPosting\JobPostApplicants;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Employer\Dashboard\JobPostList;
 use App\Livewire\Employer\Jobpost\JobApplicants;
-use App\Livewire\Jobseeker\Dashboard;
+use App\Livewire\Public\Dashboard;
+use App\Livewire\Public\JobpostView;
+use App\Livewire\Public\Profile\EmployerProfile;
+use App\Livewire\Public\Profile\JobseekerProfile;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -73,18 +75,13 @@ Route::get('/myapplication', function () {
     return view('dashboard.partials.employer-jobpost');
 })->name('jobpost');
 
-Route::get('/jobpost/list', JobPostList::class)->name('employer.dashboard');
-
-Route::get('/jobpost/{id}', [JobPostView::class, 'show'])->name('jobpost.show');
-
-Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
-
-Route::get('/admin/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
 
 
-Route::get('/admin/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
 
-Route::get('/dashboard', Dashboard::class)->name('dashboard');
+
+
+
+
 
 
 // EMPLOYER
@@ -92,32 +89,34 @@ Route::get('/test2', function () {
     return view('admin.admin_partials.applicant-list');
 })->name('213');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // EMPLOYER
 Route::get('/apply', function () {
     return view('dashboard.partials.employer-jobpost');
 })->name('jobpost.apply');
+
+Route::get('/jobpost/list', JobPostList::class)->name('employer.dashboard');
+
+Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
+
+
+
+
+
+
+
+// PUBLIC
+Route::get('/dashboard', Dashboard::class)->name('dashboard');
+Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
+// PUBLIC - PROFILE
+Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
+Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
+
+
+
+
+
+
+
 
 // ADMIN TESTING NAV
 Route::get('/admin', function () {
@@ -167,5 +166,12 @@ Route::get('/admin/requirements', function () {
 Route::get('/admin/manage-admin', function () {
     return view('admin.admin_partials.admin-accounts');
 })->name('admin-admin');
+
+
+//ADMIN JOBPOST
+Route::get('/admin/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
+
+Route::get('/admin/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
+
 
 require __DIR__ . '/auth.php';

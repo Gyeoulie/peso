@@ -1,10 +1,10 @@
 <div>
     {{-- <div class="overflow-x-auto">
-    <div class="flex flex-row md:grid md:grid-cols-5 gap-2 py-8 mx-4 sm:mx-12 ">
+    <div class="flex flex-row sm:grid sm:grid-cols-5 gap-2 py-8 mx-4 sm:mx-12 ">
 
         <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 md:h-auto md:w-36 md:rounded-none md:rounded-s-lg"
+            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
+            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
                 src="{{ asset('assets/img/peso-1.png') }}" alt="">
             <div class="flex flex-col justify-between p-4 leading-normal">
                 <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
@@ -18,8 +18,8 @@
         </a>
 
         <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 md:h-auto md:w-36 md:rounded-none md:rounded-s-lg"
+            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
+            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
                 src="{{ asset('assets/img/peso-1.png') }}" alt="">
             <div class="flex flex-col justify-between p-4 leading-normal">
                 <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
@@ -32,23 +32,8 @@
             </div>
         </a>
         <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 md:h-auto md:w-36 md:rounded-none md:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
-
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 md:h-auto md:w-36 md:rounded-none md:rounded-s-lg"
+            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
+            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
                 src="{{ asset('assets/img/peso-1.png') }}" alt="">
             <div class="flex flex-col justify-between p-4 leading-normal">
                 <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
@@ -62,8 +47,23 @@
         </a>
 
         <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 md:h-auto md:w-36 md:rounded-none md:rounded-s-lg"
+            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
+            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
+                src="{{ asset('assets/img/peso-1.png') }}" alt="">
+            <div class="flex flex-col justify-between p-4 leading-normal">
+                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
+                    2021
+                </h5>
+                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
+                    acquisitions
+                    of
+                    2021 so far, in reverse chronological order.</p>
+            </div>
+        </a>
+
+        <a href="#"
+            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
+            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
                 src="{{ asset('assets/img/peso-1.png') }}" alt="">
             <div class="flex flex-col justify-between p-4 leading-normal">
                 <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
@@ -88,9 +88,9 @@
 
             {{-- MAIN BAR FOR JOB POST --}}
             <div class="col-span-4 sm:col-span-9">
-                <div class="bg-white shadow rounded-lg p-6">
+                <div class="bg-white shadow rounded-lg p-6 overflow-auto">
                     <div
-                        class="flex p-1 items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                        class="flex p-1 items-center justify-between flex-column flex-wrap sm:flex-row space-y-4 sm:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -154,7 +154,7 @@
 
 
                     </div>
-                    <table class="w-full ">
+                    <table class="w-full overflow-auto">
 
                         <tbody>
                             @if ($joblist->isEmpty())
@@ -179,7 +179,7 @@
                                 </tr>
                             @else
                                 @foreach ($joblist as $data)
-                                    <tr class="text-center hover:bg-gray-100">
+                                    <tr class="text-center hover:bg-gray-100 ">
 
                                         <td class="p-2 rounded-lg">
 
@@ -189,19 +189,20 @@
                                                         class="flex flex-col justify-center items-center h-full  flex-shrink-0">
                                                         <img src="{{ asset('storage/' . $data->company->company_img) }}"
                                                             alt="Default Image"
-                                                            class="w-48 h-48 bg-gray-300 rounded object-contain">
+                                                            class="w-24 h-24 sm:w-48 sm:h-48 bg-gray-300 rounded object-contain">
                                                     </div>
-                                                    <div class="flex-col w-full ml-5 space-y-1 md:space-y-8">
+                                                    <div class="flex-col w-full ml-5 space-y-1 sm:space-y-8">
                                                         <div class="flex flex-col">
-                                                            <div class="flex flex-col md:flex-row  text-left">
-                                                                <div class="flex flex-col md:w-3/4">
-                                                                    <h1 class="text-blue-500 text-5xl font-semibold">
+                                                            <div class="flex flex-col sm:flex-row  text-left">
+                                                                <div class="flex flex-col sm:w-3/4">
+                                                                    <h1
+                                                                        class="text-blue-500 text-2xl sm:text-5xl font-semibold">
                                                                         {{ $data->job_Title }}
                                                                     </h1>
                                                                 </div>
-                                                                <div class="flex flex-col md:w-1/4">
+                                                                <div class="hidden sm:flex flex-col sm:w-1/4">
                                                                     <h1
-                                                                        class="text-black text-xl text-left md:text-center font-medium">
+                                                                        class="text-black text-xs sm:text-xl text-left sm:text-center font-medium">
                                                                         ₱{{ number_format($data->job_MinWage) }} -
                                                                         ₱{{ number_format($data->job_MaxWage) }}</h1>
                                                                 </div>
@@ -210,39 +211,47 @@
                                                         </div>
 
                                                         <div class="flex flex-col">
-                                                            <div class="flex-row w-3/4 text-left">
-                                                                <h2 class="text-2xl font-bold">
+                                                            <div class="flex-row sm:w-3/4 text-left">
+                                                                <h2 class="text-lg sm:text-2xl font-semibold">
                                                                     {{ $data->company->bussines_Name }}</h2>
                                                             </div>
+                                                            <h1
+                                                                class="sm:hidden text-black text-sm text-left sm:text-center font-medium">
+                                                                ₱{{ number_format($data->job_MinWage) }} -
+                                                                ₱{{ number_format($data->job_MaxWage) }}</h1>
                                                         </div>
 
                                                         <div class="flex flex-col w-full">
-                                                            <div class="flex flex-col md:flex-row">
-                                                                <div class="md:w-1/4 text-left">
+                                                            <div class="flex flex-col sm:flex-row">
+                                                                <div class="sm:w-1/4 text-left">
 
-                                                                    <h3 class="text-sm text-blue-900 uppercase"> <i
-                                                                            class="fa-solid fa-location-dot"></i>
+                                                                    <h3
+                                                                        class="text-xs sm:text-sm text-blue-900 uppercase">
+                                                                        <i class="fa-solid fa-location-dot"></i>
                                                                         {{ $data->job_Address }},
                                                                         {{ $data->barangay->barangay_Name }},
                                                                         {{ $data->barangay->municipality->municipality_Name }},
                                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="md:w-1/4 text-left md:text-center">
-                                                                    <h3 class="text-sm text-blue-900 uppercase"> <i
-                                                                            class="fa-solid fa-graduation-cap"></i>
+                                                                <div class="sm:w-1/4 text-left sm:text-center">
+                                                                    <h3
+                                                                        class="text-xs sm:text-sm text-blue-900 uppercase">
+                                                                        <i class="fa-solid fa-graduation-cap"></i>
                                                                         {{ $eduLevels[$data->job_Edu] }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="md:w-1/4 text-left md:text-center">
-                                                                    <h3 class="text-sm uppercase text-blue-900"> <i
-                                                                            class="fa-solid fa-briefcase uppercase"></i>
+                                                                <div class="sm:w-1/4 text-left sm:text-center">
+                                                                    <h3
+                                                                        class="text-xs sm:text-sm uppercase text-blue-900">
+                                                                        <i class="fa-solid fa-briefcase uppercase"></i>
                                                                         {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="md:w-1/4 text-left md:text-center">
-                                                                    <h3 class="text-sm uppercase text-blue-900"> <i
-                                                                            class="fa-solid fa-calendar"></i>
+                                                                <div class="sm:w-1/4 text-left sm:text-center">
+                                                                    <h3
+                                                                        class="text-xs sm:text-sm uppercase text-blue-900">
+                                                                        <i class="fa-solid fa-calendar"></i>
                                                                         {{ $data->job_Duration->format('F j, Y') }}
                                                                     </h3>
                                                                 </div>
