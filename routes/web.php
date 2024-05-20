@@ -11,7 +11,8 @@ use App\Livewire\Employer\Jobpost\JobApplicants;
 use App\Livewire\Public\Dashboard;
 use App\Livewire\Public\JobpostView;
 use App\Livewire\Public\Profile\EmployerProfile;
-use App\Livewire\Public\Profile\JobseekerProfile;
+use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
+use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,15 +76,6 @@ Route::get('/myapplication', function () {
     return view('dashboard.partials.employer-jobpost');
 })->name('jobpost');
 
-
-
-
-
-
-
-
-
-
 // EMPLOYER
 Route::get('/test2', function () {
     return view('admin.admin_partials.applicant-list');
@@ -98,11 +90,7 @@ Route::get('/jobpost/list', JobPostList::class)->name('employer.dashboard');
 
 Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
 
-
-
-
-
-
+Route::get('/test3', EditDetails::class)->name('edit.details.test');
 
 // PUBLIC
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
@@ -110,13 +98,6 @@ Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
 // PUBLIC - PROFILE
 Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
 Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
-
-
-
-
-
-
-
 
 // ADMIN TESTING NAV
 Route::get('/admin', function () {
@@ -167,11 +148,9 @@ Route::get('/admin/manage-admin', function () {
     return view('admin.admin_partials.admin-accounts');
 })->name('admin-admin');
 
-
 //ADMIN JOBPOST
 Route::get('/admin/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
 
 Route::get('/admin/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
-
 
 require __DIR__ . '/auth.php';
