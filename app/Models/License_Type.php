@@ -9,7 +9,6 @@ class License_Type extends Model
 {
     use HasFactory;
 
-
     protected $table = 'license_type';
     protected $primaryKey = 'license_type_id';
     /**
@@ -18,8 +17,8 @@ class License_Type extends Model
      * @var array
      */
     protected $fillable = [
-        'license_name',
-        'license_code',
+        'license_Name',
+        'license_Code',
     ];
 
     /**
@@ -31,4 +30,8 @@ class License_Type extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+    public function license_type()
+    {
+        return $this->hasMany(License_Type::class, 'license_type_id');
+    }
 }

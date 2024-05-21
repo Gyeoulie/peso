@@ -17,13 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('requirement_id');
             $table->string('req_passed_Input', 255);
             $table->timestamps();
-            
-            $table->foreign('job_id')->references('job_id')->on('job_posting')->onDelete('cascade')
-            ->onUpdate('cascade');
-            $table->foreign('requirement_id')->references('requirement_id')->on('requirements')->onDelete('cascade')
-            ->onUpdate('cascade');
-        });
 
+            $table->foreign('job_id')->references('job_id')->on('job_posting')->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreign('requirement_id')->references('requirement_id')->on('requirements')->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
 
     }
 

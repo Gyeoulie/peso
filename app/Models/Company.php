@@ -48,4 +48,9 @@ class Company extends Model
     {
         return $this->belongsTo(Barangay::class, 'barangay_id');
     }
+    public function job_posting()
+    {
+        return $this->hasMany(Job_Posting::class, 'company_id');
+    }
+
 }

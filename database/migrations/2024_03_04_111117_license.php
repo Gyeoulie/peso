@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('license_id');
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('license_type_id');
-            $table->date('license_validity');
+            $table->date('license_Validity');
             $table->timestamps(); // Adds created_at and updated_at columns
             
             // Foreign key constraints

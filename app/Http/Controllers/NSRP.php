@@ -80,7 +80,6 @@ class NSRP extends Controller
     {
         //dd($request);
 
-
         $user = Auth::user();
 
         if ($request->hasFile('pimagePost')) {
@@ -242,10 +241,10 @@ class NSRP extends Controller
                 Language::create([
                     'employee_id' => $employee->employee_id,
                     'language_Type' => $language,
-                    'language_read' => $read,
-                    'language_write' => $write,
-                    'language_speak' => $speak,
-                    'language_understand' => $understand,
+                    'language_Read' => $read,
+                    'language_Write' => $write,
+                    'language_Speak' => $speak,
+                    'language_Understand' => $understand,
                 ]);
             }
         }
@@ -309,7 +308,7 @@ class NSRP extends Controller
                 License::create([
                     'employee_id' => $employee->employee_id,
                     'license_type_id' => $license,
-                    'license_validity' => $request->licenseDatePost[$index],
+                    'license_Validity' => $request->licenseDatePost[$index],
                 ]);
             }
         }

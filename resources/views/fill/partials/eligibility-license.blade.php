@@ -166,8 +166,8 @@
 
                     @foreach ($datainfo['licenseTypes'] as $licenseTypes)
                         <option data-licenseType-attribute="{{ $licenseTypes->license_type_id }}"
-                            value="{{ $licenseTypes->license_name }}">
-                            {{ $licenseTypes->license_name }}
+                            value="{{ $licenseTypes->license_Name }}">
+                            {{ $licenseTypes->license_Name }}
                         </option>
                     @endforeach
 

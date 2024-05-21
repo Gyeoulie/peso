@@ -11,10 +11,10 @@
             </div>
 
             <div class="col-span-4 sm:col-span-12">
-                <div class="bg-white shadow rounded-lg p-6">
+              
 
 
-                    @livewire('account-management-admin.account-table')
+                    @livewire('admin.account-management-admin.account-table')
 
 
                 </div>
@@ -24,8 +24,8 @@
         </div>
     </div>
 
-    @livewire('account-management-admin.editmodal');
+    @livewire('admin.account-management-admin.edit-modal');
 
-    @livewire('account-management-admin.modal');
+    @livewire('admin.account-management-admin.add-modal');
 
 </x-admin-layout>

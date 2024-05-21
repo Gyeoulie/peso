@@ -11,14 +11,14 @@
             </div>
 
             <div class="col-span-4 sm:col-span-6">
-                @livewire('requirements-admin.requirements-table')
+                @livewire('admin.requirements.requirements-table')
             </div>
 
 
 
 
             <div class="col-span-4 sm:col-span-6">
-                @livewire('requirements-admin.requirements-add')
+                @livewire('admin.requirements.requirements-add')
             </div>
 
 
@@ -27,6 +27,6 @@
         </div>
     </div>
 
-    @livewire('requirements-admin.requirements-edit')
+    @livewire('admin.requirements.requirements-edit-modal')
 
 </x-admin-layout>

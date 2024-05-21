@@ -12,25 +12,25 @@
 
             {{-- TABLE CONTAINER --}}
             <div class="col-span-4 sm:col-span-6">
-                <div class="bg-white shadow rounded-lg p-6">
-
-                    @livewire('location-management-admin.location-table')
 
 
-                </div>
+                @livewire('admin.location-management.location-table')
+
+
+
 
             </div>
 
 
-            @livewire('location-management-admin.add-locations')
+            @livewire('admin.location-management.add-locations')
         </div>
     </div>
 
-    @livewire('location-management-admin.municipality-modal')
-    @livewire('location-management-admin.province-modal')
-    @livewire('location-management-admin.baredit-modal')
-    @livewire('location-management-admin.munedit-modal')
-    @livewire('location-management-admin.provedit-modal')
+    @livewire('admin.location-management.mun-modal')
+    @livewire('admin.location-management.prov-modal')
+    @livewire('admin.location-management.bar-edit-modal')
+    @livewire('admin.location-management.mun-edit-modal')
+    @livewire('admin.location-management.prov-edit-modal')
 
 
 

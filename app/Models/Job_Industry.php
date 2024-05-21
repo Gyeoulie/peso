@@ -9,7 +9,6 @@ class Job_Industry extends Model
 {
     use HasFactory;
 
-
     protected $table = 'job_industry';
     protected $primaryKey = 'industry_id';
     /**
@@ -31,4 +30,8 @@ class Job_Industry extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+    public function industry_preference()
+    {
+        return $this->hasMany(Industry_preference::class, 'industry_id');
+    }
 }

@@ -13,10 +13,10 @@ class Language extends Model
     protected $fillable = [
         'employee_id',
         'language_Type',
-        'language_read',
-        'language_write',
-        'language_speak',
-        'language_understand',
+        'language_Read',
+        'language_Write',
+        'language_Speak',
+        'language_Understand',
     ];
 
     protected $casts = [

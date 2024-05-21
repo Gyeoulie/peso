@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('requirements', function (Blueprint $table) {
             $table->id('requirement_id');
-            $table->string('requirement_Description', 255);
-            $table->string('requirement_Type', 20);
+            $table->string('requirement_Title', 255);
+            $table->string('requirement_Status', 20);
             $table->timestamps();
         });
     }

@@ -39,4 +39,12 @@ class Municipality extends Model
     {
         return $this->belongsTo(Province::class, 'province_id');
     }
+    public function peso()
+    {
+        return $this->hasMany(PESO::class, 'municipality_id');
+    }
+    public function job_posting()
+    {
+        return $this->hasMany(Job_Posting::class, 'municipality_id');
+    }
 }

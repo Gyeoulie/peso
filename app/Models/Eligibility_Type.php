@@ -31,4 +31,10 @@ class Eligibility_Type extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function job_posting()
+    {
+        return $this->hasMany(Eligibility::class, 'eligibility_id');
+    }
+
 }

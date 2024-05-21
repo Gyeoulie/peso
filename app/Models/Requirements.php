@@ -13,12 +13,16 @@ class Requirements extends Model
     protected $primaryKey = 'requirement_id';
 
     protected $fillable = [
-        'requirement_Description',
-        'requirement_Type',
+        'requirement_Title',
+        'requirement_Status',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+    public function requirements_passed()
+    {
+        return $this->hasMany(Requirements_Passed::class, 'requirement_id');
+    }
 }
