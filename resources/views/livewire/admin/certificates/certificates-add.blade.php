@@ -7,31 +7,29 @@
 
 
                 <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="reqPost" :value="__('Certificate Title')" />
+                    <x-input-label for="certName" :value="__('Certificate Title')" />
 
                     {{-- INPUT FIELD --}}
-                    <x-text-input class="block mt-1 w-full uppercase" type="text" />
+                    <x-text-input class="block mt-1 w-full uppercase" type="text" wire:model="certName" />
 
                     {{-- ERROR VALIDATION TEXT  --}}
-                    <x-input-error :messages="$errors->get('reqPost')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('certName')" class="mt-2" />
                 </div>
 
                 <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="reqPost" :value="__('Certificate Code')" />
+                    <x-input-label for="certCode" :value="__('Certificate Code')" />
 
                     {{-- INPUT FIELD --}}
-                    <x-text-input class="block mt-1 w-full uppercase" type="text" />
+                    <x-text-input class="block mt-1 w-full uppercase" type="text" wire:model="certCode" />
 
                     {{-- ERROR VALIDATION TEXT  --}}
-                    <x-input-error :messages="$errors->get('reqPost')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('certCode')" class="mt-2" />
                 </div>
-
-
 
             </div>
 
             <div class="flex flex-row w-ful mt-6 ">
-                <x-primary-button type="submit" class="ml-auto mr-3">
+                <x-primary-button type="submit" class="ml-auto mr-3" wire:click.prevent="addCert">
                     {{ __('Add Certificate') }}
                 </x-primary-button>
 
