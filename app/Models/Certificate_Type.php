@@ -22,6 +22,7 @@ class Certificate_Type extends Model
         'cert_Code',
     ];
 
+    
     /**
      * The attributes that should be cast to native types.
      *
