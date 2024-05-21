@@ -22,6 +22,7 @@ class Certificate_Type extends Model
         'cert_Code',
     ];
 
+    
     /**
      * The attributes that should be cast to native types.
      *
@@ -31,4 +32,5 @@ class Certificate_Type extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
 }
