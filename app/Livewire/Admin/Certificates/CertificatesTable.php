@@ -28,6 +28,6 @@ class CertificatesTable extends Component
 
         $certificate_type = $query->paginate($this->rows);
 
-        return view('livewire.certificates-admin.certificates-table', compact('certificate_type'));
+        return view('livewire.admin.certificates.certificates-table', compact('certificate_type'));
     }
 }
