@@ -91,10 +91,12 @@
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="workEmp" :value="__('Employer')" />
                     <x-text-input id="workEmp" class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="workAddress" :value="__('Address')" />
                     <x-text-input id="workAddress" class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
                 <div class="flex flex-row mt-2 w-full">
 
@@ -103,7 +105,7 @@
                         <select id="workPos" class="block mt-1 w-full">
                             <option value="" disabled selected>Select Job Position</option>
                         </select>
-
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
 
                     <div class="flex flex-col w-full ml-4">
@@ -115,7 +117,7 @@
                             <option value="Probationary">Probationary</option>
                             <option value="Part-time">Part-time</option>
                         </select>
-
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                 </div>
 
@@ -123,10 +125,12 @@
                     <div class="flex flex-col w-full">
                         <x-input-label for="workStart" :value="__('Started')" />
                         <x-text-input id="workStart" class="block mt-1 w-full" type="date" />
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                     <div class="flex flex-col ml-4 w-full">
                         <x-input-label for="workEnd" :value="__('Ended')" />
                         <x-text-input id="workEnd" class="block mt-1 w-full" type="date" />
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
 
                 </div>

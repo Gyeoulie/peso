@@ -8,7 +8,7 @@
                         class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
 
                     </img>
-                    <h1 class="text-xl font-bold">John Doe</h1>
+                    <h1 class="text-xl font-bold"></h1>
                     <p class="text-gray-700">Software Developer</p>
                     <div class="mt-6 flex flex-wrap gap-4 justify-center">
                         <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="mb-4">
+                        {{-- <li class="mb-4">
                             <div class="flex flex-row gap-4 w-full">
                                 <div class="flex flex-col">
 
@@ -68,7 +68,7 @@
 
                                 </div>
                             </div>
-                        </li>
+                        </li> --}}
 
                         <li class="mb-4">
                             <div class="flex flex-row gap-4 w-full">
@@ -313,6 +313,20 @@
                                     </span>
                                 </div>
                             </div>
+
+
+                            <h2 class="text-md font-medium mt-4">Language</h2>
+                            <div class="flex flex-col w-full">
+                                {{-- BADGE CONTAINER --}}
+                                <div id= "otherSkillRow" class="flex-inline p-1">
+                                    {{-- BADGE --}}
+                                    <span
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                        Hello
+                                    </span>
+                                </div>
+                            </div>
+
 
 
                             <h2 class="text-md font-medium mt-4">Disability</h2>

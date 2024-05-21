@@ -97,6 +97,9 @@ Route::get('/dashboard', Dashboard::class)->name('dashboard');
 Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
 // PUBLIC - PROFILE
 Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
+
+
+
 Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
 
 // ADMIN TESTING NAV

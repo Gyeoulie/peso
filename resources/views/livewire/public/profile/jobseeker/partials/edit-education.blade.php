@@ -17,7 +17,7 @@
 
                 <div class="flex flex-row gap-4 items-center">
                     <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
-                    x-data="" x-on:click.prevent="$dispatch('open-modal', 'education-modal')">
+                        x-data="" x-on:click.prevent="$dispatch('open-modal', 'education-modal')">
                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -94,6 +94,7 @@
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="eduSchool" :value="__('School')" />
                     <x-text-input id="eduSchool" class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
                 <div class="flex flex-row mt-2 w-full">
                     <div class="flex flex-col w-full">
@@ -159,21 +160,24 @@
                                     GRADUATE
                                 </option>
                         </select>
-                        <h6 class="text-xs text-red-500">This Field is required! </h6>
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                     <div class="flex flex-col ml-4 w-full">
                         <x-input-label for="eduCourse" :value="__('Course')" />
                         <x-text-input id="eduCourse" class="block mt-1 w-full" type="text" />
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                 </div>
                 <div class="flex flex-row mt-2 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="eduStart" :value="__('Started')" />
                         <x-text-input id="eduStart" class="block mt-1 w-full" type="date" />
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                     <div class="flex flex-col ml-4 w-full">
                         <x-input-label for="eduEnd" :value="__('Ended')" />
                         <x-text-input id="eduEnd" class="block mt-1 w-full" type="date" />
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                 </div>
 

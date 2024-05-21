@@ -91,24 +91,30 @@
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="trainingName" :value="__('Training Name')" />
                     <x-text-input id="trainingName" class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
+                
                 <div class="flex flex-row mt-2 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="trainingStart" :value="__('Started')" />
                         <x-text-input id="trainingStart" class="block mt-1 w-full" type="date" />
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                     <div class="flex flex-col ml-4 w-full">
                         <x-input-label for="trainingEnd" :value="__('Ended')" />
                         <x-text-input id="trainingEnd" class="block mt-1 w-full" type="date" />
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                 </div>
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="trainingInsti" :value="__('Training Institution')" />
                     <x-text-input id="trainingInsti" class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="trainingCert" :value="__('Certificate Recieved')" />
                     <x-text-input id="trainingCert" class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
                 <div class="mt-2">
                     <x-input-label for="trainingComplete" :value="__('Completed')" />
@@ -124,6 +130,7 @@
                             <span class="ml-1">{{ __('No') }}</span>
                         </label>
                     </div>
+                    <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
 
             </div>

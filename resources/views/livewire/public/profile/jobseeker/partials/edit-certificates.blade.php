@@ -95,10 +95,12 @@
                     <select id="certType" class="block mt-1 w-full">
                         <option value="" disabled selected>Select Certificate</option>
                     </select>
+                    <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="certIssued" :value="__('Issued By')" />
                     <x-text-input id="certIssued" class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
 
 
@@ -106,10 +108,12 @@
                     <div class="flex flex-col w-full">
                         <x-input-label for="certDate" :value="__('Earned At')" />
                         <x-text-input id="certDate" class="block mt-1 w-full" type="date" />
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                     <div class="flex flex-col ml-4 w-full">
                         <x-input-label for="certRating" :value="__('Rating')" />
                         <x-text-input id="certRating" class="block mt-1 w-full" type="number" />
+                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                     </div>
                 </div>
 
