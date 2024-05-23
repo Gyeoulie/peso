@@ -27,7 +27,7 @@ class Job_Preference extends Model
         return $this->belongsTo(Employee::class, 'employee_id');
     }
 
-    public function position()
+    public function job_positions()
     {
         return $this->belongsTo(Job_Positions::class, 'position_id');
     }
