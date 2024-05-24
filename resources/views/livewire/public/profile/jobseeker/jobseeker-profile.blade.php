@@ -8,8 +8,8 @@
                         class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
 
                     </img>
-                    <h1 class="text-xl font-bold"></h1>
-                    <p class="text-gray-700">Software Developer</p>
+                    <h1 class="text-xl font-bold">{{ $jobseeker->fname }} {{ $jobseeker->lname }}</h1>
+                    <p class="text-gray-700">position WAIT</p>
                     <div class="mt-6 flex flex-wrap gap-4 justify-center">
                         <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
                         <a href="#"
@@ -36,7 +36,9 @@
                                         Gender
                                     </div>
                                     <div class="text-md font-medium">
-                                        Male
+
+                                        {{ $jobseeker->gender == 1 ? 'Male' : 'Female' }}
+
                                     </div>
 
 
@@ -84,7 +86,7 @@
                                         Qualification
                                     </div>
                                     <div class="text-md font-medium">
-                                        College Graduate
+                                        College Graduate WAIT
                                     </div>
 
 
@@ -107,7 +109,8 @@
                                         Email
                                     </div>
                                     <div class="text-md font-medium">
-                                        Sample@gmail.com
+                                        {{ $jobseeker->user->email }}
+
                                     </div>
 
 
@@ -132,7 +135,7 @@
                                         Phone Number
                                     </div>
                                     <div class="text-md font-medium">
-                                        09754533546
+                                        {{ $jobseeker->pnumber }}
                                     </div>
 
 
@@ -170,19 +173,10 @@
 
                         </div>
 
-                        <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                            finibus
-                            est
-                            vitae tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus non velit
-                            egestas
-                            suscipit. Nunc finibus vel ante id euismod. Vestibulum ante ipsum primis in faucibus
-                            orci
-                            luctus
-                            et ultrices posuere cubilia Curae; Aliquam erat volutpat. Nulla vulputate pharetra
-                            tellus,
-                            in
-                            luctus risus rhoncus id.
+                        <p class="text-gray-700">
+                            {{ $jobseeker->empDesc !== null ? $jobseeker->empDesc : 'No Description' }}
                         </p>
+
                     </div>
                 </div>
 
@@ -290,16 +284,23 @@
 
                             <h2 class="text-md font-medium">Job Preference</h2>
 
-                            <div class="flex flex-col w-full">
-                                {{-- BADGE CONTAINER --}}
-                                <div id= "otherSkillRow" class="flex-inline p-1">
-                                    {{-- BADGE --}}
-                                    <span
-                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                        Hello
-                                    </span>
-                                </div>
-                            </div>
+                            @foreach ($jobseeker->job_preference as $positionID)
+
+
+                                {{-- @foreach ($positionID->job_positions->position_Title as $position) --}}
+                                    <div class="flex flex-col w-full">
+                                        {{-- BADGE CONTAINER --}}
+                                        <div id= "otherSkillRow" class="flex-inline p-1">
+                                            {{-- BADGE --}}
+                                            <span
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $positionID->job_positions->position_Title }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                {{-- @endforeach --}}
+                            @endforeach
+
 
 
                             <h2 class="text-md font-medium mt-4">Skills</h2>

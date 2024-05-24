@@ -139,8 +139,12 @@ Route::get('/admin/industry', function () {
     return view('admin.admin_partials.position-industry');
 })->name('admin-industry');
 
+// Route::get('/admin/certificate', function () {
+//     return view('admin.admin_partials.admin-certificates');
+// })->name('admin-certificate');
+
 Route::get('/admin/certificate', function () {
-    return view('admin.admin_partials.admin-certificates');
+    return view('livewire.admin.certificates.certificates-table');
 })->name('admin-certificate');
 
 Route::get('/admin/requirements', function () {
