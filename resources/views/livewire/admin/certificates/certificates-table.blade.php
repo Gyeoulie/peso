@@ -3,6 +3,7 @@
     {{-- TITLE --}}
     <div class="flex items-center mb-2">
         <h1 class="text-xl font-bold">Certificate List</h1>
+        {{$hello}}
     </div>
 
     <div class="relative overflow-x-auto">

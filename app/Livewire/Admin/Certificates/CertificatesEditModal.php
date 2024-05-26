@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\CertificatesAdmin;
+namespace App\Livewire\Admin\Certificates;
 
 use App\Models\Certificate_Type;
 use Illuminate\Validation\Rule;
