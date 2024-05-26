@@ -30,13 +30,14 @@ return new class extends Migration
             $table->tinyInteger('empstatus');
             $table->string('empstatusdesc', 2);
             $table->string('pimg', 255);
+            $table->string('resume', 255)->nullable();
             $table->text('empDesc')->nullable();
             $table->timestamps(); // This will add created_at and updated_at columns
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreign('barangay')->references('barangay_id')->on('barangay')->onDelete('cascade')
-            ->onUpdate('cascade');
+                ->onUpdate('cascade');
         });
     }
 

@@ -15,7 +15,11 @@ class Job_Applicants extends Model
     protected $fillable = [
         'employee_id',
         'job_id',
+        'applicant_Resume',
         'applicant_Status',
+        'peso_Status',
+        'company_Remarks',
+        'peso_Remarks',
     ];
 
     protected $casts = [

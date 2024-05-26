@@ -157,47 +157,70 @@
 
 
                     <div class="relative overflow-x-auto ">
-                        <div class="sm:hidden">
-                            <label for="tabs" class="sr-only">Select Filter</label>
-                            <select id="tabs"
-                                class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option>All</option>
-                                <option>Pending (2)</option>
-                                <option>Interested (2)</option>
-                                <option>Pending (1)</option>
-                            </select>
+                        <div x-data="{
+                            filter: @entangle('filter'),
+                            activeFilter: 'text-gray-900 bg-gray-400 active',
+                            inactiveFilter: 'bg-white hover:text-gray-700 hover:bg-gray-50',
+                        }" x-init="$wire.set('filter', filter)">
+                            <div class="sm:hidden">
+                                <label for="tabs" class="sr-only">Select Filter</label>
+                                <select id="tabs"
+                                    class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    <option>All ({{ $applicants['total'] }})</option>
+                                    <option>Pending ({{ $applicants['pending'] }})</option>
+                                    <option>Interested ({{ $applicants['interested'] }})</option>
+                                    <option>Interview ({{ $applicants['interested'] }})</option>
+                                    <option>Pending ({{ $applicants['hired'] }})</option>
+                                </select>
+                            </div>
+                            <ul
+                                class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("ALL")'
+                                        :class="filter === 'ALL' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200 rounded-l-lg"
+                                        aria-current="page">All ({{ $applicants['total'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("PENDING")' href="#"
+                                        :class="filter === 'PENDING' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200">Pending
+                                        ({{ $applicants['pending'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("INTERESTED")' href="#"
+                                        :class="filter === 'INTERESTED' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200">Interested
+                                        ({{ $applicants['interested'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("INTERVIEW")' href="#"
+                                        :class="filter === 'INTERVIEW' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200">Interview
+                                        ({{ $applicants['interested'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("HIRED")' href="#"
+                                        :class="filter === 'HIRED' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200">Hired
+                                        ({{ $applicants['hired'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("REJECTED")' href="#"
+                                        :class="filter === 'REJECTED' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200 rounded-r-lg">Rejected
+                                        ({{ $applicants['hired'] }})</button>
+                                </li>
+                            </ul>
                         </div>
-                        <ul
-                            class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
-                            <li class="w-full focus-within:z-10">
-                                <a href="#"
-                                    class="inline-block w-full p-4 text-gray-900 bg-gray-400 border border-gray-200 rounded-s-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none"
-                                    aria-current="page">All ({{ $applicants['total'] }})</a>
-                            </li>
-                            <li class="w-full focus-within:z-10">
-                                <a href="#"
-                                    class="inline-block w-full p-4 bg-white border border-gray-200  hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none ">Pending
-                                    ({{ $applicants['pending'] }})</a>
-                            </li>
-                            <li class="w-full focus-within:z-10">
-                                <a href="#"
-                                    class="inline-block w-full p-4 bg-white border border-gray-200  hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none ">Interested
-                                    ({{ $applicants['interested'] }})</a>
-                            </li>
-                            <li class="w-full focus-within:z-10">
-                                <a href="#"
-                                    class="inline-block w-full p-4 bg-white border border-gray-200  hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none">
-                                    Hired({{ $applicants['hired'] }})</a>
-                            </li>
 
-                        </ul>
 
                         <div
-                            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mx-1">
                             <div>
 
                                 <label for="table-search" class="sr-only">Search</label>
-                                <div class="relative">
+                                <div class="relative ">
                                     <div
                                         class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
@@ -209,9 +232,10 @@
                                     </div>
 
                                     {{-- SEARCH --}}
-                                    <input type="text" id="table-search-users"
+                                    <input wire:model.live.prevent='applicantSearch' type="text"
+                                        id="table-search-users"
                                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="Search for users">
+                                        placeholder="Search applicants">
                                 </div>
                             </div>
 
@@ -250,14 +274,19 @@
                                     <th scope="col" class="px-6 py-3 w-1/4">
                                         Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-1/6">
-                                        Status
+                                    <th scope="col" class="px-6 py-3">
+                                        PESO Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-1/6">
-                                        Date Applied
+                                    @if ($filter === 'ALL')
+                                        <th scope="col" class="px-6 py-3">
+                                            Status
+                                        </th>
+                                    @endif
+                                    <th scope="col" class="px-6 py-3">
+                                        Documents
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-1/6">
-                                        View
+                                    <th scope="col" class="px-6 py-3">
+                                        Action
                                     </th>
                                 </tr>
                             </thead>
@@ -283,37 +312,168 @@
 
                                         </td>
                                     </tr>
-                                @endif
-                                @foreach ($applicants['list'] as $data)
-                                    <tr class="bg-white border-b hover:bg-gray-50">
-                                        <th scope="row"
-                                            class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                            <img class="w-10 h-10 rounded-full"
-                                                src="{{ asset('assets/img/peso-1.png') }}" alt="Jese image">
-                                            <div class="ps-3 text-wrap">
-                                                <div class="text-base font-semibold">{{ $data->employee->fname }}
-                                                    {{ $data->employee->mname }} {{ $data->employee->lname }}
+                                @else
+                                    @foreach ($applicants['list'] as $data)
+                                        <tr class="bg-white border-b hover:bg-gray-50">
+                                            <th scope="row"
+                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                <img class="w-10 h-10 rounded-full"
+                                                    src="{{ asset('assets/img/peso-1.png') }}" alt="Jese image">
+                                                <div class="ps-3 text-wrap">
+                                                    <div class="text-base font-semibold">
+                                                        <a href="#"
+                                                            class="hover:text-blue-500">{{ $data->employee->fname }}
+                                                            {{ $data->employee->mname }} {{ $data->employee->lname }}
+                                                        </a>
+                                                    </div>
+                                                    <div class="text-gray-500 font-medium text-xs">Applied date:
+                                                        {{ $data->created_at->format('F j, Y') }}
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                        </th>
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center">
+                                                    @if ($data->peso_Status === 'PENDING')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                        Pending
+                                                    @elseif($data->peso_Status === 'RECOMMENDED')
+                                                        {
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                                        Pending
+                                                        }
+                                                    @elseif($data->peso_Status === 'NOT')
+                                                        {
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                        Not Recommended
+                                                        }
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            @if ($filter === 'ALL')
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center">
+                                                        @if ($data->applicant_Status === 'PENDING')
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                            </div>
+                                                            Pending
+                                                        @elseif($data->applicant_Status === 'INTERESTED')
+                                                            {
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2">
+                                                            </div>
+                                                            Pending
+                                                            }
+                                                        @elseif($data->applicant_Status === 'INTERVIEW')
+                                                            {
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
+                                                            </div>
+                                                            Not Recommended
+                                                            }
+                                                        @elseif($data->applicant_Status === 'HIRED')
+                                                            {
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                            </div>
+                                                            Not Recommended
+                                                            }
+                                                        @elseif($data->applicant_Status === 'REJECTED')
+                                                            {
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                            </div>
+                                                            Not Recommended
+                                                            }
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                            @endif
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-row gap-4 items-center">
+                                                    <div x-data="{ tooltip: 'Download Resume' }">
+                                                        <button x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div x-data="{ tooltip: 'Download Recommendation Letter' }">
+                                                        <button x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                                            </svg>
 
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center">
-                                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                                {{ $data->applicant_Status }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="text-base font-semibold">
-                                                {{ $data->created_at->format('F j, Y') }}</div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <a href="#" class="font-medium text-blue-600 hover:underline">View
-                                                Info</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                                        </button>
+                                                    </div>
+
+
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-row gap-4 items-center">
+
+                                                    <div x-data="{ tooltip: 'Interested' }">
+                                                        <button x-tooltip="tooltip" type="button"
+                                                            class="text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+
+                                                    <div x-data="{ tooltip: 'For Interview' }">
+                                                        <button x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+
+                                                    <div x-data="{ tooltip: 'Hire' }">
+                                                        <button x-tooltip="tooltip" type="button"
+                                                            class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                            </svg>
+
+                                                        </button>
+                                                    </div>
+
+                                                    <div x-data="{ tooltip: 'Reject' }">
+                                                        <button x-tooltip="tooltip" type="button"
+                                                            class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                            </svg>
+
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

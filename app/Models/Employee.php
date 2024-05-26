@@ -30,11 +30,14 @@ class Employee extends Model
         'empstatus',
         'empstatusdesc',
         'pimg',
+        'resume',
         'empDesc',
     ];
 
     protected $casts = [
         'birthdate' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function user()
@@ -53,6 +56,10 @@ class Employee extends Model
     public function disability()
     {
         return $this->hasMany(Disability::class, 'employee_id');
+    }
+    public function language()
+    {
+        return $this->hasMany(Language::class, 'employee_id');
     }
     public function education()
     {
