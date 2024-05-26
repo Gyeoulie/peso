@@ -80,6 +80,9 @@ Route::get('/myapplication', function () {
 Route::get('/test2', function () {
     return view('admin.admin_partials.applicant-list');
 })->name('213');
+Route::get('/resume', function () {
+    return view('resume');
+})->name('resume');
 
 // EMPLOYER
 Route::get('/apply', function () {
