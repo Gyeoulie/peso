@@ -58,6 +58,7 @@
                                 2023</span>
                         </div>
 
+
                         <div class="flex flex-col h-full items-center justify-center">
                             <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
                                 <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"

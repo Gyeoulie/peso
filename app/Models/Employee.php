@@ -70,6 +70,10 @@ class Employee extends Model
     {
         return $this->hasMany(Job_Preference::class, 'employee_id');
     }
+    public function language()
+    {
+        return $this->hasMany(Language::class, 'employee_id');
+    }
     public function license()
     {
         return $this->hasMany(License::class, 'employee_id');

@@ -3,11 +3,9 @@
 namespace App\Livewire\Public\Profile\Jobseeker;
 
 use App\Models\Employee;
-use App\Models\Work_Exp;
-use App\Models\Job_Preference;
-use App\Models\Job_Positions;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 
 #[Layout('layouts.app')]
 class JobseekerProfile extends Component
@@ -18,21 +16,62 @@ class JobseekerProfile extends Component
     public function render()
     {
 
-        $jobseeker = Employee::find($this->id); 
+        $jobseeker = Employee::with([
+            'education' => function ($query) {
+                $query->orderBy('edu_Started', 'desc');
+            },
+            'work_exp' => function ($query) {
+                $query->orderBy('work_Start', 'desc');
+            },
+            'certificate' => function ($query) {
+                $query->orderBy('cert_Date_Issued', 'desc');
+            },
+            'training' => function ($query) {
+                $query->orderBy('training_Start', 'desc');
+            },
+            'language' => function ($query) {
+                $query->pluck('language_Type');
+            },
+            'disability' => function ($query) {
+                $query->pluck('disability_Type');
+            }
+            // 'eligibility' => function ($query) {
+            //     $query->orderBy('eligibility_Date', 'desc');
+            // }
+        ])->find($this->id);
 
-        
-        // $preference = Job_Preference::where('employee_id', $this->id)->get();
+
+        $eduLevels = [
+            '1' => 'GRADE I',
+            '2' => 'GRADE II',
+            '3' => 'GRADE III',
+            '4' => 'GRADE IV',
+            '5' => 'GRADE V',
+            '6' => 'GRADE VI',
+            '7' => 'GRADE VII',
+            '8' => 'GRADE VIII',
+            '9' => 'ELEMENTARY GRADUATE',
+            '10' => '1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12)',
+            '11' => '2ND YEAR HIGH SCHOOL/GRADE VIII (FOR K TO 12)',
+            '12' => '3RD YEAR HIGH SCHOOL/GRADE IX (FOR K TO 12)',
+            '13' => '4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12)',
+            '14' => 'GRADE XI (FOR K TO 12)',
+            '15' => 'GRADE XII (FOR K TO 12)',
+            '16' => 'HIGH SCHOOL GRADUATE',
+            '17' => 'VOCATIONAL UNDERGRADUATE',
+            '18' => 'VOCATIONAL GRADUATE',
+            '19' => '1ST YEAR COLLEGE LEVEL',
+            '20' => '2ND YEAR COLLEGE LEVEL',
+            '21' => '3RD YEAR COLLEGE LEVEL',
+            '22' => '4TH YEAR COLLEGE LEVEL',
+            '23' => '5TH YEAR COLLEGE LEVEL',
+            '24' => 'COLLEGE GRADUATE',
+            '25' => 'MASTERAL/POST GRADUATE LEVEL',
+            '26' => 'MASTERAL/POST GRADUATE',
+        ];
+        $highestEduTitle = $eduLevels[$jobseeker->education->first()->edu_Level];
 
 
-
-        // $preference = Job_Preference::with(['Job_Positions'])
-        //     ->where('employee_id', $this->id)
-        //     ->pluck('position_id');
-
-
-        //     $employee = Employee::with(['jobs', 'department'])->find($this->id);
-
-
-        return view('livewire.public.profile.jobseeker.jobseeker-profile', compact('jobseeker'));
+        return view('livewire.public.profile.jobseeker.jobseeker-profile', compact('jobseeker', 'highestEduTitle'));
     }
 }
