@@ -2,13 +2,18 @@
 
 namespace App\Livewire\Public;
 
+use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.app')]
 class JobpostView extends Component
 {
+
+    use WithFileUploads;
 
     public $id;
     public $eduLevels = [
@@ -39,6 +44,155 @@ class JobpostView extends Component
         '25' => 'MASTERAL/POST GRADUATE LEVEL',
         '26' => 'MASTERAL/POST GRADUATE',
     ];
+
+    public $option;
+    public $resume;
+
+    public function updateOption($option)
+    {
+        $this->option = $option;
+
+    }
+
+    // public function apply()
+    // {
+    //     $user = auth()->user();
+
+    //     $this->validate([
+    //         'option' => ['required'],
+    //     ]);
+
+    //     if ($this->option == 2) {
+    //         if (empty($user->employee->resume)) {
+    //             $this->validate([
+    //                 'resume' => ['required', 'file', 'mimes:pdf', 'max:5120'], // 'max' is in kilobytes (5MB = 5120KB)
+    //             ], [
+    //                 'resume.required' => 'The resume file is required.',
+    //                 'resume.file' => 'The resume must be a file.',
+    //                 'resume.mimes' => 'The resume must be a PDF file.',
+    //                 'resume.max' => 'The resume may not be greater than 5MB in size.',
+    //             ]);
+    //             // $fileName = $file->store('requirements', 'public');
+    //             $resumePath = $this->resume->store('resumes', 'public');
+
+    //             try {
+    //                 $user->employee->update([
+    //                     'resume' => $resumePath,
+    //                 ]);
+
+    //                 try {
+    //                     Job_Applicants::create([
+    //                         'employee_id' => $user->employee->employee_id,
+    //                         'job_id' => $this->id,
+    //                         'applicant_Resume' => $this->option, // Validate role selection
+    //                         'applicant_Status' => $this->emailPost,
+    //                         'peso_Status' => "PENDING",
+    //                     ]);
+
+    //                 } catch (\Exception $e) {
+    //                     toastr()->error('There was an error in the application!');
+    //                 }
+
+    //             } catch (\Exception $e) {
+    //                 toastr()->error('There was an error uploading your resume!');
+    //             }
+
+    //             return;
+    //         } else {
+
+    //             try {
+    //                 Job_Applicants::create([
+    //                     'employee_id' => $user->employee->employee_id,
+    //                     'job_id' => $this->id,
+    //                     'applicant_Resume' => $this->option, // Validate role selection
+    //                     'applicant_Status' => $this->emailPost,
+    //                     'peso_Status' => "PENDING",
+    //                 ]);
+
+    //             } catch (\Exception $e) {
+    //                 toastr()->error('There was an error in the application!');
+    //             }
+    //         }
+
+    //     } else if ($this->option) {
+
+    //         try {
+    //             Job_Applicants::create([
+    //                 'employee_id' => $user->employee->employee_id,
+    //                 'job_id' => $this->id,
+    //                 'applicant_Resume' => $this->option, // Validate role selection
+    //                 'applicant_Status' => $this->emailPost,
+    //                 'peso_Status' => "PENDING",
+    //             ]);
+
+    //         } catch (\Exception $e) {
+    //             toastr()->error('There was an error in the application!');
+    //         }
+    //     }
+    // }
+
+    public function apply()
+    {
+        $this->validate([
+            'option' => ['required'],
+        ]);
+
+        // Get the authenticated user
+        $user = auth()->user();
+
+        // If the user selected option 2
+        if ($this->option == 2) {
+            // If the user doesn't have a resume already
+            if (empty($user->employee->resume)) {
+                // Validate the resume upload
+                $this->validate([
+                    'resume' => ['required', 'file', 'mimes:pdf', 'max:5120'], // 'max' is in kilobytes (5MB = 5120KB)
+                ], [
+                    'resume.required' => 'The resume file is required.',
+                    'resume.file' => 'The resume must be a file.',
+                    'resume.mimes' => 'The resume must be a PDF file.',
+                    'resume.max' => 'The resume may not be greater than 5MB in size.',
+                ]);
+
+                // Store the resume file
+                $resumePath = $this->resume->store('resumes', 'public');
+
+                // Update the user's employee record with the resume path
+                try {
+                    $user->employee->update([
+                        'resume' => $resumePath,
+                    ]);
+                    toastr()->success('Application submitted successfully.');
+                } catch (\Exception $e) {
+                    toastr()->error('There was an error in uploading the resume!');
+                    return;
+                }
+
+            }
+        }
+
+        // Create a new job applicant record
+        try {
+            Job_Applicants::create([
+                'employee_id' => $user->employee->employee_id,
+                'job_id' => $this->id,
+                'applicant_Resume' => $this->option,
+                'applicant_Status' => "PENDING",
+                'peso_Status' => "PENDING",
+            ]);
+            toastr()->success('Application submitted successfully.');
+            // session()->flash('message', );
+        } catch (\Exception $e) {
+            toastr()->error('There was an error in the application!');
+        }
+
+    }
+
+    public function close()
+    {
+        $this->reset('resume', 'option');
+        $this->dispatch('close-modal', 'apply-modal');
+    }
 
     public function render()
     {

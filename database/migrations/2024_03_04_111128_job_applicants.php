@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('applicant_id');
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('job_id');
+            $table->smallInteger('applicant_Resume', 1);
             $table->string('applicant_Status', 15);
             $table->string('peso_Status', 15);
             $table->text('company_Remarks')->nullable();
