@@ -164,7 +164,10 @@
             profileTab: 'profileOverview',
         }">
 
-            <div x-show="profileTab === 'profileOverview'" class="flex flex-col space-y-5">
+            <div x-show="profileTab === 'profileOverview'" class="flex flex-col space-y-5"
+                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
+                x-transition:enter-end="opacity-100 scale-100">
+
                 <div class="container">
                     <div class="bg-white shadow-lg rounded-lg p-6">
                         <div class="flex flex-row w-full items-center justify-between">
@@ -431,11 +434,8 @@
                                     </div>
                                 @endforeach
 
-                                </div>
-                                
-
-
                             </div>
+
 
                         </div>
 
