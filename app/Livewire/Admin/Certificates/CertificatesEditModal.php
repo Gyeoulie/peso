@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\CertificatesAdmin;
+namespace App\Livewire\Admin\Certificates;
 
 use App\Models\Certificate_Type;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class CertificatesEdit extends Component
+class CertificatesEditModal extends Component
 {
     public $certId;
     public $certCodeInput;
