@@ -208,7 +208,8 @@
                                 </h1>
                             </div>
                             <div class="flex flex-row items-center justify-center mt-2">
-                                <x-primary-button class="w-[350px] h-[40px] justify-center">
+                                <x-primary-button class="w-[350px] h-[40px] justify-center" x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'apply-modal')">
                                     Apply
                                 </x-primary-button>
                             </div>
@@ -470,5 +471,140 @@
                 </div>
             </div> --}}
 
+
+    <x-modal name="apply-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Application form') }}
+            </h2>
+            <hr>
+
+
+
+            <div class="flex flex-col mt-2" x-data="{
+                selectedOption: 0,
+                selected: 'bg-blue-300',
+                unselected: 'hover:bg-blue-300',
+                resumeExists: {{ auth()->user()->employee->resume ? 'true' : 'false' }}
+            
+            }">
+
+                <div class="text-center mt-4">
+                    <span class="text-2xl">Choose the type of resume to pass for the application.</span>
+                </div>
+
+
+
+                <div class="flex flex-row w-full gap-4 sm:gap-24 justify-center items-center mt-8">
+
+
+                    <div wire:click.prevent='updateOption(1)' @click="selectedOption = 1"
+                        :class="selectedOption === 1 ? selected : unselected"
+                        class="flex flex-col  w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center gap-2 shadow-lg  cursor-pointer">
+
+                        <div>
+                            <svg class="h-10 w-10 sm:h-14 sm:w-14" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+
+                        </div>
+
+                        <div class="text-center"> <span class="font-bold">Auto Generated Resume</span>
+                        </div>
+                    </div>
+
+
+
+
+                    <div wire:click.prevent='updateOption(2)' @click="selectedOption = 2"
+                        :class="selectedOption === 2 ? selected : unselected"
+                        class="flex flex-col w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center  gap-2 shadow-lg cursor-pointer">
+
+                        <div>
+                            <svg class="h-10 w-10 sm:h-14 sm:w-14" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                            </svg>
+
+
+                        </div>
+
+                        <div class="text-center"> <span class="font-bold">Uploaded Resume</span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="mt-4 mb-4 text-center">
+                    <x-input-error :messages="$errors->get('option')" class="mt-2" />
+                    <span x-show="selectedOption === 1" x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                        x-cloak class="text-md text-blue-700">*The automated resume generation process will utilize the
+                        information provided in your profile/NSRP inputs.</span>
+
+
+                    <span x-show="selectedOption === 2" x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                        x-cloak class="text-md text-blue-700">*You have to upload a resume if you haven't uploaded in
+                        your
+                        profile.</span>
+                </div>
+
+
+                <div class="flex flex-col w-full mt-2" x-show="selectedOption === 2 && !resumeExists"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                    x-cloak>
+                    <label class="block text-sm font-medium text-gray-900" for="file_input">Upload your resume</label>
+                    <input wire:model='resume'
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                        aria-describedby="file_input_help" type="file">
+                    <p class="mt-1 text-sm text-gray-500 0">PDF ONLY.</p>
+                    <x-input-error :messages="$errors->get('resume')" class="mt-2" />
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+            <div class="mt-6 flex justify-between">
+                <x-secondary-button wire:click.prevent='close' type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+                {{-- 
+                <x-blue-button wire:click.prevent='createApplication()' type="button"
+                    class="ml-auto mr-0 sm:mr-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 justify-center w-[100px]">Confirm
+
+                </x-blue-button> --}}
+
+                <x-primary-button wire:click.prevent='apply' wire:loading.attr="disabled"
+                    class="ms-3 w-[100px] flex justify-center" type="button" id="certAdd">
+                    {{ __('Apply') }}
+                    <div wire:loading.delay.long role="status">
+                        <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-primary-button>
+            </div>
+        </div>
+    </x-modal>
 
 </div>

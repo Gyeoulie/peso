@@ -3,16 +3,21 @@
 namespace App\Livewire\Employer\Jobpost;
 
 use App\Models\Company;
+use App\Models\Employee;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
+
+// use Symfony\Component\HttpFoundation\StreamedResponse;
 
 #[Layout('layouts.app')]
 class JobApplicants extends Component
 {
-
+    use WithPagination;
     public $eduLevels = [
         '1' => 'GRADE I',
         '2' => 'GRADE II',
@@ -46,11 +51,32 @@ class JobApplicants extends Component
 
     public $selectedJob;
     public $applicantSearch;
+    public $postSearch;
+
+    public function printResume($id)
+    {
+        toastr()->success('hello');
+
+        $employee = Employee::findOrFail($id);
+
+        $pdf = Pdf::loadView('resume', ['employee' => $employee])->output();
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf;
+        }, 'filename.pdf');
+    }
 
     public function getJob($id)
     {
         $this->selectedJob = $id;
+        // $this->filter = 'ALL';
+        // $this->reset('applicantSearch');
 
+    }
+
+    public function changeFilter($filter)
+    {
+        $this->filter = $filter;
     }
 
     public function render()
@@ -58,7 +84,7 @@ class JobApplicants extends Component
         $applicants = null; // Initialize $applicants variable
 
         if ($this->selectedJob) {
-            // Fetch applicants for the selected job
+            // Create the initial query for applicants
             $applicantsQuery = Job_Applicants::leftJoin('employee', 'job_applicants.employee_id', '=', 'employee.employee_id')
                 ->where('job_applicants.job_id', $this->selectedJob)
                 ->where(function ($query) {
@@ -67,25 +93,37 @@ class JobApplicants extends Component
                         ->orWhere('employee.lname', 'like', '%' . $this->applicantSearch . '%');
                 });
 
+            // Apply the filter if it's not 'ALL'
             if ($this->filter != 'ALL') {
                 $applicantsQuery->where('job_applicants.applicant_Status', $this->filter);
             }
 
+            // Get the counts
+            $total = Job_Applicants::where('job_id', $this->selectedJob)->count();
+            $pending = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'pending')->count();
+            $interested = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'interested')->count();
+            $hired = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'hired')->count();
+
+            // Get the paginated list of applicants
+            $list = $applicantsQuery->paginate(5);
+
+            // Set the applicants array
             $applicants = [
-                'total' => $applicantsQuery->count(),
-                'pending' => $applicantsQuery->where('job_applicants.applicant_Status', 'pending')->count(),
-                'interested' => $applicantsQuery->where('job_applicants.applicant_Status', 'interested')->count(),
-                'hired' => $applicantsQuery->where('job_applicants.applicant_Status', 'hired')->count(),
-                'list' => $applicantsQuery->paginate(5),
+                'total' => $total,
+                'pending' => $pending,
+                'interested' => $interested,
+                'hired' => $hired,
+                'list' => $list,
             ];
         }
 
+        // Fetch jobs for the authenticated user's company
         $user = Auth::user();
         $userCompanyId = $user->company->company_id;
         $jobs = Job_Posting::withCount('job_applicants')
             ->where('company_id', $userCompanyId)
             ->where(function ($query) {
-                $query->where('job_Title', 'like', '%' . $this->applicantSearch . '%');
+                $query->where('job_Title', 'like', '%' . $this->postSearch . '%');
             })
             ->paginate(5);
 
