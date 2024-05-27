@@ -4,8 +4,8 @@ namespace App\Livewire\Public\Profile\Jobseeker;
 
 use App\Models\Employee;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
 
 #[Layout('layouts.app')]
 class JobseekerProfile extends Component
@@ -13,6 +13,7 @@ class JobseekerProfile extends Component
 
     public $id;
 
+    #[On('reload-table')]
     public function render()
     {
 
@@ -34,12 +35,11 @@ class JobseekerProfile extends Component
             },
             'disability' => function ($query) {
                 $query->pluck('disability_Type');
-            }
+            },
             // 'eligibility' => function ($query) {
             //     $query->orderBy('eligibility_Date', 'desc');
             // }
         ])->find($this->id);
-
 
         $eduLevels = [
             '1' => 'GRADE I',
@@ -70,7 +70,6 @@ class JobseekerProfile extends Component
             '26' => 'MASTERAL/POST GRADUATE',
         ];
         $highestEduTitle = $eduLevels[$jobseeker->education->first()->edu_Level];
-
 
         return view('livewire.public.profile.jobseeker.jobseeker-profile', compact('jobseeker', 'highestEduTitle'));
     }

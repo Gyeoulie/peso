@@ -405,7 +405,8 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
 
                                 @foreach ($jobseeker->education as $educBackground)
-                                    <div class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                    <div wire:key="{{ $educBackground->education_id }}"
+                                        class="container bg-gray-200 p-3 rounded-lg shadow ">
                                         <div class="flex flex-row">
                                             <div class="flex flex-col h-full">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -434,10 +435,8 @@
                                     </div>
                                 @endforeach
 
-                                </div>
-
-
                             </div>
+
 
                         </div>
 
@@ -669,7 +668,7 @@
 
 
 
-            @livewire('public.profile.jobseeker.partials.edit-education')
+            @livewire('public.profile.jobseeker.partials.edit-education', ['userID' => $id])
             @livewire('public.profile.jobseeker.partials.edit-work-experience')
             @livewire('public.profile.jobseeker.partials.edit-trainings')
             @livewire('public.profile.jobseeker.partials.edit-certificates')
@@ -684,90 +683,6 @@
     {{--    --}}
 
 
-
-    @script
-        <script>
-            let tabs = document.querySelectorAll(".tab")
-            let tabsIcon = document.querySelectorAll(".groupIcon")
-            let panels = document.querySelectorAll(".tab-panel")
-
-
-            tabs.forEach(tab => {
-                tab.addEventListener("click", () => {
-                    let tabTarget = tab.getAttribute("aria-controls")
-
-
-
-                    tabs.forEach(tab => {
-                        let tabId = tab.getAttribute("aria-controls")
-                        if (tabTarget === tabId) {
-                            tab.classList.remove("border-transparent", "hover:text-gray-600",
-                                "hover:border-gray-300", "active")
-                            tab.classList.add(
-                                "text-blue-600", "border-blue-600", "active")
-                        } else {
-                            tab.classList.add("border-transparent", "hover:text-gray-600",
-                                "hover:border-gray-300", "active")
-                            tab.classList.remove(
-                                "text-blue-600", "border-blue-600", "active")
-
-                        }
-                    })
-                    panels.forEach(panel => {
-                        let panelId = panel.getAttribute("id")
-                        if (tabTarget === panelId) {
-                            panel.classList.remove("hidden", "opacity-0")
-                        } else {
-                            panel.classList.add("hidden", "opacity-0")
-                        }
-                    })
-
-                    tabsIcon.forEach(tabIcon => {
-                        let tabIconId = tabIcon.getAttribute("id")
-                        if (tabTarget === tabIconId) {
-                            tabIcon.classList.remove("text-gray-400", "group-hover:text-gray-500")
-                            tabIcon.classList.add("text-blue-600")
-                        } else {
-                            tabIcon.classList.add("text-gray-400", "group-hover:text-gray-500")
-                            tabIcon.classList.remove("text-blue-600")
-
-                        }
-                    })
-                })
-            })
-
-
-            // let tabs = document.querySelectorAll(".tab")
-            // let indicator = document.querySelector(".active")
-            // let panels = document.querySelectorAll(".tab-panel")
-
-            // indicator.style.width = tabs[0].getBoundingClientRect().width + 'px'
-            // indicator.style.left = tabs[0].getBoundingClientRect().left - tabs[0].parentElement.getBoundingClientRect().left +
-            //     'px'
-
-            // tabs.forEach(tab => {
-            //     tab.addEventListener("click", () => {
-            //         let tabTarget = tab.getAttribute("aria-controls")
-            //         console.log("hello1")
-
-            //         indicator.style.width = tab.getBoundingClientRect().width + 'px'
-            //         indicator.style.left = tab.getBoundingClientRect().left - tab.parentElement
-            //             .getBoundingClientRect().left + 'px'
-
-
-            //         panels.forEach(panel => {
-            //             let panelId = panel.getAttribute("id")
-            //             if (tabTarget === panelId) {
-            //                 panel.classList.remove("hidden", "opacity-0")
-            //                 panel.classList.add("visible", "opacity-100")
-            //             } else {
-            //                 panel.classList.add("hidden", "opacity-0")
-            //             }
-            //         })
-            //     })
-            // })
-        </script>
-    @endscript
 
 
 </div>
