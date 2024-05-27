@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -59,11 +60,28 @@ class JobApplicants extends Component
 
         $employee = Employee::findOrFail($id);
 
-        $pdf = Pdf::loadView('resume', ['employee' => $employee])->output();
+        $pdf = Pdf::loadView('resume', ['employee' => $employee]);
 
         return response()->streamDownload(function () use ($pdf) {
-            echo $pdf;
-        }, 'filename.pdf');
+            echo $pdf->download();
+        }, 'report.pdf');
+
+        // return response()->streamDownload(function () {
+        //     $pdf = Pdf::loadView('resume', ['employee' => $employee]);
+        //     echo $pdf->stream();
+        // }, 'test.pdf');
+
+        // return response()->streamDownload(function () {
+        //     $pdf = App::make('dompdf.wrapper');
+        //     $pdf->loadHTML('<h1>Test</h1>');
+        //     echo $pdf->stream();
+        // }, 'test.pdf');
+
+        // $pdfContent = PDF::loadView('resume')->output();
+        // return response()->streamDownload(
+        //     fn() => print($pdfContent),
+        //     "filename.pdf"
+        // );
     }
 
     public function getJob($id)

@@ -9,105 +9,108 @@
     <title>{{ config('app.name', 'PESO') }}</title>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
+    {{-- <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.5.2-web/css/all.min.css') }}">
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
-
-
-
     <!-- Scripts -->
-
     @livewireStyles
-    @livewireScripts
-    @vite(['resources/css/app.css'])
+    @livewireScripts --}}
+    {{-- @vite(['resources/css/app.css']) --}}
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 </head>
 
-<body>
+<body style="font-family: Jost, sans-serif; hyphens: manual;">
 
-    <main class="font-jost hyphens-manual">
+    <main style="font-family: Jost, sans-serif; hyphens: manual;">
         <!-- Page -------------------------------------------------------------------------------------------------------->
         <section
-            class="p-3 my-auto mx-auto max-w-3xl bg-gray-100 rounded-2xl border-4 border-gray-700 sm:p-9 md:p-16 lg:mt-6 print:border-0 page print:max-w-letter print:max-h-letter print:mx-0 print:my-o xsm:p-8 print:bg-black md:max-w-letter md:h-letter lg:h-letter">
+            style="padding: 3rem; margin: auto; max-width: 48rem; background-color: #f3f4f6; border-radius: 1rem; border: 4px solid #374151; sm: padding: 2.25rem; md: padding: 4rem; lg: margin-top: 1.5rem; print: border: 0; print: max-width: 8.5in; print: max-height: 11in; print: margin: 0; xsm: padding: 2rem; print: background-color: #000000; md: max-width: 8.5in; md: height: 11in; lg: height: 11in;">
             <!-- Name ---------------------------------------------------------------------------------------------------->
-            <header class="pb-2 inline-flex justify-between  mb-2 w-full align-top border-b-4 border-gray-300">
-                <section class="p-3 text-white  rounded-3xl print:bg-black">
-                    <img src="{{ asset('assets/img/pham.jpg') }}" class="w-[220px] h-[150px] rounded-3xl">
+            <header
+                style="padding-bottom: 0.5rem; display: inline-flex; justify-content: space-between; margin-bottom: 0.5rem; width: 100%; align-items: top; border-bottom: 4px solid #d1d5db;">
+                <section style="padding: 3rem; color: white; border-radius: 1rem; print: background-color: black;">
+                    <img src="{{ public_path() . '/storage/default/PESO.png' }}"
+                        style="width: 220px; height: 150px; border-radius: 1rem;">
                 </section>
 
-                <section class="flex flex-col w-full ml-2">
-                    <h1 class="mt-3 mb-0 text-5xl font-bold text-gray-700">
-                       {{$employee->fname}}
+                <section style="display: flex; flex-direction: column; width: 100%; margin-left: 0.5rem;">
+                    <h1
+                        style="margin-top: 0.75rem; margin-bottom: 0; font-size: 3rem; font-weight: bold; color: #374151;">
+                       Sample name here
                     </h1>
                     <!--Location --------------------------------------------------------------------------------------------------------->
-
-                    <h3 class="m-0 mt-2 ml-2 text-xl font-semibold text-gray-500 leading-snugish">
+                    <h3
+                        style="margin: 0; margin-top: 0.5rem; margin-left: 0.5rem; font-size: 1.25rem; font-weight: 600; color: #6b7280; line-height: 1.5;">
                         San Francisco, California
                     </h3>
                 </section>
                 <!--   Initials Block         -->
-
             </header>
 
             <!-- Column -------------------------------------------------------------------------------------------------->
             <section
-                class="col-gap-8 print:col-count-2 print:h-letter-col-full col-fill-balance md:col-count-2 md:h-letter-col-full">
-                <section class="flex-col">
+                style="column-gap: 2rem; print: column-count: 2; print: height: 100vh; column-fill: balance; md: column-count: 2; md: height: 100vh;">
+                <section style="display: flex; flex-direction: column;">
                     <!-- Contact Information ------------------------------------------------------------------------------------->
-                    <section class="pb-2 mt-4 mb-0 first:mt-0">
+                    <section
+                        style="padding-bottom: 0.5rem; margin-top: 1rem; margin-bottom: 0; first-child: margin-top: 0;">
                         <!-- To keep in the same column -------------------------------------------------------------------------->
-                        <section class="print:bg-gray-800">
-                            <section class="pb-4 mb-2 border-b-4 border-gray-300 print:bg-gray-800">
-                                <ul class="pr-7 list-inside">
+                        <section style="print: background-color: #374151;">
+                            <section
+                                style="padding-bottom: 1rem; margin-bottom: 0.5rem; border-bottom: 4px solid #d1d5db; print: background-color: #374151;">
+                                <ul style="padding-right: 1.75rem; list-style-type: none; padding-left: 0;">
                                     <li
-                                        class="mt-1 leading-normal text-black text-gray-500 transition duration-100 ease-in hover:text-gray-700 text-md print:">
-                                        <a href="		    https://veilmail.io/e/J-td7W
-                " class="group">
-                                            <span class="mr-2 text-lg font-semibold text-gray-700 leading-snugish">
+                                        style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; transition: color 0.1s ease-in; font-size: 1rem; print:;">
+                                        <a href="https://veilmail.io/e/J-td7W" class="group"
+                                            style="text-decoration: none;">
+                                            <span
+                                                style="margin-right: 0.5rem; font-size: 1.125rem; font-weight: 600; color: #374151; line-height: 1.5;">
                                                 Portfolio:
                                             </span>
                                             https://veilmail.io/e/J-td7W
-
                                             <span
-                                                class="inline-block font-normal text-black text-gray-500 transition duration-100 ease-in group-hover:text-gray-700 print:text-black print:">
+                                                style="display: inline-block; font-weight: normal; color: #4b5563; transition: color 0.1s ease-in; group-hover: color: #374151; print: color: #000000;">
                                                 ↗
                                             </span>
                                         </a>
                                     </li>
                                     <li
-                                        class="mt-1 leading-normal text-gray-500 transition duration-100 ease-in hover:text-gray-700 text-md">
-                                        <a href="https://github.com/Thomashighbaugh" class="group">
-                                            <span class="mr-5 text-lg font-semibold text-gray-700 leading-snugish">
+                                        style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; transition: color 0.1s ease-in; font-size: 1rem;">
+                                        <a href="https://github.com/Thomashighbaugh" class="group"
+                                            style="text-decoration: none;">
+                                            <span
+                                                style="margin-right: 1.25rem; font-size: 1.125rem; font-weight: 600; color: #374151; line-height: 1.5;">
                                                 Github:
                                             </span>
                                             Thomashighbaugh
                                             <span
-                                                class="inline-block font-normal text-black text-gray-500 transition duration-100 ease-in group-hover:text-gray-700 print:text-black print:">
+                                                style="display: inline-block; font-weight: normal; color: #4b5563; transition: color 0.1s ease-in; group-hover: color: #374151; print: color: #000000;">
                                                 ↗
                                             </span>
                                         </a>
                                     </li>
 
                                     <li
-                                        class="mt-1 leading-normal text-gray-500 transition duration-100 ease-in hover:text-gray-700 text-md">
-                                        <a href="		    https://veilmail.io/e/J-td7W" class="group">
-                                            <span class="mr-8 text-lg font-semibold text-gray-700 leading-snugish">
+                                        style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; transition: color 0.1s ease-in; font-size: 1rem;">
+                                        <a href="https://veilmail.io/e/J-td7W" class="group"
+                                            style="text-decoration: none;">
+                                            <span
+                                                style="margin-right: 2rem; font-size: 1.125rem; font-weight: 600; color: #374151; line-height: 1.5;">
                                                 Email:
                                             </span>
                                             https://veilmail.io/e/J-td7W
-
                                             <span
-                                                class="inline-block font-normal text-gray-500 transition duration-100 ease-in group-hover:text-gray-700 print:text-black">
+                                                style="display: inline-block; font-weight: normal; color: #4b5563; transition: color 0.1s ease-in; group-hover: color: #374151; print: color: #000000;">
                                                 ↗
                                             </span>
                                         </a>
                                     </li>
                                     <li
-                                        class="mt-1 leading-normal text-gray-500 transition duration-100 ease-in hover:text-gray-700 text-md">
-                                        <a href="tel:+15109070654">
-                                            <span class="mr-5 text-lg font-semibold text-gray-700 leading-snugish">
+                                        style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; transition: color 0.1s ease-in; font-size: 1rem;">
+                                        <a href="tel:+15109070654" style="text-decoration: none;">
+                                            <span
+                                                style="margin-right: 1.25rem; font-size: 1.125rem; font-weight: 600; color: #374151; line-height: 1.5;">
                                                 Phone:
                                             </span>
                                             +1(510)907-0654
@@ -118,15 +121,17 @@
                         </section>
                     </section>
                     <!--Summary ---------------------------------------------------------------------------------------------------------->
-                    <section class="pb-2 pb-4 mt-0 border-b-4 border-gray-300 first:mt-0">
+                    <section
+                        style="padding-bottom: 0.5rem; padding-bottom: 1rem; margin-top: 0; border-bottom: 4px solid #d1d5db; first-child: margin-top: 0;">
                         <!-- To keep in the same column -->
-                        <section class="print:bg-gray-800">
-                            <h2 class="mb-2 text-xl font-bold tracking-widest text-gray-700 print:font-normal">
+                        <section style="print: background-color: #374151;">
+                            <h2
+                                style="margin-bottom: 0.5rem; font-size: 1.25rem; font-weight: bold; letter-spacing: 0.1em; color: #374151; print: font-weight: normal;">
                                 SUMMARY
                             </h2>
 
-                            <section class="mb-2 print:bg-gray-800">
-                                <p class="mt-2 leading-normal text-gray-700 text-md">
+                            <section style="margin-bottom: 0.5rem; print: background-color: #374151;">
+                                <p style="margin-top: 0.5rem; line-height: 1.5; color: #374151; font-size: 1rem;">
                                     Experienced full-stack web developer with a strong track record of independently
                                     addressing complex business requirements and overcoming challenges to deliver
                                     polished and user-friendly web solutions.
@@ -135,343 +140,149 @@
                         </section>
                     </section>
                     <!--Education -------------------------------------------------------------------------------------------------------->
-                    <section class="pb-0 mt-2 border-b-4 border-gray-300 first:mt-0 print:bg-gray-800">
+                    <section
+                        style="padding-bottom: 0; margin-top: 0.5rem; border-bottom: 4px solid #d1d5db; first-child: margin-top: 0; print: background-color: #374151;">
                         <!-- To keep in the same column -->
-                        <section class="print:bg-gray-800">
-                            <h2 class="mb-2 text-lg font-bold tracking-widest text-gray-700 print:font-normal">
+                        <section style="print: background-color: #374151;">
+                            <h2
+                                style="margin-bottom: 0.5rem; font-size: 1.25rem; font-weight: bold; letter-spacing: 0.1em; color: #374151; print: font-weight: normal;">
                                 EDUCATION
                             </h2>
-                            <!-- school --------------------------------------------------------------------------->
-                            <section class="mt-2 border-b-2 print:bg-gray-800">
-                                <header>
-                                    <h3 class="text-lg font-semibold text-gray-700 leading-snugish">
-                                        California State University East Bay
-                                    </h3>
-                                    <p class="leading-normal text-gray-500 text-md">
-                                        2009 &ndash; 2014 | Bachelor of Arts
-                                    </p>
-                                </header>
-                                <ul class="mt-2 list-disc list-inside text-gray-800 text-md">
-                                    <li>
-                                        <span class="font-semibold text-md">
-                                            Major:
-                                        </span>
-                                        Political Science
-                                    </li>
-                                    <li>
-                                        <span class="font-semibold text-md">
-                                            Minor:
-                                        </span>
-                                        Economics
-                                    </li>
-                                    <li>
-                                        <span class="font-semibold text-md">
-                                            GPA:
-                                        </span>
-                                        3.9
-                                    </li>
-                                    <li>
-                                        <span class="font-semibold text-md">
-                                            Skills:
-                                        </span>
-                                        Research, Analysis, Critical Thinking, Communication
-                                    </li>
-                                </ul>
-                            </section>
-                            <!--school 2--------------------------------------------------------------------------------------------->
-                            <section class="pb-4 mt-4 mb-4 border-b-2 print:bg-gray-800">
-                                <header>
-                                    <h3 class="flex-grow text-lg font-semibold text-gray-700 leading-snugish">
-                                        Las Positas Community College
-                                    </h3>
-                                    <p class="leading-normal text-gray-500 text-md">
-                                        2018 &ndash; Present | Associate of Science/Continuing
-                                        Education
-                                    </p>
-                                </header>
-                                <ul class="mt-2 list-disc list-inside text-gray-800 text-md">
-                                    <li>
-                                        <span class="font-semibold text-md">
-                                            Major:
-                                        </span>
-                                        Computer Science
-                                    </li>
-                                    <li>
-                                        <span class="font-semibold text-md">
-                                            GPA:
-                                        </span>
-                                        4.0
-                                    </li>
-                                    <li>
-                                        <span class="font-semibold text-md">
-                                            Skills:
-                                        </span>
-                                        Programming, Algorithms, Data Structures, Software Development
-                                    </li>
-                                </ul>
-                            </section>
 
-                            <!--school 3 --------------------------------------------------------------------------------->
-                            <section class="pb-4 mt-4 mb-4 print:bg-gray-800">
-                                <header>
-                                    <h3 class="flex-grow text-lg font-semibold text-gray-700 leading-snugish">
-                                        Codify Academy
-                                    </h3>
-                                    <p class="leading-normal text-gray-500 text-md">
-                                        2018 | Certificate
-                                    </p>
-                                </header>
-                                <ul class="mt-2 list-disc list-inside text-gray-800 text-md">
-                                    <li>
-                                        <span class="font-semibold text-md">
-                                            Subject:
-                                        </span>
-                                        Front End Development
-                                    </li>
-                                    <li>
-                                        <span class="font-semibold text-md">
-                                            Skills:
-                                        </span>
-                                        HTML, CSS, JavaScript, Web Development
-                                    </li>
-                                </ul>
+                            <section
+                                style="padding-bottom: 0.5rem; margin-bottom: 0.5rem; border-bottom: 4px solid #d1d5db; print: background-color: #374151;">
+                                <h3 style="font-size: 1.125rem; font-weight: 600; color: #6b7280;">
+                                    San Francisco State University
+                                </h3>
+                                <p style="margin-top: 0.5rem; font-size: 1rem; line-height: 1.5; color: #4b5563;">
+                                    Bachelor of Science in Computer Science
+                                    <span
+                                        style="display: block; font-size: 0.875rem; font-weight: 400; line-height: 1.25; color: #6b7280;">
+                                        Graduated: 2016
+                                    </span>
+                                </p>
                             </section>
                         </section>
                     </section>
-
-                    <!--Begin Skills ----------------------------------------------------------------------------------------------------->
-                    <section class="pb-6 mt-0 mb-4 border-b-4 border-gray-300 first:mt-0">
+                    <!--Skills ---------------------------------------------------------------------------------------------------------->
+                    <section
+                        style="padding-bottom: 1rem; margin-top: 0.5rem; border-bottom: 4px solid #d1d5db; first-child: margin-top: 0; print: background-color: #374151;">
                         <!-- To keep in the same column -->
-                        <section class="">
-                            <h2 class="mb-2 text-lg font-bold tracking-widest text-gray-700 print:font-normal">
+                        <section style="print: background-color: #374151;">
+                            <h2
+                                style="margin-bottom: 0.5rem; font-size: 1.25rem; font-weight: bold; letter-spacing: 0.1em; color: #374151; print: font-weight: normal;">
                                 SKILLS
                             </h2>
-                            <section class="mb-0">
-                                <section class="mt-1 last:pb-1 print:bg-black">
-                                    <ul class="flex flex-wrap -mb-1 font-bold leading-relaxed text-md -mr-1.6">
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            HTML5
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            CSS3
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            JavaScript
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            TypeScript
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            Node.js
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            React.js
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            Python
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            NoSQL
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            Postgresql
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            MongoDB
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            Linux
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            AWS
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            LLM/AI Prompting
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            Web Design
-                                        </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            UI/UX</li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            CI/CD </li>
-                                        <li
-                                            class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">
-                                            Lua </li>
-                                    </ul>
-                                </section>
-                            </section>
+
+                            <ul
+                                style="display: flex; flex-wrap: wrap; padding-left: 0; list-style-type: none; gap: 0.5rem; print: background-color: #374151;">
+                                <li
+                                    style="padding-left: 0.5rem; padding-right: 0.5rem; padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; color: #4b5563; border-radius: 0.375rem; background-color: #d1d5db;">
+                                    HTML
+                                </li>
+                                <li
+                                    style="padding-left: 0.5rem; padding-right: 0.5rem; padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; color: #4b5563; border-radius: 0.375rem; background-color: #d1d5db;">
+                                    CSS
+                                </li>
+                                <li
+                                    style="padding-left: 0.5rem; padding-right: 0.5rem; padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; color: #4b5563; border-radius: 0.375rem; background-color: #d1d5db;">
+                                    JavaScript
+                                </li>
+                                <li
+                                    style="padding-left: 0.5rem; padding-right: 0.5rem; padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; color: #4b5563; border-radius: 0.375rem; background-color: #d1d5db;">
+                                    React
+                                </li>
+                                <li
+                                    style="padding-left: 0.5rem; padding-right: 0.5rem; padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; color: #4b5563; border-radius: 0.375rem; background-color: #d1d5db;">
+                                    Node.js
+                                </li>
+                                <li
+                                    style="padding-left: 0.5rem; padding-right: 0.5rem; padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; color: #4b5563; border-radius: 0.375rem; background-color: #d1d5db;">
+                                    Express.js
+                                </li>
+                                <li
+                                    style="padding-left: 0.5rem; padding-right: 0.5rem; padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; color: #4b5563; border-radius: 0.375rem; background-color: #d1d5db;">
+                                    MongoDB
+                                </li>
+                                <li
+                                    style="padding-left: 0.5rem; padding-right: 0.5rem; padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.875rem; font-weight: 500; color: #4b5563; border-radius: 0.375rem; background-color: #d1d5db;">
+                                    SQL
+                                </li>
+                            </ul>
                         </section>
                     </section>
-
                     <!--Experience ------------------------------------------------------------------------------------------------------>
-                    <section class="pb-2 pb-4 mt-4 border-b-4 border-gray-300 first:mt-0">
-                        <!-- To keep in the same column ------------------------------------------------------------------------->
-                        <section class="print:bg-gray-800">
-                            <h2 class="mb-2 text-xl font-black tracking-widest text-gray-800 print:font-normal">
+                    <section
+                        style="padding-bottom: 0.5rem; padding-bottom: 1rem; margin-top: 0.5rem; border-bottom: 4px solid #d1d5db; first-child: margin-top: 0; print: background-color: #374151;">
+                        <!-- To keep in the same column -->
+                        <section style="print: background-color: #374151;">
+                            <h2
+                                style="margin-bottom: 0.5rem; font-size: 1.25rem; font-weight: bold; letter-spacing: 0.1em; color: #374151; print: font-weight: normal;">
                                 EXPERIENCE
                             </h2>
-                            <!--Job 1-->
-                            <section class="mb-2 border-b-2 border-gray-300 print:bg-gray-800">
-                                <header>
-                                    <h3 class="font-semibold text-gray-800 text-md leading-snugish">
-                                        Full Stack Web Developer
-                                    </h3>
-                                    <p class="text-sm leading-normal text-gray-500">
-                                        Jun 2018 &ndash; Present | Freelance
-                                    </p>
-                                </header>
-                                <ul class="pl-3 mt-2 font-normal text-gray-700 text-md leading-snugish">
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Created high-quality, customized web applications from scratch, employing a
-                                        diverse set of programming languages, including HTML, CSS, JavaScript, PHP, and
-                                        Python, to fulfill unique client requirements.
+
+                            <section style="margin-bottom: 1rem; print: background-color: #374151;">
+                                <h3 style="font-size: 1.125rem; font-weight: 600; color: #6b7280;">
+                                    Full-Stack Developer
+                                </h3>
+                                <p style="margin-top: 0.5rem; font-size: 1rem; line-height: 1.5; color: #4b5563;">
+                                    ABC Tech Solutions
+                                    <span
+                                        style="display: block; font-size: 0.875rem; font-weight: 400; line-height: 1.25; color: #6b7280;">
+                                        January 2020 - Present
+                                    </span>
+                                </p>
+                                <ul style="padding-left: 1.25rem; list-style-type: disc;">
+                                    <li style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; font-size: 1rem;">
+                                        Designed and developed web applications using React, Node.js, and MongoDB.
                                     </li>
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Leveraged a range of bleeding edge front-end frameworks like React.js, Nullstack
-                                        and Vue.js, as well as back-end frameworks such as Node.js and Express, to
-                                        deliver robust and scalable web solutions.
+                                    <li style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; font-size: 1rem;">
+                                        Collaborated with cross-functional teams to define project requirements and
+                                        deliver solutions.
                                     </li>
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Designed and implemented databases using SQL and NoSQL technologies like MySQL,
-                                        PostgreSQL, MongoDB, and Firebase, optimizing data storage and management.
+                                    <li style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; font-size: 1rem;">
+                                        Implemented RESTful APIs to support frontend functionalities.
+                                    </li>
+                                    <li style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; font-size: 1rem;">
+                                        Ensured application performance and scalability through code optimization and
+                                        testing.
                                     </li>
                                 </ul>
                             </section>
-                            <!-- job 2  -->
-                            <section class="mb-2 border-b-2 border-gray-300 print:bg-gray-800">
-                                <header>
-                                    <h3 class="font-semibold text-gray-800 text-md leading-snugish">
-                                        Computer Repair Technician
-                                    </h3>
-                                    <p class="text-sm text-gray-500 leading-snugish">
-                                        Mar 2018 &ndash; Present | Freelance
-                                    </p>
-                                </header>
-                                <ul class="pl-3 mt-2 font-normal text-gray-700 text-md leading-snugish">
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Provided expert computer repair services to individuals and businesses,
-                                        diagnosing and resolving hardware and software issues effectively.
+
+                            <section style="margin-bottom: 1rem; print: background-color: #374151;">
+                                <h3 style="font-size: 1.125rem; font-weight: 600; color: #6b7280;">
+                                    Frontend Developer
+                                </h3>
+                                <p style="margin-top: 0.5rem; font-size: 1rem; line-height: 1.5; color: #4b5563;">
+                                    XYZ Web Solutions
+                                    <span
+                                        style="display: block; font-size: 0.875rem; font-weight: 400; line-height: 1.25; color: #6b7280;">
+                                        June 2016 - December 2019
+                                    </span>
+                                </p>
+                                <ul style="padding-left: 1.25rem; list-style-type: disc;">
+                                    <li style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; font-size: 1rem;">
+                                        Developed responsive web interfaces using HTML, CSS, and JavaScript.
                                     </li>
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Demonstrated proficiency across diverse operating systems (Windows, macOS,
-                                        Linux) and hardware components, offering tailored solutions, including hardware
-                                        upgrades, software installations, and malware removal.
+                                    <li style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; font-size: 1rem;">
+                                        Worked closely with designers to create visually appealing and user-friendly
+                                        websites.
                                     </li>
-                                </ul>
-                            </section>
-                            <!-- job 3 -->
-                            <section class="mb-2 border-b-2 border-gray-300 print:bg-gray-800">
-                                <header>
-                                    <h3 class="font-semibold text-gray-800 text-md leading-snugish">
-                                        Assistant Manager
-                                    </h3>
-                                    <p class="text-sm text-gray-500 leading-snugish">
-                                        May 2012 &ndash; Apr 2018 | Pet Food Express
-                                    </p>
-                                </header>
-                                <ul class="pl-3 mt-2 font-normal text-gray-700 text-md leading-snugish">
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Trained and supervised staff in product knowledge, customer engagement, and
-                                        sales techniques, ensuring a top-notch shopping experience for customers.
+                                    <li style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; font-size: 1rem;">
+                                        Conducted code reviews and provided feedback to junior developers.
                                     </li>
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Maintained a pristine and organized store environment, fostering maximum
-                                        customer satisfaction.
-                                    </li>
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Demonstrated deep expertise in the pet food industry, including trends,
-                                        products, and competitors, providing customers with informed recommendations and
-                                        advice.
-                                    </li>
-                                </ul>
-                            </section>
-                            <!-- job 4 -->
-                            <section class="mb-2 border-b-0 border-gray-300 print:bg-gray-800">
-                                <header>
-                                    <h3 class="font-semibold text-gray-800 text-md leading-snugish">
-                                        Executive Assistant
-                                    </h3>
-                                    <p class="text-sm text-gray-500 leading-snugish">
-                                        Jun 2009 &ndash; Dec 2011 | 360 Custom Closets and Cabinets
-                                    </p>
-                                </header>
-                                <ul class="pl-3 mt-2 font-normal text-gray-700 text-md leading-snugish">
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Provided high-level administrative support to the small business executive,
-                                        managing schedules, travel arrangements, and coordinating meetings and events.
-                                    </li>
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Managed communication on behalf of the executive, including answering phone
-                                        calls and emails, ensuring timely and professional responses to inquiries and
-                                        requests.
-                                    </li>
-                                    <li>
-                                        <span class="text-gray-500 transform -translate-y-px select-none">
-                                            &rsaquo;
-                                        </span>
-                                        Maintained relationships with vendors, clients, and external stakeholders,
-                                        ensuring professionalism and alignment with the business's values.
+                                    <li style="margin-top: 0.25rem; line-height: 1.5; color: #4b5563; font-size: 1rem;">
+                                        Utilized version control systems (Git) for code management and collaboration.
                                     </li>
                                 </ul>
                             </section>
                         </section>
                     </section>
-
-
-                    <!-- end Column -->
-                </section>
-                <!-- end Page -->
-    </main>
-
-    <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
 </body>
 
 </html>

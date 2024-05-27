@@ -4,6 +4,7 @@ use App\Http\Controllers\CompanyProfile;
 use App\Http\Controllers\EmployeeProfile;
 use App\Http\Controllers\NSRP;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResumeController;
 use App\Livewire\Admin\JobPosting\JobPostApplicants;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Employer\Dashboard\JobPostList;
@@ -101,8 +102,6 @@ Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
 // PUBLIC - PROFILE
 Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
 
-
-
 Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
 
 // ADMIN TESTING NAV
@@ -146,7 +145,6 @@ Route::get('/admin/certificate', function () {
     return view('admin.admin_partials.admin-certificates');
 })->name('admin-certificate');
 
-
 Route::get('/admin/requirements', function () {
     return view('admin.admin_partials.requirements');
 })->name('admin-req');
@@ -159,5 +157,7 @@ Route::get('/admin/manage-admin', function () {
 Route::get('/admin/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
 
 Route::get('/admin/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
+
+Route::get('/download-resume/{id}', [ResumeController::class, 'downloadResume'])->name('download.resume');
 
 require __DIR__ . '/auth.php';
