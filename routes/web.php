@@ -5,10 +5,11 @@ use App\Http\Controllers\EmployeeProfile;
 use App\Http\Controllers\NSRP;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
+use App\Livewire\Admin\JobPosting\Applicants\ApplicantOverview;
 use App\Livewire\Admin\JobPosting\Applicants\JobPostApplicants;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
-use App\Livewire\Employer\Dashboard\JobPostList;
 use App\Livewire\Employer\Dashboard\JobApplicants;
+use App\Livewire\Employer\Dashboard\JobPostList;
 use App\Livewire\Public\Dashboard;
 use App\Livewire\Public\JobpostView;
 use App\Livewire\Public\Profile\EmployerProfile;
@@ -157,6 +158,7 @@ Route::get('/admin/manage-admin', function () {
 Route::get('/admin/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
 
 Route::get('/admin/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
+Route::get('/admin/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
 
 Route::get('/download-resume/{id}', [ResumeController::class, 'downloadResume'])->name('download.resume');
 
