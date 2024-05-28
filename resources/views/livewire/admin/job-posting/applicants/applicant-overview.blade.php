@@ -86,20 +86,23 @@
 
                             <div class="flex flex-row">
                                 <li class="mb-2 font-bold">Salary Range:</li>
-                                <p class="ms-4">20,000 - 50,000</p>
+                                <p class="ms-4">₱{{ number_format($applicant->job_posting->job_MinWage) }} -
+                                    ₱{{ number_format($applicant->job_posting->job_MaxWage) }}</p>
                             </div>
 
                             <div class="flex flex-row">
                                 <li class="mb-2 font-bold">Address:</li>
-                                <p class="ms-4">SM Baliwag
-                                    Complex, Doña
-                                    Remedios Trinidad, Highway, Brgy. Pagala, Baliuag, Bulacan 3006</p>
+                                <p class="ms-4">{{ $applicant->job_posting->job_Address }},
+                                    {{ $applicant->job_posting->barangay->barangay_Name }},
+                                    {{ $applicant->job_posting->barangay->municipality->municipality_Name }},
+                                    {{ $applicant->job_posting->barangay->municipality->province->province_Name }}</p>
                             </div>
 
                         </ul>
 
                         <div class="mt-6 flex flex-wrap justify-center">
-                            <a href="#" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
+                            <a href="{{ route('admin.jobpost', ['id' => $applicant->job_posting->job_id]) }}"
+                                class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                                 Job Posting</a>
                         </div>
 
@@ -119,10 +122,12 @@
                             <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
 
                                 {{-- BADGE --}}
-                                <span
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500 ">
-                                    Professor
-                                </span>
+                                @foreach ($applicant->job_posting->job_tags as $jobtags)
+                                    <span
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500 ">
+                                        {{ $jobtags->job_positions->position_Title }}
+                                    </span>
+                                @endforeach
 
                             </div>
                         </div>
@@ -175,15 +180,18 @@
                             </img>
 
                             <div class="flex flex-col ml-4 w-full">
-                                <h1 class="text-xl sm:text-3xl font-bold">John Rafael V. Facun</h1>
-                                <p class="text-sm sm:text-lg text-gray-700">#APPLICANTID</p>
+                                <h1 class="text-xl sm:text-3xl font-bold">{{ $applicant->employee->fname }}
+                                    {{ $applicant->employee->mname }}. {{ $applicant->employee->lname }}</h1>
+                                <p class="text-sm sm:text-lg text-gray-700">Employee ID:
+                                    {{ $applicant->employee->employee_id }}</p>
                             </div>
 
                         </div>
 
                         <div class="flex flex-col w-full ">
                             {{-- WEB DATE --}}
-                            <h1 class="hidden sm:block text-lg font-light ml-auto mr-2 mb-auto">April 28, 2024
+                            <h1 class="hidden sm:block text-lg font-light ml-auto mr-2 mb-auto">
+                                {{ $applicant->created_at->format('F j, Y') }}
                             </h1>
                             {{-- WEB BUTTONS --}}
                             <div class="hidden sm:flex flex-row w-full justify-end">
