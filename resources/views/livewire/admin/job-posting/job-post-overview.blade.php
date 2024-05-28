@@ -9,7 +9,7 @@
 
             </div>
 
-            
+
 
             {{-- FIRST CONTAINER --}}
             <div class="col-span-4 sm:col-span-12">
@@ -109,7 +109,7 @@
                                 Industry
                             </x-input-label>
                             <x-text-input id="fname" class="block mt-1 w-full" type="text"
-                                value="{{ $jobpost->industry->industry_Title }}" readonly />
+                                value="{{ $jobpost->job_industry->industry_Title }}" readonly />
                         </div>
 
                     </div>

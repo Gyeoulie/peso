@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('peso_Status', 15);
             $table->text('company_Remarks')->nullable();
             $table->text('peso_Remarks')->nullable();
+            $table->string('peso_Letter', 255)->nullable();
             
             $table->timestamps();
 

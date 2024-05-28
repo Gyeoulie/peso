@@ -353,7 +353,8 @@
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                                 <img class="w-10 h-10 rounded-full"
-                                                    src="{{ asset('assets/img/peso-1.png') }}" alt="Jese image">
+                                                    src="{{ asset('storage/' . $data->employee->pimg) }}"
+                                                    alt="Jese image">
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
                                                         <a href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
@@ -373,15 +374,11 @@
                                                         <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
                                                         Pending
                                                     @elseif($data->peso_Status === 'RECOMMENDED')
-                                                        {
                                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                                                         Recommended
-                                                        }
                                                     @elseif($data->peso_Status === 'NOT')
-                                                        {
                                                         <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
                                                         Not Recommended
-                                                        }
                                                     @endif
                                                 </div>
                                             </td>
@@ -576,7 +573,8 @@
 
                     {{ __('Mark as Interested') }}
 
-                    <div wire:loading.delay.long role="status">
+                    <div wire:loading.delay.long wire:target="updateApplicant('INTERESTED', 'interested')"
+                        role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -626,7 +624,8 @@
 
                     {{ __('Approve Interview') }}
 
-                    <div wire:loading.delay.long role="status">
+                    <div wire:loading.delay.long wire:target="updateApplicant('INTERVIEW', 'interview')"
+                        role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -674,7 +673,7 @@
 
                     {{ __('Hire Applicant') }}
 
-                    <div wire:loading.delay.long role="status">
+                    <div wire:loading.delay.long wire:target="updateApplicant('HIRED', 'hire')" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -722,7 +721,7 @@
 
                     {{ __('Reject Applicant') }}
 
-                    <div wire:loading.delay.long role="status">
+                    <div wire:loading.delay.long wire:target="updateApplicant('REJECTED', 'reject')" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -743,7 +742,6 @@
 
 
 
-    
 
 
 
