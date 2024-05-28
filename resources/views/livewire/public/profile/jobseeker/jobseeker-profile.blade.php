@@ -557,7 +557,8 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
 
                                 @foreach ($jobseeker->training as $empTraining)
-                                    <div class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                    <div wire:key="{{ $work_experience->workexp_id }}"
+                                        class="container bg-gray-200 p-3 rounded-lg shadow ">
 
                                         <div class="flex flex-row">
 
@@ -627,7 +628,8 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
 
                                 @foreach ($jobseeker->certificate as $certification)
-                                    <div class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                    <div wire:key="{{ $certification->certificate_id }}"
+                                        class="container bg-gray-200 p-3 rounded-lg shadow ">
 
                                         <div class="flex flex-row">
 
