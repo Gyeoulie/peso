@@ -5,7 +5,7 @@
             <div class="flex flex-row w-full items-center justify-between mb-4">
                 <div class="flex flex-row items-center gap-4">
 
-                    <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
+                    <div class="cursor-pointer flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
                         @click="profileTab = 'profileOverview'">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="flex flex-col h-full items-center justify-center">
-                            <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                            <div class="cursor-pointer flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
                                 <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -93,11 +93,53 @@
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="level" :value="__('Certification')" />
-                    <select id="certType" class="block mt-1 w-full">
-                        <option value="" disabled selected>Select Certificate</option>
-                    </select>
+
+                    {{-- DROP DOWN --}}
+                    <x-dropdown align="left" width="full">
+                        <x-slot name="trigger">
+                            <button
+                                class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
+                                <div class="w-full ml-2 text-left">
+                                    {{-- SELECTED TITLE HERE --}}
+                                </div>
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <!-- Search input -->
+                            <div class="p-2">
+                                <input type="text" placeholder="Search..."
+                                    class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
+                                    @click.stop>
+                            </div>
+
+                            <!-- Dropdown content with scrollbar -->
+                            <div class="max-h-[120px] bg-white overflow-y-auto">
+                                <!-- Dropdown links -->
+                                {{-- LOOP HERE --}}
+                                <x-dropdown-link
+                                    class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">TITLE
+                                    HRE</x-dropdown-link>
+                                {{-- LOOP END --}}
+                            </div>
+                        </x-slot>
+
+                    </x-dropdown>
+
+
+
                     <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
+
+
+
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="certIssued" :value="__('Issued By')" />
                     <x-text-input id="certIssued" class="block mt-1 w-full" type="text" />

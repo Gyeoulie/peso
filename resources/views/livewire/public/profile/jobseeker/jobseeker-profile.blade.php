@@ -15,7 +15,7 @@
                     @endphp
 
                     @if ($work_position)
-                        <p class="text-gray-700">{{ $work_position->position->position_Title }}</p>
+                        <p class="text-gray-700">{{ $work_position->job_positions->position_Title }}</p>
                     @else
                         <p class="text-gray-700"></p>
                     @endif
@@ -282,15 +282,16 @@
                                 <h2 class="text-xl font-bold">Jobseeker Details</h2>
 
 
-
-                                <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                    </svg>
-                                </div>
-
+                                <a href="{{ route('edit.details') }}">
+                                    <div
+                                        class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                        </svg>
+                                    </div>
+                                </a>
 
                             </div>
 
@@ -497,7 +498,8 @@
                                                 <span
                                                     class="text-2xl text-black font-bold">{{ $work_experience->work_Name }}</span>
                                                 <div class="text-lg text-black font-semibold">
-                                                    <span>{{ $work_experience->position->position_Title }}</span> -
+                                                    <span>{{ $work_experience->job_positions->position_Title }}</span>
+                                                    -
                                                     <span>{{ $work_experience->work_Status }}</span>
                                                 </div>
                                                 <span class="text-sm text-gray-700 font-medium">

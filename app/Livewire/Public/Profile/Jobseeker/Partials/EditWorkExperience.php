@@ -3,15 +3,17 @@
 namespace App\Livewire\Public\Profile\Jobseeker\Partials;
 
 use App\Models\Job_Positions;
-use Livewire\Component;
 use App\Models\Work_Exp;
 use Carbon\Carbon;
+use Livewire\Component;
 
 class EditWorkExperience extends Component
 {
 
-    public $workName, $workPosition = "", $workStatus = "", $workAdd, $workStart, $workEnd, $workID;
+    public $workName, $workPosition, $workPositionTitle, $workStatus = "", $workAdd, $workStart, $workEnd, $workID;
     public $userID;
+
+    public $search;
 
     public function rules()
     {
@@ -23,6 +25,18 @@ class EditWorkExperience extends Component
             // 'work_End' => ['required'],
             'workStatus' => ['required'],
         ];
+    }
+
+    public function updateSelect($id)
+    {
+
+        $selectedPosition = Job_Positions::find($id);
+
+        if ($selectedPosition) {
+            $this->workPosition = $id;
+            $this->workPositionTitle = $selectedPosition->position_Title;
+        }
+
     }
 
     public function save()
@@ -76,11 +90,13 @@ class EditWorkExperience extends Component
 
     public function editModal($id)
     {
+        $this->resetValidation();
         $this->workID = $id;
         $work = Work_Exp::find($id);
         $this->workName = $work->work_Name;
         $this->workAdd = $work->work_Address;
-        $this->workPosition = $work->position->position_Title;
+        $this->workPosition = $work->position_id;
+        $this->workPositionTitle = $work->job_positions->position_Title;
         $this->workStatus = $work->work_Status;
         $this->workStart = Carbon::parse($work->work_Start)->format('Y-m-d');
         $this->workEnd = Carbon::parse($work->work_End)->format('Y-m-d');
@@ -90,27 +106,26 @@ class EditWorkExperience extends Component
 
     public function addModal($id)
     {
+        $this->resetValidation();
         $this->workID = $id;
-        $this->reset('workName', 'workAdd', 'workPosition', 'workStart', 'workEnd', 'workStatus', 'workID');
+        $this->reset('workName', 'workAdd', 'workPosition', 'workStart', 'workEnd', 'workStatus', 'workID', 'workPositionTitle');
         $this->dispatch('open-modal', 'workExp-modal');
     }
 
-
-    
     public function close()
     {
-        $this->reset('workName', 'workAdd', 'workPosition', 'workStart', 'workEnd', 'workStatus', 'workID');
+        $this->resetValidation();
+        $this->reset('workName', 'workAdd', 'workPosition', 'workStart', 'workEnd', 'workStatus', 'workID', 'workPositionTitle');
         $this->dispatch('close-modal', 'workExp-modal');
     }
-
 
     public function render()
     {
         $workexp = Work_Exp::where('employee_id', '=', $this->userID)
-        ->orderBy('work_Start', 'desc')
-        ->get();
-        $allpositions = Job_Positions::all();
+            ->orderBy('work_Start', 'desc')
+            ->get();
+        $job_positions = Job_Positions::where('position_Title', 'like', '%' . $this->search . '%')->get();
 
-        return view('livewire.public.profile.jobseeker.partials.edit-work-experience', compact('workexp', 'allpositions'));
+        return view('livewire.public.profile.jobseeker.partials.edit-work-experience', compact('workexp', 'job_positions'));
     }
 }

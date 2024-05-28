@@ -94,7 +94,7 @@ Route::get('/jobpost/list', JobPostList::class)->name('employer.dashboard');
 
 Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
 
-Route::get('/test3', EditDetails::class)->name('edit.details.test');
+Route::get('/profile/edit', EditDetails::class)->name('edit.details');
 
 // PUBLIC
 Route::get('/dashboard', Dashboard::class)->name('dashboard');

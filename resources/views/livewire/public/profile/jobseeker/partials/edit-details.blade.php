@@ -7,13 +7,15 @@
         <div class="col-span-4 sm:col-span-9">
 
             <div class="flex flex-row items-center gap-4">
-                <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
-                    @click="profileTab = 'profileOverview'">
-                    <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                    </svg>
-                </div>
+                <a href="{{ route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id]) }}">
+                    <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                        <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                    </div>
+                </a>
                 <h2 class="text-2xl font-bold">Edit Profile</h2>
 
             </div>
@@ -581,11 +583,46 @@
             <div class="flex flex-col mt-2">
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="licenseType" :value="__('License')" />
-                    <select id="licenseType" class="block mt-1 w-full">
-                        <option value="" disabled selected>Select License</option>
+
+                    <x-dropdown align="left" width="full">
+                        <x-slot name="trigger">
+                            <button
+                                class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
+                                <div class="w-full ml-2 text-left">
+                                    {{-- SELECTED TITLE HERE --}}
+                                </div>
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <!-- Search input -->
+                            <div class="p-2">
+                                <input type="text" placeholder="Search..."
+                                    class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
+                                    @click.stop>
+                            </div>
+
+                            <!-- Dropdown content with scrollbar -->
+                            <div class="max-h-[120px] bg-white overflow-y-auto">
+                                <!-- Dropdown links -->
+                                {{-- LOOP HERE --}}
+                                <x-dropdown-link
+                                    class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">TITLE
+                                    HRE</x-dropdown-link>
+                                {{-- LOOP END --}}
+                            </div>
+                        </x-slot>
+
+                    </x-dropdown>
 
 
-                    </select>
                 </div>
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="licenseDate" :value="__('Date Validity')" />
@@ -617,7 +654,45 @@
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="eligibilityType" :value="__('Eligibility')" />
                     <select id="eligibilityType" class="block mt-1 w-full">
-                        <option value="" disabled selected>Select Eligibility</option>
+
+
+                        <x-dropdown align="left" width="full">
+                            <x-slot name="trigger">
+                                <button
+                                    class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
+                                    <div class="w-full ml-2 text-left">
+                                        {{-- SELECTED TITLE HERE --}}
+                                    </div>
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <!-- Search input -->
+                                <div class="p-2">
+                                    <input type="text" placeholder="Search..."
+                                        class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
+                                        @click.stop>
+                                </div>
+
+                                <!-- Dropdown content with scrollbar -->
+                                <div class="max-h-[120px] bg-white overflow-y-auto">
+                                    <!-- Dropdown links -->
+                                    {{-- LOOP HERE --}}
+                                    <x-dropdown-link
+                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">TITLE
+                                        HRE</x-dropdown-link>
+                                    {{-- LOOP END --}}
+                                </div>
+                            </x-slot>
+
+                        </x-dropdown>
 
 
                     </select>

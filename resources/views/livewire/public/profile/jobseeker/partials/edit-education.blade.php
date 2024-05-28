@@ -4,7 +4,7 @@
         <div class="bg-white shadow-lg rounded-lg p-6">
             <div class="flex flex-row w-full items-center justify-between mb-4">
                 <div class="flex flex-row items-center gap-4">
-                    <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
+                    <div class="cursor-pointer flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
                         @click="profileTab = 'profileOverview'">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -62,7 +62,7 @@
 
                             <div class="flex flex-col h-full items-center justify-center">
                                 <div wire:click.prevent='editModal({{ $education->education_id }})'
-                                    class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                    class="cursor-pointer flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
                                     <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -104,7 +104,7 @@
                 <div class="flex flex-row mt-2 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="eduLevel" :value="__('Level')" />
-                        <select wire:model="educLevel" id="eduLevel" class="block mt-1 w-full">
+                        <select wire:model="educLevel" id="eduLevel" class="block mt-1 w-full rounded-lg">
                             <option value="" disabled>Select Level</option>
                             <option value="1">GRADE I</option>
                             <option value="2">GRADE II</option>
