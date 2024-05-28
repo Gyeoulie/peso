@@ -7,7 +7,7 @@
             <div class="col-span-4 sm:col-span-12">
 
                 {{-- TITLE --}}
-                <h1 class="text-2xl font-bold">Job Posting \ Applicants List</h1>
+                <h1 class="text-2xl font-bold">Job Posting \ Applicants List \ Applicant Overview</h1>
             </div>
 
             {{-- ALERT MESSAGE FOR MATCH --}}
@@ -47,7 +47,7 @@
 
                     <div class="flex flex-col items-center">
                         {{-- IMAGE --}}
-                        <img src="https://randomuser.me/api/portraits/men/94.jpg"
+                        <img src="{{ asset('storage/' . $applicant->job_posting->company->company_img) }}"
                             class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
                         </img>
 
@@ -124,7 +124,7 @@
                                 {{-- BADGE --}}
                                 @foreach ($applicant->job_posting->job_tags as $jobtags)
                                     <span
-                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500 ">
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                         {{ $jobtags->job_positions->position_Title }}
                                     </span>
                                 @endforeach
@@ -143,12 +143,11 @@
                     <div class="flex flex-row w-full gap-4">
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="fname"> </i> Job Position
-                                Tags
+                            <x-input-label for="fname"> </i> Job Qualifications
                             </x-input-label>
-                            <textarea id="message" rows="4"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Write your thoughts here..." disabled></textarea>
+                            <textarea rows="10"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                                disabled>{{ $applicant->job_posting->job_Qualifications }}</textarea>
                         </div>
 
                     </div>
@@ -165,7 +164,31 @@
             <div class="col-span-4 sm:col-span-8 px-2 sm:px-0">
                 {{-- CONTAINER FOR APPLICANT INFORMATION --}}
                 <div class="bg-white shadow rounded-lg p-6">
-                    <h1 class="text-2xl font-bold mb-7">Applicant Information</h1>
+                    <div class="flex flex-row justify-between items-center  mb-6">
+
+
+                        <h1 class="text-2xl font-bold ">Applicant Information</h1>
+
+
+                        @if ($applicant->applicant_Status == 'PENDING')
+                            <span
+                                class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                        @elseif ($applicant->applicant_Status == 'INTERESTED')
+                            <span
+                                class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-sm font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">INTERESTED</span>
+                        @elseif ($applicant->applicant_Status == 'INTERVIEW')
+                            <span
+                                class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
+                        @elseif ($applicant->applicant_Status == 'HIRED')
+                            <span
+                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
+                        @elseif ($applicant->applicant_Status == 'REJECTED')
+                            <span
+                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                        @endif
+
+                    </div>
+
 
                     {{-- PHONE DATE (SMALL SCREEN) --}}
                     <div class="sm:hidden flex flex-row w-full justify-end">
@@ -175,7 +198,7 @@
                     <div class="flex flex-row w-full">
                         <div class="flex flex-row w-full items-center">
                             {{-- IMG --}}
-                            <img src="https://randomuser.me/api/portraits/men/94.jpg"
+                            <img src="{{ asset('storage/' . $applicant->employee->pimg) }}"
                                 class="w-32 h-32 bg-gray-300 rounded-lg shrink-0">
                             </img>
 
@@ -184,6 +207,19 @@
                                     {{ $applicant->employee->mname }}. {{ $applicant->employee->lname }}</h1>
                                 <p class="text-sm sm:text-lg text-gray-700">Employee ID:
                                     {{ $applicant->employee->employee_id }}</p>
+                                <div>
+                                    @if ($applicant->peso_Status == 'PENDING')
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                    @elseif ($applicant->peso_Status == 'RECOMMENDED')
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
+                                    @elseif ($applicant->peso_Status == 'NOT')
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">NOT
+                                            RECOMMENDED</span>
+                                    @endif
+                                </div>
                             </div>
 
                         </div>
@@ -194,31 +230,36 @@
                                 {{ $applicant->created_at->format('F j, Y') }}
                             </h1>
                             {{-- WEB BUTTONS --}}
-                            <div class="hidden sm:flex flex-row w-full justify-end">
-                                <button type="button"
-                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
-                                    style="width: 100px;" x-data=""
-                                    x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</button>
-                                <button type="button"
-                                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
-                                    style="width: 100px;" x-data=""
-                                    x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Approve</button>
-                            </div>
+                            @if ($applicant->peso_Status == 'PENDING')
+                                <div class="hidden sm:flex flex-row w-full justify-end">
+                                    <button type="button"
+                                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+                                        style="width: 100px;" x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</button>
+                                    <button type="button"
+                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+                                        style="width: 100px;" x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Approve</button>
+                                </div>
+                            @endif
+
                         </div>
 
                     </div>
 
                     {{-- MOBILE BUTTONS (SMALL SCREEN) --}}
-                    <div class="sm:hidden flex flex-row w-full mt-4 justify-center space-x-4">
-                        <button type="button"
-                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                            x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</button>
-                        <button type="button"
-                            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                            x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Approve</button>
-                    </div>
+                    @if ($applicant->peso_Status == 'PENDING')
+                        <div class="sm:hidden flex flex-row w-full mt-4 justify-center space-x-4">
+                            <button type="button"
+                                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                                x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</button>
+                            <button type="button"
+                                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+                                x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Approve</button>
+                        </div>
+                    @endif
 
                     <hr class="my-6 border-t border-gray-300">
 
@@ -228,7 +269,9 @@
                             <ul>
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Status:</li>
-                                    <p class="ms-4">UNEMPLOYED</p>
+                                    <p class="ms-4">
+                                        {{ $applicant->employee->empstatus == 1 ? 'Employed' : 'Unemployed' }}
+                                    </p>
                                 </div>
 
                                 <div class="flex flex-row">
@@ -238,22 +281,24 @@
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Gender:</li>
-                                    <p class="ms-4">Male</p>
+                                    <p class="ms-4"> {{ $applicant->employee->gender == 1 ? 'Male' : 'Female' }}</p>
                                 </div>
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Contact:</li>
-                                    <p class="ms-4">09123456789</p>
+                                    <p class="ms-4">{{ $applicant->employee->pnumber }}</p>
                                 </div>
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Email:</li>
-                                    <p class="ms-4">sample@email.com</p>
+                                    <p class="ms-4">{{ $applicant->employee->user->email }}</p>
                                 </div>
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Address:</li>
-                                    <p class="ms-4">SM Baliwag
-                                        Complex, Doña
-                                        Remedios Trinidad, Highway, Brgy. Pagala, Baliuag, Bulacan 3006</p>
+                                    <p class="ms-4">{{ $applicant->employee->address }},
+                                        {{ $applicant->employee->barangay->barangay_Name }},
+                                        {{ $applicant->employee->barangay->municipality->municipality_Name }},
+                                        {{ $applicant->employee->barangay->municipality->province->province_Name }}
+                                    </p>
                                 </div>
                             </ul>
 
@@ -266,20 +311,13 @@
                             </x-input-label>
                             {{-- BADGE CONTAINER --}}
                             <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
-
-                                {{-- BADGE --}}
-                                <span
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500 ">
-                                    Professor
-                                </span>
-                                <span
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500 ">
-                                    Professor
-                                </span>
-                                <span
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500 ">
-                                    Professor
-                                </span>
+                                @foreach ($applicant->employee->job_preference as $jobpref)
+                                    {{-- BADGE --}}
+                                    <span
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {{ $jobpref->job_positions->position_Title }}
+                                    </span>
+                                @endforeach
                             </div>
                         </div>
 
@@ -294,6 +332,9 @@
                             <a href="#"
                                 class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
                                 Resume</a>
+                            <a href="#"
+                                class="bg-purple-300 hover:bg-purple-400 text-gray-700 py-2 px-4 rounded">View
+                                Recommendation Letter</a>
                         </div>
                     </div>
 
@@ -318,28 +359,61 @@
                 <div class="flex flex-col ">
                     <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Upload
                         Recommendation Letter</label>
-                    <input
-                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                        aria-describedby="file_input_help" id="file_input" type="file">
-                    <p class="mt-1 text-sm text-gray-500 0" id="file_input_help">PDF Only</p>
+                    <div class="flex flex-row items-center">
+
+                        <input wire:model='recLetter'
+                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                            aria-describedby="file_input_help" type="file">
+                        <div wire:loading.delay.long wire:target="recLetter" role="status">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    fill="currentFill" />
+                            </svg>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+
+                    <p class="mt-1 text-sm text-gray-500 0">PDF Only</p>
+                    <x-input-error :messages="$errors->get('recLetter')" class="mt-2" />
                 </div>
 
                 <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="eligibilityType" :value="__('Remarks')" />
-                    <textarea id="message" rows="4"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                    <x-input-label for="remarks" :value="__('Remarks')" />
+                    <textarea wire:model='recommendationRemarks' rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
                         placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('recommendationRemarks')" class="mt-2" />
                 </div>
 
             </div>
             <div class="mt-6 flex justify-end">
-                <x-secondary-button type="button">
+                <x-secondary-button wire:click.prevent="closeModal('recommendation')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button class="ms-3" type="button" id="eligibilityAdd">
+                <x-green-button wire:loading.attr="disabled"
+                    wire:click.prevent="updateApplicant('RECOMMENDED', 'recommendation')" class="ms-3"
+                    type="button">
                     {{ __('Confirm Recommendation') }}
-                </x-primary-button>
+                    <div wire:loading.delay.long wire:target="updateApplicant('RECOMMENDED', 'recommendation')"
+                        role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-green-button>
             </div>
         </div>
     </x-modal>
@@ -355,20 +429,34 @@
             <div class="flex flex-col mt-2">
 
                 <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="eligibilityType" :value="__('Remarks')" />
-                    <textarea id="message" rows="4"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                    <x-input-label for="remarks" :value="__('Remarks')" />
+                    <textarea wire:model='rejectRemarks' rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
                         placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('rejectRemarks')" class="mt-2" />
                 </div>
 
             </div>
             <div class="mt-6 flex justify-end">
-                <x-secondary-button type="button">
+                <x-secondary-button wire:click.prevent="closeModal('reject')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3" type="button" id="eligibilityAdd">
+                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="updateApplicant('REJECT', 'reject')"
+                    class="ms-3" type="button">
                     {{ __('Reject') }}
+                    <div wire:loading.delay.long wire:target="updateApplicant('REJECT', 'reject')" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </x-danger-button>
             </div>
         </div>
