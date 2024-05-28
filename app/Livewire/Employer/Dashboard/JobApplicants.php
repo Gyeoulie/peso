@@ -166,7 +166,7 @@ class JobApplicants extends Component
                 $applicantsQuery->where('job_applicants.applicant_Status', $this->filter);
             }
 
-            if($this->sortDate !== null && $this->sortDate !== '') {
+            if ($this->sortDate !== null && $this->sortDate !== '') {
                 $applicantsQuery->orderBy('job_applicants.created_at', $this->sortDate);
             }
 
