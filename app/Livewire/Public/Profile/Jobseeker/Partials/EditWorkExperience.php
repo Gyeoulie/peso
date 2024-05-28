@@ -104,18 +104,17 @@ class EditWorkExperience extends Component
         $this->dispatch('open-modal', 'workExp-modal');
     }
 
-    public function addModal($id)
+    public function addModal()
     {
         $this->resetValidation();
-        $this->workID = $id;
-        $this->reset('workName', 'workAdd', 'workPosition', 'workStart', 'workEnd', 'workStatus', 'workID', 'workPositionTitle');
+        $this->reset('search', 'workName', 'workAdd', 'workPosition', 'workStart', 'workEnd', 'workStatus', 'workID', 'workPositionTitle');
         $this->dispatch('open-modal', 'workExp-modal');
     }
 
     public function close()
     {
         $this->resetValidation();
-        $this->reset('workName', 'workAdd', 'workPosition', 'workStart', 'workEnd', 'workStatus', 'workID', 'workPositionTitle');
+        $this->reset('search', 'workName', 'workAdd', 'workPosition', 'workStart', 'workEnd', 'workStatus', 'workID', 'workPositionTitle');
         $this->dispatch('close-modal', 'workExp-modal');
     }
 

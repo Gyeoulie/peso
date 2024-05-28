@@ -82,9 +82,8 @@ class EditEducation extends Component
         $this->dispatch('open-modal', 'education-modal');
     }
 
-    public function addModal($id)
+    public function addModal()
     {
-        $this->educID = $id;
         $this->reset('educName', 'educCourse', 'educLevel', 'educStart', 'educEnd', 'educID');
         $this->dispatch('open-modal', 'education-modal');
     }

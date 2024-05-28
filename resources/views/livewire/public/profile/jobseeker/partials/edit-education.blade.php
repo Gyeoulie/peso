@@ -18,7 +18,9 @@
 
                 <div class="flex flex-row gap-4 items-center">
                     <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
-                        x-data="" x-on:click.prevent="$dispatch('open-modal', 'education-modal')">
+                        x-data="" 
+                        {{-- x-on:click.prevent="$dispatch('open-modal', 'education-modal')" --}}
+                        wire:click.prevent='addModal()'>
                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
