@@ -1,0 +1,759 @@
+<div>
+
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Job Applicants') }}
+        </h2>
+    </x-slot>
+
+    <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
+        <div class="col-span-4 sm:col-span-5">
+
+            <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                <label for="table-search" class="sr-only">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </div>
+
+                    {{-- SEARCH --}}
+                    <input wire:model.live.prevent='postSearch' type="text" id="table-search-users"
+                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Search for job posting">
+                </div>
+                <div>
+
+                    <x-dropdown align="right" width="36">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                <div>
+                                    Filter
+                                </div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+
+                        <x-slot name="content">
+                            <x-slot name="contentClasses">
+                                max-h-[300px] bg-white
+                            </x-slot>
+
+                            <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('ALL')">
+                                All
+                            </x-dropdown-link>
+                            <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('ACTIVE')">
+                                Active
+                            </x-dropdown-link>
+                            <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('PENDING')">
+                                Pending
+                            </x-dropdown-link>
+                            <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('COMPLETED')">
+                                Completed
+                            </x-dropdown-link>
+
+
+                        </x-slot>
+                    </x-dropdown>
+
+                </div>
+            </div>
+            <div class="flex">
+                @if ($jobs->isEmpty())
+                    <div class="flex w-full">
+                        <div class="w-full rounded-lg p-10">
+                            <div class="flex flex-col items-center justify-center w-full">
+                                <div class="p-6 bg-gray-100 rounded-full">
+                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                    </svg>
+
+                                </div>
+                                <p class="text-xl font-bold text-black text-center mt-2">
+                                    No Job Posting Found!
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                @else
+                    <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full">
+                        @foreach ($jobs as $data)
+                            <div class="flex flex-col  sm:w-full">
+                                <a wire:key='jobPost-{{ $data->job_id }}'
+                                    wire:click.prevent='getJob({{ $data->job_id }})' class="cursor-pointer">
+                                    <div
+                                        class="bg-white shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
+
+                                        <div class="flex flex-row gap-4 sm:gap-0 justify-end">
+
+                                            <div class="flex flex-col w-full">
+                                                <h1 class="text-3xl font-bold underline">{{ $data->job_Title }}</h1>
+                                                <h1 class="text-l text-gray-600">{{ $data->company->bussines_Name }}
+                                                </h1>
+                                                <div class="flex flex-row">
+
+                                                </div>
+
+                                            </div>
+                                            <div class="flex w-full justify-end mb-auto mt-0">
+                                                <span
+                                                    class="bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
+                                                    PESO {{ $data->municipality->municipality_Name }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="flex flex-row">
+                                            <p class="mb-2 font-bold">Applicants:</p>
+                                            <p class="ms-4">{{ $data->job_applicants_count }}</p>
+                                        </div>
+
+
+                                        <div class="flex flex-col w-full mt-4">
+                                            <div class="flex flex-col md:flex-row">
+                                                <div class="md:w-1/4 text-left">
+
+                                                    <h3 class="text-sm uppercase"> <i
+                                                            class="fa-solid fa-location-dot"></i>
+                                                        {{ $data->barangay->municipality->municipality_Name }},
+                                                        {{ $data->barangay->municipality->province->province_Name }}
+                                                </div>
+                                                <div class="md:w-1/4 text-left md:text-center uppercase">
+                                                    <h3 class="text-sm"> <i class="fa-solid fa-graduation-cap"></i>
+                                                        {{ $eduLevels[$data->job_Edu] }}</h3>
+                                                </div>
+                                                <div class="md:w-1/4 text-left md:text-center">
+                                                    <h3 class="text-sm uppercase"> <i class="fa-solid fa-briefcase"></i>
+                                                        {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
+                                                    </h3>
+                                                </div>
+                                                <div class="md:w-1/4 text-left md:text-center">
+                                                    <h3 class="text-sm uppercase"> <i class="fa-solid fa-calendar"></i>
+                                                        {{ $data->created_at->format('F j, Y') }}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                </tr>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            <div class="mt-2">
+                {{ $jobs->links() }}
+            </div>
+        </div>
+
+        <div class="col-span-4 sm:col-span-7">
+            @if ($applicants)
+                <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+
+
+                    <div class="relative overflow-x-auto ">
+                        <div x-data="{
+                            filter: @entangle('filter'),
+                            activeFilter: 'text-gray-900 bg-gray-400 active',
+                            inactiveFilter: 'bg-white hover:text-gray-700 hover:bg-gray-50',
+                        }" x-init="$wire.set('filter', filter)">
+                            <div class="sm:hidden">
+                                <label for="tabs" class="sr-only">Select Filter</label>
+                                <select id="tabs"
+                                    class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    <option wire:click.prevent='changeFilter("ALL")'>All ({{ $applicants['total'] }})
+                                    </option>
+                                    <option wire:click.prevent='changeFilter("PENDING")'>Pending
+                                        ({{ $applicants['pending'] }})</option>
+                                    <option wire:click.prevent='changeFilter("INTERESTED")'>Interested
+                                        ({{ $applicants['interested'] }})</option>
+                                    <option wire:click.prevent='changeFilter("INTERVIEW")'>Interview
+                                        ({{ $applicants['interview'] }})</option>
+                                    <option wire:click.prevent='changeFilter("HIRED")'>Pending
+                                        ({{ $applicants['hired'] }})</option>\
+                                    <option wire:click.prevent='changeFilter("REJECTED")'>Pending
+                                        ({{ $applicants['rejected'] }})</option>
+                                </select>
+                            </div>
+                            <ul
+                                class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("ALL")'
+                                        :class="filter === 'ALL' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200 rounded-l-lg"
+                                        aria-current="page">All ({{ $applicants['total'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("PENDING")'
+                                        :class="filter === 'PENDING' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200">Pending
+                                        ({{ $applicants['pending'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("INTERESTED")'
+                                        :class="filter === 'INTERESTED' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200">Interested
+                                        ({{ $applicants['interested'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("INTERVIEW")'
+                                        :class="filter === 'INTERVIEW' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200">Interview
+                                        ({{ $applicants['interview'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("HIRED")'
+                                        :class="filter === 'HIRED' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200">Hired
+                                        ({{ $applicants['hired'] }})</button>
+                                </li>
+                                <li class="w-full focus-within:z-10">
+                                    <button wire:click.prevent='changeFilter("REJECTED")'
+                                        :class="filter === 'REJECTED' ? activeFilter : inactiveFilter"
+                                        class="inline-block w-full p-4 border border-gray-200 rounded-r-lg">Rejected
+                                        ({{ $applicants['rejected'] }})</button>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                        <div
+                            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mx-1">
+                            <div>
+
+                                <label for="table-search" class="sr-only">Search</label>
+                                <div class="relative ">
+                                    <div
+                                        class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2"
+                                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                        </svg>
+                                    </div>
+
+                                    {{-- SEARCH --}}
+                                    <input wire:model.live.prevent='applicantSearch' type="text"
+                                        id="table-search-users"
+                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Search applicants">
+                                </div>
+                            </div>
+
+                            {{-- DROP DOWN BUTTON --}}
+
+                            <x-dropdown align="right" width="48">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        <div>
+                                            {{ $sortDate === 'ASC' ? 'Newest' : ($sortDate == 'DESC' ? 'Oldest' : 'Sort by Date') }}
+                                        </div>
+
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
+
+                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('ASC')">
+                                        Newest
+                                    </x-dropdown-link>
+
+                                    <!-- Authentication -->
+                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('DESC')">
+                                        Oldest
+                                    </x-dropdown-link>
+                                </x-slot>
+                            </x-dropdown>
+
+
+                        </div>
+
+                        {{-- TABLE --}}
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 ">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        PESO Status
+                                    </th>
+                                    @if ($filter === 'ALL')
+                                        <th scope="col" class="px-6 py-3">
+                                            Status
+                                        </th>
+                                    @endif
+                                    <th scope="col" class="px-6 py-3">
+                                        Documents
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (isset($applicants['list']) && count($applicants['list']) === 0)
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="flex flex-col items-center justify-center mt-10">
+                                                <div class="p-6 bg-gray-100 rounded-full">
+                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-width="2"
+                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                    </svg>
+
+                                                </div>
+                                                <p class="text-xl font-bold text-black text-center mt-2 mb-20">
+                                                    No Applicants Found
+                                                </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                @else
+                                    @foreach ($applicants['list'] as $data)
+                                        <tr class="bg-white border-b hover:bg-gray-50">
+                                            <th scope="row"
+                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                <img class="w-10 h-10 rounded-full"
+                                                    src="{{ asset('assets/img/peso-1.png') }}" alt="Jese image">
+                                                <div class="ps-3 text-wrap">
+                                                    <div class="text-base font-semibold">
+                                                        <a href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
+                                                            class="hover:text-blue-500">{{ $data->employee->fname }}
+                                                            {{ $data->employee->mname }} {{ $data->employee->lname }}
+                                                        </a>
+                                                    </div>
+                                                    <div class="text-gray-500 font-medium text-xs">Applied date:
+                                                        {{ $data->created_at->format('F j, Y') }}
+                                                    </div>
+                                                </div>
+
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center">
+                                                    @if ($data->peso_Status === 'PENDING')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                        Pending
+                                                    @elseif($data->peso_Status === 'RECOMMENDED')
+                                                        {
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                                        Recommended
+                                                        }
+                                                    @elseif($data->peso_Status === 'NOT')
+                                                        {
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                        Not Recommended
+                                                        }
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            @if ($filter === 'ALL')
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center">
+                                                        @if ($data->applicant_Status === 'PENDING')
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                            </div>
+                                                            Pending
+                                                        @elseif($data->applicant_Status === 'INTERESTED')
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2">
+                                                            </div>
+                                                            Interested
+                                                        @elseif($data->applicant_Status === 'INTERVIEW')
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
+                                                            </div>
+                                                            Interview
+                                                        @elseif($data->applicant_Status === 'HIRED')
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                            </div>
+                                                            Hired
+                                                        @elseif($data->applicant_Status === 'REJECTED')
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                            </div>
+                                                            Rejected
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                            @endif
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-row gap-4 items-center">
+                                                    <div x-data="{ tooltip: 'Download Resume' }">
+                                                        <button
+                                                            wire:click.prevent='printResume({{ $data->employee_id }})'
+                                                            x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    @if ($data->peso_Status === 'RECOMMENDED')
+                                                        <div x-data="{ tooltip: 'Download Recommendation Letter' }">
+                                                            <button x-tooltip="tooltip" type="button"
+                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                                                </svg>
+
+                                                            </button>
+                                                        </div>
+                                                    @endif
+
+
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-row gap-4 items-center">
+                                                    @if ($filter != 'HIRED' && $data->applicant_Status != 'INTERESTED')
+                                                        <div x-data="{ tooltip: 'Interested' }">
+                                                            <button
+                                                                wire:click.prevent="openModal('interested', {{ $data->applicant_id }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    @endif
+                                                    @if ($filter != 'HIRED' && $data->applicant_Status != 'INTERVIEW')
+                                                        <div x-data="{ tooltip: 'For Interview' }">
+                                                            <button
+                                                                wire:click.prevent="openModal('interview', {{ $data->applicant_id }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    @endif
+                                                    @if ($filter == 'INTERVIEW')
+                                                        <div x-data="{ tooltip: 'Hire' }">
+                                                            <button
+                                                                wire:click.prevent="openModal('hire', {{ $data->applicant_id }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                </svg>
+
+                                                            </button>
+                                                        </div>
+                                                    @endif
+                                                    @if ($filter != 'HIRED' && $data->applicant_Status != 'REJECTED')
+                                                        <div x-data="{ tooltip: 'Reject' }">
+                                                            <button
+                                                                wire:click.prevent="openModal('reject', {{ $data->applicant_id }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                </svg>
+
+                                                            </button>
+                                                        </div>
+                                                    @endif
+
+                                                </div>
+
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- pagination --}}
+                    <div>
+                        {{ $applicants['list']->links() }}
+                    </div>
+
+
+                </div>
+            @endif
+        </div>
+    </div>
+
+
+    {{-- MODALS --}}
+    <x-modal name="interested-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Mark applicant as interested?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label :value="__('Remarks')" />
+                    <textarea wire:model='remarks' id="message" rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your remarks here..." maxlength="600"></textarea>
+                    <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
+                </div>
+
+            </div>
+
+
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('interested')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <button
+                    class="inline-flex items-center px-4 py-2 bg-purple-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    wire:loading.attr="disabled" wire:click.prevent="updateApplicant('INTERESTED', 'interested')"
+                    class="ms-3" class="ms-3" type="button">
+
+
+                    {{ __('Mark as Interested') }}
+
+                    <div wire:loading.delay.long role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+    </x-modal>
+
+
+    <x-modal name="interview-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to interivew?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label :value="__('Remarks')" />
+                    <textarea wire:model='remarks' id="message" rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your remarks here..." maxlength="600"></textarea>
+                    <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
+                </div>
+
+            </div>
+
+
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('interview')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-blue-button wire:loading.attr="disabled"
+                    wire:click.prevent="updateApplicant('INTERVIEW', 'interview')" class="ms-3" class="ms-3"
+                    type="button">
+
+
+                    {{ __('Approve Interview') }}
+
+                    <div wire:loading.delay.long role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-blue-button>
+
+            </div>
+        </div>
+    </x-modal>
+
+    <x-modal name="hire-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to hire the applicant?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label :value="__('Remarks')" />
+                    <textarea wire:model='remarks' id="message" rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your remarks here..." maxlength="600"></textarea>
+                    <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
+                </div>
+
+            </div>
+
+
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('hire')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-green-button wire:loading.attr="disabled" wire:click.prevent="updateApplicant('HIRED', 'hire')"
+                    class="ms-3" class="ms-3" type="button">
+
+
+                    {{ __('Hire Applicant') }}
+
+                    <div wire:loading.delay.long role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-green-button>
+
+            </div>
+        </div>
+    </x-modal>
+
+    <x-modal name="reject-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to reject the applicant?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label :value="__('Remarks')" />
+                    <textarea wire:model='remarks' id="message" rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your remarks here..." maxlength="600"></textarea>
+                    <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
+                </div>
+
+            </div>
+
+
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('reject')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button wire:loading.attr="disabled"
+                    wire:click.prevent="updateApplicant('REJECTED', 'reject')" class="ms-3" type="button">
+
+
+                    {{ __('Reject Applicant') }}
+
+                    <div wire:loading.delay.long role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-danger-button>
+
+            </div>
+        </div>
+    </x-modal>
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

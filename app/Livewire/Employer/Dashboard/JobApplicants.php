@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Employer\Jobpost;
+namespace App\Livewire\Employer\Dashboard;
 
 use App\Models\Company;
 use App\Models\Employee;
@@ -48,11 +48,12 @@ class JobApplicants extends Component
         '26' => 'MASTERAL/POST GRADUATE',
     ];
 
-    public $filter = 'ALL';
+    public $remarks, $applicantId;
 
+    public $applicantSearch, $postSearch;
     public $selectedJob;
-    public $applicantSearch;
-    public $postSearch;
+
+    public $filter = 'ALL', $sortDate, $jobFilter = 'ALL';
 
     public function printResume($id)
     {
@@ -84,9 +85,47 @@ class JobApplicants extends Component
         // );
     }
 
+    public function openModal($modal, $applicantId)
+    {
+        $this->reset('remarks', 'applicantId');
+        $this->applicantId = $applicantId;
+        $this->dispatch('open-modal', $modal . '-modal');
+    }
+    public function closeModal($modal)
+    {
+        $this->reset('remarks', 'applicantId');
+        $this->dispatch('close-modal', $modal . '-modal');
+    }
+
+    public function updateApplicant($status, $modal)
+    {
+
+        $this->validate([
+            'remarks' => ['required', 'string'],
+        ]);
+
+        try {
+            // Create the user record
+            Job_Applicants::where('applicant_id', $this->applicantId)->update([
+                'applicant_Status' => $status,
+                'company_Remarks' => $this->remarks,
+            ]);
+
+            toastr()->success('Applicant has been Updated!');
+        } catch (\Exception $e) {
+
+            // Show error toastr notification
+            toastr()->error('There was an Error');
+        }
+
+        $this->closeModal($modal);
+
+    }
+
     public function getJob($id)
     {
         $this->selectedJob = $id;
+        $this->reset('sortDate');
         // $this->filter = 'ALL';
         // $this->reset('applicantSearch');
 
@@ -95,6 +134,17 @@ class JobApplicants extends Component
     public function changeFilter($filter)
     {
         $this->filter = $filter;
+        $this->reset('sortDate');
+    }
+    public function updateSort($sort)
+    {
+        $this->sortDate = $sort;
+
+    }
+
+    public function updateJobFilter($status)
+    {
+        $this->jobFilter = $status;
     }
 
     public function render()
@@ -116,11 +166,17 @@ class JobApplicants extends Component
                 $applicantsQuery->where('job_applicants.applicant_Status', $this->filter);
             }
 
+            if ($this->sortDate !== null && $this->sortDate !== '') {
+                $applicantsQuery->orderBy('job_applicants.created_at', $this->sortDate);
+            }
+
             // Get the counts
             $total = Job_Applicants::where('job_id', $this->selectedJob)->count();
             $pending = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'pending')->count();
             $interested = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'interested')->count();
+            $interview = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'interview')->count();
             $hired = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'hired')->count();
+            $rejected = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'rejected')->count();
 
             // Get the paginated list of applicants
             $list = $applicantsQuery->paginate(5);
@@ -130,7 +186,9 @@ class JobApplicants extends Component
                 'total' => $total,
                 'pending' => $pending,
                 'interested' => $interested,
+                'interview' => $interview,
                 'hired' => $hired,
+                'rejected' => $rejected,
                 'list' => $list,
             ];
         }
@@ -138,14 +196,19 @@ class JobApplicants extends Component
         // Fetch jobs for the authenticated user's company
         $user = Auth::user();
         $userCompanyId = $user->company->company_id;
-        $jobs = Job_Posting::withCount('job_applicants')
+        $jobsQuery = Job_Posting::withCount('job_applicants')
             ->where('company_id', $userCompanyId)
             ->where(function ($query) {
                 $query->where('job_Title', 'like', '%' . $this->postSearch . '%');
-            })
-            ->paginate(5);
+            });
 
-        return view('livewire.employer.jobpost.job-applicants', compact('jobs', 'applicants'));
+        if ($this->jobFilter !== 'ALL') {
+            $jobsQuery->where('job_Status', $this->jobFilter);
+        }
+
+        $jobs = $jobsQuery->paginate(5);
+
+        return view('livewire.employer.dashboard.job-applicants', compact('jobs', 'applicants'));
     }
 }
 // if ($this->selectedJob) {
