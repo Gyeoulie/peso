@@ -477,7 +477,8 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
 
                                 @foreach ($jobseeker->work_exp as $work_experience)
-                                    <div class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                    <div wire:key="{{ $work_experience->workexp_id }}"
+                                        class="container bg-gray-200 p-3 rounded-lg shadow ">
 
                                         <div class="flex flex-row">
 
@@ -669,9 +670,9 @@
 
 
             @livewire('public.profile.jobseeker.partials.edit-education', ['userID' => $id])
-            @livewire('public.profile.jobseeker.partials.edit-work-experience')
-            @livewire('public.profile.jobseeker.partials.edit-trainings')
-            @livewire('public.profile.jobseeker.partials.edit-certificates')
+            @livewire('public.profile.jobseeker.partials.edit-work-experience', ['userID' => $id])
+            @livewire('public.profile.jobseeker.partials.edit-trainings', ['userID' => $id])
+            @livewire('public.profile.jobseeker.partials.edit-certificates', ['userID' => $id])
 
 
         </div>

@@ -49,7 +49,7 @@
                                 </svg>
 
                             </div>
-
+                                
                             <div class="flex flex-col ml-4 w-full">
                                 <span class="text-2xl text-black font-bold">{{ $education->edu_School }}</span>
                                 <div class="text-lg text-black font-semibold">{{ $education->edu_Course }}</div>
@@ -105,7 +105,7 @@
                     <div class="flex flex-col w-full">
                         <x-input-label for="eduLevel" :value="__('Level')" />
                         <select wire:model="educLevel" id="eduLevel" class="block mt-1 w-full">
-                            <option value="" disabled selected>Select Level</option>
+                            <option value="" disabled>Select Level</option>
                             <option value="1">GRADE I</option>
                             <option value="2">GRADE II</option>
                             <option value="3">GRADE III</option>
@@ -159,7 +159,7 @@
 
             </div>
             <div class="mt-6 flex justify-end">
-                <x-secondary-button ype="button">
+                <x-secondary-button wire:click.prevent='close' type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 

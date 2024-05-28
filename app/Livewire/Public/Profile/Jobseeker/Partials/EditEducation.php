@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class EditEducation extends Component
 {
-    public $educName, $educCourse, $educLevel, $educStart, $educEnd, $educID;
+    public $educName, $educCourse, $educLevel = "", $educStart, $educEnd, $educID;
     public $userID;
 
     public function rules()
@@ -18,12 +18,6 @@ class EditEducation extends Component
             'educLevel' => ['required', 'string'],
             'educStart' => ['required'],
         ];
-    }
-
-    public function close()
-    {
-        $this->reset('educName', 'educCourse', 'educLevel', 'educStart', 'educEnd', 'educID');
-        $this->dispatch('close-modal', 'education-modal');
     }
 
     public function save()
@@ -72,11 +66,11 @@ class EditEducation extends Component
         }
         $this->close();
         $this->dispatch('reload-table');
-
     }
+
+
     public function editModal($id)
     {
-
         $this->educID = $id;
         $educ2 = Education::find($id);
         $this->educName = $educ2->edu_School;
@@ -86,13 +80,29 @@ class EditEducation extends Component
         $this->educEnd = Carbon::parse($educ2->edu_Ended)->format('Y-m-d');
 
         $this->dispatch('open-modal', 'education-modal');
+    }
 
+    public function addModal($id)
+    {
+        $this->educID = $id;
+        $this->reset('educName', 'educCourse', 'educLevel', 'educStart', 'educEnd', 'educID');
+        $this->dispatch('open-modal', 'education-modal');
+    }
+
+
+    
+    public function close()
+    {
+        $this->reset('educName', 'educCourse', 'educLevel', 'educStart', 'educEnd', 'educID');
+        $this->dispatch('close-modal', 'education-modal');
     }
 
     public function render()
     {
 
-        $educ = Education::findMany($this->userID);
+        $educ = Education::where('employee_id', '=', $this->userID)
+        ->orderBy('edu_Started', 'desc')
+        ->get();
         return view('livewire.public.profile.jobseeker.partials.edit-education', compact('educ'));
     }
 }
