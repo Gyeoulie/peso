@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\JobPosting;
+namespace App\Livewire\Admin\JobPosting\Applicants;
 
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
@@ -62,7 +62,7 @@ class JobPostApplicants extends Component
             })
             ->paginate(10);
 
-        return view('livewire.admin.job-posting.job-post-applicants', compact('jobpost', 'jobApplicants'));
+        return view('livewire.admin.job-posting.applicants.job-post-applicants', compact('jobpost', 'jobApplicants'));
     }
 
 }

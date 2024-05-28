@@ -45,4 +45,9 @@ class Barangay extends Model
         return $this->hasMany(Job_Posting::class, 'barangay_id');
     }
 
+    public function employee()
+    {
+        return $this->hasMany(Employee::class, 'barangay_id');
+    }
+
 }

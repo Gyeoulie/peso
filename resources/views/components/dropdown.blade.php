@@ -21,6 +21,9 @@
         case 'full':
             $width = 'w-full';
             break;
+        default:
+            $width = 'w-' . $width;
+            break;
     }
 @endphp
 

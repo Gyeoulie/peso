@@ -25,7 +25,7 @@ class Employee extends Model
         'birthdate',
         'pnumber',
         'address',
-        'barangay',
+        'barangay_id',
         'tinnum',
         'empstatus',
         'empstatusdesc',
@@ -47,7 +47,7 @@ class Employee extends Model
 
     public function barangay()
     {
-        return $this->belongsTo(Barangay::class, 'barangay');
+        return $this->belongsTo(Barangay::class, 'barangay_id');
     }
     public function certificate()
     {
