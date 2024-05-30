@@ -13,6 +13,54 @@ class JobseekerProfile extends Component
 
     public $id;
 
+    public $description;
+    // public $successss = false;
+
+
+    public function rules()
+    {
+        return [
+            'description' => ['required', 'string', 'min:50', 'max:1000'],
+
+        ];
+    }
+
+    public function editModal()
+    {
+        $this->resetValidation();
+        $employeeInfo = Employee::find($this->id);
+        $this->description = $employeeInfo->empDesc;
+
+        $this->dispatch('open-modal', 'aboutme-modal');
+    }
+
+    public function saveeeeeeeeee()
+    {
+        $this->validate();
+    
+        try {
+            // Update the employee record
+            Employee::where('employee_id', $this->id)->update([
+                'empDesc' => $this->description,
+            ]);
+            toastr()->success('About Me Record has been Updated!');
+    
+            $this->closeeeeeeeeeeee();
+            $this->dispatch('reload-table');
+        } catch (\Exception $e) {
+            toastr()->error('There was an Error');
+        }
+    }
+    
+
+    public function closeeeeeeeeeeee()
+    {
+        // dump($this->id);
+
+        $this->reset('description');
+        $this->dispatch('close-modal', 'aboutme-modal');
+    }
+
     #[On('reload-table')]
     public function render()
     {

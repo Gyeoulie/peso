@@ -65,7 +65,7 @@
                         </tr>
                     @else
                         @foreach ($industry as $data)
-                            <tr class="bg-white border-b hover:bg-gray-50">
+                            <tr wire:key='industry-{{ $data->industry_id }}' class="bg-white border-b hover:bg-gray-50">
                                 <td class="px-6 py-4 text-center">
 
                                     <button wire:click.prevent='industrySelect({{ $data->industry_id }})'
