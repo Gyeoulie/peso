@@ -158,7 +158,7 @@
                                 </tr>
                             @else
                                 @foreach ($applicants as $data)
-                                    <tr class="bg-white border-b ">
+                                    <tr wire:key='jobPost-{{ $data->job_id }}' class="bg-white border-b ">
                                         <th scope="row" class="flex items-center px-6 py-4 text-gray-900 ">
                                             <div class="ps-3">
                                                 <div class="text-base font-semibold">{{ $data->job_Title }}</div>
