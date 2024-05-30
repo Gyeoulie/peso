@@ -67,7 +67,8 @@
                             </tr>
                         @else
                             @foreach ($jobposition as $data)
-                                <tr class="bg-white border-b hover:bg-gray-50">
+                                <tr wire:key='position-{{ $data->position_id }}'
+                                    class="bg-white border-b hover:bg-gray-50">
                                     <td class="px-6 py-4 text-center">
 
                                         <button wire:click.prevent='tagSelect({{ $data->position_id }})'

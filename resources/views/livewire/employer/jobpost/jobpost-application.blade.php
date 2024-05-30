@@ -360,7 +360,8 @@
                 @foreach ($requirements->chunk(2) as $chunk)
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 w-full mt-4">
                         @foreach ($chunk as $requirement)
-                            <div class="flex flex-col w-full sm:w-1/2">
+                            <div wire:key='jobRequirement-{{ $requirement->requirement_id }}'
+                                class="flex flex-col w-full sm:w-1/2">
                                 <label class="block text-sm font-medium text-gray-900"
                                     for="file_input">{{ $requirement->requirement_Title }}</label>
                                 <input wire:model='req.{{ $requirement->requirement_id }}'

@@ -387,7 +387,7 @@
 
                     <div class="flex-inline  rounded-lg p-1 mt-2 ">
                         @foreach ($JobPost->job_tags as $jobTag)
-                            <span
+                            <span wire:key='jobTag-{{ $data->job_positions->position_id }}'
                                 class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                 {{ $jobTag->job_positions->position_Title }}
                             </span>
