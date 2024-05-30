@@ -65,7 +65,7 @@
                         </tr>
                     @else
                         @foreach ($barangay as $data)
-                            <tr class="bg-white border-b hover:bg-gray-50">
+                            <tr wire:key='barangay-{{ $data->barangay_id }}' class="bg-white border-b hover:bg-gray-50">
                                 <td class="px-6 py-4 text-center">
 
                                     <button wire:click.prevent='barSelect({{ $data->barangay_id }})'
