@@ -43,19 +43,35 @@ class ApplicationHistory extends Component
     ];
 
     public $selectedJob;
+    public $search, $filter;
 
-    public function updateSelection($id){
+    public function updateSelection($id)
+    {
         $this->selectedJob = $id;
     }
     public function render()
     {
         $user = Auth::user(); // Correct usage of the Auth facade
 
-        $applications = Job_Applicants::where('employee_id', '=', $user->employee->employee_id)->get();
+        $applications = Job_Applicants::with(['job_posting.company'])
+            ->where('employee_id', '=', $user->employee->employee_id)
+            ->where(function ($query) {
+                $query->whereHas('job_posting', function ($query) {
+                    $query->where('job_Title', 'like', '%' . $this->search . '%');
+                })
 
+                    ->orWhereHas('job_posting.company', function ($query) {
+                        $query->where('bussines_Name', 'like', '%' . $this->search . '%');
+                    });
+            });
 
+        //     if ($this->filter) {
+        // $applications
+        //     }
+
+        $applications = $applications->paginate(5);
         $applicationInfo = null;
-        if($this->selectedJob){
+        if ($this->selectedJob) {
             $applicationInfo = Job_Applicants::find($this->selectedJob);
         }
         return view('livewire.jobseeker.application-history', compact('applications', 'applicationInfo'));

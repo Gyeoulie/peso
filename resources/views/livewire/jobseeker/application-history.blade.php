@@ -1,5 +1,4 @@
 <div>
-
     <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
         <div class="col-span-4 sm:col-span-5">
 
@@ -15,7 +14,7 @@
                     </div>
 
                     {{-- SEARCH --}}
-                    <input type="text" id="table-search-users"
+                    <input wire:model.live.prevent='search' type="text" id="table-search-users"
                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for applications">
                 </div>
@@ -56,13 +55,18 @@
                 </div>
             </div>
 
-            <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full">
+            <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full"
+                x-data="{
+                    selectedJob: @entangle('selectedJob'),
+                    activeJob: 'bg-blue-300',
+                    inactiveJob: 'bg-white',
+                }">
                 @foreach ($applications as $data)
                     <div class="flex flex-col sm:w-full">
-                        <a href="#" wire:key='application-{{ $data->applicant_id }}'
+                        <a class="cursor-pointer" wire:key='application-{{ $data->applicant_id }}'
                             wire:click.prevent="updateSelection({{ $data->applicant_id }})">
-                            <div
-                                class="bg-white shadow rounded-lg p-6 flex flex-col mb-4 hover:scale-105 transition-transform">
+                            <div :class="selectedJob === {{ $data->applicant_id }} ? activeJob : inactiveJob"
+                                class="shadow rounded-lg p-6 flex flex-col mb-4 hover:scale-105 transition-transform">
 
                                 <div class="flex flex-row">
                                     <div class="flex flex-col">
@@ -96,7 +100,7 @@
                                                 class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                                         @elseif ($data->applicant_Status == 'INTERESTED')
                                             <span
-                                                class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-sm font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">INTERESTED</span>
+                                                class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                                         @elseif ($data->applicant_Status == 'INTERVIEW')
                                             <span
                                                 class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
@@ -158,9 +162,9 @@
                             </img>
                         </div>
                         <div class="flex flex-col ml-4 w-full">
-                            <h1 class="text-7xl font-bold underline">{{ $applicationInfo->job_posting->job_Title }}
+                            <h1 class="text-6xl  font-bold underline">{{ $applicationInfo->job_posting->job_Title }}
                             </h1>
-                            <h1 class="text-l text-gray-600">
+                            <h1 class="text-3xl text-gray-600">
                                 {{ $applicationInfo->job_posting->company->bussines_Name }}</h1>
 
                         </div>
@@ -170,7 +174,7 @@
                                     class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                             @elseif ($applicationInfo->applicant_Status == 'INTERESTED')
                                 <span
-                                    class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-sm font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">INTERESTED</span>
+                                    class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                             @elseif ($applicationInfo->applicant_Status == 'INTERVIEW')
                                 <span
                                     class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
@@ -216,12 +220,42 @@
                                 </p>
                             </div>
 
+                            <div class="flex flex-row">
+                                <li class="mb-2 font-bold">Date Applied:</li>
+                                <p class="ms-4">{{ $applicationInfo->created_at->format('F j, Y') }}</p>
+                            </div>
+
+                            <div class="flex flex-row ">
+                                <li class="mb-2 font-bold">PESO Status:</li>
+                                <p class="ms-4">
+
+                                    @if ($applicationInfo->peso_Status === 'PENDING')
+                                        Pending
+                                    @elseif($applicationInfo->peso_Status === 'RECOMMENDED')
+                                        Recommended
+                                    @elseif($applicationInfo->peso_Status === 'NOT')
+                                        Not Recommended
+                                    @endif
+
+                                </p>
+                            </div>
+
+
                         </ul>
 
+                        @if ($applicationInfo->applicant_Status != 'INTERESTED' && $applicationInfo->company_Remarks)
+                            <div class="flex flex-col  mt-2">
+                                <h1 class="mb-2 font-bold">Company Remarks</h1>
+                                <textarea id="message" rows="6"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                                    placeholder="Company remarks..." maxlength="600" readonly></textarea>
+                            </div>
+                        @endif
 
                         {{-- BUTTON --}}
                         <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                            <a href="#" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
+                            <a href="{{ route('jobpost.show', ['id' => $applicationInfo->job_id]) }}"
+                                class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                                 Job Posting</a>
                             <a href="#"
                                 class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
