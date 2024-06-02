@@ -10,6 +10,7 @@ use App\Livewire\Admin\JobPosting\Applicants\JobPostApplicants;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Employer\Dashboard\JobApplicants;
 use App\Livewire\Employer\Dashboard\JobPostList;
+use App\Livewire\Jobseeker\ApplicationHistory;
 use App\Livewire\Public\Dashboard;
 use App\Livewire\Public\JobpostView;
 use App\Livewire\Public\Profile\EmployerProfile;
@@ -70,13 +71,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/jobpost/application', function () {
-    return view('dashboard.partials.jobseeker-application');
-})->name('jobseeker.application');
+// Route::get('/jobpost/application', function () {
+//     return view('dashboard.partials.jobseeker-application');
+// })->name('jobseeker.application');
 
-Route::get('/myapplication', function () {
-    return view('dashboard.partials.employer-jobpost');
-})->name('jobpost');
+// Route::get('/myapplication', function () {
+//     return view('dashboard.partials.employer-jobpost');
+// })->name('jobpost');
 
 // EMPLOYER
 Route::get('/test2', function () {
@@ -96,6 +97,9 @@ Route::get('/jobpost/list', JobPostList::class)->name('employer.dashboard');
 Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
 
 Route::get('/profile/edit', EditDetails::class)->name('edit.details');
+
+// JOBSEEKER
+Route::get('/applications/history', ApplicationHistory::class)->name('jobseeker.application');
 
 // PUBLIC
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
