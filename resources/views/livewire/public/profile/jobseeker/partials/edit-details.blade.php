@@ -81,22 +81,22 @@
                     <div class="flex flex-row mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname" :value="__('First Name')" />
-                            <x-text-input id="fname" class="block mt-1 w-full" type="text" />
+                            <x-text-input class="block mt-1 w-full" type="text" />
 
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="lname" :value="__('Last Name')" />
-                            <x-text-input id="lname" class="block mt-1 w-full" type="text" />
+                            <x-text-input class="block mt-1 w-full" type="text" />
                         </div>
                     </div>
                     <div class="flex flex-row mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="mname" :value="__('Middle Name')" />
-                            <x-text-input id="mname" class="block mt-1 w-full" type="text" />
+                            <x-text-input class="block mt-1 w-full" type="text" />
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="suffix" :value="__('Suffix')" />
-                            <select id="suffix" name="suffixPost" class="block mt-1 w-full rounded-md">
+                            <select name="suffixPost" class="block mt-1 w-full rounded-md">
                                 <option value="" disabled selected>Select Suffix</option>
                                 <option value="mr">None</option>
                                 <option value="mrs">Jr. (Junior)</option>
@@ -117,11 +117,11 @@
                     <div class="flex flex-row mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="birthdate" :value="__('Birthdate')" />
-                            <x-text-input id="birthdate" class="block mt-1 w-full" type="date" />
+                            <x-text-input class="block mt-1 w-full" type="date" />
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="gender" :value="__('Gender')" />
-                            <select id="gender" name="genderPost" class="block mt-1 w-full rounded-md">
+                            <select name="genderPost" class="block mt-1 w-full rounded-md">
                                 <option value="" disabled selected>Select Gender</option>
                                 <option value="1">Male</option>
                                 <option value="2">Female</option>
@@ -132,13 +132,12 @@
                     <div class="flex flex-row w-full mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="presentAddress" :value="__('Present Address')" />
-                            <x-text-input id="presentAddress" class="block mt-1 w-full" type="text"
-                                name="hnumPost" />
+                            <x-text-input class="block mt-1 w-full" type="text" name="hnumPost" />
                             <x-input-error :messages="$errors->get('fname')" class="mt-2" />
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="city" :value="__('Barangay')" />
-                            <select id="city" name="barangayPost" class="block mt-1 w-full rounded-md">
+                            <select name="barangayPost" class="block mt-1 w-full rounded-md">
                             </select>
                             <x-input-error :messages="$errors->get('city')" class="mt-2" />
                         </div>
@@ -146,14 +145,14 @@
                     <div class="flex flex-row mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="city" :value="__('Municipality')" />
-                            <select id="city" name="cityPost" class="block mt-1 w-full rounded-md">
+                            <select name="cityPost" class="block mt-1 w-full rounded-md">
                                 <option value="" disabled selected>Select City</option>
                             </select>
                             <x-input-error :messages="$errors->get('city')" class="mt-2" />
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="province" :value="__('Province')" />
-                            <select id="province" name="provincePost" class="block mt-1 w-full rounded-md">
+                            <select name="provincePost" class="block mt-1 w-full rounded-md">
                                 <option value="" disabled selected>Select Province</option>
                             </select>
                             <x-input-error :messages="$errors->get('province')" class="mt-2" />
@@ -162,7 +161,7 @@
                     <div class="flex flex-row mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="civilstatus" :value="__('Civil Status')" />
-                            <select id="civilstatus" name="civilstatusPost" class="block mt-1 w-full rounded-md">
+                            <select name="civilstatusPost" class="block mt-1 w-full rounded-md">
                                 <option value="" disabled selected>Select Civil Status</option>
                                 <option value="1">Single</option>
                                 <option value="2">Married</option>
@@ -173,7 +172,7 @@
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="religion" :value="__('Religion')" />
-                            <select id="religion" name="religionPost" class="block mt-1 w-full rounded-md">
+                            <select name="religionPost" class="block mt-1 w-full rounded-md">
                                 <option value="" disabled selected>Select Religion</option>
                                 <option value="2">ASSEMBLY OF GOD</option>
                                 <option value="3">AGLIPAYAN</option>
@@ -224,18 +223,17 @@
                     <div class="flex flex-row mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="pnum" :value="__('Cellphone No.')" />
-                            <x-text-input id="pnum" class="block mt-1 w-full" type="tel" name="pnumPost" />
+                            <x-text-input class="block mt-1 w-full" type="tel" name="pnumPost" />
                             <x-input-error :messages="$errors->get('pnum')" class="mt-2" />
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="tin" :value="__('TIN')" />
-                            <x-text-input id="tin" class="block mt-1 w-full" type="text" name="tinPost" />
+                            <x-text-input class="block mt-1 w-full" type="text" name="tinPost" />
                             <x-input-error :messages="$errors->get('lname')" class="mt-2" />
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="height" :value="__('Height')" />
-                            <x-text-input id="height" class="block mt-1 w-full" type="text"
-                                name="heightPost" />
+                            <x-text-input class="block mt-1 w-full" type="text" name="heightPost" />
                             <x-input-error :messages="$errors->get('lname')" class="mt-2" />
                         </div>
                     </div>
@@ -324,7 +322,7 @@
                                     </svg>
                                 </div>
                                 {{-- SEARCH --}}
-                                <input type="text" wire:model.live.prevent='search' id="table-search-users"
+                                <input type="text" wire:model.live.prevent='search'
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for job position">
                             </div>
@@ -430,7 +428,7 @@
                                     </svg>
                                 </div>
                                 {{-- SEARCH --}}
-                                <input type="text" wire:model.live.prevent='search' id="table-search-users"
+                                <input type="text" wire:model.live.prevent='search'
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for job position">
                             </div>
@@ -626,7 +624,7 @@
                 </div>
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="licenseDate" :value="__('Date Validity')" />
-                    <x-text-input id="licenseDate" class="block mt-1 w-full" type="date" />
+                    <x-text-input class="block mt-1 w-full" type="date" />
                 </div>
 
             </div>
@@ -641,7 +639,6 @@
             </div>
         </div>
     </x-modal>
-
 
 
     <x-modal name="eligibility-modal" focusable>
@@ -652,54 +649,51 @@
             <hr>
             <div class="flex flex-col mt-2">
                 <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="eligibilityType" :value="__('Eligibility')" />
-                    <select id="eligibilityType" class="block mt-1 w-full">
+                    <x-input-label for="licenseType" :value="__('Eligibility')" />
 
-
-                        <x-dropdown align="left" width="full">
-                            <x-slot name="trigger">
-                                <button
-                                    class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
-                                    <div class="w-full ml-2 text-left">
-                                        {{-- SELECTED TITLE HERE --}}
-                                    </div>
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-                            <x-slot name="content">
-                                <!-- Search input -->
-                                <div class="p-2">
-                                    <input type="text" placeholder="Search..."
-                                        class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
-                                        @click.stop>
+                    <x-dropdown align="left" width="full">
+                        <x-slot name="trigger">
+                            <button
+                                class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
+                                <div class="w-full ml-2 text-left">
+                                    {{-- SELECTED TITLE HERE --}}
                                 </div>
-
-                                <!-- Dropdown content with scrollbar -->
-                                <div class="max-h-[120px] bg-white overflow-y-auto">
-                                    <!-- Dropdown links -->
-                                    {{-- LOOP HERE --}}
-                                    <x-dropdown-link
-                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">TITLE
-                                        HRE</x-dropdown-link>
-                                    {{-- LOOP END --}}
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
                                 </div>
-                            </x-slot>
+                            </button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <!-- Search input -->
+                            <div class="p-2">
+                                <input type="text" placeholder="Search..."
+                                    class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
+                                    @click.stop>
+                            </div>
 
-                        </x-dropdown>
+                            <!-- Dropdown content with scrollbar -->
+                            <div class="max-h-[120px] bg-white overflow-y-auto">
+                                <!-- Dropdown links -->
+                                {{-- LOOP HERE --}}
+                                <x-dropdown-link
+                                    class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">TITLE
+                                    HRE</x-dropdown-link>
+                                {{-- LOOP END --}}
+                            </div>
+                        </x-slot>
+
+                    </x-dropdown>
 
 
-                    </select>
                 </div>
                 <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="eligibilityDate" :value="__('Date Validity')" />
-                    <x-text-input id="eligibilityDate" class="block mt-1 w-full" type="date" />
+                    <x-input-label for="licenseDate" :value="__('Date Validity')" />
+                    <x-text-input class="block mt-1 w-full" type="date" />
                 </div>
 
             </div>
@@ -714,6 +708,11 @@
             </div>
         </div>
     </x-modal>
+
+
+
+
+
 
 
 

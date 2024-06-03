@@ -22,6 +22,11 @@
                             {{ __('Profile') }}
                         </x-nav-link>
                     @endif
+                    @if (auth()->user()->usertype == 5)
+                        <x-nav-link :href="route('employer.profile', ['id' => auth()->user()->company->company_id])" :active="request()->routeIs('employer.profile')">
+                            {{ __('Profile') }}
+                        </x-nav-link>
+                    @endif
                     @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
                         <x-nav-link :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
                             {{ __('Job Postings') }}

@@ -13,7 +13,7 @@ use App\Livewire\Employer\Dashboard\JobPostList;
 use App\Livewire\Jobseeker\ApplicationHistory;
 use App\Livewire\Public\Dashboard;
 use App\Livewire\Public\JobpostView;
-use App\Livewire\Public\Profile\EmployerProfile;
+use App\Livewire\Public\Profile\Employer\EmployerProfile;
 use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
 use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
 use Illuminate\Support\Facades\Route;
