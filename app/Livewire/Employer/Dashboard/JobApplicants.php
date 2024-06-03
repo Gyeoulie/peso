@@ -51,7 +51,7 @@ class JobApplicants extends Component
     public $remarks, $applicantId;
 
     public $applicantSearch, $postSearch;
-    public $selectedJob;
+    public $selectedJob, $selectedEmployee;
 
     public $filter = 'ALL', $sortDate, $jobFilter = 'ALL';
 

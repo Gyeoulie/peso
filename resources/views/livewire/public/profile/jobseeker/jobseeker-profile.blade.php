@@ -169,7 +169,7 @@
                 x-transition:enter-end="opacity-100 scale-100">
 
                 <div class="container">
-                    <div class="bg-white shadow-lg rounded-lg p-6">
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-wrap">
                         <div class="flex flex-row w-full items-center justify-between">
                             <h2 class="text-xl font-bold">About me</h2>
 
@@ -186,7 +186,7 @@
 
                         </div>
 
-                        <p class="text-gray-700">
+                        <p class="text-gray-700 text-wrap break-words">
                             {{-- {{ $jobseeker->empDesc !== null || $jobseeker->empDesc !== "" ? $jobseeker->empDesc : 'No Description' }} --}}
                             {{ $jobseeker->empDesc ?: 'No Description' }}
 
