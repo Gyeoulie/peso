@@ -16,6 +16,7 @@ use App\Livewire\Public\JobpostView;
 use App\Livewire\Public\Profile\Employer\EmployerProfile;
 use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
 use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
+use App\Livewire\Signup\Jobseeker\JobseekerInformation;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,13 +42,6 @@ Route::post('/fill', [NSRP::class, 'storeInfo'])->name('postInfo');
 Route::get('/fill/employer', [NSRP::class, 'loadEmployer'])->name('fill_employer');
 Route::post('/fill/employer', [NSRP::class, 'postEmployer'])->name('postEmployer');
 
-//PESO ADMIN ADD
-// Route::post('/admin/add', [AdminTable::class, 'addData'])->name('addDataAdmin');
-// Route::post('/admin/addPeso', [AdminTable::class, 'addPeso'])->name('addPesoAdmin');
-
-//ADMIN LOGIN REDIRECT
-// Route::get('/admin', [AdminTable::class, 'index'])->name('admintables');
-
 //JOBSEEKER PROFILE
 Route::get('/employee', [EmployeeProfile::class, 'employeeProfile'])->name('employeeProfile');
 Route::post('/employee/update', [EmployeeProfile::class, 'updateDescEmp'])->name('updateDescEmp');
@@ -71,18 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route::get('/jobpost/application', function () {
-//     return view('dashboard.partials.jobseeker-application');
-// })->name('jobseeker.application');
-
-// Route::get('/myapplication', function () {
-//     return view('dashboard.partials.employer-jobpost');
-// })->name('jobpost');
-
 // EMPLOYER
-Route::get('/test2', function () {
-    return view('admin.admin_partials.applicant-list');
-})->name('213');
+
 Route::get('/resume', function () {
     return view('resume');
 })->name('resume');
@@ -165,5 +149,8 @@ Route::get('/admin/job/applicants/{id}', JobPostApplicants::class)->name('admin.
 Route::get('/admin/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
 
 Route::get('/download-resume/{id}', [ResumeController::class, 'downloadResume'])->name('download.resume');
+
+// test
+Route::get('/testj', JobseekerInformation::class)->name('jobseeker.test');
 
 require __DIR__ . '/auth.php';

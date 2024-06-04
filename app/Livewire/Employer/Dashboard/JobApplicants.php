@@ -51,7 +51,7 @@ class JobApplicants extends Component
     public $remarks, $applicantId;
 
     public $applicantSearch, $postSearch;
-    public $selectedJob, $selectedEmployee;
+    public $selectedJob, $selectedApplicant;
 
     public $filter = 'ALL', $sortDate, $jobFilter = 'ALL';
 
@@ -121,11 +121,17 @@ class JobApplicants extends Component
         $this->closeModal($modal);
 
     }
+    public function getApplicant($id)
+    {
+        $this->selectedApplicant = $id;
+        $this->reset('sortDate');
+    }
 
     public function getJob($id)
     {
         $this->selectedJob = $id;
-        $this->reset('sortDate');
+        $this->reset('sortDate', 'selectedApplicant');
+        $this->filter = 'ALL';
         // $this->filter = 'ALL';
         // $this->reset('applicantSearch');
 
@@ -150,6 +156,7 @@ class JobApplicants extends Component
     public function render()
     {
         $applicants = null; // Initialize $applicants variable
+        $applicantInfo = null;
 
         if ($this->selectedJob) {
             // Create the initial query for applicants
@@ -208,9 +215,16 @@ class JobApplicants extends Component
 
         $jobs = $jobsQuery->paginate(5);
 
-        return view('livewire.employer.dashboard.job-applicants', compact('jobs', 'applicants'));
+        if ($this->selectedApplicant) {
+            $applicantInfo = Job_Applicants::find($this->selectedApplicant);
+
+            // dd($applicantInfo);
+        }
+
+        return view('livewire.employer.dashboard.job-applicants', compact('jobs', 'applicants', 'applicantInfo'));
     }
 }
+
 // if ($this->selectedJob) {
 //     // Fetch applicants for the selected job
 //     $applicantsQuery = Job_Applicants::leftJoin('employee', 'job_applicants.employee_id', '=', 'employee.employee_id')

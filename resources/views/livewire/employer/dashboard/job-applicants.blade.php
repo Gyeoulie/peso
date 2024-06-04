@@ -96,15 +96,14 @@
                     <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full"
                         x-data="{
                             selectedJob: @entangle('selectedJob'),
-                            activeJob: 'bg-blue-300',
-                            inactiveJob: 'bg-white',
                         }">
                         @foreach ($jobs as $data)
-                            <div class="flex flex-col  sm:w-full">
+                            <div class="flex flex-col sm:w-full">
                                 <a wire:key='jobPost-{{ $data->job_id }}'
                                     wire:click.prevent='getJob({{ $data->job_id }})' class="cursor-pointer">
-                                    <div :class="selectedJob == {{ $data->job_id }} ? activeJob : inactiveJob"
-                                        class="shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
+
+                                    <div
+                                        class=" @if ($data->job_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
 
                                         <div class="flex flex-row gap-4 sm:gap-0 justify-end">
 
@@ -171,12 +170,16 @@
             </div>
         </div>
 
-        <div class="col-span-4 sm:col-span-7">
+        <div class="col-span-4 sm:col-span-7" x-data="{
+            selectedApplicant: @entangle('selectedApplicant')
+        }">
             @if ($applicants)
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+                <div x-show="!selectedApplicant" class="bg-white shadow rounded-lg p-6 flex flex-col"
+                    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
+                    x-transition:enter-end="opacity-100 scale-100">
 
 
-                    <div class="relative overflow-x-auto ">
+                    <div class="relative overflow-x-auto">
                         <div x-data="{
                             filter: @entangle('filter'),
                             activeFilter: 'text-gray-900 bg-gray-400 active',
@@ -522,6 +525,25 @@
                                                             </button>
                                                         </div>
                                                     @endif
+                                                    @if ($filter != 'ALL' && $data->applicant_Status != 'PENDING')
+                                                        <div x-data="{ tooltip: 'Applicant Info' }">
+                                                            <button
+                                                                wire:click.prevent="getApplicant({{ $data->applicant_id }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="w-5 h-5" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                                                                </svg>
+
+
+                                                            </button>
+                                                        </div>
+                                                    @endif
 
                                                 </div>
 
@@ -541,42 +563,47 @@
 
 
                 </div>
-            @endif
 
 
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col">
-                @if ($selectedEmployee)
-                    <div class="flex flex-row items-center gap-4">
-                        <a href="#">
-                            <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                                </svg>
+
+                <div x-show="selectedApplicant" class="bg-white shadow rounded-lg p-6 flex flex-col"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                    x-cloak>
+                    @if ($selectedApplicant)
+                        <div class="flex flex-row items-center gap-4">
+                            <button @click="selectedApplicant = null">
+                                <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                    <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                    </svg>
+                                </div>
+                            </button>
+                            <h2 class="text-2xl font-bold">Applicant Information</h2>
+
+                        </div>
+
+                        <div class="flex flex-row mt-2">
+                            <div class="flex flex-col">
+                                <img src="https://randomuser.me/api/portraits/men/94.jpg"
+                                    class="w-30 h-30 bg-gray-300 rounded-lg shrink-0">
+                                </img>
                             </div>
-                        </a>
-                        <h2 class="text-2xl font-bold">Applicant Information</h2>
+                            <div class="flex flex-col ml-4 w-full justify-center">
+                                <h1 class="text-3xl  font-bold">
+                                    {{ $applicantInfo->employee->fname }} {{ $applicantInfo->employee->mname }}
+                                    {{ $applicantInfo->employee->lname }}
+                                </h1>
+                                <h1 class="text-lg text-gray-600">
+                                    {{ $applicantInfo->employee->barangay->municipality->municipality_Name }},
+                                    {{ $applicantInfo->employee->barangay->municipality->province->province_Name }}
+                                </h1>
 
-                    </div>
-
-                    <div class="flex flex-row mt-2">
-                        <div class="flex flex-col">
-                            <img src="https://randomuser.me/api/portraits/men/94.jpg"
-                                class="w-30 h-30 bg-gray-300 rounded-lg shrink-0">
-                            </img>
-                        </div>
-                        <div class="flex flex-col ml-4 w-full">
-                            <h1 class="text-6xl  font-bold underline">
-                                {{-- {{ $applicationInfo->job_posting->job_Title }} --}}
-                            </h1>
-                            <h1 class="text-3xl text-gray-600">
-                                {{-- {{ $applicationInfo->job_posting->company->bussines_Name }} --}}
-                            </h1>
-
-                        </div>
-                        <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
-                            {{-- @if ($applicationInfo->applicant_Status == 'PENDING')
+                            </div>
+                            <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
+                                {{-- @if ($applicationInfo->applicant_Status == 'PENDING')
                                 <span
                                     class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                             @elseif ($applicationInfo->applicant_Status == 'INTERESTED')
@@ -592,80 +619,77 @@
                                 <span
                                     class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
                             @endif --}}
+                            </div>
                         </div>
-                    </div>
-                    <hr class="mt-4">
-                    <div class="flex flex-col mt-4">
+                        <hr class="mt-4">
+                        <div class="flex flex-col mt-4">
 
-                        <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">APPLICATION DETAIL</span>
+                            <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">APPLICATION
+                                DETAIL</span>
 
-                        <ul>
+                            <ul>
+
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">Date Applied:</li>
+                                    <p class="ms-4">
+                                        {{ $applicantInfo->created_at->format('F j, Y') }}
+                                    </p>
+                                </div>
+                                <div class="flex flex-row ">
+                                    <li class="mb-2 font-bold">Applicant Status:</li>
+                                    <p class="ms-4">
+
+                                        @if ($applicantInfo->peso_Status === 'PENDING')
+                                            Pending
+                                        @elseif($applicantInfo->peso_Status === 'RECOMMENDED')
+                                            Recommended
+                                        @elseif($applicantInfo->peso_Status === 'NOT')
+                                            Not Recommended
+                                        @endif
+
+                                    </p>
+                                </div>
 
 
-                            <div class="flex flex-row">
-                                <li class="mb-2 font-bold">Resume:</li>
-                                {{-- @if ($applicationInfo->applicant_Resume === 1)
-                                    <p class="ms-4">Uploaded Resume</p>
-                                @elseif($applicationInfo->applicant_Resume === 2)
-                                    <p class="ms-4">AUTO-GENERATED</p>
-                                @endif --}}
+                                <div class="flex flex-row ">
+                                    <li class="mb-2 font-bold">PESO Status:</li>
+                                    <p class="ms-4">
+
+                                        @if ($applicantInfo->peso_Status === 'PENDING')
+                                            Pending
+                                        @elseif($applicantInfo->peso_Status === 'RECOMMENDED')
+                                            Recommended
+                                        @elseif($applicantInfo->peso_Status === 'NOT')
+                                            Not Recommended
+                                        @endif
+
+                                    </p>
+                                </div>
+
+
+                            </ul>
+
+                            <div class="flex flex-col  mt-2">
+                                <h1 class="mb-2 font-bold">Remarks</h1>
+                                <textarea id="message" rows="6"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                                    placeholder="My remarks..." maxlength="600" readonly></textarea>
                             </div>
 
-                            <div class="flex flex-row">
-                                <li class="mb-2 font-bold">Date Applied:</li>
-                                <p class="ms-4">
-                                    {{-- {{ $applicationInfo->created_at->format('F j, Y') }} --}}
-                                </p>
+                            <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                                <a href="#"
+                                    class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
+                                    Recommendation Letter</a>
+                                <a href="#"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
+                                    Resume</a>
                             </div>
 
 
-                            <div class="flex flex-row">
-                                <li class="mb-2 font-bold">Address:</li>
-                                <p class="ms-4">
-                                    {{-- {{ $applicationInfo->job_posting->job_Address }},
-                                    {{ $applicationInfo->job_posting->barangay->barangay_Name }},
-                                    {{ $applicationInfo->job_posting->barangay->municipality->municipality_Name }},
-                                    {{ $applicationInfo->job_posting->barangay->municipality->province->province_Name }} --}}
-                                </p>
-                            </div>
-
-                            <div class="flex flex-row">
-                                <li class="mb-2 font-bold">Date Applied:</li>
-                                <p class="ms-4">
-                                    {{-- {{ $applicationInfo->created_at->format('F j, Y') }} --}}
-                                </p>
-                            </div>
-
-                            <div class="flex flex-row ">
-                                <li class="mb-2 font-bold">PESO Status:</li>
-                                <p class="ms-4">
-
-                                    {{-- @if ($applicationInfo->peso_Status === 'PENDING')
-                                        Pending
-                                    @elseif($applicationInfo->peso_Status === 'RECOMMENDED')
-                                        Recommended
-                                    @elseif($applicationInfo->peso_Status === 'NOT')
-                                        Not Recommended
-                                    @endif --}}
-
-                                </p>
-                            </div>
-
-
-                        </ul>
-
-                        <div class="flex flex-col  mt-2">
-                            <h1 class="mb-2 font-bold">Remarks</h1>
-                            <textarea id="message" rows="6"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
-                                placeholder="My remarks..." maxlength="600" readonly></textarea>
                         </div>
-
-
-                    </div>
-                @endif
-            </div>
-
+                    @endif
+                </div>
+            @endif
         </div>
     </div>
 
