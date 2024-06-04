@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Livewire\Signup\Jobseeker\Partials;
+
+use Livewire\Attributes\On;
+use Livewire\Component;
+
+class WorkExperience extends Component
+{
+
+    public $workExperienceData = [];
+    public function editWorkExperience($index)
+    {
+        $this->dispatch('editWorkExperience', index: $index);
+    }
+
+    public function removeWorkExperience($index)
+    {
+        unset($this->workExperienceData[$index]);
+        $this->workExperienceData = array_values($this->workExperienceData);
+        toastr()->error('Record removed!');
+    }
+
+    #[On('refreshWorkExp')]
+    public function render()
+    {
+        return view('livewire.signup.jobseeker.partials.work-experience');
+    }
+}

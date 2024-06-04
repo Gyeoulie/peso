@@ -711,7 +711,7 @@
 
             <div class="mt-6 flex justify-end">
                 <x-secondary-button type="button" wire:click.prevent='closeeeeeeeeeeee'>
-                {{ __('Cancel') }}
+                    {{ __('Cancel') }}
                 </x-secondary-button>
 
 
