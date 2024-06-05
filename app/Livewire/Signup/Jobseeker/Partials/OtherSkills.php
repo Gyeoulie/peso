@@ -27,6 +27,7 @@ class OtherSkills extends Component
         'EMBROIDERY',
         'TAILORING',
     ];
+    public $stepNumber = 10;
 
     public function addSkills()
     {
@@ -83,9 +84,18 @@ class OtherSkills extends Component
     {
         $otherSkills = array_merge($this->checkBoxData, $this->inputData);
 
-        dd($otherSkills);
+        $this->dispatch('handleStepData', $this->stepNumber, [
+            'otherSkills' => $otherSkills,
+        ]);
 
+        $this->dispatch('nextStep');
     }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
+    }
+
     public function render()
     {
         return view('livewire.signup.jobseeker.partials.other-skills');

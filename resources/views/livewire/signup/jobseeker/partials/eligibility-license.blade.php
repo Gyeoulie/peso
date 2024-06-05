@@ -1,7 +1,7 @@
 <div>
     <h1 class="text-2xl font-bold">Eligibility/License</h1>
 
-    <div class="flex flex-col mt-4 ">
+    <div class="flex flex-col mt-10">
         @if ($eligibilityData)
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg  mx-auto">
                 <table class="w-full text-md text-center rtl:text-center text-gray-500">
@@ -110,12 +110,12 @@
                 ADD LICENSE
             </button>
         </div>
-        <div class="flex flex-row justify-end space-x-4">
-            <x-secondary-button type="button">
+        <div class="flex flex-row mt-4 justify-between w-full space-x-4 mt-4 mb-4">
+            <x-secondary-button wire:click.prevent='prev' type="button">
                 Previous
             </x-secondary-button>
 
-            <x-blue-button type="button">
+            <x-blue-button wire:click.prevent='next' type="button">
                 Next
             </x-blue-button>
         </div>

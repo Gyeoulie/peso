@@ -9,6 +9,8 @@ class WorkExperience extends Component
 {
 
     public $workExperienceData = [];
+
+    public $stepNumber = 9;
     public function editWorkExperience($index)
     {
         $this->dispatch('editWorkExperience', index: $index);
@@ -19,6 +21,20 @@ class WorkExperience extends Component
         unset($this->workExperienceData[$index]);
         $this->workExperienceData = array_values($this->workExperienceData);
         toastr()->error('Record removed!');
+    }
+
+    public function next()
+    {
+        $this->dispatch('handleStepData', $this->stepNumber, [
+            'workExperienceData' => $this->workExperienceData,
+        ]);
+
+        $this->dispatch('nextStep');
+    }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
     }
 
     #[On('refreshWorkExp')]

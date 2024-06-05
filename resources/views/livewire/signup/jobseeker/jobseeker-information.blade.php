@@ -14,41 +14,45 @@
         </div>
 
 
-        <div class="col-span-4 sm:col-start-2 sm:col-end-12 ">
+        <div class="col-span-4 sm:col-start-2 sm:col-end-12" x-data="{
+            currentStep: @entangle('currentStep'),
+            activeTab: 'bg-blue-400',
+            inactiveTab: 'bg-white',
+        }">
             <div class="flex flex-row">
-                <ul class="border border-gray-200 rounded-l overflow-hidden shadow-md">
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out highlighted-section">
+                <ul class="hidden sm:block border border-gray-200 rounded-l overflow-hidden shadow-md">
+                    <li :class="currentStep === 1 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out highlighted-section">
                         Applicant Name</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 2 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Personal Information</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 3 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Employment Status</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 4 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Job Preferences</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 5 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Language/Dialects</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 6 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Educational Background</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 7 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Certification/Training</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 8 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Eligibility/License</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 9 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Work Experience</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 10 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Other Skills</li>
-                    <li
-                        class="section-item px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                    <li :class="currentStep === 11 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Certification And Authorization</li>
                 </ul>
                 <div class="w-full px-6 py-6 bg-white shadow-md overflow-hidden sm:rounded-r-lg">
@@ -58,60 +62,98 @@
 
 
                     {{-- APPLICANT NAME --}}
-                    <div class="applicant-name-section">
+                    <div x-show="currentStep === 1" class="applicant-name-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0">
                         @livewire('signup.jobseeker.partials.applicant-name')
+                        {{-- <li :class="currentStep === 1 ? activeTab : inactiveTab"vewire:signup.jobseeker.partials.applicant-name /> --}}
+
 
                     </div>
 
                     {{-- personal information --}}
-                    <div class="personal-information-section">
+                    <div x-show="currentStep === 2" class="personal-information-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         @livewire('signup.jobseeker.partials.personal-information')
 
                     </div>
 
                     {{-- employment status --}}
-                    <div class="employment-status-section">
+                    <div x-show="currentStep === 3" class="employment-status-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         @livewire('signup.jobseeker.partials.employment-status')
 
                     </div>
 
                     {{-- JOB PREFERENCES --}}
-                    <div class="job-preference-section">
+                    <div x-show="currentStep === 4" class="job-preference-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         @livewire('signup.jobseeker.partials.job-preference')
                     </div>
 
                     {{-- LANGUAGE/DIALECTS --}}
-                    <div class="language-section">
+                    <div x-show="currentStep === 5" class="language-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         @livewire('signup.jobseeker.partials.language')
                     </div>
 
                     {{-- EDUCATIONAL BACKGROUND --}}
-                    <div class="education-section">
+                    <div x-show="currentStep === 6" class="education-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         @livewire('signup.jobseeker.partials.education')
                     </div>
 
                     {{-- CERTIFICATION AND TRAININGS --}}
-                    <div class="certiciation-training-section">
+                    <div x-show="currentStep === 7" class="certiciation-training-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         @livewire('signup.jobseeker.partials.certification-training')
                     </div>
 
                     {{-- ELIGIBILITY/LICENSE --}}
-                    <div class="eligibility-license-section">
+                    <div x-show="currentStep === 8" class="eligibility-license-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         @livewire('signup.jobseeker.partials.eligibility-license')
                     </div>
 
                     {{-- WORK EXPERIENCE --}}
-                    <div class="work-experience-section">
+                    <div x-show="currentStep === 9" class="work-experience-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         @livewire('signup.jobseeker.partials.work-experience')
                     </div>
 
                     {{-- OTHER SKILLS --}}
-                    <div class="other-skills-section">
+                    <div x-show="currentStep === 10" class="other-skills-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         @livewire('signup.jobseeker.partials.other-skills')
                     </div>
 
 
 
+                    <div x-show="currentStep === 11" class="confirmation-section"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
+                        @livewire('signup.jobseeker.partials.confirmation')
+                    </div>
 
 
 

@@ -11,6 +11,8 @@ class Language extends Component
     public $languages = [];
     public $languageError = '';
 
+    public $stepNumber = 5;
+
     public function removeLanguage($index)
     {
         unset($this->languages[$index]);
@@ -24,7 +26,15 @@ class Language extends Component
             'languages' => 'required|array|min:1',
         ]);
 
-        dd($this->languages);
+        $this->dispatch('handleStepData', $this->stepNumber, [
+            'languages' => $this->languages,
+        ]);
+        $this->dispatch('nextStep');
+    }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
     }
 
     #[On('refreshLanguage')]

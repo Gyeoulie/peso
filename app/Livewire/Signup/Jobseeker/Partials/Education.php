@@ -10,6 +10,8 @@ class Education extends Component
     // #[Reactive]
     public $educationData = [];
 
+    public $stepNumber = 6;
+
     public $eduLevels = [
         '1' => 'GRADE I',
         '2' => 'GRADE II',
@@ -56,7 +58,18 @@ class Education extends Component
         $this->validate([
             'educationData' => 'required|array|min:1',
         ]);
+
+        $this->dispatch('handleStepData', $this->stepNumber, [
+            'educationData' => $this->educationData,
+        ]);
+        $this->dispatch('nextStep');
     }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
+    }
+
     #[On('refreshEdu')]
     public function render()
     {

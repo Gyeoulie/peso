@@ -1,5 +1,5 @@
 <x-modal name="eligibility-modal" focusable>
-    <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+    <div class="w-full max-w-4xl px-6 py-6 items-center">
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Eligibility Record') }}
         </h2>
@@ -62,9 +62,9 @@
                 {{ __('Cancel') }}
             </x-secondary-button>
 
-            <x-danger-button wire:click.prevent='save' class="ms-3" type="button">
+            <x-primary-button wire:click.prevent='save' class="ms-3" type="button">
                 {{ __('Save') }}
-            </x-danger-button>
+            </x-primary-button>
         </div>
     </div>
 </x-modal>

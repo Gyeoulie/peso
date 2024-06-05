@@ -10,6 +10,8 @@ class CertificationTraining extends Component
 
     public $certificateData = [], $trainingData = [];
 
+    public $stepNumber = 7;
+
     public function editCertificate($id)
     {
         $this->dispatch('editCertificate', id: $id);
@@ -39,6 +41,20 @@ class CertificationTraining extends Component
         $this->trainingData = array_values($this->trainingData);
         toastr()->success('Record removed!');
 
+    }
+
+    public function next()
+    {
+        $this->dispatch('handleStepData', $this->stepNumber, [
+            'certificateData' => $this->certificateData,
+            'trainingData' => $this->trainingData,
+        ]);
+        $this->dispatch('nextStep');
+    }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
     }
 
     #[On('refreshCertTrain')]

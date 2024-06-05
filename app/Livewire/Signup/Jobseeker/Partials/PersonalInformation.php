@@ -15,6 +15,8 @@ class PersonalInformation extends Component
 
     public $mun, $prov, $bar;
 
+    public $stepNumber = 2;
+
     #[On('barSelect')]
     public function barSelect($id)
     {
@@ -37,7 +39,7 @@ class PersonalInformation extends Component
             'address' => 'required|string|max:255',
             'barangayID' => 'required',
             'civilstatus' => 'required|in:1,2,3',
-            'religion' => 'required|string',
+            'religion' => 'required',
             'phone' => 'required|regex:/(09)[0-9]{9}/|numeric',
             'tin' => 'nullable|size:11|numeric',
             'height' => 'nullable|numeric',
@@ -62,8 +64,25 @@ class PersonalInformation extends Component
 
         $this->validate($rules, $messages);
 
+        $this->dispatch('handleStepData', $this->stepNumber, [
+            'address' => $this->address,
+            'barangayID' => $this->barangayID,
+            'civilstatus' => $this->civilstatus,
+            'religion' => $this->religion,
+            'phone' => $this->phone,
+            'tin' => $this->tin,
+            'height' => $this->height,
+            'disabilityBox' => $this->disabilityBox,
+            'otherDisability' => $this->otherDisability,
+        ]);
+
+        $this->dispatch('nextStep');
     }
 
+    public function prev()
+    {
+        $this->dispatch('prevStep');
+    }
     public function render()
     {
         return view('livewire.signup.jobseeker.partials.personal-information');

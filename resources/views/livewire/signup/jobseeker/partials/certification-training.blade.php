@@ -1,6 +1,6 @@
 <div>
     <h1 class="text-2xl font-bold">Certification and Training</h1>
-    <div class="flex flex-col mt-4 ">
+    <div class="flex flex-col mt-10">
 
 
         @if ($certificateData)
@@ -149,12 +149,13 @@
                 ADD TRAINING
             </button>
         </div>
-        <div class="flex flex-row justify-end space-x-4">
-            <x-secondary-button type="button">
+
+        <div class="flex flex-row mt-4 justify-between w-full space-x-4 mt-4 mb-4">
+            <x-secondary-button wire:click.prevent='prev' type="button">
                 Previous
             </x-secondary-button>
 
-            <x-blue-button type="button">
+            <x-blue-button wire:click.prevent='next' type="button">
                 Next
             </x-blue-button>
         </div>

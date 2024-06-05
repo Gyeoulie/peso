@@ -12,6 +12,8 @@ class JobPreference extends Component
 
     public $jobpreference = [], $industrypreference = [];
 
+    public $stepNumber = 4;
+
     #[On('positionSelect')]
     public function positionSelect($id)
     { // Check if the selected job position already exists in the $jobTags array
@@ -108,6 +110,17 @@ class JobPreference extends Component
             'industrypreference.max' => 'Please select only one industry preference.',
         ]);
 
+        $this->dispatch('handleStepData', $this->stepNumber, [
+            'jobpreference' => $this->jobpreference,
+            'industrypreference' => $this->industrypreference,
+        ]);
+
+        $this->dispatch('nextStep');
+    }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
     }
 
     public function render()

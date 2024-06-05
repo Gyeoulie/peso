@@ -13,7 +13,9 @@ class ApplicantName extends Component
     public $stepNumber = 1;
 
     public $fname, $mname, $lname, $suffix = "", $bday, $gender = "";
-    
+
+    public $test;
+
     #[Validate]
     public $pimage;
 
@@ -72,6 +74,8 @@ class ApplicantName extends Component
 
         $this->validate($rules, $messages);
 
+        $imgPath = $this->pimage->store('images/user_data', 'public');
+
         $this->dispatch('handleStepData', $this->stepNumber, [
             'fname' => $this->fname,
             'mname' => $this->mname,
@@ -79,8 +83,14 @@ class ApplicantName extends Component
             'suffix' => $this->suffix,
             'bday' => $this->bday,
             'gender' => $this->gender,
-            'pimage' => $this->pimage->getRealPath(),
+            'pimage' => $imgPath,
         ]);
+        $this->dispatch('nextStep');
+    }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
     }
 
     public function render()

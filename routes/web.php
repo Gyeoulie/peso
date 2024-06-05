@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CompanyProfile;
 use App\Http\Controllers\EmployeeProfile;
-use App\Http\Controllers\NSRP;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
 use App\Livewire\Admin\JobPosting\Applicants\ApplicantOverview;
@@ -35,12 +34,15 @@ Route::get('/', function () {
 });
 
 //JOBSEEKER FILL INFORMATION
-Route::get('/fill', [NSRP::class, 'loadData'])->name('fill_profile');
-Route::post('/fill', [NSRP::class, 'storeInfo'])->name('postInfo');
+// Route::get('/fill', [NSRP::class, 'loadData'])->name('fill_profile');
+// Route::post('/fill', [NSRP::class, 'storeInfo'])->name('postInfo');
 
-//EMPLOYER FILL INFORMATION
-Route::get('/fill/employer', [NSRP::class, 'loadEmployer'])->name('fill_employer');
-Route::post('/fill/employer', [NSRP::class, 'postEmployer'])->name('postEmployer');
+// //EMPLOYER FILL INFORMATION
+// Route::get('/fill/employer', [NSRP::class, 'loadEmployer'])->name('fill_employer');
+// Route::post('/fill/employer', [NSRP::class, 'postEmployer'])->name('postEmployer');
+
+// SIGN UP
+Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile');
 
 //JOBSEEKER PROFILE
 Route::get('/employee', [EmployeeProfile::class, 'employeeProfile'])->name('employeeProfile');
@@ -55,9 +57,9 @@ Route::post('/company/update', [CompanyProfile::class, 'updateDescCompany'])->na
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard/home', function () {
-    return view('dashboard.home');
-})->middleware(['auth', 'verified'])->name('dashboard.home');
+// Route::get('/dashboard/home', function () {
+//     return view('dashboard.home');
+// })->middleware(['auth', 'verified'])->name('dashboard.home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -86,7 +88,8 @@ Route::get('/profile/edit', EditDetails::class)->name('edit.details');
 Route::get('/applications/history', ApplicationHistory::class)->name('jobseeker.application');
 
 // PUBLIC
-Route::get('/dashboard', Dashboard::class)->name('dashboard');
+Route::get('/dashboard', Dashboard::class)->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
 // PUBLIC - PROFILE
 Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
@@ -151,6 +154,6 @@ Route::get('/admin/job/applicants/overview/{id}', ApplicantOverview::class)->nam
 Route::get('/download-resume/{id}', [ResumeController::class, 'downloadResume'])->name('download.resume');
 
 // test
-Route::get('/testj', JobseekerInformation::class)->name('jobseeker.test');
+// Route::get('/testj', JobseekerInformation::class)->name('jobseeker.test');
 
 require __DIR__ . '/auth.php';

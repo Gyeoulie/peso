@@ -1,6 +1,6 @@
 <div>
     <h1 class="text-2xl font-bold">Language/Dialects</h1>
-    <div class="flex flex-col mt-4 ">
+    <div class="flex flex-col mt-10">
         @if ($languages)
             <div class="relative h-xl overflow-y-auto shadow-md sm:rounded-lg w-3/4 mx-auto">
                 <table class="w-full overflow-scroll text-sm text-center rtl:text-center text-gray-500">
@@ -83,8 +83,9 @@
                 ADD LANGUAGE
             </button>
         </div>
-        <div class="flex flex-row justify-end space-x-4">
-            <x-secondary-button type="button">
+        
+        <div class="flex flex-row mt-4 justify-between w-full space-x-4 mt-4 mb-4">
+            <x-secondary-button wire:click.prevent='prev' type="button">
                 Previous
             </x-secondary-button>
 

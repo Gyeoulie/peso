@@ -1,6 +1,6 @@
 <div>
     <h1 class="text-2xl font-bold">Job and Industry Preference</h1>
-    <div class="flex flex-col mt-2 w-full">
+    <div class="flex flex-col mt-10 w-full">
         <div class="flex-inline mt-2 ">
 
 
@@ -71,8 +71,8 @@
         </div>
     </div>
 
-    <div class="flex flex-row justify-end space-x-4">
-        <x-secondary-button type="button">
+    <div class="flex flex-row mt-4 justify-between w-full space-x-4 mt-4 mb-4">
+        <x-secondary-button wire:click.prevent='prev' type="button">
             Previous
         </x-secondary-button>
 

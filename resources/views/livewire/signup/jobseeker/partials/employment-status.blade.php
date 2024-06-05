@@ -3,7 +3,7 @@
         <!-- Livewire Component -->
         <div x-data="employmentStatusHandler()" @change-status.window="updateEmpDesc">
             <h1 class="text-2xl font-bold">Employment Status</h1>
-            <div class="flex flex-row mt-4">
+            <div class="flex flex-col sm:flex-row gap-4 mt-10">
                 <div class="flex flex-col w-full">
                     <x-input-label for="empStatus" :value="__('Employment Status')" />
                     <select wire:model='empStatus' x-model="empStatus" @change="updateEmpDesc"
@@ -15,7 +15,7 @@
                     <x-input-error :messages="$errors->get('empStatus')" class="mt-2" />
                     </h1>
                 </div>
-                <div class="flex flex-col ml-4 w-full">
+                <div class="flex flex-col w-full">
                     <x-input-label for="empDesc" :value="__('Description')" />
                     <select wire:model='empDescription' x-model="empDesc" class="block mt-1 w-full rounded">
                         <option value="" disabled selected>Select Description</option>
@@ -28,8 +28,8 @@
                 </div>
             </div>
 
-            <div class="mt-20 flex flex-row justify-end space-x-4">
-                <x-secondary-button type="button">
+            <div class="flex flex-row mt-4 justify-between w-full space-x-4 mt-4 mb-4">
+                <x-secondary-button wire:click.prevent='prev' type="button">
                     Previous
                 </x-secondary-button>
 

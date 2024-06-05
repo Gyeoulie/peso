@@ -19,11 +19,12 @@ return new class extends Migration
             $table->string('edu_Course', 255)->nullable();
             $table->date('edu_Started')->nullable();
             $table->date('edu_Ended')->nullable();
+            $table->tinyInteger('edu_Ongoing', 1)->nullable();
             $table->timestamps();
 
             // Define foreign key constraint
             $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
+                ->onUpdate('cascade');
         });
     }
 

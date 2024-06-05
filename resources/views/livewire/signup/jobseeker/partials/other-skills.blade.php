@@ -1,9 +1,9 @@
 <div>
 
     <h1 class="text-2xl font-bold">Add Other Skills</h1>
-    <div class="flex flex-col mt-4">
-        <div class="flex flex-row w-full">
-            <table class="ml-10 table-fixed">
+    <div class="flex flex-col mt-10">
+        <div class="flex flex-row w-full overflow-auto">
+            <table class="ml-10 table-fixed ">
                 <tbody>
                     <tr>
                         <td class="px-6 py-1">
@@ -201,14 +201,14 @@
             </table>
         </div>
 
-        <div class="flex flex-row ml-12 mt-4 w-full">
-            <div class="flex flex-col w-1/2">
+        <div class="flex flex-row px-4 sm:px-12 mt-4 w-full">
+            <div class="flex flex-col w-full">
                 <x-input-label for="presentAddress" :value="__('Other Skills')" />
-                <div class="inline-flex">
-                    <x-text-input wire:model='inputSkills' class="block mt-1 w-full" type="text"
-                        name="hnum" />
+                <div class="flex flex-row gap-4">
+                    <x-text-input wire:model='inputSkills' class="block mt-1 w-1/2" type="text" name="hnum" />
                     <x-primary-button wire:click.prevent='addSkills' type="button"
-                        class="ml-2 px-4 py-2  text-white rounded">Add</x-primary-button>
+                        class="flex justify-center items-center sm:w-[100px] text-white rounded">Add
+                        Skill</x-primary-button>
                 </div>
                 <x-input-error :messages="$errors->get('inputSkills')" class="mt-2" />
 
@@ -216,7 +216,7 @@
         </div>
 
 
-        <div id="otherSkillRow" class="flex-inline ml-12 mt-2">
+        <div id="otherSkillRow" class="flex-inline px-2 sm:px-12 mt-2">
             @foreach ($inputData as $index => $data)
                 <span wire:key="jobPref-{{ $index }}"
                     class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -237,8 +237,8 @@
 
 
 
-        <div class="flex flex-row justify-end space-x-4">
-            <x-secondary-button type="button">
+        <div class="flex flex-row mt-4 justify-between w-full space-x-4">
+            <x-secondary-button wire:click.prevent='prev' type="button">
                 Previous
             </x-secondary-button>
 

@@ -10,6 +10,8 @@ class EligibilityLicense extends Component
 
     public $eligibilityData = [], $licenseData = [];
 
+    public $stepNumber = 8;
+
     public function editEligibility($id)
     {
         $this->dispatch('editEligibility', id: $id);
@@ -42,6 +44,20 @@ class EligibilityLicense extends Component
             toastr()->error('Record removed!');
 
         }
+    }
+
+    public function next()
+    {
+        $this->dispatch('handleStepData', $this->stepNumber, [
+            'eligibilityData' => $this->eligibilityData,
+            'licenseData' => $this->licenseData,
+        ]);
+        $this->dispatch('nextStep');
+    }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
     }
 
     #[On('refreshEligibilityLicense')]

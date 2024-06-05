@@ -9,6 +9,8 @@ class EmploymentStatus extends Component
 
     public $empStatus = "", $empDescription = "";
 
+    public $stepNumber = 3;
+
     public function next()
     {
 
@@ -18,6 +20,17 @@ class EmploymentStatus extends Component
 
         ]);
 
+        $this->dispatch('handleStepData', $this->stepNumber, [
+            'empStatus' => $this->empStatus,
+            'empDescription' => $this->empDescription,
+        ]);
+
+        $this->dispatch('nextStep');
+    }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
     }
 
     public function render()

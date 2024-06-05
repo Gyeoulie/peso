@@ -1,12 +1,12 @@
 <div>
     <h1 class="text-2xl font-bold">Personal Information</h1>
-    <div class="flex flex-row w-full">
+    <div class="flexflex-col sm:flex-row gap-4 w-full mt-10">
         <div class="flex flex-col w-full">
             <x-input-label for="presentAddress" :value="__('Present Address')" />
             <x-text-input wire:model='address' class="block mt-1 w-full" type="text" />
             <x-input-error :messages="$errors->get('address')" class="mt-2" />
         </div>
-        <div class="flex flex-col ml-4 w-full">
+        <div class="flex flex-col w-full">
             <x-input-label for="city" :value="__('Barangay')" />
             <x-text-input x-on-click wire:model='bar' class="block mt-1 w-full" type="text" readonly
                 x-data="" x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')"
@@ -14,17 +14,17 @@
             <x-input-error :messages="$errors->get('barangayID')" class="mt-2" />
         </div>
     </div>
-    <div class="flex flex-row mt-4">
+    <div class="flex flex-col sm:flex-row gap-4 mt-4">
         <div class="flex flex-col w-full">
             <x-input-label for="city" :value="__('Municipality')" />
             <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
         </div>
-        <div class="flex flex-col ml-4 w-full">
+        <div class="flex flex-col w-full">
             <x-input-label for="province" :value="__('Province')" />
             <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
         </div>
     </div>
-    <div class="flex flex-row mt-4">
+    <div class="flex flex-col sm:flex-row gap-4 mt-4">
         <div class="flex flex-col w-full">
             <x-input-label for="civilstatus" :value="__('Civil Status')" />
             <select wire:model='civilstatus' class="block mt-1 w-full rounded">
@@ -36,9 +36,9 @@
             </select>
             <x-input-error :messages="$errors->get('civilstatus')" class="mt-2" />
         </div>
-        <div class="flex flex-col ml-4 w-full">
+        <div class="flex flex-col w-full">
             <x-input-label for="religion" :value="__('Religion')" />
-            <select wire:model='' class="block mt-1 w-full rounded">
+            <select wire:model='religion' class="block mt-1 w-full rounded">
                 <option value="" disabled selected>Select Religion</option>
                 <option value="2">ASSEMBLY OF GOD</option>
                 <option value="3">AGLIPAYAN</option>
@@ -46,7 +46,7 @@
                 <option value="5">BAPTIST</option>
                 <option value="6">BUDDIST</option>
                 <option value="7">CHURCH OF GOD THRU CHRIST JESUS</option>
-                <option value="8">C/option>
+                <option value="8">CHRISTIAN</option>
                 <option value="9">CHURCH OF CHRIST</option>
                 <option value="10">CHURCH OF GOD</option>
                 <option value="25">CHURCH OF LATTER DAY SAINT</option>
@@ -66,7 +66,7 @@
                 <option value="23">LUTHERAN</option>
                 <option value="24">METHODIST</option>
                 <option value="26">NON-SECTORAL CHARISMATIC</option>
-                <option value="HRISTIAN<27">ORTHODOX</option>
+                <option value="27">ORTHODOX</option>
                 <option value="28">OTHERS</option>
                 <option value="29">PENTECOSTAL</option>
                 <option value="30">PHILIPPINE INDEPENDENT CHRISTIAN CHURCH(PICC/IFI)</option>
@@ -86,18 +86,18 @@
         </div>
     </div>
 
-    <div class="flex flex-row mt-4">
+    <div class="flex flex-col sm:flex-row gap-4 mt-4">
         <div class="flex flex-col w-full">
             <x-input-label for="phone" :value="__('Cellphone No.')" />
-            <x-text-input wire:model='' class="block mt-1 w-full" type="tel" />
+            <x-text-input wire:model='phone' class="block mt-1 w-full" type="tel" />
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
-        <div class="flex flex-col ml-4 w-full">
+        <div class="flex flex-col w-full">
             <x-input-label for="tin" :value="__('TIN')" />
             <x-text-input wire:model='tin' class="block mt-1 w-full" type="text" />
             <x-input-error :messages="$errors->get('tin')" class="mt-2" />
         </div>
-        <div class="flex flex-col ml-4 w-full">
+        <div class="flex flex-col w-full">
             <x-input-label for="height" :value="__('Height')" />
             <x-text-input wire:model='height' class="block mt-1 w-full" type="text" />
             <x-input-error :messages="$errors->get('height')" class="mt-2" />
@@ -105,10 +105,10 @@
     </div>
 
 
-    <div class="flex flex-row mt-4" x-data="{ otherDisability: false }">
+    <div class="flex flex-col sm:flex-row mt-4 gap-4" x-data="{ otherDisability: false }">
         <div class="flex flex-col w-full">
             <x-input-label for="disability" :value="__('Disability')" />
-            <div class="flex flex-row space-x-4">
+            <div class="flex flex-col mt-2 sm:flex-row gap-1 sm:gap-4">
                 <div
                     class="mb-[0.125rem] block min-h-[1.5rem] sm:min-h-auto sm:mb-[0.5rem] md:min-h-auto md:mb-[0.125rem] pl-[1.5rem]">
                     <input wire:model='disabilityBox'
@@ -167,15 +167,15 @@
             </div>
 
         </div>
-        <div x-show="otherDisability" x-cloak class="flex flex-col ml-4 w-full">
+        <div x-show="otherDisability" x-cloak class="flex flex-col w-full">
             <x-input-label for="otherDisability" :value="__('Others')" />
             <x-text-input wire:model='otherDisability' class="block mt-1 w-full" type="text" />
             <x-input-error :messages="$errors->get('')" class="mt-2" />
         </div>
     </div>
 
-    <div class="flex flex-row mt-4 justify-end space-x-4">
-        <x-secondary-button type="button">
+    <div class="flex flex-row mt-4 justify-between w-full space-x-4">
+        <x-secondary-button wire:click.prevent='prev' type="button">
             Previous
         </x-secondary-button>
 
