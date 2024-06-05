@@ -12,7 +12,6 @@ class JobseekerProfile extends Component
 {
 
     public $id;
-
     public $description;
     // public $successss = false;
 
@@ -39,14 +38,13 @@ class JobseekerProfile extends Component
         $this->validate();
     
         try {
-            // Update the employee record
             Employee::where('employee_id', $this->id)->update([
                 'empDesc' => $this->description,
             ]);
             toastr()->success('About Me Record has been Updated!');
     
             $this->closeeeeeeeeeeee();
-            $this->dispatch('reload-table');
+            // $this->dispatch('reload-table');       
         } catch (\Exception $e) {
             toastr()->error('There was an Error');
         }

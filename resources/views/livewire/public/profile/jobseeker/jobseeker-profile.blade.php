@@ -283,7 +283,7 @@
                             <div class="flex flex-row w-full justify-between items-center mt-4 mb-4">
                                 <h2 class="text-xl font-bold">Jobseeker Details</h2>
 
-
+{{-- eto sa edit deets --}}
                                 <a href="{{ route('edit.details') }}">
                                     <div
                                         class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
@@ -711,14 +711,11 @@
 
             <div class="mt-6 flex justify-end">
                 <x-secondary-button type="button" wire:click.prevent='closeeeeeeeeeeee'>
-                {{ __('Cancel') }}
+                    {{ __('Cancel') }}
                 </x-secondary-button>
 
-
-                <x-danger-button wire:loading.attr="disabled" class="ms-3" type="button">
-                    <div wire:click.prevent='saveeeeeeeeee'>
-
-
+                <div wire:click.prevent='saveeeeeeeeee'>
+                    <x-danger-button wire:loading.attr="disabled" class="ms-3" type="button">
                         {{ __('Save') }}
 
                         <div wire:loading.delay.long role="status">
@@ -733,11 +730,9 @@
                                     fill="currentFill" />
                             </svg>
                             <span class="sr-only">Loading...</span>
-
                         </div>
-                    </div>
-
-                </x-danger-button>
+                    </x-danger-button>
+                </div>
 
             </div>
     </x-modal>

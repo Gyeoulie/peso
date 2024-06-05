@@ -29,7 +29,7 @@ class License extends Model
         return $this->belongsTo(Employee::class, 'employee_id');
     }
 
-    public function License_Type()
+    public function license_type()
     {
         return $this->belongsTo(License_Type::class, 'license_type_id');
     }
