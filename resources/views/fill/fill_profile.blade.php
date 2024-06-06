@@ -33,7 +33,8 @@
         <a :href="route('logout')"
             onclick="event.preventDefault();
                         this.closest('form').submit();" id="logout-link"
-            class="ml-4 font-semibold text-gray-600 hover:text-gray-900  focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500" style="cursor: pointer;">Logout</a>
+            class="ml-4 font-semibold text-gray-600 hover:text-gray-900  focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+            style="cursor: pointer;">Logout</a>
 
     </form>
 
@@ -50,7 +51,7 @@
 
             <h1 class="text-3xl p-6">Complete your Details</h1>
         </div>
-    
+
 
         <div class="flex flex-row justify-center">
             <ul class="border border-gray-200 rounded overflow-hidden shadow-md">
@@ -171,10 +172,11 @@
 
     </div>
 
-    
+
 </body>
+
 </html>
-    
+
 <script>
     function toggleTableVisibility(dispTable) {
         const table = document.getElementById(dispTable);
@@ -221,6 +223,3 @@
         }
     }
 </script>
-
-
-

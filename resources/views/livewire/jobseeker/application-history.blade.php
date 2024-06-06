@@ -58,15 +58,13 @@
             <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full"
                 x-data="{
                     selectedJob: @entangle('selectedJob'),
-                    activeJob: 'bg-blue-300',
-                    inactiveJob: 'bg-white',
                 }">
                 @foreach ($applications as $data)
                     <div class="flex flex-col sm:w-full">
                         <a class="cursor-pointer" wire:key='application-{{ $data->applicant_id }}'
                             wire:click.prevent="updateSelection({{ $data->applicant_id }})">
-                            <div :class="selectedJob === {{ $data->applicant_id }} ? activeJob : inactiveJob"
-                                class="shadow rounded-lg p-6 flex flex-col mb-4 hover:scale-105 transition-transform">
+                            <div
+                                class="@if ($data->applicant_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
 
                                 <div class="flex flex-row">
                                     <div class="flex flex-col">
