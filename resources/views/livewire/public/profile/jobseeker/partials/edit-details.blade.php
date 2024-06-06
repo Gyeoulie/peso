@@ -75,8 +75,7 @@
                                 class="cursor-pointer px-4 py-2 bg-[#428bca] text-white rounded hover:bg-red-600 transition-colors duration-300 text-center w-full">
                                 Upload Image
                             </label>
-                            <input type="file" id="imageUpload" name="pimagePost" class="hidden" accept="image/*"
-                                onchange="previewImage(event)">
+                            <input type="file" id="imageUpload" class="hidden" accept="image/*">
                         </div>
                     </div>
 
@@ -100,19 +99,19 @@
                             <x-input-label for="suffix" :value="__('Suffix')" />
                             <select wire:model="suffix" name="suffixPost" class="block mt-1 w-full rounded-md">
                                 <option value="" disabled selected>Select Suffix</option>
-                                <option value="nonw">None</option>
-                                <option value="jr">Jr. (Junior)</option>
-                                <option value="sr">Sr. (Senior)</option>
-                                <option value="i">I</option>
-                                <option value="ii">II</option>
-                                <option value="iii">III</option>
-                                <option value="iv">IV</option>
-                                <option value="v">V</option>
-                                <option value="vi">VI</option>
-                                <option value="vii">VII</option>
-                                <option value="viii">VIII</option>
-                                <option value="ix">IX</option>
-                                <option value="x">X</option>
+                                <option value="">None</option>
+                                <option value="Jr">Jr. (Junior)</option>
+                                <option value="Sr">Sr. (Senior)</option>
+                                <option value="I">I</option>
+                                <option value="II">II</option>
+                                <option value="III">III</option>
+                                <option value="IV">IV</option>
+                                <option value="V">V</option>
+                                <option value="VI">VI</option>
+                                <option value="VII">VII</option>
+                                <option value="VIII">VIII</option>
+                                <option value="IX">IX</option>
+                                <option value="X">X</option>
                             </select>
                         </div>
                     </div>
@@ -268,8 +267,8 @@
                                 <x-input-label for="fname"> </i>Disability
                                 </x-input-label>
 
-                                <x-primary-button class="ml-auto mr-3" type="button" x-data="">
-                                    {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> --}}
+                                <x-primary-button class="ml-auto mr-3" type="button" x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'disability-modal')">
                                     Add Disability
                                 </x-primary-button>
 
@@ -588,6 +587,45 @@
 
                         </div>
                     </div>
+                    <div class="flex flex-row my-4 w-full gap-4 mt-4">
+                        <div class="flex flex-col w-full">
+
+                            <div class="flex flex-row w-full items-center">
+
+                                <x-input-label for="fname"> </i>Industry Preference
+                                </x-input-label>
+
+                                <x-primary-button class="ml-auto mr-3" type="button" x-data="">
+                                    Add Industry Preference
+                                </x-primary-button>
+
+                            </div>
+
+                            <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
+
+
+
+                                <span
+                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
+                                    Information Technology
+                                    <button type="button"
+                                        class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                        <span class="sr-only">Remove badge</span>
+                                        <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
+                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M18 6 6 18" />
+                                            <path d="m6 6 12 12" />
+                                        </svg>
+                                    </button>
+                                </span>
+
+                            </div>
+                            <x-input-error :messages="$errors->get('')" class="mt-2" />
+
+                        </div>
+                    </div>
 
                 </div>
 
@@ -644,8 +682,10 @@
                                 <!-- Dropdown links -->
                                 {{-- LOOP HERE --}}
                                 @foreach ($liTypes as $licenseTypes)
-                                    <x-dropdown-link wire:click.prevent='selectLicense({{$licenseTypes->license_type_id}})'
-                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase"> {{$licenseTypes->license_Name}} </x-dropdown-link>
+                                    <x-dropdown-link
+                                        wire:click.prevent='selectLicense({{ $licenseTypes->license_type_id }})'
+                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">
+                                        {{ $licenseTypes->license_Name }} </x-dropdown-link>
                                 @endforeach
                                 {{-- LOOP END --}}
                             </div>
@@ -666,9 +706,9 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button wire:click.prevent='saveLicense()' class="ms-3" type="button">
+                <x-primary-button wire:click.prevent='saveLicense()' class="ms-3" type="button">
                     {{ __('Save') }}
-                </x-danger-button>
+                </x-primary-button>
             </div>
         </div>
     </x-modal>
@@ -739,9 +779,9 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button wire:click.prevent="saveEli()" class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveEli()" class="ms-3" type="button">
                     {{ __('Save') }}
-                </x-danger-button>
+                </x-primary-button>
             </div>
         </div>
     </x-modal>
@@ -750,6 +790,45 @@
 
 
 
+    <x-modal name="disability-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Add Disaibility Record') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2" x-data="{ otherDisability: false }">
+
+                <div class="flex flex-col  mt-2 w-full">
+                    <x-input-label for="langSelect" :value="__('Add Disability')" />
+                    <select class="block mt-1 w-full rounded"
+                        x-on:change="otherDisability = $event.target.value === 'other'">
+                        <option value="" disabled selected>Select Disaibility</option>
+                        <option value="VISUAL">Visual</option>
+                        <option value="HEARING">Hearing</option>
+                        <option value="SPEECH">Speech</option>
+                        <option value="PHYSICAL">Physical</option>
+                        <option value="MENTAL">Mental</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <x-input-error :messages="$errors->get('')" class="mt-2" />
+                </div>
+                <div x-show="otherDisability" x-cloak class="mt-2">
+                    <x-input-label for="addDisability" :value="__('Others')" />
+                    <x-text-input class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('')" class="mt-2" />
+                </div>
+            </div>
+            <div class="mt-8 flex justify-end">
+                <x-secondary-button>
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-primary-button class="ms-3" type="button">
+                    {{ __('Add Disability Record') }}
+                </x-primary-button>
+            </div>
+        </div>
+    </x-modal>
 
 
 
