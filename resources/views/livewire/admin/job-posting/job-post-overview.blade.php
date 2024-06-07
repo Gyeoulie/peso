@@ -29,7 +29,7 @@
                             </img>
 
                             <div class="flex flex-col ml-4 w-full">
-                                <h1 class="text-xl sm:text-3xl font-bold">{{ $jobpost->company->bussines_Name }}</h1>
+                                <h1 class="text-xl sm:text-3xl font-bold">{{ $jobpost->company->business_Name }}</h1>
                                 <p class="text-sm sm:text-lg text-gray-700">{{ $jobpost->company->company_Address }},
                                     {{ $jobpost->barangay->barangay_Name }},
                                     {{ $jobpost->barangay->municipality->municipality_Name }},

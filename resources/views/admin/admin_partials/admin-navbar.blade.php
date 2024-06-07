@@ -1,12 +1,12 @@
 <aside id="default-sidebar"
     class="hidden sm:block sticky top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
     aria-label="Sidebar">
-    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50">
+    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50" x-data="{ activeNav: 'bg-gray-300', inactiveNav: 'hover:bg-gray-100' }">
         <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase">Menu</h5>
         <ul class="space-y-2 font-medium">
             <li>
-                <a href="{{ route('admin') }}"
-                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                <a href="{{ route('admin') }}" :class="{{ request()->routeIs('admin') }} ? activeNav : inactiveNav"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 group">
                     <svg class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                         <path
@@ -19,7 +19,8 @@
             </li>
             <li>
                 <a href="{{ route('admin-joblist') }}"
-                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 ">
+                    :class="{{ request()->routeIs('admin-joblist') }} ? activeNav : inactiveNav"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 ">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                         <path
@@ -30,7 +31,7 @@
             </li>
             <li>
                 <button type="button"
-                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-300"
                     aria-controls="dropdown-example" data-collapse-toggle="dropdown-1">
 
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -53,15 +54,17 @@
                             d="m1 1 4 4 4-4" />
                     </svg>
                 </button>
-                <ul id="dropdown-1" class="hidden py-2 space-y-2">
+                <ul id="dropdown-1" class="py-2 space-y-2 {{ request()->routeIs('admin-admin', 'admin-users') ? 'block' : 'hidden' }}">
                     <li>
-                        <a href="{{ route('admin') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">User
+                        <a href="{{ route('admin-users') }}"
+                          :class="{{ request()->routeIs('admin-users') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">User
                             Management</a>
                     </li>
                     <li>
                         <a href="{{ route('admin-admin') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Admin
+                            :class="{{ request()->routeIs('admin-admin') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Admin
                             Account Management</a>
                     </li>
 
@@ -69,7 +72,7 @@
             </li>
             {{-- <li>
                 <a href="{{ route('admin-location') }}"
-                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 group">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path
@@ -80,7 +83,7 @@
             </li> --}}
             <li>
                 <button type="button"
-                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-300 "
                     aria-controls="dropdown-example" data-collapse-toggle="dropdown-2">
 
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -102,23 +105,29 @@
                             d="m1 1 4 4 4-4" />
                     </svg>
                 </button>
-                <ul id="dropdown-2" class="hidden py-2 space-y-2">
+                <ul id="dropdown-2"
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-certificate', 'admin-eligibility', 'admin-location', 'admin-industry') ? 'block' : 'hidden' }}">
+
                     <li>
                         <a href="{{ route('admin-certificate') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Certificates</a>
+                            :class="{{ request()->routeIs('admin-certificate') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Certificates</a>
                     </li>
                     <li>
                         <a href="{{ route('admin-eligibility') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Eligibility
+                            :class="{{ request()->routeIs('admin-eligibility') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Eligibility
                             and License</a>
                     </li>
                     <li>
                         <a href="{{ route('admin-location') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Locations</a>
+                            :class="{{ request()->routeIs('admin-location') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Locations</a>
                     </li>
                     <li>
                         <a href="{{ route('admin-industry') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Positions
+                            :class="{{ request()->routeIs('admin-industry') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Positions
                             and Industry</a>
                     </li>
 
@@ -126,7 +135,9 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ route('admin-req') }}" class="flex items-center p-2 text-gray-900 rounded-lg ">
+                <a href="{{ route('admin-req') }}"
+                    :class="{{ request()->routeIs('admin-req') }} ? activeNav : inactiveNav"
+                    class="flex items-center p-2 text-gray-900 rounded-lg ">
 
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -146,13 +157,17 @@
             <li>
                 <a href="{{ route('admin') }}" class="flex items-center p-2 text-gray-900 rounded-lg ">
 
-                    <svg  class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                        <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
-                        <path d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
-                        <path d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
-                      </svg>
-                      
-                      
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                        <path
+                            d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
+                        <path
+                            d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
+                        <path
+                            d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
+                    </svg>
+
+
                     {{-- <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                         <path

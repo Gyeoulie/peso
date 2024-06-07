@@ -51,7 +51,7 @@
                             class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
                         </img>
 
-                        <h1 class="text-xl font-bold">{{ $applicant->job_posting->company->bussines_Name }}</h1>
+                        <h1 class="text-xl font-bold">{{ $applicant->job_posting->company->business_Name }}</h1>
                         <p class="text-gray-700">#IDNUMBER</p>
 
                         <div class="flex flex-row mt-6 justify-between w-full">

@@ -76,7 +76,7 @@
                                         <h1 class="text-3xl font-bold underline">{{ $data->job_posting->job_Title }}
                                         </h1>
                                         <h1 class="text-l text-gray-600">
-                                            {{ $data->job_posting->company->bussines_Name }}</h1>
+                                            {{ $data->job_posting->company->business_Name }}</h1>
                                         <div class="flex flex-row">
                                             <span
                                                 class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
@@ -163,7 +163,7 @@
                             <h1 class="text-6xl  font-bold underline">{{ $applicationInfo->job_posting->job_Title }}
                             </h1>
                             <h1 class="text-3xl text-gray-600">
-                                {{ $applicationInfo->job_posting->company->bussines_Name }}</h1>
+                                {{ $applicationInfo->job_posting->company->business_Name }}</h1>
 
                         </div>
                         <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">

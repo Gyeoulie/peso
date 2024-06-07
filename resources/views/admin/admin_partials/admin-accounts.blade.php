@@ -11,17 +11,17 @@
             </div>
 
             <div class="col-span-4 sm:col-span-12">
-              
 
 
-                    @livewire('admin.account-management-admin.account-table')
 
+                @livewire('admin.account-management-admin.account-table')
 
-                </div>
 
             </div>
 
         </div>
+
+    </div>
     </div>
 
     @livewire('admin.account-management-admin.edit-modal');

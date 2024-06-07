@@ -62,7 +62,7 @@ class Dashboard extends Component
             ->where('job_posting.job_Status', '=', 'ACTIVE')
             ->where(function ($query) {
                 $query->where('job_posting.job_Title', 'like', '%' . $this->search . '%')
-                    ->orWhere('company.bussines_Name', 'like', '%' . $this->search . '%')
+                    ->orWhere('company.business_Name', 'like', '%' . $this->search . '%')
                     ->orWhere('company.company_Address', 'like', '%' . $this->search . '%')
                     ->orWhere('job_posting.job_Address', 'like', '%' . $this->search . '%')
                     ->orWhere('m1.municipality_Name', 'like', '%' . $this->search . '%')

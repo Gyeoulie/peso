@@ -50,7 +50,7 @@
         @include('dashboard.admin_partials.admin-navbar')
 
 
-        
+
 
 
 

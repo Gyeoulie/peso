@@ -117,7 +117,7 @@ class JobPostOverview extends Component
         }
 
         $pdfPath = $reqpassed->req_passed_Input;
-        $pdfName = $reqpassed->requirement->requirement_Title . '_' . $reqpassed->job_posting->company->bussines_Name . '.pdf';
+        $pdfName = $reqpassed->requirement->requirement_Title . '_' . $reqpassed->job_posting->company->business_Name . '.pdf';
 
         //$path = storage_path('public/' . $pdfPath);
         if (Storage::exists('public/' . $pdfPath)) {

@@ -109,7 +109,7 @@
 
                                             <div class="flex flex-col w-full">
                                                 <h1 class="text-3xl font-bold underline">{{ $data->job_Title }}</h1>
-                                                <h1 class="text-l text-gray-600">{{ $data->company->bussines_Name }}
+                                                <h1 class="text-l text-gray-600">{{ $data->company->business_Name }}
                                                 </h1>
                                                 <div class="flex flex-row">
 
@@ -198,7 +198,7 @@
                                     <option wire:click.prevent='changeFilter("INTERVIEW")'>Interview
                                         ({{ $applicants['interview'] }})</option>
                                     <option wire:click.prevent='changeFilter("HIRED")'>Pending
-                                        ({{ $applicants['hired'] }})</option>\
+                                        ({{ $applicants['hired'] }})</option>
                                     <option wire:click.prevent='changeFilter("REJECTED")'>Pending
                                         ({{ $applicants['rejected'] }})</option>
                                 </select>

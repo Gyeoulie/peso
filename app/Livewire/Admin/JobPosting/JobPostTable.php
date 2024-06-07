@@ -32,7 +32,7 @@ class JobPostTable extends Component
 
     //                 ->where(function ($query) {
     //                     $query->where('job_posting.job_Title', 'like', '%' . $this->search . '%')
-    //                         ->orWhere('company.bussines_Name', 'like', '%' . $this->search . '%')
+    //                         ->orWhere('company.business_Name', 'like', '%' . $this->search . '%')
     //                         ->orWhere('company.trade_Name', 'like', '%' . $this->search . '%')
     //                         ->orWhere('company.company_Address', 'like', '%' . $this->search . '%')
     //                         ->orWhere('barangay.barangay_Name', 'like', '%' . $this->search . '%')
@@ -51,7 +51,7 @@ class JobPostTable extends Component
     //                 ->where('job_posting.job_Status', '=', 'PENDING')
     //                 ->where(function ($query) {
     //                     $query->where('job_posting.job_Title', 'like', '%' . $this->search . '%')
-    //                         ->orWhere('company.bussines_Name', 'like', '%' . $this->search . '%')
+    //                         ->orWhere('company.business_Name', 'like', '%' . $this->search . '%')
     //                         ->orWhere('company.trade_Name', 'like', '%' . $this->search . '%')
     //                         ->orWhere('company.company_Address', 'like', '%' . $this->search . '%')
     //                         ->orWhere('barangay.barangay_Name', 'like', '%' . $this->search . '%')
@@ -68,7 +68,7 @@ class JobPostTable extends Component
     //             ->where('job_posting.job_Status', '=', 'ACTIVE')
     //             ->where(function ($query) {
     //                 $query->where('job_posting.job_Title', 'like', '%' . $this->search . '%')
-    //                     ->orWhere('company.bussines_Name', 'like', '%' . $this->search . '%')
+    //                     ->orWhere('company.business_Name', 'like', '%' . $this->search . '%')
     //                     ->orWhere('company.trade_Name', 'like', '%' . $this->search . '%')
     //                     ->orWhere('company.company_Address', 'like', '%' . $this->search . '%')
     //                     ->orWhere('barangay.barangay_Name', 'like', '%' . $this->search . '%')
@@ -87,7 +87,7 @@ class JobPostTable extends Component
     //                 ->whereNotIn('job_posting.job_Status', ['PENDING', 'ACTIVE'])
     //                 ->where(function ($query) {
     //                     $query->where('job_posting.job_Title', 'like', '%' . $this->search . '%')
-    //                         ->orWhere('company.bussines_Name', 'like', '%' . $this->search . '%')
+    //                         ->orWhere('company.business_Name', 'like', '%' . $this->search . '%')
     //                         ->orWhere('company.trade_Name', 'like', '%' . $this->search . '%')
     //                         ->orWhere('company.company_Address', 'like', '%' . $this->search . '%')
     //                         ->orWhere('barangay.barangay_Name', 'like', '%' . $this->search . '%')
@@ -111,7 +111,7 @@ class JobPostTable extends Component
             ->where(function ($query) {
                 $query->where('job_Title', 'like', '%' . $this->search . '%')
                     ->orWhereHas('company', function ($query) {
-                        $query->where('bussines_Name', 'like', '%' . $this->search . '%')
+                        $query->where('business_Name', 'like', '%' . $this->search . '%')
                             ->orWhere('trade_Name', 'like', '%' . $this->search . '%')
                             ->orWhere('company_Address', 'like', '%' . $this->search . '%');
                     })
@@ -149,7 +149,7 @@ class JobPostTable extends Component
 //             ->where('job_posting.peso_municipality_id', '=', $user->peso->municipality_id)
 //             ->where(function ($query) {
 //                 $query->where('job_posting.job_Title', 'like', '%' . $this->search . '%')
-//                     ->orWhere('company.bussines_Name', 'like', '%' . $this->search . '%')
+//                     ->orWhere('company.business_Name', 'like', '%' . $this->search . '%')
 //                     ->orWhere('company.trade_Name', 'like', '%' . $this->search . '%')
 //                     ->orWhere('company.company_Address', 'like', '%' . $this->search . '%')
 //                     ->orWhere('barangay.barangay_Name', 'like', '%' . $this->search . '%')

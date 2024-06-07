@@ -213,7 +213,7 @@
                                                         <div class="flex flex-col">
                                                             <div class="flex-row sm:w-3/4 text-left">
                                                                 <h2 class="text-lg sm:text-2xl font-semibold">
-                                                                    {{ $data->company->bussines_Name }}</h2>
+                                                                    {{ $data->company->business_Name }}</h2>
                                                             </div>
                                                             <h1
                                                                 class="sm:hidden text-black text-sm text-left sm:text-center font-medium">

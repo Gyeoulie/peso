@@ -61,7 +61,7 @@ class ApplicationHistory extends Component
                 })
 
                     ->orWhereHas('job_posting.company', function ($query) {
-                        $query->where('bussines_Name', 'like', '%' . $this->search . '%');
+                        $query->where('business_Name', 'like', '%' . $this->search . '%');
                     });
             });
 

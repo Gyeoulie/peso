@@ -5,7 +5,7 @@
 }">
 
 
-    <div class="relative overflow-x-auto ">
+    <div class="relative overflow-x-auto p-1">
         <div class="sm:hidden">
             <label for="tabs" class="sr-only">Select your country</label>
             <select id="tabs"
@@ -156,7 +156,7 @@
                                 <img class="w-10 h-10 rounded-full"
                                     src="{{ asset('storage/' . $data->company->company_img) }}" alt="Jese image">
                                 <div class="ps-3 text-wrap">
-                                    <div class="text-base font-semibold">{{ $data->company->bussines_Name }}</div>
+                                    <div class="text-base font-semibold">{{ $data->company->business_Name }}</div>
                                     <div class="font-normal text-gray-500 text-sm">{{ $data->company->company_Address }}
                                         {{ $data->company->barangay->barangay_Name }},
                                         {{ $data->company->barangay->municipality->municipality_Name }},
@@ -201,28 +201,34 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex flex-row  gap-5">
-                                    <a href="{{ route('admin.jobpost', ['id' => $data->job_id]) }}"
-                                        class="font-medium text-blue-600" title="View Job Posting Info"><svg
-                                            class="w-6 h-6 text-blue-600 " aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round"
-                                                stroke-linejoin="round" stroke-width="2"
-                                                d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                        </svg>
-
-                                    </a>
-                                    @if ($filter == 'ACTIVE')
-                                        <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
-                                            class="font-medium text-blue-600 " title="View Applicants">
-                                            <svg class="w-6 h-6 text-blue-600" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <div x-data="{ tooltip: 'View Job Post Information' }">
+                                        <a href="{{ route('admin.jobpost', ['id' => $data->job_id]) }}"
+                                            x-tooltip="tooltip" type="button"
+                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                    clip-rule="evenodd" />
                                             </svg>
                                         </a>
+                                    </div>
+
+                                    @if ($filter == 'ACTIVE')
+                                        <div x-data="{ tooltip: 'View Applicants' }">
+                                            <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
+                                                x-tooltip="tooltip" type="button"
+                                                class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                <svg class="w-5 h-5 " aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                </svg>
+                                            </a>
+                                        </div>
                                     @endif
 
                                 </div>

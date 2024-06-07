@@ -1,6 +1,6 @@
 <div class="col-span-4 sm:col-span-6" x-data="{
     openTab: 1,
-    activeClasses: 'text-gray-900 bg-gray-100 rounded-s-lg active',
+    activeClasses: 'text-gray-900 bg-gray-100 active',
     inactiveClasses: 'bg-white hover:text-gray-700 hover:bg-gray-50'
 }">
     <div class="bg-white shadow rounded-lg p-6">
@@ -21,7 +21,7 @@
         <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-lg sm:flex ">
             <li class="w-full focus-within:z-10">
                 <a href="#" @click="openTab = 1" :class="openTab === 1 ? activeClasses : inactiveClasses"
-                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Barangay</a>
+                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-s-lg">Barangay</a>
             </li>
             <li class="w-full focus-within:z-10">
                 <a href="#" @click="openTab = 2" :class="openTab === 2 ? activeClasses : inactiveClasses"
@@ -29,7 +29,7 @@
             </li>
             <li class="w-full focus-within:z-10">
                 <a href="#" @click="openTab = 3" :class="openTab === 3 ? activeClasses : inactiveClasses"
-                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Province</a>
+                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">Province</a>
             </li>
 
         </ul>

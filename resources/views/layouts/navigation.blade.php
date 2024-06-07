@@ -43,7 +43,7 @@
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 8)
-                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                        <x-nav-link :href="route('admin')" :active="Route::is('admin*')">
                             {{ __('Admin Tools') }}
                         </x-nav-link>
                     @endif

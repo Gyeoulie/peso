@@ -8,8 +8,8 @@
         </div>
         <div class="flex flex-col w-full">
             <x-input-label for="city" :value="__('Barangay')" />
-            <x-text-input x-on-click wire:model='bar' class="block mt-1 w-full" type="text" readonly
-                x-data="" x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')"
+            <x-text-input wire:model='bar' class="block mt-1 w-full" type="text" readonly x-data=""
+                x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')"
                 x-on:focus="$dispatch('open-modal', 'barangay-modal')" />
             <x-input-error :messages="$errors->get('barangayID')" class="mt-2" />
         </div>

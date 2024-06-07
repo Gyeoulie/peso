@@ -22,7 +22,7 @@
                             class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
                         </img>
 
-                        <h1 class="text-xl font-bold">{{ $jobpost->first()->company->bussines_Name }}
+                        <h1 class="text-xl font-bold">{{ $jobpost->first()->company->business_Name }}
                         </h1>
                         <p class="text-gray-700">#IDNUMBER</p>
 

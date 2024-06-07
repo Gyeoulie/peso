@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="flex-row sm:mt-5">
-                                <h2 class="text-md sm:text-3xl font-semibold">{{ $JobPost->company->bussines_Name }}
+                                <h2 class="text-md sm:text-3xl font-semibold">{{ $JobPost->company->business_Name }}
                                 </h2>
                             </div>
 

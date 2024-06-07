@@ -283,7 +283,7 @@
                             <div class="flex flex-row w-full justify-between items-center mt-4 mb-4">
                                 <h2 class="text-xl font-bold">Jobseeker Details</h2>
 
-{{-- eto sa edit deets --}}
+                                {{-- eto sa edit deets --}}
                                 <a href="{{ route('edit.details') }}">
                                     <div
                                         class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">

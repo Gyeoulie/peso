@@ -37,7 +37,7 @@
                 <section style="display: flex; flex-direction: column; width: 100%; margin-left: 0.5rem;">
                     <h1
                         style="margin-top: 0.75rem; margin-bottom: 0; font-size: 3rem; font-weight: bold; color: #374151;">
-                       Sample name here
+                        Sample name here
                     </h1>
                     <!--Location --------------------------------------------------------------------------------------------------------->
                     <h3

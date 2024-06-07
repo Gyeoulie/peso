@@ -20,6 +20,11 @@
 
     <link href="https://pagecdn.io/lib/easyfonts/fonts.css" rel="stylesheet" />
 
+    {{-- TOOLTIP --}}
+    <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+
+
     <!-- Scripts -->
     @livewireScripts
     @livewireStyles

@@ -7,10 +7,10 @@
                 class="bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0 grow-0">
                 <!-- Display uploaded image here -->
                 @if ($pimage)
-                    <img id="uploadedImage" class="flex uploaded-image object-fill w-30 h-40"
+                    <img id="uploadedImage" class="flex uploaded-image object-fill w-[200px] h-[200px] shrink-0 grow-0"
                         src="{{ $pimage->temporaryUrl() }}" alt="Uploaded Image" />
                 @else
-                    <img id="uploadedImage" class="flex uploaded-image object-fill w-30 h-40"
+                    <img id="uploadedImage" class="flex uploaded-image object-fill  w-[200px] h-[200px] shrink-0 grow-0"
                         src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                         alt="Uploaded Image" />
                 @endif
