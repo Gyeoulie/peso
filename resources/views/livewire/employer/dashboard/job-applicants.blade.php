@@ -336,7 +336,7 @@
                             <tbody>
                                 @if (isset($applicants['list']) && count($applicants['list']) === 0)
                                     <tr>
-                                        <td colspan="4">
+                                        <td colspan="5">
                                             <div class="flex flex-col items-center justify-center mt-10">
                                                 <div class="p-6 bg-gray-100 rounded-full">
                                                     <svg class="w-24 h-24 text-black" aria-hidden="true"

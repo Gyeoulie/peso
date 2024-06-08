@@ -13,31 +13,33 @@
             {{-- ALERT MESSAGE FOR MATCH --}}
             <div class="col-span-4 sm:col-span-12">
 
-                <div class="bg-green-100 shadow rounded-lg p-6">
-                    <div class="flex flex-row items-center justify-between">
-                        <p class="text-green-700 font-bold text-xl">This job matches applicant's preferences</p>
-                        <svg class="w-9 h-9 sm:w-9 sm:h-9 text-green-700 me-2.5" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-                        </svg>
+                @if ($isMatch === true)
+                    <div class="bg-green-100 shadow rounded-lg p-6">
+                        <div class="flex flex-row items-center justify-between">
+                            <p class="text-green-700 font-bold text-xl">This job matches the applicant's preferences</p>
+                            <svg class="w-9 h-9 sm:w-9 sm:h-9 text-green-700 me-2.5" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                            </svg>
+                        </div>
                     </div>
-                </div>
-
-                <div class="bg-red-100 shadow rounded-lg p-6">
-                    <div class="flex flex-row items-center justify-between">
-                        <p class="text-red-700 font-bold  text-xl">This job doesn't match applicant's
-                            preferences
-                        </p>
-                        <svg class="w-9 h-9 sm:w-10 sm:h-10 text-red-700 me-2" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
-                                clip-rule="evenodd" />
-                        </svg>
+                @else
+                    <div class="bg-red-100 shadow rounded-lg p-6">
+                        <div class="flex flex-row items-center justify-between">
+                            <p class="text-red-700 font-bold  text-xl">This job doesn't match the applicant's
+                                preferences
+                            </p>
+                            <svg class="w-9 h-9 sm:w-10 sm:h-10 text-red-700 me-2" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
                     </div>
-                </div>
+                @endif
 
             </div>
 

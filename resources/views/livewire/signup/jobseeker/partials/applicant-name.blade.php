@@ -1,6 +1,6 @@
-<div>
+<div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Applicant Name</h1>
-    <div class="flex flex-col items-center mt-10">
+    <div class="flex flex-col items-center mt-5">
         <div class="flex flex-col items-center">
             <x-input-label for="image" :value="__('Upload Image')" />
             <div
@@ -87,7 +87,7 @@
             <x-input-error :messages="$errors->get('gender')" class="mt-2" />
         </div>
     </div>
-    <div class="flex flex-row mt-4 justify-end space-x-4 mt-4 mb-4">
+    <div class="flex flex-row justify-end space-x-4 mt-4 ">
         <x-blue-button wire:click.prevent='next' type="button">
             Next
         </x-blue-button>

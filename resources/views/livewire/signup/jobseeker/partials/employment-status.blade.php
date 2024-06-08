@@ -1,9 +1,9 @@
-<div>
-    <div>
+<div class="w-full h-full">
+    <div class="w-full h-full">
         <!-- Livewire Component -->
-        <div x-data="employmentStatusHandler()" @change-status.window="updateEmpDesc">
+        <div x-data="employmentStatusHandler()" @change-status.window="updateEmpDesc" class="flex flex-col w-full h-full">
             <h1 class="text-2xl font-bold">Employment Status</h1>
-            <div class="flex flex-col sm:flex-row gap-4 mt-10">
+            <div class="flex flex-col sm:flex-row gap-4 mt-5">
                 <div class="flex flex-col w-full">
                     <x-input-label for="empStatus" :value="__('Employment Status')" />
                     <select wire:model='empStatus' x-model="empStatus" @change="updateEmpDesc"
@@ -27,17 +27,17 @@
                     </h1>
                 </div>
             </div>
-
-            <div class="flex flex-row mt-4 justify-between w-full space-x-4 mt-4 mb-4">
+            <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
                 <x-secondary-button wire:click.prevent='prev' type="button">
                     Previous
                 </x-secondary-button>
-
                 <x-blue-button wire:click.prevent='next' type="button">
                     Next
                 </x-blue-button>
             </div>
+
         </div>
+
     </div>
 
     <script>

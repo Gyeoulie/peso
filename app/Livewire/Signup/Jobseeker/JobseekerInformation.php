@@ -200,7 +200,7 @@ class JobseekerInformation extends Component
                 $user->save();
                 // Update the user's role
 
-                // DB::commit();
+                DB::commit();
             }
 
         } catch (\Exception $e) {

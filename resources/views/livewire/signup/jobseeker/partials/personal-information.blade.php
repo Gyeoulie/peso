@@ -1,6 +1,6 @@
-<div>
+<div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Personal Information</h1>
-    <div class="flexflex-col sm:flex-row gap-4 w-full mt-10">
+    <div class="flexflex-col sm:flex-row gap-4 w-full mt-5">
         <div class="flex flex-col w-full">
             <x-input-label for="presentAddress" :value="__('Present Address')" />
             <x-text-input wire:model='address' class="block mt-1 w-full" type="text" />
@@ -174,7 +174,7 @@
         </div>
     </div>
 
-    <div class="flex flex-row mt-4 justify-between w-full space-x-4">
+    <div class="flex flex-row justify-between space-x-4 mt-4 ">
         <x-secondary-button wire:click.prevent='prev' type="button">
             Previous
         </x-secondary-button>

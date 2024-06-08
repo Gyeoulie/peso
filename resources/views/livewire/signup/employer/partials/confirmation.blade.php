@@ -1,4 +1,4 @@
-<div x-data="{ agreeBox: @entangle('agreeBox') }">
+<div class="flex flex-col w-full h-full" x-data="{ agreeBox: @entangle('agreeBox') }">
     <h1 class="text-2xl font-bold">Certification And Authorization</h1>
     <div class="flex flex-col mt-4 w-full justify-center items-center mt-10 px-4 sm:px-12">
         <p class="text-sm sm:text-xl text-justify">
@@ -34,7 +34,7 @@
             </label>
         </div>
     </div>
-    <div class="flex flex-row mt-4 justify-between w-full space-x-4 mt-4 mb-4">
+    <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
         <x-secondary-button wire:click.prevent='prev' type="button">
             Previous
         </x-secondary-button>

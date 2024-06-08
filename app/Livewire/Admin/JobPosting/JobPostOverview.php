@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\JobPosting;
 
+use App\Models\Employee;
 use App\Models\Job_Posting;
 use App\Models\Requirements_Passed;
 use Illuminate\Support\Facades\Auth;
@@ -70,41 +71,12 @@ class JobPostOverview extends Component
 
     }
 
-    // public function rejectJob($id, $status, $modalname)
-    // {
-
-    //     $user = Auth::user();
-
-    //     $this->validate([
-    //         'remarks' => 'required|string',
-    //     ]);
-
-    //     try {
-    //         Job_Posting::where('job_id', $id)->update([
-    //             'job_Status' => $status,
-    //             'peso_Remarks' => $this->remarks,
-    //             'peso_id' => $user->id,
-    //         ]);
-    //         $this->dispatch($modalname);
-    //         toastr()->success('Job Posting Approved');
-
-    //     } catch (\Exception $e) {
-    //         toastr()->error($e);
-    //     }
-
-    // }
-
     public function close($modal)
     {
         $this->reset('remarks');
         $this->resetValidation();
         $this->dispatch('close-modal', $modal);
     }
-
-    // public function mount($id)
-    // {
-    //     $this->id = $id;
-    // }
 
     public function downloadPDF($id)
     {
@@ -141,7 +113,36 @@ class JobPostOverview extends Component
     public function render()
     {
 
-        $jobpost = Job_Posting::find($this->id);
-        return view('livewire.admin.job-posting.job-post-overview', compact('jobpost'));
+        $jobpost = Job_Posting::with(['job_tags'])->findOrFail($this->id);
+
+        $jobMunicipalityId = $jobpost->peso_municipality_id;
+        $jobEducationLevel = $jobpost->job_Edu;
+        $jobTagIds = $jobpost->job_tags->pluck('position_id');
+
+        $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
+            $query->where('municipality_id', $jobMunicipalityId);
+        })
+            ->whereHas('education', function ($query) use ($jobEducationLevel) {
+                $query->where('edu_level', '<=', $jobEducationLevel);
+            })
+            ->whereHas('job_preference', function ($query) use ($jobTagIds) {
+                $query->whereIn('position_id', $jobTagIds);
+            })
+            ->withCount('job_preference as num_matched_tags') // Count the number of matched job tags
+            ->orderByDesc('num_matched_tags') // Order by the number of matched job tags in descending order
+            ->get();
+
+        // Find applicants that match the job posting criteria
+        // $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
+        //     $query->where('municipality_id', $jobMunicipalityId);
+        // })
+        //     ->whereHas('education', function ($query) use ($jobEducationLevel) {
+        //         $query->where('edu_level', '<=', $jobEducationLevel);
+        //     })
+        //     ->whereHas('job_preference', function ($query) use ($jobTagIds) {
+        //         $query->whereIn('position_id', $jobTagIds);
+        //     })
+        //     ->get();
+        return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees'));
     }
 }

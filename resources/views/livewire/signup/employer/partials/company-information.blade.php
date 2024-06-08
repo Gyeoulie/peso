@@ -1,11 +1,11 @@
-<div>
+<div class="flex flex-col w-full h-full gap-4">
     <h1 class="text-2xl font-bold">Company Information</h1>
-    <div class="flex flex-col mt-10 sm:flex-row-reverse">
+    <div class="flex flex-col mt-5 sm:flex-row-reverse">
         <div class="flex flex-col items-center  w-full">
             <div class="flex flex-col items-center">
                 <x-input-label for="image" :value="__('Upload Company Logo')" />
                 <div
-                    class="bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0 grow-0">
+                    class="bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center mt-2 shrink-0 grow-0">
                     <!-- Display uploaded image here -->
                     @if ($cimg)
                         <img id="uploadedImage"
@@ -166,7 +166,7 @@
 
 
 
-    <div class="flex flex-row mt-10 mb-10 justify-end space-x-4">
+    <div class="flex flex-row justify-end space-x-4 mt-4 sm:mt-auto sm:mb-4">
 
         <x-blue-button wire:click.prevent='next' type="button">
             Next

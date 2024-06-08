@@ -1,6 +1,6 @@
-<div>
+<div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Certification and Training</h1>
-    <div class="flex flex-col mt-10">
+    <div class="flex flex-col gap-4 mt-5 w-full h-full">
 
 
         @if ($certificateData)
@@ -70,7 +70,7 @@
     </div>
 
 
-    <div class="flex flex-col mt-10 ">
+    <div class="flex flex-col gap-4 mt-5 w-full h-full">
         @if ($trainingData)
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
                 <table class="w-full text-md text-center rtl:text-center text-gray-500">
@@ -150,7 +150,7 @@
             </button>
         </div>
 
-        <div class="flex flex-row mt-4 justify-between w-full space-x-4 mt-4 mb-4">
+        <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
             <x-secondary-button wire:click.prevent='prev' type="button">
                 Previous
             </x-secondary-button>

@@ -1,7 +1,7 @@
-<div>
+<div class="flex flex-col w-full h-full">
 
     <h1 class="text-2xl font-bold">Add Other Skills</h1>
-    <div class="flex flex-col mt-10">
+    <div class="flex flex-col gap-4 mt-5 w-full h-full">
         <div class="flex flex-row w-full overflow-auto">
             <table class="ml-10 table-fixed ">
                 <tbody>
@@ -237,7 +237,7 @@
 
 
 
-        <div class="flex flex-row mt-4 justify-between w-full space-x-4">
+        <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
             <x-secondary-button wire:click.prevent='prev' type="button">
                 Previous
             </x-secondary-button>
