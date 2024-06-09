@@ -2,26 +2,27 @@
 
 namespace App\Livewire\Public\Profile\Jobseeker\Partials;
 
+use App\Models\Barangay;
 use App\Models\Disability;
 use App\Models\Eligibility;
 use App\Models\Eligibility_Type;
 use App\Models\Employee;
+use App\Models\Industry_preference;
+use App\Models\Job_Industry;
+use App\Models\Job_Positions;
+use App\Models\Job_Preference;
 use App\Models\License;
 use App\Models\License_Type;
-use App\Models\Barangay;
-use App\Models\Job_Preference;
-use App\Models\Industry_preference;
-use App\Models\Job_Positions;
-use App\Models\Job_Industry;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Layout;
-use Livewire\Component;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use Livewire\WithFileUploads;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
-
-
+use Livewire\Attributes\Validate;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.app')]
 class EditDetails extends Component
@@ -32,24 +33,24 @@ class EditDetails extends Component
     public $search;
 
     // BASIC INFORMATION
+
+    #[Validate]
     public $pimg;
+
     public $fname, $mname, $lname, $suffix, $birthdate, $gender = 0, $civilstatus = 0, $religion = 0,
-        $pnumber, $tinnum, $height, $address;
+    $pnumber, $tinnum, $height, $address;
     public $barangayID, $mun, $prov, $bar;
     public $disability, $selectDisability = "", $otherDisability = "";
     public $jobpreference, $industrypreference;
-
 
     // ELIGIBILITY
     public $eliID;
     public $eliTypeID;
     public $eli_Name = 'Select Eligibility', $eli_Date;
 
-
     //LICENSE
     public $licName = 'Select License', $licValidity;
     public $licID, $licTypeID;
-
 
     public function rules()
     {
@@ -66,37 +67,9 @@ class EditDetails extends Component
             'bar' => ['required'],
             'mun' => ['required'],
             'prov' => ['required'],
-
+            'pimg' => 'required|image|mimes:jpeg,png,jpg|max:5120',
         ];
     }
-
-    
-    // function previewImage(event) {
-    //     var fileInput = event.target;
-    //     var uploadedImage = document.getElementById('uploadedImage');
-    //     var imageContainer = document.querySelector('.w-160.h-160');
-
-    //     // Ensure a file is selected
-    //     if (fileInput.files && fileInput.files[0]) {
-    //         var reader = new FileReader();
-
-    //         reader.onload = function (e) {
-    //             uploadedImage.src = e.target.result;
-    //             imageContainer.style.backgroundImage = 'url(' + e.target.result + ')';
-    //             imageContainer.style.backgroundSize = 'cover';
-    //             imageContainer.style.backgroundPosition = 'center';
-    //         };
-
-    //         // Read the file as a data URL
-    //         reader.readAsDataURL(fileInput.files[0]);
-    //     }
-    // }
-
-    public function updatedImage()
-    {
-        $this->emit('imageUpdated', $this->pimg->temporaryUrl());
-    }
-
 
     public function openModal($modalName)
     {
@@ -130,7 +103,6 @@ class EditDetails extends Component
             Disability::where('disability_id', $disID)
                 ->where('employee_id', $this->empID)
                 ->delete();
-
 
             toastr()->success('Disability record has been deleted.');
         } catch (\Exception $e) {
@@ -186,10 +158,24 @@ class EditDetails extends Component
         if ($name == "general") {
             $this->validate();
 
+            $jobseekerData = Employee::findOrFail($this->empID);
+            $imgPath = null;
+
+            if ($this->pimg) {
+                $imgPath = $this->pimg->store('images/user_data', 'public');
+            }
+
+            DB::beginTransaction();
+
             try {
-                // Create the user record
-                Employee::where('employee_id', $this->empID)->update([
-                    'pimg' => $this->pimg,
+                // Delete the old image if a new one is uploaded
+                if ($this->pimg && $jobseekerData->pimg) {
+                    Storage::disk('public')->delete($jobseekerData->pimg);
+                }
+
+                // Update the user record
+                $jobseekerData->update([
+                    'pimg' => $imgPath ?? $jobseekerData->pimg,
                     'fname' => $this->fname,
                     'mname' => $this->mname,
                     'lname' => $this->lname,
@@ -203,14 +189,16 @@ class EditDetails extends Component
                     'address' => $this->address,
                     'barangay' => $this->barangayID, //fk
                     'tinnum' => $this->tinnum,
-
                 ]);
 
-                toastr()->success('Profile has been Updated!');
+                DB::commit();
+
+                toastr()->success('Profile has been updated!');
             } catch (\Exception $e) {
+                DB::rollBack();
 
                 // Show error toastr notification
-                toastr()->error('There was an Error');
+                toastr()->error('There was an error updating the profile.');
             }
         } elseif ($name == "disability") {
             if ($this->selectDisability === "other") {
@@ -337,8 +325,6 @@ class EditDetails extends Component
         }
     }
 
-
-
     #[On('industrySelect')]
     public function industrySelect($id)
     {
@@ -362,26 +348,15 @@ class EditDetails extends Component
             toastr()->error('Could not fetch data');
             $this->dispatch('close-modal', 'industry-modal');
         }
-      
+
     }
 
     public function removePosition($positionId)
     {
-        // // Find the index of the element with the given position_id
-        // $index = array_search($positionId, array_column($this->jobpreference, 'position_id'));
-
-        // // If the element exists in the array, remove it
-        // if ($index !== false) {
-        //     unset($this->jobpreference[$index]);
-        //     // Reindex the array to maintain sequential keys
-        //     $this->jobpreference = array_values($this->jobpreference);
-        // }
-
         try {
             Job_Preference::where('job_preference_id', $positionId)
                 ->where('employee_id', $this->empID)
                 ->delete();
-
 
             toastr()->success('Job Preference record has been deleted.');
         } catch (\Exception $e) {
@@ -392,21 +367,11 @@ class EditDetails extends Component
 
     public function removeIndustry($industryId)
     {
-        // // Find the index of the element with the given position_id
-        // $index = array_search($industryId, array_column($this->industrypreference, 'industry_id'));
-
-        // // If the element exists in the array, remove it
-        // if ($index !== false) {
-        //     unset($this->industrypreference[$index]);
-        //     // Reindex the array to maintain sequential keys
-        //     $this->industrypreference = array_values($this->industrypreference);
-        // }
 
         try {
             Industry_Preference::where('industry_pref_id', $industryId)
                 ->where('employee_id', $this->empID)
                 ->delete();
-
 
             toastr()->success('Industry Preference record has been deleted.');
         } catch (\Exception $e) {
@@ -435,7 +400,7 @@ class EditDetails extends Component
         $this->height = $employeeDetails->height;
         $this->address = $employeeDetails->address;
 
-        $barangayDetails = Barangay::find($employeeDetails->barangay);
+        $barangayDetails = Barangay::find($employeeDetails->barangay->barangay_id);
         $this->bar = $barangayDetails->barangay_Name;
         $this->mun = $barangayDetails->municipality->municipality_Name;
         $this->prov = $barangayDetails->municipality->province->province_Name;
@@ -443,7 +408,6 @@ class EditDetails extends Component
     }
 
     public function render()
-
     {
         $user = Auth::user();
         $this->empID = $user->employee->employee_id;
@@ -465,9 +429,7 @@ class EditDetails extends Component
             ->orderBy('eligibility_Date', 'desc')
             ->get();
 
-
         $elTypes = Eligibility_Type::where('eligibility_Name', 'like', '%' . $this->search . '%')->get();
-
 
         $license = License::where('employee_id', '=', $this->empID)
             ->where(function ($query) {
@@ -478,12 +440,10 @@ class EditDetails extends Component
             ->orderBy('license_Validity', 'desc')
             ->get();
 
-
         $liTypes = License_Type::where('license_Name', 'like', '%' . $this->search . '%')
             ->get();
 
-        
-            return view(
+        return view(
             'livewire.public.profile.jobseeker.partials.edit-details',
             compact('employeeDetails', 'eligibility', 'elTypes', 'license', 'liTypes', 'jobPreference', 'industryPreference')
         );

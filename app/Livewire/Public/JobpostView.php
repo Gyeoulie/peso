@@ -197,6 +197,7 @@ class JobpostView extends Component
     public function render()
     {
 
+        $isApplied = false;
         $JobPost = Job_Posting::find($this->id);
 
         if (!$JobPost) {
@@ -207,6 +208,13 @@ class JobpostView extends Component
             return redirect()->route('dashboard');
         }
 
-        return view('livewire.public.jobpost-view', compact('JobPost'));
+        if (auth()->user()->usertype === 4) {
+            $isApplied = Job_Applicants::where('job_id', $this->id)
+                ->where('employee_id', auth()->user()->employee->employee_id)
+                ->exists();
+
+        }
+
+        return view('livewire.public.jobpost-view', compact('JobPost', 'isApplied'));
     }
 }

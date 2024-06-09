@@ -15,7 +15,6 @@ class JobseekerProfile extends Component
     public $description;
     // public $successss = false;
 
-
     public function rules()
     {
         return [
@@ -33,25 +32,24 @@ class JobseekerProfile extends Component
         $this->dispatch('open-modal', 'aboutme-modal');
     }
 
-    public function saveeeeeeeeee()
+    public function Save()
     {
         $this->validate();
-    
+
         try {
             Employee::where('employee_id', $this->id)->update([
                 'empDesc' => $this->description,
             ]);
             toastr()->success('About Me Record has been Updated!');
-    
-            $this->closeeeeeeeeeeee();
-            // $this->dispatch('reload-table');       
+
+            $this->close();
+            // $this->dispatch('reload-table');
         } catch (\Exception $e) {
             toastr()->error('There was an Error');
         }
     }
-    
 
-    public function closeeeeeeeeeeee()
+    public function close()
     {
         // dump($this->id);
 

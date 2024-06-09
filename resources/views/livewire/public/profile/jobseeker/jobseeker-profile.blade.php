@@ -5,20 +5,18 @@
             <div class="bg-white shadow-xl rounded-lg p-6">
                 <div class="flex flex-col items-center">
                     {{-- <img src="https://randomuser.me/api/portraits/men/94.jpg" --}}
-                    <img src="{{ $jobseeker->pimg ? asset($jobseeker->pimg) : asset('https://randomuser.me/api/portraits/men/94.jpg') }}"
-                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
+                    <img src="{{ $jobseeker->pimg ? asset('storage/' . $jobseeker->pimg) : asset('https://randomuser.me/api/portraits/men/94.jpg') }}"
+                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 ">
                     </img>
                     <h1 class="text-xl font-bold">{{ $jobseeker->fname }} {{ $jobseeker->lname }}</h1>
 
-                    @php
-                        $work_position = $jobseeker->work_exp->first();
-                    @endphp
 
-                    @if ($work_position)
-                        <p class="text-gray-700">{{ $work_position->job_positions->position_Title }}</p>
-                    @else
-                        <p class="text-gray-700"></p>
-                    @endif
+
+                    <p class="text-gray-700">
+                        {{ $jobseeker->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
+                    </p>
+
+
 
                     <div class="mt-6 flex flex-wrap gap-4 justify-center">
                         <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
@@ -405,41 +403,59 @@
                                 </div>
 
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                            @if ($jobseeker->education->isEmpty())
 
-                                @foreach ($jobseeker->education as $educBackground)
-                                    <div wire:key="{{ $educBackground->education_id }}"
-                                        class="container bg-gray-200 p-3 rounded-lg shadow ">
-                                        <div class="flex flex-row">
-                                            <div class="flex flex-col h-full">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                    fill="currentColor"
-                                                    class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 ">
-                                                    <path
-                                                        d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
-                                                    <path
-                                                        d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
-                                                    <path
-                                                        d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
-                                                </svg>
-                                            </div>
+                                <div class="flex flex-col justify-center items-center mt-20 mb-20">
+                                    <div class="flex  bg-gray-100 rounded-full p-1">
 
-                                            <div class="flex flex-col ml-4 w-full">
-                                                <span
-                                                    class="text-2xl text-black font-bold">{{ $educBackground->edu_School }}</span>
-                                                <div class="text-lg text-black font-semibold">
-                                                    <span>{{ $educBackground->edu_Course }}
+                                        <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                                        </svg>
+
+                                    </div>
+
+                                    <div class="text-center text-black text-xl font-semibold mt-5">
+                                        Education is empty.
+                                    </div>
+                                </div>
+                            @else
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+
+                                    @foreach ($jobseeker->education as $educBackground)
+                                        <div wire:key="{{ $educBackground->education_id }}"
+                                            class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                            <div class="flex flex-row">
+                                                <div class="flex flex-col h-full">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                        fill="currentColor"
+                                                        class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 ">
+                                                        <path
+                                                            d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
+                                                        <path
+                                                            d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
+                                                        <path
+                                                            d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
+                                                    </svg>
                                                 </div>
-                                                <span class="text-sm text-gray-700 font-medium">
-                                                    {{ $educBackground->edu_Started->format('F Y') }} -
-                                                    {{ $educBackground->edu_Ended->format('F Y') }}</span>
+
+                                                <div class="flex flex-col ml-4 w-full">
+                                                    <span
+                                                        class="text-2xl text-black font-bold">{{ $educBackground->edu_School }}</span>
+                                                    <div class="text-lg text-black font-semibold">
+                                                        <span>{{ $educBackground->edu_Course }}
+                                                    </div>
+                                                    <span class="text-sm text-gray-700 font-medium">
+                                                        {{ $educBackground->edu_Started->format('F Y') }} -
+                                                        {{ $educBackground->edu_Ended->format('F Y') }}</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
-
-                            </div>
-
+                                    @endforeach
+                                </div>
+                            @endif
 
                         </div>
 
@@ -476,49 +492,68 @@
                                 </div>
 
                             </div>
+                            @if ($jobseeker->work_exp->isEmpty())
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                                <div class="flex flex-col justify-center items-center mt-20 mb-20">
+                                    <div class="flex  bg-gray-100 rounded-full p-1">
 
-                                @foreach ($jobseeker->work_exp as $work_experience)
-                                    <div wire:key="{{ $work_experience->workexp_id }}"
-                                        class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                        <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                                        </svg>
 
-                                        <div class="flex flex-row">
+                                    </div>
 
-                                            <div class="flex flex-col h-full">
-                                                <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 "
-                                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                    width="24" height="24" fill="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path fill-rule="evenodd"
-                                                        d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.382l1.447.723.005.003.027.013.12.056c.108.05.272.123.486.212.429.177 1.056.416 1.834.655C7.481 13.524 9.63 14 12 14c2.372 0 4.52-.475 6.08-.956.78-.24 1.406-.478 1.835-.655a14.028 14.028 0 0 0 .606-.268l.027-.013.005-.002L22 11.381V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.447 7.894.553-.276V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.382l.553.276.002.002.004.002.013.006.041.02.151.07c.13.06.318.144.557.242.478.198 1.163.46 2.01.72C7.019 15.476 9.37 16 12 16c2.628 0 4.98-.525 6.67-1.044a22.95 22.95 0 0 0 2.01-.72 15.994 15.994 0 0 0 .707-.312l.041-.02.013-.006.004-.002.001-.001-.431-.866.432.865ZM12 10a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </div>
+                                    <div class="text-center text-black text-xl font-semibold mt-5">
+                                        Work Experience is Empty.
+                                    </div>
+                                </div>
+                            @else
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
 
-                                            <div class="flex flex-col ml-4 w-full">
-                                                <span
-                                                    class="text-2xl text-black font-bold">{{ $work_experience->work_Name }}</span>
-                                                <div class="text-lg text-black font-semibold">
-                                                    <span>{{ $work_experience->job_positions->position_Title }}</span>
-                                                    -
-                                                    <span>{{ $work_experience->work_Status }}</span>
+                                    @foreach ($jobseeker->work_exp as $work_experience)
+                                        <div wire:key="{{ $work_experience->workexp_id }}"
+                                            class="container bg-gray-200 p-3 rounded-lg shadow ">
+
+                                            <div class="flex flex-row">
+
+                                                <div class="flex flex-col h-full">
+                                                    <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 "
+                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                        width="24" height="24" fill="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.382l1.447.723.005.003.027.013.12.056c.108.05.272.123.486.212.429.177 1.056.416 1.834.655C7.481 13.524 9.63 14 12 14c2.372 0 4.52-.475 6.08-.956.78-.24 1.406-.478 1.835-.655a14.028 14.028 0 0 0 .606-.268l.027-.013.005-.002L22 11.381V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.447 7.894.553-.276V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.382l.553.276.002.002.004.002.013.006.041.02.151.07c.13.06.318.144.557.242.478.198 1.163.46 2.01.72C7.019 15.476 9.37 16 12 16c2.628 0 4.98-.525 6.67-1.044a22.95 22.95 0 0 0 2.01-.72 15.994 15.994 0 0 0 .707-.312l.041-.02.013-.006.004-.002.001-.001-.431-.866.432.865ZM12 10a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
                                                 </div>
-                                                <span class="text-sm text-gray-700 font-medium">
-                                                    {{ $work_experience->work_Start->format('F Y') }} -
-                                                    {{ $work_experience->work_End->format('F Y') }}
-                                                </span>
-                                                <span
-                                                    class="text-sm text-gray-700 font-medium">{{ $work_experience->work_Address }}</span>
+
+                                                <div class="flex flex-col ml-4 w-full">
+                                                    <span
+                                                        class="text-2xl text-black font-bold">{{ $work_experience->work_Name }}</span>
+                                                    <div class="text-lg text-black font-semibold">
+                                                        <span>{{ $work_experience->job_positions->position_Title }}</span>
+                                                        -
+                                                        <span>{{ $work_experience->work_Status }}</span>
+                                                    </div>
+                                                    <span class="text-sm text-gray-700 font-medium">
+                                                        {{ $work_experience->work_Start->format('F Y') }} -
+                                                        {{ $work_experience->work_End->format('F Y') }}
+                                                    </span>
+                                                    <span
+                                                        class="text-sm text-gray-700 font-medium">{{ $work_experience->work_Address }}</span>
+                                                </div>
+
                                             </div>
 
                                         </div>
-
-                                    </div>
-                                @endforeach
+                                    @endforeach
 
 
-                            </div>
+                                </div>
+                            @endif
                         </div>
 
 
@@ -540,9 +575,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M12 4.5v15m7.5-7.5h-15" />
                                         </svg>
-
                                     </div>
-
 
                                     <div @click="profileTab = 'editTrainings'"
                                         class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
@@ -555,43 +588,60 @@
                                 </div>
 
                             </div>
+                            @if ($jobseeker->training->isEmpty())
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                                <div class="flex flex-col justify-center items-center mt-20 mb-20">
+                                    <div class="flex  bg-gray-100 rounded-full p-1">
 
-                                @foreach ($jobseeker->training as $empTraining)
-                                    <div wire:key="{{ $work_experience->workexp_id }}"
-                                        class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                        <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                                        </svg>
 
-                                        <div class="flex flex-row">
+                                    </div>
 
-                                            <div class="flex flex-col h-full">
-                                                <i
-                                                    class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 fa-solid fa-certificate"></i>
-                                            </div>
+                                    <div class="text-center text-black text-xl font-semibold mt-5">
+                                        Training Record is Empty.
+                                    </div>
+                                </div>
+                            @else
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
 
-                                            <div class="flex flex-col ml-4 w-full">
-                                                <span
-                                                    class="text-2xl text-black font-bold">{{ $empTraining->training_Name }}</span>
-                                                <div class="text-lg text-black font-semibold">
-                                                    <span>{{ $empTraining->training_Cert }}</span>
-                                                    -
-                                                    <span>{{ $empTraining->training_Status == 1 ? 'Completed' : 'Not Completed' }}</span>
+                                    @foreach ($jobseeker->training as $empTraining)
+                                        <div wire:key="{{ $empTraining->training_id }}"
+                                            class="container bg-gray-200 p-3 rounded-lg shadow ">
+
+                                            <div class="flex flex-row">
+
+                                                <div class="flex flex-col h-full">
+                                                    <i
+                                                        class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 fa-solid fa-certificate"></i>
                                                 </div>
-                                                <span
-                                                    class="text-sm text-gray-700 font-medium">{{ $empTraining->training_From }}</span>
-                                                <span class="text-sm text-gray-700 font-medium">
-                                                    {{ $empTraining->training_Start->format('F Y') }} -
-                                                    {{ $empTraining->training_End->format('F Y') }}</span>
+
+                                                <div class="flex flex-col ml-4 w-full">
+                                                    <span
+                                                        class="text-2xl text-black font-bold">{{ $empTraining->training_Name }}</span>
+                                                    <div class="text-lg text-black font-semibold">
+                                                        <span>{{ $empTraining->training_Cert }}</span>
+                                                        -
+                                                        <span>{{ $empTraining->training_Status == 1 ? 'Completed' : 'Not Completed' }}</span>
+                                                    </div>
+                                                    <span
+                                                        class="text-sm text-gray-700 font-medium">{{ $empTraining->training_From }}</span>
+                                                    <span class="text-sm text-gray-700 font-medium">
+                                                        {{ $empTraining->training_Start->format('F Y') }} -
+                                                        {{ $empTraining->training_End->format('F Y') }}</span>
+                                                </div>
+
                                             </div>
 
                                         </div>
+                                    @endforeach
 
-                                    </div>
-                                @endforeach
-
-
-
-                            </div>
+                                </div>
+                            @endif
                         </div>
 
 
@@ -611,9 +661,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M12 4.5v15m7.5-7.5h-15" />
                                         </svg>
-
                                     </div>
-
 
                                     <div @click="profileTab = 'editCertificates'"
                                         class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
@@ -626,40 +674,58 @@
                                 </div>
 
                             </div>
+                            @if ($jobseeker->certificate->isEmpty())
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                                <div class="flex flex-col justify-center items-center mt-20 mb-20">
+                                    <div class="flex  bg-gray-100 rounded-full p-1">
 
-                                @foreach ($jobseeker->certificate as $certification)
-                                    <div wire:key="{{ $certification->certificate_id }}"
-                                        class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                        <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                                        </svg>
 
-                                        <div class="flex flex-row">
+                                    </div>
 
-                                            <div class="flex flex-col h-full">
-                                                <i
-                                                    class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 fa-solid fa-certificate"></i>
-                                            </div>
+                                    <div class="text-center text-black text-xl font-semibold mt-5">
+                                        Certificate Record is empty.
+                                    </div>
+                                </div>
+                            @else
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
 
-                                            <div class="flex flex-col ml-4 w-full">
-                                                <span
-                                                    class="text-2xl text-black font-bold">{{ $certification->certificateType->cert_Name }}</span>
-                                                <span class="text-lg text-black font-semibold">
-                                                    {{ $certification->cert_From }}
-                                                </span>
-                                                <span
-                                                    class="text-sm text-gray-700 font-medium">{{ $certification->cert_Rating }}</span>
-                                                <span class="text-sm text-gray-700 font-medium">
-                                                    {{ $certification->cert_Date_Issued->format('F Y') }}
-                                                </span>
+                                    @foreach ($jobseeker->certificate as $certification)
+                                        <div wire:key="{{ $certification->certificate_id }}"
+                                            class="container bg-gray-200 p-3 rounded-lg shadow ">
+
+                                            <div class="flex flex-row">
+                                                <div class="flex flex-col h-full">
+                                                    <i
+                                                        class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 fa-solid fa-certificate"></i>
+                                                </div>
+
+                                                <div class="flex flex-col ml-4 w-full">
+                                                    <span
+                                                        class="text-2xl text-black font-bold">{{ $certification->certificateType->cert_Name }}</span>
+                                                    <span class="text-lg text-black font-semibold">
+                                                        {{ $certification->cert_From }}
+                                                    </span>
+                                                    <span
+                                                        class="text-sm text-gray-700 font-medium">{{ $certification->cert_Rating }}</span>
+                                                    <span class="text-sm text-gray-700 font-medium">
+                                                        {{ $certification->cert_Date_Issued->format('F Y') }}
+                                                    </span>
+                                                </div>
+
                                             </div>
 
                                         </div>
-
-                                    </div>
-                                @endforeach
+                                    @endforeach
 
 
-                            </div>
+                                </div>
+                            @endif
                         </div>
 
                     </div>
@@ -710,12 +776,12 @@
 
 
             <div class="mt-6 flex justify-end">
-                <x-secondary-button type="button" wire:click.prevent='closeeeeeeeeeeee'>
+                <x-secondary-button type="button" wire:click.prevent='close'>
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <div wire:click.prevent='saveeeeeeeeee'>
-                    <x-danger-button wire:loading.attr="disabled" class="ms-3" type="button">
+                <div wire:click.prevent='save'>
+                    <x-primary-button wire:loading.attr="disabled" class="ms-3" type="button">
                         {{ __('Save') }}
 
                         <div wire:loading.delay.long role="status">
@@ -731,7 +797,7 @@
                             </svg>
                             <span class="sr-only">Loading...</span>
                         </div>
-                    </x-danger-button>
+                    </x-primary-button>
                 </div>
 
             </div>

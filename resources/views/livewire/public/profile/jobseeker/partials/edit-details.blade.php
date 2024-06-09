@@ -65,14 +65,23 @@
                             <div
                                 class="w-[160] h-[160] bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
                                 <!-- Display uploaded image here -->
-                                <img id="uploadedImage" class="uploaded-image"
-                                    src="{{ $employeeDetails->pimg ? asset($employeeDetails->pimg) : asset('https://randomuser.me/api/portraits/men/94.jpg') }}"
-                                    alt="User Image" width="160" height="160" />
+                                @if ($pimg && !$errors->has('pimg'))
+                                    <img id="uploadedImage"
+                                        class="flex uploaded-image object-contain w-[200px] h-[200px] shrink-0 grow-0"
+                                        src="{{ $pimg->temporaryUrl() }}" alt="Uploaded Image" />
+                                @else
+                                    <img id="uploadedImage"
+                                        class="flex uploaded-image object-contain w-[200px] h-[200px] shrink-0 grow-0"
+                                        src="{{ asset('storage/' . $employeeDetails->pimg) }}" alt="Uploaded Image" />
+                                @endif
                             </div>
                         </div>
+
+
+                        <x-input-error :messages="$errors->get('pimg')" class="mt-2" />
                         <div class="mt-4 w-160 flex justify-center">
                             <label for="imageUpload"
-                                class="cursor-pointer px-4 py-2 bg-[#428bca] text-white rounded hover:bg-red-600 transition-colors duration-300 text-center w-full">
+                                class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 Upload Image
                             </label>
                             <input wire:model="pimg" type="file" id="imageUpload" class="hidden" accept="image/*">
@@ -614,8 +623,10 @@
                                         @foreach ($industryPreference as $industryPref)
                                             <span
                                                 class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                                {{$industryPref->industry->industry_Title}}
-                                                <button wire:click.prevent="removeIndustry({{$industryPref->industry_pref_id}})" type="button"
+                                                {{ $industryPref->industry->industry_Title }}
+                                                <button
+                                                    wire:click.prevent="removeIndustry({{ $industryPref->industry_pref_id }})"
+                                                    type="button"
                                                     class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
                                                     <span class="sr-only">Remove badge</span>
                                                     <svg class="flex-shrink-0 size-3"
@@ -848,11 +859,3 @@
 
 
 </div>
-
-
-
-
-
-
-
-

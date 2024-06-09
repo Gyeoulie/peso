@@ -54,100 +54,126 @@
                     </div>
                 </div>
             </div>
+            <div class="flex">
+                @if ($applications->isEmpty())
+                    <div class="flex w-full">
+                        <div class="w-full rounded-lg p-10">
+                            <div class="flex flex-col items-center justify-center w-full">
+                                <div class="p-6 bg-gray-100 rounded-full">
+                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                    </svg>
 
-            <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full"
-                x-data="{
-                    selectedJob: @entangle('selectedJob'),
-                }">
-                @foreach ($applications as $data)
-                    <div class="flex flex-col sm:w-full">
-                        <a class="cursor-pointer" wire:key='application-{{ $data->applicant_id }}'
-                            wire:click.prevent="updateSelection({{ $data->applicant_id }})">
-                            <div
-                                class="@if ($data->applicant_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
-
-                                <div class="flex flex-row">
-                                    <div class="flex flex-col">
-                                        <img src="https://randomuser.me/api/portraits/men/94.jpg"
-                                            class="w-30 h-30 bg-gray-300 rounded-lg shrink-0">
-                                        </img>
-                                    </div>
-                                    <div class="flex flex-col ml-4 w-full">
-                                        <h1 class="text-3xl font-bold underline">{{ $data->job_posting->job_Title }}
-                                        </h1>
-                                        <h1 class="text-l text-gray-600">
-                                            {{ $data->job_posting->company->business_Name }}</h1>
-                                        <div class="flex flex-row">
-                                            <span
-                                                class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
-                                                <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                    viewBox="0 0 20 20">
-                                                    <path
-                                                        d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                                </svg>
-                                                {{ $data->created_at->diffForHumans() }}
-                                            </span>
-                                        </div>
-
-                                    </div>
-                                    <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
-
-                                        @if ($data->applicant_Status == 'PENDING')
-                                            <span
-                                                class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                                        @elseif ($data->applicant_Status == 'INTERESTED')
-                                            <span
-                                                class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                                        @elseif ($data->applicant_Status == 'INTERVIEW')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
-                                        @elseif ($data->applicant_Status == 'HIRED')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
-                                        @elseif ($data->applicant_Status == 'REJECTED')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
-                                        @endif
-
-                                    </div>
                                 </div>
-
-                                <div class="flex flex-col w-full mt-4">
-                                    <div class="flex flex-col md:flex-row">
-                                        <div class="md:w-1/4 text-left">
-
-                                            <h3 class="text-sm"> <i class="fa-solid fa-location-dot"></i> SM
-                                                {{ $data->job_posting->company->barangay->municipality->municipality_Name }},
-                                                {{ $data->job_posting->company->barangay->municipality->province->province_Name }}
-                                            </h3>
-
-                                        </div>
-                                        <div class="md:w-1/4 text-left md:text-center">
-                                            <h3 class="text-sm"> <i class="fa-solid fa-graduation-cap"></i>
-                                                {{ $eduLevels[$data->job_posting->job_Edu] }}</h3>
-                                        </div>
-                                        <div class="md:w-1/4 text-left md:text-center">
-                                            <h3 class="text-sm"> <i class="fa-solid fa-briefcase"></i>
-                                                {{ $data->job_posting->job_Type == 1 ? 'Full Time' : 'Part Time' }}
-                                            </h3>
-                                        </div>
-                                        <div class="md:w-1/4 text-left md:text-center">
-                                            <h3 class="text-sm"> <i class="fa-solid fa-calendar"></i>
-                                                {{ $data->job_posting->created_at->format('F j, Y') }}
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
+                                <p class="text-xl font-bold text-black text-center mt-2">
+                                    No Application Found!
+                                </p>
                             </div>
-                        </a>
+                        </div>
+
                     </div>
-                @endforeach
+                @else
+                    <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full"
+                        x-data="{
+                            selectedJob: @entangle('selectedJob'),
+                        }">
+                        @foreach ($applications as $data)
+                            <div class="flex flex-col sm:w-full">
+                                <a class="cursor-pointer" wire:key='application-{{ $data->applicant_id }}'
+                                    wire:click.prevent="updateSelection({{ $data->applicant_id }})">
+                                    <div
+                                        class="@if ($data->applicant_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
+
+                                        <div class="flex flex-row">
+                                            <div class="flex flex-col">
+                                                <img src="https://randomuser.me/api/portraits/men/94.jpg"
+                                                    class="w-30 h-30 bg-gray-300 rounded-lg shrink-0">
+                                                </img>
+                                            </div>
+                                            <div class="flex flex-col ml-4 w-full">
+                                                <h1 class="text-3xl font-bold underline">
+                                                    {{ $data->job_posting->job_Title }}
+                                                </h1>
+                                                <h1 class="text-l text-gray-600">
+                                                    {{ $data->job_posting->company->business_Name }}</h1>
+                                                <div class="flex flex-row">
+                                                    <span
+                                                        class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
+                                                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                            viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
+                                                        </svg>
+                                                        {{ $data->created_at->diffForHumans() }}
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
+
+                                                @if ($data->applicant_Status == 'PENDING')
+                                                    <span
+                                                        class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                @elseif ($data->applicant_Status == 'INTERESTED')
+                                                    <span
+                                                        class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                @elseif ($data->applicant_Status == 'INTERVIEW')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
+                                                @elseif ($data->applicant_Status == 'HIRED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
+                                                @elseif ($data->applicant_Status == 'REJECTED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                                @endif
+
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col w-full mt-4">
+                                            <div class="flex flex-col md:flex-row">
+                                                <div class="md:w-1/4 text-left">
+
+                                                    <h3 class="text-sm"> <i class="fa-solid fa-location-dot"></i> SM
+                                                        {{ $data->job_posting->company->barangay->municipality->municipality_Name }},
+                                                        {{ $data->job_posting->company->barangay->municipality->province->province_Name }}
+                                                    </h3>
+
+                                                </div>
+                                                <div class="md:w-1/4 text-left md:text-center">
+                                                    <h3 class="text-sm"> <i class="fa-solid fa-graduation-cap"></i>
+                                                        {{ $eduLevels[$data->job_posting->job_Edu] }}</h3>
+                                                </div>
+                                                <div class="md:w-1/4 text-left md:text-center">
+                                                    <h3 class="text-sm"> <i class="fa-solid fa-briefcase"></i>
+                                                        {{ $data->job_posting->job_Type == 1 ? 'Full Time' : 'Part Time' }}
+                                                    </h3>
+                                                </div>
+                                                <div class="md:w-1/4 text-left md:text-center">
+                                                    <h3 class="text-sm"> <i class="fa-solid fa-calendar"></i>
+                                                        {{ $data->job_posting->created_at->format('F j, Y') }}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        @endforeach
 
 
 
+                    </div>
+                @endif
             </div>
-
+            <div class="mt-2">
+                {{ $applications->links() }}
+            </div>
         </div>
 
         <div class="col-span-4 sm:col-span-7">
