@@ -75,7 +75,7 @@
                                 class="cursor-pointer px-4 py-2 bg-[#428bca] text-white rounded hover:bg-red-600 transition-colors duration-300 text-center w-full">
                                 Upload Image
                             </label>
-                            <input type="file" id="imageUpload" class="hidden" accept="image/*">
+                            <input wire:model="pimg" type="file" id="imageUpload" class="hidden" accept="image/*">
                         </div>
                     </div>
 
@@ -140,8 +140,11 @@
                             <x-input-error :messages="$errors->get('address')" class="mt-2" />
                         </div>
                         <div class="flex flex-col ml-4 w-full">
+                            <livewire:modals.barangay-modal />
                             <x-input-label for="city" :value="__('Barangay')" />
-                            <select name="barangayPost" class="block mt-1 w-full rounded-md">
+                            <select x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')" name="barangayPost"
+                                class="block mt-1 w-full rounded-md">
+                                <option value="" disabled selected>{{ $bar }}</option>
                             </select>
                             <x-input-error :messages="$errors->get('city')" class="mt-2" />
                         </div>
@@ -150,15 +153,17 @@
                     <div class="flex flex-row mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="city" :value="__('Municipality')" />
-                            <select name="cityPost" class="block mt-1 w-full rounded-md">
-                                <option value="" disabled selected>Select City</option>
+                            <select x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')" name="cityPost"
+                                class="block mt-1 w-full rounded-md">
+                                <option value="" disabled selected>{{ $mun }}</option>
                             </select>
                             <x-input-error :messages="$errors->get('city')" class="mt-2" />
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="province" :value="__('Province')" />
-                            <select name="provincePost" class="block mt-1 w-full rounded-md">
-                                <option value="" disabled selected>Select Province</option>
+                            <select x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')" name="provincePost"
+                                class="block mt-1 w-full rounded-md">
+                                <option value="" disabled selected>{{ $prov }}</option>
                             </select>
                             <x-input-error :messages="$errors->get('province')" class="mt-2" />
                         </div>
@@ -252,13 +257,7 @@
 
 
 
-
-
-
-
-
-
-
+                    {{-- DISABILITY --}}
                     <div class="flex flex-row my-4 w-full gap-4">
                         <div class="flex flex-col w-full">
 
@@ -302,12 +301,14 @@
 
                         </div>
                     </div>
+                    {{-- DISABILITY --}}
+
 
                     <div class="flex flex-row">
 
 
-                        <x-blue-button class="ml-auto mr-3" type="button" x-data=""
-                            {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> --}} x-on:click.prevent="save">
+                        <x-blue-button wire:click.prevent="saveDetails('general')" class="ml-auto mr-3"
+                            type="button" x-data="" {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> x-on:click.prevent="saveDetails(general)" --}}>
                             Save
                         </x-blue-button>
                     </div>
@@ -347,7 +348,7 @@
 
                             {{-- ADD BUTTON --}}
                             <div class="hidden sm:inline-flex">
-                                <x-primary-button wire:click.prevent='addEli()' type="button"
+                                <x-primary-button wire:click.prevent="openModal('eligibility')" type="button"
                                     class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900"
                                     x-data="">
                                     {{-- x-on:click.prevent="$dispatch('open-modal', 'eligibility-modal')"> --}}
@@ -390,7 +391,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-row items-center justify-center gap-6">
                                                 <button
-                                                    wire:click.prevent='editEligibility({{ $eli->eligibility_id }})'
+                                                    wire:click.prevent="editRecord({{ $eli->eligibility_id }}, 'eligibility')"
                                                     type="button">
 
 
@@ -460,7 +461,7 @@
 
                             {{-- ADD BUTTON --}}
                             <div class="hidden sm:inline-flex">
-                                <x-primary-button wire:click.prevent='addlicense()' type="button"
+                                <x-primary-button wire:click.prevent="openModal('license')" type="button"
                                     class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900"
                                     x-data="">
                                     {{-- x-on:click.prevent="$dispatch('open-modal', 'jobposition-modal')"> --}}
@@ -496,14 +497,14 @@
 
                                         <td class="px-6 py-4">
                                             <div class="text-black font-bold text-lg uppercase">
-                                                {{ $empLicense->license_Validity }}
+                                                {{ $empLicense->license_Validity->format('F j, Y') }}
                                             </div>
                                         </td>
 
                                         <td class="px-6 py-4">
                                             <div class="flex flex-row items-center justify-center gap-6">
                                                 <button
-                                                    wire:click.prevent='editLicense({{ $empLicense->license_id }})'
+                                                    wire:click.prevent="editRecord({{ $empLicense->license_id }}, 'license')"
                                                     type="button">
 
 
@@ -541,93 +542,102 @@
                 </div>
                 {{-- LICENSE --}}
 
-
+                {{-- JOB AND INDUSTRY PREFERENCE --}}
                 <div class="flex flex-col" x-show="openTab === 4"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
+                    <livewire:modals.job-position-modal>
+                        <livewire:modals.industry-modal>
+                            <div class="flex flex-row my-4 w-full gap-4 mt-4">
+                                <div class="flex flex-col w-full">
 
-                    <div class="flex flex-row my-4 w-full gap-4 mt-4">
-                        <div class="flex flex-col w-full">
+                                    <div class="flex flex-row w-full items-center">
 
-                            <div class="flex flex-row w-full items-center">
+                                        <x-input-label for="fname"> </i>Job Preference
+                                        </x-input-label>
 
-                                <x-input-label for="fname"> </i>Job Preference
-                                </x-input-label>
+                                        <x-primary-button class="ml-auto mr-3" type="button" x-data=""
+                                            x-on:click.prevent="$dispatch('open-modal', 'job-position-modal')">
+                                            Add Job Preference
+                                        </x-primary-button>
 
-                                <x-primary-button class="ml-auto mr-3" type="button" x-data=""
-                                    x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')">
-                                    Add Job Preference
-                                </x-primary-button>
+                                    </div>
 
+                                    <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
+
+
+                                        @foreach ($jobPreference as $jobPref)
+                                            <span
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
+                                                {{ $jobPref->job_positions->position_Title }}
+                                                <button
+                                                    wire:click.prevent="removePosition({{ $jobPref->job_preference_id }})"
+                                                    type="button"
+                                                    class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                                    <span class="sr-only">Remove badge</span>
+                                                    <svg class="flex-shrink-0 size-3"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M18 6 6 18" />
+                                                        <path d="m6 6 12 12" />
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        @endforeach
+
+                                    </div>
+                                    <x-input-error :messages="$errors->get('jobpreference')" class="mt-2" />
+
+                                </div>
                             </div>
+                            <div class="flex flex-row my-4 w-full gap-4 mt-4">
+                                <div class="flex flex-col w-full">
 
-                            <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
+                                    <div class="flex flex-row w-full items-center">
+
+                                        <x-input-label for="fname"> </i>Industry Preference
+                                        </x-input-label>
+
+                                        <x-primary-button class="ml-auto mr-3" type="button" x-data=""
+                                            x-on:click.prevent="$dispatch('open-modal', 'industry-modal')">
+                                            Add Industry Preference
+                                        </x-primary-button>
+
+                                    </div>
+
+                                    <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
 
 
+                                        @foreach ($industryPreference as $industryPref)
+                                            <span
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
+                                                {{$industryPref->industry->industry_Title}}
+                                                <button wire:click.prevent="removeIndustry({{$industryPref->industry_pref_id}})" type="button"
+                                                    class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                                    <span class="sr-only">Remove badge</span>
+                                                    <svg class="flex-shrink-0 size-3"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M18 6 6 18" />
+                                                        <path d="m6 6 12 12" />
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        @endforeach
 
-                                <span
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                    Information Technology
-                                    <button type="button"
-                                        class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
-                                        <span class="sr-only">Remove badge</span>
-                                        <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
-                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path d="M18 6 6 18" />
-                                            <path d="m6 6 12 12" />
-                                        </svg>
-                                    </button>
-                                </span>
+                                    </div>
+                                    <x-input-error :messages="$errors->get('industrypreference')" class="mt-2" />
 
+                                </div>
                             </div>
-                            <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
-
-                        </div>
-                    </div>
-                    <div class="flex flex-row my-4 w-full gap-4 mt-4">
-                        <div class="flex flex-col w-full">
-
-                            <div class="flex flex-row w-full items-center">
-
-                                <x-input-label for="fname"> </i>Industry Preference
-                                </x-input-label>
-
-                                <x-primary-button class="ml-auto mr-3" type="button" x-data="">
-                                    Add Industry Preference
-                                </x-primary-button>
-
-                            </div>
-
-                            <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
-
-
-
-                                <span
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                    Information Technology
-                                    <button type="button"
-                                        class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
-                                        <span class="sr-only">Remove badge</span>
-                                        <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
-                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path d="M18 6 6 18" />
-                                            <path d="m6 6 12 12" />
-                                        </svg>
-                                    </button>
-                                </span>
-
-                            </div>
-                            <x-input-error :messages="$errors->get('')" class="mt-2" />
-
-                        </div>
-                    </div>
 
                 </div>
+                {{-- JOB AND INDUSTRY PREFERENCE --}}
 
             </div>
 
@@ -683,7 +693,7 @@
                                 {{-- LOOP HERE --}}
                                 @foreach ($liTypes as $licenseTypes)
                                     <x-dropdown-link
-                                        wire:click.prevent='selectLicense({{ $licenseTypes->license_type_id }})'
+                                        wire:click.prevent="setVar({{ $licenseTypes->license_type_id }}, 'license')"
                                         class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">
                                         {{ $licenseTypes->license_Name }} </x-dropdown-link>
                                 @endforeach
@@ -702,11 +712,11 @@
 
             </div>
             <div class="mt-6 flex justify-end">
-                <x-secondary-button wire:click.prevent='closeLic()' type="button">
+                <x-secondary-button wire:click.prevent="closeModal('license')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent='saveLicense()' class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveDetails('license')" class="ms-3" type="button">
                     {{ __('Save') }}
                 </x-primary-button>
             </div>
@@ -754,7 +764,8 @@
                                 <!-- Dropdown links -->
                                 {{-- LOOP HERE --}}
                                 @foreach ($elTypes as $eliTypes)
-                                    <x-dropdown-link wire:click.prevent='setEli({{ $eliTypes->eligibility_type_id }})'
+                                    <x-dropdown-link
+                                        wire:click.prevent="setVar({{ $eliTypes->eligibility_type_id }}, 'eligibility')"
                                         class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">
                                         {{ $eliTypes->eligibility_Name }}</x-dropdown-link>
                                     {{-- LOOP END --}}
@@ -775,11 +786,11 @@
 
             </div>
             <div class="mt-6 flex justify-end">
-                <x-secondary-button wire:click.prevent="close()" type="button">
+                <x-secondary-button wire:click.prevent="closeModal('eligibility')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent="saveEli()" class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveDetails('eligibility')" class="ms-3" type="button">
                     {{ __('Save') }}
                 </x-primary-button>
             </div>
@@ -800,9 +811,9 @@
 
                 <div class="flex flex-col  mt-2 w-full">
                     <x-input-label for="langSelect" :value="__('Add Disability')" />
-                    <select class="block mt-1 w-full rounded"
+                    <select wire:model='selectDisability' class="block mt-1 w-full rounded"
                         x-on:change="otherDisability = $event.target.value === 'other'">
-                        <option value="" disabled selected>Select Disaibility</option>
+                        <option value="" disabled selected>Select Disability</option>
                         <option value="VISUAL">Visual</option>
                         <option value="HEARING">Hearing</option>
                         <option value="SPEECH">Speech</option>
@@ -810,20 +821,20 @@
                         <option value="MENTAL">Mental</option>
                         <option value="other">Other</option>
                     </select>
-                    <x-input-error :messages="$errors->get('')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('selectDisability')" class="mt-2" />
                 </div>
                 <div x-show="otherDisability" x-cloak class="mt-2">
                     <x-input-label for="addDisability" :value="__('Others')" />
-                    <x-text-input class="block mt-1 w-full" type="text" />
-                    <x-input-error :messages="$errors->get('')" class="mt-2" />
+                    <x-text-input wire:model.prevent='otherDisability' class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('otherDisability')" class="mt-2" />
                 </div>
             </div>
             <div class="mt-8 flex justify-end">
-                <x-secondary-button>
+                <x-secondary-button wire:click.prevent="closeModal('disability')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveDetails('disability')" class="ms-3" type="button">
                     {{ __('Add Disability Record') }}
                 </x-primary-button>
             </div>
@@ -837,3 +848,11 @@
 
 
 </div>
+
+
+
+
+
+
+
+
