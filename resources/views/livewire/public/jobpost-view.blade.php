@@ -189,7 +189,8 @@
 
                             @if (auth()->user()->usertype >= 8 && auth()->user()->peso->municipality_id == $JobPost->peso_municipality_id)
                                 <div class="flex flex-row items-center justify-center mt-2">
-                                    <a href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
+                                    <a wire:navigate
+                                        href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
                                         <x-primary-button class="w-[350px] h-[40px] justify-center">
 
                                             View Job Applicants
@@ -216,7 +217,8 @@
                                 </div>
                             @else
                                 <div class="flex flex-row w-full items-center justify-center mt-2">
-                                    <h1 class="text-xl font-semibold text-blue-500">You have already applied for this job position.
+                                    <h1 class="text-xl font-semibold text-blue-500">You have already applied for this
+                                        job position.
                                     </h1>
                                 </div>
                             @endif

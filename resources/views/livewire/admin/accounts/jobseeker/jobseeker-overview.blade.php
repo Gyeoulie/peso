@@ -3,7 +3,7 @@
 
         {{-- TITLE --}}
         <div class="col-span-12">
-            <h1 class="text-2xl font-bold">User Management \ User Overview</h1>
+            <h1 class="text-2xl font-bold">Jobseeker Management \ Jobseeker Overview</h1>
         </div>
 
         <div class="col-span-12 mt-5">
@@ -60,11 +60,7 @@
                         <div class="flex flex-row">
                             <li class="mb-2 font-bold">Status:</li>
                             <p class="ms-4">
-                                @if ($jobseeker->empstatus == 1)
-                                    EMPLOYED
-                                @else
-                                    UNEMPLOYED
-                                @endif
+                                {{ $jobseeker->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
                             </p>
                         </div>
 

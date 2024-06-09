@@ -103,7 +103,7 @@
                         </ul>
 
                         <div class="mt-6 flex flex-wrap justify-center">
-                            <a href="{{ route('admin.jobpost', ['id' => $applicant->job_posting->job_id]) }}"
+                            <a wire:navigate href="{{ route('admin.jobpost', ['id' => $applicant->job_posting->job_id]) }}"
                                 class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                                 Job Posting</a>
                         </div>

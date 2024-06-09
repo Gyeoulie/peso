@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Livewire\Admin\Accounts\JobseekerOverview;
-use App\Livewire\Admin\Accounts\UserManagement;
+use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
+use App\Livewire\Admin\Accounts\Jobseeker\JobseekerManagement;
+use App\Livewire\Admin\Accounts\Jobseeker\JobseekerOverview;
 use App\Livewire\Admin\JobPosting\Applicants\ApplicantOverview;
 use App\Livewire\Admin\JobPosting\Applicants\JobPostApplicants;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
@@ -14,6 +15,7 @@ use App\Livewire\Public\JobpostView;
 use App\Livewire\Public\Profile\Employer\EmployerProfile;
 use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
 use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
+use App\Livewire\Public\SearchProfiles;
 use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +34,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/search/profile', SearchProfiles::class)->name('search.profiles');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -109,8 +111,10 @@ Route::prefix('admin')->group(function () {
         return view('admin.admin_partials.requirements');
     })->name('admin-req');
 
-    Route::get('/manage-users', UserManagement::class)->name('admin-users');
-    Route::get('/manage-users/jobseeker/{id}', JobseekerOverview::class)->name('admin-users-jobseeker');
+    Route::get('/manage/jobseeker', JobseekerManagement::class)->name('admin-users-jobseeker');
+    Route::get('/manage/jobseeker/{id}', JobseekerOverview::class)->name('admin-users-jobseeker-overview');
+
+    Route::get('/manage/employer', EmployerManagement::class)->name('admin-users-employer');
 
     Route::get('/manage-admin', function () {
         return view('admin.admin_partials.admin-accounts');
@@ -171,7 +175,7 @@ Route::get('/admin/job/applicants/{id}', JobPostApplicants::class)->name('admin.
 Route::get('/admin/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
 
 // ------------------------------TEST ROUTES------------------------------
-Route::get('/teste', EmployerInformation::class)->name('employer.test');
+// Route::get('/teste', EmployerInformation::class)->name('employer.test');
 
 Route::get('/resume', function () {
     return view('resume');

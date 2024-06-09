@@ -3,6 +3,7 @@
 namespace App\Livewire\Public\Profile\Jobseeker;
 
 use App\Models\Employee;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -60,6 +61,18 @@ class JobseekerProfile extends Component
     #[On('reload-table')]
     public function render()
     {
+        
+
+        $highestEduTitle = 'None';
+        $isOwner = false;
+
+        $user = Auth::user();
+
+        if ($user->usertype == 4) {
+            if ($user->employee->employee_id == $this->id) {
+                $isOwner = true;
+            }
+        }
 
         $jobseeker = Employee::with([
             'education' => function ($query) {
@@ -85,36 +98,38 @@ class JobseekerProfile extends Component
             // }
         ])->find($this->id);
 
-        $eduLevels = [
-            '1' => 'GRADE I',
-            '2' => 'GRADE II',
-            '3' => 'GRADE III',
-            '4' => 'GRADE IV',
-            '5' => 'GRADE V',
-            '6' => 'GRADE VI',
-            '7' => 'GRADE VII',
-            '8' => 'GRADE VIII',
-            '9' => 'ELEMENTARY GRADUATE',
-            '10' => '1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12)',
-            '11' => '2ND YEAR HIGH SCHOOL/GRADE VIII (FOR K TO 12)',
-            '12' => '3RD YEAR HIGH SCHOOL/GRADE IX (FOR K TO 12)',
-            '13' => '4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12)',
-            '14' => 'GRADE XI (FOR K TO 12)',
-            '15' => 'GRADE XII (FOR K TO 12)',
-            '16' => 'HIGH SCHOOL GRADUATE',
-            '17' => 'VOCATIONAL UNDERGRADUATE',
-            '18' => 'VOCATIONAL GRADUATE',
-            '19' => '1ST YEAR COLLEGE LEVEL',
-            '20' => '2ND YEAR COLLEGE LEVEL',
-            '21' => '3RD YEAR COLLEGE LEVEL',
-            '22' => '4TH YEAR COLLEGE LEVEL',
-            '23' => '5TH YEAR COLLEGE LEVEL',
-            '24' => 'COLLEGE GRADUATE',
-            '25' => 'MASTERAL/POST GRADUATE LEVEL',
-            '26' => 'MASTERAL/POST GRADUATE',
-        ];
-        $highestEduTitle = $eduLevels[$jobseeker->education->first()->edu_Level];
+        if ($jobseeker) {
+            $eduLevels = [
+                '1' => 'GRADE I',
+                '2' => 'GRADE II',
+                '3' => 'GRADE III',
+                '4' => 'GRADE IV',
+                '5' => 'GRADE V',
+                '6' => 'GRADE VI',
+                '7' => 'GRADE VII',
+                '8' => 'GRADE VIII',
+                '9' => 'ELEMENTARY GRADUATE',
+                '10' => '1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12)',
+                '11' => '2ND YEAR HIGH SCHOOL/GRADE VIII (FOR K TO 12)',
+                '12' => '3RD YEAR HIGH SCHOOL/GRADE IX (FOR K TO 12)',
+                '13' => '4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12)',
+                '14' => 'GRADE XI (FOR K TO 12)',
+                '15' => 'GRADE XII (FOR K TO 12)',
+                '16' => 'HIGH SCHOOL GRADUATE',
+                '17' => 'VOCATIONAL UNDERGRADUATE',
+                '18' => 'VOCATIONAL GRADUATE',
+                '19' => '1ST YEAR COLLEGE LEVEL',
+                '20' => '2ND YEAR COLLEGE LEVEL',
+                '21' => '3RD YEAR COLLEGE LEVEL',
+                '22' => '4TH YEAR COLLEGE LEVEL',
+                '23' => '5TH YEAR COLLEGE LEVEL',
+                '24' => 'COLLEGE GRADUATE',
+                '25' => 'MASTERAL/POST GRADUATE LEVEL',
+                '26' => 'MASTERAL/POST GRADUATE',
+            ];
+            $highestEduTitle = $eduLevels[$jobseeker->education->first()->edu_Level];
+        }
 
-        return view('livewire.public.profile.jobseeker.jobseeker-profile', compact('jobseeker', 'highestEduTitle'));
+        return view('livewire.public.profile.jobseeker.jobseeker-profile', compact('jobseeker', 'highestEduTitle', 'isOwner'));
     }
 }

@@ -5,7 +5,8 @@
         <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase">Menu</h5>
         <ul class="space-y-2 font-medium">
             <li>
-                <a href="{{ route('admin') }}" :class="{{ request()->routeIs('admin') }} ? activeNav : inactiveNav"
+                <a wire:navigate href="{{ route('admin') }}"
+                    :class="{{ request()->routeIs('admin') }} ? activeNav : inactiveNav"
                     class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 group">
                     <svg class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
@@ -18,8 +19,10 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin-joblist') }}"
-                    :class="{{ request()->routeIs('admin-joblist') }} ? activeNav : inactiveNav"
+                <a wire:navigate
+                    href="{{ route('admin-joblist', 'admin.jobpost', 'admin.jobpost.applicants', 'admin.jobpost.applicants.overview') }}"
+                    :class="{{ request()->routeIs('admin-joblist') || request()->routeIs('admin.jobpost') || request()->routeIs('admin.jobpost.applicants') || request()->routeIs('admin.jobpost.applicants.overview') }}
+                        ? activeNav : inactiveNav"
                     class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 ">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
@@ -54,15 +57,23 @@
                             d="m1 1 4 4 4-4" />
                     </svg>
                 </button>
-                <ul id="dropdown-1" class="py-2 space-y-2 {{ request()->routeIs('admin-admin', 'admin-users') ? 'block' : 'hidden' }}">
+                <ul id="dropdown-1"
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-admin', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview') ? 'block' : 'hidden' }}">
                     <li>
-                        <a href="{{ route('admin-users') }}"
-                          :class="{{ request()->routeIs('admin-users') }} ? activeNav : inactiveNav"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">User
+                        <a wire:navigate href="{{ route('admin-users-jobseeker') }}"
+                            :class="{{ request()->routeIs('admin-users-jobseeker') || request()->routeIs('admin-users-jobseeker-overview') }}
+                                ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Jobseekers
                             Management</a>
                     </li>
                     <li>
-                        <a href="{{ route('admin-admin') }}"
+                        <a wire:navigate href="{{ route('admin-users-employer') }}"
+                            :class="{{ request()->routeIs('admin-users-employer') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Employers
+                            Management</a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="{{ route('admin-admin') }}"
                             :class="{{ request()->routeIs('admin-admin') }} ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Admin
                             Account Management</a>
@@ -109,23 +120,23 @@
                     class="py-2 space-y-2 {{ request()->routeIs('admin-certificate', 'admin-eligibility', 'admin-location', 'admin-industry') ? 'block' : 'hidden' }}">
 
                     <li>
-                        <a href="{{ route('admin-certificate') }}"
+                        <a wire:navigate href="{{ route('admin-certificate') }}"
                             :class="{{ request()->routeIs('admin-certificate') }} ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Certificates</a>
                     </li>
                     <li>
-                        <a href="{{ route('admin-eligibility') }}"
+                        <a wire:navigate href="{{ route('admin-eligibility') }}"
                             :class="{{ request()->routeIs('admin-eligibility') }} ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Eligibility
                             and License</a>
                     </li>
                     <li>
-                        <a href="{{ route('admin-location') }}"
+                        <a wire:navigate href="{{ route('admin-location') }}"
                             :class="{{ request()->routeIs('admin-location') }} ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Locations</a>
                     </li>
                     <li>
-                        <a href="{{ route('admin-industry') }}"
+                        <a wire:navigate href="{{ route('admin-industry') }}"
                             :class="{{ request()->routeIs('admin-industry') }} ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Positions
                             and Industry</a>
@@ -135,7 +146,7 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ route('admin-req') }}"
+                <a wire:navigate href="{{ route('admin-req') }}"
                     :class="{{ request()->routeIs('admin-req') }} ? activeNav : inactiveNav"
                     class="flex items-center p-2 text-gray-900 rounded-lg ">
 
@@ -155,10 +166,11 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin') }}" class="flex items-center p-2 text-gray-900 rounded-lg ">
+                <a wire:navigate href="{{ route('admin') }}" class="flex items-center p-2 text-gray-900 rounded-lg ">
 
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
-                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        className="w-6 h-6">
                         <path
                             d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
                         <path

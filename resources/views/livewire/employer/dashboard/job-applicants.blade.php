@@ -366,7 +366,7 @@
                                                     alt="Jese image">
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
-                                                        <a href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
+                                                        <a wire:navigate href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
                                                             class="hover:text-blue-500">{{ $data->employee->fname }}
                                                             {{ $data->employee->mname }} {{ $data->employee->lname }}
                                                         </a>

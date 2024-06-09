@@ -278,7 +278,7 @@
 
                         {{-- BUTTON --}}
                         <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                            <a href="{{ route('jobpost.show', ['id' => $applicationInfo->job_id]) }}"
+                            <a wire:navigate href="{{ route('jobpost.show', ['id' => $applicationInfo->job_id]) }}"
                                 class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                                 Job Posting</a>
                             <a href="#"

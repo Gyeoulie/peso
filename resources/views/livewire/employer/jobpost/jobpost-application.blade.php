@@ -97,7 +97,7 @@
 
                 <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
-                    <div class="flex flex-row gap-4 w">
+                    <div class="flex flex-row gap-4 w-full">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="minWagePost"> <i class="fa-solid fa-briefcase"></i> Minimum Wage

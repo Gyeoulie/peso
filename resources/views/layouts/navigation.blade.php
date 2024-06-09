@@ -14,36 +14,36 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if (auth()->user()->usertype == 4)
-                        <x-nav-link :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
+                        <x-nav-link wire:navigate :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
                             {{ __('Profile') }}
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype == 5)
-                        <x-nav-link :href="route('employer.profile', ['id' => auth()->user()->company->company_id])" :active="request()->routeIs('employer.profile')">
+                        <x-nav-link wire:navigate :href="route('employer.profile', ['id' => auth()->user()->company->company_id])" :active="request()->routeIs('employer.profile')">
                             {{ __('Profile') }}
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                        <x-nav-link :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
+                        <x-nav-link wire:navigate :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
                             {{ __('Job Postings') }}
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                        <x-nav-link :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
+                        <x-nav-link wire:navigate :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
                             {{ __('Job Applicants') }}
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
-                        <x-nav-link :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
+                        <x-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
                             {{ __('My Applications') }}
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 8)
-                        <x-nav-link :href="route('admin')" :active="Route::is('admin*')">
+                        <x-nav-link wire:navigate :href="route('admin')" :active="Route::is('admin*')">
                             {{ __('Admin Tools') }}
                         </x-nav-link>
                     @endif
@@ -53,23 +53,7 @@
             <div class="hidden sm:flex mr-1 ml-auto w-96">
 
 
-                <form class="flex items-center w-full mx-auto">
-                    <label for="simple-search" class="sr-only">Search</label>
-                    <div class="relative w-full">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                            </svg>
-
-
-                        </div>
-                        <input type="text" id="simple-search"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 "
-                            placeholder="Search profile..." required />
-                    </div>
-                </form>
+                <livewire:components.profile-search/>
 
 
             </div>
@@ -94,7 +78,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link wire:navigate :href="route('profile.edit')">
                             {{ __('Settings') }}
                         </x-dropdown-link>
 
@@ -131,31 +115,31 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             @if (auth()->user()->usertype == 4)
-                <x-responsive-nav-link :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
+                <x-responsive-nav-link wire:navigate :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
             @endif
             @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                <x-responsive-nav-link :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
+                <x-responsive-nav-link wire:navigate :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
                     {{ __('Job Postings') }}
                 </x-responsive-nav-link>
             @endif
             @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                <x-responsive-nav-link :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
+                <x-responsive-nav-link wire:navigate :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
                     {{ __('Job Applicants') }}
                 </x-responsive-nav-link>
             @endif
             @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
-                <x-responsive-nav-link :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
+                <x-responsive-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
                     {{ __('My Applications') }}
                 </x-responsive-nav-link>
             @endif
             @if (auth()->user()->usertype >= 8)
-                <x-responsive-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                <x-responsive-nav-link wire:navigate :href="route('admin')" :active="request()->routeIs('admin')">
                     {{ __('Admin Tools') }}
                 </x-responsive-nav-link>
             @endif
@@ -172,28 +156,14 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <x-responsive-nav-link wire:navigate :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
                 <div class="flex px-4 ">
 
-                    <form class="flex items-center w-full mx-auto">
-                        <label for="simple-search" class="sr-only">Search</label>
-                        <div class="relative w-full">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                </svg>
+                
 
-
-                            </div>
-                            <input type="text" id="simple-search"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 "
-                                placeholder="Search profile..." required />
-                        </div>
-                    </form>
+                    <livewire:components.profile-search/>
 
                 </div>
 

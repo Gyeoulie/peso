@@ -179,11 +179,13 @@
                                 </tr>
                             @else
                                 @foreach ($joblist as $data)
-                                    <tr wire:key='jobPosting-{{ $data->job_id }}' class="text-center hover:bg-gray-100 ">
+                                    <tr wire:key='jobPosting-{{ $data->job_id }}'
+                                        class="text-center hover:bg-gray-100 ">
 
                                         <td class="p-2 rounded-lg">
 
-                                            <a href="{{ route('jobpost.show', ['id' => $data->job_id]) }}">
+                                            <a wire:navigate
+                                                href="{{ route('jobpost.show', ['id' => $data->job_id]) }}">
                                                 <div class="flex flex-row w-full">
                                                     <div
                                                         class="flex flex-col justify-center items-center h-full  flex-shrink-0">

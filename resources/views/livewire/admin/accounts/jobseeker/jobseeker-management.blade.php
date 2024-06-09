@@ -2,10 +2,10 @@
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
         <div class="col-span-12">
-            <h1 class="text-2xl font-bold">Role Management / User Management</h1>
+            <h1 class="text-2xl font-bold">Role Management / Jobseeker Management</h1>
         </div>
 
-        <div class="col-span-4 sm:col-start-1 sm:col-end-10">
+        <div class="col-span-4 sm:col-span-12">
             <div class="bg-white shadow rounded-lg p-6" x-data="{
                 openTab: 1,
                 activeClasses: 'text-gray-900 bg-gray-400 active',
@@ -16,12 +16,12 @@
 
                 <div class="relative overflow-x-auto p-1 mt-4">
                     <div class="sm:hidden">
-                        <label for="tabs" class="sr-only">Select your country</label>
+                        <label for="tabs" class="sr-only">Select Filters</label>
                         <select id="tabs"
                             class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option>All</option>
-                            <option>Pending</option>
-                            <option>Others</option>
+                            <option wire:click.prevent='updateUserFilter("ALL")' @click="openTab = 1">All</option>
+                            <option wire:click.prevent='updateUserFilter(1)' @click="openTab = 2">>Employed</option>
+                            <option wire:click.prevent='updateUserFilter(2)' @click="openTab = 4">>Unemployed</option>
                         </select>
                     </div>
                     <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
@@ -114,7 +114,7 @@
                                 </tr>
                             @else
                                 @foreach ($jobseeker as $data)
-                                    <tr class="bg-white border-b hover:bg-gray-50">
+                                    <tr wire:key='emp-{{ $data->employee_id }}' class="bg-white border-b hover:bg-gray-50">
                                         <th scope="row"
                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                             <img class="w-10 h-10 rounded-full"
@@ -161,7 +161,8 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-row  gap-5">
                                                 <div x-data="{ tooltip: 'Jobseeker Overview' }">
-                                                    <a href="{{ route('admin-users-jobseeker', ['id' => $data->employee_id]) }}"
+                                                    <a wire:navigate
+                                                        href="{{ route('admin-users-jobseeker-overview', ['id' => $data->employee_id]) }}"
                                                         x-tooltip="tooltip" type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"

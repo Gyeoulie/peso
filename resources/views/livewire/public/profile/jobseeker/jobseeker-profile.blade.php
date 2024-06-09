@@ -172,20 +172,20 @@
                             <h2 class="text-xl font-bold">About me</h2>
 
 
-
-                            <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                <svg wire:click.prevent='editModal()' class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                </svg>
-                            </div>
-
+                            @if ($isOwner)
+                                <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                    <svg wire:click.prevent='editModal()' class="w-8 h-8"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                    </svg>
+                                </div>
+                            @endif
 
                         </div>
 
                         <p class="text-gray-700 text-wrap break-words">
-                            {{-- {{ $jobseeker->empDesc !== null || $jobseeker->empDesc !== "" ? $jobseeker->empDesc : 'No Description' }} --}}
                             {{ $jobseeker->empDesc ?: 'No Description' }}
 
                         </p>
@@ -282,17 +282,18 @@
                                 <h2 class="text-xl font-bold">Jobseeker Details</h2>
 
                                 {{-- eto sa edit deets --}}
-                                <a href="{{ route('edit.details') }}">
-                                    <div
-                                        class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
-                                    </div>
-                                </a>
-
+                                @if ($isOwner)
+                                    <a wire:navigate href="{{ route('edit.details') }}">
+                                        <div
+                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                        </div>
+                                    </a>
+                                @endif
                             </div>
 
 
@@ -303,7 +304,7 @@
                                 <div id= "otherSkillRow" class="flex-inline p-1">
                                     {{-- BADGE --}}
                                     @foreach ($jobseeker->job_preference as $preferences)
-                                        <span
+                                        <span wire:key='jobPref-{{$preferences->job_preference_id}}'
                                             class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $preferences->job_positions->position_Title }}
                                         </span>
@@ -321,7 +322,7 @@
                                     {{-- BADGE --}}
 
                                     @foreach ($jobseeker->skills as $empSkills)
-                                        <span
+                                        <span wire:key='skills-{{$empSkills->skills_id}}'
                                             class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $empSkills->skill_Type }}
                                         </span>
@@ -337,7 +338,7 @@
                                 <div id= "otherSkillRow" class="flex-inline p-1">
                                     {{-- BADGE --}}
                                     @foreach ($jobseeker->language as $empLanguage)
-                                        <span
+                                       <span wire:key='language-{{$empLanguage->language_id}}'
                                             class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $empLanguage->language_Type }}
                                         </span>
@@ -353,7 +354,7 @@
                                 <div id= "otherSkillRow" class="flex-inline p-1">
                                     {{-- BADGE --}}
                                     @foreach ($jobseeker->disability as $empDisability)
-                                        <span
+                                        <span wire:key='disability-{{$empDisability->disability_id}}'
                                             class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $empDisability->disability_Type }}
                                         </span>
@@ -378,29 +379,31 @@
 
                             <div class="flex flex-row w-full justify-between mt-6 mb-4">
                                 <h2 class="text-xl font-bold">Education</h2>
+                                @if ($isOwner)
+                                    <div class="flex flex-row gap-4 items-center">
 
-                                <div class="flex flex-row gap-4 items-center">
-                                    <div x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'education-modal')"
-                                        class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 4.5v15m7.5-7.5h-15" />
-                                        </svg>
+                                        <div x-data=""
+                                            x-on:click.prevent="$dispatch('open-modal', 'education-modal')"
+                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 4.5v15m7.5-7.5h-15" />
+                                            </svg>
 
+                                        </div>
+
+
+                                        <div @click="profileTab = 'editEducation'"
+                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                        </div>
                                     </div>
-
-
-                                    <div @click="profileTab = 'editEducation'"
-                                        class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
-                                    </div>
-                                </div>
+                                @endif
 
                             </div>
                             @if ($jobseeker->education->isEmpty())
@@ -465,33 +468,35 @@
                             x-transition:enter-start="opacity-0 scale-90"
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
 
+
                             <div class="flex flex-row w-full justify-between mt-6 mb-4">
                                 <h2 class="text-xl font-bold">Work Experience</h2>
+                                @if ($isOwner)
+                                    <div class="flex flex-row gap-4 items-center">
+                                        <div x-data=""
+                                            x-on:click.prevent="$dispatch('open-modal', 'workExp-modal')"
+                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 4.5v15m7.5-7.5h-15" />
+                                            </svg>
 
-                                <div class="flex flex-row gap-4 items-center">
-                                    <div x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'workExp-modal')"
-                                        class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 4.5v15m7.5-7.5h-15" />
-                                        </svg>
+                                        </div>
 
+
+                                        <div @click="profileTab = 'editWorkExperience'"
+                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                        </div>
                                     </div>
-
-
-                                    <div @click="profileTab = 'editWorkExperience'"
-                                        class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
-                                    </div>
-                                </div>
-
+                                @endif
                             </div>
+
                             @if ($jobseeker->work_exp->isEmpty())
 
                                 <div class="flex flex-col justify-center items-center mt-20 mb-20">
@@ -566,27 +571,28 @@
                             <div class="flex flex-row w-full justify-between mt-6 mb-4">
                                 <h2 class="text-xl font-bold">Trainings</h2>
 
-                                <div class="flex flex-row gap-4 items-center">
-                                    <div x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'training-modal')"
-                                        class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 4.5v15m7.5-7.5h-15" />
-                                        </svg>
-                                    </div>
+                                @if ($isOwner)
+                                    <div class="flex flex-row gap-4 items-center">
+                                        <div x-data=""
+                                            x-on:click.prevent="$dispatch('open-modal', 'training-modal')"
+                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 4.5v15m7.5-7.5h-15" />
+                                            </svg>
+                                        </div>
 
-                                    <div @click="profileTab = 'editTrainings'"
-                                        class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
+                                        <div @click="profileTab = 'editTrainings'"
+                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                        </div>
                                     </div>
-                                </div>
-
+                                @endif
                             </div>
                             @if ($jobseeker->training->isEmpty())
 
@@ -652,6 +658,7 @@
                             <div class="flex flex-row w-full justify-between mt-6 mb-4">
                                 <h2 class="text-xl font-bold">Certificates</h2>
 
+                                @if ($isOwner)
                                 <div class="flex flex-row gap-4 items-center">
                                     <div x-data=""
                                         x-on:click.prevent="$dispatch('open-modal', 'certificate-modal')"
@@ -672,6 +679,7 @@
                                         </svg>
                                     </div>
                                 </div>
+                                @endif
 
                             </div>
                             @if ($jobseeker->certificate->isEmpty())

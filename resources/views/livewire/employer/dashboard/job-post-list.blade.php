@@ -11,7 +11,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col ml-auto mr-2 justify-center">
-                            <a href="{{ route('jobpost.apply') }}">
+                            <a wire:navigate href="{{ route('jobpost.apply') }}">
                                 <x-primary-button type="button" class="w-[150px] mr-2 justify-center">
 
                                     Post Job
@@ -238,7 +238,7 @@
 
                                         </td>
                                         <td class="px-6 py-4">
-                                            <a href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
+                                            <a wire:navigate href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
                                                 class="font-medium text-blue-600  hover:underline">View
                                                 Post</a>
                                         </td>

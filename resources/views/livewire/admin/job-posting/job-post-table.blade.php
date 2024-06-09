@@ -202,7 +202,7 @@
                             <td class="px-6 py-4">
                                 <div class="flex flex-row  gap-5">
                                     <div x-data="{ tooltip: 'View Job Post Information' }">
-                                        <a href="{{ route('admin.jobpost', ['id' => $data->job_id]) }}"
+                                        <a wire:navigate href="{{ route('admin.jobpost', ['id' => $data->job_id]) }}"
                                             x-tooltip="tooltip" type="button"
                                             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -217,7 +217,7 @@
 
                                     @if ($filter == 'ACTIVE')
                                         <div x-data="{ tooltip: 'View Applicants' }">
-                                            <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
+                                            <a wire:navigate href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
                                                 x-tooltip="tooltip" type="button"
                                                 class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                 <svg class="w-5 h-5 " aria-hidden="true"

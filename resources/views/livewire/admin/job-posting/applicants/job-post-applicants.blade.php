@@ -74,7 +74,7 @@
 
                         {{-- JOB POST LINK --}}
                         <div class="mt-6 flex flex-wrap justify-center">
-                            <a href="{{ route('admin.jobpost', ['id' => $jobpost->job_id]) }}"
+                            <a wire:navigate href="{{ route('admin.jobpost', ['id' => $jobpost->job_id]) }}"
                                 class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                                 Job Posting</a>
                         </div>
@@ -235,7 +235,7 @@
                                             </td>
                                             <td class="px-6 py-4 text-center">
                                                 <div x-data="{ tooltip: 'Applicant Overview' }">
-                                                    <a href="{{ route('admin.jobpost.applicants.overview', ['id' => $applicants->applicant_id]) }}"
+                                                    <a wire:navigate href="{{ route('admin.jobpost.applicants.overview', ['id' => $applicants->applicant_id]) }}"
                                                         x-tooltip="tooltip" type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"

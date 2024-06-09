@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Accounts;
+namespace App\Livewire\Admin\Accounts\Jobseeker;
 
 use App\Models\Employee;
 use App\Models\Job_Applicants;
@@ -32,6 +32,6 @@ class JobseekerOverview extends Component
             })
             ->paginate(5);
 
-        return view('livewire.admin.accounts.jobseeker-overview', compact('jobseeker', 'application_history'));
+        return view('livewire.admin.accounts.jobseeker.jobseeker-overview', compact('jobseeker', 'application_history'));
     }
 }
