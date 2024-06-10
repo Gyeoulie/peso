@@ -6,7 +6,7 @@
                 <div class="flex flex-col items-center">
                     {{-- <img src="https://randomuser.me/api/portraits/men/94.jpg" --}}
                     <img src="{{ $jobseeker->pimg ? asset('storage/' . $jobseeker->pimg) : asset('https://randomuser.me/api/portraits/men/94.jpg') }}"
-                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 ">
+                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover">
                     </img>
                     <h1 class="text-xl font-bold">{{ $jobseeker->fname }} {{ $jobseeker->lname }}</h1>
 

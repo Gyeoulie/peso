@@ -53,7 +53,7 @@
                                                     {{ $data->name }}
                                                 </div>
                                                 <div class="flex flex-row">
-                                                    <div class="mt-1 text-md font-bold">
+                                                    <div class="mt-1 text-md font-bold text-blue-500">
                                                         <span class="font-medium">
                                                             JOBSEEKER</span> ·
                                                         <span class="font-medium">
@@ -86,7 +86,7 @@
                                                     {{ $data->name }}
                                                 </div>
                                                 <div class="flex flex-row">
-                                                    <div class="mt-1 text-md font-bold">
+                                                    <div class="mt-1 text-md font-bold text-blue-500">
                                                         <span class="font-medium">
                                                             COMPANY</span> ·
                                                         <span class="font-medium">

@@ -36,6 +36,7 @@ class SearchProfiles extends Component
         $employeeQuery = DB::table('employee')
             ->leftJoin('barangay', 'employee.barangay_id', '=', 'barangay.barangay_id')
             ->leftJoin('municipality', 'barangay.municipality_id', '=', 'municipality.municipality_id')
+            ->leftJoin('users', 'employee.user_id', '=', 'users.id')
             ->select(
                 DB::raw("'employee' as type"),
                 'employee.employee_id as id',
@@ -53,6 +54,7 @@ class SearchProfiles extends Component
                     (employee.lname LIKE '%$search%')
                 ) as relevance_score")
             )
+            ->where('users.usertype', '=', '4')
             ->where(function ($query) use ($search) {
                 $query->where('employee.fname', 'like', '%' . $search . '%')
                     ->orWhere('employee.mname', 'like', '%' . $search . '%')
@@ -63,6 +65,7 @@ class SearchProfiles extends Component
         $companyQuery = DB::table('company')
             ->leftJoin('barangay', 'company.barangay_id', '=', 'barangay.barangay_id')
             ->leftJoin('municipality', 'barangay.municipality_id', '=', 'municipality.municipality_id')
+            ->leftJoin('users', 'company.user_id', '=', 'users.id')
             ->select(
                 DB::raw("'company' as type"),
                 'company.company_Id as id',
@@ -79,6 +82,7 @@ class SearchProfiles extends Component
                     (company.trade_Name LIKE '%$search%')
                 ) as relevance_score")
             )
+            ->where('users.usertype', '=', '5')
             ->where(function ($query) use ($search) {
                 $query->where('company.business_Name', 'like', '%' . $search . '%')
                     ->orWhere('company.trade_Name', 'like', '%' . $search . '%');
