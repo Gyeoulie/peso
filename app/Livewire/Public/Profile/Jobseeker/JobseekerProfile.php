@@ -32,7 +32,7 @@ class JobseekerProfile extends Component
         $this->dispatch('open-modal', 'aboutme-modal');
     }
 
-    public function Save()
+    public function save()
     {
         $this->validate();
 
