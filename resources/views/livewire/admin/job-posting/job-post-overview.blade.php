@@ -302,31 +302,31 @@
                         </div>
                     @else
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-
                             @foreach ($matchingEmployees as $data)
-                                <div
-                                    class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-gray-100 rounded-xl shadow-lg shrink-0">
-                                    <img class="flex mx-auto w-[100px] h-[100px] rounded-lg sm:mx-0 sm:grow-0 sm:shrink-0"
-                                        src="{{ asset('storage/' . $data->pimg) }}" alt="Woman's Face">
-                                    <div
-                                        class="flex flex-col items-center justify-center text-center  sm:text-left mt-2">
-                                        <div class="space-y-0.5">
-                                            <p class="text-lg text-black text-center font-semibold">
-                                                {{ $data->fname }}
-                                                {{ $data->mname ?? '' }}
-                                                {{ $data->lname }}@if (!empty($data->suffix))
-                                                    , {{ $data->suffix }}
-                                                @endif
-                                            </p>
-                                            <p class="text-slate-500 text-center font-medium">
-                                                {{ $data->empstatus == 1 ? 'Employed' : 'Unemployed' }}
-                                            </p>
-                                        </div>
-                                        <a wire:navigate href="{{ route('jobseeker.profile', ['id' => $data->employee_id]) }}"
-                                            class="mt-2 px-4 py-1 text-sm text-blue-600 font-semibold rounded-full border border-blue-200 hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
+                            <div wire:key='jobseeker-{{$data->employee_id}}'
+                                 class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-gray-200 rounded-xl shadow shrink-0 grow-0 w-full hover:bg-gray-300 transition-colors duration-300">
+                                <img class="flex mx-auto w-[100px] h-[100px] rounded-lg sm:mx-0 sm:grow-0 sm:shrink-0"
+                                     src="{{ asset('storage/' . $data->pimg) }}" alt="jobseeker-{{$data->employee_id}}">
+                                <div class="flex flex-col items-center justify-center text-center  sm:text-left mt-2">
+                                    <div class="space-y-0.5">
+                                        <p class="text-lg text-black text-center font-semibold">
+                                            {{ $data->fname }}
+                                            {{ $data->mname ?? '' }}
+                                            {{ $data->lname }}@if (!empty($data->suffix))
+                                                , {{ $data->suffix }}
+                                            @endif
+                                        </p>
+                                        <p class="text-slate-500 text-center font-medium">
+                                            {{ $data->empstatus == 1 ? 'Employed' : 'Unemployed' }}
+                                        </p>
                                     </div>
+                                    <a wire:navigate
+                                       href="{{ route('jobseeker.profile', ['id' => $data->employee_id]) }}"
+                                       class="mt-2 px-4 py-1 text-sm text-blue-600  bg-blue-300 font-semibold rounded-full border border-blue-200 hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
                                 </div>
-                            @endforeach
+                            </div>
+                        @endforeach
+                        
 
                         </div>
 

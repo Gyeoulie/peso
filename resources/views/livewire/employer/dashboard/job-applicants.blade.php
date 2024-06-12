@@ -366,7 +366,8 @@
                                                     alt="Jese image">
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
-                                                        <a wire:navigate href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
+                                                        <a wire:navigate
+                                                            href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
                                                             class="hover:text-blue-500">{{ $data->employee->fname }}
                                                             {{ $data->employee->mname }} {{ $data->employee->lname }}
                                                         </a>
@@ -419,9 +420,10 @@
                                                 </td>
                                             @endif
                                             <td class="px-6 py-4">
-                                                <div class="flex flex-row gap-4 items-center">
+                                                <div class="flex flex-row gap-4 items-center" x-data="{ openNewTab: function(url) { window.open(url, '_blank'); } }">
                                                     <div x-data="{ tooltip: 'Download Resume' }">
                                                         <button
+                                                            {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
                                                             wire:click.prevent='printResume({{ $data->employee_id }})'
                                                             x-tooltip="tooltip" type="button"
                                                             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
@@ -905,7 +907,13 @@
 
 
 
-
+    <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('openNewTab', url => {
+                window.open(url, '_blank');
+            });
+        });
+    </script>
 
 
 </div>

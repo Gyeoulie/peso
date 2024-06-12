@@ -204,7 +204,7 @@ class JobpostView extends Component
             return redirect()->route('dashboard');
         }
 
-        if (auth()->user()->usertype >= 4 && $JobPost->job_Status == 'PENDING') {
+        if (auth()->user()->usertype <= 4 && $JobPost->job_Status == 'PENDING') {
             return redirect()->route('dashboard');
         }
 

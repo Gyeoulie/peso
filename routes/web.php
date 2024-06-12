@@ -15,6 +15,7 @@ use App\Livewire\Public\JobpostView;
 use App\Livewire\Public\Profile\Employer\EmployerProfile;
 use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
 use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
+use App\Livewire\Public\Resume\ResumeView;
 use App\Livewire\Public\SearchProfiles;
 use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
@@ -180,6 +181,8 @@ Route::get('/admin/job/applicants/overview/{id}', ApplicantOverview::class)->nam
 Route::get('/resume', function () {
     return view('resume');
 })->name('resume');
+
+Route::get('/resume/view/{id}', ResumeView::class)->name('view.resume');
 
 require __DIR__ . '/auth.php';
 

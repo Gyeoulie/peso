@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "3.5",
         "php-flasher/flasher-laravel": "^1.15",
+        "spatie/laravel-pdf": "^1.5",
         "wireui/heroicons": "^2.6",
         "yoeunes/toastr": "^2.3"
     },

@@ -123,7 +123,7 @@ class JobPostOverview extends Component
             $query->where('municipality_id', $jobMunicipalityId);
         })
             ->whereHas('education', function ($query) use ($jobEducationLevel) {
-                $query->where('edu_level', '<=', $jobEducationLevel);
+                $query->where('edu_Level', '>=', $jobEducationLevel);
             })
             ->whereHas('job_preference', function ($query) use ($jobTagIds) {
                 $query->whereIn('position_id', $jobTagIds);

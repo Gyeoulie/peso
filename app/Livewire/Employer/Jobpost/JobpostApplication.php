@@ -163,7 +163,8 @@ class JobpostApplication extends Component
             }
 
             toastr()->success('You have successfully submitted an application!');
-            return redirect()->route('jobpost.show', ['id' => $jobposting->id]);
+            // return redirect()->route('jobpost.show', ['id' => $jobposting->id]);
+            $this->redirectRoute('jobpost.show', ['id' => $jobposting->job_id], navigate: true);
 
         }
     }

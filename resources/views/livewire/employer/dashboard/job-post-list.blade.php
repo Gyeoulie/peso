@@ -29,7 +29,7 @@
 
     <div class="table-container">
         <div class="max-w-7xl mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-2">
+            <div class="bg-white overflow-hidden sm:rounded-lg p-2">
 
 
                 <div x-data="{
@@ -82,7 +82,7 @@
 
 
 
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <div class="relative overflow-x-auto ">
                     <div
                         class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white px-4 pt-4">
 
@@ -238,7 +238,8 @@
 
                                         </td>
                                         <td class="px-6 py-4">
-                                            <a wire:navigate href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
+                                            <a wire:navigate
+                                                href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
                                                 class="font-medium text-blue-600  hover:underline">View
                                                 Post</a>
                                         </td>
@@ -248,7 +249,9 @@
                         </tbody>
                     </table>
                     {{-- navbar --}}
-                    <div></div>
+                    <div class="mt-2 p-4">
+                        {{ $applicants->links() }}
+                    </div>
                 </div>
 
 

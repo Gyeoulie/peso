@@ -6,10 +6,13 @@ use App\Models\Job_Posting;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class JobPostList extends Component
 {
+
+    use WithPagination;
     public $search;
 
     public $filter = 'ALL', $sortDate;
