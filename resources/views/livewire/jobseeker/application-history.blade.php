@@ -273,7 +273,7 @@
                                 <h1 class="mb-2 font-bold">Company Remarks</h1>
                                 <textarea id="message" rows="6"
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
-                                    placeholder="Company remarks..." maxlength="600" readonly></textarea>
+                                    placeholder="Company remarks..." maxlength="600" readonly>{{ $applicationInfo->company_Remarks }}</textarea>
                             </div>
                         @endif
 

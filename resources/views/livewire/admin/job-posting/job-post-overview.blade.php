@@ -97,18 +97,22 @@
                     <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job
+                            <x-input-label for="title"> <i class="fa-solid fa-briefcase"></i> Job
                                 Title
                             </x-input-label>
-                            <x-text-input id="fname" class="block mt-1 w-full" type="text"
+                            <x-text-input id="title" class="block mt-1 w-full" type="text"
                                 value="{{ $jobpost->job_Title }}" readonly />
                         </div>
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job
-                                Industry
+                            <x-input-label for="industry" class="flex flex-row items-center gap-1"> <svg class="w-5 h-5"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M4.5 2.25a.75.75 0 0 0 0 1.5v16.5h-.75a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5h-.75V3.75a.75.75 0 0 0 0-1.5h-15ZM9 6a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H9Zm-.75 3.75A.75.75 0 0 1 9 9h1.5a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM9 12a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H9Zm3.75-5.25A.75.75 0 0 1 13.5 6H15a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM13.5 9a.75.75 0 0 0 0 1.5H15A.75.75 0 0 0 15 9h-1.5Zm-.75 3.75a.75.75 0 0 1 .75-.75H15a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM9 19.5v-2.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 9 19.5Z"
+                                        clip-rule="evenodd" />
+                                </svg>Job Industry
                             </x-input-label>
-                            <x-text-input id="fname" class="block mt-1 w-full" type="text"
+                            <x-text-input id="industry" class="block mt-1 w-full" type="text"
                                 value="{{ $jobpost->job_industry->industry_Title }}" readonly />
                         </div>
 
@@ -118,17 +122,27 @@
                     <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
                         <div class="flex flex-col ml w-full">
-                            <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i>
+                            <x-input-label for="education" class="flex flex-row items-center gap-1"> <svg
+                                    class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path
+                                        d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
+                                    <path
+                                        d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
+                                    <path
+                                        d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
+                                </svg>
+
                                 Educational Attainment
                             </x-input-label>
-                            <x-text-input id="fname" class="block mt-1 w-full" type="text"
+                            <x-text-input id="education" class="block mt-1 w-full" type="text"
                                 value=" {{ $eduLevels[$jobpost->job_Edu] }}" readonly />
                         </div>
 
                         <div class="flex flex-col sm:flex-col ml w-full">
-                            <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Employment Type
+                            <x-input-label for="type"> <i class="fa-solid fa-briefcase"></i> Employment Type
                             </x-input-label>
-                            <x-text-input id="fname" class="block mt-1 w-full" type="text"
+                            <x-text-input id="type" class="block mt-1 w-full" type="text"
                                 value="{{ $jobpost->job_Type == 1 ? 'Full Time' : 'Part Time' }}" readonly />
                         </div>
 
@@ -137,25 +151,50 @@
                     <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Wage Range
+                            <x-input-label for="wage" class="flex flex-row items-center gap-1"><svg class="w-5 h-5"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 7.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" />
+                                    <path fill-rule="evenodd"
+                                        d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 0 1 1.5 14.625v-9.75ZM8.25 9.75a3.75 3.75 0 1 1 7.5 0 3.75 3.75 0 0 1-7.5 0ZM18.75 9a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V9.75a.75.75 0 0 0-.75-.75h-.008ZM4.5 9.75A.75.75 0 0 1 5.25 9h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H5.25a.75.75 0 0 1-.75-.75V9.75Z"
+                                        clip-rule="evenodd" />
+                                    <path
+                                        d="M2.25 18a.75.75 0 0 0 0 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 0 0-.75-.75H2.25Z" />
+                                </svg>
+                                Wage Range
                             </x-input-label>
-                            <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost"
+                            <x-text-input id="wage" class="block mt-1 w-full" type="text" name="fnamePost"
                                 value="₱{{ number_format($jobpost->job_MinWage) }} - ₱{{ number_format($jobpost->job_MaxWage) }}"
                                 readonly />
                         </div>
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job
+                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg
+                                    class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
+                                    <path fill-rule="evenodd"
+                                        d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Job
                                 Posting Duration
                             </x-input-label>
-                            <x-text-input id="fname" class="block mt-1 w-full" type="text"
+                            <x-text-input id="duration" class="block mt-1 w-full" type="text"
                                 value=" {{ $jobpost->job_Duration->format('F j, Y') }}" readonly />
                         </div>
 
                         <div class="flex flex-col w-1/3">
-                            <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job Slots
+                            <x-input-label for="slots" class="flex flex-row items-center gap-1"><svg
+                                    class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                
+                                Job Slots
                             </x-input-label>
-                            <x-text-input id="fname" class="block mt-1 w-full" type="text"
+                            <x-text-input id="slots" class="block mt-1 w-full" type="text"
                                 value=" {{ $jobpost->job_Slots }}" readonly />
                         </div>
 
@@ -205,7 +244,7 @@
                                 Description
                             </x-input-label>
                             <textarea id="message" rows="4" readonly
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
                                 placeholder="Write your thoughts here...">{{ $jobpost->job_Description }}</textarea>
                         </div>
                     </div>
@@ -216,7 +255,7 @@
                                 Qualification
                             </x-input-label>
                             <textarea id="message" rows="4" readonly
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
                                 placeholder="Write your thoughts here...">{{ $jobpost->job_Qualifications }}</textarea>
                         </div>
                     </div>
@@ -227,7 +266,7 @@
                                 Company Remarks
                             </x-input-label>
                             <textarea id="message" rows="4" readonly
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
                                 placeholder="Write your thoughts here...">{{ $jobpost->job_Remarks }}</textarea>
                         </div>
                     </div>
@@ -273,6 +312,22 @@
 
                 </div>
 
+                @if (($jobpost->job_Status == 'ACTIVE' || $jobpost->job_Status == 'REJECTED') && $jobpost->peso_Remarks)
+                    <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
+
+                        <h1 class="text-3xl font-bold">PESO Remarks</h1>
+
+
+                        <div class="flex flex-col mt-4 w-full">
+
+                            <textarea id="message" rows="6" readonly
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                                placeholder="Write your thoughts here...">{{ $jobpost->peso_Remarks }}</textarea>
+                        </div>
+
+                    </div>
+                @endif
+
 
 
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4 ">
@@ -303,30 +358,32 @@
                     @else
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                             @foreach ($matchingEmployees as $data)
-                            <div wire:key='jobseeker-{{$data->employee_id}}'
-                                 class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-gray-200 rounded-xl shadow shrink-0 grow-0 w-full hover:bg-gray-300 transition-colors duration-300">
-                                <img class="flex mx-auto w-[100px] h-[100px] rounded-lg sm:mx-0 sm:grow-0 sm:shrink-0"
-                                     src="{{ asset('storage/' . $data->pimg) }}" alt="jobseeker-{{$data->employee_id}}">
-                                <div class="flex flex-col items-center justify-center text-center  sm:text-left mt-2">
-                                    <div class="space-y-0.5">
-                                        <p class="text-lg text-black text-center font-semibold">
-                                            {{ $data->fname }}
-                                            {{ $data->mname ?? '' }}
-                                            {{ $data->lname }}@if (!empty($data->suffix))
-                                                , {{ $data->suffix }}
-                                            @endif
-                                        </p>
-                                        <p class="text-slate-500 text-center font-medium">
-                                            {{ $data->empstatus == 1 ? 'Employed' : 'Unemployed' }}
-                                        </p>
+                                <div wire:key='jobseeker-{{ $data->employee_id }}'
+                                    class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-gray-200 rounded-xl shadow shrink-0 grow-0 w-full hover:bg-gray-300 transition-colors duration-300">
+                                    <img class="flex mx-auto w-[100px] h-[100px] rounded-lg sm:mx-0 sm:grow-0 sm:shrink-0"
+                                        src="{{ asset('storage/' . $data->pimg) }}"
+                                        alt="jobseeker-{{ $data->employee_id }}">
+                                    <div
+                                        class="flex flex-col items-center justify-center text-center  sm:text-left mt-2">
+                                        <div class="space-y-0.5">
+                                            <p class="text-lg text-black text-center font-semibold">
+                                                {{ $data->fname }}
+                                                {{ $data->mname ?? '' }}
+                                                {{ $data->lname }}@if (!empty($data->suffix))
+                                                    , {{ $data->suffix }}
+                                                @endif
+                                            </p>
+                                            <p class="text-slate-500 text-center font-medium">
+                                                {{ $data->empstatus == 1 ? 'Employed' : 'Unemployed' }}
+                                            </p>
+                                        </div>
+                                        <a wire:navigate
+                                            href="{{ route('jobseeker.profile', ['id' => $data->employee_id]) }}"
+                                            class="mt-2 px-4 py-1 text-sm text-blue-600  bg-blue-300 font-semibold rounded-full border border-blue-200 hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
                                     </div>
-                                    <a wire:navigate
-                                       href="{{ route('jobseeker.profile', ['id' => $data->employee_id]) }}"
-                                       class="mt-2 px-4 py-1 text-sm text-blue-600  bg-blue-300 font-semibold rounded-full border border-blue-200 hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
                                 </div>
-                            </div>
-                        @endforeach
-                        
+                            @endforeach
+
 
                         </div>
 
@@ -359,7 +416,7 @@
                     <div class="flex flex-col mt-2 w-full">
                         <x-input-label :value="__('Remarks')" />
                         <textarea wire:model='remarks' id="message" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
                             placeholder="Write your remarks here..."></textarea>
                         <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
                     </div>
@@ -409,7 +466,7 @@
                     <div class="flex flex-col mt-2 w-full">
                         <x-input-label :value="__('Remarks')" />
                         <textarea wire:model='remarks' id="message" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
                             placeholder="Write your thoughts here..."></textarea>
                         <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
                     </div>

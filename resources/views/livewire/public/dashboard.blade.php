@@ -112,11 +112,13 @@
 
                         {{-- FILTER BUTTON --}}
                         <div class="mr-3">
-                            <x-dropdown align="right" width="48">
+                            <x-dropdown align="right" width="36">
                                 <x-slot name="trigger">
                                     <button
                                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
-                                        <div>Filter</div>
+                                        <div>
+                                            Filter
+                                        </div>
 
                                         <div class="ms-1">
                                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -132,22 +134,20 @@
 
                                 <x-slot name="content">
                                     <x-slot name="contentClasses">
-                                        max-h-[200px] bg-white
+                                        max-h-[300px] bg-white
                                     </x-slot>
 
-                                    <x-dropdown-link href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100">All</x-dropdown-link>
-                                    <hr>
-                                    <!-- Authentication -->
-                                    <x-dropdown-link href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100">Active</x-dropdown-link>
+                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('ALL')">
+                                        Recommended
+                                    </x-dropdown-link>
+                                    <x-dropdown-link class="cursor-pointer">
+                                        All
+                                    </x-dropdown-link>
 
-                                    <x-dropdown-link href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100">Disabled</x-dropdown-link>
 
-                                    </form>
                                 </x-slot>
                             </x-dropdown>
+
 
                         </div>
 
