@@ -43,11 +43,21 @@ class ApplicationHistory extends Component
     ];
 
     public $selectedJob;
-    public $search, $filter;
+    public $search, $filter = 'All', $sort = 'Newest';
 
     public function updateSelection($id)
     {
         $this->selectedJob = $id;
+    }
+
+    public function updateFilter($value)
+    {
+        $this->filter = $value;
+    }
+
+    public function updateSort($value)
+    {
+        $this->sort = $value;
     }
     public function render()
     {
@@ -65,9 +75,22 @@ class ApplicationHistory extends Component
                     });
             });
 
-        //     if ($this->filter) {
-        // $applications
-        //     }
+        if ($this->filter == 'Pending') {
+            $applications = $applications->whereIn('applicant_Status', ['PENDING', 'INTERESTED']);
+
+        } else if ($this->filter == 'Interview') {
+            $applications = $applications->where('applicant_Status', '=', 'INTERVIEW');
+        } else if ($this->filter == 'Others') {
+            $applications = $applications->whereNotIn('applicant_Status', ['INTERVIEW', 'PENDING', 'INTERESTED']);
+
+        }
+
+        if ($this->sort == 'Newest') {
+            $applications = $applications->orderBy('created_at', 'ASC');
+        } else if ($this->sort == 'Oldest') {
+            $applications = $applications->orderBy('created_at', 'DESC');
+
+        }
 
         $applications = $applications->paginate(5);
         $applicationInfo = null;

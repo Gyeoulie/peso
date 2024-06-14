@@ -304,7 +304,7 @@
                                 <div id= "otherSkillRow" class="flex-inline p-1">
                                     {{-- BADGE --}}
                                     @foreach ($jobseeker->job_preference as $preferences)
-                                        <span wire:key='jobPref-{{$preferences->job_preference_id}}'
+                                        <span wire:key='jobPref-{{ $preferences->job_preference_id }}'
                                             class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $preferences->job_positions->position_Title }}
                                         </span>
@@ -322,7 +322,7 @@
                                     {{-- BADGE --}}
 
                                     @foreach ($jobseeker->skills as $empSkills)
-                                        <span wire:key='skills-{{$empSkills->skills_id}}'
+                                        <span wire:key='skills-{{ $empSkills->skills_id }}'
                                             class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $empSkills->skill_Type }}
                                         </span>
@@ -338,7 +338,7 @@
                                 <div id= "otherSkillRow" class="flex-inline p-1">
                                     {{-- BADGE --}}
                                     @foreach ($jobseeker->language as $empLanguage)
-                                       <span wire:key='language-{{$empLanguage->language_id}}'
+                                        <span wire:key='language-{{ $empLanguage->language_id }}'
                                             class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $empLanguage->language_Type }}
                                         </span>
@@ -354,7 +354,7 @@
                                 <div id= "otherSkillRow" class="flex-inline p-1">
                                     {{-- BADGE --}}
                                     @foreach ($jobseeker->disability as $empDisability)
-                                        <span wire:key='disability-{{$empDisability->disability_id}}'
+                                        <span wire:key='disability-{{ $empDisability->disability_id }}'
                                             class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $empDisability->disability_Type }}
                                         </span>
@@ -619,11 +619,11 @@
                                         <div wire:key="{{ $empTraining->training_id }}"
                                             class="container bg-gray-200 p-3 rounded-lg shadow ">
 
-                                            <div class="flex flex-row">
+                                            <div class="flex flex-row items-center">
 
                                                 <div class="flex flex-col h-full">
-                                                    <i
-                                                        class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 fa-solid fa-certificate"></i>
+                                                    <i class="text-gray-800 fa-solid fa-certificate text-[80px]"></i>
+
                                                 </div>
 
                                                 <div class="flex flex-col ml-4 w-full">
@@ -659,26 +659,26 @@
                                 <h2 class="text-xl font-bold">Certificates</h2>
 
                                 @if ($isOwner)
-                                <div class="flex flex-row gap-4 items-center">
-                                    <div x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'certificate-modal')"
-                                        class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 4.5v15m7.5-7.5h-15" />
-                                        </svg>
-                                    </div>
+                                    <div class="flex flex-row gap-4 items-center">
+                                        <div x-data=""
+                                            x-on:click.prevent="$dispatch('open-modal', 'certificate-modal')"
+                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 4.5v15m7.5-7.5h-15" />
+                                            </svg>
+                                        </div>
 
-                                    <div @click="profileTab = 'editCertificates'"
-                                        class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
+                                        <div @click="profileTab = 'editCertificates'"
+                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                        </div>
                                     </div>
-                                </div>
                                 @endif
 
                             </div>
@@ -707,10 +707,13 @@
                                         <div wire:key="{{ $certification->certificate_id }}"
                                             class="container bg-gray-200 p-3 rounded-lg shadow ">
 
-                                            <div class="flex flex-row">
+                                            <div class="flex flex-row items-center">
                                                 <div class="flex flex-col h-full">
-                                                    <i
-                                                        class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 fa-solid fa-certificate"></i>
+                                                    <svg class="w-20 h-20 " xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                                        <path
+                                                            d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z" />
+                                                    </svg>
                                                 </div>
 
                                                 <div class="flex flex-col ml-4 w-full">

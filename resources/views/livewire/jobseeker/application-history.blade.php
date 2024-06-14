@@ -18,41 +18,88 @@
                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for applications">
                 </div>
-                <div>
+                <div class="flex flex-row gap-3 mr-3">
 
-                    {{-- DROP DOWN BUTTON --}}
-                    <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
-                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5"
-                        type="button">
-                        <span class="sr-only">Action button</span>
-                        Filter
-                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <!-- Dropdown menu -->
-                    <div id="dropdownAction"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                        <ul class="py-1 text-sm text-gray-700" aria-labelledby="dropdownActionButton">
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Reward</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Promote</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Activate
-                                    account</a>
-                            </li>
-                        </ul>
-                        <div class="py-1">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Delete
-                                User</a>
-                        </div>
-                    </div>
+                    <x-dropdown align="right" width="36">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                <div>
+                                    {{ $filter }}
+                                </div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+
+                        <x-slot name="content">
+                            <x-slot name="contentClasses">
+                                max-h-[300px] bg-white
+                            </x-slot>
+
+                            <x-dropdown-link wire:click.prevent="updateFilter('All')" class="cursor-pointer">
+                                All
+                            </x-dropdown-link>
+                            <x-dropdown-link wire:click.prevent="updateFilter('Pending')" class="cursor-pointer">
+                                Pending
+                            </x-dropdown-link>
+                            <x-dropdown-link wire:click.prevent="updateFilter('Interview')" class="cursor-pointer">
+                                Interview
+                            </x-dropdown-link>
+                            <x-dropdown-link wire:click.prevent="updateFilter('Others')" class="cursor-pointer">
+                                Others
+                            </x-dropdown-link>
+
+
+                        </x-slot>
+                    </x-dropdown>
+
+
+                    <x-dropdown align="right" width="36">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                <div>
+                                    {{ $sort }}
+                                </div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+
+                        <x-slot name="content">
+                            <x-slot name="contentClasses">
+                                max-h-[300px] bg-white
+                            </x-slot>
+
+                            <x-dropdown-link wire:click.prevent="updateSort('Newest')" class="cursor-pointer">
+                                Newest
+                            </x-dropdown-link>
+                            <x-dropdown-link wire:click.prevent="updateSort('Oldest')" class="cursor-pointer">
+                                Oldest
+                            </x-dropdown-link>
+
+
+                        </x-slot>
+                    </x-dropdown>
                 </div>
+
             </div>
             <div class="flex">
                 @if ($applications->isEmpty())
