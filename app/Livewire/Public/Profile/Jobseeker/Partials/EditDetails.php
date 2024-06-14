@@ -400,7 +400,7 @@ class EditDetails extends Component
         $this->height = $employeeDetails->height;
         $this->address = $employeeDetails->address;
 
-        $barangayDetails = Barangay::find($employeeDetails->barangay->barangay_id);
+        $barangayDetails = Barangay::find($employeeDetails->barangay);
         $this->bar = $barangayDetails->barangay_Name;
         $this->mun = $barangayDetails->municipality->municipality_Name;
         $this->prov = $barangayDetails->municipality->province->province_Name;
