@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\JobPosting;
 
+use App\Models\Employee;
 use App\Models\Job_Posting;
 use App\Models\Requirements_Passed;
 use Illuminate\Support\Facades\Auth;
@@ -70,41 +71,12 @@ class JobPostOverview extends Component
 
     }
 
-    // public function rejectJob($id, $status, $modalname)
-    // {
-
-    //     $user = Auth::user();
-
-    //     $this->validate([
-    //         'remarks' => 'required|string',
-    //     ]);
-
-    //     try {
-    //         Job_Posting::where('job_id', $id)->update([
-    //             'job_Status' => $status,
-    //             'peso_Remarks' => $this->remarks,
-    //             'peso_id' => $user->id,
-    //         ]);
-    //         $this->dispatch($modalname);
-    //         toastr()->success('Job Posting Approved');
-
-    //     } catch (\Exception $e) {
-    //         toastr()->error($e);
-    //     }
-
-    // }
-
     public function close($modal)
     {
         $this->reset('remarks');
         $this->resetValidation();
         $this->dispatch('close-modal', $modal);
     }
-
-    // public function mount($id)
-    // {
-    //     $this->id = $id;
-    // }
 
     public function downloadPDF($id)
     {
@@ -117,7 +89,7 @@ class JobPostOverview extends Component
         }
 
         $pdfPath = $reqpassed->req_passed_Input;
-        $pdfName = $reqpassed->requirement->requirement_Title . '_' . $reqpassed->job_posting->company->bussines_Name . '.pdf';
+        $pdfName = $reqpassed->requirement->requirement_Title . '_' . $reqpassed->job_posting->company->business_Name . '.pdf';
 
         //$path = storage_path('public/' . $pdfPath);
         if (Storage::exists('public/' . $pdfPath)) {
@@ -141,7 +113,51 @@ class JobPostOverview extends Component
     public function render()
     {
 
-        $jobpost = Job_Posting::find($this->id);
-        return view('livewire.admin.job-posting.job-post-overview', compact('jobpost'));
+        $jobpost = Job_Posting::with(['job_tags'])->findOrFail($this->id);
+
+        $jobMunicipalityId = $jobpost->peso_municipality_id;
+        $jobEducationLevel = $jobpost->job_Edu;
+        $jobIndustryId = $jobpost->industry_id;
+        $jobTagIds = $jobpost->job_tags->pluck('position_id');
+
+        $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
+            $query->where('municipality_id', $jobMunicipalityId);
+        })
+        ->whereHas('education', function ($query) use ($jobEducationLevel) {
+            $query->where('edu_Level', '>=', $jobEducationLevel);
+        })
+        ->whereHas('job_preference', function ($query) use ($jobTagIds) {
+            $query->whereIn('position_id', $jobTagIds);
+        })
+        ->withCount(['job_preference as num_matched_tags' => function ($query) use ($jobTagIds) {
+            $query->whereIn('position_id', $jobTagIds);
+        }])
+        ->withCount(['industry_preference as num_matched_industry' => function ($query) use ($jobIndustryId) {
+            $query->where('industry_id', $jobIndustryId);
+        }])
+        ->orderByRaw('
+            CASE
+                WHEN num_matched_industry > 0 AND num_matched_tags > 0 THEN 1
+                WHEN num_matched_industry > 0 AND num_matched_tags = 0 THEN 2
+                WHEN num_matched_industry = 0 AND num_matched_tags > 0 THEN 3
+                ELSE 4
+            END
+        ')
+        ->orderByDesc('num_matched_tags')
+        ->get();
+        
+
+        // Find applicants that match the job posting criteria
+        // $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
+        //     $query->where('municipality_id', $jobMunicipalityId);
+        // })
+        //     ->whereHas('education', function ($query) use ($jobEducationLevel) {
+        //         $query->where('edu_level', '<=', $jobEducationLevel);
+        //     })
+        //     ->whereHas('job_preference', function ($query) use ($jobTagIds) {
+        //         $query->whereIn('position_id', $jobTagIds);
+        //     })
+        //     ->get();
+        return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees'));
     }
 }

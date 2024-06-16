@@ -21,7 +21,7 @@
 
                         </img>
 
-                        <h1 class="text-xl font-bold">{{ $jobpost->company->bussines_Name }}
+                        <h1 class="text-xl font-bold">{{ $jobpost->company->business_Name }}
                         </h1>
                         <p class="text-gray-700">#IDNUMBER</p>
 
@@ -74,7 +74,7 @@
 
                         {{-- JOB POST LINK --}}
                         <div class="mt-6 flex flex-wrap justify-center">
-                            <a href="{{ route('admin.jobpost', ['id' => $jobpost->job_id]) }}"
+                            <a wire:navigate href="{{ route('admin.jobpost', ['id' => $jobpost->job_id]) }}"
                                 class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                                 Job Posting</a>
                         </div>
@@ -139,7 +139,7 @@
 
                     <div class="relative overflow-x-auto">
                         <div
-                            class="flex items-center  flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
+                            class="flex items-center  flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1 p-1">
 
                             <label for="table-search" class="sr-only">Search</label>
                             <div class="relative">
@@ -153,7 +153,7 @@
                                 </div>
 
                                 {{-- SEARCH --}}
-                                <input type="text" id="table-search-users"
+                                <input wire:model.live='search' type="text" id="table-search-users"
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for Applicants">
                             </div>
@@ -225,8 +225,22 @@
 
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center">
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
-                                                    {{ $applicants->applicant_Status }}
+                                                    @if ($applicants->applicant_Status == 'PENDING')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                        PENDING
+                                                    @elseif($applicants->applicant_Status == 'INTERESTED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2"></div>
+                                                        INTERESTED
+                                                    @elseif($applicants->applicant_Status == 'INTERVIEW')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
+                                                        INTERVIEW
+                                                    @elseif($applicants->applicant_Status == 'HIRED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                                        HIRED
+                                                    @elseif($applicants->applicant_Status == 'REJECTED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                        REJECTED
+                                                    @endif
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
@@ -235,7 +249,8 @@
                                             </td>
                                             <td class="px-6 py-4 text-center">
                                                 <div x-data="{ tooltip: 'Applicant Overview' }">
-                                                    <a href="{{ route('admin.jobpost.applicants.overview', ['id' => $applicants->applicant_id]) }}"
+                                                    <a wire:navigate
+                                                        href="{{ route('admin.jobpost.applicants.overview', ['id' => $applicants->applicant_id]) }}"
                                                         x-tooltip="tooltip" type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -245,11 +260,9 @@
                                                                 d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
                                                                 clip-rule="evenodd" />
                                                         </svg>
-
-
-
                                                     </a>
                                                 </div>
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -259,43 +272,10 @@
                     </div>
 
                     {{-- PAGINATION --}}
-                    <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-                        aria-label="Table navigation">
-                        <span
-                            class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing
-                            <span class="font-semibold text-gray-900">1-10</span> of <span
-                                class="font-semibold text-gray-900">1000</span></span>
-                        <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 ">Previous</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">1</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">2</a>
-                            </li>
-                            <li>
-                                <a href="#" aria-current="page"
-                                    class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">4</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">5</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 ">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
+
+                    <div>
+                        {{ $jobApplicants->links() }}
+                    </div>
                 </div>
             </div>
         </div>

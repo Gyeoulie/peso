@@ -2,7 +2,12 @@
 
 namespace App\Livewire\Admin\JobPosting\Applicants;
 
+use App\Models\Barangay;
+use App\Models\Education;
+use App\Models\Industry_preference;
 use App\Models\Job_Applicants;
+use App\Models\Job_Posting;
+use App\Models\Job_Preference;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -80,6 +85,7 @@ class ApplicantOverview extends Component
                     'peso_Status' => $action,
                     'peso_Remarks' => $this->recommendationRemarks,
                     'peso_Letter' => $recLetterPath,
+                    'applicant_Notif' => 1,
                 ]);
                 toastr()->success('Applicant updated successfully!');
             } catch (\Exception $e) {
@@ -96,6 +102,7 @@ class ApplicantOverview extends Component
                 Job_Applicants::where('applicant_id', $this->id)->update([
                     'peso_Status' => $action,
                     'peso_Remarks' => $this->rejectRemarks,
+                    'applicant_Notif' => 1,
                 ]);
                 toastr()->success('Applicant updated successfully!');
             } catch (\Exception $e) {
@@ -118,7 +125,40 @@ class ApplicantOverview extends Component
     public function render()
     {
         $applicant = Job_Applicants::findOrFail($this->id);
-        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant'));
+
+// Get the highest education level of the employee
+        $highestEducationLevel = Education::where('employee_id', $applicant->employee->employee_id)
+            ->max('edu_level');
+
+// Get the employee's municipality ID via their barangay
+        $employeeMunicipalityId = Barangay::where('barangay_id', $applicant->employee->barangay_id)
+            ->value('municipality_id');
+
+// Get the employee's job preferences (array of position_id)
+        $employeeJobPreferences = Job_Preference::where('employee_id', $applicant->employee->employee_id)
+            ->pluck('position_id');
+
+        $employeeIndustryPreference = Industry_Preference::where('employee_id', $applicant->employee->employee_id)
+            ->pluck('industry_id');
+
+// Query to check if the specific job posting matches the employee
+        $isMatch = Job_Posting::where('job_id', $applicant->job_id)
+            ->where('job_Status', 'ACTIVE')
+            ->where('peso_municipality_id', $employeeMunicipalityId)
+            ->where('job_edu', '<=', $highestEducationLevel)
+            ->where(function ($query) use ($employeeJobPreferences) {
+                $query->whereHas('job_tags', function ($query) use ($employeeJobPreferences) {
+                    $query->whereIn('position_id', $employeeJobPreferences);
+                });
+            })
+            ->orWhere(function ($query) use ($employeeIndustryPreference) {
+                $query->whereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
+                    $query->whereIn('industry_id', $employeeIndustryPreference);
+                });
+            })
+            ->exists();
+
+        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant', 'isMatch'));
     }
 
 }

@@ -97,7 +97,7 @@
 
                 <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
-                    <div class="flex flex-row gap-4 w">
+                    <div class="flex flex-row gap-4 w-full">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="minWagePost"> <i class="fa-solid fa-briefcase"></i> Minimum Wage
@@ -337,9 +337,8 @@
                     <x-input-error :messages="$errors->get('remPost')" class="mt-2" />
                 </div>
 
-                <div class="flex flex-row mt-4 mb-4 ">
-                    <x-blue-button wire:click.prevent='nextSection(2)' type="button"
-                        class="ml-auto mr-0 sm:mr-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 justify-center w-[100px]">Next</x-blue-button>
+                <div class="flex flex-row justify-end mt-4 mb-4 ">
+                    <x-blue-button wire:click.prevent='nextSection(2)' type="button">Next</x-blue-button>
                 </div>
 
 
@@ -374,12 +373,10 @@
                     </div>
                 @endforeach
 
-                <div class="flex flex-row mt-12 mb-4 ">
-                    <x-blue-button wire:click.prevent='prevSection(1)' type="button"
-                        class="sm:mr-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 justify-center w-[100px]"
-                        style="width: 100px;">Previous</x-blue-button>
-                    <x-blue-button wire:click.prevent='nextSection(3)' type="button"
-                        class="ml-auto mr-0 sm:mr-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 justify-center w-[100px]">Next</x-blue-button>
+                <div class="flex flex-row justify-between w-full mt-12 mb-4 ">
+                    <x-secondary-button wire:click.prevent='prevSection(1)'
+                        type="button">Previous</x-secondary-button>
+                    <x-blue-button wire:click.prevent='nextSection(3)' type="button">Next</x-blue-button>
                 </div>
 
             </div>
@@ -430,12 +427,15 @@
                         <br>
                         <p>Thank you for your understanding and cooperation.</p>
                     </div>
-                    <div class="flex justify-center items-center w-full mt-12">
-                        <input wire:model='agreePost' id="link-checkbox" type="checkbox" value=""
-                            class="sm:mr-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 justify-center w-[100px]">
-                        <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 ">I
-                            agree with the <a href="#" class="text-blue-600 hover:underline">terms and
-                                conditions.</a></label>
+                    <div class="flex flex-col justify-center items-center w-full mt-12 ">
+                        <div class="flex flex-row justify-center items-center w-full">
+                            <input wire:model='agreePost' id="link-checkbox" type="checkbox" value=""
+                                class="sm:mr-2 font-medium rounded-lg text-sm px-3 py-3 justify-center">
+                            <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 ">I
+                                agree with the <a href="#" class="text-blue-600 hover:underline">terms and
+                                    conditions.</a></label>
+                        </div>
+
                         <x-input-error :messages="$errors->get('agreePost')" class="mt-2" />
                     </div>
                 </div>
@@ -443,14 +443,12 @@
 
 
 
-                <div class="flex flex-row mt-24 mb-4 ">
-                    <x-blue-button wire:click.prevent='prevSection(2)' type="button" wire:loading.attr="disabled"
-                        class=" text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
-                        style="width: 100px;">Previous</x-blue-button>
-                    <x-blue-button wire:click.prevent='createApplication()' type="button"
-                        wire:loading.attr="disabled"
-                        class="ml-auto mr-0 sm:mr-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 justify-center w-[100px]">Confirm
-                        <div wire:loading.delay.long role="status">
+                <div class="flex flex-row justify-between w-full mt-24 mb-4 ">
+                    <x-secondary-button wire:click.prevent='prevSection(2)' type="button"
+                        wire:loading.attr="disabled">Previous</x-secondary-button>
+                    <x-green-button wire:click.prevent='createApplication' type="button"
+                        wire:loading.attr="disabled">Confirm
+                        <div wire:loading.delay.long wire:target="createApplication" role="status">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -462,7 +460,7 @@
                             </svg>
                             <span class="sr-only">Loading...</span>
                         </div>
-                    </x-blue-button>
+                    </x-green-button>
                 </div>
 
             </div>

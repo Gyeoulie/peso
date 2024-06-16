@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('company', function (Blueprint $table) {
             $table->id('company_id');
             $table->unsignedBigInteger('user_id')->unsigned();
-            $table->string('bussines_Name', 255);
+            $table->string('business_Name', 255);
             $table->string('trade_Name', 255);
             $table->string('company_TIN', 15);
             $table->tinyInteger('company_Type');

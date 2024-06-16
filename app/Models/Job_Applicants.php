@@ -21,6 +21,7 @@ class Job_Applicants extends Model
         'company_Remarks',
         'peso_Remarks',
         'peso_Letter',
+        'applicant_Notif',
     ];
 
     protected $casts = [

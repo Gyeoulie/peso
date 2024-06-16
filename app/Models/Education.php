@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Education extends Model
@@ -17,6 +16,7 @@ class Education extends Model
         'edu_Course',
         'edu_Started',
         'edu_Ended',
+        'edu_Ongoing',
     ];
 
     protected $casts = [

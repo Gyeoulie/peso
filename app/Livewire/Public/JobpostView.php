@@ -162,7 +162,6 @@ class JobpostView extends Component
                     $user->employee->update([
                         'resume' => $resumePath,
                     ]);
-                    toastr()->success('Application submitted successfully.');
                 } catch (\Exception $e) {
                     toastr()->error('There was an error in uploading the resume!');
                     return;
@@ -180,6 +179,7 @@ class JobpostView extends Component
                 'applicant_Status' => "PENDING",
                 'peso_Status' => "PENDING",
             ]);
+            $this->close();
             toastr()->success('Application submitted successfully.');
             // session()->flash('message', );
         } catch (\Exception $e) {
@@ -197,16 +197,24 @@ class JobpostView extends Component
     public function render()
     {
 
+        $isApplied = false;
         $JobPost = Job_Posting::find($this->id);
 
         if (!$JobPost) {
             return redirect()->route('dashboard');
         }
 
-        if (auth()->user()->usertype >= 4 && $JobPost->job_Status == 'PENDING') {
+        if (auth()->user()->usertype <= 4 && $JobPost->job_Status == 'PENDING') {
             return redirect()->route('dashboard');
         }
 
-        return view('livewire.public.jobpost-view', compact('JobPost'));
+        if (auth()->user()->usertype === 4) {
+            $isApplied = Job_Applicants::where('job_id', $this->id)
+                ->where('employee_id', auth()->user()->employee->employee_id)
+                ->exists();
+
+        }
+
+        return view('livewire.public.jobpost-view', compact('JobPost', 'isApplied'));
     }
 }

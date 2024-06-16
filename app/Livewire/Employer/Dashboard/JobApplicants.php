@@ -9,6 +9,7 @@ use App\Models\Job_Posting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -51,38 +52,68 @@ class JobApplicants extends Component
     public $remarks, $applicantId;
 
     public $applicantSearch, $postSearch;
-    public $selectedJob;
+    public $selectedJob, $selectedApplicant;
 
     public $filter = 'ALL', $sortDate, $jobFilter = 'ALL';
 
-    public function printResume($id)
+    public function printResume($id, $type)
     {
-        toastr()->success('hello');
 
         $employee = Employee::findOrFail($id);
+        $filename = $employee->fname . '_' . $employee->lname . '_resume.pdf';
+        if ($type == 1) {
+            // dd(public_path('storage/' . $employee->pimg));
 
-        $pdf = Pdf::loadView('resume', ['employee' => $employee]);
+            $pdf = Pdf::loadView('resume', ['employee' => $employee]);
 
-        return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->download();
-        }, 'report.pdf');
+            return response()->streamDownload(function () use ($pdf) {
+                echo $pdf->download();
+            }, $filename);
+            toastr()->success('Download Success');
 
-        // return response()->streamDownload(function () {
-        //     $pdf = Pdf::loadView('resume', ['employee' => $employee]);
-        //     echo $pdf->stream();
-        // }, 'test.pdf');
+        } elseif ($type == 2) {
 
-        // return response()->streamDownload(function () {
-        //     $pdf = App::make('dompdf.wrapper');
-        //     $pdf->loadHTML('<h1>Test</h1>');
-        //     echo $pdf->stream();
-        // }, 'test.pdf');
+            if (Storage::exists('public/' . $employee->resume)) {
+                // Get the URL of the PDF file
+                // $pdfUrl = Storage::url($path);
 
-        // $pdfContent = PDF::loadView('resume')->output();
-        // return response()->streamDownload(
-        //     fn() => print($pdfContent),
-        //     "filename.pdf"
-        // );
+                $fileContent = Storage::get('public/' . $employee->resume);
+
+                return response()->streamDownload(function () use ($fileContent) {
+                    echo $fileContent;
+                }, $filename);
+                // Redirect the user to the PDF URL
+                toastr()->success('Download Success');
+            } else {
+                // PDF file not found, handle the error accordingly
+                // For example, you can redirect the user or show a message
+            }
+        }
+
+    }
+
+    public function printRecom($id)
+    {
+
+        $applicant = Job_Applicants::findOrFail($id);
+
+        if (Storage::exists('public/' . $applicant->peso_Letter)) {
+            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_resume.pdf';
+
+            $fileContent = Storage::get('public/' . $applicant->peso_Letter);
+
+            return response()->streamDownload(function () use ($fileContent) {
+                echo $fileContent;
+            }, $filename);
+            // Redirect the user to the PDF URL
+            toastr()->success('Download Success');
+        } else {
+            // PDF file not found, handle the error accordingly
+            // For example, you can redirect the user or show a message
+            toastr()->error('Recommendation Letter not found!');
+
+        }
+
     }
 
     public function openModal($modal, $applicantId)
@@ -105,27 +136,39 @@ class JobApplicants extends Component
         ]);
 
         try {
-            // Create the user record
-            Job_Applicants::where('applicant_id', $this->applicantId)->update([
+            // Prepare update data
+            $updateData = [
                 'applicant_Status' => $status,
                 'company_Remarks' => $this->remarks,
-            ]);
+            ];
 
-            toastr()->success('Applicant has been Updated!');
+            // Conditionally add 'applicant_Notif' to the update data
+            if ($status != 'INTERESTED') {
+                $updateData['applicant_Notif'] = 1;
+            }
+
+            // Update applicant record
+            Job_Applicants::where('applicant_id', $this->applicantId)->update($updateData);
+
+            toastr()->success('Applicant has been updated!');
         } catch (\Exception $e) {
-
-            // Show error toastr notification
-            toastr()->error('There was an Error');
+            toastr()->error('There was an error updating the applicant.');
         }
 
         $this->closeModal($modal);
 
     }
+    public function getApplicant($id)
+    {
+        $this->selectedApplicant = $id;
+        $this->reset('sortDate');
+    }
 
     public function getJob($id)
     {
         $this->selectedJob = $id;
-        $this->reset('sortDate');
+        $this->reset('sortDate', 'selectedApplicant');
+        $this->filter = 'ALL';
         // $this->filter = 'ALL';
         // $this->reset('applicantSearch');
 
@@ -150,6 +193,7 @@ class JobApplicants extends Component
     public function render()
     {
         $applicants = null; // Initialize $applicants variable
+        $applicantInfo = null;
 
         if ($this->selectedJob) {
             // Create the initial query for applicants
@@ -206,11 +250,23 @@ class JobApplicants extends Component
             $jobsQuery->where('job_Status', $this->jobFilter);
         }
 
+        if ($this->selectedJob) {
+            // Use conditional ordering to prioritize the selected job
+            $jobsQuery->orderByRaw("CASE WHEN job_id = ? THEN 0 ELSE 1 END", [$this->selectedJob]);
+        }
+
         $jobs = $jobsQuery->paginate(5);
 
-        return view('livewire.employer.dashboard.job-applicants', compact('jobs', 'applicants'));
+        if ($this->selectedApplicant) {
+            $applicantInfo = Job_Applicants::find($this->selectedApplicant);
+
+            // dd($applicantInfo);
+        }
+
+        return view('livewire.employer.dashboard.job-applicants', compact('jobs', 'applicants', 'applicantInfo'));
     }
 }
+
 // if ($this->selectedJob) {
 //     // Fetch applicants for the selected job
 //     $applicantsQuery = Job_Applicants::leftJoin('employee', 'job_applicants.employee_id', '=', 'employee.employee_id')

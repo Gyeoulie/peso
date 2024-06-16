@@ -13,31 +13,33 @@
             {{-- ALERT MESSAGE FOR MATCH --}}
             <div class="col-span-4 sm:col-span-12">
 
-                <div class="bg-green-100 shadow rounded-lg p-6">
-                    <div class="flex flex-row items-center justify-between">
-                        <p class="text-green-700 font-bold text-xl">This job matches applicant's preferences</p>
-                        <svg class="w-9 h-9 sm:w-9 sm:h-9 text-green-700 me-2.5" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-                        </svg>
+                @if ($isMatch === true)
+                    <div class="bg-green-100 shadow rounded-lg p-6">
+                        <div class="flex flex-row items-center justify-between">
+                            <p class="text-green-700 font-bold text-xl">This job matches the applicant's preferences</p>
+                            <svg class="w-9 h-9 sm:w-9 sm:h-9 text-green-700 me-2.5" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                            </svg>
+                        </div>
                     </div>
-                </div>
-
-                <div class="bg-red-100 shadow rounded-lg p-6">
-                    <div class="flex flex-row items-center justify-between">
-                        <p class="text-red-700 font-bold  text-xl">This job doesn't match applicant's
-                            preferences
-                        </p>
-                        <svg class="w-9 h-9 sm:w-10 sm:h-10 text-red-700 me-2" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
-                                clip-rule="evenodd" />
-                        </svg>
+                @else
+                    <div class="bg-red-100 shadow rounded-lg p-6">
+                        <div class="flex flex-row items-center justify-between">
+                            <p class="text-red-700 font-bold  text-xl">This job doesn't match the applicant's
+                                preferences
+                            </p>
+                            <svg class="w-9 h-9 sm:w-10 sm:h-10 text-red-700 me-2" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
                     </div>
-                </div>
+                @endif
 
             </div>
 
@@ -51,7 +53,7 @@
                             class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
                         </img>
 
-                        <h1 class="text-xl font-bold">{{ $applicant->job_posting->company->bussines_Name }}</h1>
+                        <h1 class="text-xl font-bold">{{ $applicant->job_posting->company->business_Name }}</h1>
                         <p class="text-gray-700">#IDNUMBER</p>
 
                         <div class="flex flex-row mt-6 justify-between w-full">
@@ -101,7 +103,8 @@
                         </ul>
 
                         <div class="mt-6 flex flex-wrap justify-center">
-                            <a href="{{ route('admin.jobpost', ['id' => $applicant->job_posting->job_id]) }}"
+                            <a wire:navigate
+                                href="{{ route('admin.jobpost', ['id' => $applicant->job_posting->job_id]) }}"
                                 class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                                 Job Posting</a>
                         </div>
@@ -305,19 +308,36 @@
                         </div>
 
 
-                        <div class="flex flex-col w-full">
-                            <x-input-label for="fname"> </i> Job Position
-                                Tags
-                            </x-input-label>
-                            {{-- BADGE CONTAINER --}}
-                            <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
-                                @foreach ($applicant->employee->job_preference as $jobpref)
-                                    {{-- BADGE --}}
-                                    <span
-                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        {{ $jobpref->job_positions->position_Title }}
-                                    </span>
-                                @endforeach
+                        <div class="flex flex-col w-full gap-5">
+                            <div>
+                                <x-input-label for="fname"> </i> Job Position
+                                    Tags
+                                </x-input-label>
+                                {{-- BADGE CONTAINER --}}
+                                <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
+                                    @foreach ($applicant->employee->job_preference as $jobpref)
+                                        {{-- BADGE --}}
+                                        <span
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 px-2.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            {{ $jobpref->job_positions->position_Title }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div>
+                                <x-input-label for="fname"> </i> Industry Preference
+                                </x-input-label>
+                                {{-- BADGE CONTAINER --}}
+                                <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
+                                    @foreach ($applicant->employee->industry_preference as $industrypref)
+                                        {{-- BADGE --}}
+                                        <span
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 px-2.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            {{ $industrypref->job_industry->industry_Title }}
+                                        </span>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
 

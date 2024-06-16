@@ -93,19 +93,23 @@
 
                     </div>
                 @else
-                    <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full">
+                    <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full"
+                        x-data="{
+                            selectedJob: @entangle('selectedJob'),
+                        }">
                         @foreach ($jobs as $data)
-                            <div class="flex flex-col  sm:w-full">
+                            <div class="flex flex-col sm:w-full">
                                 <a wire:key='jobPost-{{ $data->job_id }}'
                                     wire:click.prevent='getJob({{ $data->job_id }})' class="cursor-pointer">
+
                                     <div
-                                        class="bg-white shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
+                                        class=" @if ($data->job_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
 
                                         <div class="flex flex-row gap-4 sm:gap-0 justify-end">
 
                                             <div class="flex flex-col w-full">
                                                 <h1 class="text-3xl font-bold underline">{{ $data->job_Title }}</h1>
-                                                <h1 class="text-l text-gray-600">{{ $data->company->bussines_Name }}
+                                                <h1 class="text-l text-gray-600">{{ $data->company->business_Name }}
                                                 </h1>
                                                 <div class="flex flex-row">
 
@@ -166,12 +170,16 @@
             </div>
         </div>
 
-        <div class="col-span-4 sm:col-span-7">
+        <div class="col-span-4 sm:col-span-7" x-data="{
+            selectedApplicant: @entangle('selectedApplicant')
+        }">
             @if ($applicants)
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+                <div x-show="!selectedApplicant" class="bg-white shadow rounded-lg p-6 flex flex-col"
+                    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
+                    x-transition:enter-end="opacity-100 scale-100">
 
 
-                    <div class="relative overflow-x-auto ">
+                    <div class="relative overflow-x-auto">
                         <div x-data="{
                             filter: @entangle('filter'),
                             activeFilter: 'text-gray-900 bg-gray-400 active',
@@ -190,7 +198,7 @@
                                     <option wire:click.prevent='changeFilter("INTERVIEW")'>Interview
                                         ({{ $applicants['interview'] }})</option>
                                     <option wire:click.prevent='changeFilter("HIRED")'>Pending
-                                        ({{ $applicants['hired'] }})</option>\
+                                        ({{ $applicants['hired'] }})</option>
                                     <option wire:click.prevent='changeFilter("REJECTED")'>Pending
                                         ({{ $applicants['rejected'] }})</option>
                                 </select>
@@ -328,7 +336,7 @@
                             <tbody>
                                 @if (isset($applicants['list']) && count($applicants['list']) === 0)
                                     <tr>
-                                        <td colspan="4">
+                                        <td colspan="5">
                                             <div class="flex flex-col items-center justify-center mt-10">
                                                 <div class="p-6 bg-gray-100 rounded-full">
                                                     <svg class="w-24 h-24 text-black" aria-hidden="true"
@@ -353,12 +361,13 @@
                                             class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full"
+                                                <img class="w-10 h-10 rounded-full object-cover"
                                                     src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                     alt="Jese image">
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
-                                                        <a href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
+                                                        <a wire:navigate
+                                                            href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
                                                             class="hover:text-blue-500">{{ $data->employee->fname }}
                                                             {{ $data->employee->mname }} {{ $data->employee->lname }}
                                                         </a>
@@ -411,10 +420,10 @@
                                                 </td>
                                             @endif
                                             <td class="px-6 py-4">
-                                                <div class="flex flex-row gap-4 items-center">
+                                                <div class="flex flex-row gap-4 items-center" x-data="{ openNewTab: function(url) { window.open(url, '_blank'); } }">
                                                     <div x-data="{ tooltip: 'Download Resume' }">
-                                                        <button
-                                                            wire:click.prevent='printResume({{ $data->employee_id }})'
+                                                        <button {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
+                                                            wire:click.prevent='printResume({{ $data->employee_id }}, {{ $data->applicant_Resume }})'
                                                             x-tooltip="tooltip" type="button"
                                                             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
@@ -427,7 +436,9 @@
                                                     </div>
                                                     @if ($data->peso_Status === 'RECOMMENDED')
                                                         <div x-data="{ tooltip: 'Download Recommendation Letter' }">
-                                                            <button x-tooltip="tooltip" type="button"
+                                                            <button
+                                                                wire:click.prevent='printRecom({{ $data->applicant_id }})'
+                                                                x-tooltip="tooltip" type="button"
                                                                 class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                 <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -517,6 +528,25 @@
                                                             </button>
                                                         </div>
                                                     @endif
+                                                    @if ($filter != 'ALL' && $data->applicant_Status != 'PENDING')
+                                                        <div x-data="{ tooltip: 'Applicant Info' }">
+                                                            <button
+                                                                wire:click.prevent="getApplicant({{ $data->applicant_id }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="w-5 h-5" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                                                                </svg>
+
+
+                                                            </button>
+                                                        </div>
+                                                    @endif
 
                                                 </div>
 
@@ -535,6 +565,132 @@
                     </div>
 
 
+                </div>
+
+
+
+                <div x-show="selectedApplicant" class="bg-white shadow rounded-lg p-6 flex flex-col"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                    x-cloak>
+                    @if ($selectedApplicant)
+                        <div class="flex flex-row items-center gap-4">
+                            <button @click="selectedApplicant = null">
+                                <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                    <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                    </svg>
+                                </div>
+                            </button>
+                            <h2 class="text-2xl font-bold">Applicant Information</h2>
+
+                        </div>
+
+                        <div class="flex flex-row mt-2">
+                            <div class="flex flex-col">
+                                <img src="https://randomuser.me/api/portraits/men/94.jpg"
+                                    class="w-30 h-30 bg-gray-300 rounded-lg shrink-0">
+                                </img>
+                            </div>
+                            <div class="flex flex-col ml-4 w-full justify-center">
+                                <h1 class="text-3xl  font-bold">
+                                    {{ $applicantInfo->employee->fname }} {{ $applicantInfo->employee->mname }}
+                                    {{ $applicantInfo->employee->lname }}
+                                </h1>
+                                <h1 class="text-lg text-gray-600">
+                                    {{ $applicantInfo->employee->barangay->municipality->municipality_Name }},
+                                    {{ $applicantInfo->employee->barangay->municipality->province->province_Name }}
+                                </h1>
+
+                            </div>
+                            <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
+                                {{-- @if ($applicationInfo->applicant_Status == 'PENDING')
+                                <span
+                                    class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                            @elseif ($applicationInfo->applicant_Status == 'INTERESTED')
+                                <span
+                                    class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                            @elseif ($applicationInfo->applicant_Status == 'INTERVIEW')
+                                <span
+                                    class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
+                            @elseif ($applicationInfo->applicant_Status == 'HIRED')
+                                <span
+                                    class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
+                            @elseif ($applicationInfo->applicant_Status == 'REJECTED')
+                                <span
+                                    class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                            @endif --}}
+                            </div>
+                        </div>
+                        <hr class="mt-4">
+                        <div class="flex flex-col mt-4">
+
+                            <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">APPLICATION
+                                DETAIL</span>
+
+                            <ul>
+
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">Date Applied:</li>
+                                    <p class="ms-4">
+                                        {{ $applicantInfo->created_at->format('F j, Y') }}
+                                    </p>
+                                </div>
+                                <div class="flex flex-row ">
+                                    <li class="mb-2 font-bold">Applicant Status:</li>
+                                    <p class="ms-4">
+
+                                        @if ($applicantInfo->peso_Status === 'PENDING')
+                                            Pending
+                                        @elseif($applicantInfo->peso_Status === 'RECOMMENDED')
+                                            Recommended
+                                        @elseif($applicantInfo->peso_Status === 'NOT')
+                                            Not Recommended
+                                        @endif
+
+                                    </p>
+                                </div>
+
+
+                                <div class="flex flex-row ">
+                                    <li class="mb-2 font-bold">PESO Status:</li>
+                                    <p class="ms-4">
+
+                                        @if ($applicantInfo->peso_Status === 'PENDING')
+                                            Pending
+                                        @elseif($applicantInfo->peso_Status === 'RECOMMENDED')
+                                            Recommended
+                                        @elseif($applicantInfo->peso_Status === 'NOT')
+                                            Not Recommended
+                                        @endif
+
+                                    </p>
+                                </div>
+
+
+                            </ul>
+
+                            <div class="flex flex-col  mt-2">
+                                <h1 class="mb-2 font-bold">Remarks</h1>
+                                <textarea id="message" rows="6"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                                    placeholder="My remarks..." maxlength="600" readonly></textarea>
+                            </div>
+
+                            <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                                <a href="#"
+                                    class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
+                                    Recommendation Letter</a>
+                                <a href="#"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
+                                    Resume</a>
+                            </div>
+
+
+                        </div>
+                    @endif
                 </div>
             @endif
         </div>
@@ -752,7 +908,13 @@
 
 
 
-
+    <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('openNewTab', url => {
+                window.open(url, '_blank');
+            });
+        });
+    </script>
 
 
 </div>

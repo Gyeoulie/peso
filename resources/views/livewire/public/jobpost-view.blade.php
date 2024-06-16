@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="flex-row sm:mt-5">
-                                <h2 class="text-md sm:text-3xl font-semibold">{{ $JobPost->company->bussines_Name }}
+                                <h2 class="text-md sm:text-3xl font-semibold">{{ $JobPost->company->business_Name }}
                                 </h2>
                             </div>
 
@@ -189,7 +189,8 @@
 
                             @if (auth()->user()->usertype >= 8 && auth()->user()->peso->municipality_id == $JobPost->peso_municipality_id)
                                 <div class="flex flex-row items-center justify-center mt-2">
-                                    <a href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
+                                    <a wire:navigate
+                                        href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
                                         <x-primary-button class="w-[350px] h-[40px] justify-center">
 
                                             View Job Applicants
@@ -202,17 +203,25 @@
                         @endif
 
                         @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
-                            <div class="flex flex-row w-full items-center justify-center mt-2">
-                                <h1>Applicantion ends: <span
-                                        class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
-                                </h1>
-                            </div>
-                            <div class="flex flex-row items-center justify-center mt-2">
-                                <x-primary-button class="w-[350px] h-[40px] justify-center" x-data=""
-                                    x-on:click.prevent="$dispatch('open-modal', 'apply-modal')">
-                                    Apply
-                                </x-primary-button>
-                            </div>
+                            @if ($isApplied == false)
+                                <div class="flex flex-row w-full items-center justify-center mt-2">
+                                    <h1>Applicantion ends: <span
+                                            class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
+                                    </h1>
+                                </div>
+                                <div class="flex flex-row items-center justify-center mt-2">
+                                    <x-primary-button class="w-[350px] h-[40px] justify-center" x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'apply-modal')">
+                                        Apply
+                                    </x-primary-button>
+                                </div>
+                            @else
+                                <div class="flex flex-row w-full items-center justify-center mt-2">
+                                    <h1 class="text-xl font-semibold text-blue-500">You have already applied for this
+                                        job position.
+                                    </h1>
+                                </div>
+                            @endif
 
                             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-4">
                         @endif
@@ -387,7 +396,7 @@
 
                     <div class="flex-inline  rounded-lg p-1 mt-2 ">
                         @foreach ($JobPost->job_tags as $jobTag)
-                            <span wire:key='jobTag-{{ $data->job_positions->position_id }}'
+                            <span wire:key='jobTag-{{ $jobTag->job_positions->position_id }}'
                                 class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                 {{ $jobTag->job_positions->position_Title }}
                             </span>
@@ -483,7 +492,7 @@
 
 
                 <div class="flex flex-col mt-2" x-data="{
-                    selectedOption: 0,
+                    selectedOption:  @entangle('option'),
                     selected: 'bg-blue-300',
                     unselected: 'hover:bg-blue-300',
                     resumeExists: {{ auth()->user()->employee->resume ? 'true' : 'false' }}
@@ -594,7 +603,7 @@
                     <x-primary-button wire:click.prevent='apply' wire:loading.attr="disabled"
                         class="ms-3 w-[100px] flex justify-center" type="button" id="certAdd">
                         {{ __('Apply') }}
-                        <div wire:loading.delay.long role="status">
+                        <div wire:loading.delay.long wire:target='apply' role="status">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
