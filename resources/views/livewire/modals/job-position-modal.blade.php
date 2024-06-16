@@ -94,6 +94,14 @@
                 {{ $jobposition->links() }}
             </div>
 
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button type="button" x-data=""
+                    x-on:click="$dispatch('close-modal', 'job-position-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+            </div>
+
 
         </div>
 

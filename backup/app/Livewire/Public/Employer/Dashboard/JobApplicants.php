@@ -9,7 +9,6 @@ use App\Models\Job_Posting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -56,64 +55,34 @@ class JobApplicants extends Component
 
     public $filter = 'ALL', $sortDate, $jobFilter = 'ALL';
 
-    public function printResume($id, $type)
+    public function printResume($id)
     {
+        toastr()->success('hello');
 
         $employee = Employee::findOrFail($id);
-        $filename = $employee->fname . '_' . $employee->lname . '_resume.pdf';
-        if ($type == 1) {
-            // dd(public_path('storage/' . $employee->pimg));
 
-            $pdf = Pdf::loadView('resume', ['employee' => $employee]);
+        $pdf = Pdf::loadView('resume', ['employee' => $employee]);
 
-            return response()->streamDownload(function () use ($pdf) {
-                echo $pdf->download();
-            }, $filename);
-            toastr()->success('Download Success');
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->download();
+        }, 'report.pdf');
 
-        } elseif ($type == 2) {
+        // return response()->streamDownload(function () {
+        //     $pdf = Pdf::loadView('resume', ['employee' => $employee]);
+        //     echo $pdf->stream();
+        // }, 'test.pdf');
 
-            if (Storage::exists('public/' . $employee->resume)) {
-                // Get the URL of the PDF file
-                // $pdfUrl = Storage::url($path);
+        // return response()->streamDownload(function () {
+        //     $pdf = App::make('dompdf.wrapper');
+        //     $pdf->loadHTML('<h1>Test</h1>');
+        //     echo $pdf->stream();
+        // }, 'test.pdf');
 
-                $fileContent = Storage::get('public/' . $employee->resume);
-
-                return response()->streamDownload(function () use ($fileContent) {
-                    echo $fileContent;
-                }, $filename);
-                // Redirect the user to the PDF URL
-                toastr()->success('Download Success');
-            } else {
-                // PDF file not found, handle the error accordingly
-                // For example, you can redirect the user or show a message
-            }
-        }
-
-    }
-
-    public function printRecom($id)
-    {
-
-        $applicant = Job_Applicants::findOrFail($id);
-
-        if (Storage::exists('public/' . $applicant->peso_Letter)) {
-            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_resume.pdf';
-
-            $fileContent = Storage::get('public/' . $applicant->peso_Letter);
-
-            return response()->streamDownload(function () use ($fileContent) {
-                echo $fileContent;
-            }, $filename);
-            // Redirect the user to the PDF URL
-            toastr()->success('Download Success');
-        } else {
-            // PDF file not found, handle the error accordingly
-            // For example, you can redirect the user or show a message
-            toastr()->error('Recommendation Letter not found!');
-
-        }
-
+        // $pdfContent = PDF::loadView('resume')->output();
+        // return response()->streamDownload(
+        //     fn() => print($pdfContent),
+        //     "filename.pdf"
+        // );
     }
 
     public function openModal($modal, $applicantId)
@@ -136,23 +105,17 @@ class JobApplicants extends Component
         ]);
 
         try {
-            // Prepare update data
-            $updateData = [
+            // Create the user record
+            Job_Applicants::where('applicant_id', $this->applicantId)->update([
                 'applicant_Status' => $status,
                 'company_Remarks' => $this->remarks,
-            ];
+            ]);
 
-            // Conditionally add 'applicant_Notif' to the update data
-            if ($status != 'INTERESTED') {
-                $updateData['applicant_Notif'] = 1;
-            }
-
-            // Update applicant record
-            Job_Applicants::where('applicant_id', $this->applicantId)->update($updateData);
-
-            toastr()->success('Applicant has been updated!');
+            toastr()->success('Applicant has been Updated!');
         } catch (\Exception $e) {
-            toastr()->error('There was an error updating the applicant.');
+
+            // Show error toastr notification
+            toastr()->error('There was an Error');
         }
 
         $this->closeModal($modal);
@@ -194,6 +157,8 @@ class JobApplicants extends Component
     {
         $applicants = null; // Initialize $applicants variable
         $applicantInfo = null;
+
+        dd($this->selectedJob);
 
         if ($this->selectedJob) {
             // Create the initial query for applicants

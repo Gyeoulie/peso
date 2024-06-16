@@ -117,20 +117,35 @@ class JobPostOverview extends Component
 
         $jobMunicipalityId = $jobpost->peso_municipality_id;
         $jobEducationLevel = $jobpost->job_Edu;
+        $jobIndustryId = $jobpost->industry_id;
         $jobTagIds = $jobpost->job_tags->pluck('position_id');
 
         $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
             $query->where('municipality_id', $jobMunicipalityId);
         })
-            ->whereHas('education', function ($query) use ($jobEducationLevel) {
-                $query->where('edu_Level', '>=', $jobEducationLevel);
-            })
-            ->whereHas('job_preference', function ($query) use ($jobTagIds) {
-                $query->whereIn('position_id', $jobTagIds);
-            })
-            ->withCount('job_preference as num_matched_tags') // Count the number of matched job tags
-            ->orderByDesc('num_matched_tags') // Order by the number of matched job tags in descending order
-            ->get();
+        ->whereHas('education', function ($query) use ($jobEducationLevel) {
+            $query->where('edu_Level', '>=', $jobEducationLevel);
+        })
+        ->whereHas('job_preference', function ($query) use ($jobTagIds) {
+            $query->whereIn('position_id', $jobTagIds);
+        })
+        ->withCount(['job_preference as num_matched_tags' => function ($query) use ($jobTagIds) {
+            $query->whereIn('position_id', $jobTagIds);
+        }])
+        ->withCount(['industry_preference as num_matched_industry' => function ($query) use ($jobIndustryId) {
+            $query->where('industry_id', $jobIndustryId);
+        }])
+        ->orderByRaw('
+            CASE
+                WHEN num_matched_industry > 0 AND num_matched_tags > 0 THEN 1
+                WHEN num_matched_industry > 0 AND num_matched_tags = 0 THEN 2
+                WHEN num_matched_industry = 0 AND num_matched_tags > 0 THEN 3
+                ELSE 4
+            END
+        ')
+        ->orderByDesc('num_matched_tags')
+        ->get();
+        
 
         // Find applicants that match the job posting criteria
         // $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {

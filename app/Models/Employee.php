@@ -97,4 +97,9 @@ class Employee extends Model
     {
         return $this->hasMany(Work_Exp::class, 'employee_id');
     }
+
+    public function industry_preference()
+    {
+        return $this->hasMany(Industry_preference::class, 'employee_id');
+    }
 }

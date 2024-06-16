@@ -6,7 +6,7 @@
                 <div class="flex flex-col items-center">
                     {{-- <img src="https://randomuser.me/api/portraits/men/94.jpg" --}}
                     <img src="{{ $jobseeker->pimg ? asset('storage/' . $jobseeker->pimg) : asset('https://randomuser.me/api/portraits/men/94.jpg') }}"
-                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover">
+                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
                     </img>
                     <h1 class="text-xl font-bold">{{ $jobseeker->fname }} {{ $jobseeker->lname }}</h1>
 
@@ -20,8 +20,6 @@
 
                     <div class="mt-6 flex flex-wrap gap-4 justify-center">
                         <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
-                        <a href="#"
-                            class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">Resume</a>
                     </div>
                 </div>
                 <hr class="my-6 border-t border-gray-300">
@@ -429,9 +427,9 @@
 
                                     @foreach ($jobseeker->education as $educBackground)
                                         <div wire:key="{{ $educBackground->education_id }}"
-                                            class="container bg-gray-200 p-3 rounded-lg shadow ">
-                                            <div class="flex flex-row">
-                                                <div class="flex flex-col h-full">
+                                            class="container bg-blue-200  p-3 rounded-lg shadow ">
+                                            <div class="flex flex-row h-full items-center">
+                                                <div class="flex flex-col">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                                         fill="currentColor"
                                                         class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 ">
@@ -520,12 +518,12 @@
 
                                     @foreach ($jobseeker->work_exp as $work_experience)
                                         <div wire:key="{{ $work_experience->workexp_id }}"
-                                            class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                            class="container bg-blue-200  p-3 rounded-lg shadow ">
 
-                                            <div class="flex flex-row">
+                                            <div class="flex flex-row h-full items-center">
 
-                                                <div class="flex flex-col h-full">
-                                                    <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 "
+                                                <div class="flex flex-col">
+                                                    <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800"
                                                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                         width="24" height="24" fill="currentColor"
                                                         viewBox="0 0 24 24">
@@ -617,12 +615,23 @@
 
                                     @foreach ($jobseeker->training as $empTraining)
                                         <div wire:key="{{ $empTraining->training_id }}"
-                                            class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                            class="container bg-blue-200  p-3 rounded-lg shadow ">
 
-                                            <div class="flex flex-row items-center">
+                                            <div class="flex flex-row h-full items-center">
 
-                                                <div class="flex flex-col h-full">
-                                                    <i class="text-gray-800 fa-solid fa-certificate text-[80px]"></i>
+                                                <div class="flex flex-col">
+                                                    <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800"
+                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                        fill="currentColor">
+                                                        <path fill-rule="evenodd"
+                                                            d="M12 6.75a5.25 5.25 0 0 1 6.775-5.025.75.75 0 0 1 .313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 0 1 1.248.313 5.25 5.25 0 0 1-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 1 1 2.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0 1 12 6.75ZM4.117 19.125a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z"
+                                                            clip-rule="evenodd" />
+                                                        <path
+                                                            d="m10.076 8.64-2.201-2.2V4.874a.75.75 0 0 0-.364-.643l-3.75-2.25a.75.75 0 0 0-.916.113l-.75.75a.75.75 0 0 0-.113.916l2.25 3.75a.75.75 0 0 0 .643.364h1.564l2.062 2.062 1.575-1.297Z" />
+                                                        <path fill-rule="evenodd"
+                                                            d="m12.556 17.329 4.183 4.182a3.375 3.375 0 0 0 4.773-4.773l-3.306-3.305a6.803 6.803 0 0 1-1.53.043c-.394-.034-.682-.006-.867.042a.589.589 0 0 0-.167.063l-3.086 3.748Zm3.414-1.36a.75.75 0 0 1 1.06 0l1.875 1.876a.75.75 0 1 1-1.06 1.06L15.97 17.03a.75.75 0 0 1 0-1.06Z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
 
                                                 </div>
 
@@ -685,7 +694,7 @@
                             @if ($jobseeker->certificate->isEmpty())
 
                                 <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                    <div class="flex  bg-gray-100 rounded-full p-1">
+                                    <div class="flex bg-gray-100 rounded-full p-1">
 
                                         <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -705,11 +714,12 @@
 
                                     @foreach ($jobseeker->certificate as $certification)
                                         <div wire:key="{{ $certification->certificate_id }}"
-                                            class="container bg-gray-200 p-3 rounded-lg shadow ">
+                                            class="container bg-blue-200  p-3 rounded-lg shadow ">
 
-                                            <div class="flex flex-row items-center">
-                                                <div class="flex flex-col h-full">
-                                                    <svg class="w-20 h-20 " xmlns="http://www.w3.org/2000/svg"
+                                            <div class="flex flex-row h-full items-center">
+                                                <div class="flex flex-col">
+                                                    <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800"
+                                                        xmlns="http://www.w3.org/2000/svg"
                                                         viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                                         <path
                                                             d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z" />

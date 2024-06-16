@@ -92,6 +92,13 @@
         </div>
 
 
+        <div class="mt-6 flex justify-end">
+            <x-secondary-button type="button" x-data=""
+                x-on:click="$dispatch('industry-modal', 'barangay-modal')">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+        </div>
     </div>
 
 </x-modal>

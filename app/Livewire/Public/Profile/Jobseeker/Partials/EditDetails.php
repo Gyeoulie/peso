@@ -329,6 +329,14 @@ class EditDetails extends Component
     public function industrySelect($id)
     {
 
+        $jobPreferenceCount = auth()->user()->employee->job_preference->count();
+
+        if ($jobPreferenceCount === 1) {
+            toastr()->warning('You can only choose one industry.');
+            $this->dispatch('close-modal', 'industry-modal');
+            return;
+        }
+
         $industryExist = Industry_Preference::where('industry_id', $id)
             ->where('employee_id', $this->empID)->exists();
         if ($industryExist) {
@@ -400,7 +408,7 @@ class EditDetails extends Component
         $this->height = $employeeDetails->height;
         $this->address = $employeeDetails->address;
 
-        $barangayDetails = Barangay::find($employeeDetails->barangay);
+        $barangayDetails = Barangay::find($employeeDetails->barangay_id);
         $this->bar = $barangayDetails->barangay_Name;
         $this->mun = $barangayDetails->municipality->municipality_Name;
         $this->prov = $barangayDetails->municipality->province->province_Name;

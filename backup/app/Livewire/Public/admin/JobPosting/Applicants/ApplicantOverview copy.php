@@ -85,7 +85,6 @@ class ApplicantOverview extends Component
                     'peso_Status' => $action,
                     'peso_Remarks' => $this->recommendationRemarks,
                     'peso_Letter' => $recLetterPath,
-                    'applicant_Notif' => 1,
                 ]);
                 toastr()->success('Applicant updated successfully!');
             } catch (\Exception $e) {
@@ -102,7 +101,6 @@ class ApplicantOverview extends Component
                 Job_Applicants::where('applicant_id', $this->id)->update([
                     'peso_Status' => $action,
                     'peso_Remarks' => $this->rejectRemarks,
-                    'applicant_Notif' => 1,
                 ]);
                 toastr()->success('Applicant updated successfully!');
             } catch (\Exception $e) {
@@ -126,35 +124,33 @@ class ApplicantOverview extends Component
     {
         $applicant = Job_Applicants::findOrFail($this->id);
 
-// Get the highest education level of the employee
+        // Get the highest education level of the employee
         $highestEducationLevel = Education::where('employee_id', $applicant->employee->employee_id)
             ->max('edu_level');
 
-// Get the employee's municipality ID via their barangay
+        // Get the employee's municipality ID via their barangay
         $employeeMunicipalityId = Barangay::where('barangay_id', $applicant->employee->barangay_id)
             ->value('municipality_id');
 
-// Get the employee's job preferences (array of position_id)
+        // Get the employee's job preferences (array of position_id)
         $employeeJobPreferences = Job_Preference::where('employee_id', $applicant->employee->employee_id)
             ->pluck('position_id');
 
-        $employeeIndustryPreference = Industry_Preference::where('employee_id', $applicant->employee->employee_id)
+        $employeeIndustryPreference = Industry_preference::where('employee_id', $applicant->employee->employee_id)
             ->pluck('industry_id');
 
-// Query to check if the specific job posting matches the employee
+        // Query to check if the specific job posting matches the employee
         $isMatch = Job_Posting::where('job_id', $applicant->job_id)
             ->where('job_Status', 'ACTIVE')
             ->where('peso_municipality_id', $employeeMunicipalityId)
-            ->where('job_edu', '<=', $highestEducationLevel)
-            ->where(function ($query) use ($employeeJobPreferences) {
-                $query->whereHas('job_tags', function ($query) use ($employeeJobPreferences) {
-                    $query->whereIn('position_id', $employeeJobPreferences);
-                });
+            ->where('job_Edu', '<=', $highestEducationLevel)
+            ->whereHas('job_tags', function ($query) use ($employeeJobPreferences) {
+                // Check if any of the jobTags' position_id is in the employee's job preferences
+                $query->whereIn('position_id', $employeeJobPreferences);
             })
-            ->orWhere(function ($query) use ($employeeIndustryPreference) {
-                $query->whereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
-                    $query->whereIn('industry_id', $employeeIndustryPreference);
-                });
+            ->whereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
+                // Check if any of the jobTags' position_id is in the employee's job preferences
+                $query->whereIn('industry_id', $employeeIndustryPreference);
             })
             ->exists();
 

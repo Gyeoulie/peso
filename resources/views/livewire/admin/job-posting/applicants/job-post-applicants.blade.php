@@ -139,7 +139,7 @@
 
                     <div class="relative overflow-x-auto">
                         <div
-                            class="flex items-center  flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
+                            class="flex items-center  flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1 p-1">
 
                             <label for="table-search" class="sr-only">Search</label>
                             <div class="relative">
@@ -153,7 +153,7 @@
                                 </div>
 
                                 {{-- SEARCH --}}
-                                <input type="text" id="table-search-users"
+                                <input wire:model.live='search' type="text" id="table-search-users"
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for Applicants">
                             </div>
@@ -225,8 +225,22 @@
 
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center">
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
-                                                    {{ $applicants->applicant_Status }}
+                                                    @if ($applicants->applicant_Status == 'PENDING')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                        PENDING
+                                                    @elseif($applicants->applicant_Status == 'INTERESTED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2"></div>
+                                                        INTERESTED
+                                                    @elseif($applicants->applicant_Status == 'INTERVIEW')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
+                                                        INTERVIEW
+                                                    @elseif($applicants->applicant_Status == 'HIRED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                                        HIRED
+                                                    @elseif($applicants->applicant_Status == 'REJECTED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                        REJECTED
+                                                    @endif
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
@@ -235,7 +249,8 @@
                                             </td>
                                             <td class="px-6 py-4 text-center">
                                                 <div x-data="{ tooltip: 'Applicant Overview' }">
-                                                    <a wire:navigate href="{{ route('admin.jobpost.applicants.overview', ['id' => $applicants->applicant_id]) }}"
+                                                    <a wire:navigate
+                                                        href="{{ route('admin.jobpost.applicants.overview', ['id' => $applicants->applicant_id]) }}"
                                                         x-tooltip="tooltip" type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"

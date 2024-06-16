@@ -4,6 +4,7 @@ namespace App\Livewire\Public;
 
 use App\Models\Barangay;
 use App\Models\Education;
+use App\Models\Industry_preference;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use Illuminate\Support\Facades\Auth;
@@ -68,6 +69,7 @@ class Dashboard extends Component
     public function updateFilter($value)
     {
         $this->filter = $value;
+        $this->sort = 'Newest';
     }
 
     public function updateSort($value)
@@ -81,47 +83,78 @@ class Dashboard extends Component
         $user = Auth::user();
 
         if ($this->filter == 'Recommended') {
+
+            // Get the highest education level of the user
             // Get the highest education level of the user
             $highestEducationLevel = Education::where('employee_id', $user->employee->employee_id)
                 ->max('edu_level');
 
-            // Get the user's municipality ID via their barangay
+// Get the user's municipality ID via their barangay
             $userMunicipalityId = Barangay::where('barangay_id', $user->employee->barangay_id)
                 ->value('municipality_id');
 
-            // Get the user's job preferences (array of position_id)
+// Get the user's job preferences (array of position_id)
             $userJobPreferences = Job_Preference::where('employee_id', $user->employee->employee_id)
                 ->pluck('position_id');
 
-            // Query for matching job postings
-            $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality'])
+// Get the user's industry preference
+            $userIndustryPreference = Industry_Preference::where('employee_id', $user->employee->employee_id)
+                ->pluck('industry_id');
+
+// Query for matching job postingsz`
+            $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
                 ->where('job_Status', 'ACTIVE')
                 ->where('peso_municipality_id', $userMunicipalityId)
                 ->where('job_edu', '<=', $highestEducationLevel)
-                ->whereHas('job_tags', function ($query) use ($userJobPreferences) {
-                    // Check if any of the jobTags' position_id is in the user's job preferences
-                    $query->whereIn('position_id', $userJobPreferences);
+                ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                    // Ensure that either job tags match or industry matches, or both
+                    $query->where(function ($query) use ($userJobPreferences) {
+                        $query->whereHas('job_tags', function ($query) use ($userJobPreferences) {
+                            $query->whereIn('position_id', $userJobPreferences);
+                        });
+                    })
+                        ->orWhere(function ($query) use ($userIndustryPreference) {
+                            $query->whereHas('job_industry', function ($query) use ($userIndustryPreference) {
+                                $query->whereIn('industry_id', $userIndustryPreference);
+                            });
+                        });
                 })
                 ->where(function ($query) {
                     // Additional search filters for company, job title, and position name
                     $query->whereHas('company', function ($query) {
-                        $query->where('business_Name', 'like', "%{$this->search}%")
-                            ->orWhere('trade_Name', 'like', "%{$this->search}%");
+                        $query->where('business_Name', 'like', '%' . $this->search . '%')
+                            ->orWhere('trade_Name', 'like', '%' . $this->search . '%');
                     })
-                        ->orWhere('job_Title', 'like', "%{$this->search}%")
+                        ->orWhere('job_Title', 'like', '%' . $this->search . '%')
                         ->orWhereHas('job_tags.job_positions', function ($query) {
-                            $query->where('position_Title', 'like', "%{$this->search}%");
+                            $query->where('position_Title', 'like', '%' . $this->search . '%');
+                        })
+                        ->orWhereHas('job_industry', function ($query) {
+                            $query->where('industry_Title', 'like', '%' . $this->search . '%');
                         });
                 })
-                ->withCount('job_tags') // Count the number of job_tags matches
-                ->orderByDesc('job_tags_count') // Order by the count of job_tags matches in descending order
-                ->distinct(); // Ensure distinct job postings
+                ->withCount(['job_tags as job_tags_count' => function ($query) use ($userJobPreferences) {
+                    $query->whereIn('position_id', $userJobPreferences);
+                }])
+                ->withCount(['job_industry as industry_count' => function ($query) use ($userIndustryPreference) {
+                    $query->whereIn('industry_id', $userIndustryPreference);
+                }])
+                ->orderByRaw('
+    CASE
+        WHEN industry_count > 0 AND job_tags_count > 0 THEN 1
+        WHEN industry_count > 0 AND job_tags_count = 0 THEN 2
+        WHEN industry_count = 0 AND job_tags_count > 0 THEN 3
+        ELSE 4
+    END
+')
+                ->orderByDesc('job_tags_count')
+                ->distinct();
 
         } else if ($this->filter == 'My Municipality') {
             // dd($this->filter);
             if ($user->usertype == 4) {
 
-                $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality'])
+                $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
                     ->where('job_Status', 'ACTIVE')
                     ->whereHas('municipality', function ($query) use ($user) {
                         $query->where('municipality_id', $user->employee->barangay->municipality->municipality_id);
@@ -136,6 +169,9 @@ class Dashboard extends Component
                             ->orWhereHas('job_tags.job_positions', function ($query) {
                                 $query->where('position_Title', 'like', '%' . $this->search . '%');
                             })
+                            ->orWhereHas('job_industry', function ($query) {
+                                $query->where('industry_Title', 'like', '%' . $this->search . '%');
+                            })
                             ->orWhereHas('barangay.municipality', function ($query) {
                                 $query->where('barangay_Name', 'like', '%' . $this->search . '%')
                                     ->orWhere('municipality_Name', 'like', '%' . $this->search . '%');
@@ -148,7 +184,7 @@ class Dashboard extends Component
                     ->distinct(); // Ensure distinct job postings
 
             } else if ($user->usertype >= 8) {
-                $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality'])
+                $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
                     ->where('job_Status', 'ACTIVE')
                     ->whereHas('municipality', function ($query) use ($user) {
                         $query->where('municipality_id', $user->peso->municipality->municipality_id);
@@ -163,6 +199,9 @@ class Dashboard extends Component
                             ->orWhereHas('job_tags.job_positions', function ($query) {
                                 $query->where('position_Title', 'like', '%' . $this->search . '%');
                             })
+                            ->orWhereHas('job_industry', function ($query) {
+                                $query->where('industry_Title', 'like', '%' . $this->search . '%');
+                            })
                             ->orWhereHas('barangay.municipality', function ($query) {
                                 $query->where('barangay_Name', 'like', '%' . $this->search . '%')
                                     ->orWhere('municipality_Name', 'like', '%' . $this->search . '%');
@@ -176,7 +215,7 @@ class Dashboard extends Component
             }
 
         } else if ($this->filter == 'All') {
-            $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality'])
+            $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
                 ->where('job_Status', 'ACTIVE')
                 ->where(function ($query) {
                     // Additional search filters for company, job title, and position name
@@ -187,6 +226,9 @@ class Dashboard extends Component
                         ->orWhere('job_Title', 'like', '%' . $this->search . '%')
                         ->orWhereHas('job_tags.job_positions', function ($query) {
                             $query->where('position_Title', 'like', '%' . $this->search . '%');
+                        })
+                        ->orWhereHas('job_industry', function ($query) {
+                            $query->where('industry_Title', 'like', '%' . $this->search . '%');
                         })
                         ->orWhereHas('barangay.municipality', function ($query) {
                             $query->where('barangay_Name', 'like', '%' . $this->search . '%')
@@ -205,6 +247,8 @@ class Dashboard extends Component
             $joblist = $joblist->orderBy('created_at', 'ASC');
         } elseif ($this->sort == 'Oldest') {
             $joblist = $joblist->orderBy('created_at', 'DESC');
+        } elseif ($this->sort == 'Random') {
+            $joblist = $joblist->inRandomOrder();
         }
 
         $joblist = $joblist->paginate($this->pagination);

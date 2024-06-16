@@ -100,6 +100,7 @@
         <div class="flex flex-col w-full">
             <x-input-label for="height" :value="__('Height')" />
             <x-text-input wire:model='height' class="block mt-1 w-full" type="text" />
+            <x-input-label for="height" :value="__('*Must be in Centimeters')" />
             <x-input-error :messages="$errors->get('height')" class="mt-2" />
         </div>
     </div>
@@ -185,7 +186,7 @@
     </div>
 
 
-    <livewire:modals.barangay-modal />
+    <livewire:modals.barangay-signup-modal />
 
 
 

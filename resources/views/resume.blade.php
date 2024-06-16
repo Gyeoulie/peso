@@ -32,6 +32,8 @@
         .experience-section,
         .trainings-section,
         .certifications-section {
+            width: 100%;
+
             margin-bottom: 1rem;
             border-bottom: 4px solid #d1d5db;
         }
@@ -43,11 +45,11 @@
             align-items: top;
         }
 
-        .header-section img {
+        /* .header-section img {
             width: 220px;
             height: 150px;
             border-radius: 1rem;
-        }
+        } */
 
         .header-section h1 {
             font-size: 3rem;
@@ -139,22 +141,40 @@
     </style>
     <main>
         <section class="section-container">
-            <header class="header-section"
-                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #d1d5db; padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-                <section
-                    style="padding: 3rem; color: white; border-radius: 1rem; background-color: black; display: inline-block;">
-                    <img src="{{ public_path() . $employee->pimg }}"
-                        style="width: 180px; height: 120px; border-radius: 1rem;">
+            {{-- <header class="header-section" style="display: flex; justify-content: center; align-items: center;">
+                <section style="padding: 1rem; text-align: center;">
+                    <img src="{{ public_path('storage/' . $employee->pimg) }}" alt="Employee Image"
+                        style="margin-top: 0.5rem; width: 240px; height: 160px; object-fit: cover; border-radius: 8px;">
                 </section>
-                <section
-                    style="display: inline-block; flex-direction: column; width: calc(100% - 220px - 1rem); margin-left: 0.5rem;">
-                    <h1 style="margin: 0.75rem 0 0; font-size: 3rem; font-weight: bold; color: #374151;">
-                        {{ $employee->fname }} {{ $employee->lname }}</h1>
-                    <h3 style="margin: 0.5rem 0 0 0.5rem; font-size: 1.25rem; font-weight: 600; color: #6b7280;">San
-                        {{ $employee->barangay->municipality->municipality_Name }},
-                        {{ $employee->barangay->municipality->province->province_Name }}</h3>
+                <section style="text-align: left; margin-left: 1rem;">
+                    <h1 style="margin: 0; font-size: 2.5rem; font-weight: bold; color: #374151;">
+                        {{ $employee->fname }} {{ $employee->lname }}
+                    </h1>
+                    <h3 style="margin: 0.5rem 0 0; font-size: 1.25rem; font-weight: 600; color: #6b7280;">
+                        San {{ $employee->barangay->municipality->municipality_Name }},
+                        {{ $employee->barangay->municipality->province->province_Name }}
+                    </h3>
+                </section>
+            </header> --}}
+
+
+            <header class="header-section" style="display: flex; align-items: center;">
+                <section style="display: inline-flex;">
+                    <img src="{{ public_path('storage/' . $employee->pimg) }}" alt="Employee Image"
+                        style="width: 240px; height: 160px; object-fit: cover; border-radius: 8px;">
+                </section>
+                <section style="display: inline-flex; flex: 1; margin-left: 1rem;">
+                    <h1 style="margin: 0.75rem 0 0; font-size: 2.5rem; font-weight: bold; color: #374151;">
+                        {{ $employee->fname }} {{ $employee->lname }}
+                    </h1>
+                    <h3 style="margin: 0.5rem 0 0; font-size: 1.25rem; font-weight: 600; color: #6b7280;">
+                        San {{ $employee->barangay->municipality->municipality_Name }},
+                        {{ $employee->barangay->municipality->province->province_Name }}
+                    </h3>
                 </section>
             </header>
+
+
             <section class="contact-section">
                 <ul style="padding-right: 1.75rem; list-style-type: none; padding-left: 0;">
                     <li style="margin-top: 0.25rem; line-height: 1.5;">

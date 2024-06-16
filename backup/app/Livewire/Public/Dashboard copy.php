@@ -52,11 +52,6 @@ class Dashboard extends Component
     public $filter;
     public $pagination = 5;
 
-
-
-
-    pu
-
     public function render()
     {
 

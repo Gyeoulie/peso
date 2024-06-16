@@ -27,7 +27,7 @@ class Industry_preference extends Model
         return $this->belongsTo(Employee::class, 'employee_id');
     }
 
-    public function industry()
+    public function job_industry()
     {
         return $this->belongsTo(Job_Industry::class, 'industry_id');
     }

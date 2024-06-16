@@ -4,21 +4,15 @@
         <div class="flex flex-col md:w-1/4 h-full md:sticky top-5">
             <div class="bg-white shadow-xl rounded-lg p-6">
                 <div class="flex flex-col items-center">
-                    {{-- <img src="https://randomuser.me/api/portraits/men/94.jpg" --}}
-                    <img src="asset('https://randomuser.me/api/portraits/men/94.jpg') }}" alt="User Image"
-                        class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
+                    <img src="{{ $employer->company_img ? asset('storage/' . $employer->company_img) : asset('https://randomuser.me/api/portraits/men/94.jpg') }}"
+                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
                     </img>
-                    <h1 class="text-xl font-bold">{{ $employer->bussines_Name }}</h1>
+                    <h1 class="text-xl font-bold">{{ $employer->business_Name }}</h1>
 
 
 
                     <p class="text-gray-700">{{ $employer->trade_Name }}</p>
 
-                    <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                        <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
-                        <a href="#"
-                            class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">Resume</a>
-                    </div>
                 </div>
                 <hr class="my-6 border-t border-gray-300">
                 <div class="flex flex-col w-full px-5 mt-5">
@@ -27,12 +21,13 @@
                         <li class="mb-4">
                             <div class="flex flex-row gap-4 w-full">
                                 <div class="flex flex-col">
-                                    <svg class="w-7 h-7 text-blue-500" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-width="2"
-                                            d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+
+                                    <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
                                     </svg>
+
 
                                 </div>
                                 <div class="flex flex-col gap-1">
@@ -57,7 +52,7 @@
                                     <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                                            d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
                                     </svg>
                                 </div>
                                 <div class="flex flex-col gap-1">
@@ -79,7 +74,7 @@
                                     <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                            d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
                                     </svg>
 
                                 </div>
@@ -111,9 +106,10 @@
                                     <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                                            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                     </svg>
-
 
 
                                 </div>
@@ -122,7 +118,9 @@
                                         Company Address
                                     </div>
                                     <div class="text-md font-medium">
-                                        {{ $employer->company_Address }}
+                                        {{ $employer->barangay->barangay_Name }},
+                                        {{ $employer->barangay->municipality->municipality_Name }},
+                                        {{ $employer->barangay->municipality->province->province_Name }}
                                     </div>
 
 
@@ -177,71 +175,85 @@
                 <div class="container">
                     <div class="bg-white shadow rounded-lg p-6">
 
+                        <div class="flex flex-row w-full mb-4">
+                            <h2 class="text-xl font-bold">Available Jobs</h2>
 
+                        </div>
+                        @if ($employer->job_posting->isEmpty())
 
+                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
+                                <div class="flex  bg-gray-100 rounded-full p-1">
 
+                                    <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                                    </svg>
 
+                                </div>
 
-                        <div>
-
-                            <div class="flex flex-row w-full  mt-6 mb-4">
-                                <h2 class="text-xl font-bold">Available Jobs</h2>
-
+                                <div class="text-center text-black text-xl font-semibold mt-5">
+                                    No job posting found.
+                                </div>
                             </div>
-                         
+                        @else
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
 
-                            @foreach ($employer->job_posting as $jobPosts)
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                                @foreach ($employer->job_posting as $jobPosts)
+                                    <a href="{{ route('jobpost.show', ['id' => $jobPosts->job_id]) }}">
+                                        <div class="container bg-blue-200 hover:bg-blue-300 p-3 rounded-lg shadow ">
 
+                                            <div class="flex flex-row h-full items-center">
 
-                                    <div class="container bg-gray-200 p-3 rounded-lg shadow ">
-
-                                        <div class="flex flex-row">
-
-                                            <div class="flex flex-col h-full">
-                                                <i
-                                                    class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 fa-solid fa-certificate"></i>
-                                            </div>
-
-                                            <div class="flex flex-col ml-4 w-full">
-                                                <span class="text-2xl text-blue-500 font-bold">
-                                                    {{ $jobPosts->job_Title }}
-                                                </span>
-                                                <span class="text-lg text-black font-semibold">
-                                                    {{$jobPosts->job_Address}}
-                                                </span>
-                                                <div class="flex flex-row w-full gap-5">
-                                                    <span class="text-md text-black font-semibold">
-                                                        {{ $jobPosts->job_Type == 1
-                                                            ? 'Full Time'
-                                                            : ($jobPosts->job_Type == 2
-                                                                ? 'Part Time'
-                                                                : '') }}
-                                                    </span>
-                                                    <span class="text-md text-black font-semibold">
-                                                        P{{$jobPosts->job_MinWage}} - P{{$jobPosts->job_MaxWage}}
-                                                    </span>
-
-
+                                                <div class="flex flex-col">
+                                                    <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 "
+                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                        width="24" height="24" fill="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.382l1.447.723.005.003.027.013.12.056c.108.05.272.123.486.212.429.177 1.056.416 1.834.655C7.481 13.524 9.63 14 12 14c2.372 0 4.52-.475 6.08-.956.78-.24 1.406-.478 1.835-.655a14.028 14.028 0 0 0 .606-.268l.027-.013.005-.002L22 11.381V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.447 7.894.553-.276V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.382l.553.276.002.002.004.002.013.006.041.02.151.07c.13.06.318.144.557.242.478.198 1.163.46 2.01.72C7.019 15.476 9.37 16 12 16c2.628 0 4.98-.525 6.67-1.044a22.95 22.95 0 0 0 2.01-.72 15.994 15.994 0 0 0 .707-.312l.041-.02.013-.006.004-.002.001-.001-.431-.866.432.865ZM12 10a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
                                                 </div>
 
-                                                <span class="text-sm text-gray-700 font-medium">Posted at: {{$jobPosts->created_at->format('F j, Y')}}</span>
+                                                <div class="flex flex-col ml-4 w-full">
+                                                    <span class="text-2xl text-blue-500 font-bold">
+                                                        {{ $jobPosts->job_Title }}
+                                                    </span>
+                                                    <span class="text-lg text-black font-semibold">
+                                                        {{ $jobPosts->barangay->municipality->municipality_Name }},
+                                                        {{ $jobPosts->barangay->municipality->province->province_Name }}
+                                                    </span>
+                                                    <div class="flex flex-row w-full gap-5">
+                                                        <span class="text-md text-black font-semibold">
+                                                            {{ $jobPosts->job_Type == 1 ? 'Full Time' : ($jobPosts->job_Type == 2 ? 'Part Time' : '') }}
+                                                        </span>
+                                                        <span class="text-md text-black font-semibold">
+                                                            ₱{{ number_format($jobPosts->job_MinWage, 2) }} -
+                                                            ₱{{ number_format($jobPosts->job_MaxWage, 2) }}
+                                                        </span>
+
+
+
+                                                    </div>
+
+                                                    <span class="text-sm text-gray-700 font-medium">Posted at:
+                                                        {{ $jobPosts->created_at->format('F j, Y') }}</span>
+
+                                                </div>
 
                                             </div>
 
                                         </div>
+                                    </a>
+                                @endforeach
 
-                                    </div>
+                            </div>
 
-
-
-                                </div>
-                            @endforeach
-
+                        @endif
 
 
 
-                        </div>
 
                     </div>
 

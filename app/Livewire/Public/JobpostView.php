@@ -162,7 +162,6 @@ class JobpostView extends Component
                     $user->employee->update([
                         'resume' => $resumePath,
                     ]);
-                    toastr()->success('Application submitted successfully.');
                 } catch (\Exception $e) {
                     toastr()->error('There was an error in uploading the resume!');
                     return;
@@ -180,6 +179,7 @@ class JobpostView extends Component
                 'applicant_Status' => "PENDING",
                 'peso_Status' => "PENDING",
             ]);
+            $this->close();
             toastr()->success('Application submitted successfully.');
             // session()->flash('message', );
         } catch (\Exception $e) {

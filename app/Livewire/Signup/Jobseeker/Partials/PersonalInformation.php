@@ -41,8 +41,8 @@ class PersonalInformation extends Component
             'civilstatus' => 'required|in:1,2,3',
             'religion' => 'required',
             'phone' => 'required|regex:/(09)[0-9]{9}/|numeric',
-            'tin' => 'nullable|size:11|numeric',
-            'height' => 'nullable|numeric',
+            'tin' => 'nullable|digits:11|unique:employee,tinnum',
+            'height' => 'nullable|numeric|min:1',
         ];
 
         $messages = [
@@ -57,9 +57,9 @@ class PersonalInformation extends Component
             'phone.required' => 'The phone number is required.',
             'phone.regex' => 'The phone number must be in the correct format.',
             'phone.numeric' => 'The phone number must be numeric.',
-            'tin.size' => 'The TIN must be 11 digits long.',
-            'tin.numeric' => 'The TIN must be numeric.',
+            'tin.digits' => 'The TIN must be 11 digits long.',
             'height.numeric' => 'The height must be a number.',
+            'height.min' => 'The height must be valid.',
         ];
 
         $this->validate($rules, $messages);

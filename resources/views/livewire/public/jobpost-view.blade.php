@@ -492,7 +492,7 @@
 
 
                 <div class="flex flex-col mt-2" x-data="{
-                    selectedOption: 0,
+                    selectedOption:  @entangle('option'),
                     selected: 'bg-blue-300',
                     unselected: 'hover:bg-blue-300',
                     resumeExists: {{ auth()->user()->employee->resume ? 'true' : 'false' }}
@@ -603,7 +603,7 @@
                     <x-primary-button wire:click.prevent='apply' wire:loading.attr="disabled"
                         class="ms-3 w-[100px] flex justify-center" type="button" id="certAdd">
                         {{ __('Apply') }}
-                        <div wire:loading.delay.long role="status">
+                        <div wire:loading.delay.long wire:target='apply' role="status">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path

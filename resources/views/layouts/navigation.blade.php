@@ -40,6 +40,7 @@
                     @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
                         <x-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
                             {{ __('My Applications') }}
+                            <livewire:components.applications-notif />
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->usertype >= 8)
@@ -53,7 +54,7 @@
             <div class="hidden sm:flex mr-1 ml-auto w-96">
 
 
-                <livewire:components.profile-search/>
+                <livewire:components.profile-search />
 
 
             </div>
@@ -113,7 +114,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden relative">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
@@ -131,11 +132,14 @@
             @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
                 <x-responsive-nav-link wire:navigate :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
                     {{ __('Job Applicants') }}
+
                 </x-responsive-nav-link>
             @endif
             @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
                 <x-responsive-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
                     {{ __('My Applications') }}
+                    <span
+                        class="inline-flex relative bg-red-500 p-0.5 leading-none w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full"></span>
                 </x-responsive-nav-link>
             @endif
             @if (auth()->user()->usertype >= 8)
@@ -161,9 +165,9 @@
                 </x-responsive-nav-link>
                 <div class="flex px-4 ">
 
-                
 
-                    <livewire:components.profile-search/>
+
+                    <livewire:components.profile-search />
 
                 </div>
 

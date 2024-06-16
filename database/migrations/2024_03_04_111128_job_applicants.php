@@ -15,19 +15,20 @@ return new class extends Migration
             $table->id('applicant_id');
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('job_id');
-            $table->smallInteger('applicant_Resume', 1);
+            $table->tinyInteger('applicant_Resume');
             $table->string('applicant_Status', 15);
             $table->string('peso_Status', 15);
             $table->text('company_Remarks')->nullable();
             $table->text('peso_Remarks')->nullable();
             $table->string('peso_Letter', 255)->nullable();
-            
+            $table->tinyInteger('applicant_Notif')->default(2);
+
             $table->timestamps();
 
             $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
+                ->onUpdate('cascade');
             $table->foreign('job_id')->references('job_id')->on('job_posting')->onDelete('cascade')
-            ->onUpdate('cascade');
+                ->onUpdate('cascade');
         });
     }
 

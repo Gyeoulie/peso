@@ -19,7 +19,7 @@ class EmployerProfile extends Component
         if ($getDesc) {
             $this->description = $getDesc->company_Desc;
         }
-        
+
         $this->dispatch('open-modal', 'aboutme-modal');
     }
     public function close()
@@ -50,8 +50,9 @@ class EmployerProfile extends Component
             'user',
             'barangay',
             'job_posting' => function ($query) {
-                $query->orderBy('job_Status', 'desc');
-            }
+                $query->where('job_Status', 'ACTIVE')
+                    ->orderBy('job_Status', 'desc');
+            },
         ])->find($this->id);
 
         return view('livewire.public.profile.employer.employer-profile', compact('employer'));

@@ -44,9 +44,9 @@
                             <option wire:click.prevent='changeFilter("ALL")'>All ({{ $allCount }})
                             </option>
                             <option wire:click.prevent='changeFilter("PENDING")'>Pending
-                                ({{ $activeCount }})</option>
-                            <option wire:click.prevent='changeFilter("INTERESTED")'>Interested
                                 ({{ $pendingCount }})</option>
+                            <option wire:click.prevent='changeFilter("INTERESTED")'>Interested
+                                ({{ $activeCount }})</option>
                             <option wire:click.prevent='changeFilter("INTERVIEW")'>Interview
                                 ({{ $othersCount }})</option>
 
@@ -63,13 +63,13 @@
                             <button wire:click.prevent='changeFilter("PENDING")'
                                 :class="filter === 'PENDING' ? activeFilter : inactiveFilter"
                                 class="inline-block w-full p-4 border border-gray-200">Pending
-                                ({{ $activeCount }})</button>
+                                ({{ $pendingCount }})</button>
                         </li>
                         <li class="w-full focus-within:z-10">
                             <button wire:click.prevent='changeFilter("ACTIVE")'
                                 :class="filter === 'ACTIVE' ? activeFilter : inactiveFilter"
                                 class="inline-block w-full p-4 border border-gray-200">Approved
-                                ({{ $pendingCount }})</button>
+                                ({{ $activeCount }})</button>
                         </li>
                         <li class="w-full focus-within:z-10">
                             <button wire:click.prevent='changeFilter("OTHERS")'

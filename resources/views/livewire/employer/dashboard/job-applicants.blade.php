@@ -361,7 +361,7 @@
                                             class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full"
+                                                <img class="w-10 h-10 rounded-full object-cover"
                                                     src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                     alt="Jese image">
                                                 <div class="ps-3 text-wrap">
@@ -422,9 +422,8 @@
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-row gap-4 items-center" x-data="{ openNewTab: function(url) { window.open(url, '_blank'); } }">
                                                     <div x-data="{ tooltip: 'Download Resume' }">
-                                                        <button
-                                                            {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
-                                                            wire:click.prevent='printResume({{ $data->employee_id }})'
+                                                        <button {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
+                                                            wire:click.prevent='printResume({{ $data->employee_id }}, {{ $data->applicant_Resume }})'
                                                             x-tooltip="tooltip" type="button"
                                                             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
@@ -437,7 +436,9 @@
                                                     </div>
                                                     @if ($data->peso_Status === 'RECOMMENDED')
                                                         <div x-data="{ tooltip: 'Download Recommendation Letter' }">
-                                                            <button x-tooltip="tooltip" type="button"
+                                                            <button
+                                                                wire:click.prevent='printRecom({{ $data->applicant_id }})'
+                                                                x-tooltip="tooltip" type="button"
                                                                 class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                 <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"

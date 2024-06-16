@@ -151,10 +151,9 @@
                         <div class="flex flex-col ml-4 w-full">
                             <livewire:modals.barangay-modal />
                             <x-input-label for="city" :value="__('Barangay')" />
-                            <select x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')" name="barangayPost"
-                                class="block mt-1 w-full rounded-md">
-                                <option value="" disabled selected>{{ $bar }}</option>
-                            </select>
+                            <x-text-input wire:model='bar' class="block mt-1 w-full" type="text" readonly
+                                x-data="" x-on:click.prevent="dispatch('open-modal', 'barangay-modal')"
+                                x-on:focus="$dispatch('open-modal', 'barangay-modal')" />
                             <x-input-error :messages="$errors->get('city')" class="mt-2" />
                         </div>
                     </div>
@@ -162,18 +161,12 @@
                     <div class="flex flex-row mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="city" :value="__('Municipality')" />
-                            <select x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')" name="cityPost"
-                                class="block mt-1 w-full rounded-md">
-                                <option value="" disabled selected>{{ $mun }}</option>
-                            </select>
+                            <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
                             <x-input-error :messages="$errors->get('city')" class="mt-2" />
                         </div>
                         <div class="flex flex-col ml-4 w-full">
                             <x-input-label for="province" :value="__('Province')" />
-                            <select x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')" name="provincePost"
-                                class="block mt-1 w-full rounded-md">
-                                <option value="" disabled selected>{{ $prov }}</option>
-                            </select>
+                            <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
                             <x-input-error :messages="$errors->get('province')" class="mt-2" />
                         </div>
                     </div>
@@ -623,7 +616,7 @@
                                         @foreach ($industryPreference as $industryPref)
                                             <span
                                                 class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                                {{ $industryPref->industry->industry_Title }}
+                                                {{ $industryPref->job_industry->industry_Title }}
                                                 <button
                                                     wire:click.prevent="removeIndustry({{ $industryPref->industry_pref_id }})"
                                                     type="button"

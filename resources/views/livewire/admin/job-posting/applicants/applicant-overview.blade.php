@@ -103,7 +103,8 @@
                         </ul>
 
                         <div class="mt-6 flex flex-wrap justify-center">
-                            <a wire:navigate href="{{ route('admin.jobpost', ['id' => $applicant->job_posting->job_id]) }}"
+                            <a wire:navigate
+                                href="{{ route('admin.jobpost', ['id' => $applicant->job_posting->job_id]) }}"
                                 class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                                 Job Posting</a>
                         </div>
@@ -307,19 +308,36 @@
                         </div>
 
 
-                        <div class="flex flex-col w-full">
-                            <x-input-label for="fname"> </i> Job Position
-                                Tags
-                            </x-input-label>
-                            {{-- BADGE CONTAINER --}}
-                            <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
-                                @foreach ($applicant->employee->job_preference as $jobpref)
-                                    {{-- BADGE --}}
-                                    <span
-                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        {{ $jobpref->job_positions->position_Title }}
-                                    </span>
-                                @endforeach
+                        <div class="flex flex-col w-full gap-5">
+                            <div>
+                                <x-input-label for="fname"> </i> Job Position
+                                    Tags
+                                </x-input-label>
+                                {{-- BADGE CONTAINER --}}
+                                <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
+                                    @foreach ($applicant->employee->job_preference as $jobpref)
+                                        {{-- BADGE --}}
+                                        <span
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 px-2.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            {{ $jobpref->job_positions->position_Title }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div>
+                                <x-input-label for="fname"> </i> Industry Preference
+                                </x-input-label>
+                                {{-- BADGE CONTAINER --}}
+                                <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
+                                    @foreach ($applicant->employee->industry_preference as $industrypref)
+                                        {{-- BADGE --}}
+                                        <span
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 px-2.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            {{ $industrypref->job_industry->industry_Title }}
+                                        </span>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
 

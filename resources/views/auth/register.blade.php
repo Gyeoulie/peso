@@ -12,11 +12,11 @@
         <div class="mt-4">
             <x-input-label for="role" :value="__('Select Role')" />
             <div class="flex items-center">
-                <label for="Job Seeker" class="mr-2">
+                <label for="jobseeker" class="mr-2">
                     <input id="jobseeker" type="radio" name="role" value="2" required autocomplete="off">
                     <span class="ml-1">{{ __('Job Seeker') }}</span>
                 </label>
-                <label for="Employer" class="ml-4 mr-2">
+                <label for="employer" class="ml-4 mr-2">
                     <input id="employer" type="radio" name="role" value="3" required autocomplete="off">
                     <span class="ml-1">{{ __('Employer') }}</span>
                 </label>

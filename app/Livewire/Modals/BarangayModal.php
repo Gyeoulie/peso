@@ -23,9 +23,6 @@ class BarangayModal extends Component
     public function render()
     {
 
-        // if ($this->search) {
-        //     dd($this->search);
-        // }
 
         $barangay = Barangay::with('municipality.province')
             ->where('barangay_Name', 'like', '%' . $this->search . '%')
