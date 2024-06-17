@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
 use App\Livewire\Admin\Accounts\Jobseeker\JobseekerManagement;
 use App\Livewire\Admin\Accounts\Jobseeker\JobseekerOverview;
+use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\JobPosting\Applicants\ApplicantOverview;
 use App\Livewire\Admin\JobPosting\Applicants\JobPostApplicants;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
@@ -68,9 +69,7 @@ Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
 
 //------------------------------ ADMIN  NAVIGATION ------------------------------
 Route::prefix('admin')->group(function () {
-    Route::get('/', function () {
-        return view('admin.admin_partials.admin-dashboard');
-    })->name('admin');
+    Route::get('/', AdminDashboard::class)->name('admin');
 
     Route::get('/job/applicants', function () {
         return view('admin.admin_partials.applicant-list');

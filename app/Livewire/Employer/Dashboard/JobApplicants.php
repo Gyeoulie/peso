@@ -98,7 +98,7 @@ class JobApplicants extends Component
         $applicant = Job_Applicants::findOrFail($id);
 
         if (Storage::exists('public/' . $applicant->peso_Letter)) {
-            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_resume.pdf';
+            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_recommendation.pdf';
 
             $fileContent = Storage::get('public/' . $applicant->peso_Letter);
 

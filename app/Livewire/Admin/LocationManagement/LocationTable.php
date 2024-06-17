@@ -55,17 +55,17 @@ class LocationTable extends Component
                 ->orWhereHas('municipality.province', function ($query) {
                     $query->where('province_Name', 'like', '%' . $this->search . '%');
                 })
-                ->paginate(20);
+                ->paginate(10);
         } else if ($this->defaultFilter === 'Municipalities') {
             $locationData = Municipality::with('province')
                 ->where('municipality_Name', 'like', '%' . $this->search . '%')
                 ->orWhereHas('province', function ($query) {
                     $query->where('province_Name', 'like', '%' . $this->search . '%');
                 })
-                ->paginate(20);
+                ->paginate(10);
         } else if ($this->defaultFilter === 'Provinces') {
             $locationData = Province::where('province_Name', 'like', '%' . $this->search . '%')
-                ->paginate(20);
+                ->paginate(10);
         }
 
         return view('livewire.admin.location-management.location-table', compact('locationData'));

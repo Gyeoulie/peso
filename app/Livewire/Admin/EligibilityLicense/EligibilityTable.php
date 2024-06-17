@@ -11,7 +11,7 @@ class EligibilityTable extends Component
 {
     use WithPagination;
 
-    public $rows = 5;
+    public $rows = 10;
 
     public $search;
 
@@ -26,7 +26,7 @@ class EligibilityTable extends Component
 
         $eligibility = Eligibility_Type::where('eligibility_Name', 'like', '%' . $this->search . '%')
             ->orderBy('eligibility_Name', 'asc')
-            ->paginate($this->rows);
+            ->paginate($this->rows, ['*'], 'eligibility');
 
 
 

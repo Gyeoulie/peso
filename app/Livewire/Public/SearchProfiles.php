@@ -92,7 +92,7 @@ class SearchProfiles extends Component
         $results = $employeeQuery->union($companyQuery)
             ->orderByDesc('relevance_score')
             ->orderBy('name')
-            ->paginate(4);
+            ->paginate(10);
 
         // dd($results);
 

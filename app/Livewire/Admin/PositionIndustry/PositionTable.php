@@ -12,7 +12,7 @@ class PositionTable extends Component
 
     use WithPagination;
 
-    public $rows = 5;
+    public $rows = 10;
 
     public $search;
 
@@ -27,7 +27,7 @@ class PositionTable extends Component
 
         $jobpositions = Job_Positions::where('position_Title', 'like', '%' . $this->search . '%')
             ->orderBy('position_Title', 'asc')
-            ->paginate($this->rows);
+            ->paginate($this->rows, ['*'], 'position');
 
         return view('livewire.admin.position-industry.position-table', compact('jobpositions'));
     }

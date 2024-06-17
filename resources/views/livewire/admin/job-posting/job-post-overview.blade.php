@@ -30,7 +30,8 @@
 
                             <div class="flex flex-col ml-4 w-full">
                                 <h1 class="text-xl sm:text-3xl font-bold">{{ $jobpost->company->business_Name }}</h1>
-                                <p class="text-sm sm:text-lg text-gray-700">{{ $jobpost->company->company_Address }},
+                                <p class="text-sm sm:text-lg text-gray-700 uppercase">
+                                    {{ $jobpost->company->company_Address }},
                                     {{ $jobpost->barangay->barangay_Name }},
                                     {{ $jobpost->barangay->municipality->municipality_Name }},
                                     {{ $jobpost->barangay->municipality->province->province_Name }}</p>
@@ -191,7 +192,7 @@
                                         d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                
+
                                 Job Slots
                             </x-input-label>
                             <x-text-input id="slots" class="block mt-1 w-full" type="text"
@@ -243,7 +244,7 @@
                             <x-input-label for="fname"> </i> Job
                                 Description
                             </x-input-label>
-                            <textarea id="message" rows="4" readonly
+                            <textarea id="message" rows="8" readonly
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
                                 placeholder="Write your thoughts here...">{{ $jobpost->job_Description }}</textarea>
                         </div>
@@ -254,7 +255,7 @@
                             <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job
                                 Qualification
                             </x-input-label>
-                            <textarea id="message" rows="4" readonly
+                            <textarea id="message" rows="8" readonly
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
                                 placeholder="Write your thoughts here...">{{ $jobpost->job_Qualifications }}</textarea>
                         </div>
@@ -265,7 +266,7 @@
                             <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job
                                 Company Remarks
                             </x-input-label>
-                            <textarea id="message" rows="4" readonly
+                            <textarea id="message" rows="8" readonly
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
                                 placeholder="Write your thoughts here...">{{ $jobpost->job_Remarks }}</textarea>
                         </div>
@@ -359,8 +360,8 @@
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                             @foreach ($matchingEmployees as $data)
                                 <div wire:key='jobseeker-{{ $data->employee_id }}'
-                                    class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-blue-100 rounded-xl shadow-xl shrink-0 grow-0 w-full hover:bg-blue-200 transition-colors duration-300">
-                                    <img class="flex mx-auto w-[100px] h-[100px] object-cover rounded-lg sm:mx-0 sm:grow-0 sm:shrink-0 shadow-full"
+                                    class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-blue-50 rounded-xl shrink-0 grow-0 w-full hover:bg-blue-200 transition-colors duration-300">
+                                    <img class="flex mx-auto w-[100px] h-[100px] object-cover rounded-full sm:mx-0 sm:grow-0 sm:shrink-0 shadow-xl"
                                         src="{{ asset('storage/' . $data->pimg) }}"
                                         alt="jobseeker-{{ $data->employee_id }}">
                                     <div

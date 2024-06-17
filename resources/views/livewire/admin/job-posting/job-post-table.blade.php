@@ -10,10 +10,10 @@
             <label for="tabs" class="sr-only">Select your country</label>
             <select id="tabs"
                 class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                <option>All</option>
-                <option>Pending</option>
-                <option>Approved</option>
-                <option>Others</option>
+                <option wire:click.prevent='updateFilter("")'>All ({{ $allCount }})</option>
+                <option wire:click.prevent='updateFilter("PENDING")'>Pending ({{ $pendingCount }})</option>
+                <option wire:click.prevent='updateFilter("ACTIVE")'>Approved ({{ $activeCount }})</option>
+                <option wire:click.prevent='updateFilter("OTHERS")'>Others ({{ $othersCount }})</option>
             </select>
         </div>
         <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
@@ -21,19 +21,22 @@
                 <button wire:click.prevent='updateFilter("")' @click="openTab = 1"
                     :class="openTab === 1 ? activeClasses : inactiveClasses"
                     class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-s-lg"
-                    aria-current="page">All</button>
+                    aria-current="page">All ({{ $allCount }})</button>
             </li>
             <li wire:click.prevent='updateFilter("PENDING")' class="w-full focus-within:z-10">
                 <button @click="openTab = 2" :class="openTab === 2 ? activeClasses : inactiveClasses"
-                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Pending</button>
+                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Pending
+                    ({{ $pendingCount }})</button>
             </li>
             <li wire:click.prevent='updateFilter("ACTIVE")' class="w-full focus-within:z-10">
                 <button @click="openTab = 3" :class="openTab === 3 ? activeClasses : inactiveClasses"
-                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Active</button>
+                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Active
+                    ({{ $activeCount }})</button>
             </li>
             <li wire:click.prevent='updateFilter("OTHERS")' class="w-full focus-within:z-10">
                 <button @click="openTab = 4" :class="openTab === 4 ? activeClasses : inactiveClasses"
-                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">Others</button>
+                    class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">Others
+                    ({{ $othersCount }})</button>
             </li>
 
         </ul>
@@ -98,7 +101,7 @@
 
         {{-- TABLE --}}
         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                 <tr>
                     <th scope="col" class="px-6 py-3 w-1/4">
                         Company
@@ -131,21 +134,20 @@
                 @if ($jobpost->isEmpty())
                     <tr>
                         <td colspan="7">
-                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                <div class="flex  bg-gray-100 rounded-full p-1">
-                                    <svg class="w-16 h-16 text-black" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 21l-3.5-3.5m0 0a7 7 0 1 1-9-10.5 7 7 0 0 1 9 10.5z" />
+                            <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                <div class="p-6 bg-gray-100 rounded-full">
+                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                     </svg>
-                                </div>
 
-                                <div class="text-center text-black text-xl font-semibold mt-2">
-                                    No Job Posting Found
                                 </div>
+                                <p class="text-xl font-bold text-black text-center mt-2">
+                                    No Records Found!
+                                </p>
                             </div>
-
 
                         </td>
                     </tr>
@@ -157,7 +159,8 @@
                                     src="{{ asset('storage/' . $data->company->company_img) }}" alt="Jese image">
                                 <div class="ps-3 text-wrap">
                                     <div class="text-base font-semibold">{{ $data->company->business_Name }}</div>
-                                    <div class="font-normal text-gray-500 text-sm">{{ $data->company->company_Address }}
+                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                        {{ $data->company->company_Address }}
                                         {{ $data->company->barangay->barangay_Name }},
                                         {{ $data->company->barangay->municipality->municipality_Name }},
                                         {{ $data->company->barangay->municipality->province->province_Name }}
@@ -217,7 +220,8 @@
 
                                     @if ($filter == 'ACTIVE')
                                         <div x-data="{ tooltip: 'View Applicants' }">
-                                            <a wire:navigate href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
+                                            <a wire:navigate
+                                                href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
                                                 x-tooltip="tooltip" type="button"
                                                 class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                 <svg class="w-5 h-5 " aria-hidden="true"
@@ -243,8 +247,8 @@
     </div>
 
     {{-- PAGINATION --}}
-    <div>
-
+    <div class="mt-4">
+        {{ $jobpost->links('vendor.pagination.tailwind') }}
     </div>
 
 </div>

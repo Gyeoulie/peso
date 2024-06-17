@@ -72,7 +72,7 @@
                                     <div class="text-lg text-black font-semibold">{{ $education->edu_Course }}</div>
                                     <span class="text-sm text-gray-700 font-medium">
                                         {{ $education->edu_Started->format('F Y') }} -
-                                        {{ $education->edu_Ended->format('F Y') }}
+                                        {{ $education->edu_Ongoing == 1 ? 'Present' : $education->edu_Ended->format('F Y') }}
                                     </span>
                                 </div>
 

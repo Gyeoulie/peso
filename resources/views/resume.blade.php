@@ -167,8 +167,7 @@
                     <h1 style="margin: 0.75rem 0 0; font-size: 2.5rem; font-weight: bold; color: #374151;">
                         {{ $employee->fname }} {{ $employee->lname }}
                     </h1>
-                    <h3 style="margin: 0.5rem 0 0; font-size: 1.25rem; font-weight: 600; color: #6b7280;">
-                        San {{ $employee->barangay->municipality->municipality_Name }},
+                    <h3 style="margin: 0.5rem 0 0; font-size: 1.25rem; font-weight: 600; color: #6b7280;">{{ $employee->barangay->municipality->municipality_Name }},
                         {{ $employee->barangay->municipality->province->province_Name }}
                     </h3>
                 </section>
@@ -192,12 +191,12 @@
                 </ul>
             </section>
 
-            <section class="summary-section">
-                <h2 class="section-title">SUMMARY</h2>
-                <p class="section-content">Experienced full-stack web developer with a strong track record of
-                    independently addressing complex business requirements and overcoming challenges to deliver polished
-                    and user-friendly web solutions.</p>
-            </section>
+            @if ($employee->empDesc)
+                <section class="summary-section">
+                    <h2 class="section-title">About Me</h2>
+                    <p class="section-content" style="text-align: justify;">{{ $employee->empDesc }}</p>
+                </section>
+            @endif
 
             <section class="education-section">
                 <h2 class="section-title">EDUCATION</h2>

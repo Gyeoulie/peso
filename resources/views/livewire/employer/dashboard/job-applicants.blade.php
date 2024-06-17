@@ -458,7 +458,7 @@
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-row gap-4 items-center">
-                                                    @if ($filter != 'HIRED' && $data->applicant_Status != 'INTERESTED')
+                                                    @if ($filter != 'HIRED' && $data->applicant_Status != 'INTERESTED' && $data->applicant_Status != 'INTERVIEW')
                                                         <div x-data="{ tooltip: 'Interested' }">
                                                             <button
                                                                 wire:click.prevent="openModal('interested', {{ $data->applicant_id }})"
@@ -590,8 +590,8 @@
 
                         <div class="flex flex-row mt-2">
                             <div class="flex flex-col">
-                                <img src="https://randomuser.me/api/portraits/men/94.jpg"
-                                    class="w-30 h-30 bg-gray-300 rounded-lg shrink-0">
+                                <img src="{{ asset('storage/' . $applicantInfo->employee->pimg) }}"
+                                    class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                                 </img>
                             </div>
                             <div class="flex flex-col ml-4 w-full justify-center">
@@ -642,12 +642,16 @@
                                     <li class="mb-2 font-bold">Applicant Status:</li>
                                     <p class="ms-4">
 
-                                        @if ($applicantInfo->peso_Status === 'PENDING')
+                                        @if ($applicantInfo->applicant_Status === 'PENDING')
                                             Pending
-                                        @elseif($applicantInfo->peso_Status === 'RECOMMENDED')
-                                            Recommended
-                                        @elseif($applicantInfo->peso_Status === 'NOT')
-                                            Not Recommended
+                                        @elseif($applicantInfo->applicant_Status === 'INTERESTED')
+                                            Interested
+                                        @elseif($applicantInfo->applicant_Status === 'INTERVIEW')
+                                            Interview
+                                        @elseif($applicantInfo->applicant_Status === 'HIRED')
+                                            Hired
+                                        @elseif($applicantInfo->applicant_Status === 'REJECTED')
+                                            Rejected
                                         @endif
 
                                     </p>
@@ -676,16 +680,36 @@
                                 <h1 class="mb-2 font-bold">Remarks</h1>
                                 <textarea id="message" rows="6"
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
-                                    placeholder="My remarks..." maxlength="600" readonly></textarea>
+                                    placeholder="My remarks..." maxlength="600" readonly>{{ $applicantInfo->company_Remarks }}</textarea>
                             </div>
 
                             <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                                <a href="#"
-                                    class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
-                                    Recommendation Letter</a>
-                                <a href="#"
-                                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
-                                    Resume</a>
+                                <div x-data="{ tooltip: 'Download Resume' }">
+                                    <button {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
+                                        wire:click.prevent='printResume({{ $applicantInfo->employee_id }}, {{ $applicantInfo->applicant_Resume }})'
+                                        x-tooltip="tooltip" type="button"
+                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                @if ($applicantInfo->peso_Status == 'RECOMMENDED')
+                                    <div x-data="{ tooltip: 'Download Recommendation Letter' }">
+                                        <button wire:click.prevent='printRecom({{ $applicantInfo->applicant_id }})'
+                                            x-tooltip="tooltip" type="button"
+                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                            </svg>
+
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
 
@@ -717,7 +741,7 @@
 
 
 
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 flex justify-end gap-4">
                 <x-secondary-button wire:click.prevent="closeModal('interested')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -769,7 +793,7 @@
 
 
 
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 flex justify-end gap-4">
                 <x-secondary-button wire:click.prevent="closeModal('interview')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -819,7 +843,7 @@
 
 
 
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 flex justify-end gap-4">
                 <x-secondary-button wire:click.prevent="closeModal('hire')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -867,7 +891,7 @@
 
 
 
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 flex justify-end gap-4">
                 <x-secondary-button wire:click.prevent="closeModal('reject')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>

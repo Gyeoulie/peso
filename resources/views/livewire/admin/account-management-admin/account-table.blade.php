@@ -32,7 +32,7 @@
 
         {{-- REQUIREMENT TABLE --}}
         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                 <tr>
                     <th scope="col" class="px-6 py-3 text-center">
                         Email
@@ -69,7 +69,7 @@
 
                                 </div>
                                 <p class="text-xl font-bold text-black text-center mt-2">
-                                    No Accounts Found!
+                                    No Records Found!
                                 </p>
                             </div>
 

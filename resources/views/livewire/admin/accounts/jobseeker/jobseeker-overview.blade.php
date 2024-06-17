@@ -71,7 +71,7 @@
 
                         <div class="flex flex-row">
                             <li class="mb-2 font-bold">Address:</li>
-                            <p class="ms-4"> {{ $jobseeker->address }}, {{ $jobseeker->barangay->barangay_Name }},
+                            <p class="ms-4 uppercase"> {{ $jobseeker->address }}, {{ $jobseeker->barangay->barangay_Name }},
                                 {{ $jobseeker->barangay->municipality->municipality_Name }},
                                 {{ $jobseeker->barangay->municipality->province->province_Name }}</p>
                         </div>
@@ -173,7 +173,7 @@
 
                     {{-- HISTORY TABLE --}}
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
                                     Job Position

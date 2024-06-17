@@ -11,7 +11,7 @@ class LicenseTable extends Component
 {
     use WithPagination;
 
-    public $rows = 5;
+    public $rows = 10;
 
     public $search;
 
@@ -25,7 +25,7 @@ class LicenseTable extends Component
     {
         $license = License_Type::where('license_Name', 'like', '%' . $this->search . '%')
             ->orderBy('license_Name', 'asc')
-            ->paginate($this->rows);
+            ->paginate($this->rows, ['*'], 'license');
 
         return view('livewire.admin.eligibility-license.license-table', compact('license'));
     }

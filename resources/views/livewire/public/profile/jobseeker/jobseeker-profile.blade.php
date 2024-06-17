@@ -183,7 +183,7 @@
 
                         </div>
 
-                        <p class="text-gray-700 text-wrap break-words">
+                        <p class="text-gray-700 text-wrap text-justify px-1 break-words">
                             {{ $jobseeker->empDesc ?: 'No Description' }}
 
                         </p>
@@ -303,7 +303,7 @@
                                     {{-- BADGE --}}
                                     @foreach ($jobseeker->job_preference as $preferences)
                                         <span wire:key='jobPref-{{ $preferences->job_preference_id }}'
-                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $preferences->job_positions->position_Title }}
                                         </span>
                                     @endforeach
@@ -321,7 +321,7 @@
 
                                     @foreach ($jobseeker->skills as $empSkills)
                                         <span wire:key='skills-{{ $empSkills->skills_id }}'
-                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                             {{ $empSkills->skill_Type }}
                                         </span>
                                     @endforeach
@@ -337,7 +337,7 @@
                                     {{-- BADGE --}}
                                     @foreach ($jobseeker->language as $empLanguage)
                                         <span wire:key='language-{{ $empLanguage->language_id }}'
-                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800 uppercase">
                                             {{ $empLanguage->language_Type }}
                                         </span>
                                     @endforeach
@@ -353,7 +353,7 @@
                                     {{-- BADGE --}}
                                     @foreach ($jobseeker->disability as $empDisability)
                                         <span wire:key='disability-{{ $empDisability->disability_id }}'
-                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-2 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800 uppercase">
                                             {{ $empDisability->disability_Type }}
                                         </span>
                                     @endforeach
@@ -450,7 +450,7 @@
                                                     </div>
                                                     <span class="text-sm text-gray-700 font-medium">
                                                         {{ $educBackground->edu_Started->format('F Y') }} -
-                                                        {{ $educBackground->edu_Ended->format('F Y') }}</span>
+                                                        {{ $educBackground->edu_Ongoing == 1 ? 'Present' : $educBackground->edu_Ended->format('F Y') }}</span>
                                                 </div>
                                             </div>
                                         </div>

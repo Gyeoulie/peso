@@ -17,6 +17,7 @@
     <link href="https://fonts.bunny.net/css?family=ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
 
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <link href="https://pagecdn.io/lib/easyfonts/fonts.css" rel="stylesheet" />
 
@@ -29,6 +30,7 @@
     @livewireScripts
     @livewireStyles
     @vite(['resources/css/app.css'])
+    @livewireChartsScripts
 </head>
 
 <body class="font-sans antialiased bg-gray-100 flex flex-col min-h-screen">

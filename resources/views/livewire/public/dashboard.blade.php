@@ -194,9 +194,12 @@
                                     <x-dropdown-link wire:click.prevent="updateSort('Oldest')" class="cursor-pointer">
                                         Oldest
                                     </x-dropdown-link>
-                                    <x-dropdown-link wire:click.prevent="updateSort('Random')" class="cursor-pointer">
-                                        Random
-                                    </x-dropdown-link>
+                                    @if ($filter != 'Recommended')
+                                        <x-dropdown-link wire:click.prevent="updateSort('Random')"
+                                            class="cursor-pointer">
+                                            Random
+                                        </x-dropdown-link>
+                                    @endif
 
 
                                 </x-slot>

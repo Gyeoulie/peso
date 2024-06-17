@@ -11,7 +11,7 @@ class IndustryTable extends Component
 {
     use WithPagination;
 
-    public $rows = 5;
+    public $rows = 10;
 
     public $search;
 
@@ -25,7 +25,7 @@ class IndustryTable extends Component
     {
         $industry = Job_Industry::where('industry_Title', 'like', '%' . $this->search . '%')
             ->orderBy('industry_Title', 'asc')
-            ->paginate($this->rows);
+            ->paginate($this->rows, ['*'], 'industry');
 
         return view('livewire.admin.position-industry.industry-table', compact('industry'));
     }

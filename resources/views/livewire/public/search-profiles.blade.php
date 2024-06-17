@@ -109,7 +109,7 @@
                     @endif
                 </div>
                 <div class="m-4">
-                    {{ $results->links() }}
+                    {{ $results->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
 

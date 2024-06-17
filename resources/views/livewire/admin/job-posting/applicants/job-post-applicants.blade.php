@@ -214,7 +214,7 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="text-base font-semibold">
+                                                <div class="text-base font-semibold uppercase">
                                                     {{ $applicants->employee->address }},
                                                     {{ $applicants->employee->barangay->barangay_Name }},
                                                     {{ $applicants->employee->barangay->municipality->municipality_Name }},

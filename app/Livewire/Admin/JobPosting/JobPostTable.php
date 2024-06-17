@@ -55,7 +55,15 @@ class JobPostTable extends Component
 
         $jobpost = $jobpost->orderBy('job_posting.created_at', 'DESC')->withCount('job_applicants')->paginate(10);
 
-        return view('livewire.admin.job-posting.job-post-table', compact('jobpost'));
+        $allCount = Job_Posting::where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
+        $pendingCount = Job_Posting::where('job_Status', '=', 'PENDING')
+            ->where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
+        $activeCount = Job_Posting::where('job_Status', '=', 'ACTIVE')
+            ->where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
+        $othersCount = Job_Posting::whereNotIn('job_Status', ['PENDING', 'ACTIVE'])
+            ->where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
+
+        return view('livewire.admin.job-posting.job-post-table', compact('jobpost', 'allCount', 'pendingCount', 'activeCount', 'othersCount'));
     }
 
 }
