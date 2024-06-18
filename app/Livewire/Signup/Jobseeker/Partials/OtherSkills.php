@@ -62,13 +62,17 @@ class OtherSkills extends Component
             }
         } else {
             // If it doesn't match, add to inputData if not already added
-            if (!in_array($this->inputSkills, $this->inputData)) {
+            if (!in_array(strtoupper($this->inputSkills), $this->inputData)) {
                 $this->inputData[] = strtoupper($this->inputSkills);
             }
         }
 
         $this->reset('inputSkills');
 
+    }
+
+    public function ewan(){
+        dd($this->checkBoxData);
     }
 
     public function removeSkills($data)

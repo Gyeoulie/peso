@@ -15,8 +15,6 @@
                 <div class="flex flex-col w-full">
                     <x-input-label for="eduLevel" :value="__('Level')" />
                     <select wire:model='eduLevel' class="block mt-1 w-full rounded">
-                        <option value="" disabled selected>Select Level</option>
-                        <td class="border px-6 py-4">
                             <option value="" disabled>Select Level</option>
                             <option value="1">GRADE I</option>
                             <option value="2">GRADE II</option>

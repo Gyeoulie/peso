@@ -19,7 +19,7 @@
                     </div>
 
                     {{-- LICENSE SEARCH --}}
-                    <input type="text"
+                    <input wire:model.live='search' type="text"
                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search industry">
                 </div>
@@ -94,7 +94,7 @@
 
         <div class="mt-6 flex justify-end">
             <x-secondary-button type="button" x-data=""
-                x-on:click="$dispatch('industry-modal', 'barangay-modal')">
+                x-on:click="$dispatch('close-modal', 'industry-modal')">
                 {{ __('Cancel') }}
             </x-secondary-button>
 

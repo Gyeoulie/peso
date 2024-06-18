@@ -435,7 +435,7 @@
 
                         {{ __('Approve Job Posting') }}
 
-                        <div wire:loading.delay.long role="status">
+                        <div wire:loading.delay.long wire:target='updateJob' role="status">
                             <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -483,7 +483,7 @@
                         wire:click.prevent="updateJob({{ $jobpost->job_id }}, 'REJECTED', 'reject-modal')"
                         class="ms-3" type="button">
                         {{ __('Reject Application') }}
-                        <div wire:loading.delay.long role="status">
+                        <div wire:loading.delay.long wire:target='updateJob' role="status">
                             <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path

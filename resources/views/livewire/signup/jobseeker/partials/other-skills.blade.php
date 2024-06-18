@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full h-full">
+<div wire:poll class="flex flex-col w-full h-full">
 
     <h1 class="text-2xl font-bold">Add Other Skills</h1>
     <div class="flex flex-col gap-4 mt-5 w-full h-full">
@@ -207,6 +207,8 @@
                 <div class="flex flex-row gap-4">
                     <x-text-input wire:model='inputSkills' class="block mt-1 w-1/2" type="text" name="hnum" />
                     <x-primary-button wire:click.prevent='addSkills' type="button"
+                        class="flex justify-center items-center sm:w-[100px] text-white rounded">Add
+                        Skill</x-primary-button><x-primary-button wire:click.prevent='ewan' type="button"
                         class="flex justify-center items-center sm:w-[100px] text-white rounded">Add
                         Skill</x-primary-button>
                 </div>
