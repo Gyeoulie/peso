@@ -207,7 +207,12 @@ class JobApplicants extends Component
 
             // Apply the filter if it's not 'ALL'
             if ($this->filter != 'ALL') {
-                $applicantsQuery->where('job_applicants.applicant_Status', $this->filter);
+                if ($this->filter == 'REJECTED') {
+                    $applicantsQuery->whereIn('job_applicants.applicant_Status', ['REJECTED', 'CANCELLED']);
+                } else {
+                    $applicantsQuery->where('job_applicants.applicant_Status', $this->filter);
+
+                }
             }
 
             if ($this->sortDate !== null && $this->sortDate !== '') {
@@ -220,7 +225,10 @@ class JobApplicants extends Component
             $interested = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'interested')->count();
             $interview = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'interview')->count();
             $hired = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'hired')->count();
-            $rejected = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'rejected')->count();
+            $accepted = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'accepted')->count();
+            $rejected = Job_Applicants::where('job_id', $this->selectedJob)
+                ->whereIn('applicant_Status', ['rejected', 'cancelled'])
+                ->count();
 
             // Get the paginated list of applicants
             $list = $applicantsQuery->paginate(5);
@@ -232,6 +240,7 @@ class JobApplicants extends Component
                 'interested' => $interested,
                 'interview' => $interview,
                 'hired' => $hired,
+                'accepted' => $accepted,
                 'rejected' => $rejected,
                 'list' => $list,
             ];

@@ -185,9 +185,12 @@
                         @elseif ($applicant->applicant_Status == 'HIRED')
                             <span
                                 class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
-                        @elseif ($applicant->applicant_Status == 'REJECTED')
+                        @elseif ($applicant->applicant_Status == 'ACCEPTED')
                             <span
-                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">ACCEPTED</span>
+                        @elseif ($applicant->applicant_Status == 'REJECTED' || $applicant->applicant_Status == 'CANCELLED')
+                            <span
+                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $applicant->applicant_Status }}</span>
                         @endif
 
                     </div>

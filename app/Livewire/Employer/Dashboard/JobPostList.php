@@ -42,8 +42,10 @@ class JobPostList extends Component
                 $query->where('applicant_Status', 'INTERVIEW');
             }, 'job_applicants as hired_count' => function ($query) {
                 $query->where('applicant_Status', 'HIRED');
+            }, 'job_applicants as accepted_count' => function ($query) {
+                $query->where('applicant_Status', 'ACCEPTED');
             }, 'job_applicants as rejected_count' => function ($query) {
-                $query->where('applicant_Status', 'REJECTED');
+                $query->whereIn('applicant_Status', ['REJECTED', 'CANCELLED']);
             },
         ])->where('company_id', $user->company->company_id)
             ->where(function ($query) {
