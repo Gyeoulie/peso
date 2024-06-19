@@ -14,42 +14,47 @@
             <div class="flex flex-col sm:flex-row gap-4 mt-2 w-full">
                 <div class="flex flex-col w-full">
                     <x-input-label for="eduLevel" :value="__('Level')" />
-                    <select wire:model='eduLevel' class="block mt-1 w-full rounded">
-                            <option value="" disabled>Select Level</option>
-                            <option value="1">GRADE I</option>
-                            <option value="2">GRADE II</option>
-                            <option value="3">GRADE III</option>
-                            <option value="4">GRADE IV</option>
-                            <option value="5">GRADE V</option>
-                            <option value="6">GRADE VI</option>
-                            <option value="7">GRADE VII</option>
-                            <option value="8">GRADE VIII</option>
-                            <option value="9">ELEMENTARY GRADUATE</option>
-                            <option value="10">1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12)</option>
-                            <option value="11">2ND YEAR HIGH SCHOOL/GRADE VIII (FOR K TO 12)</option>
-                            <option value="12">3RD YEAR HIGH SCHOOL/GRADE IX (FOR K TO 12)</option>
-                            <option value="13">4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12)</option>
-                            <option value="14">GRADE XI (FOR K TO 12)</option>
-                            <option value="15">GRADE XII (FOR K TO 12)</option>
-                            <option value="16">HIGH SCHOOL GRADUATE</option>
-                            <option value="17">VOCATIONAL UNDERGRADUATE</option>
-                            <option value="18">VOCATIONAL GRADUATE</option>
-                            <option value="19">1ST YEAR COLLEGE LEVEL</option>
-                            <option value="20">2ND YEAR COLLEGE LEVEL</option>
-                            <option value="21">3RD YEAR COLLEGE LEVEL</option>
-                            <option value="22">4TH YEAR COLLEG LEVEL</option>
-                            <option value="23">5TH YEAR COLLEGE LEVEL</option>
-                            <option value="24">COLLEGE GRADUATE</option>
-                            <option value="25">MASTERAL/POST GRADUATE LEVEL</option>
-                            <option value="26">MASTERAL/POST GRADUATE</option>
+                    <select wire:model='eduLevel' class="block mt-1 w-full rounded"
+                        x-on:change="$wire.eduLevel <= 18 ? $wire.eduCourse = '' : ''">
+                        <option value="" disabled>Select Level</option>
+                        <option value="1">GRADE I</option>
+                        <option value="2">GRADE II</option>
+                        <option value="3">GRADE III</option>
+                        <option value="4">GRADE IV</option>
+                        <option value="5">GRADE V</option>
+                        <option value="6">GRADE VI</option>
+                        <option value="7">GRADE VII</option>
+                        <option value="8">GRADE VIII</option>
+                        <option value="9">ELEMENTARY GRADUATE</option>
+                        <option value="10">1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12)</option>
+                        <option value="11">2ND YEAR HIGH SCHOOL/GRADE VIII (FOR K TO 12)</option>
+                        <option value="12">3RD YEAR HIGH SCHOOL/GRADE IX (FOR K TO 12)</option>
+                        <option value="13">4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12)</option>
+                        <option value="14">GRADE XI (FOR K TO 12)</option>
+                        <option value="15">GRADE XII (FOR K TO 12)</option>
+                        <option value="16">HIGH SCHOOL GRADUATE</option>
+                        <option value="17">VOCATIONAL UNDERGRADUATE</option>
+                        <option value="18">VOCATIONAL GRADUATE</option>
+                        <option value="19">1ST YEAR COLLEGE LEVEL</option>
+                        <option value="20">2ND YEAR COLLEGE LEVEL</option>
+                        <option value="21">3RD YEAR COLLEGE LEVEL</option>
+                        <option value="22">4TH YEAR COLLEG LEVEL</option>
+                        <option value="23">5TH YEAR COLLEGE LEVEL</option>
+                        <option value="24">COLLEGE GRADUATE</option>
+                        <option value="25">MASTERAL/POST GRADUATE LEVEL</option>
+                        <option value="26">MASTERAL/POST GRADUATE</option>
                     </select>
                     <x-input-error :messages="$errors->get('eduLevel')" class="mt-2" />
                 </div>
                 <div class="flex flex-col w-full">
                     <x-input-label for="eduCourse" :value="__('Course')" />
-                    <x-text-input wire:model='eduCourse' class="block mt-1 w-full" type="text" />
+                    <x-text-input wire:model="eduCourse" 
+                                  x-bind:disabled="$wire.eduLevel <= 18"
+                                  class="block mt-1 w-full"
+                                  type="text" />
                     <x-input-error :messages="$errors->get('eduCourse')" class="mt-2" />
                 </div>
+                
             </div>
             <div class="flex flex-col sm:flex-row  mt-2 w-full gap-4" x-data="{ eduOngoing: @entangle('eduOngoing'), eduEnd: @entangle('eduEnd') }">
                 <div class="flex flex-col w-full">
