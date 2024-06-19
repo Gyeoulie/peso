@@ -132,7 +132,7 @@
 
         {{-- PAGINATION --}}
         <div class="mt-4">
-            {{ $license->links('vendor.pagination.tailwind') }}
+            {{ $license->links('vendor.livewire.tailwind') }}
         </div>
 
 

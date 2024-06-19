@@ -5,11 +5,12 @@ namespace App\Livewire\Admin\EligibilityLicense;
 use App\Models\License_Type;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class LicenseTable extends Component
 {
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
 
     public $rows = 10;
 
@@ -25,7 +26,7 @@ class LicenseTable extends Component
     {
         $license = License_Type::where('license_Name', 'like', '%' . $this->search . '%')
             ->orderBy('license_Name', 'asc')
-            ->paginate($this->rows, ['*'], 'license');
+            ->paginate($this->rows);
 
         return view('livewire.admin.eligibility-license.license-table', compact('license'));
     }

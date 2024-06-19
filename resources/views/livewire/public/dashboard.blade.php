@@ -83,7 +83,7 @@
 </div> --}}
 
 
-    <div class="container mx-auto py-8">
+    <div wire:poll class="container mx-auto py-8">
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0">
 
             {{-- MAIN BAR FOR JOB POST --}}

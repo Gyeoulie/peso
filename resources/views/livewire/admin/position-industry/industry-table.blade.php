@@ -135,7 +135,7 @@
 
         {{-- PAGINATION --}}
         <div class="mt-4">
-            {{ $industry->links('vendor.pagination.tailwind') }}
+            {{ $industry->links('vendor.livewire.tailwind') }}
         </div>
 
 

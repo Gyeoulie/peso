@@ -1,4 +1,4 @@
-<div class="sm:mx-10">
+<div wire:poll class="sm:mx-10">
     <div class="container py-8">
 
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
@@ -239,9 +239,9 @@
                             @if ($applicant->peso_Status == 'PENDING')
                                 <div class="hidden sm:flex flex-row w-full justify-end gap-2">
                                     <x-danger-button type="button" x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</x-danger-button>
+                                        x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Not Recommend</x-danger-button>
                                     <x-green-button type="button" x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Approve</x-green-button>
+                                        x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Recommend</x-green-button>
                                 </div>
                             @endif
 
@@ -253,9 +253,9 @@
                     @if ($applicant->peso_Status == 'PENDING')
                         <div class="sm:hidden flex flex-row w-full mt-4 justify-center space-x-4">
                             <x-danger-button type="button" x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</x-danger-button>
+                                x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Not Recommend</x-danger-button>
                             <x-green-button type="button" x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Approve</x-green-button>
+                                x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Recommend</x-green-button>
                         </div>
                     @endif
 

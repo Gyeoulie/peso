@@ -17,7 +17,7 @@ class PositionEditModal extends Component
     public function rules()
     {
         return [
-            'posId' => ['required'],
+            'positionId' => ['required'],
             'pcodePost' => ['required', 'string', Rule::unique('job_positions', 'position_Code')->ignore($this->positionId, 'position_id')],
             'positionPost' => ['required', 'string', Rule::unique('job_positions', 'position_Title')->ignore($this->positionId, 'position_id')],
         ];
@@ -46,7 +46,7 @@ class PositionEditModal extends Component
 
         try {
             // Create the user record
-            Job_Positions::where('position_id', $this->posId)->update([
+            Job_Positions::where('position_id', $this->positionId)->update([
                 'position_Title' => strtoupper($this->positionPost),
                 'position_Code' => strtoupper($this->pcodePost),
             ]);

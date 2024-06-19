@@ -83,7 +83,7 @@
 
         {{-- PAGINATION --}}
         <div>
-            {{ $municipalities->links() }}
+            {{ $municipalities->links('vendor.livewire.tailwind') }}
 
         </div>
 

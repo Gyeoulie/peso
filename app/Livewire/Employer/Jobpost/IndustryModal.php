@@ -4,11 +4,12 @@ namespace App\Livewire\Employer\Jobpost;
 
 use App\Models\Job_Industry;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class IndustryModal extends Component
 {
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination;
     public $search;
 
     public function industrySelect($id)
@@ -22,7 +23,7 @@ class IndustryModal extends Component
     {
 
         $industry = Job_Industry::where('industry_Title', 'like', '%' . $this->search . '%')
-            ->paginate(8, ['*'], 'industry');
+            ->paginate(8);
 
         return view('livewire.employer.jobpost.industry-modal', compact('industry'));
     }

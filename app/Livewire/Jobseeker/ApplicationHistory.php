@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class ApplicationHistory extends Component
 {
 
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
     public $eduLevels = [
         '1' => 'GRADE I',
         '2' => 'GRADE II',

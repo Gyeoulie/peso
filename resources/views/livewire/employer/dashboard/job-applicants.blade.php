@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
 
-    <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
+    <div wire:poll class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
         <div class="col-span-4 sm:col-span-5">
 
             <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
@@ -58,9 +58,9 @@
                             <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('ACTIVE')">
                                 Active
                             </x-dropdown-link>
-                            <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('PENDING')">
+                            {{-- <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('PENDING')">
                                 Pending
-                            </x-dropdown-link>
+                            </x-dropdown-link> --}}
                             <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('COMPLETED')">
                                 Completed
                             </x-dropdown-link>
@@ -166,7 +166,7 @@
             </div>
 
             <div class="mt-2">
-                {{ $jobs->links() }}
+                {{ $jobs->links('vendor.livewire.tailwind') }}
             </div>
         </div>
 
@@ -284,7 +284,7 @@
                                     <button
                                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
                                         <div>
-                                            {{ $sortDate === 'ASC' ? 'Newest' : ($sortDate == 'DESC' ? 'Oldest' : 'Sort by Date') }}
+                                            {{ $sortDate === 'ASC' ? 'Oldest' : ($sortDate == 'DESC' ? 'Newest' : 'Sort by Date') }}
                                         </div>
 
                                         <div class="ms-1">
@@ -304,12 +304,12 @@
                                         max-h-[300px] bg-white
                                     </x-slot>
 
-                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('ASC')">
+                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('DESC')">
                                         Newest
                                     </x-dropdown-link>
 
                                     <!-- Authentication -->
-                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('DESC')">
+                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('ASC')">
                                         Oldest
                                     </x-dropdown-link>
                                 </x-slot>
@@ -394,7 +394,7 @@
                                                     @elseif($data->peso_Status === 'RECOMMENDED')
                                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                                                         Recommended
-                                                    @elseif($data->peso_Status === 'NOT')
+                                                    @elseif($data->peso_Status === 'REJECT')
                                                         <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
                                                         Not Recommended
                                                     @endif
@@ -474,7 +474,9 @@
                                                         $filter != 'ACCEPTED' &&
                                                             $filter != 'HIRED' &&
                                                             $data->applicant_Status != 'INTERESTED' &&
-                                                            $data->applicant_Status != 'INTERVIEW' && $data->applicant_Status != 'CANCELLED' && $data->applicant_Status != 'REJECTED')
+                                                            $data->applicant_Status != 'INTERVIEW' &&
+                                                            $data->applicant_Status != 'CANCELLED' &&
+                                                            $data->applicant_Status != 'REJECTED')
                                                         <div x-data="{ tooltip: 'Interested' }">
                                                             <button
                                                                 wire:click.prevent="openModal('interested', {{ $data->applicant_id }})"
@@ -491,7 +493,12 @@
                                                             </button>
                                                         </div>
                                                     @endif
-                                                    @if ($filter != 'ACCEPTED' && $filter != 'HIRED' && $data->applicant_Status != 'INTERVIEW' && $data->applicant_Status != 'CANCELLED' && $data->applicant_Status != 'REJECTED')
+                                                    @if (
+                                                        $filter != 'ACCEPTED' &&
+                                                            $filter != 'HIRED' &&
+                                                            $data->applicant_Status != 'INTERVIEW' &&
+                                                            $data->applicant_Status != 'CANCELLED' &&
+                                                            $data->applicant_Status != 'REJECTED')
                                                         <div x-data="{ tooltip: 'For Interview' }">
                                                             <button
                                                                 wire:click.prevent="openModal('interview', {{ $data->applicant_id }})"
@@ -526,7 +533,11 @@
                                                             </button>
                                                         </div>
                                                     @endif
-                                                    @if ($filter != 'ACCEPTED' && $filter != 'HIRED' && $data->applicant_Status != 'CANCELLED' && $data->applicant_Status != 'REJECTED')
+                                                    @if (
+                                                        $filter != 'ACCEPTED' &&
+                                                            $filter != 'HIRED' &&
+                                                            $data->applicant_Status != 'CANCELLED' &&
+                                                            $data->applicant_Status != 'REJECTED')
                                                         <div x-data="{ tooltip: 'Reject' }">
                                                             <button
                                                                 wire:click.prevent="openModal('reject', {{ $data->applicant_id }})"
@@ -577,7 +588,7 @@
 
                     {{-- pagination --}}
                     <div>
-                        {{ $applicants['list']->links() }}
+                        {{ $applicants['list']->links('vendor.livewire.tailwind') }}
                     </div>
 
 
@@ -686,7 +697,7 @@
                                             Pending
                                         @elseif($applicantInfo->peso_Status === 'RECOMMENDED')
                                             Recommended
-                                        @elseif($applicantInfo->peso_Status === 'NOT')
+                                        @elseif($applicantInfo->peso_Status === 'REJECT')
                                             Not Recommended
                                         @endif
 

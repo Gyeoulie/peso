@@ -121,7 +121,7 @@
 
         <div class="mt-4">
 
-            {{ $adminAccounts->links() }}
+            {{ $adminAccounts->links('vendor.livewire.tailwind') }}
         </div>
 
     </div>

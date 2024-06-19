@@ -118,7 +118,7 @@
 
     {{-- PAGINATION --}}
     <div class="mt-4">
-        {{ $certificate_type->links('vendor.pagination.tailwind') }}
+        {{ $certificate_type->links('vendor.livewire.tailwind') }}
     </div>
 
 </div>

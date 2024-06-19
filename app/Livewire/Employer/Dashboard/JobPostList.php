@@ -6,13 +6,14 @@ use App\Models\Job_Posting;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class JobPostList extends Component
 {
 
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
     public $search;
 
     public $filter = 'ALL', $sortDate;
@@ -33,19 +34,25 @@ class JobPostList extends Component
 
         $applicantsQuery = Job_Posting::withCount([
             'job_applicants as pending_count' => function ($query) {
-                $query->where('applicant_Status', 'PENDING');
+                $query->where('applicant_Status', 'PENDING')
+                    ->whereNot('peso_Status', 'PENDING');
             },
             'job_applicants as interested_count' => function ($query) {
-                $query->where('applicant_Status', 'INTERESTED');
+                $query->where('applicant_Status', 'INTERESTED')
+                    ->whereNot('peso_Status', 'PENDING');
             },
             'job_applicants as interview_count' => function ($query) {
-                $query->where('applicant_Status', 'INTERVIEW');
+                $query->where('applicant_Status', 'INTERVIEW')
+                    ->whereNot('peso_Status', 'PENDING');
             }, 'job_applicants as hired_count' => function ($query) {
-                $query->where('applicant_Status', 'HIRED');
+                $query->where('applicant_Status', 'HIRED')
+                    ->whereNot('peso_Status', 'PENDING');
             }, 'job_applicants as accepted_count' => function ($query) {
-                $query->where('applicant_Status', 'ACCEPTED');
+                $query->where('applicant_Status', 'ACCEPTED')
+                    ->whereNot('peso_Status', 'PENDING');
             }, 'job_applicants as rejected_count' => function ($query) {
-                $query->whereIn('applicant_Status', ['REJECTED', 'CANCELLED']);
+                $query->whereIn('applicant_Status', ['REJECTED', 'CANCELLED'])
+                    ->whereNot('peso_Status', 'PENDING');
             },
         ])->where('company_id', $user->company->company_id)
             ->where(function ($query) {

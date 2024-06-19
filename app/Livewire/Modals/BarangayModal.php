@@ -4,11 +4,12 @@ namespace App\Livewire\Modals;
 
 use App\Models\Barangay;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class BarangayModal extends Component
 {
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
 
     public $search;
 
@@ -33,7 +34,7 @@ class BarangayModal extends Component
                 $query->where('province_Name', 'like', '%' . $this->search . '%');
             })
             ->orderBy('barangay_Name', 'ASC')
-            ->paginate(10, ['*'], 'barangay');
+            ->paginate(10);
 
         return view('livewire.modals.barangay-modal', compact('barangay'));
     }

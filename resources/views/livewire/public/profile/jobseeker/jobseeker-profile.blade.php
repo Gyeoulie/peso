@@ -1,7 +1,7 @@
 <div>
     <div class="flex flex-col md:flex-row w-full h-full gap-4 container mx-auto p-4 md:p-0 md:py-8">
 
-        <div class="flex flex-col md:w-1/4 h-full md:sticky top-5">
+        <div wire:poll class="flex flex-col md:w-1/4 h-full md:sticky top-5">
             <div class="bg-white shadow-xl rounded-lg p-6">
                 <div class="flex flex-col items-center">
                     {{-- <img src="https://randomuser.me/api/portraits/men/94.jpg" --}}
@@ -160,7 +160,7 @@
             profileTab: 'profileOverview',
         }">
 
-            <div x-show="profileTab === 'profileOverview'" class="flex flex-col space-y-5"
+            <div wire:poll x-show="profileTab === 'profileOverview'" class="flex flex-col space-y-5"
                 x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                 x-transition:enter-end="opacity-100 scale-100">
 
@@ -312,55 +312,57 @@
 
 
 
+                            @if ($jobseeker->skills->count() > 0)
+                                <h2 class="text-md font-medium mt-4">Skills</h2>
+                                <div class="flex flex-col w-full">
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
 
-                            <h2 class="text-md font-medium mt-4">Skills</h2>
-                            <div class="flex flex-col w-full">
-                                {{-- BADGE CONTAINER --}}
-                                <div id= "otherSkillRow" class="flex-inline p-1">
-                                    {{-- BADGE --}}
+                                        @foreach ($jobseeker->skills as $empSkills)
+                                            <span wire:key='skills-{{ $empSkills->skills_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $empSkills->skill_Type }}
+                                            </span>
+                                        @endforeach
 
-                                    @foreach ($jobseeker->skills as $empSkills)
-                                        <span wire:key='skills-{{ $empSkills->skills_id }}'
-                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                            {{ $empSkills->skill_Type }}
-                                        </span>
-                                    @endforeach
-
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
-
-                            <h2 class="text-md font-medium mt-4">Language</h2>
-                            <div class="flex flex-col w-full">
-                                {{-- BADGE CONTAINER --}}
-                                <div id= "otherSkillRow" class="flex-inline p-1">
-                                    {{-- BADGE --}}
-                                    @foreach ($jobseeker->language as $empLanguage)
-                                        <span wire:key='language-{{ $empLanguage->language_id }}'
-                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800 uppercase">
-                                            {{ $empLanguage->language_Type }}
-                                        </span>
-                                    @endforeach
+                            @if ($jobseeker->language->count() > 0)
+                                <h2 class="text-md font-medium mt-4">Language</h2>
+                                <div class="flex flex-col w-full">
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+                                        @foreach ($jobseeker->language as $empLanguage)
+                                            <span wire:key='language-{{ $empLanguage->language_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800 uppercase">
+                                                {{ $empLanguage->language_Type }}
+                                            </span>
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
 
+                            @if ($jobseeker->disability->count() > 0)
+                                <h2 class="text-md font-medium mt-4">Disability</h2>
+                                <div class="flex flex-col w-full">
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+                                        @foreach ($jobseeker->disability as $empDisability)
+                                            <span wire:key='disability-{{ $empDisability->disability_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800 uppercase">
+                                                {{ $empDisability->disability_Type }}
+                                            </span>
+                                        @endforeach
 
-                            <h2 class="text-md font-medium mt-4">Disability</h2>
-                            <div class="flex flex-col w-full">
-                                {{-- BADGE CONTAINER --}}
-                                <div id= "otherSkillRow" class="flex-inline p-1">
-                                    {{-- BADGE --}}
-                                    @foreach ($jobseeker->disability as $empDisability)
-                                        <span wire:key='disability-{{ $empDisability->disability_id }}'
-                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800 uppercase">
-                                            {{ $empDisability->disability_Type }}
-                                        </span>
-                                    @endforeach
-
+                                    </div>
                                 </div>
-                            </div>
-
+                            @endif
 
 
 

@@ -1,4 +1,4 @@
-<div>
+<div wire:poll>
     <div class="flex flex-col md:flex-row w-full h-full gap-4 container mx-auto p-4 md:p-0 md:py-8">
 
         <div class="flex flex-col md:w-1/4 h-full md:sticky top-5">

@@ -91,7 +91,7 @@
 
             {{-- PAGINATION --}}
             <div>
-                {{ $jobposition->links() }}
+                {{ $jobposition->links('vendor.livewire.tailwind') }}
             </div>
 
 

@@ -7,7 +7,7 @@
 
             {{-- TITLE --}}
             <div class="col-span-4 sm:col-span-12">
-                <h1 class="text-2xl font-bold">Job Posting</h1>
+                <h1 class="text-2xl font-bold">Requirements Management</h1>
             </div>
 
             <div class="col-span-4 sm:col-span-6">

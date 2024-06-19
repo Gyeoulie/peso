@@ -208,8 +208,6 @@
                     <x-text-input wire:model='inputSkills' class="block mt-1 w-1/2" type="text" name="hnum" />
                     <x-primary-button wire:click.prevent='addSkills' type="button"
                         class="flex justify-center items-center sm:w-[100px] text-white rounded">Add
-                        Skill</x-primary-button><x-primary-button wire:click.prevent='ewan' type="button"
-                        class="flex justify-center items-center sm:w-[100px] text-white rounded">Add
                         Skill</x-primary-button>
                 </div>
                 <x-input-error :messages="$errors->get('inputSkills')" class="mt-2" />

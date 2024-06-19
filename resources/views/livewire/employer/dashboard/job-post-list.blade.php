@@ -1,4 +1,4 @@
-<div>
+<div wire:poll>
     <div class="py-12">
         <div class="max-w-7xl mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -253,7 +253,7 @@
                     </table>
                     {{-- navbar --}}
                     <div class="mt-2 p-4">
-                        {{ $applicants->links() }}
+                        {{ $applicants->links('vendor.livewire.tailwind') }}
                     </div>
                 </div>
 

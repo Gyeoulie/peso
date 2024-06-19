@@ -50,13 +50,13 @@ class Dashboard extends Component
                 $query->where('municipality_id', $pesoMunicipalityId);
             })
             ->count();
-        $totalActiveApplicants = Job_Applicants::whereNotIn('applicant_Status', ['REJECTED', 'HIRED'])
+        $totalActiveApplicants = Job_Applicants::whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED', 'CANCELLED'])
             ->whereHas('job_posting.barangay.municipality', function ($query) use ($pesoMunicipalityId) {
                 $query->where('municipality_id', $pesoMunicipalityId);
             })
             ->count();
 
-        $recentActiveApplicants = Job_Applicants::whereNotIn('applicant_Status', ['REJECTED', 'HIRED'])
+        $recentActiveApplicants = Job_Applicants::whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED', 'CANCELLED'])
             ->whereHas('job_posting.barangay.municipality', function ($query) use ($pesoMunicipalityId) {
                 $query->where('municipality_id', $pesoMunicipalityId);
             })
@@ -64,6 +64,15 @@ class Dashboard extends Component
             ->count();
 
         $recentJobPost = Job_Posting::where('peso_municipality_id', $pesoMunicipalityId)
+            ->orderByDesc('created_at') // Optionally, order by created_at descending
+            ->take(5) // Limit to 5 records
+            ->get();
+
+        $recentApplicants = Job_Applicants::with('job_posting', 'job_posting.municipality')
+            ->whereHas('job_posting.municipality', function ($query) use ($pesoMunicipalityId) {
+                $query->where('municipality_id', $pesoMunicipalityId);
+            })
+            ->where('peso_Status', 'PENDING')
             ->orderByDesc('created_at') // Optionally, order by created_at descending
             ->take(5) // Limit to 5 records
             ->get();
@@ -138,6 +147,6 @@ class Dashboard extends Component
             ->setDataLabelsEnabled(true)
             ->setColors(['#' . substr(md5(rand()), 0, 6), '#' . substr(md5(rand()), 0, 6), '#' . substr(md5(rand()), 0, 6), '#' . substr(md5(rand()), 0, 6), '#' . substr(md5(rand()), 0, 6)]); // Add additional colors as needed
 
-        return view('livewire.admin.dashboard', compact('totalJobPostings', 'recentJobPostings', 'totalJobSeekers', 'recentJobSeekers', 'totalEmployed', 'totalUnemployed', 'totalActiveApplicants', 'recentActiveApplicants', 'recentJobPost', 'columnChartModel', 'pieChartModel'));
+        return view('livewire.admin.dashboard', compact('totalJobPostings', 'recentJobPostings', 'totalJobSeekers', 'recentJobSeekers', 'totalEmployed', 'totalUnemployed', 'totalActiveApplicants', 'recentActiveApplicants', 'recentJobPost', 'columnChartModel', 'pieChartModel', 'recentApplicants'));
     }
 }

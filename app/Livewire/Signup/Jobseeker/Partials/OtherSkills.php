@@ -70,11 +70,6 @@ class OtherSkills extends Component
         $this->reset('inputSkills');
 
     }
-
-    public function ewan(){
-        dd($this->checkBoxData);
-    }
-
     public function removeSkills($data)
     {
 

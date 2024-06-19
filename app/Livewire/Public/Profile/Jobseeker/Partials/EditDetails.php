@@ -329,11 +329,10 @@ class EditDetails extends Component
     public function industrySelect($id)
     {
 
-        $jobPreferenceCount = auth()->user()->employee->job_preference->count();
+        $industryPreferenceCount = Industry_preference::where('employee_id', $this->empID)->count();
 
-        if ($jobPreferenceCount === 1) {
+        if ($industryPreferenceCount >= 1) {
             toastr()->warning('You can only choose one industry.');
-            $this->dispatch('close-modal', 'industry-modal');
             return;
         }
 
@@ -351,6 +350,7 @@ class EditDetails extends Component
                 'employee_id' => $this->empID,
                 'industry_id' => $id,
             ]);
+            toastr()->success('Industry preference successfully updated!.');
             $this->dispatch('close-modal', 'industry-modal');
         } else {
             toastr()->error('Could not fetch data');

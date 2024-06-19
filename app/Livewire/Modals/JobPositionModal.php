@@ -4,12 +4,13 @@ namespace App\Livewire\Modals;
 
 use App\Models\Job_Positions;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class JobPositionModal extends Component
 {
 
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
     public $search;
 
     public function positionSelect($id)
@@ -21,7 +22,7 @@ class JobPositionModal extends Component
     {
 
         $jobposition = Job_Positions::where('position_Title', 'like', '%' . $this->search . '%')
-            ->paginate(8, ['*'], 'jobTags');
+            ->paginate(8);
 
         return view('livewire.modals.job-position-modal', compact('jobposition'));
     }

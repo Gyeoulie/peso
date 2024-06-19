@@ -7,10 +7,12 @@ use App\Models\Municipality;
 use App\Models\Province;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class LocationTable extends Component
 {
 
+    use WithPagination;
     public $defaultFilter;
 
     public $search;

@@ -179,7 +179,7 @@
 
     {{-- PAGINATION --}}
     <div class="mt-4">
-        {{ $requirements->links('vendor.pagination.tailwind') }}
+        {{ $requirements->links('vendor.livewire.tailwind') }}
     </div>
 
 </div>

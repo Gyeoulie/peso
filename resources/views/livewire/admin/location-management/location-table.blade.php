@@ -50,7 +50,7 @@
 
                             <x-dropdown-link href="#" wire:click="updatePublicKey('Barangay')"
                                 class="block px-4 py-2 hover:bg-gray-100">Barangay</x-dropdown-link>
-
+ 
                             <!-- Authentication -->
                             <x-dropdown-link href="#" wire:click="updatePublicKey('Municipalities')"
                                 class="block px-4 py-2 hover:bg-gray-100">Municipalities</x-dropdown-link>
@@ -316,6 +316,6 @@
     </div>
 
     <div class="mt-4">
-        {{ $locationData->links('vendor.pagination.tailwind') }}
+        {{ $locationData->links('vendor.livewire.tailwind') }}
     </div>
 </div>
