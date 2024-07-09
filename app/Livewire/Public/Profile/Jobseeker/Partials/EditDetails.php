@@ -52,6 +52,7 @@ class EditDetails extends Component
     public $licName = 'Select License', $licValidity;
     public $licID, $licTypeID;
 
+    //RULES
     public function rules()
     {
         return [
@@ -71,6 +72,7 @@ class EditDetails extends Component
         ];
     }
 
+    //MODAL
     public function openModal($modalName)
     {
         if ($modalName == "disability") {
@@ -101,6 +103,39 @@ class EditDetails extends Component
         $this->resetValidation();
     }
 
+    //DISABILITY
+    public function saveDisability(){
+        if ($this->selectDisability === "other") {
+            $this->selectDisability = $this->otherDisability;
+            $this->validate([
+                'selectDisability' => ['required', 'string', 'filled'],
+            ]);
+        }
+
+        $this->validate([
+            'selectDisability' => [
+                'required', 'string', 'filled',
+                Rule::unique('disability', 'disability_Type')
+                    ->where(function ($query) {
+                        $query->where('employee_id', $this->empID)
+                            ->whereRaw('LOWER(disability_Type) = LOWER(?)', [$this->selectDisability]);
+                    }),
+            ],
+        ]);
+
+        try {
+            Disability::create([
+                'employee_id' => $this->empID,
+                'disability_Type' => strtoupper($this->selectDisability),
+            ]);
+
+            toastr()->success('Disability Record has been Added!');
+        } catch (\Exception $e) {
+            toastr()->error('There was an Error');
+        }
+        $this->closeModal('disability');
+    }
+
     public function removeDisability($disID)
     {
         try {
@@ -113,6 +148,33 @@ class EditDetails extends Component
 
             toastr()->error('There was an Error');
         }
+    }
+
+    //SET VARIABLES
+    public function mount()
+    {
+        $user = Auth::user();
+        $this->empID = $user->employee->employee_id;
+
+        $employeeDetails = Employee::find($this->empID);
+
+        $this->fname = $employeeDetails->fname;
+        $this->mname = $employeeDetails->mname;
+        $this->lname = $employeeDetails->lname;
+        $this->suffix = $employeeDetails->suffix;
+        $this->birthdate = Carbon::parse($employeeDetails->birthdate)->format('Y-m-d');
+        $this->gender = $employeeDetails->gender;
+        $this->civilstatus = $employeeDetails->civilstatus;
+        $this->religion = $employeeDetails->religion;
+        $this->pnumber = $employeeDetails->pnumber;
+        $this->tinnum = $employeeDetails->tinnum;
+        $this->height = $employeeDetails->height;
+        $this->address = $employeeDetails->address;
+
+        $barangayDetails = Barangay::find($employeeDetails->barangay);
+        $this->bar = $barangayDetails->barangay_Name;
+        $this->mun = $barangayDetails->municipality->municipality_Name;
+        $this->prov = $barangayDetails->municipality->province->province_Name;
     }
 
     public function setVar($id, $name)
@@ -157,138 +219,250 @@ class EditDetails extends Component
         }
     }
 
-    public function saveDetails($name)
-    {
-        if ($name == "general") {
-            $this->validate();
+    //SAVE PROFILE
+    public function saveProfile(){
+        $this->validate();
 
-            $jobseekerData = Employee::findOrFail($this->empID);
-            $imgPath = null;
+        $jobseekerData = Employee::findOrFail($this->empID);
+        $imgPath = null;
 
-            if ($this->pimg) {
-                $imgPath = $this->pimg->store('images/user_data', 'public');
+        if ($this->pimg) {
+            $imgPath = $this->pimg->store('images/user_data', 'public');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            if ($this->pimg && $jobseekerData->pimg) {
+                Storage::disk('public')->delete($jobseekerData->pimg);
             }
 
-            DB::beginTransaction();
-
-            try {
-                if ($this->pimg && $jobseekerData->pimg) {
-                    Storage::disk('public')->delete($jobseekerData->pimg);
-                }
-
-                $jobseekerData->update([
-                    'pimg' => $imgPath ?? $jobseekerData->pimg,
-                    'fname' => $this->fname,
-                    'mname' => $this->mname,
-                    'lname' => $this->lname,
-                    'suffix' => $this->suffix,
-                    'height' => $this->height,
-                    'gender' => $this->gender,
-                    'civilstatus' => $this->civilstatus,
-                    'religion' => $this->religion,
-                    'birthdate' => $this->birthdate,
-                    'pnumber' => $this->pnumber,
-                    'address' => $this->address,
-                    'barangay' => $this->barangayID, //fk
-                    'tinnum' => $this->tinnum,
-                ]);
-
-                DB::commit();
-
-                toastr()->success('Profile has been updated!');
-            } catch (\Exception $e) {
-                DB::rollBack();
-
-                // Show error toastr notification
-                toastr()->error('There was an error updating the profile.');
-            }
-        } elseif ($name == "disability") {
-            if ($this->selectDisability === "other") {
-                $this->selectDisability = $this->otherDisability;
-                $this->validate([
-                    'selectDisability' => ['required', 'string', 'filled'],
-                ]);
-            }
-
-            $this->validate([
-                'selectDisability' => [
-                    'required', 'string', 'filled',
-                    Rule::unique('disability', 'disability_Type')
-                        ->where(function ($query) {
-                            $query->where('employee_id', $this->empID)
-                                ->whereRaw('LOWER(disability_Type) = LOWER(?)', [$this->selectDisability]);
-                        }),
-                ],
+            $jobseekerData->update([
+                'pimg' => $imgPath ?? $jobseekerData->pimg,
+                'fname' => $this->fname,
+                'mname' => $this->mname,
+                'lname' => $this->lname,
+                'suffix' => $this->suffix,
+                'height' => $this->height,
+                'gender' => $this->gender,
+                'civilstatus' => $this->civilstatus,
+                'religion' => $this->religion,
+                'birthdate' => $this->birthdate,
+                'pnumber' => $this->pnumber,
+                'address' => $this->address,
+                'barangay' => $this->barangayID, //fk
+                'tinnum' => $this->tinnum,
             ]);
 
+            DB::commit();
+
+            toastr()->success('Profile has been updated!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Show error toastr notification
+            toastr()->error('There was an error updating the profile.');
+        }
+
+
+    }
+
+    //LICENSE
+    public function saveLicense(){
+        if ($this->licID) {
             try {
-                Disability::create([
-                    'employee_id' => $this->empID,
-                    'disability_Type' => strtoupper($this->selectDisability),
+                License::where('license_id', $this->licID)->update([
+                    'license_type_id' => $this->licTypeID,
+                    'license_Validity' => $this->licValidity,
                 ]);
 
-                toastr()->success('Disability Record has been Added!');
+                toastr()->success('License Record has been Updated!');
             } catch (\Exception $e) {
                 toastr()->error('There was an Error');
             }
-            $this->closeModal('disability');
-        } elseif ($name == "license") {
-            if ($this->licID) {
-                try {
-                    License::where('license_id', $this->licID)->update([
-                        'license_type_id' => $this->licTypeID,
-                        'license_Validity' => $this->licValidity,
-                    ]);
+        } else {
+            try {
+                License::create([
+                    'employee_id' => $this->empID,
+                    'license_type_id' => $this->licTypeID,
+                    'license_Validity' => $this->licValidity,
+                ]);
 
-                    toastr()->success('License Record has been Updated!');
-                } catch (\Exception $e) {
-                    toastr()->error('There was an Error');
-                }
-            } else {
-                try {
-                    License::create([
-                        'employee_id' => $this->empID,
-                        'license_type_id' => $this->licTypeID,
-                        'license_Validity' => $this->licValidity,
-                    ]);
-
-                    toastr()->success('License Record has been Added!');
-                } catch (\Exception $e) {
-                    toastr()->error('There was an Error');
-                }
+                toastr()->success('License Record has been Added!');
+            } catch (\Exception $e) {
+                toastr()->error('There was an Error');
             }
-
-            $this->closeModal('license');
-        } elseif ($name == "eligibility") {
-            if ($this->eliID) {
-                try {
-                    Eligibility::where('eligibility_id', $this->eliID)->update([
-                        'eligibility_Type' => $this->eliTypeID,
-                        'eligibility_Date' => $this->eli_Date,
-                    ]);
-
-                    toastr()->success('Eligibility Record has been Updated!');
-                } catch (\Exception $e) {
-                    toastr()->error('There was an Error');
-                }
-            } else {
-                try {
-                    Eligibility::create([
-                        'employee_id' => $this->empID,
-                        'eligibility_Type' => $this->eliTypeID,
-                        'eligibility_Date' => $this->eli_Date,
-                    ]);
-
-                    toastr()->success('Eligibility Record has been Added!');
-                } catch (\Exception $e) {
-                    toastr()->error('There was an Error');
-                }
-            }
-
-            $this->closeModal('eligibility');
         }
+
+        $this->closeModal('license');
     }
 
+
+    //ELIGIBILITY
+    public function saveEligibility(){
+        if ($this->eliID) {
+            try {
+                Eligibility::where('eligibility_id', $this->eliID)->update([
+                    'eligibility_Type' => $this->eliTypeID,
+                    'eligibility_Date' => $this->eli_Date,
+                ]);
+
+                toastr()->success('Eligibility Record has been Updated!');
+            } catch (\Exception $e) {
+                toastr()->error('There was an Error');
+            }
+        } else {
+            try {
+                Eligibility::create([
+                    'employee_id' => $this->empID,
+                    'eligibility_Type' => $this->eliTypeID,
+                    'eligibility_Date' => $this->eli_Date,
+                ]);
+
+                toastr()->success('Eligibility Record has been Added!');
+            } catch (\Exception $e) {
+                toastr()->error('There was an Error');
+            }
+        }
+
+        $this->closeModal('eligibility');
+    }
+
+
+    // public function saveDetails($name)
+    // {
+    //     if ($name == "general") {
+    //         $this->validate();
+
+    //         $jobseekerData = Employee::findOrFail($this->empID);
+    //         $imgPath = null;
+
+    //         if ($this->pimg) {
+    //             $imgPath = $this->pimg->store('images/user_data', 'public');
+    //         }
+
+    //         DB::beginTransaction();
+
+    //         try {
+    //             if ($this->pimg && $jobseekerData->pimg) {
+    //                 Storage::disk('public')->delete($jobseekerData->pimg);
+    //             }
+
+    //             $jobseekerData->update([
+    //                 'pimg' => $imgPath ?? $jobseekerData->pimg,
+    //                 'fname' => $this->fname,
+    //                 'mname' => $this->mname,
+    //                 'lname' => $this->lname,
+    //                 'suffix' => $this->suffix,
+    //                 'height' => $this->height,
+    //                 'gender' => $this->gender,
+    //                 'civilstatus' => $this->civilstatus,
+    //                 'religion' => $this->religion,
+    //                 'birthdate' => $this->birthdate,
+    //                 'pnumber' => $this->pnumber,
+    //                 'address' => $this->address,
+    //                 'barangay' => $this->barangayID, //fk
+    //                 'tinnum' => $this->tinnum,
+    //             ]);
+
+    //             DB::commit();
+
+    //             toastr()->success('Profile has been updated!');
+    //         } catch (\Exception $e) {
+    //             DB::rollBack();
+
+    //             // Show error toastr notification
+    //             toastr()->error('There was an error updating the profile.');
+    //         }
+    //     } elseif ($name == "disability") {
+    //         if ($this->selectDisability === "other") {
+    //             $this->selectDisability = $this->otherDisability;
+    //             $this->validate([
+    //                 'selectDisability' => ['required', 'string', 'filled'],
+    //             ]);
+    //         }
+
+    //         $this->validate([
+    //             'selectDisability' => [
+    //                 'required', 'string', 'filled',
+    //                 Rule::unique('disability', 'disability_Type')
+    //                     ->where(function ($query) {
+    //                         $query->where('employee_id', $this->empID)
+    //                             ->whereRaw('LOWER(disability_Type) = LOWER(?)', [$this->selectDisability]);
+    //                     }),
+    //             ],
+    //         ]);
+
+    //         try {
+    //             Disability::create([
+    //                 'employee_id' => $this->empID,
+    //                 'disability_Type' => strtoupper($this->selectDisability),
+    //             ]);
+
+    //             toastr()->success('Disability Record has been Added!');
+    //         } catch (\Exception $e) {
+    //             toastr()->error('There was an Error');
+    //         }
+    //         $this->closeModal('disability');
+    //     } elseif ($name == "license") {
+    //         if ($this->licID) {
+    //             try {
+    //                 License::where('license_id', $this->licID)->update([
+    //                     'license_type_id' => $this->licTypeID,
+    //                     'license_Validity' => $this->licValidity,
+    //                 ]);
+
+    //                 toastr()->success('License Record has been Updated!');
+    //             } catch (\Exception $e) {
+    //                 toastr()->error('There was an Error');
+    //             }
+    //         } else {
+    //             try {
+    //                 License::create([
+    //                     'employee_id' => $this->empID,
+    //                     'license_type_id' => $this->licTypeID,
+    //                     'license_Validity' => $this->licValidity,
+    //                 ]);
+
+    //                 toastr()->success('License Record has been Added!');
+    //             } catch (\Exception $e) {
+    //                 toastr()->error('There was an Error');
+    //             }
+    //         }
+
+    //         $this->closeModal('license');
+    //     } elseif ($name == "eligibility") {
+    //         if ($this->eliID) {
+    //             try {
+    //                 Eligibility::where('eligibility_id', $this->eliID)->update([
+    //                     'eligibility_Type' => $this->eliTypeID,
+    //                     'eligibility_Date' => $this->eli_Date,
+    //                 ]);
+
+    //                 toastr()->success('Eligibility Record has been Updated!');
+    //             } catch (\Exception $e) {
+    //                 toastr()->error('There was an Error');
+    //             }
+    //         } else {
+    //             try {
+    //                 Eligibility::create([
+    //                     'employee_id' => $this->empID,
+    //                     'eligibility_Type' => $this->eliTypeID,
+    //                     'eligibility_Date' => $this->eli_Date,
+    //                 ]);
+
+    //                 toastr()->success('Eligibility Record has been Added!');
+    //             } catch (\Exception $e) {
+    //                 toastr()->error('There was an Error');
+    //             }
+    //         }
+
+    //         $this->closeModal('eligibility');
+    //     }
+    // }
+
+
+    //ADDRESS + POSITIONS
     #[On('barSelect')]
     public function barSelect($id)
     {
@@ -380,31 +554,8 @@ class EditDetails extends Component
         }
     }
 
-    public function mount()
-    {
-        $user = Auth::user();
-        $this->empID = $user->employee->employee_id;
 
-        $employeeDetails = Employee::find($this->empID);
 
-        $this->fname = $employeeDetails->fname;
-        $this->mname = $employeeDetails->mname;
-        $this->lname = $employeeDetails->lname;
-        $this->suffix = $employeeDetails->suffix;
-        $this->birthdate = Carbon::parse($employeeDetails->birthdate)->format('Y-m-d');
-        $this->gender = $employeeDetails->gender;
-        $this->civilstatus = $employeeDetails->civilstatus;
-        $this->religion = $employeeDetails->religion;
-        $this->pnumber = $employeeDetails->pnumber;
-        $this->tinnum = $employeeDetails->tinnum;
-        $this->height = $employeeDetails->height;
-        $this->address = $employeeDetails->address;
-
-        $barangayDetails = Barangay::find($employeeDetails->barangay);
-        $this->bar = $barangayDetails->barangay_Name;
-        $this->mun = $barangayDetails->municipality->municipality_Name;
-        $this->prov = $barangayDetails->municipality->province->province_Name;
-    }
 
     public function render()
     {

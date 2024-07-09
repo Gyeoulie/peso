@@ -310,7 +310,7 @@
                     <div class="flex flex-row">
 
 
-                        <x-blue-button wire:click.prevent="saveDetails('general')" class="ml-auto mr-3"
+                        <x-blue-button wire:click.prevent="saveProfile" class="ml-auto mr-3"
                             type="button" x-data="" {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> x-on:click.prevent="saveDetails(general)" --}}>
                             Save
                         </x-blue-button>
@@ -721,7 +721,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent="saveDetails('license')" class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveLicense" class="ms-3" type="button">
                     {{ __('Save') }}
                 </x-primary-button>
             </div>
@@ -795,7 +795,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent="saveDetails('eligibility')" class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveEligibility" class="ms-3" type="button">
                     {{ __('Save') }}
                 </x-primary-button>
             </div>
@@ -839,7 +839,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent="saveDetails('disability')" class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveDisability" class="ms-3" type="button">
                     {{ __('Add Disability Record') }}
                 </x-primary-button>
             </div>
