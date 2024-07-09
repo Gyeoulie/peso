@@ -12,6 +12,14 @@ class EmployerProfile extends Component
     public $id;
     public $description;
 
+    public function rules()
+    {
+        return [
+            'description' => ['required', 'string', 'min:50', 'max:1000'],
+
+        ];
+    }
+
     public function open()
     {
         $getDesc = Company::where('company_id', $this->id)->first();
@@ -30,6 +38,7 @@ class EmployerProfile extends Component
 
     public function save()
     {
+        $this->validate();
         try {
             Company::where('company_id', $this->id)->update([
                 'company_Desc' => $this->description,

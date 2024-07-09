@@ -57,10 +57,10 @@
                                 </div>
                                 <div class="flex flex-col gap-1">
                                     <div class="text-lg font-bold text-black">
-                                        {{ $employer->employer_Type == 1 ? 'Public' : ($employer->employer_Type == 2 ? 'Private' : '') }}
+                                        Employer Type
                                     </div>
                                     <div class="text-md font-medium">
-                                        {{ $employer->employer_Type_Desc }}
+                                        {{ $employer->employer_Type == 1 ? 'Public' : ($employer->employer_Type == 2 ? 'Private' : '') }}
                                     </div>
 
 
@@ -146,7 +146,7 @@
                 <div class="container">
                     <div class="bg-white shadow-lg rounded-lg p-6 text-wrap">
                         <div class="flex flex-row w-full items-center justify-between">
-                            <h2 class="text-xl font-bold">About me</h2>
+                            <h2 class="text-xl font-bold">Company Description</h2>
 
 
 
@@ -176,7 +176,7 @@
                     <div class="bg-white shadow rounded-lg p-6">
 
                         <div class="flex flex-row w-full mb-4">
-                            <h2 class="text-xl font-bold">Available Jobs</h2>
+                            <h2 class="text-xl font-bold">Job Postings</h2>
 
                         </div>
                         @if ($employer->job_posting->isEmpty())
@@ -201,7 +201,8 @@
 
                                 @foreach ($employer->job_posting as $jobPosts)
                                     <a href="{{ route('jobpost.show', ['id' => $jobPosts->job_id]) }}">
-                                        <div class="container bg-blue-200 hover:bg-blue-300 p-3 rounded-lg shadow ">
+                                        <div wire:key='{{ $jobPosts->job_id }}'
+                                        class="container bg-blue-200 hover:bg-blue-300 p-3 rounded-lg shadow ">
 
                                             <div class="flex flex-row h-full items-center">
 
@@ -211,7 +212,7 @@
                                                         width="24" height="24" fill="currentColor"
                                                         viewBox="0 0 24 24">
                                                         <path fill-rule="evenodd"
-                                                            d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.382l1.447.723.005.003.027.013.12.056c.108.05.272.123.486.212.429.177 1.056.416 1.834.655C7.481 13.524 9.63 14 12 14c2.372 0 4.52-.475 6.08-.956.78-.24 1.406-.478 1.835-.655a14.028 14.028 0 0 0 .606-.268l.027-.013.005-.002L22 11.381V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.447 7.894.553-.276V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.382l.553.276.002.002.004.002.013.006.041.02.151.07c.13.06.318.144.557.242.478.198 1.163.46 2.01.72C7.019 15.476 9.37 16 12 16c2.628 0 4.98-.525 6.67-1.044a22.95 22.95 0 0 0 2.01-.72 15.994 15.994 0 0 0 .707-.312l.041-.02.013-.006.004-.002.001-.001-.431-.866.432.865ZM12 10a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                                             d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.382l1.447.723.005.003.027.013.12.056c.108.05.272.123.486.212.429.177 1.056.416 1.834.655C7.481 13.524 9.63 14 12 14c2.372 0 4.52-.475 6.08-.956.78-.24 1.406-.478 1.835-.655a14.028 14.028 0 0 0 .606-.268l.027-.013.005-.002L22 11.381V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.447 7.894.553-.276V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.382l.553.276.002.002.004.002.013.006.041.02.151.07c.13.06.318.144.557.242.478.198 1.163.46 2.01.72C7.019 15.476 9.37 16 12 16c2.628 0 4.98-.525 6.67-1.044a22.95 22.95 0 0 0 2.01-.72 15.994 15.994 0 0 0 .707-.312l.041-.02.013-.006.004-.002.001-.001-.431-.866.432.865ZM12 10a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
                                                             clip-rule="evenodd" />
                                                     </svg>
                                                 </div>
@@ -280,12 +281,12 @@
     <x-modal name="aboutme-modal" focusable>
         <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
             <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Edit About Me') }}
+                {{ __('Edit Company Description') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
                 <div class="flex flex-col mt-2 w-full">
-                    <x-input-label :value="__('About Me')" />
+                    <x-input-label :value="__('Company Description')" />
                     <textarea wire:model='description' id="message" rows="6" required
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
                         placeholder="Write something about yourself here..." maxlength="600"></textarea>

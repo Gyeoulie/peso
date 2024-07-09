@@ -38,7 +38,7 @@ class EditDetails extends Component
     public $pimg;
 
     public $fname, $mname, $lname, $suffix, $birthdate, $gender = 0, $civilstatus = 0, $religion = 0,
-    $pnumber, $tinnum, $height, $address;
+        $pnumber, $tinnum, $height, $address;
     public $barangayID, $mun, $prov, $bar;
     public $disability, $selectDisability = "", $otherDisability = "";
     public $jobpreference, $industrypreference;
@@ -73,13 +73,17 @@ class EditDetails extends Component
 
     public function openModal($modalName)
     {
-        if ($modalName == "eligibility") {
+        if ($modalName == "disability") {
+            $this->reset('selectDisability', 'otherDisability',);
+            $this->dispatch('open-modal', 'disability-modal');
+        } elseif ($modalName == "eligibility") {
             $this->reset('eliID', 'eli_Name', 'eli_Date', 'search');
             $this->dispatch('open-modal', 'eligibility-modal');
         } elseif ($modalName == "license") {
             $this->reset('licID', 'licName', 'licValidity', 'search');
             $this->dispatch('open-modal', 'license-modal');
         }
+        $this->resetValidation();
     }
 
     public function closeModal($modalName)
@@ -94,12 +98,12 @@ class EditDetails extends Component
             $this->reset('licID', 'licName', 'licValidity', 'search');
             $this->dispatch('close-modal', 'license-modal');
         }
+        $this->resetValidation();
     }
 
     public function removeDisability($disID)
     {
         try {
-            // Create the user record
             Disability::where('disability_id', $disID)
                 ->where('employee_id', $this->empID)
                 ->delete();
@@ -107,7 +111,6 @@ class EditDetails extends Component
             toastr()->success('Disability record has been deleted.');
         } catch (\Exception $e) {
 
-            // Show error toastr notification
             toastr()->error('There was an Error');
         }
     }
@@ -116,6 +119,7 @@ class EditDetails extends Component
     {
         if ($name == "eligibility") {
             $this->reset('search');
+
             $eligibilityType = Eligibility_Type::find($id);
             $this->eli_Name = $eligibilityType->eligibility_Name;
             $this->eliTypeID = $id;
@@ -168,12 +172,10 @@ class EditDetails extends Component
             DB::beginTransaction();
 
             try {
-                // Delete the old image if a new one is uploaded
                 if ($this->pimg && $jobseekerData->pimg) {
                     Storage::disk('public')->delete($jobseekerData->pimg);
                 }
 
-                // Update the user record
                 $jobseekerData->update([
                     'pimg' => $imgPath ?? $jobseekerData->pimg,
                     'fname' => $this->fname,
@@ -229,7 +231,6 @@ class EditDetails extends Component
             } catch (\Exception $e) {
                 toastr()->error('There was an Error');
             }
-
             $this->closeModal('disability');
         } elseif ($name == "license") {
             if ($this->licID) {
@@ -329,13 +330,6 @@ class EditDetails extends Component
     public function industrySelect($id)
     {
 
-        $industryPreferenceCount = Industry_preference::where('employee_id', $this->empID)->count();
-
-        if ($industryPreferenceCount >= 1) {
-            toastr()->warning('You can only choose one industry.');
-            return;
-        }
-
         $industryExist = Industry_Preference::where('industry_id', $id)
             ->where('employee_id', $this->empID)->exists();
         if ($industryExist) {
@@ -350,13 +344,11 @@ class EditDetails extends Component
                 'employee_id' => $this->empID,
                 'industry_id' => $id,
             ]);
-            toastr()->success('Industry preference successfully updated!.');
             $this->dispatch('close-modal', 'industry-modal');
         } else {
             toastr()->error('Could not fetch data');
             $this->dispatch('close-modal', 'industry-modal');
         }
-
     }
 
     public function removePosition($positionId)
@@ -408,11 +400,10 @@ class EditDetails extends Component
         $this->height = $employeeDetails->height;
         $this->address = $employeeDetails->address;
 
-        $barangayDetails = Barangay::find($employeeDetails->barangay_id);
+        $barangayDetails = Barangay::find($employeeDetails->barangay);
         $this->bar = $barangayDetails->barangay_Name;
         $this->mun = $barangayDetails->municipality->municipality_Name;
         $this->prov = $barangayDetails->municipality->province->province_Name;
-
     }
 
     public function render()
@@ -420,40 +411,30 @@ class EditDetails extends Component
         $user = Auth::user();
         $this->empID = $user->employee->employee_id;
 
-        $employeeDetails = Employee::find($this->empID);
-
         $this->disability = Disability::where('employee_id', '=', $this->empID)->get();
 
-        $jobPreference = Job_Preference::where('employee_id', '=', $this->empID)->get();
+        $elTypes = Eligibility_Type::where('eligibility_Name', 'like', '%' . $this->search . '%')->get();
+        $liTypes = License_Type::where('license_Name', 'like', '%' . $this->search . '%')->get();
 
-        $industryPreference = Industry_Preference::where('employee_id', '=', $this->empID)->get();
-
-        $eligibility = Eligibility::where('employee_id', '=', $this->empID)
-            ->where(function ($query) {
+        $employeeDetails = Employee::with([
+            'job_preference',
+            'industry_preference',
+            'eligibility' => function ($query) {
                 $query->whereHas('eligibilityType', function ($q) {
                     $q->where('eligibility_Name', 'like', '%' . $this->search . '%');
-                });
-            })
-            ->orderBy('eligibility_Date', 'desc')
-            ->get();
-
-        $elTypes = Eligibility_Type::where('eligibility_Name', 'like', '%' . $this->search . '%')->get();
-
-        $license = License::where('employee_id', '=', $this->empID)
-            ->where(function ($query) {
+                })->orderBy('eligibility_Date', 'desc');
+            },
+            'license' => function ($query) {
                 $query->whereHas('License_Type', function ($q) {
                     $q->where('license_Name', 'like', '%' . $this->search . '%');
-                });
-            })
-            ->orderBy('license_Validity', 'desc')
-            ->get();
+                })->orderBy('license_Validity', 'desc');
+            }
+        ])->find($this->empID);
 
-        $liTypes = License_Type::where('license_Name', 'like', '%' . $this->search . '%')
-            ->get();
-
+   
         return view(
             'livewire.public.profile.jobseeker.partials.edit-details',
-            compact('employeeDetails', 'eligibility', 'elTypes', 'license', 'liTypes', 'jobPreference', 'industryPreference')
+            compact('employeeDetails', 'elTypes', 'liTypes')
         );
     }
 }
