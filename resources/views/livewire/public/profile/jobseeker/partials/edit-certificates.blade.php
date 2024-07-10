@@ -47,54 +47,54 @@
                     </div>
                 </div>
             @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
-                    @foreach ($certs as $userCerts)
-                        <div wire:key="{{ $userCerts->cert_id }}" class="container bg-blue-200 p-3 rounded-lg shadow ">
+                {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
+                @foreach ($certs as $userCerts)
+                    <div wire:key="{{ $userCerts->cert_id }}" class="container p-3">
 
-                            <div class="flex flex-row h-full items-center">
+                        <div class="flex flex-row h-full items-center">
 
-                                <div class="flex flex-col">
-                                    <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                                        <path
-                                            d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z" />
-                                    </svg>
-                                </div>
-
-
-                                <div class="flex flex-col ml-4 w-full">
-                                    <span
-                                        class="text-2xl text-black font-bold">{{ $userCerts->certificateType->cert_Name }}</span>
-                                    <span class="text-lg text-black font-semibold">
-                                        {{ $userCerts->cert_From }}
-                                    </span>
-                                    <span class="text-sm text-gray-700 font-medium"> {{ $userCerts->cert_Rating }}
-                                    </span>
-                                    <span class="text-sm text-gray-700 font-medium">
-                                        {{ $userCerts->cert_Date_Issued->format('F Y') }}
-                                    </span>
-                                </div>
-
-                                <div class="flex flex-col h-full items-center justify-center">
-                                    <div wire:click.prevent = 'editModal({{ $userCerts->cert_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1">
-                                        <svg class="w-8 h-8 text-blue-700" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
-                                    </div>
-                                </div>
-
+                            <div class="flex flex-col">
+                                <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path
+                                        d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z" />
+                                </svg>
                             </div>
 
 
+                            <div class="flex flex-col ml-4 w-full">
+                                <span
+                                    class="text-3xl text-black font-black">{{ $userCerts->certificateType->cert_Name }}</span>
+                                <span class="text-xl text-black font-semibold">
+                                    {{ $userCerts->cert_From }}
+                                </span>
+                                <span class="text-md text-gray-700 font-medium"> {{ $userCerts->cert_Rating }}
+                                </span>
+                                <span class="text-md text-gray-700 font-medium">
+                                    {{ $userCerts->cert_Date_Issued->format('F Y') }}
+                                </span>
+                            </div>
+
+                            <div class="flex flex-col h-full items-center justify-center">
+                                <div wire:click.prevent = 'editModal({{ $userCerts->cert_id }})'
+                                    class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1">
+                                    <svg class="w-10 h-10 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                    </svg>
+                                </div>
+                            </div>
+
                         </div>
-                    @endforeach
 
 
-                </div>
+                    </div>
+                    <hr class="h-0.5 my-2 mx-10 bg-blue-200 border-0">
+                @endforeach
+
+
+                {{-- </div> --}}
 
             @endif
         </div>

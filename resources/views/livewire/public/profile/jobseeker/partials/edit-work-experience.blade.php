@@ -49,57 +49,56 @@
                     </div>
                 </div>
             @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
 
-                    @foreach ($workexp as $experience)
-                        <div wire:key="{{ $experience->workexp_id }}"
-                            class="container bg-blue-200 p-3 rounded-lg shadow ">
+                @foreach ($workexp as $experience)
+                    <div wire:key="{{ $experience->workexp_id }}" class="container p-3">
 
-                            <div class="flex flex-row h-full items-center">
+                        <div class="flex flex-row h-full items-center">
 
-                                <div class="flex flex-col">
-                                    <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd"
-                                            d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.382l1.447.723.005.003.027.013.12.056c.108.05.272.123.486.212.429.177 1.056.416 1.834.655C7.481 13.524 9.63 14 12 14c2.372 0 4.52-.475 6.08-.956.78-.24 1.406-.478 1.835-.655a14.028 14.028 0 0 0 .606-.268l.027-.013.005-.002L22 11.381V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.447 7.894.553-.276V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.382l.553.276.002.002.004.002.013.006.041.02.151.07c.13.06.318.144.557.242.478.198 1.163.46 2.01.72C7.019 15.476 9.37 16 12 16c2.628 0 4.98-.525 6.67-1.044a22.95 22.95 0 0 0 2.01-.72 15.994 15.994 0 0 0 .707-.312l.041-.02.013-.006.004-.002.001-.001-.431-.866.432.865ZM12 10a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
-                                            clip-rule="evenodd" />
-                                    </svg>
+                            <div class="flex flex-col">
+                                <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.382l1.447.723.005.003.027.013.12.056c.108.05.272.123.486.212.429.177 1.056.416 1.834.655C7.481 13.524 9.63 14 12 14c2.372 0 4.52-.475 6.08-.956.78-.24 1.406-.478 1.835-.655a14.028 14.028 0 0 0 .606-.268l.027-.013.005-.002L22 11.381V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.447 7.894.553-.276V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.382l.553.276.002.002.004.002.013.006.041.02.151.07c.13.06.318.144.557.242.478.198 1.163.46 2.01.72C7.019 15.476 9.37 16 12 16c2.628 0 4.98-.525 6.67-1.044a22.95 22.95 0 0 0 2.01-.72 15.994 15.994 0 0 0 .707-.312l.041-.02.013-.006.004-.002.001-.001-.431-.866.432.865ZM12 10a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+
+                            <div class="flex flex-col ml-4 w-full">
+                                <span class="text-3xl text-black font-black">{{ $experience->work_Name }}</span>
+                                <div class="text-xl text-black font-semibold">
+                                    <span>{{ $experience->job_positions->position_Title }}</span>
+                                    -
+                                    <span>{{ $experience->work_Status }}</span>
                                 </div>
-
-                                <div class="flex flex-col ml-4 w-full">
-                                    <span class="text-2xl text-black font-bold">{{ $experience->work_Name }}</span>
-                                    <div class="text-lg text-black font-semibold">
-                                        <span>{{ $experience->job_positions->position_Title }}</span>
-                                        -
-                                        <span>{{ $experience->work_Status }}</span>
-                                    </div>
-                                    <span class="text-sm text-gray-700 font-medium">
-                                        {{ $experience->work_Start->format('F Y') }} -
-                                        {{ $experience->work_End->format('F Y') }}</span>
-                                    <span
-                                        class="text-sm text-gray-700 font-medium">{{ $experience->work_Address }}</span>
-                                </div>
-
-
-                                <div class="flex flex-col h-full items-center justify-center">
-                                    <div wire:click.prevent='editModal({{ $experience->workexp_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1">
-                                        <svg class="w-8 h-8 text-blue-700" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
-                                    </div>
-                                </div>
-
+                                <span class="text-md text-gray-700 font-medium">
+                                    {{ $experience->work_Start->format('F Y') }} -
+                                    {{ $experience->work_End->format('F Y') }}</span>
+                                <span class="text-md text-gray-700 font-medium">{{ $experience->work_Address }}</span>
                             </div>
 
 
-                        </div>
-                    @endforeach
+                            <div class="flex flex-col h-full items-center justify-center">
+                                <div wire:click.prevent='editModal({{ $experience->workexp_id }})'
+                                    class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1">
+                                    <svg class="w-10 h-10 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                    </svg>
+                                </div>
+                            </div>
 
-                </div>
+                        </div>
+
+
+                    </div>
+                    <hr class="h-0.5 my-2 mx-10 bg-blue-200 border-0">
+                @endforeach
+
+                {{-- </div> --}}
 
             @endif
         </div>

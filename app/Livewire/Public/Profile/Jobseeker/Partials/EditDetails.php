@@ -38,7 +38,7 @@ class EditDetails extends Component
     public $pimg;
 
     public $fname, $mname, $lname, $suffix, $birthdate, $gender = 0, $civilstatus = 0, $religion = 0,
-        $pnumber, $tinnum, $height, $address;
+    $pnumber, $tinnum, $height, $address;
     public $barangayID, $mun, $prov, $bar;
     public $disability, $selectDisability = "", $otherDisability = "";
     public $jobpreference, $industrypreference;
@@ -76,7 +76,7 @@ class EditDetails extends Component
     public function openModal($modalName)
     {
         if ($modalName == "disability") {
-            $this->reset('selectDisability', 'otherDisability',);
+            $this->reset('selectDisability', 'otherDisability', );
             $this->dispatch('open-modal', 'disability-modal');
         } elseif ($modalName == "eligibility") {
             $this->reset('eliID', 'eli_Name', 'eli_Date', 'search');
@@ -104,7 +104,8 @@ class EditDetails extends Component
     }
 
     //DISABILITY
-    public function saveDisability(){
+    public function saveDisability()
+    {
         if ($this->selectDisability === "other") {
             $this->selectDisability = $this->otherDisability;
             $this->validate([
@@ -171,7 +172,7 @@ class EditDetails extends Component
         $this->height = $employeeDetails->height;
         $this->address = $employeeDetails->address;
 
-        $barangayDetails = Barangay::find($employeeDetails->barangay);
+        $barangayDetails = Barangay::find($employeeDetails->barangay_id);
         $this->bar = $barangayDetails->barangay_Name;
         $this->mun = $barangayDetails->municipality->municipality_Name;
         $this->prov = $barangayDetails->municipality->province->province_Name;
@@ -220,7 +221,8 @@ class EditDetails extends Component
     }
 
     //SAVE PROFILE
-    public function saveProfile(){
+    public function saveProfile()
+    {
         $this->validate();
 
         $jobseekerData = Employee::findOrFail($this->empID);
@@ -264,11 +266,11 @@ class EditDetails extends Component
             toastr()->error('There was an error updating the profile.');
         }
 
-
     }
 
     //LICENSE
-    public function saveLicense(){
+    public function saveLicense()
+    {
         if ($this->licID) {
             try {
                 License::where('license_id', $this->licID)->update([
@@ -297,9 +299,9 @@ class EditDetails extends Component
         $this->closeModal('license');
     }
 
-
     //ELIGIBILITY
-    public function saveEligibility(){
+    public function saveEligibility()
+    {
         if ($this->eliID) {
             try {
                 Eligibility::where('eligibility_id', $this->eliID)->update([
@@ -327,7 +329,6 @@ class EditDetails extends Component
 
         $this->closeModal('eligibility');
     }
-
 
     // public function saveDetails($name)
     // {
@@ -461,7 +462,6 @@ class EditDetails extends Component
     //     }
     // }
 
-
     //ADDRESS + POSITIONS
     #[On('barSelect')]
     public function barSelect($id)
@@ -554,9 +554,6 @@ class EditDetails extends Component
         }
     }
 
-
-
-
     public function render()
     {
         $user = Auth::user();
@@ -579,10 +576,9 @@ class EditDetails extends Component
                 $query->whereHas('License_Type', function ($q) {
                     $q->where('license_Name', 'like', '%' . $this->search . '%');
                 })->orderBy('license_Validity', 'desc');
-            }
+            },
         ])->find($this->empID);
 
-   
         return view(
             'livewire.public.profile.jobseeker.partials.edit-details',
             compact('employeeDetails', 'elTypes', 'liTypes')
