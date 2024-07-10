@@ -89,7 +89,7 @@
 
         {{-- PAGINATION --}}
         <div>
-            {{ $barangay->links() }}
+            {{ $barangay->links('vendor.livewire.tailwind') }}
         </div>
 
 

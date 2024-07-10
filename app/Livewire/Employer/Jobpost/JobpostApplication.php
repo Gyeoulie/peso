@@ -64,7 +64,7 @@ class JobpostApplication extends Component
     {
 
         if ($id == 2) {
-            $this->validate([
+            $rules = [
                 'jobTitlePost' => ['required', 'string'],
                 'jobIndustryPost' => ['required'],
                 'minWagePost' => ['required', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1'],
@@ -78,9 +78,36 @@ class JobpostApplication extends Component
                 'slotsPost' => ['required', 'string'],
                 'descPost' => ['required', 'string'],
                 'qualPost' => ['required', 'string'],
-                'remPost' => ['string'],
+                'remPost' => ['nullable', 'string'],
                 'jobTags' => ['required', 'array', 'min:1'],
-            ]);
+            ];
+
+            $messages = [
+                'jobTitlePost.required' => 'The job title is required.',
+                'jobIndustryPost.required' => 'Please select at least one industry.',
+                'minWagePost.required' => 'Minimum wage is required.',
+                'minWagePost.regex' => 'Minimum wage must be a valid number with up to two decimal places.',
+                'minWagePost.min' => 'Minimum wage must be at least 1.',
+                'maxWagePost.required' => 'Maximum wage is required.',
+                'maxWagePost.regex' => 'Maximum wage must be a valid number with up to two decimal places.',
+                'maxWagePost.min' => 'Maximum wage must be at least 1.',
+                'maxWagePost.gte' => 'Maximum wage must be greater than or equal to minimum wage.',
+                'eduPost.required' => 'Please select required education level.',
+                'jtypePost.required' => 'Please select job type.',
+                'wAddPost.required' => 'Work address is required.',
+                'barPost.required' => 'Please select barangay.',
+                'pesoPost.required' => 'PESO municipality is required.',
+                'durationPost.required' => 'Job duration is required.',
+                'durationPost.date' => 'Job duration must be a valid date.',
+                'slotsPost.required' => 'Number of slots is required.',
+                'descPost.required' => 'Job description is required.',
+                'qualPost.required' => 'Qualifications are required.',
+                'jobTags.required' => 'Please select at least one job tag.',
+                'jobTags.array' => 'Job tags must be an array.',
+                'jobTags.min' => 'Please select at least one job tag.',
+            ];
+
+            $this->validate($rules, $messages);
 
             $this->currentSlide++;
         } else if ($id == 3) {

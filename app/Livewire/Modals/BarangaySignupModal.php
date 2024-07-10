@@ -5,12 +5,13 @@ namespace App\Livewire\Modals;
 use App\Models\Barangay;
 use App\Models\PESO;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class BarangaySignupModal extends Component
 {
 
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
 
     public $search;
 
@@ -45,7 +46,7 @@ class BarangaySignupModal extends Component
                     });
             })
             ->orderBy('barangay_Name', 'ASC')
-            ->paginate(10, ['*'], 'barangay');
+            ->paginate(10);
 
         return view('livewire.modals.barangay-signup-modal', compact('barangay'));
     }

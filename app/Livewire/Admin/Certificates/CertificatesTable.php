@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Admin\Certificates;
 
-
 use App\Models\Certificate_Type;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class CertificatesTable extends Component
 {
-
+    use WithPagination;
     public $search;
     public $rows = 5;
     public $orderBy = '';
@@ -22,9 +22,8 @@ class CertificatesTable extends Component
     #[On('reload-table')]
     public function render()
     {
-        $query = Certificate_Type::where('cert_Name','like','%' . $this->search . '%')
-        ->orWhere("cert_Code","like",'%' . $this->search . '%');
-
+        $query = Certificate_Type::where('cert_Name', 'like', '%' . $this->search . '%')
+            ->orWhere("cert_Code", "like", '%' . $this->search . '%');
 
         $certificate_type = $query->paginate($this->rows);
 
@@ -32,4 +31,4 @@ class CertificatesTable extends Component
         return view('livewire.admin.certificates.certificates-table', compact('certificate_type'));
 
     }
-}   
+}

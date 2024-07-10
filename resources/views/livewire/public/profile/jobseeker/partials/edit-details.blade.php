@@ -268,8 +268,9 @@
                                 <x-input-label for="fname"> </i>Disability
                                 </x-input-label>
 
-                                <x-primary-button class="ml-auto mr-3" type="button" x-data=""
-                                    x-on:click.prevent="$dispatch('open-modal', 'disability-modal')">
+                                <x-primary-button wire:click.prevent="openModal('disability')" class="ml-auto mr-3"
+                                    type="button" x-data="">
+                                    {{-- x-on:click.prevent="$dispatch('open-modal', 'disability-modal')" --}}
                                     Add Disability
                                 </x-primary-button>
 
@@ -309,7 +310,7 @@
                     <div class="flex flex-row">
 
 
-                        <x-blue-button wire:click.prevent="saveDetails('general')" class="ml-auto mr-3"
+                        <x-blue-button wire:click.prevent="saveProfile" class="ml-auto mr-3"
                             type="button" x-data="" {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> x-on:click.prevent="saveDetails(general)" --}}>
                             Save
                         </x-blue-button>
@@ -376,7 +377,7 @@
                             </thead>
                             <tbody>
 
-                                @foreach ($eligibility as $eli)
+                                @foreach ($employeeDetails->eligibility as $eli)
                                     <tr class="bg-white border-b hover:bg-gray-50">
                                         <td class="px-6 py-4">
                                             <div class="text-gray-500 font-medium text-lg uppercase">
@@ -488,7 +489,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($license as $empLicense)
+                                @foreach ($employeeDetails->license as $empLicense)
                                     <tr wire:key="{{ $empLicense->license_id }}"
                                         class="bg-white border-b hover:bg-gray-50">
                                         <td class="px-6 py-4">
@@ -569,7 +570,7 @@
                                     <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
 
 
-                                        @foreach ($jobPreference as $jobPref)
+                                        @foreach ($employeeDetails->job_preference as $jobPref)
                                             <span
                                                 class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
                                                 {{ $jobPref->job_positions->position_Title }}
@@ -613,7 +614,7 @@
                                     <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
 
 
-                                        @foreach ($industryPreference as $industryPref)
+                                        @foreach ($employeeDetails->industry_preference as $industryPref)
                                             <span
                                                 class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
                                                 {{ $industryPref->job_industry->industry_Title }}
@@ -720,7 +721,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent="saveDetails('license')" class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveLicense" class="ms-3" type="button">
                     {{ __('Save') }}
                 </x-primary-button>
             </div>
@@ -794,7 +795,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent="saveDetails('eligibility')" class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveEligibility" class="ms-3" type="button">
                     {{ __('Save') }}
                 </x-primary-button>
             </div>
@@ -838,7 +839,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent="saveDetails('disability')" class="ms-3" type="button">
+                <x-primary-button wire:click.prevent="saveDisability" class="ms-3" type="button">
                     {{ __('Add Disability Record') }}
                 </x-primary-button>
             </div>

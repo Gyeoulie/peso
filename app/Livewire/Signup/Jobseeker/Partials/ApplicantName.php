@@ -45,7 +45,7 @@ class ApplicantName extends Component
             'bday' => [
                 'required',
                 'date',
-                'before_or_equal:' . now()->subYears(15)->format('Y-m-d'), // Ensures the date is not today or any future date
+                'before_or_equal:' . now()->subYears(18)->format('Y-m-d'), // Ensures the date is not today or any future date
             ],
             'gender' => 'required|in:1,2', // Assuming gender can only be Male or Female
             'pimage' => 'required|image|mimes:jpeg,png,jpg|max:5120', // Required image, max 5MB, allowed types: jpeg, png, jpg

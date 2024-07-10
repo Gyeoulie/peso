@@ -1,4 +1,4 @@
-<div class="sm:mx-10">
+<div wire:poll class="sm:mx-10">
     <div class="container py-8">
 
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
@@ -214,7 +214,7 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="text-base font-semibold">
+                                                <div class="text-base font-semibold uppercase">
                                                     {{ $applicants->employee->address }},
                                                     {{ $applicants->employee->barangay->barangay_Name }},
                                                     {{ $applicants->employee->barangay->municipality->municipality_Name }},
@@ -237,9 +237,13 @@
                                                     @elseif($applicants->applicant_Status == 'HIRED')
                                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                                                         HIRED
-                                                    @elseif($applicants->applicant_Status == 'REJECTED')
+                                                    @elseif($applicants->applicant_Status == 'ACCEPTED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2">
+                                                        </div>
+                                                        ACCEPTED
+                                                    @elseif($applicants->applicant_Status == 'REJECTED' || $applicants->applicant_Status == 'CANCELLED')
                                                         <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                        REJECTED
+                                                        <p class="uppercase">{{ $applicants->applicant_Status }}</p>
                                                     @endif
                                                 </div>
                                             </td>
@@ -274,7 +278,7 @@
                     {{-- PAGINATION --}}
 
                     <div>
-                        {{ $jobApplicants->links() }}
+                        {{ $jobApplicants->links('vendor.livewire.tailwind') }}
                     </div>
                 </div>
             </div>

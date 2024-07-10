@@ -40,8 +40,8 @@ class PersonalInformation extends Component
             'barangayID' => 'required',
             'civilstatus' => 'required|in:1,2,3',
             'religion' => 'required',
-            'phone' => 'required|regex:/(09)[0-9]{9}/|numeric',
-            'tin' => 'nullable|digits:11|unique:employee,tinnum',
+            'phone' => 'required|regex:/^09\d{9}$/',
+            'tin' => 'nullable|digits:9|unique:employee,tinnum',
             'height' => 'nullable|numeric|min:1',
         ];
 
@@ -55,8 +55,7 @@ class PersonalInformation extends Component
             'religion.required' => 'The religion is required.',
             'religion.string' => 'The religion must be a string.',
             'phone.required' => 'The phone number is required.',
-            'phone.regex' => 'The phone number must be in the correct format.',
-            'phone.numeric' => 'The phone number must be numeric.',
+            'phone.regex' => 'The phone number must start with 09 and be exactly 11 digits long.',
             'tin.digits' => 'The TIN must be 11 digits long.',
             'height.numeric' => 'The height must be a number.',
             'height.min' => 'The height must be valid.',

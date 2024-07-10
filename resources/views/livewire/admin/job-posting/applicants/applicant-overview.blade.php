@@ -1,4 +1,4 @@
-<div class="sm:mx-10">
+<div wire:poll class="sm:mx-10">
     <div class="container py-8">
 
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
@@ -50,7 +50,7 @@
                     <div class="flex flex-col items-center">
                         {{-- IMAGE --}}
                         <img src="{{ asset('storage/' . $applicant->job_posting->company->company_img) }}"
-                            class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
+                            class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 object-cover shadow-xl">
                         </img>
 
                         <h1 class="text-xl font-bold">{{ $applicant->job_posting->company->business_Name }}</h1>
@@ -94,7 +94,7 @@
 
                             <div class="flex flex-row">
                                 <li class="mb-2 font-bold">Address:</li>
-                                <p class="ms-4">{{ $applicant->job_posting->job_Address }},
+                                <p class="ms-4 uppercase">{{ $applicant->job_posting->job_Address }},
                                     {{ $applicant->job_posting->barangay->barangay_Name }},
                                     {{ $applicant->job_posting->barangay->municipality->municipality_Name }},
                                     {{ $applicant->job_posting->barangay->municipality->province->province_Name }}</p>
@@ -185,9 +185,12 @@
                         @elseif ($applicant->applicant_Status == 'HIRED')
                             <span
                                 class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
-                        @elseif ($applicant->applicant_Status == 'REJECTED')
+                        @elseif ($applicant->applicant_Status == 'ACCEPTED')
                             <span
-                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">ACCEPTED</span>
+                        @elseif ($applicant->applicant_Status == 'REJECTED' || $applicant->applicant_Status == 'CANCELLED')
+                            <span
+                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $applicant->applicant_Status }}</span>
                         @endif
 
                     </div>
@@ -202,7 +205,7 @@
                         <div class="flex flex-row w-full items-center">
                             {{-- IMG --}}
                             <img src="{{ asset('storage/' . $applicant->employee->pimg) }}"
-                                class="w-32 h-32 bg-gray-300 rounded-lg shrink-0">
+                                class="w-32 h-32 bg-gray-300 rounded-lg shrink-0 object-cover shadow-lg">
                             </img>
 
                             <div class="flex flex-col ml-4 w-full">
@@ -227,22 +230,18 @@
 
                         </div>
 
-                        <div class="flex flex-col w-full ">
+                        <div class="flex flex-col w-full">
                             {{-- WEB DATE --}}
                             <h1 class="hidden sm:block text-lg font-light ml-auto mr-2 mb-auto">
                                 {{ $applicant->created_at->format('F j, Y') }}
                             </h1>
                             {{-- WEB BUTTONS --}}
                             @if ($applicant->peso_Status == 'PENDING')
-                                <div class="hidden sm:flex flex-row w-full justify-end">
-                                    <button type="button"
-                                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
-                                        style="width: 100px;" x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</button>
-                                    <button type="button"
-                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
-                                        style="width: 100px;" x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Approve</button>
+                                <div class="hidden sm:flex flex-row w-full justify-end gap-2">
+                                    <x-danger-button type="button" x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Not Recommend</x-danger-button>
+                                    <x-green-button type="button" x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Recommend</x-green-button>
                                 </div>
                             @endif
 
@@ -253,20 +252,16 @@
                     {{-- MOBILE BUTTONS (SMALL SCREEN) --}}
                     @if ($applicant->peso_Status == 'PENDING')
                         <div class="sm:hidden flex flex-row w-full mt-4 justify-center space-x-4">
-                            <button type="button"
-                                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                                x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</button>
-                            <button type="button"
-                                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
-                                x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Approve</button>
+                            <x-danger-button type="button" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Not Recommend</x-danger-button>
+                            <x-green-button type="button" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'recommendation-modal')">Recommend</x-green-button>
                         </div>
                     @endif
 
                     <hr class="my-6 border-t border-gray-300">
 
-                    <div class="flex flex-row">
+                    <div class="flex flex-col sm:flex-row">
 
                         <div class="flex flex-col w-full">
                             <ul>
@@ -297,7 +292,7 @@
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Address:</li>
-                                    <p class="ms-4">{{ $applicant->employee->address }},
+                                    <p class="ms-4 uppercase">{{ $applicant->employee->address }},
                                         {{ $applicant->employee->barangay->barangay_Name }},
                                         {{ $applicant->employee->barangay->municipality->municipality_Name }},
                                         {{ $applicant->employee->barangay->municipality->province->province_Name }}
@@ -347,14 +342,32 @@
                     {{-- BUTTONS --}}
                     <div class="flex flex-row mt-4 justify-center w-full">
                         <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                            <a href="#" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
-                                NSRP</a>
-                            <a href="#"
-                                class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
-                                Resume</a>
-                            <a href="#"
-                                class="bg-purple-300 hover:bg-purple-400 text-gray-700 py-2 px-4 rounded">View
-                                Recommendation Letter</a>
+                            <div x-data="{ tooltip: 'Download Resume' }">
+                                <button {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
+                                    wire:click.prevent='printResume({{ $applicant->employee_id }}, {{ $applicant->applicant_Resume }})'
+                                    x-tooltip="tooltip" type="button"
+                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                                    </svg>
+                                </button>
+                            </div>
+                            @if ($applicant->peso_Status == 'RECOMMENDED')
+                                <div x-data="{ tooltip: 'Download Recommendation Letter' }">
+                                    <button wire:click.prevent='printRecom({{ $applicant->applicant_id }})'
+                                        x-tooltip="tooltip" type="button"
+                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                        </svg>
+
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                     </div>
 

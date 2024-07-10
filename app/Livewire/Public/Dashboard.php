@@ -244,9 +244,9 @@ class Dashboard extends Component
         }
 
         if ($this->sort == 'Newest') {
-            $joblist = $joblist->orderBy('created_at', 'ASC');
-        } elseif ($this->sort == 'Oldest') {
             $joblist = $joblist->orderBy('created_at', 'DESC');
+        } elseif ($this->sort == 'Oldest') {
+            $joblist = $joblist->orderBy('created_at', 'ASC');
         } elseif ($this->sort == 'Random') {
             $joblist = $joblist->inRandomOrder();
         }

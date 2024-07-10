@@ -36,7 +36,7 @@
 
                     {{-- TABLE --}}
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
                                 <th scope="col" class="px-6 py-3 ">
                                     Business Name
@@ -60,22 +60,20 @@
                             @if ($employer->isEmpty())
                                 <tr>
                                     <td colspan="5">
-                                        <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                            <div class="flex  bg-gray-100 rounded-full p-1">
-                                                <svg class="w-32 h-32 text-black" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M21 21l-3.5-3.5m0 0a7 7 0 1 1-9-10.5 7 7 0 0 1 9 10.5z" />
+                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                            <div class="p-6 bg-gray-100 rounded-full">
+                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
-                                            </div>
 
-                                            <div class="text-center text-black text-2xl font-semibold mt-6">
-                                                No Employer / Company Found!
                                             </div>
+                                            <p class="text-xl font-bold text-black text-center mt-2">
+                                                No Records Found!
+                                            </p>
                                         </div>
-
 
                                     </td>
                                 </tr>
@@ -95,8 +93,9 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="font-normal text-gray-500 text-sm">
-                                                    {{ $data->company_Address }}, {{ $data->barangay->barangay_Name }},
+                                                <div class="font-normal text-gray-500 text-sm uppercase">
+                                                    {{ $data->company_Address }},
+                                                    {{ $data->barangay->barangay_Name }},
                                                     {{ $data->barangay->municipality->municipality_Name }}
                                                 </div>
                                             </div>
@@ -150,10 +149,9 @@
                 </div>
 
                 {{-- PAGINATION --}}
-                <div>
-
+                <div class="mt-4">
+                    {{ $employer->links('vendor.livewire.tailwind') }}
                 </div>
-
             </div>
 
 

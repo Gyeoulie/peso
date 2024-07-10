@@ -4,12 +4,13 @@ namespace App\Livewire\Employer\Jobpost;
 
 use App\Models\Barangay;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class BarangayModal extends Component
 {
 
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
 
     public $search;
 
@@ -31,7 +32,7 @@ class BarangayModal extends Component
             ->orWhereHas('municipality.province', function ($query) {
                 $query->where('province_Name', 'like', '%' . $this->search . '%');
             })
-            ->paginate(10, ['*'], 'barangay');
+            ->paginate(10);
 
         return view('livewire.employer.jobpost.barangay-modal', compact('barangay'));
     }

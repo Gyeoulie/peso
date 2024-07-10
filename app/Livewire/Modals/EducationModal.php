@@ -24,7 +24,14 @@ class EducationModal extends Component
         $rules = [
             'eduSchool' => 'required|string|max:255',
             'eduLevel' => 'required|string|max:255',
-            'eduCourse' => 'required|string|max:255',
+            'eduCourse' => [
+                function ($attribute, $value, $fail) {
+                    if ($this->eduLevel >= 19 && empty($value)) {
+                        $fail('You must input a course');
+                    }
+                },
+                'max:255',
+            ],
             'eduStart' => [
                 'required',
                 'date',

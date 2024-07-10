@@ -84,7 +84,7 @@
 
             {{-- PAGINATION --}}
             <div>
-                {{ $provinces->links() }}
+                {{ $provinces->links('vendor.livewire.tailwind') }}
 
             </div>
 

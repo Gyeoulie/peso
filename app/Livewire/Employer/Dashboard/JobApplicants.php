@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 // use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -19,7 +20,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.app')]
 class JobApplicants extends Component
 {
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
     public $eduLevels = [
         '1' => 'GRADE I',
         '2' => 'GRADE II',
@@ -98,7 +99,7 @@ class JobApplicants extends Component
         $applicant = Job_Applicants::findOrFail($id);
 
         if (Storage::exists('public/' . $applicant->peso_Letter)) {
-            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_resume.pdf';
+            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_recommendation.pdf';
 
             $fileContent = Storage::get('public/' . $applicant->peso_Letter);
 
@@ -199,6 +200,7 @@ class JobApplicants extends Component
             // Create the initial query for applicants
             $applicantsQuery = Job_Applicants::leftJoin('employee', 'job_applicants.employee_id', '=', 'employee.employee_id')
                 ->where('job_applicants.job_id', $this->selectedJob)
+                ->whereNot('job_applicants.peso_Status', 'PENDING')
                 ->where(function ($query) {
                     $query->where('employee.fname', 'like', '%' . $this->applicantSearch . '%')
                         ->orWhere('employee.mname', 'like', '%' . $this->applicantSearch . '%')
@@ -207,7 +209,12 @@ class JobApplicants extends Component
 
             // Apply the filter if it's not 'ALL'
             if ($this->filter != 'ALL') {
-                $applicantsQuery->where('job_applicants.applicant_Status', $this->filter);
+                if ($this->filter == 'REJECTED') {
+                    $applicantsQuery->whereIn('job_applicants.applicant_Status', ['REJECTED', 'CANCELLED']);
+                } else {
+                    $applicantsQuery->where('job_applicants.applicant_Status', $this->filter);
+
+                }
             }
 
             if ($this->sortDate !== null && $this->sortDate !== '') {
@@ -215,12 +222,19 @@ class JobApplicants extends Component
             }
 
             // Get the counts
-            $total = Job_Applicants::where('job_id', $this->selectedJob)->count();
-            $pending = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'pending')->count();
-            $interested = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'interested')->count();
-            $interview = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'interview')->count();
-            $hired = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'hired')->count();
-            $rejected = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'rejected')->count();
+            $total = Job_Applicants::where('job_id', $this->selectedJob)
+                ->whereNot('job_applicants.peso_Status', 'PENDING')
+                ->count();
+
+            $pending = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'pending')->whereNot('job_applicants.peso_Status', 'PENDING')->count();
+            $interested = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'interested')->whereNot('job_applicants.peso_Status', 'PENDING')->count();
+            $interview = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'interview')->whereNot('job_applicants.peso_Status', 'PENDING')->count();
+            $hired = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'hired')->whereNot('job_applicants.peso_Status', 'PENDING')->count();
+            $accepted = Job_Applicants::where('job_id', $this->selectedJob)->where('job_applicants.applicant_Status', 'accepted')->whereNot('job_applicants.peso_Status', 'PENDING')->count();
+            $rejected = Job_Applicants::where('job_id', $this->selectedJob)
+                ->whereIn('applicant_Status', ['rejected', 'cancelled'])
+                ->whereNot('job_applicants.peso_Status', 'PENDING')
+                ->count();
 
             // Get the paginated list of applicants
             $list = $applicantsQuery->paginate(5);
@@ -232,6 +246,7 @@ class JobApplicants extends Component
                 'interested' => $interested,
                 'interview' => $interview,
                 'hired' => $hired,
+                'accepted' => $accepted,
                 'rejected' => $rejected,
                 'list' => $list,
             ];
@@ -240,19 +255,16 @@ class JobApplicants extends Component
         // Fetch jobs for the authenticated user's company
         $user = Auth::user();
         $userCompanyId = $user->company->company_id;
-        $jobsQuery = Job_Posting::withCount('job_applicants')
+        $jobsQuery = Job_Posting::withCount(['job_applicants' => function ($query) {
+            $query->whereNot('peso_Status', 'PENDING');
+        }])
             ->where('company_id', $userCompanyId)
+            ->whereNot('job_Status', 'PENDING')
             ->where(function ($query) {
                 $query->where('job_Title', 'like', '%' . $this->postSearch . '%');
             });
-
         if ($this->jobFilter !== 'ALL') {
             $jobsQuery->where('job_Status', $this->jobFilter);
-        }
-
-        if ($this->selectedJob) {
-            // Use conditional ordering to prioritize the selected job
-            $jobsQuery->orderByRaw("CASE WHEN job_id = ? THEN 0 ELSE 1 END", [$this->selectedJob]);
         }
 
         $jobs = $jobsQuery->paginate(5);

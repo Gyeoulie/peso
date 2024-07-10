@@ -5,14 +5,15 @@ namespace App\Livewire\Admin\PositionIndustry;
 use App\Models\Job_Positions;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\Features\SupportPagination\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class PositionTable extends Component
 {
 
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
 
-    public $rows = 5;
+    public $rows = 10;
 
     public $search;
 

@@ -5,13 +5,14 @@ namespace App\Livewire\Admin\EligibilityLicense;
 use App\Models\License_Type;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class LicenseTable extends Component
 {
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
 
-    public $rows = 5;
+    public $rows = 10;
 
     public $search;
 

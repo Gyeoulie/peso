@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class ApplicationHistory extends Component
 {
 
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination; 
     public $eduLevels = [
         '1' => 'GRADE I',
         '2' => 'GRADE II',
@@ -47,6 +48,44 @@ class ApplicationHistory extends Component
 
     public $selectedJob;
     public $search, $filter = 'All', $sort = 'Newest';
+
+    public function handleResponse($status, $id)
+    {
+
+        $user = Auth::user();
+
+        // Fetch the applicant record based on job_id and employee_id
+        $applicant = Job_Applicants::find($id);
+
+        // Check if an applicant record was found
+        if ($applicant) {
+            $applicant->update([
+                'applicant_Status' => $status,
+            ]);
+
+            if ($status == 'ACCEPTED') {
+                // Check and update employee status if necessary
+                if ($user->employee->empstatus == 2) { // Assuming empstatus is stored as an integer
+                    $employee = Employee::find($applicant->employee->employee_id);
+                    $employee->update([
+                        'empstatus' => 1,
+                    ]);
+                }
+
+                // Show success toastr notification
+                $this->dispatch('close-modal', 'accept-modal');
+                toastr()->success('Congratulations, job has been accepted!');
+
+            } else if ($status == 'CANCELLED') {
+                // Show error toastr notification
+                $this->dispatch('close-modal', 'reject-modal');
+                toastr()->error('Job has been rejected!');
+            }
+        } else {
+            // Show error toastr notification if applicant record not found
+            toastr()->error('Error in updating, please try again later.');
+        }
+    }
 
     public function updateSelection($id)
     {
@@ -111,7 +150,7 @@ class ApplicationHistory extends Component
         $applicant = Job_Applicants::findOrFail($id);
 
         if (Storage::exists('public/' . $applicant->peso_Letter)) {
-            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_resume.pdf';
+            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_recommendation.pdf';
 
             $fileContent = Storage::get('public/' . $applicant->peso_Letter);
 

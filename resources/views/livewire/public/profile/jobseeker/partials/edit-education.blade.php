@@ -47,57 +47,57 @@
                     </div>
                 </div>
             @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
 
-                    @foreach ($educ as $education)
-                        <div wire:key="{{ $education->education_id }}"
-                            class="container bg-blue-200 p-3 rounded-lg shadow">
+                @foreach ($educ as $education)
+                    <div wire:key="{{ $education->education_id }}" class="container p-3">
 
-                            <div class="flex flex-row h-full items-center">
+                        <div class="flex flex-row h-full items-center">
 
-                                <div class="flex flex-col">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 ">
-                                        <path
-                                            d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
-                                        <path
-                                            d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
-                                        <path
-                                            d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
-                                    </svg>
-                                </div>
+                            <div class="flex flex-col">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 ">
+                                    <path
+                                        d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
+                                    <path
+                                        d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
+                                    <path
+                                        d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
+                                </svg>
+                            </div>
 
-                                <div class="flex flex-col ml-4 w-full">
-                                    <span class="text-2xl text-black font-bold">{{ $education->edu_School }}</span>
-                                    <div class="text-lg text-black font-semibold">{{ $education->edu_Course }}</div>
-                                    <span class="text-sm text-gray-700 font-medium">
-                                        {{ $education->edu_Started->format('F Y') }} -
-                                        {{ $education->edu_Ended->format('F Y') }}
-                                    </span>
-                                </div>
-
-
-                                <div class="flex flex-col h-full items-center justify-center">
-                                    <div wire:click.prevent='editModal({{ $education->education_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1">
-                                        <svg class="w-8 h-8 text-blue-700" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
-                                    </div>
-                                </div>
-
+                            <div class="flex flex-col ml-4 w-full">
+                                <span class="text-3xl text-black font-black">{{ $education->edu_School }}</span>
+                                <div class="text-xl text-black font-semibold">{{ $education->edu_Course }}</div>
+                                <span class="text-md text-gray-700 font-medium">
+                                    {{ $education->edu_Started->format('F Y') }} -
+                                    {{ $education->edu_Ongoing == 1 ? 'Present' : $education->edu_Ended->format('F Y') }}
+                                </span>
                             </div>
 
 
+                            <div class="flex flex-col h-full items-center justify-center">
+                                <div wire:click.prevent='editModal({{ $education->education_id }})'
+                                    class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1">
+                                    <svg class="w-10 h-10 text-blue-700" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                    </svg>
+                                </div>
+                            </div>
+
                         </div>
-                    @endforeach
+
+
+                    </div>
+                    <hr class="h-0.5 my-2 mx-10 bg-blue-200 border-0">
+                @endforeach
 
 
 
 
-                </div>
+                {{-- </div> --}}
             @endif
 
         </div>
@@ -115,13 +115,14 @@
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="eduSchool" :value="__('School')" />
-                    <x-text-input wire:model="educName" id="eduSchool" class="block mt-1 w-full" type="text" />
-                    <x-input-error :messages="$errors->get('educName')" class="mt-2" />
+                    <x-text-input wire:model="eduSchool" class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('eduSchool')" class="mt-2" />
                 </div>
                 <div class="flex flex-row mt-2 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="eduLevel" :value="__('Level')" />
-                        <select wire:model="educLevel" id="eduLevel" class="block mt-1 w-full rounded-lg">
+                        <select wire:model='eduLevel' class="block mt-1 w-full rounded"
+                        x-on:change="$wire.eduLevel <= 18 ? $wire.eduCourse = '' : ''">
                             <option value="" disabled>Select Level</option>
                             <option value="1">GRADE I</option>
                             <option value="2">GRADE II</option>
@@ -150,27 +151,38 @@
                             <option value="25">MASTERAL/POST GRADUATE LEVEL</option>
                             <option value="26">MASTERAL/POST GRADUATE</option>
                         </select>
-                        <x-input-error :messages="$errors->get('educLevel')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('eduLevel')" class="mt-2" />
                     </div>
                     <div class="flex flex-col ml-4 w-full">
                         <x-input-label for="eduCourse" :value="__('Course')" />
-                        <x-text-input wire:model="educCourse" id="eduCourse" class="block mt-1 w-full"
-                            type="text" />
-                        <x-input-error :messages="$errors->get('educCourse')" class="mt-2" />
+                        <x-text-input wire:model="eduCourse" x-bind:disabled="$wire.eduLevel <= 18"
+                        class="block mt-1 w-full" type="text" />
+                        <x-input-error :messages="$errors->get('eduCourse')" class="mt-2" />
                     </div>
                 </div>
-                <div class="flex flex-row mt-2 w-full">
+                <div class="flex flex-col sm:flex-row  mt-2 w-full gap-4" x-data="{ eduOngoing: @entangle('eduOngoing'), eduEnd: @entangle('eduEnd') }">
                     <div class="flex flex-col w-full">
                         <x-input-label for="eduStart" :value="__('Started')" />
-                        <x-text-input wire:model="educStart" id="eduStart" class="block mt-1 w-full"
-                            type="date" />
-                        <x-input-error :messages="$errors->get('educStart')" class="mt-2" />
+                        <x-text-input wire:model="eduStart" class="block mt-1 w-full" type="date" />
+                        <x-input-error :messages="$errors->get('eduStart')" class="mt-2" />
                     </div>
                     <div class="flex flex-col ml-4 w-full">
                         <x-input-label for="eduEnd" :value="__('Ended')" />
-                        <x-text-input wire:model="educEnd" id="eduEnd" class="block mt-1 w-full"
-                            type="date" />
-                        <x-input-error :messages="$errors->get('educEnd')" class="mt-2" />
+                        <x-text-input wire:model="eduEnd" class="block mt-1 w-full" type="date"
+                            x-bind:disabled='eduOngoing' />
+
+                        <x-input-error :messages="$errors->get('eduEnd')" class="mt-2" />
+                    </div>
+
+                    <div class="flex flex-row h-full w-full items-center justify-center sm:mt-8">
+                        <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
+                            <input @click="eduEnd = eduOngoing ? eduEnd: ''" wire:model='eduOngoing'
+                                x-model="eduOngoing"
+                                class="relative float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent "
+                                type="checkbox" id="education-completed" />
+                            <x-input-label class="font-bold ml-2 inline-block pl-[0.15rem] hover:cursor-pointer"
+                                for="education-completed" :value="__('ON GOING')" />
+                        </div>
                     </div>
                 </div>
 
@@ -180,7 +192,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent='save' class="ms-3" type="button" id="eduAdd">
+                <x-primary-button wire:click.prevent='save' class="ms-3" type="button">
                     {{ __('Save') }}
                 </x-primary-button>
             </div>

@@ -1,7 +1,7 @@
 <div class="bg-white shadow rounded-lg p-6">
     <div class="relative overflow-x-auto">
 
-        <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+        <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 p-1">
 
             <label for="table-search" class="sr-only">Search</label>
 
@@ -17,7 +17,7 @@
                 {{-- SEARCH --}}
                 <input wire:model.live.prevent="search" type="text" id="table-search-users"
                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Search for">
+                    placeholder="Search">
             </div>
 
             {{-- ADD BUTTON --}}
@@ -50,7 +50,7 @@
 
                             <x-dropdown-link href="#" wire:click="updatePublicKey('Barangay')"
                                 class="block px-4 py-2 hover:bg-gray-100">Barangay</x-dropdown-link>
-
+ 
                             <!-- Authentication -->
                             <x-dropdown-link href="#" wire:click="updatePublicKey('Municipalities')"
                                 class="block px-4 py-2 hover:bg-gray-100">Municipalities</x-dropdown-link>
@@ -74,7 +74,7 @@
         {{-- TABLE BARANGAY/LOCATION --}}
         @if ($defaultFilter === 'Barangay')
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             Barangay
@@ -315,8 +315,7 @@
         @endif
     </div>
 
-    <div class="navbar-here">
-        {{-- navbar --}}
+    <div class="mt-4">
+        {{ $locationData->links('vendor.livewire.tailwind') }}
     </div>
-
 </div>

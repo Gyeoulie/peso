@@ -1,4 +1,4 @@
-<div class="container mx-auto py-8">
+<div wire:poll class="container mx-auto py-8">
 
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
         <div class="col-span-4 sm:col-start-4 sm:col-end-10">
@@ -109,7 +109,7 @@
                     @endif
                 </div>
                 <div class="m-4">
-                    {{ $results->links() }}
+                    {{ $results->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
 

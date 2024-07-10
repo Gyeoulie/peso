@@ -88,7 +88,7 @@
 
         {{-- PAGINATION --}}
         <div>
-            {{ $industry->links() }}
+            {{ $industry->links('vendor.livewire.tailwind') }}
         </div>
 
 

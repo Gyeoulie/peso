@@ -39,7 +39,8 @@
 
                     <h1 class="text-xl font-bold uppercase"> {{ $jobseeker->fname }}
                         {{ $jobseeker->mname ?? '' }}
-                        {{ $jobseeker->lname }}@if (!empty($jobseeker->suffix)), {{ $jobseeker->suffix }}
+                        {{ $jobseeker->lname }}@if (!empty($jobseeker->suffix))
+                            , {{ $jobseeker->suffix }}
                         @endif
                     </h1>
                     <p class="text-gray-700">#IDNUMBER</p>
@@ -71,7 +72,8 @@
 
                         <div class="flex flex-row">
                             <li class="mb-2 font-bold">Address:</li>
-                            <p class="ms-4"> {{ $jobseeker->address }}, {{ $jobseeker->barangay->barangay_Name }},
+                            <p class="ms-4 uppercase"> {{ $jobseeker->address }},
+                                {{ $jobseeker->barangay->barangay_Name }},
                                 {{ $jobseeker->barangay->municipality->municipality_Name }},
                                 {{ $jobseeker->barangay->municipality->province->province_Name }}</p>
                         </div>
@@ -173,7 +175,7 @@
 
                     {{-- HISTORY TABLE --}}
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
                                     Job Position
@@ -226,9 +228,12 @@
                                         @elseif ($data->applicant_Status == 'HIRED')
                                             <span
                                                 class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
-                                        @elseif ($data->applicant_Status == 'REJECTED')
+                                        @elseif ($data->applicant_Status == 'ACCEPTED')
                                             <span
-                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                                class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">ACCEPTED</span>
+                                        @elseif ($data->applicant_Status == 'REJECTED' || $data->applicant_Status == 'CANCELLED')
+                                            <span
+                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->applicant_Status }}</span>
                                         @endif
 
                                     </td>

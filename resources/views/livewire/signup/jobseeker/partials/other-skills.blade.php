@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full h-full">
+<div wire:poll class="flex flex-col w-full h-full">
 
     <h1 class="text-2xl font-bold">Add Other Skills</h1>
     <div class="flex flex-col gap-4 mt-5 w-full h-full">

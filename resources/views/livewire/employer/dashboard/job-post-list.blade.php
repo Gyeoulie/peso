@@ -1,4 +1,4 @@
-<div>
+<div wire:poll>
     <div class="py-12">
         <div class="max-w-7xl mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -209,6 +209,9 @@
                                                     class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">{{ $data->hired_count }}
                                                     HIRED</span>
                                                 <span
+                                                    class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">{{ $data->accepted_count }}
+                                                    ACCEPTED</span>
+                                                <span
                                                     class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">{{ $data->rejected_count }}
                                                     REJECTED</span>
                                             </div>
@@ -250,7 +253,7 @@
                     </table>
                     {{-- navbar --}}
                     <div class="mt-2 p-4">
-                        {{ $applicants->links() }}
+                        {{ $applicants->links('vendor.livewire.tailwind') }}
                     </div>
                 </div>
 

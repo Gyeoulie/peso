@@ -9,6 +9,8 @@ use Livewire\Component;
 
 class CertificatesEditModal extends Component
 {
+
+    
     public $certId;
     public $certCodeInput;
     public $certNameInput;

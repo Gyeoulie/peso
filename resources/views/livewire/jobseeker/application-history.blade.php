@@ -1,4 +1,4 @@
-<div>
+<div wire:poll>
     <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
         <div class="col-span-4 sm:col-span-5">
 
@@ -174,12 +174,16 @@
                                                 @elseif ($data->applicant_Status == 'HIRED')
                                                     <span
                                                         class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
-                                                @elseif ($data->applicant_Status == 'REJECTED')
+                                                @elseif ($data->applicant_Status == 'ACCEPTED')
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                                        class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">ACCEPTED</span>
+                                                @elseif ($data->applicant_Status == 'REJECTED' || $data->applicant_Status == 'CANCELLED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->applicant_Status }}</span>
                                                 @endif
 
                                             </div>
+
                                             @if ($data->applicant_Notif == 1)
                                                 <span
                                                     class="absolute bg-red-500 p-0.5 leading-none w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full -translate-y-1/2 translate-x-1/2 left-auto top-0 right-0"></span>
@@ -223,7 +227,7 @@
                 @endif
             </div>
             <div class="mt-2">
-                {{ $applications->links() }}
+                {{ $applications->links('vendor.livewire.tailwind') }}
             </div>
         </div>
 
@@ -244,26 +248,52 @@
                                 {{ $applicationInfo->job_posting->company->business_Name }}</h1>
 
                         </div>
-                        <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
-                            @if ($applicationInfo->applicant_Status == 'PENDING')
-                                <span
-                                    class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                            @elseif ($applicationInfo->applicant_Status == 'INTERESTED')
-                                <span
-                                    class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                            @elseif ($applicationInfo->applicant_Status == 'INTERVIEW')
-                                <span
-                                    class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
-                            @elseif ($applicationInfo->applicant_Status == 'HIRED')
-                                <span
-                                    class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
-                            @elseif ($applicationInfo->applicant_Status == 'REJECTED')
-                                <span
-                                    class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+
+                        <div class="flex flex-col ">
+                            <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
+                                @if ($applicationInfo->applicant_Status == 'PENDING')
+                                    <span
+                                        class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                @elseif ($applicationInfo->applicant_Status == 'INTERESTED')
+                                    <span
+                                        class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                @elseif ($applicationInfo->applicant_Status == 'INTERVIEW')
+                                    <span
+                                        class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
+                                @elseif ($applicationInfo->applicant_Status == 'HIRED')
+                                    <span
+                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
+                                @elseif ($applicationInfo->applicant_Status == 'COMPLETED')
+                                    <span
+                                        class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">HIRED</span>
+                                @elseif ($applicationInfo->applicant_Status == 'REJECTED' || $applicationInfo->applicant_Status == 'CANCELLED')
+                                    <span
+                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $applicationInfo->applicant_Status }}</span>
+                                @endif
+                            </div>
+                            @if ($applicationInfo->applicant_Status == 'HIRED')
+                                <div class="hidden sm:flex flex-row w-full justify-end">
+                                    <x-danger-button type="button" class="w-[100px] justify-center me-2 mb-2"
+                                        x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Cancel</x-danger-button>
+                                    <x-green-button type="button" class="w-[100px] justify-center me-2 mb-2"
+                                        x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'accept-modal')">Accept</x-green-button>
+                                </div>
                             @endif
                         </div>
+
                     </div>
-                    <hr class="mt-4">
+                    @if ($applicationInfo->applicant_Status == 'HIRED')
+                        <div class="sm:hidden flex flex-row w-full justify-center mt-5">
+                            <x-danger-button class="justify-center me-2 mb-2" type="button" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Cancel</x-danger-button>
+                            <x-green-button type="button" class="justify-center me-2 mb-2" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'accept-modal')">Accept</x-green-button>
+                        </div>
+                    @endif
+
+                    <hr class="mt-2 sm:mt-4">
                     <div class="flex flex-col mt-4">
 
                         <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">APPLICATION DETAIL</span>
@@ -309,7 +339,7 @@
                                         Pending
                                     @elseif($applicationInfo->peso_Status === 'RECOMMENDED')
                                         Recommended
-                                    @elseif($applicationInfo->peso_Status === 'NOT')
+                                    @elseif($applicationInfo->peso_Status === 'REJECT')
                                         Not Recommended
                                     @endif
 
@@ -335,10 +365,12 @@
                                     href="{{ route('jobpost.show', ['id' => $applicationInfo->job_id]) }}"
                                     x-tooltip="tooltip" type="button"
                                     class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
-                                      </svg>
-                                      
+                                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
+                                    </svg>
+
 
                                 </a>
                             </div>
@@ -355,18 +387,18 @@
                                 </button>
                             </div>
                             @if ($applicationInfo->peso_Status == 'RECOMMENDED')
-                            <div x-data="{ tooltip: 'Download Recommendation Letter' }">
-                                <button wire:click.prevent='printRecom({{ $applicationInfo->applicant_id }})'
-                                    x-tooltip="tooltip" type="button"
-                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-                                    </svg>
+                                <div x-data="{ tooltip: 'Download Recommendation Letter' }">
+                                    <button wire:click.prevent='printRecom({{ $applicationInfo->applicant_id }})'
+                                        x-tooltip="tooltip" type="button"
+                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                        </svg>
 
-                                </button>
-                            </div>
+                                    </button>
+                                </div>
                             @endif
                         </div>
 
@@ -375,8 +407,100 @@
 
 
                 </div>
+                <x-modal name="accept-modal" focusable>
+                    <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+                        <h2 class="text-lg font-medium text-gray-900">
+                            {{ __('Job Confirmation') }}
+                        </h2>
+                        <hr>
+                        <div class="flex flex-col mt-4">
+
+                            <h1 class="text-xl font-bold">Are you sure you want to accept this job?</h1>
+
+                        </div>
+
+
+
+                        <div class="mt-6 flex justify-end">
+                            <x-secondary-button x-data=""
+                                x-on:click.prevent="$dispatch('close-modal', 'accept-modal')" type="button">
+                                {{ __('Cancel') }}
+                            </x-secondary-button>
+
+                            <x-green-button wire:loading.attr="disabled"
+                                wire:click.prevent="handleResponse('ACCEPTED', {{ $applicationInfo->applicant_id }})"
+                                class="ms-3" type="button">
+
+
+                                {{ __('Accept Job') }}
+
+                                <div wire:loading.delay.long wire:target="handleResponse('ACCEPTED')" role="status">
+                                    <svg aria-hidden="true"
+                                        class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                            fill="currentColor" />
+                                        <path
+                                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                            fill="currentFill" />
+                                    </svg>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </x-green-button>
+
+                        </div>
+                    </div>
+                </x-modal>
+                <x-modal name="reject-modal" focusable>
+                    <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+                        <h2 class="text-lg font-medium text-gray-900">
+                            {{ __('Job Confirmation') }}
+                        </h2>
+                        <hr>
+                        <div class="flex flex-col mt-4">
+
+                            <h1 class="text-xl font-bold">Are you sure you want to cancel this job?</h1>
+
+                        </div>
+
+
+
+                        <div class="mt-6 flex justify-end">
+                            <x-secondary-button x-data=""
+                                x-on:click.prevent="$dispatch('close-modal', 'reject-modal')" type="button">
+                                {{ __('Cancel') }}
+                            </x-secondary-button>
+
+                            <x-danger-button wire:loading.attr="disabled"
+                                wire:click.prevent="handleResponse('CANCELLED', {{ $applicationInfo->applicant_id }})"
+                                class="ms-3" type="button">
+
+
+                                {{ __('Reject Job') }}
+
+                                <div wire:loading.delay.long wire:target="handleResponse('CANCELLED')" role="status">
+                                    <svg aria-hidden="true"
+                                        class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                            fill="currentColor" />
+                                        <path
+                                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                            fill="currentFill" />
+                                    </svg>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </x-danger-button>
+
+                        </div>
+                    </div>
+                </x-modal>
+
             @endif
         </div>
     </div>
+
 
 </div>

@@ -72,7 +72,7 @@
 
                     {{-- TABLE --}}
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
                                 <th scope="col" class="px-6 py-3 ">
                                     Name
@@ -93,28 +93,27 @@
                             @if ($jobseeker->isEmpty())
                                 <tr>
                                     <td colspan="4">
-                                        <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                            <div class="flex  bg-gray-100 rounded-full p-1">
-                                                <svg class="w-16 h-16 text-black" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M21 21l-3.5-3.5m0 0a7 7 0 1 1-9-10.5 7 7 0 0 1 9 10.5z" />
+                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                            <div class="p-6 bg-gray-100 rounded-full">
+                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
-                                            </div>
 
-                                            <div class="text-center text-black text-xl font-semibold mt-2">
-                                                No Jobseeker Found
                                             </div>
+                                            <p class="text-xl font-bold text-black text-center mt-2">
+                                                No Records Found!
+                                            </p>
                                         </div>
-
 
                                     </td>
                                 </tr>
                             @else
                                 @foreach ($jobseeker as $data)
-                                    <tr wire:key='emp-{{ $data->employee_id }}' class="bg-white border-b hover:bg-gray-50">
+                                    <tr wire:key='emp-{{ $data->employee_id }}'
+                                        class="bg-white border-b hover:bg-gray-50">
                                         <th scope="row"
                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                             <img class="w-10 h-10 rounded-full"
@@ -131,7 +130,7 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="font-normal text-gray-500 text-sm">
+                                                <div class="font-normal text-gray-500 text-sm uppercase">
                                                     {{ $data->address }}, {{ $data->barangay->barangay_Name }},
                                                     {{ $data->barangay->municipality->municipality_Name }}
                                                 </div>
@@ -187,8 +186,8 @@
                 </div>
 
                 {{-- PAGINATION --}}
-                <div>
-
+                <div class="mt-4">
+                    {{ $jobseeker->links('vendor.pagination.tailwind') }}
                 </div>
 
             </div>
