@@ -11,6 +11,7 @@ use App\Models\Industry_preference;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Job_Preference;
+use App\Models\Language;
 use App\Models\License;
 use App\Models\License_Type;
 use Carbon\Carbon;
@@ -42,6 +43,11 @@ class EditDetails extends Component
     public $barangayID, $mun, $prov, $bar;
     public $disability, $selectDisability = "", $otherDisability = "";
     public $jobpreference, $industrypreference;
+
+    // LANGUAGE
+    public $langID;
+    public $selectedLanguage = "", $otherLanguage;
+    public $read, $write, $speak, $understand;
 
     // ELIGIBILITY
     public $eliID;
@@ -78,6 +84,10 @@ class EditDetails extends Component
         if ($modalName == "disability") {
             $this->reset('selectDisability', 'otherDisability', );
             $this->dispatch('open-modal', 'disability-modal');
+        } elseif ($modalName == "language") {
+            $this->reset('read', 'write', 'speak', 'understand', 'otherLanguage');
+            $this->selectedLanguage = '';
+            $this->dispatch('open-modal', 'language-modal');
         } elseif ($modalName == "eligibility") {
             $this->reset('eliID', 'eli_Name', 'eli_Date', 'search');
             $this->dispatch('open-modal', 'eligibility-modal');
@@ -93,6 +103,10 @@ class EditDetails extends Component
         if ($modalName == "disability") {
             $this->reset('selectDisability', 'otherDisability');
             $this->dispatch('close-modal', 'disability-modal');
+        } elseif ($modalName == "language") {
+            $this->reset('read', 'write', 'speak', 'understand', 'otherLanguage');
+            $this->selectedLanguage = '';
+            $this->dispatch('close-modal', 'language-modal');
         } elseif ($modalName == "eligibility") {
             $this->reset('eliID', 'eli_Name', 'eli_Date', 'search');
             $this->dispatch('close-modal', 'eligibility-modal');
@@ -152,32 +166,6 @@ class EditDetails extends Component
     }
 
     //SET VARIABLES
-    public function mount()
-    {
-        $user = Auth::user();
-        $this->empID = $user->employee->employee_id;
-
-        $employeeDetails = Employee::find($this->empID);
-
-        $this->fname = $employeeDetails->fname;
-        $this->mname = $employeeDetails->mname;
-        $this->lname = $employeeDetails->lname;
-        $this->suffix = $employeeDetails->suffix;
-        $this->birthdate = Carbon::parse($employeeDetails->birthdate)->format('Y-m-d');
-        $this->gender = $employeeDetails->gender;
-        $this->civilstatus = $employeeDetails->civilstatus;
-        $this->religion = $employeeDetails->religion;
-        $this->pnumber = $employeeDetails->pnumber;
-        $this->tinnum = $employeeDetails->tinnum;
-        $this->height = $employeeDetails->height;
-        $this->address = $employeeDetails->address;
-
-        $barangayDetails = Barangay::find($employeeDetails->barangay_id);
-        $this->bar = $barangayDetails->barangay_Name;
-        $this->mun = $barangayDetails->municipality->municipality_Name;
-        $this->prov = $barangayDetails->municipality->province->province_Name;
-    }
-
     public function setVar($id, $name)
     {
         if ($name == "eligibility") {
@@ -197,6 +185,31 @@ class EditDetails extends Component
 
     public function editRecord($id, $name)
     {
+        if ($name == 'language') {
+            $this->langID = $id;
+
+            $languageData = Language::find($id);
+
+            // Mapping language types to selectedLanguage values
+            $languageTypeMap = [
+                'English' => 'English',
+                'Filipino' => 'Filipino',
+                'Mandarin' => 'Mandarin',
+            ];
+
+            $this->selectedLanguage = $languageTypeMap[$languageData->language_Type] ?? 'other';
+            $this->otherLanguage = $this->selectedLanguage == 'other' ? $languageData->language_Type : null;
+
+            // Boolean flags based on database values
+            $this->read = $languageData->language_Read == '1';
+            $this->write = $languageData->language_Write == '1';
+            $this->speak = $languageData->language_Speak == '1';
+            $this->understand = $languageData->language_Understand == '1';
+
+            $this->dispatch('open-modal', 'language-modal');
+
+        }
+
         if ($name == "license") {
             $this->licID = $id;
 
@@ -268,6 +281,39 @@ class EditDetails extends Component
 
     }
 
+    // LANGUAGE
+    public function saveLanguage()
+    {
+        if ($this->langID) {
+            Language::where('language_id', $this->langID)
+                ->where('employee_id', $this->empID)->update([
+                'employee_id' => $this->empID,
+                'language_Type' => $this->selectedLanguage === 'other' ? $this->otherLanguage : $this->selectedLanguage,
+                'language_Read' => $this->read === true ? 1 : 2,
+                'language_Write' => $this->write === true ? 1 : 2,
+                'language_Speak' => $this->speak === true ? 1 : 2,
+                'language_Understand' => $this->understand === true ? 1 : 2,
+            ]);
+        } else {
+            try {
+                Language::create([
+                    'employee_id' => $this->empID,
+                    'language_Type' => $this->selectedLanguage === 'other' ? $this->otherLanguage : $this->selectedLanguage,
+                    'language_Read' => $this->read === true ? 1 : 2,
+                    'language_Write' => $this->write === true ? 1 : 2,
+                    'language_Speak' => $this->speak === true ? 1 : 2,
+                    'language_Understand' => $this->understand === true ? 1 : 2,
+                ]);
+
+                toastr()->success('License Record has been Added!');
+            } catch (\Exception $e) {
+                toastr()->error('There was an Error');
+            }
+        }
+        $this->closeModal('language');
+
+    }
+
     //LICENSE
     public function saveLicense()
     {
@@ -329,138 +375,6 @@ class EditDetails extends Component
 
         $this->closeModal('eligibility');
     }
-
-    // public function saveDetails($name)
-    // {
-    //     if ($name == "general") {
-    //         $this->validate();
-
-    //         $jobseekerData = Employee::findOrFail($this->empID);
-    //         $imgPath = null;
-
-    //         if ($this->pimg) {
-    //             $imgPath = $this->pimg->store('images/user_data', 'public');
-    //         }
-
-    //         DB::beginTransaction();
-
-    //         try {
-    //             if ($this->pimg && $jobseekerData->pimg) {
-    //                 Storage::disk('public')->delete($jobseekerData->pimg);
-    //             }
-
-    //             $jobseekerData->update([
-    //                 'pimg' => $imgPath ?? $jobseekerData->pimg,
-    //                 'fname' => $this->fname,
-    //                 'mname' => $this->mname,
-    //                 'lname' => $this->lname,
-    //                 'suffix' => $this->suffix,
-    //                 'height' => $this->height,
-    //                 'gender' => $this->gender,
-    //                 'civilstatus' => $this->civilstatus,
-    //                 'religion' => $this->religion,
-    //                 'birthdate' => $this->birthdate,
-    //                 'pnumber' => $this->pnumber,
-    //                 'address' => $this->address,
-    //                 'barangay' => $this->barangayID, //fk
-    //                 'tinnum' => $this->tinnum,
-    //             ]);
-
-    //             DB::commit();
-
-    //             toastr()->success('Profile has been updated!');
-    //         } catch (\Exception $e) {
-    //             DB::rollBack();
-
-    //             // Show error toastr notification
-    //             toastr()->error('There was an error updating the profile.');
-    //         }
-    //     } elseif ($name == "disability") {
-    //         if ($this->selectDisability === "other") {
-    //             $this->selectDisability = $this->otherDisability;
-    //             $this->validate([
-    //                 'selectDisability' => ['required', 'string', 'filled'],
-    //             ]);
-    //         }
-
-    //         $this->validate([
-    //             'selectDisability' => [
-    //                 'required', 'string', 'filled',
-    //                 Rule::unique('disability', 'disability_Type')
-    //                     ->where(function ($query) {
-    //                         $query->where('employee_id', $this->empID)
-    //                             ->whereRaw('LOWER(disability_Type) = LOWER(?)', [$this->selectDisability]);
-    //                     }),
-    //             ],
-    //         ]);
-
-    //         try {
-    //             Disability::create([
-    //                 'employee_id' => $this->empID,
-    //                 'disability_Type' => strtoupper($this->selectDisability),
-    //             ]);
-
-    //             toastr()->success('Disability Record has been Added!');
-    //         } catch (\Exception $e) {
-    //             toastr()->error('There was an Error');
-    //         }
-    //         $this->closeModal('disability');
-    //     } elseif ($name == "license") {
-    //         if ($this->licID) {
-    //             try {
-    //                 License::where('license_id', $this->licID)->update([
-    //                     'license_type_id' => $this->licTypeID,
-    //                     'license_Validity' => $this->licValidity,
-    //                 ]);
-
-    //                 toastr()->success('License Record has been Updated!');
-    //             } catch (\Exception $e) {
-    //                 toastr()->error('There was an Error');
-    //             }
-    //         } else {
-    //             try {
-    //                 License::create([
-    //                     'employee_id' => $this->empID,
-    //                     'license_type_id' => $this->licTypeID,
-    //                     'license_Validity' => $this->licValidity,
-    //                 ]);
-
-    //                 toastr()->success('License Record has been Added!');
-    //             } catch (\Exception $e) {
-    //                 toastr()->error('There was an Error');
-    //             }
-    //         }
-
-    //         $this->closeModal('license');
-    //     } elseif ($name == "eligibility") {
-    //         if ($this->eliID) {
-    //             try {
-    //                 Eligibility::where('eligibility_id', $this->eliID)->update([
-    //                     'eligibility_Type' => $this->eliTypeID,
-    //                     'eligibility_Date' => $this->eli_Date,
-    //                 ]);
-
-    //                 toastr()->success('Eligibility Record has been Updated!');
-    //             } catch (\Exception $e) {
-    //                 toastr()->error('There was an Error');
-    //             }
-    //         } else {
-    //             try {
-    //                 Eligibility::create([
-    //                     'employee_id' => $this->empID,
-    //                     'eligibility_Type' => $this->eliTypeID,
-    //                     'eligibility_Date' => $this->eli_Date,
-    //                 ]);
-
-    //                 toastr()->success('Eligibility Record has been Added!');
-    //             } catch (\Exception $e) {
-    //                 toastr()->error('There was an Error');
-    //             }
-    //         }
-
-    //         $this->closeModal('eligibility');
-    //     }
-    // }
 
     //ADDRESS + POSITIONS
     #[On('barSelect')]
@@ -561,14 +475,16 @@ class EditDetails extends Component
 
         $this->disability = Disability::where('employee_id', '=', $this->empID)->get();
 
+        // $langTypes = Language::where('language_Type', 'like', '%' . $this->search . '%')->get();
         $elTypes = Eligibility_Type::where('eligibility_Name', 'like', '%' . $this->search . '%')->get();
         $liTypes = License_Type::where('license_Name', 'like', '%' . $this->search . '%')->get();
 
         $employeeDetails = Employee::with([
             'job_preference',
             'industry_preference',
+            'language',
             'eligibility' => function ($query) {
-                $query->whereHas('eligibilityType', function ($q) {
+                $query->whereHas('eligibility_type', function ($q) {
                     $q->where('eligibility_Name', 'like', '%' . $this->search . '%');
                 })->orderBy('eligibility_Date', 'desc');
             },
@@ -578,6 +494,24 @@ class EditDetails extends Component
                 })->orderBy('license_Validity', 'desc');
             },
         ])->find($this->empID);
+
+        $this->fname = $employeeDetails->fname;
+        $this->mname = $employeeDetails->mname;
+        $this->lname = $employeeDetails->lname;
+        $this->suffix = $employeeDetails->suffix;
+        $this->birthdate = Carbon::parse($employeeDetails->birthdate)->format('Y-m-d');
+        $this->gender = $employeeDetails->gender;
+        $this->civilstatus = $employeeDetails->civilstatus;
+        $this->religion = $employeeDetails->religion;
+        $this->pnumber = $employeeDetails->pnumber;
+        $this->tinnum = $employeeDetails->tinnum;
+        $this->height = $employeeDetails->height;
+        $this->address = $employeeDetails->address;
+
+        $barangayDetails = Barangay::find($employeeDetails->barangay_id);
+        $this->bar = $barangayDetails->barangay_Name;
+        $this->mun = $barangayDetails->municipality->municipality_Name;
+        $this->prov = $barangayDetails->municipality->province->province_Name;
 
         return view(
             'livewire.public.profile.jobseeker.partials.edit-details',

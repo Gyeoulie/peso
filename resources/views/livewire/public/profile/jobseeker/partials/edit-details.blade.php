@@ -43,14 +43,18 @@
                     </li>
                     <li class="me-2">
                         <button @click="openTab = 2" :class="openTab === 2 ? activeTab : inactiveTab"
-                            class="inline-block p-4">Eligibility</button>
+                            aria-current="page" class="inline-block p-4">Language</button>
                     </li>
                     <li class="me-2">
                         <button @click="openTab = 3" :class="openTab === 3 ? activeTab : inactiveTab"
-                            class="inline-block p-4">License</button>
+                            class="inline-block p-4">Eligibility</button>
                     </li>
                     <li class="me-2">
                         <button @click="openTab = 4" :class="openTab === 4 ? activeTab : inactiveTab"
+                            class="inline-block p-4">License</button>
+                    </li>
+                    <li class="me-2">
+                        <button @click="openTab = 5" :class="openTab === 5 ? activeTab : inactiveTab"
                             class="inline-block p-4">Job Preference</button>
                     </li>
                 </ul>
@@ -310,17 +314,146 @@
                     <div class="flex flex-row">
 
 
-                        <x-blue-button wire:click.prevent="saveProfile" class="ml-auto mr-3"
-                            type="button" x-data="" {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> x-on:click.prevent="saveDetails(general)" --}}>
+                        <x-blue-button wire:click.prevent="saveProfile" class="ml-auto mr-3" type="button"
+                            x-data="" {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> x-on:click.prevent="saveDetails(general)" --}}>
                             Save
                         </x-blue-button>
                     </div>
                 </div>
                 {{-- BASIC INFORMATION --}}
 
+                {{-- LANGUAGE --}}
+                <div class="flex flex-col" x-show="openTab === 2"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                    x-cloak>
+
+
+                    <div class="relative overflow-x-auto mt-4">
+
+                        <div
+                            class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 ">
+
+                            <label for="table-search" class="sr-only">Search</label>
+
+
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                    </svg>
+                                </div>
+                                {{-- SEARCH --}}
+                                <input wire:model.live='searchLang' type="text"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Search for language">
+                            </div>
+
+                            {{-- ADD BUTTON --}}
+                            <div class="hidden sm:inline-flex">
+                                <x-primary-button wire:click.prevent="openModal('language')" type="button"
+                                    class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900">
+                                    Add Language</x-primary-button>
+                            </div>
+
+                        </div>
+
+
+                        <table class="w-full text-sm text-left rtl:text-right">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="border px-6 py-3">
+                                        Language
+                                    </th>
+                                    <th scope="col" class="border px-6 py-3 text-center">
+                                        Read
+                                    </th>
+                                    <th scope="col" class="border px-6 py-3 text-center">
+                                        Write
+                                    </th>
+                                    <th scope="col" class="border px-6 py-3  text-center">
+                                        Speak
+                                    </th>
+                                    <th scope="col" class="border px-6 py-3 text-center">
+                                        Understand
+                                    </th>
+                                    <th scope="col" class="border px-6 py-3 text-center">
+                                        Edit
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($employeeDetails->language as $data)
+                                    <tr wire:key='language-{{ $data->language_id }}'
+                                        class="bg-white border-b hover:bg-gray-50 content-center">
+                                        <th class="border px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                            {{ $data->language_Type }}
+                                        </th>
+                                        <td scope="row" class="border px-6 py-1">
+                                            <div class="flex items-center justify-center">
+                                                <input type="checkbox" @if ($data->language_Read == '1') checked @endif
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                                    disabled>
+                                                <label for="checkbox-read" class="sr-only">checkbox</label>
+                                            </div>
+                                        </td>
+                                        <td class="border px-6 py-1">
+                                            <div class="flex items-center justify-center">
+                                                <input type="checkbox" @if ($data->language_Write == '1') checked @endif
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                                    disabled>
+                                                <label for="checkbox-write" class="sr-only">checkbox</label>
+                                            </div>
+                                        </td>
+                                        <td class="border px-6 py-1">
+                                            <div class="flex items-center justify-center">
+                                                <input type="checkbox" @if ($data->language_Speak == '1') checked @endif
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                                    disabled>
+                                                <label for="checkbox-speak" class="sr-only">checkbox</label>
+                                            </div>
+                                        </td>
+                                        <td class="border px-6 py-1">
+                                            <div class="flex items-center justify-center">
+                                                <input id="checkbox-understand" type="checkbox"
+                                                    @if ($data->language_Understand == '1') checked @endif
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                                    disabled>
+                                                <label for="checkbox-understand" class="sr-only">checkbox</label>
+                                            </div>
+                                        </td>
+                                        <td class="border px-6 py-1 text-center">
+                                            {{-- EDIT BUTTON --}}
+                                            <div x-data="{ tooltip: 'Edit Language' }">
+                                                <button
+                                                    wire:click.prevent="editRecord({{ $data->language_id }}, 'language')"
+                                                    x-tooltip="tooltip" type="button"
+                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                        stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                {{-- LANGUAGE --}}
 
                 {{-- ELIGIBILITY --}}
-                <div class="flex flex-col" x-show="openTab === 2"
+                <div class="flex flex-col" x-show="openTab === 3"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
@@ -381,7 +514,7 @@
                                     <tr class="bg-white border-b hover:bg-gray-50">
                                         <td class="px-6 py-4">
                                             <div class="text-gray-500 font-medium text-lg uppercase">
-                                                {{ $eli->eligibilityType->eligibility_Name }}
+                                                {{ $eli->eligibility_type->eligibility_Name }}
                                             </div>
                                         </td>
 
@@ -433,7 +566,7 @@
 
 
                 {{-- LICENSE --}}
-                <div class="flex flex-col" x-show="openTab === 3"
+                <div class="flex flex-col" x-show="openTab === 4"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
@@ -546,7 +679,7 @@
                 {{-- LICENSE --}}
 
                 {{-- JOB AND INDUSTRY PREFERENCE --}}
-                <div class="flex flex-col" x-show="openTab === 4"
+                <div class="flex flex-col" x-show="openTab === 5"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
@@ -847,6 +980,111 @@
     </x-modal>
 
 
+    <x-modal name="language-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Add Language/Dialect Record') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2" x-data="{ selectedLanguage: @entangle('selectedLanguage') }">
+
+                <div class="flex flex-col  mt-2 w-full">
+                    <x-input-label for="langSelect" :value="__('Add Language')" />
+                    <select wire:model='selectedLanguage' name="langSelect" class="block mt-1 w-full rounded">
+                        <option value="" disabled selected>Select Language</option>
+                        <option value="English">English</option>
+                        <option value="Filipino">Filipino</option>
+                        <option value="Mandarin">Mandarin</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <x-input-error :messages="$errors->get('selectedLanguage')" class="mt-2" />
+                </div>
+                <div x-show="selectedLanguage === 'other'" x-cloak class="mt-2">
+                    <x-input-label for="langOther" :value="__('Other Language')" />
+                    <x-text-input wire:model='otherLanguage' class="block mt-1 w-full" type="text"
+                        name="langOther" />
+                    <x-input-error :messages="$errors->get('otherLanguage')" class="mt-2" />
+                </div>
+
+                <div class="flex flex-col mt-4 w-full">
+                    <div class="flex flex-row justify-center gap-5 w-full">
+                        <div>
+                            <input wire:model='read' type="checkbox" id="read-option" class="hidden peer"
+                                required="">
+                            <label for="read-option"
+                                class="inline-flex items-center justify-between w-full p-3 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                <div class="flex flex-row items-center justify-center">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                                    </svg>
+
+                                    <div class="ml-2 w-full text-lg font-semibold">Read</div>
+                                </div>
+                        </div>
+                        <div>
+                            <input wire:model='write' type="checkbox" id="write-option" class="hidden peer"
+                                required="">
+                            <label for="write-option"
+                                class="inline-flex items-center justify-between w-full p-3 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                <div class="flex flex-row items-center justify-center">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                                    </svg>
+
+                                    <div class="ml-2 w-full text-lg font-semibold">Write</div>
+                                </div>
+                        </div>
+                        <div>
+                            <input wire:model='speak' type="checkbox" id="speak-option" class="hidden peer"
+                                required="">
+                            <label for="speak-option"
+                                class="inline-flex items-center justify-between w-full p-3 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                <div class="flex flex-row items-center justify-center">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                                    </svg>
+                                    <div class="ml-2 w-full text-lg font-semibold">Speak</div>
+                                </div>
+                        </div>
+                        <div>
+                            <input wire:model='understand' type="checkbox" id="understand-option"
+                                class="hidden peer" required="">
+                            <label for="understand-option"
+                                class="inline-flex items-center justify-between w-full p-3 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                <div class="flex flex-row items-center justify-center">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802" />
+                                    </svg>
+
+                                    <div class="ml-2 w-full text-lg font-semibold">Understand</div>
+                                </div>
+                        </div>
+                        </label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="mt-8 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('language')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-primary-button wire:click.prevent='saveLanguage' class="ms-3" type="button">
+                    {{ __('Save Language Record') }}
+                </x-primary-button>
+            </div>
+        </div>
+    </x-modal>
 
 
 
