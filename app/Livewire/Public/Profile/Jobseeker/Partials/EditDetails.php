@@ -63,18 +63,7 @@ class EditDetails extends Component
     {
         return [
             // BASIC INFORMATION
-            'fname' => ['required', 'string'],
-            'lname' => ['required', 'string'],
-            'birthdate' => ['required'],
-            'gender' => ['required'],
-            'civilstatus' => ['required'],
-            'religion' => ['required'],
-            'pnumber' => ['required'],
-            'address' => ['required'],
-            'bar' => ['required'],
-            'mun' => ['required'],
-            'prov' => ['required'],
-            'pimg' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'pimg' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ];
     }
 
@@ -236,7 +225,44 @@ class EditDetails extends Component
     //SAVE PROFILE
     public function saveProfile()
     {
-        $this->validate();
+
+        $rules = [
+            'fname' => ['required', 'string'],
+            'lname' => ['required', 'string'],
+            'birthdate' => [
+                'required',
+                'date',
+                'before_or_equal:' . now()->subYears(18)->toDateString(), // Must be at least 18 years old
+                'before_or_equal:' . now()->toDateString(), // Cannot be in the future
+            ],
+            'gender' => ['required'],
+            'civilstatus' => ['required'],
+            'religion' => ['required'],
+            'pnumber' => ['required'],
+            'address' => ['required'],
+            'bar' => ['required'],
+            'mun' => ['required'],
+            'prov' => ['required'],
+        ];
+
+        $messages = [
+            'fname.required' => 'First name is required.',
+            'lname.required' => 'Last name is required.',
+            'birthdate.required' => 'Birthdate is required.',
+            'birthdate.date' => 'Birthdate must be a valid date.',
+            'birthdate.before_or_equal' => 'You must be at least 18 years old.',
+            'birthdate.before_or_equal' => 'Birthdate cannot be a future date.',
+            'gender.required' => 'Gender is required.',
+            'civilstatus.required' => 'Civil status is required.',
+            'religion.required' => 'Religion is required.',
+            'pnumber.required' => 'Phone number is required.',
+            'address.required' => 'Address is required.',
+            'bar.required' => 'Barangay is required.',
+            'mun.required' => 'Municipality is required.',
+            'prov.required' => 'Province is required.',
+        ];
+
+        $this->validate($rules, $messages);
 
         $jobseekerData = Employee::findOrFail($this->empID);
         $imgPath = null;
@@ -248,54 +274,69 @@ class EditDetails extends Component
         DB::beginTransaction();
 
         try {
+            // Delete old image if a new one is uploaded and there is an existing image
             if ($this->pimg && $jobseekerData->pimg) {
                 Storage::disk('public')->delete($jobseekerData->pimg);
             }
 
-            $jobseekerData->update([
-                'pimg' => $imgPath ?? $jobseekerData->pimg,
-                'fname' => $this->fname,
-                'mname' => $this->mname,
-                'lname' => $this->lname,
-                'suffix' => $this->suffix,
-                'height' => $this->height,
-                'gender' => $this->gender,
-                'civilstatus' => $this->civilstatus,
-                'religion' => $this->religion,
-                'birthdate' => $this->birthdate,
-                'pnumber' => $this->pnumber,
-                'address' => $this->address,
-                'barangay' => $this->barangayID, //fk
-                'tinnum' => $this->tinnum,
-            ]);
+            // Update model attributes
+            $jobseekerData->pimg = $imgPath ?? $jobseekerData->pimg;
+            $jobseekerData->fname = $this->fname;
+            $jobseekerData->mname = $this->mname;
+            $jobseekerData->lname = $this->lname;
+            $jobseekerData->suffix = $this->suffix;
+            $jobseekerData->height = $this->height;
+            $jobseekerData->gender = $this->gender;
+            $jobseekerData->civilstatus = $this->civilstatus;
+            $jobseekerData->religion = $this->religion;
+            $jobseekerData->birthdate = $this->birthdate;
+            $jobseekerData->pnumber = $this->pnumber;
+            $jobseekerData->address = $this->address;
+            $jobseekerData->barangay_id = $this->barangayID;
+            $jobseekerData->tinnum = $this->tinnum;
 
-            DB::commit();
-
-            toastr()->success('Profile has been updated!');
+            // Check if any attributes have changed
+            if ($jobseekerData->isDirty()) {
+                $jobseekerData->save();
+                DB::commit();
+                toastr()->success('Profile has been updated!');
+            } else {
+                DB::rollBack();
+                toastr()->info('No changes detected.');
+            }
         } catch (\Exception $e) {
             DB::rollBack();
-
-            // Show error toastr notification
             toastr()->error('There was an error updating the profile.');
         }
-
     }
 
     // LANGUAGE
     public function saveLanguage()
     {
-        if ($this->langID) {
-            Language::where('language_id', $this->langID)
-                ->where('employee_id', $this->empID)->update([
-                'employee_id' => $this->empID,
-                'language_Type' => $this->selectedLanguage === 'other' ? $this->otherLanguage : $this->selectedLanguage,
-                'language_Read' => $this->read === true ? 1 : 2,
-                'language_Write' => $this->write === true ? 1 : 2,
-                'language_Speak' => $this->speak === true ? 1 : 2,
-                'language_Understand' => $this->understand === true ? 1 : 2,
-            ]);
-        } else {
-            try {
+        DB::beginTransaction();
+
+        try {
+            if ($this->langID) {
+                $language = Language::where('language_id', $this->langID)
+                    ->where('employee_id', $this->empID)
+                    ->firstOrFail();
+
+                // Update model attributes
+                $language->employee_id = $this->empID;
+                $language->language_Type = $this->selectedLanguage === 'other' ? $this->otherLanguage : $this->selectedLanguage;
+                $language->language_Read = $this->read === true ? 1 : 2;
+                $language->language_Write = $this->write === true ? 1 : 2;
+                $language->language_Speak = $this->speak === true ? 1 : 2;
+                $language->language_Understand = $this->understand === true ? 1 : 2;
+
+                // Check if any attributes have changed
+                if ($language->isDirty()) {
+                    $language->save();
+                    toastr()->success('Language Record has been updated!');
+                } else {
+                    toastr()->info('No changes detected.');
+                }
+            } else {
                 Language::create([
                     'employee_id' => $this->empID,
                     'language_Type' => $this->selectedLanguage === 'other' ? $this->otherLanguage : $this->selectedLanguage,
@@ -305,13 +346,16 @@ class EditDetails extends Component
                     'language_Understand' => $this->understand === true ? 1 : 2,
                 ]);
 
-                toastr()->success('License Record has been Added!');
-            } catch (\Exception $e) {
-                toastr()->error('There was an Error');
+                toastr()->success('Language Record has been added!');
             }
-        }
-        $this->closeModal('language');
 
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error updating the language record.');
+        }
+
+        $this->closeModal('language');
     }
 
     //LICENSE
@@ -507,6 +551,7 @@ class EditDetails extends Component
         $this->tinnum = $employeeDetails->tinnum;
         $this->height = $employeeDetails->height;
         $this->address = $employeeDetails->address;
+        $this->barangayID = $employeeDetails->barangay_id;
 
         $barangayDetails = Barangay::find($employeeDetails->barangay_id);
         $this->bar = $barangayDetails->barangay_Name;

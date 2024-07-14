@@ -8,6 +8,7 @@ use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\JobPosting\Applicants\ApplicantOverview;
 use App\Livewire\Admin\JobPosting\Applicants\JobPostApplicants;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
+use App\Livewire\Admin\PositionIndustry\PositionIndustry;
 use App\Livewire\Employer\Dashboard\JobApplicants;
 use App\Livewire\Employer\Dashboard\JobPostList;
 use App\Livewire\Jobseeker\ApplicationHistory;
@@ -99,9 +100,10 @@ Route::prefix('admin')->group(function () {
         return view('admin.admin_partials.location-management');
     })->name('admin-location');
 
-    Route::get('/industry', function () {
-        return view('admin.admin_partials.position-industry');
-    })->name('admin-industry');
+    // Route::get('/industry', function () {
+    //     return view('admin.admin_partials.position-industry');
+    // })->name('admin-industry');
+    Route::get('/industry', PositionIndustry::class)->name('admin-industry');
 
     Route::get('/certificate', function () {
         return view('admin.admin_partials.admin-certificates');
