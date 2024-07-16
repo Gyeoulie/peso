@@ -19,10 +19,10 @@
                 </a>
             </li>
             <li>
-                <a wire:navigate
-                    href="{{ route('admin-joblist', 'admin.jobpost', 'admin.jobpost.applicants', 'admin.jobpost.applicants.overview') }}"
+                <a wire:navigate href="{{ route('admin-joblist') }}" {{-- href="{{ route('admin-joblist', 'admin.jobpost', 'admin.jobpost.applicants', 'admin.jobpost.applicants.overview') }} --}}
                     :class="{{ request()->routeIs('admin-joblist') || request()->routeIs('admin.jobpost') || request()->routeIs('admin.jobpost.applicants') || request()->routeIs('admin.jobpost.applicants.overview') }}
-                        ? activeNav : inactiveNav"
+                        ?
+                        activeNav : inactiveNav"
                     class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 ">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
@@ -62,7 +62,8 @@
                     <li>
                         <a wire:navigate href="{{ route('admin-users-jobseeker') }}"
                             :class="{{ request()->routeIs('admin-users-jobseeker') || request()->routeIs('admin-users-jobseeker-overview') }}
-                                ? activeNav : inactiveNav"
+                                ?
+                                activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Jobseekers
                             Management</a>
                     </li>

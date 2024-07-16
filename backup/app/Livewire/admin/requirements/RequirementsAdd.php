@@ -41,7 +41,6 @@ class RequirementsAdd extends Component
             toastr()->error('There was an Error');
         }
 
-        
         $this->dispatch('hello');
     }
 

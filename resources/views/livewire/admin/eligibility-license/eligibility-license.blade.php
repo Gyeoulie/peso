@@ -1,39 +1,31 @@
 <div class="container mx-auto py-8">
-
-    {{-- CONTIANER --}}
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
-
-        {{-- TITLE --}}
         <div class="col-span-4 sm:col-span-12">
-            <h1 class="text-2xl font-bold ">Data Management / Position - Industry</h1>
+            <h1 class="text-2xl font-bold">Data Management / Eligibility - License</h1>
         </div>
 
-        {{-- JOB POSITION CONTAINER --}}
+
         <div class="col-span-4 sm:col-span-6">
+            {{-- @livewire('admin.eligibility-license.eligibility-table') --}}
+
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex flex-row mb-4">
-                    {{-- TITLE --}}
                     <div class="flex items-center">
-                        <h1 class="text-xl font-bold ">Job Position List</h1>
+                        <h1 class="text-xl font-bold ">Eligibility List</h1>
                     </div>
-
 
                     {{-- PHONE BUTTON (SMALL SCREEN) --}}
                     <div class="mr-0 ml-auto sm:hidden">
-                        <x-primary-button wire:click.prevent="open('jobposition')" type="button"
+                        <x-primary-button wire:click.prevent="open('eligibility')" type="button"
                             class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900">Add
-                            Job Position</x-primary-button>
+                            Eligibility</x-primary-button>
                     </div>
                 </div>
-
-                <div class="relative overflow-x-auto ">
-
+                <div class="relative overflow-x-auto">
                     <div
-                        class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 ">
+                        class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
-
-
                         <div class="relative">
                             <div
                                 class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -43,40 +35,39 @@
                                         stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            {{-- SEARCH --}}
-                            <input type="text" wire:model.live.prevent='searchPosition'
+
+                            {{-- ELIGIBILITY SEARCH --}}
+                            <input wire:model.live.prevent='searchEligiblity' type="text" id="table-search-users"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Search for job position">
+                                placeholder="Search eligibility">
                         </div>
 
-                        {{-- ADD BUTTON --}}
-                        <div class="hidden sm:inline-flex">
-                            <x-primary-button type="button"
-                                class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900"
-                                x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'jobposition-modal')">Add
-                                Job Position</x-primary-button>
+                        {{-- WEB BUTTON --}}
+                        <div class="hidden sm:inline-flex ">
+                            <x-primary-button wire:click.prevent="open('eligibility')" type="button"
+                                class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900">
+                                Add Eligibility</x-primary-button>
                         </div>
-
                     </div>
 
-                    {{-- POSITION TABLE --}}
-                    <table class="w-full text-sm text-left rtl:text-right">
+                    {{-- ELIGIBILITY TABLE --}}
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+
                             <tr>
-                                <th scope="col" class="px-6 py-3 w-1/3">
-                                    Job Code
+                                <th scope="col" class="px-6 py-3">
+                                    Eligibility Code
                                 </th>
-                                <th scope="col" class="px-6 py-3 w-full">
-                                    Position Name
+                                <th scope="col" class="px-6 py-3">
+                                    Eligibility Title
                                 </th>
-                                <th scope="col" class="px-6 py-3 w-1/3">
+                                <th scope="col" class="px-6 py-3 w-1/4">
 
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($jobpositions->isEmpty())
+                            @if ($eligibility->isEmpty())
                                 <tr>
                                     <td colspan="3">
                                         <div class="flex flex-col items-center justify-center mt-24 mb-24">
@@ -97,25 +88,25 @@
                                     </td>
                                 </tr>
                             @else
-                                @foreach ($jobpositions as $data)
+                                @foreach ($eligibility as $data)
                                     <tr class="bg-white border-b hover:bg-gray-50">
                                         <td class="px-6 py-4">
                                             <div class="text-gray-500 font-medium text-lg uppercase">
-                                                {{ $data->position_Code }}
+                                                {{ $data->eligibility_Code }}
                                             </div>
                                         </td>
 
                                         <td class="px-6 py-4">
                                             <div class="text-black font-bold text-lg uppercase">
-                                                {{ $data->position_Title }}
+                                                {{ $data->eligibility_Name }}
                                             </div>
                                         </td>
-
                                         <td class="px-6 py-4">
+
                                             <div class="flex flex-row items-center justify-center gap-6">
-                                                <div x-data="{ tooltip: 'Edit Job Position' }">
+                                                <div x-data="{ tooltip: 'Edit Eligibility' }">
                                                     <button
-                                                        wire:click.prevent="editPosition('{{ $data->position_id }}')"
+                                                        wire:click.prevent="editEligibility({{ $data->eligibility_type_id }})"
                                                         x-tooltip="tooltip" type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +117,7 @@
                                                         </svg>
                                                     </button>
                                                 </div>
-                                                <div x-data="{ tooltip: 'Delete Job Position' }">
+                                                <div x-data="{ tooltip: 'Delete justify' }">
                                                     <button x-tooltip="tooltip" type="button"
                                                         class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +131,10 @@
                                                 </div>
 
                                             </div>
+
+
                                         </td>
+
                                     </tr>
                                 @endforeach
                             @endif
@@ -150,44 +144,38 @@
 
                 {{-- PAGINATION --}}
                 <div class="mt-4">
-                    {{ $jobpositions->links('vendor.livewire.tailwind') }}
+                    {{ $eligibility->links('vendor.livewire.tailwind') }}
                 </div>
 
 
             </div>
+
+
         </div>
 
 
 
-        {{-- INDUSTRY CONTAINER --}}
+
         <div class="col-span-4 sm:col-span-6">
+            {{-- @livewire('admin.eligibility-license.license-table') --}}
             <div class="bg-white shadow rounded-lg p-6">
-
-                {{-- TITLE --}}
                 <div class="flex flex-row mb-4">
-                    {{-- TITLE --}}
                     <div class="flex items-center">
-                        <h1 class="text-xl font-bold ">Industry List</h1>
+                        <h1 class="text-xl font-bold ">License List</h1>
                     </div>
-
 
                     {{-- PHONE BUTTON (SMALL SCREEN) --}}
                     <div class="mr-0 ml-auto sm:hidden">
-                        <x-primary-button type="button"
-                            class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900"
-                            x-data="" x-on:click.prevent="$dispatch('open-modal', 'industry-modal')">Add
-                            Job Position</x-primary-button>
+                        <x-primary-button wire:click.prevent="open('license')" type="button"
+                            class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900">Add
+                            License</x-primary-button>
                     </div>
                 </div>
-
-                <div class="relative overflow-x-auto ">
-
+                <div class="relative overflow-x-auto">
                     <div
-                        class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 ">
+                        class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
-
-
                         <div class="relative">
                             <div
                                 class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -197,40 +185,38 @@
                                         stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            {{-- SEARCH --}}
-                            <input type="text" wire:model.live.prevent='searchIndustry'
+
+                            {{-- ELIGIBILITY SEARCH --}}
+                            <input type="text" wire:model.live.prevent='searchLicense' id="table-search-users"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Search for industry">
+                                placeholder="Search license">
                         </div>
 
-                        {{-- ADD BUTTON --}}
-                        <div class="hidden sm:inline-flex">
-                            <x-primary-button type="button"
-                                class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900"
-                                x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'industry-modal')">Add
-                                Industry</x-primary-button>
+                        {{-- WEB BUTTON --}}
+                        <div class="hidden sm:inline-flex ">
+                            <x-primary-button wire:click.prevent="open('license')" type="button"
+                                class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900">Add
+                                License</x-primary-button>
                         </div>
-
                     </div>
 
-                    {{-- POSITION TABLE --}}
-                    <table class="w-full text-sm text-left rtl:text-right">
+                    {{-- ELIGIBILITY TABLE --}}
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
-                                <th scope="col" class="px-6 py-3 w-1/3">
-                                    Industry Code
+                                <th scope="col" class="px-6 py-3 ">
+                                    Code
                                 </th>
-                                <th scope="col" class="px-6 py-3 w-full">
-                                    Industry Title
+                                <th scope="col" class="px-6 py-3 ">
+                                    License
                                 </th>
-                                <th scope="col" class="px-6 py-3 w-1/3">
+                                <th scope="col" class="px-6 py-3 w-1/4">
 
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($industry->isEmpty())
+                            @if ($license->isEmpty())
                                 <tr>
                                     <td colspan="3">
                                         <div class="flex flex-col items-center justify-center mt-24 mb-24">
@@ -252,25 +238,33 @@
                                     </td>
                                 </tr>
                             @else
-                                @foreach ($industry as $data)
+                                @if ($license->isEmpty())
+                                    <tr> <!-- Adjust the value as needed -->
+                                        <td colspan="3"
+                                            class="text-black font-bold text-lg uppercase text-center mt-5">No
+                                            Records
+                                            Found</td>
+                                    </tr>
+                                @endif
+                                @foreach ($license as $data)
                                     <tr class="bg-white border-b hover:bg-gray-50">
                                         <td class="px-6 py-4">
                                             <div class="text-gray-500 font-medium text-lg uppercase">
-                                                {{ $data->industry_Code }}
+                                                {{ $data->license_Code }}
                                             </div>
                                         </td>
 
                                         <td class="px-6 py-4">
                                             <div class="text-black font-bold text-lg uppercase">
-                                                {{ $data->industry_Title }}
+                                                {{ $data->license_Name }}
                                             </div>
                                         </td>
 
                                         <td class="px-6 py-4">
                                             <div class="flex flex-row items-center justify-center gap-6">
-                                                <div x-data="{ tooltip: 'Edit Industry' }">
+                                                <div x-data="{ tooltip: 'Edit License' }">
                                                     <button
-                                                        wire:click.prevent="editIndustry('{{ $data->industry_id }}')"
+                                                        wire:click.prevent="editLicense({{ $data->license_type_id }})"
                                                         x-tooltip="tooltip" type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -281,7 +275,7 @@
                                                         </svg>
                                                     </button>
                                                 </div>
-                                                <div x-data="{ tooltip: 'Delete Industry' }">
+                                                <div x-data="{ tooltip: 'Delete justify' }">
                                                     <button x-tooltip="tooltip" type="button"
                                                         class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -294,11 +288,9 @@
                                                     </button>
                                                 </div>
 
-
-
-
                                             </div>
                                         </td>
+
                                     </tr>
                                 @endforeach
                             @endif
@@ -308,95 +300,99 @@
 
                 {{-- PAGINATION --}}
                 <div class="mt-4">
-                    {{ $industry->links('vendor.livewire.tailwind') }}
+                    {{ $license->links('vendor.livewire.tailwind') }}
                 </div>
 
 
             </div>
+
+
         </div>
 
+
+
+
+        {{-- ELIGIBILITY MODAL --}}
+        {{-- @livewire('admin.eligibility-license.eligibility-add-modal')
+        @livewire('admin.eligibility-license.eligibility-edit-modal') --}}
+        <x-modal name="eligibility-modal" focusable>
+            <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+                <h2 class="text-lg font-medium text-gray-900">
+                    {{ __('Manage Eligibility Record') }}
+                </h2>
+                <hr>
+                <div class="flex flex-row gap-6 mt-2 w-full">
+
+                    <div class="flex flex-col mt-2 w-full">
+                        <x-input-label for="eligibilityPost" :value="__('Eligibility Title')" />
+                        <x-text-input wire:model='eligibilityPost' id="eligibilityPost"
+                            class="block mt-1 w-full uppercase" type="text" name="eligibilityPost" />
+                        <x-input-error :messages="$errors->get('eligibilityPost')" class="mt-2" />
+                    </div>
+
+
+                    <div class="flex flex-col mt-2 w-full">
+                        <x-input-label for="ecodePost" :value="__('Eligibility Code')" />
+                        <x-text-input wire:model='ecodePost' id="ecodePost" class="block mt-1 w-full uppercase"
+                            type="text" name="ecodePost" />
+                        <x-input-error :messages="$errors->get('ecodePost')" class="mt-2" />
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <x-secondary-button wire:click.prevent="close('eligibility')" type="button">
+                        {{ __('Cancel') }}
+                    </x-secondary-button>
+
+                    <x-primary-button wire:click.prevent='saveEligibility' class="ms-3" type="button"
+                        id="eligibilityAdd">
+                        {{ __('Add Eligibility') }}
+                    </x-primary-button>
+                </div>
+            </div>
+        </x-modal>
+
+
+
+        {{-- LICENSE MODAL --}}
+        {{-- @livewire('admin.eligibility-license.license-add-modal')
+        @livewire('admin.eligibility-license.license-edit-modal') --}}
+        <x-modal name="license-modal" focusable>
+            <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+                <h2 class="text-lg font-medium text-gray-900">
+                    {{ __('Manage License Record') }}
+                </h2>
+                <hr>
+                <div class="flex flex-row gap-6 mt-2 w-full">
+
+                    <div class="flex flex-col mt-2 w-full">
+                        <x-input-label for="licensePost" :value="__('License Title')" />
+                        <x-text-input wire:model='licensePost' id="licensePost" class="block mt-1 w-full uppercase"
+                            type="text" name="licensePost" />
+                        <x-input-error :messages="$errors->get('licensePost')" class="mt-2" />
+                    </div>
+
+
+                    <div class="flex flex-col mt-2 w-full">
+                        <x-input-label for="lcodePost" :value="__('License Code')" />
+                        <x-text-input wire:model='lcodePost' id="lcodePost" class="block mt-1 w-full uppercase"
+                            type="text" name="lcodePost" />
+                        <x-input-error :messages="$errors->get('lcodePost')" class="mt-2" />
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <x-secondary-button wire:click.prevent="close('license')" type="button">
+                        {{ __('Cancel') }}
+                    </x-secondary-button>
+
+                    <x-primary-button wire:click.prevent='saveLicense' class="ms-3" type="button"
+                        id="eligibilityAdd">
+                        {{ __('Save License') }}
+                    </x-primary-button>
+                </div>
+            </div>
+        </x-modal>
 
     </div>
-
-
-    {{-- JOB POSITION MODAL --}}
-    <x-modal name="jobposition-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
-            <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Add Job Position') }}
-            </h2>
-
-            <hr>
-
-            <div class="flex flex-row gap-6 mt-2">
-
-                <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="positionPost" :value="__('Job Position Title')" />
-                    <x-text-input wire:model='positionPost' id="positionPost" class="block mt-1 w-full uppercase"
-                        type="text" />
-                    <x-input-error :messages="$errors->get('positionPost')" class="mt-2" />
-                </div>
-
-                <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="pcodePost" :value="__('Job Position Code')" />
-                    <x-text-input wire:model='pcodePost' id="pcodePost" class="block mt-1 w-full uppercase"
-                        type="text" />
-                    <x-input-error :messages="$errors->get('pcodePost')" class="mt-2" />
-                </div>
-
-
-            </div>
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button wire:click.prevent="close('jobposition')" type="button">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
-
-                <x-primary-button wire:click.prevent='savePosition' class="ms-3" type="button"
-                    id="eligibilityAdd">
-                    {{ __('Save Position') }}
-                </x-primary-button>
-            </div>
-        </div>
-    </x-modal>
-
-
-    {{-- INDUSTRY MODAL --}}
-    <x-modal name="industry-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
-            <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Add Industry') }}
-            </h2>
-
-            <hr>
-
-            <div class="flex flex-row gap-6 mt-2">
-
-                <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="industryPost" :value="__('Industry Title')" />
-                    <x-text-input wire:model='industryPost' id="industryPost" class="block mt-1 w-full uppercase"
-                        type="text" />
-                    <x-input-error :messages="$errors->get('industryPost')" class="mt-2" />
-                </div>
-
-                <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="icodePost" :value="__('Industry Code')" />
-                    <x-text-input wire:model='icodePost' id="icodePost" class="block mt-1 w-full uppercase"
-                        type="text" />
-                    <x-input-error :messages="$errors->get('icodePost')" class="mt-2" />
-                </div>
-
-
-            </div>
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button wire:click.prevent="close('industry')" type="button">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
-
-                <x-primary-button wire:click.prevent='saveIndustry' class="ms-3" type="button">
-                    {{ __('Save Position') }}
-                </x-primary-button>
-            </div>
-        </div>
-    </x-modal>
-
 </div>

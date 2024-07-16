@@ -4,11 +4,16 @@ use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
 use App\Livewire\Admin\Accounts\Jobseeker\JobseekerManagement;
 use App\Livewire\Admin\Accounts\Jobseeker\JobseekerOverview;
+use App\Livewire\Admin\Certificates\Certificates;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Admin\EligibilityLicense\EligibilityLicense;
 use App\Livewire\Admin\JobPosting\Applicants\ApplicantOverview;
 use App\Livewire\Admin\JobPosting\Applicants\JobPostApplicants;
+use App\Livewire\Admin\JobPosting\JobPosting;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
+use App\Livewire\Admin\LocationManagement\Location;
 use App\Livewire\Admin\PositionIndustry\PositionIndustry;
+use App\Livewire\Admin\Requirements\Requirements;
 use App\Livewire\Employer\Dashboard\JobApplicants;
 use App\Livewire\Employer\Dashboard\JobPostList;
 use App\Livewire\Jobseeker\ApplicationHistory;
@@ -80,13 +85,12 @@ Route::prefix('admin')->group(function () {
         return view('admin.admin_partials.applicant-overview');
     })->name('admin-appoverview');
 
-    Route::get('/eligibility', function () {
-        return view('admin.admin_partials.eligibility-license');
-    })->name('admin-eligibility');
+    // Route::get('/eligibility', function () {
+    //     return view('admin.admin_partials.eligibility-license');
+    // })->name('admin-eligibility');
+    Route::get('/eligibility', EligibilityLicense::class)->name('admin-eligibility');
 
-    Route::get('/jobs', function () {
-        return view('admin.admin_partials.job-posting-list');
-    })->name('admin-joblist');
+    Route::get('/jobs', JobPosting::class)->name('admin-joblist');
 
     Route::get('/jobs/overview', function () {
         return view('admin.admin_partials.job-posting-overview');
@@ -96,22 +100,13 @@ Route::prefix('admin')->group(function () {
         return view('admin.admin_partials.jobseeker-overview');
     })->name('admin-overview');
 
-    Route::get('/location', function () {
-        return view('admin.admin_partials.location-management');
-    })->name('admin-location');
+    Route::get('/location', Location::class)->name('admin-location');
 
-    // Route::get('/industry', function () {
-    //     return view('admin.admin_partials.position-industry');
-    // })->name('admin-industry');
     Route::get('/industry', PositionIndustry::class)->name('admin-industry');
 
-    Route::get('/certificate', function () {
-        return view('admin.admin_partials.admin-certificates');
-    })->name('admin-certificate');
+    Route::get('/certificate', Certificates::class)->name('admin-certificate');
 
-    Route::get('/requirements', function () {
-        return view('admin.admin_partials.requirements');
-    })->name('admin-req');
+    Route::get('/requirements', Requirements::class)->name('admin-req');
 
     Route::get('/manage/jobseeker', JobseekerManagement::class)->name('admin-users-jobseeker');
     Route::get('/manage/jobseeker/{id}', JobseekerOverview::class)->name('admin-users-jobseeker-overview');

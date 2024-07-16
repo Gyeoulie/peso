@@ -10,13 +10,11 @@ use Livewire\WithPagination;
 
 class EligibilityTable extends Component
 {
-    use WithPagination, WithoutUrlPagination; 
-
-    
+    use WithPagination, WithoutUrlPagination;
 
     public $rows = 10;
 
-   public $search;
+    public $search;
 
     public function editEligibility($id)
     {
