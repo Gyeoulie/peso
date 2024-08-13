@@ -718,96 +718,91 @@
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
-                    <livewire:modals.job-position-modal>
-                        <livewire:modals.industry-modal>
-                            <div class="flex flex-row my-4 w-full gap-4 mt-4">
-                                <div class="flex flex-col w-full">
+                    <div class="flex flex-row my-4 w-full gap-4 mt-4">
+                        <div class="flex flex-col w-full">
 
-                                    <div class="flex flex-row w-full items-center">
+                            <div class="flex flex-row w-full items-center">
 
-                                        <x-input-label for="fname"> </i>Job Preference
-                                        </x-input-label>
+                                <x-input-label for="fname"> </i>Job Preference
+                                </x-input-label>
 
-                                        <x-primary-button class="ml-auto mr-3" type="button" x-data=""
-                                            x-on:click.prevent="$dispatch('open-modal', 'job-position-modal')">
-                                            Add Job Preference
-                                        </x-primary-button>
+                                <x-primary-button class="ml-auto mr-3" type="button" x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'job-position-modal')">
+                                    Add Job Preference
+                                </x-primary-button>
 
-                                    </div>
-
-                                    <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
-
-
-                                        @foreach ($employeeDetails->job_preference as $jobPref)
-                                            <span
-                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                                {{ $jobPref->job_positions->position_Title }}
-                                                <button
-                                                    wire:click.prevent="removePosition({{ $jobPref->job_preference_id }})"
-                                                    type="button"
-                                                    class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
-                                                    <span class="sr-only">Remove badge</span>
-                                                    <svg class="flex-shrink-0 size-3"
-                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M18 6 6 18" />
-                                                        <path d="m6 6 12 12" />
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                        @endforeach
-
-                                    </div>
-                                    <x-input-error :messages="$errors->get('jobpreference')" class="mt-2" />
-
-                                </div>
                             </div>
-                            <div class="flex flex-row my-4 w-full gap-4 mt-4">
-                                <div class="flex flex-col w-full">
 
-                                    <div class="flex flex-row w-full items-center">
-
-                                        <x-input-label for="fname"> </i>Industry Preference
-                                        </x-input-label>
-
-                                        <x-primary-button class="ml-auto mr-3" type="button" x-data=""
-                                            x-on:click.prevent="$dispatch('open-modal', 'industry-modal')">
-                                            Add Industry Preference
-                                        </x-primary-button>
-
-                                    </div>
-
-                                    <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
+                            <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
 
 
-                                        @foreach ($employeeDetails->industry_preference as $industryPref)
-                                            <span
-                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                                {{ $industryPref->job_industry->industry_Title }}
-                                                <button
-                                                    wire:click.prevent="removeIndustry({{ $industryPref->industry_pref_id }})"
-                                                    type="button"
-                                                    class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
-                                                    <span class="sr-only">Remove badge</span>
-                                                    <svg class="flex-shrink-0 size-3"
-                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M18 6 6 18" />
-                                                        <path d="m6 6 12 12" />
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                        @endforeach
+                                @foreach ($employeeDetails->job_preference as $jobPref)
+                                    <span
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
+                                        {{ $jobPref->job_positions->position_Title }}
+                                        <button wire:click.prevent="removePosition({{ $jobPref->job_preference_id }})"
+                                            type="button"
+                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                            <span class="sr-only">Remove badge</span>
+                                            <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M18 6 6 18" />
+                                                <path d="m6 6 12 12" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                @endforeach
 
-                                    </div>
-                                    <x-input-error :messages="$errors->get('industrypreference')" class="mt-2" />
-
-                                </div>
                             </div>
+                            <x-input-error :messages="$errors->get('jobpreference')" class="mt-2" />
+
+                        </div>
+                    </div>
+                    <div class="flex flex-row my-4 w-full gap-4 mt-4">
+                        <div class="flex flex-col w-full">
+
+                            <div class="flex flex-row w-full items-center">
+
+                                <x-input-label for="fname"> </i>Industry Preference
+                                </x-input-label>
+
+                                <x-primary-button class="ml-auto mr-3" type="button" x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'industry-modal')">
+                                    Add Industry Preference
+                                </x-primary-button>
+
+                            </div>
+
+                            <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
+
+
+                                @foreach ($employeeDetails->industry_preference as $industryPref)
+                                    <span
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
+                                        {{ $industryPref->job_industry->industry_Title }}
+                                        <button
+                                            wire:click.prevent="removeIndustry({{ $industryPref->industry_pref_id }})"
+                                            type="button"
+                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                            <span class="sr-only">Remove badge</span>
+                                            <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M18 6 6 18" />
+                                                <path d="m6 6 12 12" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                @endforeach
+
+                            </div>
+                            <x-input-error :messages="$errors->get('industrypreference')" class="mt-2" />
+
+                        </div>
+                    </div>
 
                 </div>
                 {{-- JOB AND INDUSTRY PREFERENCE --}}
@@ -1122,7 +1117,8 @@
     </x-modal>
 
 
-
+    <livewire:modals.job-position-modal />
+    <livewire:modals.industry-modal />
 
 
 </div>

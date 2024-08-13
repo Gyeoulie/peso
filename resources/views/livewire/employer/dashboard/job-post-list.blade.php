@@ -27,9 +27,9 @@
         </div>
     </div>
 
-    <div class="table-container">
-        <div class="max-w-7xl mx-auto">
-            <div class="bg-white overflow-hidden sm:rounded-lg p-2">
+    <div class="table-container overflow-visible">
+        <div class="max-w-7xl mx-auto overflow-visible">
+            <div class="bg-white overflow-hidden sm:rounded-lg p-2 overflow-visible">
 
 
                 <div x-data="{
@@ -102,7 +102,7 @@
                         </div>
 
                         {{-- SORT --}}
-                        <x-dropdown align="left" width="48">
+                        <x-dropdown align="left" width="36">
                             <x-slot name="trigger">
                                 <button
                                     class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
@@ -124,7 +124,7 @@
 
                             <x-slot name="content">
                                 <x-slot name="contentClasses">
-                                    max-h-[300px] bg-white
+                                    max-w-[300px] bg-white
                                 </x-slot>
 
                                 <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('ASC')">
@@ -138,138 +138,139 @@
                             </x-slot>
                         </x-dropdown>
 
-                    </div>
-                    <div class="overflow-x-auto ">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 lg:table-fixed">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3 md:w-96">
-                                        Job Title
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 md:w-96">
-                                        Candidates
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 w-md">
-                                        Status
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 w-md">
-                                        Date
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 w-md">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($applicants->isEmpty())
+
+                        <div class="overflow-x-auto ">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 lg:table-fixed">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                                     <tr>
-                                        <td colspan="5">
-                                            <div class="flex flex-col items-center justify-center mt-24 mb-24">
-                                                <div class="p-6 bg-gray-100 rounded-full">
-                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                        height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-width="2"
-                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                                    </svg>
-
-                                                </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
-                                                    No Job Posting Found
-                                                </p>
-                                            </div>
-
-                                        </td>
+                                        <th scope="col" class="px-6 py-3 md:w-96">
+                                            Job Title
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 md:w-96">
+                                            Candidates
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 w-md">
+                                            Status
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 w-md">
+                                            Date
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 w-md">
+                                            Action
+                                        </th>
                                     </tr>
-                                @else
-                                    @foreach ($applicants as $data)
-                                        <tr wire:key='jobPost-{{ $data->job_id }}' class="bg-white border-b ">
-                                            <th scope="row" class="flex items-center px-6 py-4 text-gray-900 ">
-                                                <div class="ps-3">
-                                                    <div class="text-base font-semibold">{{ $data->job_Title }}</div>
-                                                    <div class="font-normal text-gray-500 text-sm">
-                                                        {{ $data->job_Address }},
-                                                        {{ $data->barangay->barangay_Name }},
-                                                        {{ $data->barangay->municipality->municipality_Name }},
-                                                        {{ $data->barangay->municipality->province->province_Name }}
+                                </thead>
+                                <tbody>
+                                    @if ($applicants->isEmpty())
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                    <div class="p-6 bg-gray-100 rounded-full">
+                                                        <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-width="2"
+                                                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                        </svg>
+
                                                     </div>
-                                                </div>
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-wrap gap-2">
-                                                    <span
-                                                        class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">{{ $data->pending_count }}
-                                                        PENDING</span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-sm font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">{{ $data->interested_count }}
-                                                        INTERESTED</span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">{{ $data->interview_count }}
-                                                        INTERVIEW</span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">{{ $data->hired_count }}
-                                                        HIRED</span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">{{ $data->accepted_count }}
-                                                        ACCEPTED</span>
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">{{ $data->rejected_count }}
-                                                        REJECTED</span>
-                                                </div>
-                                            </td>
-
-
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center">
-                                                    @if ($data->job_Status == 'ACTIVE')
-                                                        <div
-                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 me-2 uppercase">
-                                                        </div> ACTIVE
-                                                    @elseif ($data->job_Status == 'PENDING')
-                                                        <div
-                                                            class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2 uppercase">
-                                                        </div> PENDING
-                                                    @else
-                                                        <div
-                                                            class="h-2.5 w-2.5 rounded-full bg-red-500 me-2 uppercase">
-                                                        </div>
-                                                        {{ $data->job_Status }}
-                                                    @endif
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="font-normal text-gray-500 text-sm">
-                                                    {{ $data->created_at->format('F j, Y') }}
-
+                                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                                        No Job Posting Found
+                                                    </p>
                                                 </div>
 
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <a wire:navigate
-                                                    href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
-                                                    class="font-medium text-blue-600  hover:underline">View
-                                                    Post</a>
                                             </td>
                                         </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
+                                    @else
+                                        @foreach ($applicants as $data)
+                                            <tr wire:key='jobPost-{{ $data->job_id }}' class="bg-white border-b ">
+                                                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 ">
+                                                    <div class="ps-3">
+                                                        <div class="text-base font-semibold">{{ $data->job_Title }}
+                                                        </div>
+                                                        <div class="font-normal text-gray-500 text-sm">
+                                                            {{ $data->job_Address }},
+                                                            {{ $data->barangay->barangay_Name }},
+                                                            {{ $data->barangay->municipality->municipality_Name }},
+                                                            {{ $data->barangay->municipality->province->province_Name }}
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-wrap gap-2">
+                                                        <span
+                                                            class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">{{ $data->pending_count }}
+                                                            PENDING</span>
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-sm font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">{{ $data->interested_count }}
+                                                            INTERESTED</span>
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">{{ $data->interview_count }}
+                                                            INTERVIEW</span>
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">{{ $data->hired_count }}
+                                                            HIRED</span>
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">{{ $data->accepted_count }}
+                                                            ACCEPTED</span>
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">{{ $data->rejected_count }}
+                                                            REJECTED</span>
+                                                    </div>
+                                                </td>
+
+
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center">
+                                                        @if ($data->job_Status == 'ACTIVE')
+                                                            <div
+                                                                class="h-2.5 w-2.5 rounded-full bg-green-500 me-2 uppercase">
+                                                            </div> ACTIVE
+                                                        @elseif ($data->job_Status == 'PENDING')
+                                                            <div
+                                                                class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2 uppercase">
+                                                            </div> PENDING
+                                                        @else
+                                                            <div
+                                                                class="h-2.5 w-2.5 rounded-full bg-red-500 me-2 uppercase">
+                                                            </div>
+                                                            {{ $data->job_Status }}
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="font-normal text-gray-500 text-sm">
+                                                        {{ $data->created_at->format('F j, Y') }}
+
+                                                    </div>
+
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <a wire:navigate
+                                                        href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
+                                                        class="font-medium text-blue-600  hover:underline">View
+                                                        Post</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        {{-- navbar --}}
+                        <div class="mt-2 p-4">
+                            {{ $applicants->links('vendor.livewire.tailwind') }}
+                        </div>
                     </div>
-                    {{-- navbar --}}
-                    <div class="mt-2 p-4">
-                        {{ $applicants->links('vendor.livewire.tailwind') }}
-                    </div>
+
+
+
+
+
+
+
                 </div>
-
-
-
-
-
-
-
             </div>
         </div>
     </div>
-</div>
