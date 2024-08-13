@@ -438,7 +438,7 @@
                                 {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
 
                                 @foreach ($jobseeker->education as $educBackground)
-                                    <div wire:key="{{ $educBackground->education_id }}" class="container  p-3  ">
+                                    <div wire:key="{{ $educBackground->education_id }}" class="container p-3">
                                         <div class="flex flex-row h-full items-center">
                                             <div class="flex flex-col">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
