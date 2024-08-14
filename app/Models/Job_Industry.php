@@ -34,6 +34,11 @@ class Job_Industry extends Model
     {
         return $this->hasMany(Industry_preference::class, 'industry_id');
     }
+
+    public function company_industry_line()
+    {
+        return $this->hasMany(Company_Industry_Line::class, 'industry_id');
+    }
     public function job_posting()
     {
         return $this->hasMany(Job_Posting::class, 'industry_id');

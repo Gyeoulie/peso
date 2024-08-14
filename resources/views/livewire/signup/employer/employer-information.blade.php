@@ -46,7 +46,7 @@
 
 
                     {{-- //PERSONAL INFORMATION --}}
-                    <div x-show="currentStep === 2" class="section comapnyContact-section h-full w-full"
+                    <div x-show="currentStep === 1" class="section comapnyContact-section h-full w-full"
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>

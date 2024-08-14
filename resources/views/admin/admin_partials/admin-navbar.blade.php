@@ -58,7 +58,7 @@
                     </svg>
                 </button>
                 <ul id="dropdown-1"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-admin', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview') ? 'block' : 'hidden' }}">
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-admin', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview', 'admin-users-employer-overview') ? 'block' : 'hidden' }}">
                     <li>
                         <a wire:navigate href="{{ route('admin-users-jobseeker') }}"
                             :class="{{ request()->routeIs('admin-users-jobseeker') || request()->routeIs('admin-users-jobseeker-overview') }}
@@ -69,7 +69,8 @@
                     </li>
                     <li>
                         <a wire:navigate href="{{ route('admin-users-employer') }}"
-                            :class="{{ request()->routeIs('admin-users-employer') }} ? activeNav : inactiveNav"
+                            :class="{{ request()->routeIs('admin-users-employer') || request()->routeIs('admin-users-employer-overview') }}
+                                ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Employers
                             Management</a>
                     </li>

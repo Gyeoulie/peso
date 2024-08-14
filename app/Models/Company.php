@@ -53,4 +53,9 @@ class Company extends Model
         return $this->hasMany(Job_Posting::class, 'company_id');
     }
 
+    public function company_industry_line()
+    {
+        return $this->hasMany(Company_Industry_Line::class, 'company_id');
+    }
+
 }

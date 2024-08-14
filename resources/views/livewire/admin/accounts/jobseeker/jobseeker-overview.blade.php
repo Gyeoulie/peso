@@ -2,11 +2,11 @@
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-12">
+        <div class="col-span-4 sm:col-span-12">
             <h1 class="text-2xl font-bold">Jobseeker Management \ Jobseeker Overview</h1>
         </div>
 
-        <div class="col-span-12 mt-5">
+        <div class="col-span-4 sm:col-span-12 mt-5">
 
             <div class="flex flex-row">
 
@@ -34,7 +34,8 @@
                 <div class="flex flex-col items-center">
                     {{-- IMAGE --}}
                     <img src="{{ asset('storage/' . $jobseeker->pimg) }}"
-                        class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
+                        class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 grow-0 object-cover">
+
                     </img>
 
                     <h1 class="text-xl font-bold uppercase"> {{ $jobseeker->fname }}
@@ -98,7 +99,7 @@
         <div class="col-span-4 sm:col-span-8 row" x-data="{
             selectedTab: 1,
             activeTab: 'text-white  bg-blue-700 active',
-            inactiveTab: 'hover:text-gray-900 bg-gray-300 hover:bg-gray-200',
+            inactiveTab: 'hover:text-white-300 bg-gray-300 hover:bg-gray-400',
             activeIcon: 'text-white',
             inactiveIcon: 'text-gray-500'
         }">
@@ -106,7 +107,7 @@
             {{-- TAB BUTTON --}}
             <ul class="flex flex-row space-x space-x-4 text-sm font-medium text-gray-500 md:me-4 mb-4 md:mb-0">
                 <li>
-                    <button :class="selectedTab === 1 ? activeTab : inactiveTab"
+                    <button @click="selectedTab = 1" :class="selectedTab === 1 ? activeTab : inactiveTab"
                         class="inline-flex items-center px-4 py-3 rounded-lg w-full" aria-current="page">
                         <svg :class="selectedTab === 1 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -119,7 +120,7 @@
                 </li>
 
                 <li>
-                    <button :class="selectedTab === 2 ? activeTab : inactiveTab"
+                    <button @click="selectedTab = 2" :class="selectedTab === 2 ? activeTab : inactiveTab"
                         class="inline-flex items-center px-4 py-3 rounded-lg w-full">
                         <svg :class="selectedTab === 2 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -148,137 +149,418 @@
 
 
             {{-- APPLICATION HISTORY CONTAINER --}}
-            <div class="bg-white shadow rounded-lg p-6 mt-4">
-                <h1 class="text-2xl font-bold mb-2">Application History</h1>
+            <div class="col-span-4 sm:col-span-6" x-data="{
+                openTab: 1,
+                activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
+                inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
+            }">
+                <div class="bg-white shadow rounded-lg p-6 mt-4">
 
-                <div class="relative overflow-x-auto p-1">
-                    <div
-                        class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
-
-                        <label for="table-search" class="sr-only">Search</label>
-                        <div class="relative">
+                    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+                        <li class="me-2">
+                            <button @click="openTab = 1" :class="openTab === 1 ? activeTab : inactiveTab"
+                                aria-current="page" class="inline-block p-4">Application History</button>
+                        </li>
+                        <li class="me-2">
+                            <button @click="openTab = 2" :class="openTab === 2 ? activeTab : inactiveTab"
+                                aria-current="page" class="inline-block p-4">Events History</button>
+                        </li>
+                        <li class="me-2">
+                            <button @click="openTab = 3" :class="openTab === 3 ? activeTab : inactiveTab"
+                                class="inline-block p-4">Recommended Jobs</button>
+                        </li>
+                    </ul>
+                    <div class="flex flex-col" x-show="openTab === 1"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                        x-cloak>
+                        <div class="relative p-1 mt-4">
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                </svg>
+                                class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
+
+                                <label for="table-search" class="sr-only">Search</label>
+                                <div class="relative">
+                                    <div
+                                        class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                        </svg>
+                                    </div>
+
+                                    {{-- SEARCH --}}
+                                    <input wire:model.live.prevent='searchApplications' type="text"
+                                        id="table-search-users"
+                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Search for Applications">
+                                </div>
                             </div>
 
-                            {{-- SEARCH --}}
-                            <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Search for Applications">
+                            {{-- HISTORY TABLE --}}
+                            <div class="overflow-x-auto ">
+                                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3">
+                                                Job Position
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Company
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Application Status
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                PESO Recommendation
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Applied Date
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($application_history as $data)
+                                            <tr class="bg-white border-b hover:bg-gray-50">
+                                                <th scope="row"
+                                                    class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+
+                                                    <div class="ps-3 text-wrap">
+                                                        <div class="text-base font-semibold">
+                                                            {{ $data->job_posting->job_Title }}
+                                                        </div>
+
+                                                    </div>
+
+                                                </th>
+                                                <td class="px-6 py-4">
+                                                    <div class="text-base font-semibold">
+                                                        {{ $data->job_posting->company->business_Name }}</div>
+                                                </td>
+
+                                                <td class="px-6 py-4">
+                                                    @if ($data->applicant_Status == 'PENDING')
+                                                        <span
+                                                            class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                    @elseif ($data->applicant_Status == 'INTERESTED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-sm font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">INTERESTED</span>
+                                                    @elseif ($data->applicant_Status == 'INTERVIEW')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
+                                                    @elseif ($data->applicant_Status == 'HIRED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
+                                                    @elseif ($data->applicant_Status == 'ACCEPTED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">ACCEPTED</span>
+                                                    @elseif ($data->applicant_Status == 'REJECTED' || $data->applicant_Status == 'CANCELLED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->applicant_Status }}</span>
+                                                    @endif
+
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    @if ($data->peso_Status == 'PENDING')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                    @elseif ($data->peso_Status == 'RECOMMENDED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
+                                                    @elseif ($data->peso_Status == 'NOT')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">NOT
+                                                            RECOMMENDED</span>
+                                                    @endif
+
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="text-base">{{ $data->created_at->format('F m, Y') }}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div class="flex flex-row  gap-5">
+                                                        <div x-data="{ tooltip: 'Application Overview' }">
+                                                            <a wire:navigate
+                                                                href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="h-5 w-5"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 24 24" fill="currentColor">
+                                                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                        clip-rule="evenodd" />
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            {{ $application_history->links('vendor.livewire.tailwind') }}
                         </div>
                     </div>
 
-                    {{-- HISTORY TABLE --}}
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    Job Position
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Company
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Application Status
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    PESO Recommendation
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Date
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($application_history as $data)
-                                <tr class="bg-white border-b hover:bg-gray-50">
-                                    <th scope="row"
-                                        class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                    <div class="flex flex-col" x-show="openTab === 2"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                        x-cloak>
+                        <div class="relative overflow-x-auto p-1 mt-4">
+                            <div
+                                class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
 
-                                        <div class="ps-3 text-wrap">
-                                            <div class="text-base font-semibold">{{ $data->job_posting->job_Title }}
-                                            </div>
+                                <label for="table-search" class="sr-only">Search</label>
+                                <div class="relative">
+                                    <div
+                                        class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2"
+                                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                        </svg>
+                                    </div>
 
-                                        </div>
+                                    {{-- SEARCH --}}
+                                    <input wire:model.live.prevent='searchJobs' type="text"
+                                        id="table-search-users"
+                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Search for Applications">
+                                </div>
+                            </div>
 
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        <div class="text-base font-semibold">
-                                            {{ $data->job_posting->company->business_Name }}</div>
-                                    </td>
+                            {{-- HISTORY TABLE --}}
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            Job Position
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Company
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Application Status
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            PESO Recommendation
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Date
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($application_history as $data)
+                                        <tr class="bg-white border-b hover:bg-gray-50">
+                                            <th scope="row"
+                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
 
-                                    <td class="px-6 py-4">
-                                        @if ($data->applicant_Status == 'PENDING')
-                                            <span
-                                                class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                                        @elseif ($data->applicant_Status == 'INTERESTED')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-sm font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">INTERESTED</span>
-                                        @elseif ($data->applicant_Status == 'INTERVIEW')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
-                                        @elseif ($data->applicant_Status == 'HIRED')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
-                                        @elseif ($data->applicant_Status == 'ACCEPTED')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">ACCEPTED</span>
-                                        @elseif ($data->applicant_Status == 'REJECTED' || $data->applicant_Status == 'CANCELLED')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->applicant_Status }}</span>
-                                        @endif
+                                                <div class="ps-3 text-wrap">
+                                                    <div class="text-base font-semibold">
+                                                        {{ $data->job_posting->job_Title }}
+                                                    </div>
 
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        @if ($data->peso_Status == 'PENDING')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                                        @elseif ($data->peso_Status == 'RECOMMENDED')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
-                                        @elseif ($data->peso_Status == 'NOT')
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">NOT
-                                                RECOMMENDED</span>
-                                        @endif
+                                                </div>
 
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-base">{{ $data->created_at->format('F m, Y') }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="flex flex-row  gap-5">
-                                            <div x-data="{ tooltip: 'Application Overview' }">
-                                                <a href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
-                                                    x-tooltip="tooltip" type="button"
-                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="currentColor">
-                                                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                        <path fill-rule="evenodd"
-                                                            d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </a>
-                                            </div>
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <div class="text-base font-semibold">
+                                                    {{ $data->job_posting->company->business_Name }}</div>
+                                            </td>
 
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                            <td class="px-6 py-4">
+                                                @if ($data->applicant_Status == 'PENDING')
+                                                    <span
+                                                        class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                @elseif ($data->applicant_Status == 'INTERESTED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-sm font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">INTERESTED</span>
+                                                @elseif ($data->applicant_Status == 'INTERVIEW')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
+                                                @elseif ($data->applicant_Status == 'HIRED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
+                                                @elseif ($data->applicant_Status == 'ACCEPTED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">ACCEPTED</span>
+                                                @elseif ($data->applicant_Status == 'REJECTED' || $data->applicant_Status == 'CANCELLED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->applicant_Status }}</span>
+                                                @endif
+
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                @if ($data->peso_Status == 'PENDING')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                @elseif ($data->peso_Status == 'RECOMMENDED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
+                                                @elseif ($data->peso_Status == 'NOT')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">NOT
+                                                        RECOMMENDED</span>
+                                                @endif
+
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="text-base">{{ $data->created_at->format('F m, Y') }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 text-center">
+                                                <div class="flex flex-row  gap-5">
+                                                    <div x-data="{ tooltip: 'Application Overview' }">
+                                                        <a wire:navigate
+                                                            href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
+                                                            x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 24 24" fill="currentColor">
+                                                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                <path fill-rule="evenodd"
+                                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                    clip-rule="evenodd" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {{-- PAGINATION --}}
+                    </div>
+
+                    <div class="flex flex-col" x-show="openTab === 3"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                        x-cloak>
+                        <div class="relative p-1 mt-4">
+                            <div
+                                class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
+
+                                <label for="table-search" class="sr-only">Search</label>
+                                <div class="relative">
+                                    <div
+                                        class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2"
+                                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                        </svg>
+                                    </div>
+
+                                    {{-- SEARCH --}}
+                                    <input wire:model.live.prevent='searchJobs' type="text" id="table-search-users"
+                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Search for Jobs">
+                                </div>
+                            </div>
+
+                            {{-- Recommendation TABLE --}}
+                            <div class="overflow-x-auto ">
+                                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3">
+                                                Job Position
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Company
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Slots Available
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Application Deadline
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($joblist as $data)
+                                            <tr wire:key='jobPosting-{{ $data->job_id }}'
+                                                class="bg-white border-b hover:bg-gray-50">
+                                                <th scope="row"
+                                                    class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+
+                                                    <div class="ps-3 text-wrap">
+                                                        <div class="text-base font-semibold">
+                                                            {{ $data->job_Title }}
+                                                        </div>
+
+                                                    </div>
+
+                                                </th>
+                                                <td class="px-6 py-4">
+                                                    <div class="text-base font-semibold">
+                                                        {{ $data->company->business_Name }}</div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="text-base font-semibold">
+                                                        {{ $data->available_slots }}</div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="text-base">{{ $data->job_Duration->format('F m, Y') }}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div class="flex flex-row  gap-5">
+
+                                                        <div x-data="{ tooltip: 'View Job Postin' }">
+                                                            <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="h-5 w-5"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 24 24" fill="currentColor">
+                                                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                        clip-rule="evenodd" />
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            {{ $joblist->links('vendor.livewire.tailwind') }}
+                        </div>
+                    </div>
+
                 </div>
-                {{-- PAGINATION --}}
-
             </div>
+
+
+
         </div>
     </div>
 </div>

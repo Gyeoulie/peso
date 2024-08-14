@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
+use App\Livewire\Admin\Accounts\Employer\EmployerOverview;
 use App\Livewire\Admin\Accounts\Jobseeker\JobseekerManagement;
 use App\Livewire\Admin\Accounts\Jobseeker\JobseekerOverview;
 use App\Livewire\Admin\Certificates\Certificates;
@@ -114,6 +115,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/manage/jobseeker/{id}', JobseekerOverview::class)->name('admin-users-jobseeker-overview');
 
     Route::get('/manage/employer', EmployerManagement::class)->name('admin-users-employer');
+    Route::get('/manage/employer/{id}', EmployerOverview::class)->name('admin-users-employer-overview');
 
     Route::get('/manage-admin', function () {
         return view('admin.admin_partials.admin-accounts');

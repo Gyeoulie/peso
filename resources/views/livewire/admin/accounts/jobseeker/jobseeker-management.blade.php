@@ -14,7 +14,7 @@
 
                 <h1 class="text-3xl text-center font-bold">Jobseekers</h1>
 
-                <div class="relative overflow-x-auto p-1 mt-4">
+                <div class="relative p-1 mt-4">
                     <div class="sm:hidden">
                         <label for="tabs" class="sr-only">Select Filters</label>
                         <select id="tabs"
@@ -71,118 +71,121 @@
                     </div>
 
                     {{-- TABLE --}}
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 ">
-                                    Name
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Employment Status
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Joined Date
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Action
-                                </th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($jobseeker->isEmpty())
+                    <div class="overflow-x-auto ">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <td colspan="4">
-                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
-                                            <div class="p-6 bg-gray-100 rounded-full">
-                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                                </svg>
+                                    <th scope="col" class="px-6 py-3 ">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Employment Status
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Joined Date
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Action
+                                    </th>
 
-                                            </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                No Records Found!
-                                            </p>
-                                        </div>
-
-                                    </td>
                                 </tr>
-                            @else
-                                @foreach ($jobseeker as $data)
-                                    <tr wire:key='emp-{{ $data->employee_id }}'
-                                        class="bg-white border-b hover:bg-gray-50">
-                                        <th scope="row"
-                                            class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                            <img class="w-10 h-10 rounded-full"
-                                                src="{{ asset('storage/' . $data->pimg) }}" alt="Jese image">
-                                            <div class="ps-3 text-wrap">
-                                                <div class="text-base font-semibold">
-                                                    <div class="text-base font-semibold uppercase">
-                                                        {{ $data->fname }}
-                                                        {{ $data->mname ?? '' }}
-                                                        {{ $data->lname }}
-                                                        @if (!empty($data->suffix))
-                                                            , {{ $data->suffix }}
-                                                        @endif
+                            </thead>
+                            <tbody>
+                                @if ($jobseeker->isEmpty())
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                <div class="p-6 bg-gray-100 rounded-full">
+                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-width="2"
+                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                    </svg>
+
+                                                </div>
+                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                    No Records Found!
+                                                </p>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                @else
+                                    @foreach ($jobseeker as $data)
+                                        <tr wire:key='emp-{{ $data->employee_id }}'
+                                            class="bg-white border-b hover:bg-gray-50">
+                                            <th scope="row"
+                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                <img class="w-10 h-10 rounded-full"
+                                                    src="{{ asset('storage/' . $data->pimg) }}" alt="Jese image">
+                                                <div class="ps-3 text-wrap">
+                                                    <div class="text-base font-semibold">
+                                                        <div class="text-base font-semibold uppercase">
+                                                            {{ $data->fname }}
+                                                            {{ $data->mname ?? '' }}
+                                                            {{ $data->lname }}
+                                                            @if (!empty($data->suffix))
+                                                                , {{ $data->suffix }}
+                                                            @endif
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                                        {{ $data->address }}, {{ $data->barangay->barangay_Name }},
+                                                        {{ $data->barangay->municipality->municipality_Name }}
+                                                    </div>
+                                                </div>
+
+                                            </th>
+                                            <td class="px-6 py-4">
+
+                                                @if ($data->empstatus == 1)
+                                                    <div class="flex flex-row items-center">
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                                        EMPLOYED
+                                                    </div>
+                                                @else
+                                                    <div class="flex flex-row items-center">
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                        UNEMPLOYED
+                                                    </div>
+                                                @endif
+
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ $data->created_at->format('F j, Y') }}
+                                            </td>
+
+
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-row  gap-5">
+                                                    <div x-data="{ tooltip: 'Jobseeker Overview' }">
+                                                        <a wire:navigate
+                                                            href="{{ route('admin-users-jobseeker-overview', ['id' => $data->employee_id]) }}"
+                                                            x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 24 24" fill="currentColor">
+                                                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                <path fill-rule="evenodd"
+                                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                    clip-rule="evenodd" />
+                                                            </svg>
+                                                        </a>
                                                     </div>
 
-                                                </div>
-                                                <div class="font-normal text-gray-500 text-sm uppercase">
-                                                    {{ $data->address }}, {{ $data->barangay->barangay_Name }},
-                                                    {{ $data->barangay->municipality->municipality_Name }}
-                                                </div>
-                                            </div>
 
-                                        </th>
-                                        <td class="px-6 py-4">
-
-                                            @if ($data->empstatus == 1)
-                                                <div class="flex flex-row items-center">
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                                    EMPLOYED
-                                                </div>
-                                            @else
-                                                <div class="flex flex-row items-center">
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                    UNEMPLOYED
-                                                </div>
-                                            @endif
-
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $data->created_at->format('F j, Y') }}
-                                        </td>
+                                            </td>
 
 
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-row  gap-5">
-                                                <div x-data="{ tooltip: 'Jobseeker Overview' }">
-                                                    <a wire:navigate
-                                                        href="{{ route('admin-users-jobseeker-overview', ['id' => $data->employee_id]) }}"
-                                                        x-tooltip="tooltip" type="button"
-                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="currentColor">
-                                                            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                            <path fill-rule="evenodd"
-                                                                d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                                clip-rule="evenodd" />
-                                                        </svg>
-                                                    </a>
-                                                </div>
-
-
-                                        </td>
-
-
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 {{-- PAGINATION --}}
