@@ -14,6 +14,7 @@ use App\Livewire\Admin\JobPosting\JobPosting;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Admin\LocationManagement\Location;
 use App\Livewire\Admin\PositionIndustry\PositionIndustry;
+use App\Livewire\Admin\Reports\BarangayReports;
 use App\Livewire\Admin\Requirements\Requirements;
 use App\Livewire\Employer\Dashboard\JobApplicants;
 use App\Livewire\Employer\Dashboard\JobPostList;
@@ -120,6 +121,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/manage-admin', function () {
         return view('admin.admin_partials.admin-accounts');
     })->name('admin-admin');
+
+    Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
+
 });
 
 // Route::get('/admin', function () {
