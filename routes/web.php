@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PDF\PDFView;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
 use App\Livewire\Admin\Accounts\Employer\EmployerOverview;
@@ -213,3 +214,6 @@ require __DIR__ . '/auth.php';
 // //EMPLOYER FILL INFORMATION
 // Route::get('/fill/employer', [NSRP::class, 'loadEmployer'])->name('fill_employer');
 // Route::post('/fill/employer', [NSRP::class, 'postEmployer'])->name('postEmployer');
+
+Route::post('/resume/view', [PDFView::class, 'viewResume'])->name('view.resume');
+Route::post('/recommendation/view', [PDFView::class, 'viewRecommendation'])->name('view.recommendation');

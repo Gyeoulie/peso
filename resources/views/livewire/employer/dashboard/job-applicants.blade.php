@@ -443,26 +443,17 @@
                                                 <td class="px-6 py-4">
                                                     <div class="flex flex-row gap-4 items-center"
                                                         x-data="{ openNewTab: function(url) { window.open(url, '_blank'); } }">
-                                                        <div x-data="{ tooltip: 'Download Resume' }">
-                                                            <button {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
-                                                                wire:click.prevent='printResume({{ $data->employee_id }}, {{ $data->applicant_Resume }})'
-                                                                x-tooltip="tooltip" type="button"
-                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                        @if ($data->peso_Status === 'RECOMMENDED')
-                                                            <div x-data="{ tooltip: 'Download Recommendation Letter' }">
-                                                                <button
-                                                                    wire:click.prevent='printRecom({{ $data->applicant_id }})'
-                                                                    x-tooltip="tooltip" type="button"
+
+
+                                                        <div x-data="{ tooltip: 'View Resume' }">
+                                                            <form action="{{ route('view.resume') }}" method="POST"
+                                                                target="_blank">
+                                                                @csrf
+                                                                <input type="hidden" name="emp_id"
+                                                                    value="{{ $data->employee_id }}">
+                                                                <input type="hidden" name="resume_type"
+                                                                    value="{{ $data->applicant_Resume }}">
+                                                                <button x-tooltip="tooltip" type="submit"
                                                                     class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                     <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
@@ -470,10 +461,36 @@
                                                                         stroke-width="1.5" stroke="currentColor">
                                                                         <path stroke-linecap="round"
                                                                             stroke-linejoin="round"
-                                                                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                                                            d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
                                                                     </svg>
-
                                                                 </button>
+                                                            </form>
+                                                        </div>
+
+
+
+
+                                                        @if ($data->peso_Status === 'RECOMMENDED')
+                                                            <div x-data="{ tooltip: 'Download Recommendation Letter' }">
+                                                                <form action="{{ route('view.recommendation') }}"
+                                                                    method="POST" target="_blank">
+                                                                    @csrf
+                                                                    <input type="hidden" name="app_id"
+                                                                        value="{{ $data->applicant_id }}">
+                                                                    <button x-tooltip="tooltip" type="submit"
+                                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+
+                                                                        <svg class="w-5 h-5"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none" viewBox="0 0 24 24"
+                                                                            stroke-width="1.5" stroke="currentColor">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                                                        </svg>
+
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         @endif
 
