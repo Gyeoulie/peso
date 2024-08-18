@@ -27,7 +27,7 @@ class Company_Industry_Line extends Model
         return $this->belongsTo(Company::class, 'company_id');
     }
 
-    public function industry()
+    public function job_industry()
     {
         return $this->belongsTo(Job_Industry::class, 'industry_id');
     }

@@ -179,7 +179,7 @@
                     x-transition:enter-end="opacity-100 scale-100">
 
 
-                    <div class="relative overflow-x-auto">
+                    <div class="relative">
                         <div x-data="{
                             filter: @entangle('filter'),
                             activeFilter: 'text-gray-900 bg-gray-400 active',
@@ -254,7 +254,7 @@
 
 
                         <div
-                            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mx-1">
+                            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 md:mx-1">
                             <div>
 
                                 <label for="table-search" class="sr-only">Search</label>
@@ -272,7 +272,7 @@
                                     {{-- SEARCH --}}
                                     <input wire:model.live.prevent='applicantSearch' type="text"
                                         id="table-search-users"
-                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Search applicants">
                                 </div>
                             </div>
@@ -319,271 +319,301 @@
                         </div>
 
                         {{-- TABLE --}}
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3 ">
-                                        Name
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        PESO Status
-                                    </th>
-                                    @if ($filter === 'ALL')
-                                        <th scope="col" class="px-6 py-3">
-                                            Status
-                                        </th>
-                                    @endif
-                                    <th scope="col" class="px-6 py-3">
-                                        Documents
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (isset($applicants['list']) && count($applicants['list']) === 0)
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
-                                        <td colspan="5">
-                                            <div class="flex flex-col items-center justify-center mt-10">
-                                                <div class="p-6 bg-gray-100 rounded-full">
-                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                        height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-width="2"
-                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                                    </svg>
-
-                                                </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2 mb-20">
-                                                    No Applicants Found
-                                                </p>
-                                            </div>
-
-                                        </td>
-                                    </tr>
-                                @else
-                                    @foreach ($applicants['list'] as $data)
-                                        <tr wire:key='jobApplicant-{{ $data->applicant_id }}'
-                                            class="bg-white border-b hover:bg-gray-50">
-                                            <th scope="row"
-                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full object-cover"
-                                                    src="{{ asset('storage/' . $data->employee->pimg) }}"
-                                                    alt="Jese image">
-                                                <div class="ps-3 text-wrap">
-                                                    <div class="text-base font-semibold">
-                                                        <a wire:navigate
-                                                            href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
-                                                            class="hover:text-blue-500">{{ $data->employee->fname }}
-                                                            {{ $data->employee->mname }} {{ $data->employee->lname }}
-                                                        </a>
-                                                    </div>
-                                                    <div class="text-gray-500 font-medium text-xs">Applied date:
-                                                        {{ $data->created_at->format('F j, Y') }}
-                                                    </div>
-                                                </div>
-
+                                        <th scope="col" class="px-6 py-3 ">
+                                            Name
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            PESO Status
+                                        </th>
+                                        @if ($filter === 'ALL')
+                                            <th scope="col" class="px-6 py-3">
+                                                Status
                                             </th>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center">
-                                                    @if ($data->peso_Status === 'PENDING')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
-                                                        Pending
-                                                    @elseif($data->peso_Status === 'RECOMMENDED')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                                        Recommended
-                                                    @elseif($data->peso_Status === 'REJECT')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                        Not Recommended
-                                                    @endif
-                                                </div>
-                                            </td>
-                                            @if ($filter === 'ALL')
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center">
-                                                        @if ($data->applicant_Status === 'PENDING')
-                                                            <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
-                                                            </div>
-                                                            Pending
-                                                        @elseif($data->applicant_Status === 'INTERESTED')
-                                                            <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2">
-                                                            </div>
-                                                            Interested
-                                                        @elseif($data->applicant_Status === 'INTERVIEW')
-                                                            <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
-                                                            </div>
-                                                            Interview
-                                                        @elseif($data->applicant_Status === 'HIRED')
-                                                            <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
-                                                            </div>
-                                                            Hired
-                                                        @elseif($data->applicant_Status === 'ACCEPTED')
-                                                            <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2">
-                                                            </div>
-                                                            Accepted
-                                                        @elseif($data->applicant_Status === 'REJECTED' || $data->applicant_Status === 'CANCELLED')
-                                                            <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
-                                                            </div>
-                                                            <p class="uppercase">{{ $data->applicant_Status }}</p>
-                                                        @endif
+                                        @endif
+                                        <th scope="col" class="px-6 py-3">
+                                            Documents
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($applicants['list']) && count($applicants['list']) === 0)
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="flex flex-col items-center justify-center mt-10">
+                                                    <div class="p-6 bg-gray-100 rounded-full">
+                                                        <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-width="2"
+                                                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                        </svg>
+
                                                     </div>
-                                                </td>
-                                            @endif
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-row gap-4 items-center" x-data="{ openNewTab: function(url) { window.open(url, '_blank'); } }">
-                                                    <div x-data="{ tooltip: 'Download Resume' }">
-                                                        <button {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
-                                                            wire:click.prevent='printResume({{ $data->employee_id }}, {{ $data->applicant_Resume }})'
-                                                            x-tooltip="tooltip" type="button"
-                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                    @if ($data->peso_Status === 'RECOMMENDED')
-                                                        <div x-data="{ tooltip: 'Download Recommendation Letter' }">
-                                                            <button
-                                                                wire:click.prevent='printRecom({{ $data->applicant_id }})'
-                                                                x-tooltip="tooltip" type="button"
-                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-                                                                </svg>
-
-                                                            </button>
-                                                        </div>
-                                                    @endif
-
-
+                                                    <p class="text-xl font-bold text-black text-center mt-2 mb-20">
+                                                        No Applicants Found
+                                                    </p>
                                                 </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-row gap-4 items-center">
-                                                    @if (
-                                                        $filter != 'ACCEPTED' &&
-                                                            $filter != 'HIRED' &&
-                                                            $data->applicant_Status != 'INTERESTED' &&
-                                                            $data->applicant_Status != 'INTERVIEW' &&
-                                                            $data->applicant_Status != 'CANCELLED' &&
-                                                            $data->applicant_Status != 'REJECTED')
-                                                        <div x-data="{ tooltip: 'Interested' }">
-                                                            <button
-                                                                wire:click.prevent="openModal('interested', {{ $data->applicant_id }})"
-                                                                x-tooltip="tooltip" type="button"
-                                                                class="text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                    @endif
-                                                    @if (
-                                                        $filter != 'ACCEPTED' &&
-                                                            $filter != 'HIRED' &&
-                                                            $data->applicant_Status != 'INTERVIEW' &&
-                                                            $data->applicant_Status != 'CANCELLED' &&
-                                                            $data->applicant_Status != 'REJECTED')
-                                                        <div x-data="{ tooltip: 'For Interview' }">
-                                                            <button
-                                                                wire:click.prevent="openModal('interview', {{ $data->applicant_id }})"
-                                                                x-tooltip="tooltip" type="button"
-                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                    @endif
-                                                    @if ($filter != 'ACCEPTED' && $filter == 'INTERVIEW')
-                                                        <div x-data="{ tooltip: 'Hire' }">
-                                                            <button
-                                                                wire:click.prevent="openModal('hire', {{ $data->applicant_id }})"
-                                                                x-tooltip="tooltip" type="button"
-                                                                class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                                </svg>
-
-                                                            </button>
-                                                        </div>
-                                                    @endif
-                                                    @if (
-                                                        $filter != 'ACCEPTED' &&
-                                                            $filter != 'HIRED' &&
-                                                            $data->applicant_Status != 'CANCELLED' &&
-                                                            $data->applicant_Status != 'REJECTED')
-                                                        <div x-data="{ tooltip: 'Reject' }">
-                                                            <button
-                                                                wire:click.prevent="openModal('reject', {{ $data->applicant_id }})"
-                                                                x-tooltip="tooltip" type="button"
-                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                                </svg>
-
-                                                            </button>
-                                                        </div>
-                                                    @endif
-                                                    @if ($filter != 'ALL' && $data->applicant_Status != 'PENDING')
-                                                        <div x-data="{ tooltip: 'Applicant Info' }">
-                                                            <button
-                                                                wire:click.prevent="getApplicant({{ $data->applicant_id }})"
-                                                                x-tooltip="tooltip" type="button"
-                                                                class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    class="w-5 h-5" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                                                </svg>
-
-
-                                                            </button>
-                                                        </div>
-                                                    @endif
-
-                                                </div>
-
 
                                             </td>
                                         </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
+                                    @else
+                                        @foreach ($applicants['list'] as $data)
+                                            <tr wire:key='jobApplicant-{{ $data->applicant_id }}'
+                                                class="bg-white border-b hover:bg-gray-50">
+                                                <th scope="row"
+                                                    class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                    <img class="w-10 h-10 rounded-full object-cover"
+                                                        src="{{ asset('storage/' . $data->employee->pimg) }}"
+                                                        alt="Jese image">
+                                                    <div class="ps-3 text-wrap">
+                                                        <div class="text-base font-semibold">
+                                                            <a wire:navigate
+                                                                href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
+                                                                class="hover:text-blue-500">{{ $data->employee->fname }}
+                                                                {{ $data->employee->mname }}
+                                                                {{ $data->employee->lname }}
+                                                            </a>
+                                                        </div>
+                                                        <div class="text-gray-500 font-medium text-xs">Applied date:
+                                                            {{ $data->created_at->format('F j, Y') }}
+                                                        </div>
+                                                    </div>
+
+                                                </th>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center">
+                                                        @if ($data->peso_Status === 'PENDING')
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                            </div>
+                                                            Pending
+                                                        @elseif($data->peso_Status === 'RECOMMENDED')
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                            </div>
+                                                            Recommended
+                                                        @elseif($data->peso_Status === 'REJECT')
+                                                            <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                            </div>
+                                                            Not Recommended
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                                @if ($filter === 'ALL')
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex items-center">
+                                                            @if ($data->applicant_Status === 'PENDING')
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                                </div>
+                                                                Pending
+                                                            @elseif($data->applicant_Status === 'INTERESTED')
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2">
+                                                                </div>
+                                                                Interested
+                                                            @elseif($data->applicant_Status === 'INTERVIEW')
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
+                                                                </div>
+                                                                Interview
+                                                            @elseif($data->applicant_Status === 'HIRED')
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                </div>
+                                                                Hired
+                                                            @elseif($data->applicant_Status === 'ACCEPTED')
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2">
+                                                                </div>
+                                                                Accepted
+                                                            @elseif($data->applicant_Status === 'REJECTED' || $data->applicant_Status === 'CANCELLED')
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                                </div>
+                                                                <p class="uppercase">{{ $data->applicant_Status }}</p>
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                @endif
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-row gap-4 items-center"
+                                                        x-data="{ openNewTab: function(url) { window.open(url, '_blank'); } }">
+
+
+                                                        <div x-data="{ tooltip: 'View Resume' }">
+                                                            <form action="{{ route('view.resume') }}" method="POST"
+                                                                target="_blank">
+                                                                @csrf
+                                                                <input type="hidden" name="emp_id"
+                                                                    value="{{ $data->employee_id }}">
+                                                                <input type="hidden" name="resume_type"
+                                                                    value="{{ $data->applicant_Resume }}">
+                                                                <button x-tooltip="tooltip" type="submit"
+                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg class="w-5 h-5"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                                                                    </svg>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+
+
+
+
+                                                        @if ($data->peso_Status === 'RECOMMENDED')
+                                                            <div x-data="{ tooltip: 'Download Recommendation Letter' }">
+                                                                <form action="{{ route('view.recommendation') }}"
+                                                                    method="POST" target="_blank">
+                                                                    @csrf
+                                                                    <input type="hidden" name="app_id"
+                                                                        value="{{ $data->applicant_id }}">
+                                                                    <button x-tooltip="tooltip" type="submit"
+                                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+
+                                                                        <svg class="w-5 h-5"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none" viewBox="0 0 24 24"
+                                                                            stroke-width="1.5" stroke="currentColor">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                                                        </svg>
+
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        @endif
+
+
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-row gap-4 items-center">
+                                                        @if (
+                                                            $filter != 'ACCEPTED' &&
+                                                                $filter != 'HIRED' &&
+                                                                $data->applicant_Status != 'INTERESTED' &&
+                                                                $data->applicant_Status != 'INTERVIEW' &&
+                                                                $data->applicant_Status != 'CANCELLED' &&
+                                                                $data->applicant_Status != 'REJECTED')
+                                                            <div x-data="{ tooltip: 'Interested' }">
+                                                                <button
+                                                                    wire:click.prevent="openModal('interested', {{ $data->applicant_id }})"
+                                                                    x-tooltip="tooltip" type="button"
+                                                                    class="text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg class="w-5 h-5"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        @endif
+                                                        @if (
+                                                            $filter != 'ACCEPTED' &&
+                                                                $filter != 'HIRED' &&
+                                                                $data->applicant_Status != 'INTERVIEW' &&
+                                                                $data->applicant_Status != 'CANCELLED' &&
+                                                                $data->applicant_Status != 'REJECTED')
+                                                            <div x-data="{ tooltip: 'For Interview' }">
+                                                                <button
+                                                                    wire:click.prevent="openModal('interview', {{ $data->applicant_id }})"
+                                                                    x-tooltip="tooltip" type="button"
+                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg class="w-5 h-5"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        @endif
+                                                        @if ($filter != 'ACCEPTED' && $filter == 'INTERVIEW')
+                                                            <div x-data="{ tooltip: 'Hire' }">
+                                                                <button
+                                                                    wire:click.prevent="openModal('hire', {{ $data->applicant_id }})"
+                                                                    x-tooltip="tooltip" type="button"
+                                                                    class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg class="w-5 h-5"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                    </svg>
+
+                                                                </button>
+                                                            </div>
+                                                        @endif
+                                                        @if (
+                                                            $filter != 'ACCEPTED' &&
+                                                                $filter != 'HIRED' &&
+                                                                $data->applicant_Status != 'CANCELLED' &&
+                                                                $data->applicant_Status != 'REJECTED')
+                                                            <div x-data="{ tooltip: 'Reject' }">
+                                                                <button
+                                                                    wire:click.prevent="openModal('reject', {{ $data->applicant_id }})"
+                                                                    x-tooltip="tooltip" type="button"
+                                                                    class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg class="w-5 h-5"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                    </svg>
+
+                                                                </button>
+                                                            </div>
+                                                        @endif
+                                                        @if ($filter != 'ALL' && $data->applicant_Status != 'PENDING')
+                                                            <div x-data="{ tooltip: 'Applicant Info' }">
+                                                                <button
+                                                                    wire:click.prevent="getApplicant({{ $data->applicant_id }})"
+                                                                    x-tooltip="tooltip" type="button"
+                                                                    class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="w-5 h-5" fill="none"
+                                                                        viewBox="0 0 24 24" stroke-width="1.5"
+                                                                        stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                                                                    </svg>
+
+
+                                                                </button>
+                                                            </div>
+                                                        @endif
+
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     {{-- pagination --}}

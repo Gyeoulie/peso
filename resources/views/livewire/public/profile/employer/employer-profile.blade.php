@@ -150,8 +150,9 @@
 
 
 
-                            <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                <svg wire:click.prevent="open()" class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                            <div
+                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                <svg wire:click.prevent="open" class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
@@ -175,8 +176,20 @@
                 <div class="container">
                     <div class="bg-white shadow rounded-lg p-6">
 
-                        <div class="flex flex-row w-full mb-4">
+                        <div class="flex flex-row justify-between w-full mb-4">
                             <h2 class="text-xl font-bold">Job Postings</h2>
+
+
+                            <div
+                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                <a wire:navigate href="{{ route('edit.details.emp') }}">
+                                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                    </svg>
+                                </a>
+                            </div>
 
                         </div>
                         @if ($employer->job_posting->isEmpty())
@@ -184,8 +197,8 @@
                             <div class="flex flex-col justify-center items-center mt-20 mb-20">
                                 <div class="flex  bg-gray-100 rounded-full p-1">
 
-                                    <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
                                     </svg>
@@ -197,59 +210,55 @@
                                 </div>
                             </div>
                         @else
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                            @foreach ($employer->job_posting as $jobPosts)
+                                <a href="{{ route('jobpost.show', ['id' => $jobPosts->job_id]) }}">
+                                    <div wire:key='{{ $jobPosts->job_id }}' class="container p-3">
 
-                                @foreach ($employer->job_posting as $jobPosts)
-                                    <a href="{{ route('jobpost.show', ['id' => $jobPosts->job_id]) }}">
-                                        <div wire:key='{{ $jobPosts->job_id }}'
-                                        class="container bg-blue-200 hover:bg-blue-300 p-3 rounded-lg shadow ">
+                                        <div class="flex flex-row h-full items-center">
 
-                                            <div class="flex flex-row h-full items-center">
+                                            <div class="flex flex-col">
+                                                <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 "
+                                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                    width="24" height="24" fill="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path fill-rule="evenodd"
+                                                        d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.382l1.447.723.005.003.027.013.12.056c.108.05.272.123.486.212.429.177 1.056.416 1.834.655C7.481 13.524 9.63 14 12 14c2.372 0 4.52-.475 6.08-.956.78-.24 1.406-.478 1.835-.655a14.028 14.028 0 0 0 .606-.268l.027-.013.005-.002L22 11.381V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.447 7.894.553-.276V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.382l.553.276.002.002.004.002.013.006.041.02.151.07c.13.06.318.144.557.242.478.198 1.163.46 2.01.72C7.019 15.476 9.37 16 12 16c2.628 0 4.98-.525 6.67-1.044a22.95 22.95 0 0 0 2.01-.72 15.994 15.994 0 0 0 .707-.312l.041-.02.013-.006.004-.002.001-.001-.431-.866.432.865ZM12 10a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
 
-                                                <div class="flex flex-col">
-                                                    <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 "
-                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                        width="24" height="24" fill="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path fill-rule="evenodd"
-                                                             d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.382l1.447.723.005.003.027.013.12.056c.108.05.272.123.486.212.429.177 1.056.416 1.834.655C7.481 13.524 9.63 14 12 14c2.372 0 4.52-.475 6.08-.956.78-.24 1.406-.478 1.835-.655a14.028 14.028 0 0 0 .606-.268l.027-.013.005-.002L22 11.381V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.447 7.894.553-.276V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.382l.553.276.002.002.004.002.013.006.041.02.151.07c.13.06.318.144.557.242.478.198 1.163.46 2.01.72C7.019 15.476 9.37 16 12 16c2.628 0 4.98-.525 6.67-1.044a22.95 22.95 0 0 0 2.01-.72 15.994 15.994 0 0 0 .707-.312l.041-.02.013-.006.004-.002.001-.001-.431-.866.432.865ZM12 10a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
+                                            <div class="flex flex-col ml-4 w-full">
+                                                <span class="text-2xl text-blue-500 font-bold">
+                                                    {{ $jobPosts->job_Title }}
+                                                </span>
+                                                <span class="text-lg text-black font-semibold">
+                                                    {{ $jobPosts->barangay->municipality->municipality_Name }},
+                                                    {{ $jobPosts->barangay->municipality->province->province_Name }}
+                                                </span>
+                                                <div class="flex flex-row w-full gap-5">
+                                                    <span class="text-md text-black font-semibold">
+                                                        {{ $jobPosts->job_Type == 1 ? 'Full Time' : ($jobPosts->job_Type == 2 ? 'Part Time' : '') }}
+                                                    </span>
+                                                    <span class="text-md text-black font-semibold">
+                                                        ₱{{ number_format($jobPosts->job_MinWage, 2) }} -
+                                                        ₱{{ number_format($jobPosts->job_MaxWage, 2) }}
+                                                    </span>
+
+
+
                                                 </div>
 
-                                                <div class="flex flex-col ml-4 w-full">
-                                                    <span class="text-2xl text-blue-500 font-bold">
-                                                        {{ $jobPosts->job_Title }}
-                                                    </span>
-                                                    <span class="text-lg text-black font-semibold">
-                                                        {{ $jobPosts->barangay->municipality->municipality_Name }},
-                                                        {{ $jobPosts->barangay->municipality->province->province_Name }}
-                                                    </span>
-                                                    <div class="flex flex-row w-full gap-5">
-                                                        <span class="text-md text-black font-semibold">
-                                                            {{ $jobPosts->job_Type == 1 ? 'Full Time' : ($jobPosts->job_Type == 2 ? 'Part Time' : '') }}
-                                                        </span>
-                                                        <span class="text-md text-black font-semibold">
-                                                            ₱{{ number_format($jobPosts->job_MinWage, 2) }} -
-                                                            ₱{{ number_format($jobPosts->job_MaxWage, 2) }}
-                                                        </span>
-
-
-
-                                                    </div>
-
-                                                    <span class="text-sm text-gray-700 font-medium">Posted at:
-                                                        {{ $jobPosts->created_at->format('F j, Y') }}</span>
-
-                                                </div>
+                                                <span class="text-sm text-gray-700 font-medium">Posted at:
+                                                    {{ $jobPosts->created_at->format('F j, Y') }}</span>
 
                                             </div>
 
                                         </div>
-                                    </a>
-                                @endforeach
 
-                            </div>
+                                    </div>
+                                </a>
+                                <hr class="h-0.5 my-2 mx-10 bg-blue-200 border-0">
+                            @endforeach
 
                         @endif
 
@@ -280,14 +289,14 @@
 
     <x-modal name="aboutme-modal" focusable>
         <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
-            <h2 class="text-lg font-medium text-gray-900">
+            <h2 class="text-xl font-bold text-gray-900">
                 {{ __('Edit Company Description') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
                 <div class="flex flex-col mt-2 w-full">
-                    <x-input-label :value="__('Company Description')" />
-                    <textarea wire:model='description' id="message" rows="6" required
+                    {{-- <x-input-label :value="__('Company Description')" /> --}}
+                    <textarea wire:model='description' id="message" rows="10" required
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
                         placeholder="Write something about yourself here..." maxlength="600"></textarea>
                     <x-input-error :messages="$errors->get('description')" class="mt-2" />
@@ -298,18 +307,18 @@
 
 
             <div class="mt-6 flex justify-end">
-                <x-secondary-button wire:click.prevent="close()" type="button">
+                <x-secondary-button wire:click.prevent="close" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
 
-                <x-danger-button wire:loading.attr="disabled" class="ms-3" type="button">
-                    <div wire:click.prevent="save()">
+                <x-primary-button wire:loading.attr="disabled" class="ms-3" type="button">
+                    <div wire:click.prevent="save">
 
 
                         {{ __('Save') }}
 
-                        <div wire:loading.delay.long role="status">
+                        <div wire:loading.delay.long wire:target='save' role="status">
 
                             <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -325,7 +334,7 @@
                         </div>
                     </div>
 
-                </x-danger-button>
+                </x-primary-button>
 
             </div>
     </x-modal>

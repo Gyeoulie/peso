@@ -53,6 +53,27 @@ class ApplicantOverview extends Component
 
     public $recommendationRemarks, $rejectRemarks, $recLetter;
 
+    public function viewFile($id, $fileToView)
+    {
+
+        if ($fileToView === 3) {
+
+            $this->dispatch('viewFile', [
+                'url' => route('view.recommendation'),
+                'app_id' => $id,
+            ]);
+
+        } else {
+
+            $this->dispatch('viewFile', [
+                'url' => route('view.resume'),
+                'emp_id' => $id,
+                'resume_type' => $fileToView,
+            ]);
+        }
+
+    }
+
     public function printResume($id, $type)
     {
 

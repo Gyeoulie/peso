@@ -29,7 +29,7 @@ class Eligibility extends Model
         return $this->belongsTo(Employee::class, 'employee_id');
     }
 
-    public function eligibilityType()
+    public function eligibility_type()
     {
         return $this->belongsTo(Eligibility_Type::class, 'eligibility_Type');
     }

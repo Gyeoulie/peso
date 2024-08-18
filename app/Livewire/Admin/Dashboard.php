@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('layouts.admin')]
 class Dashboard extends Component
 {
-    #[Layout('layouts.admin')]
     public function render()
     {
 
@@ -108,6 +108,7 @@ class Dashboard extends Component
             ->setDataLabelsEnabled(true)
             ->setLegendVisibility(false)
             ->setColumnWidth(50); // Adjust column width as needed
+// Adjust column width as needed
 
         $topJobIndustries = Job_Posting::select('industry_id', DB::raw('COUNT(*) as total_count'))
             ->groupBy('industry_id')
@@ -115,37 +116,97 @@ class Dashboard extends Component
             ->limit(5)
             ->get();
 
-        // Fetch the industry names
+// Fetch the industry names
         $industryNames = Job_Industry::whereIn('industry_id', $topJobIndustries->pluck('industry_id'))->pluck('industry_Title', 'industry_id');
 
-        // Calculate the count for the other job industries
+// Calculate the count for the other job industries
         $otherCount = Job_Posting::whereNotIn('industry_id', $topJobIndustries->pluck('industry_id'))->count();
 
-        // Create a pie chart model
+// Create a pie chart model
         $pieChartModel = new PieChartModel();
 
-        // Add top 5 industries to the pie chart
+// Add top 5 industries to the pie chart
         foreach ($topJobIndustries as $industry) {
             $pieChartModel->addSlice(
                 $industryNames[$industry->industry_id],
                 $industry->total_count,
-                $this->colors[$industry->industry_id] ?? '#000000' // Use a default color if not set
+                $this->colors[$industry->industry_id] ?? '#' . substr(md5(rand()), 0, 6) // Use a default color if not set
             );
         }
 
-        // Add 'Others' to the pie chart if there are any remaining job postings
+// Add 'Others' to the pie chart if there are any remaining job postings
         if ($otherCount > 0) {
             $pieChartModel->addSlice('Others', $otherCount, '#' . substr(md5(rand()), 0, 6));
         }
 
-        // Customize the pie chart model
+// Customize the pie chart model
         $pieChartModel->setAnimated(true)
-            ->setType('donut')
+            ->setType('pie')
             ->withOnSliceClickEvent('onSliceClick')
             ->legendPositionBottom()
             ->legendHorizontallyAlignedCenter()
             ->setDataLabelsEnabled(true)
-            ->setColors(['#' . substr(md5(rand()), 0, 6), '#' . substr(md5(rand()), 0, 6), '#' . substr(md5(rand()), 0, 6), '#' . substr(md5(rand()), 0, 6), '#' . substr(md5(rand()), 0, 6)]); // Add additional colors as needed
+            ->setColors([
+                '#' . substr(md5(rand()), 0, 6),
+                '#' . substr(md5(rand()), 0, 6),
+                '#' . substr(md5(rand()), 0, 6),
+                '#' . substr(md5(rand()), 0, 6),
+                '#' . substr(md5(rand()), 0, 6),
+            ])
+            ->setJsonConfig([
+                'chart' => [
+                    'width' => '100%', // Set to 100% or specify a pixel value like 400, 500, etc.
+                    'height' => '400px', // Specify the height for the chart
+                ],
+                'plotOptions' => [
+                    'pie' => [
+                        'dataLabels' => [
+                            'offset' => -15, // Adjust this to center the labels vertically
+                            'style' => [
+                                'fontSize' => '16px', // Corrected from '16x' to '16px'
+                                'fontFamily' => 'Helvetica, Arial, sans-serif',
+                                'fontWeight' => 'bold',
+                                'colors' => ['#FFFFFF'], // Set text color
+                                'textAlign' => 'center', // Align text in the center of each slice
+                            ],
+                        ],
+                    ],
+                ],
+                'dataLabels' => [
+                    'style' => [
+                        'fontSize' => '16px', // Adjust font size for data labels
+                        'fontWeight' => 'bold',
+                    ],
+                    'dropShadow' => [
+                        'enabled' => true,
+                        'top' => 1,
+                        'left' => 1,
+                        'blur' => 1,
+                        'color' => '#000000',
+                        'opacity' => 0.5,
+                    ],
+                ],
+                'legend' => [
+                    'position' => 'bottom', // 'top', 'bottom', 'left', 'right'
+                    'horizontalAlign' => 'center', // Align horizontally at the center
+                    'verticalAlign' => 'middle', // Align vertically at the middle
+                    'fontSize' => '14px', // Font size
+                    'fontFamily' => 'Helvetica, Arial, sans-serif', // Font family
+                    'fontWeight' => 'normal', // Font weight (normal, bold, etc.)
+                    'labels' => [
+                        'colors' => '#333333', // Legend text color
+                        'useSeriesColors' => true, // Use series colors for legend labels
+                        'formatter' => '(val) => val.toUpperCase()', // Formatter function to modify label text
+                    ],
+                    'markers' => [
+                        'width' => 10, // Width of legend markers
+                        'height' => 10, // Height of legend markers
+                        'strokeWidth' => 0, // Stroke width
+                        'strokeColor' => '#000000', // Stroke color
+                        'fillColors' => ['#FFFFFF'], // Fill color for markers
+                    ],
+                ],
+            ]);
 
         return view('livewire.admin.dashboard', compact('totalJobPostings', 'recentJobPostings', 'totalJobSeekers', 'recentJobSeekers', 'totalEmployed', 'totalUnemployed', 'totalActiveApplicants', 'recentActiveApplicants', 'recentJobPost', 'columnChartModel', 'pieChartModel', 'recentApplicants'));
     }

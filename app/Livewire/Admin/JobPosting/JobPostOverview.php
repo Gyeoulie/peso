@@ -47,6 +47,22 @@ class JobPostOverview extends Component
         '26' => 'MASTERAL/POST GRADUATE',
     ];
 
+    public $selectedReqPassedId;
+
+    public function viewRequirement($reqPassedId)
+    {
+        $this->selectedReqPassedId = $reqPassedId;
+
+        $url = route('view.requirement');
+        // Dispatch an event to trigger JavaScript for opening a new tab
+        $this->dispatch('viewFile', [
+            'url' => $url,
+            'req_passed_id' => $reqPassedId,
+
+        ]);
+
+    }
+
     public function updateJob($id, $status, $modal)
     {
 
@@ -123,19 +139,19 @@ class JobPostOverview extends Component
         $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
             $query->where('municipality_id', $jobMunicipalityId);
         })
-        ->whereHas('education', function ($query) use ($jobEducationLevel) {
-            $query->where('edu_Level', '>=', $jobEducationLevel);
-        })
-        ->whereHas('job_preference', function ($query) use ($jobTagIds) {
-            $query->whereIn('position_id', $jobTagIds);
-        })
-        ->withCount(['job_preference as num_matched_tags' => function ($query) use ($jobTagIds) {
-            $query->whereIn('position_id', $jobTagIds);
-        }])
-        ->withCount(['industry_preference as num_matched_industry' => function ($query) use ($jobIndustryId) {
-            $query->where('industry_id', $jobIndustryId);
-        }])
-        ->orderByRaw('
+            ->whereHas('education', function ($query) use ($jobEducationLevel) {
+                $query->where('edu_Level', '>=', $jobEducationLevel);
+            })
+            ->whereHas('job_preference', function ($query) use ($jobTagIds) {
+                $query->whereIn('position_id', $jobTagIds);
+            })
+            ->withCount(['job_preference as num_matched_tags' => function ($query) use ($jobTagIds) {
+                $query->whereIn('position_id', $jobTagIds);
+            }])
+            ->withCount(['industry_preference as num_matched_industry' => function ($query) use ($jobIndustryId) {
+                $query->where('industry_id', $jobIndustryId);
+            }])
+            ->orderByRaw('
             CASE
                 WHEN num_matched_industry > 0 AND num_matched_tags > 0 THEN 1
                 WHEN num_matched_industry > 0 AND num_matched_tags = 0 THEN 2
@@ -143,9 +159,8 @@ class JobPostOverview extends Component
                 ELSE 4
             END
         ')
-        ->orderByDesc('num_matched_tags')
-        ->get();
-        
+            ->orderByDesc('num_matched_tags')
+            ->get();
 
         // Find applicants that match the job posting criteria
         // $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {

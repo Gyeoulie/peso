@@ -19,10 +19,10 @@
                 </a>
             </li>
             <li>
-                <a wire:navigate
-                    href="{{ route('admin-joblist', 'admin.jobpost', 'admin.jobpost.applicants', 'admin.jobpost.applicants.overview') }}"
+                <a wire:navigate href="{{ route('admin-joblist') }}" {{-- href="{{ route('admin-joblist', 'admin.jobpost', 'admin.jobpost.applicants', 'admin.jobpost.applicants.overview') }} --}}
                     :class="{{ request()->routeIs('admin-joblist') || request()->routeIs('admin.jobpost') || request()->routeIs('admin.jobpost.applicants') || request()->routeIs('admin.jobpost.applicants.overview') }}
-                        ? activeNav : inactiveNav"
+                        ?
+                        activeNav : inactiveNav"
                     class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 ">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
@@ -45,11 +45,6 @@
                             clip-rule="evenodd" />
                     </svg>
 
-                    {{-- <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
-                        <path
-                            d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
-                    </svg> --}}
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Role Management</span>
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 10 6">
@@ -58,17 +53,20 @@
                     </svg>
                 </button>
                 <ul id="dropdown-1"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-admin', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview') ? 'block' : 'hidden' }}">
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-admin', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview', 'admin-users-employer-overview') ? 'block' : 'hidden' }}">
                     <li>
                         <a wire:navigate href="{{ route('admin-users-jobseeker') }}"
                             :class="{{ request()->routeIs('admin-users-jobseeker') || request()->routeIs('admin-users-jobseeker-overview') }}
-                                ? activeNav : inactiveNav"
+                                ?
+                                activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Jobseekers
                             Management</a>
                     </li>
                     <li>
                         <a wire:navigate href="{{ route('admin-users-employer') }}"
-                            :class="{{ request()->routeIs('admin-users-employer') }} ? activeNav : inactiveNav"
+                            :class="{{ request()->routeIs('admin-users-employer') || request()->routeIs('admin-users-employer-overview') }}
+                                ?
+                                activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Employers
                             Management</a>
                     </li>
@@ -81,17 +79,6 @@
 
                 </ul>
             </li>
-            {{-- <li>
-                <a href="{{ route('admin-location') }}"
-                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 group">
-                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                            d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
-                    </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Location Management</span>
-                </a>
-            </li> --}}
             <li>
                 <button type="button"
                     class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-300 "
@@ -148,20 +135,18 @@
             <li>
                 <a wire:navigate href="{{ route('admin-req') }}"
                     :class="{{ request()->routeIs('admin-req') }} ? activeNav : inactiveNav"
-                    class="flex items-center p-2 text-gray-900 rounded-lg ">
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 ">
+
 
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                        viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 3v4a1 1 0 0 1-1 1H5m4 10v-2m3 2v-6m3 6v-3m4-11v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875ZM9.75 17.25a.75.75 0 0 0-1.5 0V18a.75.75 0 0 0 1.5 0v-.75Zm2.25-3a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3a.75.75 0 0 1 .75-.75Zm3.75-1.5a.75.75 0 0 0-1.5 0V18a.75.75 0 0 0 1.5 0v-5.25Z"
+                            clip-rule="evenodd" />
+                        <path
+                            d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
                     </svg>
 
-                    {{-- <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                        <path
-                            d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
-                    </svg> --}}
                     <span class="flex-1 ms-3 whitespace-nowrap">Requirements </span>
                 </a>
             </li>
@@ -169,8 +154,7 @@
                 <a wire:navigate href="{{ route('admin') }}" class="flex items-center p-2 text-gray-900 rounded-lg ">
 
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
-                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                        className="w-6 h-6">
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                         <path
                             d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
                         <path
@@ -179,14 +163,43 @@
                             d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
                     </svg>
 
-
-                    {{-- <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                        <path
-                            d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
-                    </svg> --}}
                     <span class="flex-1 ms-3 whitespace-nowrap">Trainings</span>
                 </a>
+            </li>
+            <li>
+                <button type="button"
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-300"
+                    aria-controls="dropdown-example" data-collapse-toggle="dropdown-3">
+
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M2.25 2.25a.75.75 0 0 0 0 1.5H3v10.5a3 3 0 0 0 3 3h1.21l-1.172 3.513a.75.75 0 0 0 1.424.474l.329-.987h8.418l.33.987a.75.75 0 0 0 1.422-.474l-1.17-3.513H18a3 3 0 0 0 3-3V3.75h.75a.75.75 0 0 0 0-1.5H2.25Zm6.04 16.5.5-1.5h6.42l.5 1.5H8.29Zm7.46-12a.75.75 0 0 0-1.5 0v6a.75.75 0 0 0 1.5 0v-6Zm-3 2.25a.75.75 0 0 0-1.5 0v3.75a.75.75 0 0 0 1.5 0V9Zm-3 2.25a.75.75 0 0 0-1.5 0v1.5a.75.75 0 0 0 1.5 0v-1.5Z"
+                            clip-rule="evenodd" />
+                    </svg>
+
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Reports</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="dropdown-3"
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-reports-barangay') ? 'block' : 'hidden' }}">
+
+                    <li>
+                        <a wire:navigate href="{{ route('admin-reports-barangay') }}"
+                            :class="{{ request()->routeIs('admin-reports-barangay') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Barangay</a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="{{ route('admin-eligibility') }}"
+                            :class="{{ request()->routeIs('admin-eligibility') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Municipality</a>
+                    </li>
+
+                </ul>
             </li>
         </ul>
     </div>
