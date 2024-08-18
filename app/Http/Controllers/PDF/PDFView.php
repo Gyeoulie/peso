@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PDF;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Job_Applicants;
+use App\Models\Requirements_Passed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,6 +89,28 @@ class PDFView extends Controller
         $filePath = $applicant->peso_Letter;
 
         return view('pdf.recommendation-view', ['pdfPath' => $filePath]);
+
+    }
+
+    public function viewRequirement(Request $request)
+    {
+        // Validate the request to ensure an ID is provided
+        $request->validate([
+            'req_passed_id' => 'required|exists:job_applicants,applicant_id',
+
+        ]);
+
+        $requirement = Requirements_Passed::findOrFail($request->input('req_passed_id'));
+
+        // dd($applicant->peso_Letter);
+
+        if (!Storage::exists('public/' . $requirement->req_passed_input)) {
+            return response()->json(['error' => 'Requirement File not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $filePath = $requirement->req_passed_input;
+
+        return view('pdf.requirement-view', ['pdfPath' => $filePath]);
 
     }
 

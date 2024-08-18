@@ -290,21 +290,26 @@
                     @foreach ($jobpost->requirements_passed->chunk(2) as $chunk)
                         <div class="flex flex-row mt-4 w-full gap-2">
                             @foreach ($chunk as $req)
-                                <div class="flex flex-col w-1/2">
-                                    <button wire:click.prevent="downloadPDF('{{ $req->req_passed_id }}')"
-                                        type="button"
-                                        class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
-                                        <i class="fa-solid fa-file-contract me-2"></i>
-                                        {{-- {{ $req->req_passed_Input }} --}}
-                                        {{ $req->requirement->requirement_Title }}
-                                        <svg class="ml-auto mr-0 w-6 h-6 " xmlns="http://www.w3.org/2000/svg"
-                                            width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round"
-                                                stroke-linejoin="round" stroke-width="2"
-                                                d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
-                                        </svg>
+                                <div wire:key='req-{{ $req->req_passed_id }}' class="flex flex-col w-1/2">
+                                    <form wire:key='formreq-{{ $req->req_passed_id }}'  action="{{ route('view.requirement') }}" method="POST" target="_blank">
+                                        @csrf
+                                        <input type="hidden" name="req_passed_id"
+                                            value="{{ $req->req_passed_id }}">
 
-                                    </button>
+                                        <button {{-- wire:click.prevent="downloadPDF('{{ $req->req_passed_id }}')" --}} type="submit"
+                                            class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                            <i class="fa-solid fa-file-contract me-2"></i>
+                                            {{-- {{ $req->req_passed_Input }} --}}
+                                            {{ $req->requirement->requirement_Title }}
+                                            <svg class="ml-auto mr-0 w-6 h-6 " xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
+                                            </svg>
+
+                                        </button>
+                                    </form>
                                 </div>
                             @endforeach
 

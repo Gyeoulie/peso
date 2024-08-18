@@ -3,11 +3,11 @@
 
 
 
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 md:grid-cols-12 gap-4 p-3 md:p-0">
 
 
 
-        <div class="col-span-2 sm:col-span-3">
+        <div class="col-span-2 md:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Job Postings</h1>
@@ -37,7 +37,7 @@
 
         </div>
 
-        <div class="col-span-2 sm:col-span-3">
+        <div class="col-span-2 md:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Jobseekers</h1>
@@ -66,7 +66,7 @@
 
         </div>
 
-        <div class="col-span-2 sm:col-span-3">
+        <div class="col-span-2 md:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Employed Users</h1>
@@ -96,7 +96,7 @@
 
         </div>
 
-        <div class="col-span-2 sm:col-span-3">
+        <div class="col-span-2 md:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Active Applicants</h1>
@@ -127,7 +127,7 @@
         </div>
 
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 md:col-span-6">
             <div class="bg-white shadow rounded-lg p-6  h-full w-full overflow-auto">
                 <h1 class="text-2xl font-bold">Recent Job Posting</h1>
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
@@ -193,7 +193,7 @@
         </div>
 
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 md:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full">
                 <h1 class="text-2xl font-bold">Most Preferred Job Tags</h1>
                 <div class="flex h-full items-end">
@@ -203,7 +203,7 @@
 
         </div>
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 md:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
                 <h1 class="text-2xl font-bold">Recent Job Applications</h1>
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
@@ -293,7 +293,7 @@
 
 
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 md:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full">
                 <h1 class="text-2xl font-bold">Top Job Industries</h1>
                 <div class="flex h-full items-end">

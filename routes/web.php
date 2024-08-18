@@ -217,3 +217,4 @@ require __DIR__ . '/auth.php';
 
 Route::post('/resume/view', [PDFView::class, 'viewResume'])->name('view.resume');
 Route::post('/recommendation/view', [PDFView::class, 'viewRecommendation'])->name('view.recommendation');
+Route::post('/requirement/view', [PDFView::class, 'viewRequirement'])->name('view.requirement');
