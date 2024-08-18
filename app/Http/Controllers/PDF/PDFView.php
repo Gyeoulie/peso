@@ -14,6 +14,7 @@ class PDFView extends Controller
 {
     public function viewResume(Request $request)
     {
+
         // Validate the request to ensure an ID is provided
         $request->validate([
             'emp_id' => 'required|exists:employee,employee_id',
@@ -93,22 +94,20 @@ class PDFView extends Controller
     }
 
     public function viewRequirement(Request $request)
-    {
-        // Validate the request to ensure an ID is provided
+    { // Validate the request to ensure an ID is provided
         $request->validate([
-            'req_passed_id' => 'required|exists:job_applicants,applicant_id',
+            'req_passed_id' => 'required|exists:requirements_passed,req_passed_id',
 
         ]);
-
         $requirement = Requirements_Passed::findOrFail($request->input('req_passed_id'));
 
-        // dd($applicant->peso_Letter);
+        // dd($requirement->req_passed_Input);
 
-        if (!Storage::exists('public/' . $requirement->req_passed_input)) {
+        if (!Storage::exists('public/' . $requirement->req_passed_Input)) {
             return response()->json(['error' => 'Requirement File not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $filePath = $requirement->req_passed_input;
+        $filePath = $requirement->req_passed_Input;
 
         return view('pdf.requirement-view', ['pdfPath' => $filePath]);
 

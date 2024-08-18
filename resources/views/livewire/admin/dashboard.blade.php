@@ -8,7 +8,7 @@
 
 
         <div class="col-span-2 md:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Job Postings</h1>
                 </div>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="col-span-2 md:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Jobseekers</h1>
                 </div>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="col-span-2 md:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Employed Users</h1>
                 </div>
@@ -97,7 +97,7 @@
         </div>
 
         <div class="col-span-2 md:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Active Applicants</h1>
                 </div>
@@ -128,75 +128,80 @@
 
 
         <div class="col-span-4 md:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6  h-full w-full overflow-auto">
+            <div class="bg-white shadow rounded-lg p-6  h-full w-full ">
                 <h1 class="text-2xl font-bold">Recent Job Posting</h1>
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
-                    <thead class="text-xs text-gray-700 uppercase bg-blue-300">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="text-black font-bold text-md">Business Name</span>
-
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="text-black font-bold text-md">Job Title</span>
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="text-black font-bold text-md">Date</span>
-                            </th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($recentJobPost as $data)
-                            <tr wire:key='jobpost-{{ $data->job_id }}' class="bg-white border-b hover:bg-gray-50">
-                                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                    <img class="w-10 h-10 rounded-full"
-                                        src="{{ asset('storage/' . $data->company->company_img) }}" alt="img">
-                                    <div class="ps-3 text-wrap">
-                                        <div class="text-base font-semibold">
-                                            <div class="text-base font-semibold uppercase">
-                                                {{ $data->company->business_Name }}
-
-                                            </div>
-
-                                        </div>
-                                        <div class="font-normal text-gray-500 text-sm uppercase">
-                                            {{ $data->job_Address }}, {{ $data->barangay->barangay_Name }},
-                                            {{ $data->barangay->municipality->municipality_Name }}
-                                        </div>
-                                    </div>
+                <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+                <div class="overflow-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+                        <thead class="text-xs text-gray-700 uppercase bg-blue-300">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="text-black font-bold text-md">Business Name</span>
 
                                 </th>
-                                <td class="px-6 py-4">
-
-                                    <div class="font-normal text-gray-500 text-sm uppercase">
-                                        <span class="text-blue-500 font-bold text-md"> {{ $data->job_Title }}</span>
-
-
-                                    </div>
-
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $data->created_at->format('F j, Y') }}
-                                </td>
-
-
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="text-black font-bold text-md">Job Title</span>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="text-black font-bold text-md">Date</span>
+                                </th>
 
                             </tr>
-                        @endforeach
+                        </thead>
+                        <tbody>
+                            @foreach ($recentJobPost as $data)
+                                <tr wire:key='jobpost-{{ $data->job_id }}' class="bg-white border-b hover:bg-gray-50">
+                                    <th scope="row"
+                                        class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                        <img class="w-10 h-10 rounded-full object-cover"
+                                            src="{{ asset('storage/' . $data->company->company_img) }}" alt="img">
+                                        <div class="ps-3 text-wrap">
+                                            <div class="text-base font-semibold">
+                                                <div class="text-base font-semibold uppercase">
+                                                    {{ $data->company->business_Name }}
 
-                    </tbody>
-                </table>
+                                                </div>
 
+                                            </div>
+                                            <div class="font-normal text-gray-500 text-sm uppercase">
+                                                {{ $data->job_Address }}, {{ $data->barangay->barangay_Name }},
+                                                {{ $data->barangay->municipality->municipality_Name }}
+                                            </div>
+                                        </div>
+
+                                    </th>
+                                    <td class="px-6 py-4">
+
+                                        <div class="font-normal text-gray-500 text-sm uppercase">
+                                            <span class="text-blue-500 font-bold text-md">
+                                                {{ $data->job_Title }}</span>
+
+
+                                        </div>
+
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $data->created_at->format('F j, Y') }}
+                                    </td>
+
+
+
+                                </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
 
 
         <div class="col-span-4 md:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6 h-full w-full">
+            <div class="bg-white shadow rounded-lg p-6 h-full w-full ">
                 <h1 class="text-2xl font-bold">Most Preferred Job Tags</h1>
-                <div class="flex h-full items-end">
+                <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+                <div class="flex flex-col h-[400px] md:h-full items-end">
                     <livewire:livewire-column-chart {{-- key="{{ $columnChartModel->reactiveKey() }}" --}} :column-chart-model="$columnChartModel" />
                 </div>
             </div>
@@ -206,87 +211,90 @@
         <div class="col-span-4 md:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
                 <h1 class="text-2xl font-bold">Recent Job Applications</h1>
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
-                    <thead class="text-xs text-gray-700 uppercase bg-blue-300">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="text-black font-bold text-md">Applicant Name</span>
-
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="text-black font-bold text-md">Job Title</span>
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="text-black font-bold text-md">Date</span>
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-
-                            </th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($recentApplicants as $data)
-                            <tr wire:key='applicants-{{ $data->job_id }}' class="bg-white border-b hover:bg-gray-50">
-                                <th scope="row"
-                                    class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                    <img class="w-10 h-10 rounded-full"
-                                        src="{{ asset('storage/' . $data->employee->pimg) }}" alt="img">
-                                    <div class="ps-3 text-wrap">
-                                        <div class="text-base font-semibold">
-                                            <div class="text-base font-semibold uppercase">
-                                                {{ $data->employee->fname }} {{ $data->employee->mname }}
-                                                {{ $data->employee->lname }}
-
-                                            </div>
-
-                                        </div>
-                                        <div class="font-normal text-gray-500 text-sm uppercase">
-                                            {{ $data->employee->address }},
-                                            {{ $data->employee->barangay->barangay_Name }},
-                                            {{ $data->employee->barangay->municipality->municipality_Name }}
-                                        </div>
-                                    </div>
+                <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+                <div class="overflow-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+                        <thead class="text-xs text-gray-700 uppercase bg-blue-300">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="text-black font-bold text-md">Applicant Name</span>
 
                                 </th>
-                                <td class="px-6 py-4">
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="text-black font-bold text-md">Job Title</span>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="text-black font-bold text-md">Date</span>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
 
-                                    <div class="font-normal text-gray-500 text-sm uppercase">
-                                        <span class="text-blue-500 font-bold text-md">
-                                            {{ $data->job_posting->job_Title }}</span>
-
-
-                                    </div>
-
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $data->created_at->format('F j, Y') }}
-                                </td>
-
-                                <td>
-                                    <div x-data="{ tooltip: 'Applicant Overview' }">
-                                        <a wire:navigate
-                                            href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
-                                            x-tooltip="tooltip" type="button"
-                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                <path fill-rule="evenodd"
-                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </td>
-
+                                </th>
 
                             </tr>
-                        @endforeach
+                        </thead>
+                        <tbody>
+                            @foreach ($recentApplicants as $data)
+                                <tr wire:key='applicants-{{ $data->job_id }}'
+                                    class="bg-white border-b hover:bg-gray-50">
+                                    <th scope="row"
+                                        class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                        <img class="w-10 h-10 rounded-full object-cover"
+                                            src="{{ asset('storage/' . $data->employee->pimg) }}" alt="img">
+                                        <div class="ps-3 text-wrap">
+                                            <div class="text-base font-semibold">
+                                                <div class="text-base font-semibold uppercase">
+                                                    {{ $data->employee->fname }} {{ $data->employee->mname }}
+                                                    {{ $data->employee->lname }}
 
-                    </tbody>
-                </table>
+                                                </div>
 
+                                            </div>
+                                            <div class="font-normal text-gray-500 text-sm uppercase">
+                                                {{ $data->employee->address }},
+                                                {{ $data->employee->barangay->barangay_Name }},
+                                                {{ $data->employee->barangay->municipality->municipality_Name }}
+                                            </div>
+                                        </div>
+
+                                    </th>
+                                    <td class="px-6 py-4">
+
+                                        <div class="font-normal text-gray-500 text-sm uppercase">
+                                            <span class="text-blue-500 font-bold text-md">
+                                                {{ $data->job_posting->job_Title }}</span>
+
+
+                                        </div>
+
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $data->created_at->format('F j, Y') }}
+                                    </td>
+
+                                    <td>
+                                        <div x-data="{ tooltip: 'Applicant Overview' }">
+                                            <a wire:navigate
+                                                href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
+                                                x-tooltip="tooltip" type="button"
+                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </td>
+
+
+                                </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
@@ -296,6 +304,7 @@
         <div class="col-span-4 md:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full">
                 <h1 class="text-2xl font-bold">Top Job Industries</h1>
+                <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                 <div class="flex h-full items-end">
                     <livewire:livewire-pie-chart {{-- key="{{ $columnChartModel->reactiveKey() }}" --}} :pie-chart-model="$pieChartModel">
                 </div>

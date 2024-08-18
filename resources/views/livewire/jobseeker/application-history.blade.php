@@ -374,9 +374,9 @@
 
                                 </a>
                             </div>
-                            <div x-data="{ tooltip: 'Download Resume' }">
-                                <button {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
-                                    wire:click.prevent='printResume({{ $applicationInfo->employee_id }}, {{ $applicationInfo->applicant_Resume }})'
+                            <div x-data="{ tooltip: 'View Resume' }">
+                                <button {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}} {{-- wire:click.prevent='printResume({{ $applicationInfo->employee_id }}, {{ $applicationInfo->applicant_Resume }})' --}}
+                                    wire:click.prevent="viewFile({{ $applicationInfo->employee_id }},{{ $applicationInfo->applicant_Resume }} )"
                                     x-tooltip="tooltip" type="button"
                                     class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                     <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -387,9 +387,9 @@
                                 </button>
                             </div>
                             @if ($applicationInfo->peso_Status == 'RECOMMENDED')
-                                <div x-data="{ tooltip: 'Download Recommendation Letter' }">
-                                    <button wire:click.prevent='printRecom({{ $applicationInfo->applicant_id }})'
-                                        x-tooltip="tooltip" type="button"
+                                <div x-data="{ tooltip: 'View Recommendation Letter' }">
+                                    <button wire:click.prevent="viewFile({{ $applicationInfo->applicant_id }}, 3 )"
+                                        {{-- wire:click.prevent='printRecom({{ $applicationInfo->applicant_id }})' --}} x-tooltip="tooltip" type="button"
                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -504,3 +504,61 @@
 
 
 </div>
+
+
+@script
+    <script>
+        Livewire.on('viewFile', event => {
+            // Check if the event is an array and has at least one element
+            if (Array.isArray(event) && event.length > 0) {
+                // Access the first element and then its properties
+                const data = event[0]; // Assuming the data object is the first element
+
+                // Log the entire data object for verification
+                console.log('Data:', data);
+
+                // Extract URL and handle dynamic keys
+                const url = data.url;
+
+                // Ensure URL is present
+                if (url) {
+                    // Create and configure the form element
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.target = '_blank';
+
+                    // Add CSRF token as a hidden input
+                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    // Add all data inputs dynamically
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (key !== 'url') {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            input.value = value;
+                            form.appendChild(input);
+                        }
+                    });
+
+                    // Append form to the body and submit
+                    document.body.appendChild(form);
+                    form.submit();
+
+                    // Clean up by removing the form element
+                    document.body.removeChild(form);
+                } else {
+                    console.error('URL not found in event data');
+                }
+            } else {
+                console.error('Event is not in the expected format');
+            }
+        });
+    </script>
+@endscript

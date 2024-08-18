@@ -81,6 +81,7 @@ Route::get('/employer/edit', EmployerEditDetails::class)->name('edit.details.emp
 //------------------------------ ADMIN  NAVIGATION ------------------------------
 Route::prefix('admin')->group(function () {
     Route::get('/', AdminDashboard::class)->name('admin');
+    
 
     Route::get('/job/applicants', function () {
         return view('admin.admin_partials.applicant-list');

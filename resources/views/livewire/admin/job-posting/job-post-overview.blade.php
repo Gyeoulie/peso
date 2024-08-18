@@ -10,7 +10,6 @@
             </div>
 
 
-
             {{-- FIRST CONTAINER --}}
             <div class="col-span-4 sm:col-span-12">
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col">
@@ -62,9 +61,9 @@
                                     <x-danger-button class="w-[100px] justify-center me-2 mb-2" type="button"
                                         x-data=""
                                         x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</x-danger-button>
-                                    <x-blue-button type="button" class="w-[100px] justify-center me-2 mb-2"
+                                    <x-green-button type="button" class="w-[100px] justify-center me-2 mb-2"
                                         x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'approve-modal')">Approve</x-blue-button>
+                                        x-on:click.prevent="$dispatch('open-modal', 'approve-modal')">Approve</x-green-button>
                                 </div>
                             @endif
                         </div>
@@ -184,7 +183,7 @@
                                 value=" {{ $jobpost->job_Duration->format('F j, Y') }}" readonly />
                         </div>
 
-                        <div class="flex flex-col w-1/3">
+                        <div class="flex flex-col w-2/3">
                             <x-input-label for="slots" class="flex flex-row items-center gap-1"><svg
                                     class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
@@ -287,35 +286,28 @@
 
 
 
-                    @foreach ($jobpost->requirements_passed->chunk(2) as $chunk)
-                        <div class="flex flex-row mt-4 w-full gap-2">
-                            @foreach ($chunk as $req)
-                                <div wire:key='req-{{ $req->req_passed_id }}' class="flex flex-col w-1/2">
-                                    <form wire:key='formreq-{{ $req->req_passed_id }}'  action="{{ route('view.requirement') }}" method="POST" target="_blank">
-                                        @csrf
-                                        <input type="hidden" name="req_passed_id"
-                                            value="{{ $req->req_passed_id }}">
-
-                                        <button {{-- wire:click.prevent="downloadPDF('{{ $req->req_passed_id }}')" --}} type="submit"
-                                            class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                    <div class="flex flex-row flex-wrap mt-4 w-full gap-2">
+                        @foreach ($jobpost->requirements_passed->chunk(2) as $chunk)
+                            <div class="flex flex-row w-full gap-2">
+                                @foreach ($chunk as $req)
+                                    <div wire:key='req-{{ $req->req_passed_id }}' class="flex flex-col w-1/2">
+                                        <button type="button"
+                                            wire:click="viewRequirement('{{ $req->req_passed_id }}')"
+                                            class="w-full h-full text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
                                             <i class="fa-solid fa-file-contract me-2"></i>
-                                            {{-- {{ $req->req_passed_Input }} --}}
                                             {{ $req->requirement->requirement_Title }}
-                                            <svg class="ml-auto mr-0 w-6 h-6 " xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round"
                                                     stroke-linejoin="round" stroke-width="2"
                                                     d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
                                             </svg>
-
                                         </button>
-                                    </form>
-                                </div>
-                            @endforeach
-
-                        </div>
-                    @endforeach
-
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
 
                 @if (($jobpost->job_Status == 'ACTIVE' || $jobpost->job_Status == 'REJECTED') && $jobpost->peso_Remarks)
@@ -504,8 +496,66 @@
                 </div>
             </div>
         </x-modal>
-
-
-
-
     </div>
+</div>
+
+@script
+    <script>
+        Livewire.on('viewFile', event => {
+            // Check if the event is an array and has at least one element
+            if (Array.isArray(event) && event.length > 0) {
+                // Access the first element and then its properties
+                const data = event[0]; // Assuming the data object is the first element
+
+                // Log the entire data object for verification
+                console.log('Data:', data);
+
+                // Extract URL and handle dynamic keys
+                const url = data.url;
+                const formData = {
+                    ...data
+                }; // Spread the data object to use for form inputs
+
+                // Check if URL is present
+                if (url) {
+                    // Create and configure the form element
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.target = '_blank';
+
+                    // Add CSRF token as a hidden input
+                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    // Add all data inputs dynamically
+                    for (const [key, value] of Object.entries(formData)) {
+                        // Skip the URL and CSRF token from being added as form inputs
+                        if (key !== 'url') {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            input.value = value;
+                            form.appendChild(input);
+                        }
+                    }
+
+                    // Append form to the body and submit
+                    document.body.appendChild(form);
+                    form.submit();
+
+                    // Clean up by removing the form element
+                    document.body.removeChild(form);
+                } else {
+                    console.error('URL not found in event data');
+                }
+            } else {
+                console.error('Event is not in the expected format');
+            }
+        });
+    </script>
+@endscript

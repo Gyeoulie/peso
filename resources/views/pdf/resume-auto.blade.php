@@ -1,4 +1,10 @@
 <x-empty-layout>
+    <div class="flex justify-center items-center mt-2 print:hidden">
+        <button onclick="window.print()"
+            class="bg-blue-200 text-blue-900 py-2 px-4 rounded shadow hover:shadow-xl hover:bg-blue-300 duration-300">Download
+            This Resume</button>
+    </div>
+
     <main class="font-jost hyphens-manual">
         <!-- Page -------------------------------------------------------------------------------------------------------->
         <section
@@ -44,7 +50,7 @@
                                             {{ $employee->user->email }}
 
                                             <span
-                                                class="inline-block font-normal text-gray-500 transition duration-100 ease-in group-hover:text-gray-700 print:text-black">
+                                                class="print:hidden inline-block font-normal text-gray-500 transition duration-100 ease-in group-hover:text-gray-700 print:text-black">
                                                 ↗
                                             </span>
                                         </a>
@@ -56,6 +62,21 @@
                                                 Phone:
                                             </span>
                                             {{ $employee->pnumber }}
+
+                                            <span
+                                                class="print:hidden inline-block font-normal text-gray-500 transition duration-100 ease-in group-hover:text-gray-700 print:text-black">
+
+                                                <svg class="w-3 h-3 font-normal text-gray-500 transition duration-100 ease-in group-hover:text-gray-700 print:text-black"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                    fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M2 3.5A1.5 1.5 0 0 1 3.5 2h1.148a1.5 1.5 0 0 1 1.465 1.175l.716 3.223a1.5 1.5 0 0 1-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 0 0 6.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 0 1 1.767-1.052l3.223.716A1.5 1.5 0 0 1 18 15.352V16.5a1.5 1.5 0 0 1-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 0 1 2.43 8.326 13.019 13.019 0 0 1 2 5V3.5Z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+
+                                            </span>
+
+
                                         </a>
                                     </li>
                                 </ul>
@@ -115,8 +136,8 @@
                     @endif
 
                     <!--Begin Skills ----------------------------------------------------------------------------------------------------->
+                    @if (!empty($employee->work_exp) && count($employee->work_exp) > 0)
 
-                    @if ($employee->work_exp)
                         <!--Experience ------------------------------------------------------------------------------------------------------>
                         <section class="pb-2 pb-4 mt-4 border-b-4 border-black first:mt-0">
                             <!-- To keep in the same column ------------------------------------------------------------------------->
@@ -148,13 +169,13 @@
                         </section>
                     @endif
 
-                    @if ($employee->training)
+                    @if (!empty($employee->training) && count($employee->training) > 0)
                         <!--TRAININGS ------------------------------------------------------------------------------------------------------>
                         <section class="pb-2 pb-4 mt-4 border-b-4 border-black first:mt-0">
                             <!-- To keep in the same column ------------------------------------------------------------------------->
                             <section class="print:bg-gray-800">
                                 <h2 class="mb-2 text-2xl font-black tracking-widest text-gray-800 print:font-normal">
-                                    EXPERIENCE
+                                    TRAININGS
                                 </h2>
                                 <!--Job 1-->
                                 @foreach ($employee->training as $data)
@@ -180,13 +201,13 @@
                         </section>
                     @endif
 
-                    @if ($employee->certificate)
+                    @if (!empty($employee->certificate) && count($employee->certificate) > 0)
                         <!--CERTIFICATES ------------------------------------------------------------------------------------------------------>
                         <section class="pb-2 pb-4 mt-4 border-b-4 border-black first:mt-0">
                             <!-- To keep in the same column ------------------------------------------------------------------------->
                             <section class="print:bg-gray-800">
                                 <h2 class="mb-2 text-2xl font-black tracking-widest text-gray-800 print:font-normal">
-                                    EXPERIENCE
+                                    CERTIFICATES
                                 </h2>
                                 <!--Job 1-->
                                 @foreach ($employee->certificate as $data)
@@ -211,7 +232,7 @@
                         </section>
                     @endif
 
-                    @if ($employee->skills)
+                    @if (!empty($employee->skills) && count($employee->skills) > 0)
                         <section class="pb-6 mt-0 mb-4 border-b-4 border-black first:mt-0">
                             <!-- To keep in the same column -->
                             <section class="">
@@ -240,3 +261,6 @@
     </main>
 
 </x-empty-layout>
+<div class="flex justify-center items-center mt-4 print:hidden border border-gray-300 p-2 bg-gray-100 w-full">
+    <h1 class="text-sm font-medium text-gray-700">This is an auto-generated resume.</h1>
+</div>

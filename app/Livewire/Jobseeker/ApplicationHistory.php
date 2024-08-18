@@ -16,7 +16,7 @@ use Livewire\WithPagination;
 class ApplicationHistory extends Component
 {
 
-    use WithPagination, WithoutUrlPagination; 
+    use WithPagination, WithoutUrlPagination;
     public $eduLevels = [
         '1' => 'GRADE I',
         '2' => 'GRADE II',
@@ -106,6 +106,27 @@ class ApplicationHistory extends Component
     public function updateSort($value)
     {
         $this->sort = $value;
+    }
+
+    public function viewFile($id, $fileToView)
+    {
+
+        if ($fileToView === 3) {
+
+            $this->dispatch('viewFile', [
+                'url' => route('view.recommendation'),
+                'app_id' => $id,
+            ]);
+
+        } else {
+
+            $this->dispatch('viewFile', [
+                'url' => route('view.resume'),
+                'emp_id' => $id,
+                'resume_type' => $fileToView,
+            ]);
+        }
+
     }
 
     public function printResume($id, $type)

@@ -108,6 +108,7 @@ class Dashboard extends Component
             ->setDataLabelsEnabled(true)
             ->setLegendVisibility(false)
             ->setColumnWidth(50); // Adjust column width as needed
+// Adjust column width as needed
 
         $topJobIndustries = Job_Posting::select('industry_id', DB::raw('COUNT(*) as total_count'))
             ->groupBy('industry_id')
