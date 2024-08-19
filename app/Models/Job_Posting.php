@@ -78,4 +78,10 @@ class Job_Posting extends Model
         return $this->hasMany(Requirements_Passed::class, 'job_id');
     }
 
+    public function hiredApplicants()
+    {
+        return $this->hasMany(Job_Applicants::class, 'job_id')
+            ->where('applicant_status', 'HIRED');
+    }
+
 }

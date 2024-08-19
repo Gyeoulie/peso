@@ -1,4 +1,4 @@
-<div>
+<div class="w-full">
     {{-- <div class="overflow-x-auto">
     <div class="flex flex-row sm:grid sm:grid-cols-5 gap-2 py-8 mx-4 sm:mx-12 ">
 
@@ -83,8 +83,8 @@
 </div> --}}
 
 
-    <div wire:poll class="container mx-auto py-8">
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0">
+    <div wire:poll class="flex mx-auto sm:mx-12 py-8 ">
+        <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0 w-full">
 
             {{-- MAIN BAR FOR JOB POST --}}
             <div class="col-span-4 sm:col-span-9">
@@ -337,14 +337,6 @@
 
 
 
-
-
-
-
-
-
-
-
             {{-- SIDE BAR --}}
             <div class="col-span-4 sm:col-span-3">
                 <div class="bg-white shadow rounded-lg p-6">
@@ -361,6 +353,3 @@
 
 
 </div>
-
-</div>
-`

@@ -380,7 +380,30 @@
                                         </div>
                                     </div>
                                 </li>
+                                <li class="mb-4">
+                                    <div class="flex flex-row gap-4 w-full">
+                                        <div class="flex flex-col">
 
+                                            <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                            </svg>
+
+                                        </div>
+                                        <div class="flex flex-col gap-1">
+                                            <div class="text-xl font-bold text-black">
+                                                Slots Left
+                                            </div>
+
+                                            <div class="text-md font-medium ">
+                                                {{ $JobPost->slotsLeft }}
+
+                                            </div>
+
+                                        </div>
+                                </li>
 
                             </ul>
                         </div>
@@ -492,7 +515,7 @@
 
 
                 <div class="flex flex-col mt-2" x-data="{
-                    selectedOption:  @entangle('option'),
+                    selectedOption: @entangle('option'),
                     selected: 'bg-blue-300',
                     unselected: 'hover:bg-blue-300',
                     resumeExists: {{ auth()->user()->employee->resume ? 'true' : 'false' }}

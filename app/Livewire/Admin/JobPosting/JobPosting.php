@@ -27,6 +27,7 @@ class JobPosting extends Component
         $user = Auth::user();
 
         $jobpost = Job_Posting::with('company', 'barangay.municipality.province')
+            ->withCount(['job_applicants', 'hiredApplicants'])
             ->where('job_posting.peso_municipality_id', '=', $user->peso->municipality_id)
             ->where(function ($query) {
                 $query->where('job_Title', 'like', '%' . $this->search . '%')
@@ -56,8 +57,14 @@ class JobPosting extends Component
             $jobpost->whereNotIn('job_Status', ['PENDING', 'ACTIVE']);
         }
 
-        $jobpost = $jobpost->orderBy('job_posting.created_at', 'DESC')->withCount('job_applicants')->paginate(10);
+        $jobpost = $jobpost->orderBy('job_posting.created_at', 'DESC')->paginate(10);
 
+        // Calculate slots left
+        foreach ($jobpost as $job) {
+            $job->slotsLeft = $job->job_Slots - $job->hired_applicants_count;
+        }
+
+        // Fetch job counts for filtering
         $allCount = Job_Posting::where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
         $pendingCount = Job_Posting::where('job_Status', '=', 'PENDING')
             ->where('peso_municipality_id', '=', $user->peso->municipality_id)->count();

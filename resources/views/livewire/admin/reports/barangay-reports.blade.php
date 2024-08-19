@@ -197,7 +197,7 @@
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                 </div>
                 <div class="flex h-full items-end">
-                    <livewire:livewire-line-chart key="{{ $lineChartModel->reactiveKey() }}" :line-chart-model="$lineChartModel" />
+                    <livewire:livewire-line-chart key="{{ $employment_chart->reactiveKey() }}" :line-chart-model="$employment_chart" />
                 </div>
             </div>
         </div>
@@ -231,7 +231,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($jobseekers as $data)
+                        @foreach ($barangayJobSeekers as $data)
                             <tr wire:key='applicants-{{ $data->job_id }}' class="bg-white border-b hover:bg-gray-50">
                                 <th scope="row"
                                     class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
@@ -297,7 +297,7 @@
                 </table>
 
                 <div class="mt-4">
-                    {{ $jobseekers->links('vendor.pagination.tailwind') }}
+                    {{ $barangayJobSeekers->links('vendor.pagination.tailwind') }}
                 </div>
 
             </div>
