@@ -95,7 +95,7 @@
                             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
 
                             <div class="p-2 no-tailwindcss-base">
-                                {{ $JobPost->job_Description }}
+                                {!! $JobPost->job_Description !!}
 
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
 
                             <div class="p-2 no-tailwindcss-base">
-                                {{ $JobPost->job_Qualifications }}
+                                {!! $JobPost->job_Qualifications !!}
                             </div>
                         </div>
 
@@ -120,7 +120,7 @@
                             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
 
                             <div class="p-2 no-tailwindcss-base">
-                                {{ $JobPost->job_Remarks }}
+                                {!! $JobPost->job_Remarks !!}
 
                             </div>
                         </div>

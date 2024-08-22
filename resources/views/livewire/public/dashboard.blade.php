@@ -88,13 +88,13 @@
 
             {{-- MAIN BAR FOR JOB POST --}}
             <div class="col-span-4 sm:col-span-9">
-                <div class="bg-white shadow rounded-lg p-6 overflow-auto">
+                <div class="bg-white shadow rounded-lg p-6 overflow-visible">
                     <div
-                        class="flex p-1 items-center justify-between flex-column flex-wrap sm:flex-row space-y-4 sm:space-y-0 pb-4">
+                        class="flex flex-col sm:flex-row p-1 sm:items-center sm:justify-between flex-column flex-wrap sm:flex-row space-y-4 sm:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
 
-                        <div class="relative">
+                        <div class="relative w-full sm:w-auto">
 
                             <div
                                 class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -106,7 +106,7 @@
                             </div>
                             {{-- SEARCH --}}
                             <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job posting">
                         </div>
 
@@ -115,7 +115,7 @@
 
 
                             @if (auth()->user()->usertype != 5)
-                                <x-dropdown align="right" width="36">
+                                <x-dropdown align="left" width="36">
                                     <x-slot name="trigger">
                                         <button
                                             class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
@@ -163,7 +163,7 @@
                                 </x-dropdown>
                             @endif
 
-                            <x-dropdown align="right" width="36">
+                            <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
                                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">

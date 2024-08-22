@@ -18,13 +18,15 @@
                 </div>
 
                 <div class="flex flex-row gap-4 items-center">
-                    <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
-                        x-data="" wire:click.prevent = 'addModal'>
-                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
-
+                    <div x-data="{ tooltip: 'Add Certificate Record' }">
+                        <div x-tooltip="tooltip"
+                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer"
+                            x-data="" wire:click.prevent = 'addModal'>
+                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
 
@@ -76,13 +78,15 @@
                             </div>
 
                             <div class="flex flex-col h-full items-center justify-center">
-                                <div wire:click.prevent = 'editModal({{ $userCerts->cert_id }})'
-                                    class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1">
-                                    <svg class="w-10 h-10 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                    </svg>
+                                <div x-tooltip="tooltip" x-data="{ tooltip: 'Edit Certificate Record' }">
+                                    <div wire:click.prevent = 'editModal({{ $userCerts->cert_id }})'
+                                        class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1 cursor-pointer">
+                                        <svg class="w-10 h-10 text-blue-700" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
 

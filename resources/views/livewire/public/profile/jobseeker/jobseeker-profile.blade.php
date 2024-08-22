@@ -145,17 +145,20 @@
 
 
                             @if ($isOwner)
-                                <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                    <svg wire:click.prevent='editModal()' class="w-8 h-8"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                    </svg>
+                                <div x-data="{ tooltip: 'Edit Description' }">
+                                    <div x-tooltip="tooltip"
+                                        class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                        <svg wire:click.prevent='editModal()' class="w-8 h-8"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                        </svg>
+                                    </div>
                                 </div>
                             @endif
-
                         </div>
+
 
                         <p class="text-gray-700 text-wrap text-justify px-1 break-words">
                             {{ $jobseeker->empDesc ?: 'No Description' }}
@@ -255,16 +258,19 @@
 
                                 {{-- eto sa edit deets --}}
                                 @if ($isOwner)
-                                    <a wire:navigate href="{{ route('edit.details') }}">
-                                        <div
-                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                            </svg>
-                                        </div>
-                                    </a>
+                                    <div x-data="{ tooltip: 'Edit Details' }">
+                                        <a x-tooltip="tooltip" wire:navigate href="{{ route('edit.details') }}">
+                                            <div
+                                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                </svg>
+                                            </div>
+                                        </a>
+                                    </div>
                                 @endif
                             </div>
 
@@ -391,26 +397,29 @@
 
                                 @if ($isOwner)
                                     <div class="flex flex-row gap-4 items-center">
+                                        <div x-data="{ tooltip: 'Add Education Record' }">
+                                            <div x-tooltip="tooltip" x-data=""
+                                                x-on:click.prevent="$dispatch('open-modal', 'education-modal')"
+                                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 4.5v15m7.5-7.5h-15" />
+                                                </svg>
 
-                                        <div x-data=""
-                                            x-on:click.prevent="$dispatch('open-modal', 'education-modal')"
-                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 4.5v15m7.5-7.5h-15" />
-                                            </svg>
-
+                                            </div>
                                         </div>
-
-
-                                        <div @click="profileTab = 'editEducation'"
-                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                            </svg>
+                                        <div x-data="{ tooltip: 'Edit Education Record' }">
+                                            <div x-tooltip="tooltip" @click="profileTab = 'editEducation'"
+                                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 @endif
@@ -455,11 +464,11 @@
 
                                             <div class="flex flex-col ml-4 w-full">
                                                 <span
-                                                    class="text-2xl text-black font-black">{{ $educBackground->edu_School }}</span>
-                                                <div class="text-xl text-black font-semibold">
+                                                    class="text-xl md:text-2xl text-black font-black">{{ $educBackground->edu_School }}</span>
+                                                <div class="text-lg md:text-xl text-black font-semibold">
                                                     <span>{{ $educBackground->edu_Course }}
                                                 </div>
-                                                <span class="text-md text-gray-700 font-medium">
+                                                <span class="text-sm md:text-md text-gray-700 font-medium">
                                                     {{ $educBackground->edu_Started->format('F Y') }} -
                                                     {{ $educBackground->edu_Ongoing == 1 ? 'Present' : $educBackground->edu_Ended->format('F Y') }}</span>
                                             </div>
@@ -483,26 +492,33 @@
                                 <h2 class="text-3xl font-black">Work Experience</h2>
                                 @if ($isOwner)
                                     <div class="flex flex-row gap-4 items-center">
-                                        <div x-data=""
-                                            x-on:click.prevent="$dispatch('open-modal', 'workExp-modal')"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 4.5v15m7.5-7.5h-15" />
-                                            </svg>
+                                        <div x-data="{ tooltip: 'Add Work Experience' }">
+                                            <div x-tooltip="tooltip" x-data=""
+                                                x-on:click.prevent="$dispatch('open-modal', 'workExp-modal')"
+                                                class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 4.5v15m7.5-7.5h-15" />
+                                                </svg>
 
+                                            </div>
                                         </div>
 
 
-                                        <div @click="profileTab = 'editWorkExperience'"
-                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                            </svg>
+                                        <div x-data="{ tooltip: 'Edit Work Experience' }">
+                                            <div x-tooltip="tooltip" @click="profileTab = 'editWorkExperience'"
+                                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                </svg>
+                                            </div>
                                         </div>
+
                                     </div>
                                 @endif
                             </div>
@@ -546,18 +562,18 @@
 
                                             <div class="flex flex-col ml-4 w-full">
                                                 <span
-                                                    class="text-2xl text-black font-black">{{ $work_experience->work_Name }}</span>
-                                                <div class="text-xl text-black font-semibold">
+                                                    class="text-xl md:text-2xl text-black font-black">{{ $work_experience->work_Name }}</span>
+                                                <div class="text-lg md:text-xl text-black font-semibold">
                                                     <span>{{ $work_experience->job_positions->position_Title }}</span>
                                                     -
                                                     <span>{{ $work_experience->work_Status }}</span>
                                                 </div>
-                                                <span class="text-md text-gray-700 font-medium">
+                                                <span class="text-sm md:text-md text-gray-700 font-medium">
                                                     {{ $work_experience->work_Start->format('F Y') }} -
                                                     {{ $work_experience->work_End->format('F Y') }}
                                                 </span>
                                                 <span
-                                                    class="text-sm text-gray-700 font-medium">{{ $work_experience->work_Address }}</span>
+                                                    class="text-xs md:text-sm text-gray-700 font-medium">{{ $work_experience->work_Address }}</span>
                                             </div>
 
                                         </div>
@@ -583,23 +599,29 @@
 
                                 @if ($isOwner)
                                     <div class="flex flex-row gap-4 items-center">
-                                        <div x-data=""
-                                            x-on:click.prevent="$dispatch('open-modal', 'training-modal')"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 4.5v15m7.5-7.5h-15" />
-                                            </svg>
+                                        <div x-data="{ tooltip: 'Adit Training Record' }">
+                                            <div x-tooltip="tooltip" x-data=""
+                                                x-on:click.prevent="$dispatch('open-modal', 'training-modal')"
+                                                class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 4.5v15m7.5-7.5h-15" />
+                                                </svg>
+                                            </div>
                                         </div>
 
-                                        <div @click="profileTab = 'editTrainings'"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                            </svg>
+                                        <div x-data="{ tooltip: 'Edit Training Record' }">
+                                            <div x-tooltip="tooltip" @click="profileTab = 'editTrainings'"
+                                                class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 @endif
@@ -648,15 +670,15 @@
 
                                             <div class="flex flex-col ml-4 w-full">
                                                 <span
-                                                    class="text-2xl text-black font-black">{{ $empTraining->training_Name }}</span>
-                                                <div class="text-xl text-black font-semibold">
+                                                    class="text-xl md:text-2xl text-black font-black">{{ $empTraining->training_Name }}</span>
+                                                <div class="text-lg md:text-xl text-black font-semibold">
                                                     <span>{{ $empTraining->training_Cert }}</span>
                                                     -
                                                     <span>{{ $empTraining->training_Status == 1 ? 'Completed' : 'Not Completed' }}</span>
                                                 </div>
                                                 <span
-                                                    class="text-md text-gray-700 font-medium">{{ $empTraining->training_From }}</span>
-                                                <span class="text-md text-gray-700 font-medium">
+                                                    class="text-sm md:text-md text-gray-700 font-medium">{{ $empTraining->training_From }}</span>
+                                                <span class="text-sm md:text-md text-gray-700 font-medium">
                                                     {{ $empTraining->training_Start->format('F Y') }} -
                                                     {{ $empTraining->training_End->format('F Y') }}</span>
                                             </div>
@@ -681,23 +703,29 @@
 
                                 @if ($isOwner)
                                     <div class="flex flex-row gap-4 items-center">
-                                        <div x-data=""
-                                            x-on:click.prevent="$dispatch('open-modal', 'certificate-modal')"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 4.5v15m7.5-7.5h-15" />
-                                            </svg>
+                                        <div x-data="{ tooltip: 'Add Certificate Record' }">
+                                            <div x-tooltip="tooltip" x-data=""
+                                                x-on:click.prevent="$dispatch('open-modal', 'certificate-modal')"
+                                                class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 4.5v15m7.5-7.5h-15" />
+                                                </svg>
+                                            </div>
                                         </div>
 
-                                        <div @click="profileTab = 'editCertificates'"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                            </svg>
+                                        <div x-data="{ tooltip: 'Edit Certificate Record' }">
+                                            <div x-tooltip="tooltip" @click="profileTab = 'editCertificates'"
+                                                class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 @endif
@@ -739,12 +767,12 @@
 
                                             <div class="flex flex-col ml-4 w-full">
                                                 <span
-                                                    class="text-2xl text-black font-black">{{ $certification->certificateType->cert_Name }}</span>
-                                                <span class="text-xl text-black font-semibold">
+                                                    class="text-xl md:text-2xl text-black font-black">{{ $certification->certificateType->cert_Name }}</span>
+                                                <span class="text-lg md:text-xl text-black font-semibold">
                                                     {{ $certification->cert_From }}
                                                 </span>
                                                 <span
-                                                    class="text-lg text-gray-700 font-medium">{{ $certification->cert_Rating }}</span>
+                                                    class="text-md md:text-lg text-gray-700 font-medium">{{ $certification->cert_Rating }}</span>
                                                 <span class="text-md text-gray-700 font-medium">
                                                     {{ $certification->cert_Date_Issued->format('F Y') }}
                                                 </span>

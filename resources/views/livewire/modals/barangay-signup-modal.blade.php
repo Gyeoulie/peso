@@ -20,71 +20,73 @@
 
                     {{-- LICENSE SEARCH --}}
                     <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search">
                 </div>
 
                 {{-- WEB BUTTON --}}
             </div>
-
             {{-- LICENSE MODAL --}}
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-300">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 w-1/4">
-
-                        </th>
-                        <th scope="col" class="px-6 py-3 uppercase">
-                            Barangay
-                        </th>
-                        <th scope="col" class="px-6 py-3 uppercase">
-                            Municipality, Province
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if ($barangay->isEmpty())
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>
-                            <td colspan="3">
-                                <div class="flex flex-col items-center justify-center mt-20 mb-20">
-                                    <div class="p-6 bg-gray-100 rounded-full">
-                                        <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                        </svg>
+                            <th scope="col" class="px-6 py-3 w-1/4">
 
-                                    </div>
-                                    <p class="text-xl font-bold text-black text-center mt-2">
-                                        No Record Found!
-                                    </p>
-                                </div>
-
-                            </td>
+                            </th>
+                            <th scope="col" class="px-6 py-3 uppercase">
+                                Barangay
+                            </th>
+                            <th scope="col" class="px-6 py-3 uppercase">
+                                Municipality, Province
+                            </th>
                         </tr>
-                    @else
-                        @foreach ($barangay as $data)
-                            <tr wire:key='barangay-{{ $data->barangay_id }}' class="bg-white border-b hover:bg-gray-50">
-                                <td class="px-6 py-4 text-center">
+                    </thead>
+                    <tbody>
+                        @if ($barangay->isEmpty())
+                            <tr>
+                                <td colspan="3">
+                                    <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                        <div class="p-6 bg-gray-100 rounded-full">
+                                            <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                            </svg>
 
-                                    <button wire:click.prevent='barSelect({{ $data->barangay_id }})'
-                                        class="text-blue-500 hover:underline">Select</button>
+                                        </div>
+                                        <p class="text-xl font-bold text-black text-center mt-2">
+                                            No Record Found!
+                                        </p>
+                                    </div>
 
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="font-semibold text-base uppercase">{{ $data->barangay_Name }}</div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="font-semibold text-base uppercase">
-                                        {{ $data->municipality->municipality_Name }},
-                                        {{ $data->municipality->province->province_Name }}</div>
                                 </td>
                             </tr>
-                        @endforeach
-                    @endif
-                </tbody>
-            </table>
+                        @else
+                            @foreach ($barangay as $data)
+                                <tr wire:key='barangay-{{ $data->barangay_id }}'
+                                    class="bg-white border-b hover:bg-gray-50">
+                                    <td class="px-6 py-4 text-center">
+
+                                        <button wire:click.prevent='barSelect({{ $data->barangay_id }})'
+                                            class="text-blue-500 hover:underline">Select</button>
+
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="font-semibold text-base uppercase">{{ $data->barangay_Name }}</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="font-semibold text-base uppercase">
+                                            {{ $data->municipality->municipality_Name }},
+                                            {{ $data->municipality->province->province_Name }}</div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         {{-- PAGINATION --}}

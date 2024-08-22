@@ -308,32 +308,38 @@
 
                 <div class="flex flex-col sm:flex-row w-full space-y-5 sm:sm:space-y-0 sm:space-x-5 mt-4">
 
-                    <div class="flex flex-col w-full ">
+                    <div wire:ignore class="flex flex-col w-1/2 ">
                         <x-input-label for="descPost"> <i class="fa-solid fa-briefcase"></i> Job Description
                         </x-input-label>
-                        <textarea wire:model='descPost' rows="8"
+                        <textarea wire:model='descPost' id="descText"></textarea>
+                        {{-- <textarea wire:model='descPost' rows="8"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Write your thoughts here..."></textarea>
+                        <x-input-error :messages="$errors->get('descPost')" class="mt-2" /> --}}
                         <x-input-error :messages="$errors->get('descPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col w-full ">
+                    <div wire:ignore class="flex flex-col w-1/2 ">
                         <x-input-label for="qualPost"> <i class="fa-solid fa-briefcase"></i> Job Qualification
                         </x-input-label>
-                        <textarea wire:model='qualPost' rows="8"
+                        <textarea wire:model='qualPost' id="qualText"></textarea>
+                        {{-- <textarea wire:model='qualPost' rows="8"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Write your thoughts here..."></textarea>
+                        <x-input-error :messages="$errors->get('qualPost')" class="mt-2" /> --}}
                         <x-input-error :messages="$errors->get('qualPost')" class="mt-2" />
                     </div>
 
                 </div>
 
-                <div class="flex flex-col w-full mt-4">
+                <div wire:ignore class="flex flex-col w-full mt-4">
                     <x-input-label for="remPost"> <i class="fa-solid fa-briefcase"></i> Remarks
                     </x-input-label>
-                    <textarea wire:model='remPost' rows="4"
+                    <textarea wire:model='remPost' id="remText"></textarea>
+                    {{-- <textarea wire:model='remPost' rows="4"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('remPost')" class="mt-2" /> --}}
                     <x-input-error :messages="$errors->get('remPost')" class="mt-2" />
                 </div>
 
@@ -467,5 +473,75 @@
         </div>
 
     </div>
+
+    {{-- @scipt --}}
+    <script>
+        $('#descText').summernote({
+            placeholder: 'Write job description here...',
+            tabsize: 2,
+            height: 120,
+            toolbar: [
+                ['font', ['bold', 'underline']],
+                ['para', ['ul', 'ol', 'paragraph']],
+            ],
+            callbacks: {
+                onChange: function(contents, $editable) {
+                    if ($('#descText').summernote('isEmpty')) {
+                        @this.set('descPost',
+                            ''
+                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
+                    } else {
+                        @this.set('descPost', contents);
+                    }
+                }
+            }
+        });
+        $('#qualText').summernote({
+            placeholder: 'Write job qualifications here...',
+            tabsize: 2,
+            height: 120,
+            toolbar: [
+                ['font', ['bold', 'underline']],
+                ['para', ['ul', 'ol', 'paragraph']],
+            ],
+            callbacks: {
+                onChange: function(contents, $editable) {
+                    if ($('#qualText').summernote('isEmpty')) {
+                        @this.set('qualPost',
+                            ''
+                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
+                    } else {
+                        @this.set('qualPost', contents);
+                    }
+                }
+            }
+        });
+        $('#remText').summernote({
+            placeholder: 'Write remarks here...',
+            tabsize: 2,
+            height: 120,
+            toolbar: [
+                ['font', ['bold', 'underline']],
+                ['para', ['ul', 'ol', 'paragraph']],
+            ],
+            callbacks: {
+                onChange: function(contents, $editable) {
+                    if ($('#remText').summernote('isEmpty')) {
+                        @this.set('remPost',
+                            ''
+                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
+                    } else {
+                        @this.set('remPost', contents);
+                    }
+                }
+            }
+        });
+
+        $('.note-statusbar').hide();
+    </script>
+
+
+    {{-- @endscript --}}
+
 
 </div>

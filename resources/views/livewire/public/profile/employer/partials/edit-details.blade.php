@@ -97,12 +97,13 @@
                                     <span class="sr-only">Loading...</span>
                                 </div>
                             </label>
-                            <input wire:model="companyImage" type="file" id="imageUpload" class="hidden" accept="image/*">
+                            <input wire:model="companyImage" type="file" id="imageUpload" class="hidden"
+                                accept="image/*">
                         </div>
                     </div>
 
                     {{-- FIELDS START --}}
-                    <div class="flex flex-row gap-4 mt-4 w-full">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="bname" :value="__('Business Name')" />
                             <x-text-input wire:model="businessName" class="block mt-1 w-full" type="text" disabled />
@@ -116,7 +117,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row gap-4 mt-4">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="tin" :value="__('TIN')" />
                             <x-text-input wire:model="tin" class="block mt-1 w-full" type="text" disabled />
@@ -147,7 +148,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row gap-4 mt-4">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="emptype" :value="__('Employment Type')" />
                             <x-text-input wire:model="empType" class="block mt-1 w-full" type="text" disabled />
@@ -161,14 +162,14 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row w-full mt-4">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="companyAddress" :value="__('Company Address')" />
                             <x-text-input wire:model="companyAddress" class="block mt-1 w-full" type="text" />
                             <x-input-error :messages="$errors->get('companyAddress')" class="mt-2" />
 
                         </div>
-                        <div class="flex flex-col ml-4 w-full">
+                        <div class="flex flex-col w-full">
                             <livewire:modals.barangay-modal />
                             <x-input-label for="city" :value="__('Barangay')" />
                             <x-text-input wire:model='bar' class="block mt-1 w-full" type="text" readonly
@@ -178,13 +179,13 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row mt-4">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="mun" :value="__('Municipality')" />
                             <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
                             <x-input-error :messages="$errors->get('mun')" class="mt-2" />
                         </div>
-                        <div class="flex flex-col ml-4 w-full">
+                        <div class="flex flex-col w-full">
                             <x-input-label for="province" :value="__('Province')" />
                             <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
                             <x-input-error :messages="$errors->get('prov')" class="mt-2" />
@@ -220,7 +221,7 @@
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
 
-                    <div class="flex flex-row gap-4 mt-4 w-full">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactPerson" :value="__('Contact Person')" />
                             <x-text-input wire:model="contactPerson" class="block mt-1 w-full" type="text" />
@@ -235,7 +236,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row gap-4 mt-4">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactEmail" :value="__('E-mail Address')" />
                             <x-text-input wire:model="contactEmail" class="block mt-1 w-full" type="email" />
@@ -250,7 +251,7 @@
 
                     </div>
 
-                    <div class="flex flex-row gap-4 mt-4">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactMobile" :value="__('Mobile No.')" />
                             <x-text-input wire:model="contactPnum" class="block mt-1 w-full" type="tel" />
@@ -341,7 +342,6 @@
 
 
                 </div>
-                {{-- ELIGIBILITY --}}
 
 
 

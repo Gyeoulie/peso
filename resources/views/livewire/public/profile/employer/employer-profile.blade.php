@@ -1,4 +1,4 @@
-<div wire:poll>
+<div>
     <div class="flex flex-col md:flex-row w-full h-full gap-4 container mx-auto p-4 md:p-0 md:py-8">
 
         <div class="flex flex-col md:w-1/4 h-full md:sticky top-5">
@@ -149,16 +149,19 @@
                             <h2 class="text-xl font-bold">Company Description</h2>
 
 
-
-                            <div
-                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
-                                <svg wire:click.prevent="open" class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                </svg>
-                            </div>
-
+                            @if ($isOwner)
+                                <div
+                                    class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                    <div x-data="{ tooltip: 'Edit Company Description' }">
+                                        <svg x-tooltip="tooltip" wire:click.prevent="open" class="w-8 h-8"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            @endif
 
                         </div>
 
@@ -180,7 +183,7 @@
                             <h2 class="text-xl font-bold">Job Postings</h2>
 
 
-                            <div
+                            {{-- <div
                                 class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
                                 <a wire:navigate href="{{ route('edit.details.emp') }}">
                                     <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -189,7 +192,7 @@
                                             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </a>
-                            </div>
+                            </div> --}}
 
                         </div>
                         @if ($employer->job_posting->isEmpty())

@@ -120,9 +120,12 @@
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname"> Job Qualification
                             </x-input-label>
-                            <textarea id="message" rows="4"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 h-48"
-                                placeholder="Write your thoughts here..." readonly>{{ $jobpost->job_Qualifications }}</textarea>
+                            <div
+                                class="h-[200px] overflow-auto block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none">
+                                <div class="no-tailwindcss-base">
+                                    {!! trim($jobpost->job_Qualifications) ? $jobpost->job_Qualifications : 'Qualifications: No details available.' !!}
+                                </div>
+                            </div>
                         </div>
                     </div>
 

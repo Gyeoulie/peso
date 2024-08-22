@@ -70,6 +70,7 @@ class EditDetails extends Component
     //MODAL
     public function openModal($modalName)
     {
+
         if ($modalName == "disability") {
             $this->reset('selectDisability', 'otherDisability', );
             $this->dispatch('open-modal', 'disability-modal');
@@ -84,11 +85,13 @@ class EditDetails extends Component
             $this->reset('licID', 'licName', 'licValidity', 'search');
             $this->dispatch('open-modal', 'license-modal');
         }
+        $this->resetErrorBag();
         $this->resetValidation();
     }
 
     public function closeModal($modalName)
     {
+
         if ($modalName == "disability") {
             $this->reset('selectDisability', 'otherDisability');
             $this->dispatch('close-modal', 'disability-modal');
@@ -174,6 +177,8 @@ class EditDetails extends Component
 
     public function editRecord($id, $name)
     {
+        $this->resetErrorBag();
+        $this->resetValidation();
         if ($name == 'language') {
             $this->langID = $id;
 
@@ -313,6 +318,53 @@ class EditDetails extends Component
     // LANGUAGE
     public function saveLanguage()
     {
+
+       
+        $rules = [
+            'selectedLanguage' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    // Check if the selected language already exists for the employee
+                    $existingLanguage = Language::where('employee_id', $this->empID)
+                        ->where('language_Type', $value === 'other' ? $this->otherLanguage : $value)
+                        ->first();
+
+                    if ($existingLanguage && $existingLanguage->language_id !== $this->langID) {
+                        $fail('The selected language has already been added.');
+                    }
+                },
+            ],
+            'otherLanguage' => [
+                'required_if:selectedLanguage,other',
+                'nullable',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    // Check if the "other" language already exists for the employee
+                    if ($this->selectedLanguage === 'other') {
+                        $existingLanguage = Language::where('employee_id', $this->empID)
+                            ->where('language_Type', $value)
+                            ->first();
+
+                        if ($existingLanguage && $existingLanguage->language_id !== $this->langID) {
+                            $fail('The language "' . $value . '" has already been added.');
+                        }
+                    }
+                },
+            ],
+        ];
+
+        $messages = [
+            'selectedLanguage.required' => 'Please select a language.',
+            'otherLanguage.required_if' => 'The other language field is required when the selected language is "other".',
+            'otherLanguage.max' => 'Language must only have 255 characters.',
+        ];
+
+        $this->validate($rules, $messages);
+        // Custom validation for at least one being true
+        if (!$this->read && !$this->write && !$this->speak && !$this->understand) {
+            $this->addError('language_option', 'At least one of the options for read, write, speak, or understand must be selected.');
+            return;
+        }
         DB::beginTransaction();
 
         try {
