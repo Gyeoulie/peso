@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('program_reg', function (Blueprint $table) {
             $table->id('program_reg_id');
-            $table->unsignedBigInteger('employee_id');
-            $table->unsignedBigInteger('program_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
+            $table->unsignedBigInteger('program_id')->comment('Foreign Key');
             $table->string('program_reg_Status', 15);
             $table->timestamps(); // Adds created_at and updated_at columns
+            $table->softDeletes();
 
-            $table->foreign('program_id')->references('program_id')->on('programs')->onDelete('cascade')
-            ->onUpdate('cascade');
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('program_id')->references('program_id')->on('programs');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
         });
     }
 
@@ -30,6 +29,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('program_reg');
+        Schema::table('program_reg', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('program_reg');
     }
 };

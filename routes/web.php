@@ -17,8 +17,11 @@ use App\Livewire\Admin\LocationManagement\Location;
 use App\Livewire\Admin\PositionIndustry\PositionIndustry;
 use App\Livewire\Admin\Reports\BarangayReports;
 use App\Livewire\Admin\Requirements\Requirements;
+use App\Livewire\Admin\Training\CreateTrainining;
+use App\Livewire\Admin\Training\TrainingList;
 use App\Livewire\Employer\Dashboard\JobApplicants;
 use App\Livewire\Employer\Dashboard\JobPostList;
+use App\Livewire\Employer\Jobpost\JobpostApplication;
 use App\Livewire\Jobseeker\ApplicationHistory;
 use App\Livewire\Public\Dashboard;
 use App\Livewire\Public\JobpostView;
@@ -28,6 +31,7 @@ use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
 use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
 use App\Livewire\Public\Resume\ResumeView;
 use App\Livewire\Public\SearchProfiles;
+use App\Livewire\Public\TrainingView;
 use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +65,9 @@ Route::get('/employer/details', EmployerInformation::class)->name('fill_employer
 Route::get('/dashboard', Dashboard::class)->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
+
+Route::get('/training/{id}', TrainingView::class)->name('training.show');
+
 //------------------------------ PUBLIC - PROFILE ------------------------------
 Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
 
@@ -71,9 +78,12 @@ Route::get('/applications/history', ApplicationHistory::class)->name('jobseeker.
 Route::get('/profile/edit', EditDetails::class)->name('edit.details');
 
 //------------------------------ EMPLOYER ------------------------------
-Route::get('/apply', function () {
-    return view('dashboard.partials.employer-jobpost');
-})->name('jobpost.apply');
+// Route::get('/apply', function () {
+//     return view('dashboard.partials.employer-jobpost');
+// })->name('jobpost.apply');
+
+Route::get('/apply', JobpostApplication::class)->name('jobpost.apply');
+
 Route::get('/employer/jobpost', JobPostList::class)->name('employer.dashboard');
 Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
 Route::get('/employer/edit', EmployerEditDetails::class)->name('edit.details.emp');
@@ -81,7 +91,6 @@ Route::get('/employer/edit', EmployerEditDetails::class)->name('edit.details.emp
 //------------------------------ ADMIN  NAVIGATION ------------------------------
 Route::prefix('admin')->group(function () {
     Route::get('/', AdminDashboard::class)->name('admin');
-    
 
     Route::get('/job/applicants', function () {
         return view('admin.admin_partials.applicant-list');
@@ -123,6 +132,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/manage-admin', function () {
         return view('admin.admin_partials.admin-accounts');
     })->name('admin-admin');
+
+    Route::get('/training', TrainingList::class)->name('admin-training');
+    Route::get('/training/create', CreateTrainining::class)->name('admin-create-training');
 
     Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
 

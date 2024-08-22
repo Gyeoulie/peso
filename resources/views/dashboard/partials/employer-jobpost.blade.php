@@ -10,11 +10,6 @@
 
 
 
-    @livewire('employer.jobpost.job-positions-modal')
-    @livewire('employer.jobpost.industry-modal')
-    @livewire('employer.jobpost.barangay-modal')
-
-
 
 
 

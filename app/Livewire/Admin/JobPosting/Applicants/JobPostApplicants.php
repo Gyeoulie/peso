@@ -48,8 +48,13 @@ class JobPostApplicants extends Component
     {
         // Fetch job posting details
         $jobpost = Job_Posting::with(['company'])
+            ->withCount('hiredApplicants')
             ->where('job_id', $this->id)
             ->first();
+
+        if ($jobpost) {
+            $jobpost->slotsLeft = $jobpost->job_Slots - $jobpost->hired_applicants_count;
+        }
 
         // Fetch job applicants
         $jobApplicants = Job_Applicants::with(['employee'])

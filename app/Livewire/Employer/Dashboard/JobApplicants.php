@@ -3,13 +3,10 @@
 namespace App\Livewire\Employer\Dashboard;
 
 use App\Models\Company;
-use App\Models\Employee;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
@@ -20,7 +17,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.app')]
 class JobApplicants extends Component
 {
-    use WithPagination, WithoutUrlPagination; 
+    use WithPagination, WithoutUrlPagination;
     public $eduLevels = [
         '1' => 'GRADE I',
         '2' => 'GRADE II',
@@ -57,62 +54,23 @@ class JobApplicants extends Component
 
     public $filter = 'ALL', $sortDate, $jobFilter = 'ALL';
 
-    public function printResume($id, $type)
+    public function viewFile($id, $fileToView)
     {
 
-        $employee = Employee::findOrFail($id);
-        $filename = $employee->fname . '_' . $employee->lname . '_resume.pdf';
-        if ($type == 1) {
-            // dd(public_path('storage/' . $employee->pimg));
+        if ($fileToView === 3) {
 
-            $pdf = Pdf::loadView('resume', ['employee' => $employee]);
+            $this->dispatch('viewFile', [
+                'url' => route('view.recommendation'),
+                'app_id' => $id,
+            ]);
 
-            return response()->streamDownload(function () use ($pdf) {
-                echo $pdf->download();
-            }, $filename);
-            toastr()->success('Download Success');
-
-        } elseif ($type == 2) {
-
-            if (Storage::exists('public/' . $employee->resume)) {
-                // Get the URL of the PDF file
-                // $pdfUrl = Storage::url($path);
-
-                $fileContent = Storage::get('public/' . $employee->resume);
-
-                return response()->streamDownload(function () use ($fileContent) {
-                    echo $fileContent;
-                }, $filename);
-                // Redirect the user to the PDF URL
-                toastr()->success('Download Success');
-            } else {
-                // PDF file not found, handle the error accordingly
-                // For example, you can redirect the user or show a message
-            }
-        }
-
-    }
-
-    public function printRecom($id)
-    {
-
-        $applicant = Job_Applicants::findOrFail($id);
-
-        if (Storage::exists('public/' . $applicant->peso_Letter)) {
-            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_recommendation.pdf';
-
-            $fileContent = Storage::get('public/' . $applicant->peso_Letter);
-
-            return response()->streamDownload(function () use ($fileContent) {
-                echo $fileContent;
-            }, $filename);
-            // Redirect the user to the PDF URL
-            toastr()->success('Download Success');
         } else {
-            // PDF file not found, handle the error accordingly
-            // For example, you can redirect the user or show a message
-            toastr()->error('Recommendation Letter not found!');
 
+            $this->dispatch('viewFile', [
+                'url' => route('view.resume'),
+                'emp_id' => $id,
+                'resume_type' => $fileToView,
+            ]);
         }
 
     }

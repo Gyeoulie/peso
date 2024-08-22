@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('license', function (Blueprint $table) {
             $table->id('license_id');
-            $table->unsignedBigInteger('employee_id');
-            $table->unsignedBigInteger('license_type_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
+            $table->unsignedBigInteger('license_type_id')->comment('Foreign Key');
             $table->date('license_Validity');
-            $table->timestamps(); // Adds created_at and updated_at columns
-            
+            $table->timestamps();
+            $table->softDeletes(); // Adds created_at and updated_at columns
+
             // Foreign key constraints
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
-            $table->foreign('license_type_id')->references('license_type_id')->on('license_type')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
+            $table->foreign('license_type_id')->references('license_type_id')->on('license_type');
         });
     }
 
@@ -31,6 +30,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('license');
+        Schema::table('license', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('license');
     }
 };

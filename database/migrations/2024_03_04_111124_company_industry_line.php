@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('company_industry_line', function (Blueprint $table) {
             $table->id('company_industry_line_id');
-            $table->unsignedBigInteger('company_id');
-            $table->unsignedBigInteger('industry_id');
+            $table->unsignedBigInteger('company_id')->comment('Foreign Key');
+            $table->unsignedBigInteger('industry_id')->comment('Foreign Key');
             $table->timestamps();
+            $table->softDeletes();
 
             // Define foreign key constraints
-            $table->foreign('company_id')->references('company_id')->on('company')->onDelete('cascade')
-            ->onUpdate('cascade');
-            $table->foreign('industry_id')->references('industry_id')->on('job_industry')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('company_id')->references('company_id')->on('company');
+            $table->foreign('industry_id')->references('industry_id')->on('job_industry');
         });
     }
 
@@ -30,6 +29,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('company_industry_line');
+        Schema::table('company_industry_line', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('company_industry_line');
     }
 };

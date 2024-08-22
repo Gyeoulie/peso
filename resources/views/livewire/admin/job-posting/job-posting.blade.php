@@ -123,7 +123,7 @@
                                     Employment Type
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Slots
+                                    Slots Available
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     @if ($filter == 'ACTIVE')
@@ -188,7 +188,9 @@
                                             {{ $data->job_Title == 1 ? 'PART TIME' : 'FULL TIME' }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $data->job_Slots }}
+                                            {{-- {{ $data->job_Slots }} --}}
+
+                                            {{ $data->slotsLeft }}
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex items-center">

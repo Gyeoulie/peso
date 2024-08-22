@@ -151,7 +151,9 @@
                 </a>
             </li>
             <li>
-                <a wire:navigate href="{{ route('admin') }}" class="flex items-center p-2 text-gray-900 rounded-lg ">
+                <button type="button"
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-300"
+                    aria-controls="dropdown-example" data-collapse-toggle="dropdown-3">
 
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -163,13 +165,35 @@
                             d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
                     </svg>
 
-                    <span class="flex-1 ms-3 whitespace-nowrap">Trainings</span>
-                </a>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Trainings</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="dropdown-3"
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-training', 'admin-create-training') ? 'block' : 'hidden' }}">
+
+                    <li>
+                        <a wire:navigate href="{{ route('admin-training') }}"
+                            :class="{{ request()->routeIs('admin-training') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Training
+                            List</a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="{{ route('admin-create-training') }}"
+                            :class="{{ request()->routeIs('admin-create-training') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Create
+                            a Training</a>
+                    </li>
+
+                </ul>
             </li>
             <li>
                 <button type="button"
                     class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-300"
-                    aria-controls="dropdown-example" data-collapse-toggle="dropdown-3">
+                    aria-controls="dropdown-example" data-collapse-toggle="dropdown-4">
 
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -185,7 +209,7 @@
                             d="m1 1 4 4 4-4" />
                     </svg>
                 </button>
-                <ul id="dropdown-3"
+                <ul id="dropdown-4"
                     class="py-2 space-y-2 {{ request()->routeIs('admin-reports-barangay') ? 'block' : 'hidden' }}">
 
                     <li>

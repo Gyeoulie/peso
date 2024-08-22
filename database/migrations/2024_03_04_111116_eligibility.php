@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('eligibility', function (Blueprint $table) {
             $table->id('eligibility_id');
-            $table->unsignedBigInteger('employee_id');
-            $table->unsignedBigInteger('eligibility_Type');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
+            $table->unsignedBigInteger('eligibility_Type')->comment('Foreign Key');
             $table->date('eligibility_Date');
             $table->timestamps();
+            $table->softDeletes();
 
             // Define foreign key constraints
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
-            $table->foreign('eligibility_Type')->references('eligibility_type_id')->on('eligibility_type')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
+            $table->foreign('eligibility_Type')->references('eligibility_type_id')->on('eligibility_type');
         });
     }
 
@@ -31,6 +30,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('eligibility');
+        Schema::table('eligibility', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('eligibility');
     }
 };

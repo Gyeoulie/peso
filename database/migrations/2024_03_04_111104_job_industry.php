@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('industry_Title', 255);
             $table->string('industry_Code', 10);
             $table->timestamps();
-            
+            $table->softDeletes();
+
         });
     }
 
@@ -25,6 +26,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_industry');
+        Schema::table('job_industry', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('job_industry');
     }
 };

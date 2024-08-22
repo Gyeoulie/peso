@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('company', function (Blueprint $table) {
             $table->id('company_id');
-            $table->unsignedBigInteger('user_id')->unsigned();
+            $table->unsignedBigInteger('user_id')->comment('Foreign Key');
             $table->string('business_Name', 255);
             $table->string('trade_Name', 255);
             $table->string('company_TIN', 15);
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->tinyInteger('employer_Type_Desc');
             $table->integer('company_Total_workforce');
             $table->string('company_Address', 255);
-            $table->unsignedBigInteger('barangay_id');
+            $table->unsignedBigInteger('barangay_id')->comment('Foreign Key');;
             $table->string('contact_Person', 255);
             $table->string('contact_Person_position', 255);
             $table->string('company_Pnum', 15);
@@ -33,11 +33,10 @@ return new class extends Migration
             $table->string('company_img', 255);
             $table->text('company_Desc')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')
-                ->onUpdate('cascade');;
-            $table->foreign('barangay_id')->references('barangay_id')->on('barangay')->onDelete('cascade')
-                ->onUpdate('cascade');;
+            $table->foreign('user_id')->references('id')->on('users');;
+            $table->foreign('barangay_id')->references('barangay_id')->on('barangay');;
         });
     }
 
@@ -46,6 +45,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('company');
+        Schema::table('company', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('company');
     }
 };

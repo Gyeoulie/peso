@@ -10,7 +10,7 @@ use Livewire\WithPagination;
 class JobPositionModal extends Component
 {
 
-    use WithPagination, WithoutUrlPagination; 
+    use WithPagination, WithoutUrlPagination;
     public $search;
 
     public function positionSelect($id)

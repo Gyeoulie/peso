@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('cert_Name', 255);
             $table->string('cert_Code', 10);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -24,6 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('certificate_type');
+        Schema::table('certificate_type', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('certificate_type');
     }
 };

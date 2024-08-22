@@ -13,19 +13,18 @@ return new class extends Migration
     {
         Schema::create('work_experience', function (Blueprint $table) {
             $table->id('workexp_id');
-            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
             $table->string('work_Name', 255);
             $table->text('work_Address');
-            $table->unsignedBigInteger('position_id');
+            $table->unsignedBigInteger('position_id')->comment('Foreign Key');
             $table->date('work_Start');
             $table->date('work_End');
-            $table->string('work_Status',255);
+            $table->string('work_Status', 255);
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
-            $table->foreign('position_id')->references('position_id')->on('job_positions')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
+            $table->foreign('position_id')->references('position_id')->on('job_positions');
         });
     }
 
@@ -34,6 +33,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('work_experience');
+        Schema::table('work_experience', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('work_experience');
     }
 };

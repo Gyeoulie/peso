@@ -198,7 +198,11 @@ class JobpostView extends Component
     {
 
         $isApplied = false;
-        $JobPost = Job_Posting::find($this->id);
+        $JobPost = Job_Posting::withCount('hiredApplicants')->find($this->id);
+
+        if ($JobPost) {
+            $JobPost->slotsLeft = $JobPost->job_Slots - $JobPost->hired_applicants_count;
+        }
 
         if (!$JobPost) {
             return redirect()->route('dashboard');

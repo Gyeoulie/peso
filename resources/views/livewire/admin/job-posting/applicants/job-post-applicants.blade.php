@@ -16,7 +16,7 @@
                     <div class="flex flex-col items-center">
                         {{-- COMPANY IMAGE --}}
                         <img src="{{ asset('storage/' . $jobpost->company->company_img) }}"
-                            class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
+                            class="w-32 h-32 bg-gray-300 rounded-md mb-4  shrink-0 object-cover shadow-xl">
 
 
                         </img>
@@ -41,6 +41,10 @@
                             Details</span>
 
                         <ul>
+                            <div class="flex flex-row justify-between">
+                                <li class="mb-2 font-bold">Slots Remaining:</li>
+                                <p class="ms-4">{{ $jobpost->slotsLeft }}</p>
+                            </div>
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Job Position:</li>
                                 <p class="ms-4">{{ $jobpost->job_Title }}</p>
@@ -116,9 +120,12 @@
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname"> Job Qualification
                             </x-input-label>
-                            <textarea id="message" rows="4"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 h-48"
-                                placeholder="Write your thoughts here..." readonly>{{ $jobpost->job_Qualifications }}</textarea>
+                            <div
+                                class="h-[200px] overflow-auto block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none">
+                                <div class="no-tailwindcss-base">
+                                    {!! trim($jobpost->job_Qualifications) ? $jobpost->job_Qualifications : 'Qualifications: No details available.' !!}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -135,7 +142,12 @@
 
                 {{-- APPLICATION LIST CONTAINER --}}
                 <div class="bg-white shadow rounded-lg p-6">
-                    <h1 class="text-2xl font-bold mb-7">Applicant List</h1>
+                    <div class="flex flex-row justify-between">
+                        <h1 class="text-2xl font-bold mb">Applicant List</h1>
+                        <h1 class="text-2xl font-bold mb">Slots Remaining: {{ $jobpost->slotsLeft }} </h1>
+
+                    </div>
+                    <hr class="h-px my-4  bg-gray-200 border-0 dark:bg-gray-700">
 
                     <div class="relative overflow-x-auto">
                         <div
@@ -224,7 +236,7 @@
                                             </td>
 
                                             <td class="px-6 py-4">
-                                                <div class="flex items-center">
+                                                <div class="flex items-center font-semibold">
                                                     @if ($applicants->applicant_Status == 'PENDING')
                                                         <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
                                                         PENDING
@@ -248,7 +260,8 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="text-base">{{ $applicants->created_at->format('F j, Y') }}
+                                                <div class="text-base text-sm">
+                                                    {{ $applicants->created_at->format('F j, Y') }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 text-center">

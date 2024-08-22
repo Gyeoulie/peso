@@ -22,76 +22,78 @@
 
                         {{-- LICENSE SEARCH --}}
                         <input type="text" wire:model.live.prevent='search'
-                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search Job Position">
                     </div>
 
                     {{-- WEB BUTTON --}}
                 </div>
-
-                {{-- LICENSE MODAL --}}
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-300">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 w-1/4">
-
-                            </th>
-                            <th scope="col" class="px-6 py-3 uppercase">
-                                Job Position
-                            </th>
-                            <th scope="col" class="px-6 py-3 uppercase">
-                                Code
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if ($jobposition->isEmpty())
+                <div class="overflow-x-auto ">
+                    {{-- LICENSE MODAL --}}
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
-                                <td colspan="3">
-                                    <div class="flex flex-col items-center justify-center mt-24 mb-24">
-                                        <div class="p-6 bg-gray-100 rounded-full">
-                                            <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                            </svg>
+                                <th scope="col" class="px-6 py-3 w-1/4">
 
-                                        </div>
-                                        <p class="text-xl font-bold text-black text-center mt-2">
-                                            No Record Found!
-                                        </p>
-                                    </div>
-
-                                </td>
+                                </th>
+                                <th scope="col" class="px-6 py-3 uppercase">
+                                    Job Position
+                                </th>
+                                <th scope="col" class="px-6 py-3 uppercase">
+                                    Code
+                                </th>
                             </tr>
-                        @else
-                            @foreach ($jobposition as $data)
-                                <tr wire:key='position-{{ $data->position_id }}'
-                                    class="bg-white border-b hover:bg-gray-50">
-                                    <td class="px-6 py-4 text-center">
+                        </thead>
+                        <tbody>
+                            @if ($jobposition->isEmpty())
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                            <div class="p-6 bg-gray-100 rounded-full">
+                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                </svg>
 
-                                        <button wire:click.prevent='positionSelect({{ $data->position_id }})'
-                                            class="text-blue-500 hover:underline">Select</button>
-
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="font-semibold text-base uppercase"> {{ $data->position_Title }}
+                                            </div>
+                                            <p class="text-xl font-bold text-black text-center mt-2">
+                                                No Record Found!
+                                            </p>
                                         </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="font-semibold text-base uppercase">{{ $data->position_Code }}</div>
+
                                     </td>
                                 </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
+                            @else
+                                @foreach ($jobposition as $data)
+                                    <tr wire:key='position-{{ $data->position_id }}'
+                                        class="bg-white border-b hover:bg-gray-50">
+                                        <td class="px-6 py-4 text-center">
+
+                                            <button wire:click.prevent='positionSelect({{ $data->position_id }})'
+                                                class="text-blue-500 hover:underline">Select</button>
+
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="font-semibold text-base uppercase"> {{ $data->position_Title }}
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="font-semibold text-base uppercase">{{ $data->position_Code }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {{-- PAGINATION --}}
             <div>
-                {{ $jobposition->links() }}
+                {{ $jobposition->links('vendor.livewire.tailwind') }}
             </div>
 
             <div class="mt-6 flex justify-end">

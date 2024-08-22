@@ -18,6 +18,16 @@
         list-style: revert;
         padding: revert;
     }
+
+    .no-tailwindcss-base ul {
+        list-style: disc !important;
+        list-style-position: inside !important;
+    }
+
+    .no-tailwindcss-base ol {
+        list-style: decimal !important;
+        list-style-position: inside !important;
+    }
 }
 
 /* .no-scrollbar::-webkit-scrollbar {
@@ -44,11 +54,29 @@
     background-clip: content-box;
 }
 
-
 [x-cloak] {
     display: none !important;
 }
 
+.note-editable ul {
+    list-style: disc !important;
+    list-style-position: inside !important;
+}
+
+.note-editable ol {
+    list-style: decimal !important;
+    list-style-position: inside !important;
+}
+
+.note-editor {
+    width: 100% !important; /* Adjust width as needed */
+}
+
+.note-editable {
+    max-height: 120px !important; /* Ensure this matches the height you set in your JavaScript */
+    overflow: auto !important; /* Add scrollbars if content overflows */
+    white-space: pre-wrap; /* Ensure long lines are wrapped correctly */
+}
 @tailwind components;
 @tailwind utilities;
 

@@ -3,6 +3,7 @@
 namespace App\Livewire\Public\Profile\Employer;
 
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -64,6 +65,16 @@ class EmployerProfile extends Component
             },
         ])->find($this->id);
 
-        return view('livewire.public.profile.employer.employer-profile', compact('employer'));
+        $isOwner = false;
+
+        $user = Auth::user();
+
+        if ($user->usertype == 5) {
+            if ($user->company->company_id == $this->id) {
+                $isOwner = true;
+            }
+        }
+
+        return view('livewire.public.profile.employer.employer-profile', compact('employer', 'isOwner'));
     }
 }

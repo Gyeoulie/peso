@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Work_Exp extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    
     protected $table = 'work_experience';
     protected $primaryKey = 'workexp_id';
 
@@ -26,6 +29,7 @@ class Work_Exp extends Model
         'work_End' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     public function employee()

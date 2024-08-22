@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('language', function (Blueprint $table) {
             $table->id('language_id');
-            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
             $table->string('language_Type', 255);
             $table->tinyInteger('language_Read');
             $table->tinyInteger('language_Write');
             $table->tinyInteger('language_Speak');
             $table->tinyInteger('language_Understand');
-            $table->timestamps(); // Adds created_at and updated_at columns
+            $table->timestamps();
+            $table->softDeletes(); // Adds created_at and updated_at columns
 
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
         });
     }
 
@@ -31,6 +31,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('language');
+        Schema::table('language', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('language');
     }
 };

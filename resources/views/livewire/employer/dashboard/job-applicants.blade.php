@@ -188,21 +188,15 @@
                             <div class="sm:hidden">
                                 <label for="tabs" class="sr-only">Select Filter</label>
                                 <select id="tabs"
-                                    class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                    <option wire:click.prevent='changeFilter("ALL")'>All ({{ $applicants['total'] }})
-                                    </option>
-                                    <option wire:click.prevent='changeFilter("PENDING")'>Pending
-                                        ({{ $applicants['pending'] }})</option>
-                                    <option wire:click.prevent='changeFilter("INTERESTED")'>Interested
-                                        ({{ $applicants['interested'] }})</option>
-                                    <option wire:click.prevent='changeFilter("INTERVIEW")'>Interview
-                                        ({{ $applicants['interview'] }})</option>
-                                    <option wire:click.prevent='changeFilter("HIRED")'>Pending
-                                        ({{ $applicants['hired'] }})</option>
-                                    <option wire:click.prevent='changeFilter("ACCEPTED")'>Pending
-                                        ({{ $applicants['accepted'] }})</option>
-                                    <option wire:click.prevent='changeFilter("REJECTED")'>Pending
-                                        ({{ $applicants['rejected'] }})</option>
+                                    class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    @change="$wire.changeFilter($event.target.value)">
+                                    <option value="ALL">All ({{ $applicants['total'] }})</option>
+                                    <option value="PENDING">Pending ({{ $applicants['pending'] }})</option>
+                                    <option value="INTERESTED">Interested ({{ $applicants['interested'] }})</option>
+                                    <option value="INTERVIEW">Interview ({{ $applicants['interview'] }})</option>
+                                    <option value="HIRED">Hired ({{ $applicants['hired'] }})</option>
+                                    <option value="ACCEPTED">Accepted ({{ $applicants['accepted'] }})</option>
+                                    <option value="REJECTED">Rejected ({{ $applicants['rejected'] }})</option>
                                 </select>
                             </div>
                             <ul
@@ -441,29 +435,23 @@
                                                     </td>
                                                 @endif
                                                 <td class="px-6 py-4">
-                                                    <div class="flex flex-row gap-4 items-center"
-                                                        x-data="{ openNewTab: function(url) { window.open(url, '_blank'); } }">
+                                                    <div class="flex flex-row gap-4 items-center">
 
 
                                                         <div x-data="{ tooltip: 'View Resume' }">
-                                                            <form action="{{ route('view.resume') }}" method="POST"
-                                                                target="_blank">
-                                                                @csrf
-                                                                <input type="hidden" name="emp_id"
-                                                                    value="{{ $data->employee_id }}">
-                                                                <input type="hidden" name="resume_type"
-                                                                    value="{{ $data->applicant_Resume }}">
-                                                                <button x-tooltip="tooltip" type="submit"
-                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                    <svg class="w-5 h-5"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        fill="none" viewBox="0 0 24 24"
-                                                                        stroke-width="1.5" stroke="currentColor">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
-                                                                    </svg>
-                                                                </button>
+                                                            <button
+                                                                wire:click.prevent="viewFile({{ $data->employee_id }},{{ $data->applicant_Resume }} )"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                                                                </svg>
+                                                            </button>
                                                             </form>
                                                         </div>
 
@@ -471,25 +459,22 @@
 
 
                                                         @if ($data->peso_Status === 'RECOMMENDED')
-                                                            <div x-data="{ tooltip: 'Download Recommendation Letter' }">
-                                                                <form action="{{ route('view.recommendation') }}"
-                                                                    method="POST" target="_blank">
-                                                                    @csrf
-                                                                    <input type="hidden" name="app_id"
-                                                                        value="{{ $data->applicant_id }}">
-                                                                    <button x-tooltip="tooltip" type="submit"
-                                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <div x-data="{ tooltip: 'View Recommendation Letter' }">
+                                                                <button
+                                                                    wire:click.prevent="viewFile({{ $data->applicant_id }}, 3 )"
+                                                                    x-tooltip="tooltip" type="button"
+                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
 
-                                                                        <svg class="w-5 h-5"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            fill="none" viewBox="0 0 24 24"
-                                                                            stroke-width="1.5" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-                                                                        </svg>
+                                                                    <svg class="w-5 h-5"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                                                    </svg>
 
-                                                                    </button>
+                                                                </button>
                                                                 </form>
                                                             </div>
                                                         @endif
@@ -641,7 +626,7 @@
                                     </svg>
                                 </div>
                             </button>
-                            <h2 class="text-2xl font-bold">Applicant Information</h2>
+                            <h2 class="text-lg sm:text-2xl font-bold">Applicant Information</h2>
 
                         </div>
 
@@ -745,9 +730,9 @@
                             </div>
 
                             <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                                <div x-data="{ tooltip: 'Download Resume' }">
-                                    <button {{-- x-on:click="openNewTab('{{ asset('storage/images/requirements/tXllyVuLtDR7W0X5cF6EdkZ9H1BWD2t4odWIFBpT.pdf') }}')" --}}
-                                        wire:click.prevent='printResume({{ $applicantInfo->employee_id }}, {{ $applicantInfo->applicant_Resume }})'
+                                <div x-data="{ tooltip: 'View Resume' }">
+                                    <button
+                                        wire:click.prevent="viewFile({{ $applicantInfo->employee_id }},{{ $applicantInfo->applicant_Resume }} )"
                                         x-tooltip="tooltip" type="button"
                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -758,8 +743,9 @@
                                     </button>
                                 </div>
                                 @if ($applicantInfo->peso_Status == 'RECOMMENDED')
-                                    <div x-data="{ tooltip: 'Download Recommendation Letter' }">
-                                        <button wire:click.prevent='printRecom({{ $applicantInfo->applicant_id }})'
+                                    <div x-data="{ tooltip: 'View Recommendation Letter' }">
+
+                                        <button wire:click.prevent="viewFile({{ $applicantInfo->applicant_id }}, 3 )"
                                             x-tooltip="tooltip" type="button"
                                             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -992,14 +978,61 @@
 
 
 
+    @script
+        <script>
+            Livewire.on('viewFile', event => {
+                // Check if the event is an array and has at least one element
+                if (Array.isArray(event) && event.length > 0) {
+                    // Access the first element and then its properties
+                    const data = event[0]; // Assuming the data object is the first element
 
-    <script>
-        document.addEventListener('livewire:load', function() {
-            Livewire.on('openNewTab', url => {
-                window.open(url, '_blank');
+                    // Log the entire data object for verification
+                    console.log('Data:', data);
+
+                    // Extract URL and handle dynamic keys
+                    const url = data.url;
+
+                    // Ensure URL is present
+                    if (url) {
+                        // Create and configure the form element
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = url;
+                        form.target = '_blank';
+
+                        // Add CSRF token as a hidden input
+                        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+                        form.appendChild(csrfInput);
+
+                        // Add all data inputs dynamically
+                        Object.entries(data).forEach(([key, value]) => {
+                            if (key !== 'url') {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = key;
+                                input.value = value;
+                                form.appendChild(input);
+                            }
+                        });
+
+                        // Append form to the body and submit
+                        document.body.appendChild(form);
+                        form.submit();
+
+                        // Clean up by removing the form element
+                        document.body.removeChild(form);
+                    } else {
+                        console.error('URL not found in event data');
+                    }
+                } else {
+                    console.error('Event is not in the expected format');
+                }
             });
-        });
-    </script>
-
+        </script>
+    @endscript
 
 </div>

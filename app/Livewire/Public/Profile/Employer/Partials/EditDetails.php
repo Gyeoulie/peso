@@ -266,6 +266,8 @@ class EditDetails extends Component
         $user = Auth::user();
         $this->empID = $user->company->company_id;
 
+        
+
         $employerDetails = Company::with(['company_industry_line'])
             ->findOrFail($this->empID);
 

@@ -81,7 +81,13 @@
                     <x-slot name="content">
                         <x-dropdown-link wire:navigate :href="route('profile.edit')">
                             {{ __('Settings') }}
+
                         </x-dropdown-link>
+                        @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                            <x-dropdown-link wire:navigate :href="route('edit.details.emp')">
+                                {{ __('Company Details') }}
+                            </x-dropdown-link>
+                        @endif
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -147,7 +153,13 @@
                     {{ __('Admin Tools') }}
                 </x-responsive-nav-link>
             @endif
+            <div class="flex px-4 ">
 
+
+
+                <livewire:components.profile-search />
+
+            </div>
 
         </div>
 
@@ -160,16 +172,18 @@
             </div>
 
             <div class="mt-3 space-y-1">
+
+                @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                    <x-responsive-nav-link wire:navigate :href="route('edit.details.emp')">
+                        {{ __('Company Details') }}
+                    </x-responsive-nav-link>
+                @endif
+
                 <x-responsive-nav-link wire:navigate :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('Settings') }}
                 </x-responsive-nav-link>
-                <div class="flex px-4 ">
 
 
-
-                    <livewire:components.profile-search />
-
-                </div>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
