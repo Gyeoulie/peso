@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('requirement_Title', 255);
             $table->string('requirement_Status', 20);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -24,6 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requirements');
+        Schema::table('requirements', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('requirements');
     }
 };

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->id('skills_id');
-            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
             $table->string('skill_Type', 255);
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
         });
     }
 
@@ -27,6 +27,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('skills');
+        Schema::table('skills', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('skills');
     }
 };

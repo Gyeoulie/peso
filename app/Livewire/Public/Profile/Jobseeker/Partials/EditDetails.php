@@ -311,6 +311,9 @@ class EditDetails extends Component
             }
         } catch (\Exception $e) {
             DB::rollBack();
+            if (isset($imgPath)) {
+                Storage::disk('public')->delete($imgPath);
+            }
             toastr()->error('There was an error updating the profile.');
         }
     }
@@ -319,7 +322,6 @@ class EditDetails extends Component
     public function saveLanguage()
     {
 
-       
         $rules = [
             'selectedLanguage' => [
                 'required',

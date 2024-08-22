@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('training', function (Blueprint $table) {
             $table->id('training_id');
-            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
             $table->string('training_Name', 255);
             $table->string('training_From', 255);
             $table->string('training_Cert', 255);
@@ -21,9 +21,9 @@ return new class extends Migration
             $table->date('training_End');
             $table->tinyInteger('training_Status');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
         });
     }
 
@@ -32,6 +32,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('training');
+        Schema::table('training', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('training');
     }
 };

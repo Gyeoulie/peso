@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('barangay_Name', 255);
             $table->string('barangay_Code', 10);
             $table->timestamps();
+            $table->softDeletes();
             // Foreign key constraint
             $table->foreign('municipality_id')->references('municipality_id')->on('municipality');
         });
@@ -27,6 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('barangay');
+        Schema::table('barangay', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('barangay');
     }
 };

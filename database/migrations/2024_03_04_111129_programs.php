@@ -14,19 +14,26 @@ return new class extends Migration
         Schema::create('programs', function (Blueprint $table) {
             $table->id('program_id');
             $table->string('program_Title', 255);
-            $table->text('program_Description');
+            $table->string('program_Modality', 20);
+            $table->string('program_Type', 20);
             $table->string('program_Host', 255);
-            $table->unsignedBigInteger('industry_id');
-            $table->dateTime('program_Datetime');
-            $table->string('program_Address', 255);
-            $table->unsignedBigInteger('barangay_id');
+            $table->integer('program_Slots')->nullable();
+            $table->unsignedBigInteger('industry_id')->comment('Foreign Key');
+            $table->dateTime('program_Datetime')->nullable();
+            $table->dateTime('program_Deadline');
+            $table->text('program_Location');
+            $table->text('program_Description')->nullable();
+            $table->text('program_Qualification')->nullable();
+            $table->text('program_Remarks')->nullable();
             $table->string('program_Status', 15);
+            $table->string('program_pubmat', 255)->nullable();
+            $table->unsignedBigInteger('municipality_id')->comment('Foreign Key');
             $table->timestamps(); // Adds created_at and updated_at columns
+            $table->softDeletes();
 
-            $table->foreign('industry_id')->references('industry_id')->on('job_industry')->onDelete('cascade')
-            ->onUpdate('cascade');
-            $table->foreign('barangay_id')->references('barangay_id')->on('barangay')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('industry_id')->references('industry_id')->on('job_industry');
+            $table->foreign('municipality_id')->references('municipality_id')->on('municipality');
+
         });
     }
 
@@ -35,6 +42,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('programs');
+        Schema::table('programs', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('programs');
     }
 };

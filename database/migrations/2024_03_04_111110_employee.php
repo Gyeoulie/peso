@@ -25,19 +25,18 @@ return new class extends Migration
             $table->date('birthdate');
             $table->string('pnumber', 255);
             $table->string('address', 255);
-            $table->unsignedBigInteger('barangay')->unsigned()->comment('Foreign Key');
+            $table->unsignedBigInteger('barangay_id')->unsigned()->comment('Foreign Key');
             $table->string('tinnum', 15);
             $table->tinyInteger('empstatus');
             $table->string('empstatusdesc', 2);
             $table->string('pimg', 255);
             $table->string('resume', 255)->nullable();
             $table->text('empDesc')->nullable();
-            $table->timestamps(); // This will add created_at and updated_at columns
+            $table->timestamps();
+            $table->softDeletes(); // This will add created_at and updated_at columns
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreign('barangay')->references('barangay_id')->on('barangay')->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('barangay_id')->references('barangay_id')->on('barangay');
         });
     }
 
@@ -46,6 +45,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employee');
+        Schema::table('employee', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('employee');
     }
 };

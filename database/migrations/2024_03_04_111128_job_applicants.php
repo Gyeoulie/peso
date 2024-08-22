@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('job_applicants', function (Blueprint $table) {
             $table->id('applicant_id');
-            $table->unsignedBigInteger('employee_id');
-            $table->unsignedBigInteger('job_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
+            $table->unsignedBigInteger('job_id')->comment('Foreign Key');
             $table->tinyInteger('applicant_Resume');
             $table->string('applicant_Status', 15);
             $table->string('peso_Status', 15);
@@ -22,13 +22,12 @@ return new class extends Migration
             $table->text('peso_Remarks')->nullable();
             $table->string('peso_Letter', 255)->nullable();
             $table->tinyInteger('applicant_Notif')->default(2);
-
+            $table->timestamp('responded_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreign('job_id')->references('job_id')->on('job_posting')->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
+            $table->foreign('job_id')->references('job_id')->on('job_posting');
         });
     }
 
@@ -37,6 +36,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_applicants');
+        Schema::table('job_applicants', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('job_applicants');
     }
 };

@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('peso_Email', 255)->nullable();
             $table->unsignedBigInteger('municipality_id');
             $table->timestamps(); // Adds created_at and updated_at columns
+            $table->softDeletes();
 
-            $table->foreign('municipality_id')->references('municipality_id')->on('municipality')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('municipality_id')->references('municipality_id')->on('municipality');
         });
     }
 
@@ -32,6 +32,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('peso');
+        Schema::table('peso', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('peso');
     }
 };

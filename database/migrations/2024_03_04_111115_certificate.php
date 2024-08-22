@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('certificate', function (Blueprint $table) {
             $table->id('cert_id');
-            $table->unsignedBigInteger('employee_id');
-            $table->unsignedBigInteger('cert_Type_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
+            $table->unsignedBigInteger('cert_Type_id')->comment('Foreign Key');
             $table->string('cert_From', 255);
             $table->date('cert_Date_Issued');
             $table->string('cert_Rating', 10);
             $table->timestamps();
+            $table->softDeletes();
 
             // Foreign key constraints
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
-            $table->foreign('cert_Type_id')->references('cert_type_id')->on('certificate_type')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
+            $table->foreign('cert_Type_id')->references('cert_type_id')->on('certificate_type');
         });
     }
 
@@ -33,6 +32,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('certificate');
+        Schema::table('certificate', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('certificate');
     }
 };

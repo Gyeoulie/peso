@@ -12,10 +12,12 @@ use App\Models\Requirements;
 use App\Models\Requirements_Passed;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+#[Layout('layouts.app')]
 class JobpostApplication extends Component
 {
 
@@ -196,7 +198,7 @@ class JobpostApplication extends Component
         }
     }
 
-    #[On('tagSelect')]
+    #[On('positionSelect')]
     public function tagSelect($id)
     {
         // Check if the selected job position already exists in the $jobTags array
@@ -213,10 +215,10 @@ class JobpostApplication extends Component
                 'position_id' => $jobposition->position_id,
                 'position_Title' => $jobposition->position_Title,
             ];
-            $this->dispatch('close-modal', 'jobTag-modal');
+            $this->dispatch('close-modal', 'job-position-modal');
         } else {
             toastr()->error('Could not fetch data');
-            $this->dispatch('close-modal', 'jobTag-modal');
+            $this->dispatch('close-modal', 'job-position-modal');
         }
     }
 

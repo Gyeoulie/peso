@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Requirements extends Model
+class Program_Tags extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'requirements';
-    protected $primaryKey = 'requirement_id';
+    protected $table = 'program_tags';
+    protected $primaryKey = 'program_tags_id';
 
     protected $fillable = [
-        'requirement_Title',
-        'requirement_Status',
+        'program_id',
+        'position_id',
     ];
 
     protected $casts = [
@@ -23,8 +23,14 @@ class Requirements extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
-    public function requirements_passed()
+
+    public function programs()
     {
-        return $this->hasMany(Requirements_Passed::class, 'requirement_id');
+        return $this->belongsTo(Programs::class, 'program_id');
+    }
+
+    public function job_positions()
+    {
+        return $this->belongsTo(Job_Positions::class, 'position_id');
     }
 }

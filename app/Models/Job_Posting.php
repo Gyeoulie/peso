@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Job_Posting extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'job_posting';
     protected $primaryKey = 'job_id';
@@ -31,12 +32,16 @@ class Job_Posting extends Model
         'peso_id',
         'peso_municipality_id',
         'peso_Remarks',
+        'job_Duration',
+        'responded_at',
     ];
 
     protected $casts = [
         'job_Duration' => 'date',
+        'responded_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     public function company()

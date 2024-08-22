@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('requirements_passed', function (Blueprint $table) {
             $table->id('req_passed_id');
-            $table->unsignedBigInteger('job_id');
-            $table->unsignedBigInteger('requirement_id');
+            $table->unsignedBigInteger('job_id')->comment('Foreign Key');
+            $table->unsignedBigInteger('requirement_id')->comment('Foreign Key');
             $table->string('req_passed_Input', 255);
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('job_id')->references('job_id')->on('job_posting')->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreign('requirement_id')->references('requirement_id')->on('requirements')->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->foreign('job_id')->references('job_id')->on('job_posting');
+            $table->foreign('requirement_id')->references('requirement_id')->on('requirements');
         });
 
     }
@@ -31,6 +30,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requirements_passed');
+        Schema::table('requirements_passed', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('requirements_passed');
     }
 };

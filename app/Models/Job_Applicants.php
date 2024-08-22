@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Job_Applicants extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'job_applicants';
     protected $primaryKey = 'applicant_id';
@@ -22,11 +23,14 @@ class Job_Applicants extends Model
         'peso_Remarks',
         'peso_Letter',
         'applicant_Notif',
+        'responded_at',
     ];
 
     protected $casts = [
+        'responded_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     public function employee()

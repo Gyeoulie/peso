@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('eligibility_Name', 255);
             $table->string('eligibility_Code', 10);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -24,6 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('eligibility_type');
+        Schema::table('eligibility_type', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('eligibility_type');
     }
 };

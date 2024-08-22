@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('province_Name', 255);
             $table->string('province_Code', 10);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -24,6 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('province');
+        Schema::table('province', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('province');
     }
 };

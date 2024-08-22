@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id('license_type_id');
             $table->string('license_Name', 255);
             $table->string('license_Code', 10);
-            $table->timestamps(); // Adds created_at and updated_at columns
+            $table->timestamps();
+            $table->softDeletes(); // Adds created_at and updated_at columns
         });
     }
 
@@ -24,6 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('license_type');
+        Schema::table('license_type', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('license_type');
     }
 };

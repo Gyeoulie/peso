@@ -265,7 +265,7 @@
                             </x-input-label>
 
                             <x-primary-button class="ml-auto mr-3" type="button" x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')">
+                                x-on:click.prevent="$dispatch('open-modal', 'job-position-modal')">
                                 Add Job Tag
                             </x-primary-button>
 
@@ -308,39 +308,55 @@
 
                 <div class="flex flex-col sm:flex-row w-full space-y-5 sm:sm:space-y-0 sm:space-x-5 mt-4">
 
-                    <div wire:ignore class="flex flex-col w-1/2 ">
+                    <div class="flex flex-col w-1/2 ">
                         <x-input-label for="descPost"> <i class="fa-solid fa-briefcase"></i> Job Description
                         </x-input-label>
-                        <textarea wire:model='descPost' id="descText"></textarea>
+                        <div wire:ignore>
+                            <textarea wire:model='descPost' id="descText"></textarea>
+                        </div>
+
                         {{-- <textarea wire:model='descPost' rows="8"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Write your thoughts here..."></textarea>
                         <x-input-error :messages="$errors->get('descPost')" class="mt-2" /> --}}
-                        <x-input-error :messages="$errors->get('descPost')" class="mt-2" />
+                        @if ($errors->has('descPost'))
+                            <x-input-error :messages="$errors->get('descPost')" class="mt-2" />
+                        @endif
+
                     </div>
 
-                    <div wire:ignore class="flex flex-col w-1/2 ">
+
+                    <div class="flex flex-col w-1/2 ">
                         <x-input-label for="qualPost"> <i class="fa-solid fa-briefcase"></i> Job Qualification
                         </x-input-label>
-                        <textarea wire:model='qualPost' id="qualText"></textarea>
+                        <div wire:ignore>
+                            <textarea wire:model='qualPost' id="qualText"></textarea>
+                        </div>
                         {{-- <textarea wire:model='qualPost' rows="8"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Write your thoughts here..."></textarea>
                         <x-input-error :messages="$errors->get('qualPost')" class="mt-2" /> --}}
-                        <x-input-error :messages="$errors->get('qualPost')" class="mt-2" />
+                        @if ($errors->has('qualPost'))
+                            <x-input-error :messages="$errors->get('qualPost')" class="mt-2" />
+                        @endif
                     </div>
 
                 </div>
 
-                <div wire:ignore class="flex flex-col w-full mt-4">
+                <div class="flex flex-col w-full mt-4">
                     <x-input-label for="remPost"> <i class="fa-solid fa-briefcase"></i> Remarks
                     </x-input-label>
-                    <textarea wire:model='remPost' id="remText"></textarea>
+                    <div wire:ignore>
+                        <textarea wire:model='remPost' id="remText"></textarea>
+                    </div>
                     {{-- <textarea wire:model='remPost' rows="4"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Write your thoughts here..."></textarea>
                     <x-input-error :messages="$errors->get('remPost')" class="mt-2" /> --}}
-                    <x-input-error :messages="$errors->get('remPost')" class="mt-2" />
+                    @if ($errors->has('remPost'))
+                        <x-input-error :messages="$errors->get('remPost')" class="mt-2" />
+                    @endif
+
                 </div>
 
                 <div class="flex flex-row justify-end mt-4 mb-4 ">
@@ -473,6 +489,11 @@
         </div>
 
     </div>
+
+    <livewire:modals.job-position-modal />
+    <livewire:modals.industry-modal />
+    <livewire:modals.barangay-modal />
+
 
     {{-- @scipt --}}
     <script>

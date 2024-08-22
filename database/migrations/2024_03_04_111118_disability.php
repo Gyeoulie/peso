@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('disability', function (Blueprint $table) {
             $table->id('disability_id');
-            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
             $table->string('disability_Type', 256);
             $table->timestamps();
+            $table->softDeletes();
 
             // Define foreign key constraint
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
         });
     }
 
@@ -28,6 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('disability');
+        Schema::table('disability', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('disability');
     }
 };

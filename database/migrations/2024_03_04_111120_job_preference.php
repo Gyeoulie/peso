@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('job_preference', function (Blueprint $table) {
             $table->id('job_preference_id');
-            $table->unsignedBigInteger('employee_id');
-            $table->unsignedBigInteger('position_id');
+            $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
+            $table->unsignedBigInteger('position_id')->comment('Foreign Key');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('employee_id')->references('employee_id')->on('employee')->onDelete('cascade')
-            ->onUpdate('cascade');
-            $table->foreign('position_id')->references('position_id')->on('job_positions')->onDelete('cascade')
-            ->onUpdate('cascade');
+            $table->foreign('employee_id')->references('employee_id')->on('employee');
+            $table->foreign('position_id')->references('position_id')->on('job_positions');
         });
     }
 
@@ -29,6 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_preference');
+        Schema::table('job_preference', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('job_preference');
     }
 };

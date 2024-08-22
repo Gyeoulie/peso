@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('position_Title', 255);
             $table->string('position_Code', 10);
             $table->timestamps();
+            $table->softDeletes();
         });
 
-        
     }
 
     /**
@@ -26,6 +26,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_positions');
+        Schema::table('job_positions', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('job_positions');
     }
 };

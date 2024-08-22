@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('municipality_Name', 255);
             $table->string('municipality_Code', 10);
             $table->timestamps(); // Adds created_at and updated_at columns
+            $table->softDeletes();
 
             $table->foreign('province_id')->references('province_id')->on('province');
         });
@@ -27,6 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('municipality');
+        Schema::table('municipality', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        // Schema::dropIfExists('municipality');
     }
 };
