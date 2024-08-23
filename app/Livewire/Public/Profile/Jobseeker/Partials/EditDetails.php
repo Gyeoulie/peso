@@ -256,7 +256,6 @@ class EditDetails extends Component
             'birthdate.required' => 'Birthdate is required.',
             'birthdate.date' => 'Birthdate must be a valid date.',
             'birthdate.before_or_equal' => 'You must be at least 18 years old.',
-            'birthdate.before_or_equal' => 'Birthdate cannot be a future date.',
             'gender.required' => 'Gender is required.',
             'civilstatus.required' => 'Civil status is required.',
             'religion.required' => 'Religion is required.',

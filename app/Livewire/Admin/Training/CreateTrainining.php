@@ -144,7 +144,7 @@ class CreateTrainining extends Component
             // Combine progDate and progTime into a single datetime
             if ($this->progDate && $this->progTime) {
                 $programDatetime = Carbon::createFromFormat('Y-m-d H:i', $this->progDate . ' ' . $this->progTime);
-                $data['program_datetime'] = $programDatetime;
+                $data['program_Datetime'] = $programDatetime;
             }
         }
 
