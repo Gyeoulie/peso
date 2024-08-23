@@ -2,7 +2,7 @@
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
         <div class="col-span-4 sm:col-span-12">
-            <h1 class="text-2xl font-bold">Trainings / Training List</h1>
+            <h1 class="text-2xl font-bold">Trainings / Training List / Training Details</h1>
         </div>
 
 
@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4">
                 <div class="flex flex-row justify-center items-center h-full p-5 flex-shrink-0">
                     <img src="{{ asset('storage/' . $programInfo->program_pubmat) }}" alt="Default I mage"
-                        class="w-[450px] h-[450px] bg-gray-300 rounded object-contain">
+                        class="w-[260px] h-[200px] sm:w-[600px] sm:h-[450px] bg-gray-300 rounded object-fill">
                 </div>
 
 
@@ -115,7 +115,7 @@
                         </div>
                         <div class="flex flex-col w-full h-full">
                             <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
-                                <div class="flex flex-row gap-2 sm:gap-4 w-full">
+                                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
                                     <div class="flex flex-col w-full">
                                         <x-input-label for="progTitle" :value="__('Date Posted')" />
                                         <x-text-input value="{{ $programInfo->created_at->format('F j, Y') }}"
@@ -128,7 +128,7 @@
                                     </div>
                                 </div>
                                 @if ($programInfo->program_Datetime)
-                                    <div class="flex flex-row gap-2 sm:gap-4 w-full">
+                                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
                                         <div class="flex flex-col w-full">
                                             <x-input-label for="progTitle" :value="__('Program Date')" />
                                             <x-text-input
@@ -173,7 +173,7 @@
                                     <x-text-input value="{{ $programInfo->program_Location }}"
                                         class="block mt-1 w-full" type="text" disabled />
                                 </div>
-                                <div class="flex flex-col w-1/3">
+                                <div class="flex flex-col w-full sm:w-1/3">
                                     <x-input-label for="progTitle" :value="__('Industry Tag')" />
                                     <x-text-input value="{{ $programInfo->job_industry->industry_Title }}"
                                         class="block mt-1 w-full" type="text" disabled />

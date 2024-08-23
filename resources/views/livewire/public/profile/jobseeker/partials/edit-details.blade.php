@@ -310,13 +310,14 @@
                             <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
 
 
-                                @foreach ($disability as $dis)
-                                    <span wire:key="{{ $dis->disability_id }}"
-                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                        {{ $dis->disability_Type }}
-                                        <button wire:click.prevent="removeDisability({{ $dis->disability_id }})"
+                                @foreach ($displayDisabilities as $dis)
+                                    <span wire:key="{{ $dis['disability_id'] ?? md5($dis['disability_Type']) }}"
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {{ $dis['disability_Type'] }}
+                                        <button
+                                            wire:click.prevent="removeDisability('{{ $dis['disability_id'] ?? $dis['disability_Type'] }}')"
                                             type="button"
-                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
                                             <span class="sr-only">Remove badge</span>
                                             <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -328,6 +329,9 @@
                                         </button>
                                     </span>
                                 @endforeach
+
+
+
 
 
                             </div>
@@ -397,7 +401,7 @@
                                 <x-primary-button wire:click.prevent="openModal('language')" type="button"
                                     class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900">
                                     Add Language</x-primary-button>
-                            </div>  
+                            </div>
 
                         </div>
 
@@ -900,7 +904,7 @@
 
 
     <x-modal name="license-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('License Record') }}
             </h2>
@@ -972,7 +976,7 @@
 
 
     <x-modal name="eligibility-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Eligibility Record') }}
             </h2>
@@ -1049,7 +1053,7 @@
 
 
     <x-modal name="disability-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Add Disaibility Record') }}
             </h2>
@@ -1090,7 +1094,7 @@
 
 
     <x-modal name="language-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Add Language/Dialect Record') }}
             </h2>

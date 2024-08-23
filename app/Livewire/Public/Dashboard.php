@@ -7,6 +7,7 @@ use App\Models\Education;
 use App\Models\Industry_preference;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
+use App\Models\Programs;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -253,6 +254,8 @@ class Dashboard extends Component
 
         $joblist = $joblist->paginate($this->pagination);
 
-        return view('livewire.public.dashboard', compact('joblist'));
+        $programList = Programs::orderBy('created_at', 'desc')->take(4)->get();
+
+        return view('livewire.public.dashboard', compact('joblist', 'programList'));
     }
 }

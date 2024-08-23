@@ -1,89 +1,30 @@
 <div class="w-full">
-    {{-- <div class="overflow-x-auto">
-    <div class="flex flex-row sm:grid sm:grid-cols-5 gap-2 py-8 mx-4 sm:mx-12 ">
+    <div class="overflow-x-auto">
+        <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
 
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
+            @foreach ($programList as $data)
+                <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
+                    class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                    <img class="w-full sm:w-60 object-cover h-48 sm:h-auto"
+                        src="{{ asset('storage/' . $data->program_pubmat) }}" alt="prog-{{ $data->program_id }}">
+                    <div class="flex flex-col justify-between  p-4 sm:p-6">
+                        <h5 class="mb-2  text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
+                            {{ $data->program_Title }}
+                        </h5>
+                        <p class="mb-4 text-sm font-normal text-gray-700 leading-relaxed">
 
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
+                            {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 90, '...') !!}
 
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
+                        </p>
+                    </div>
+                </a>
+            @endforeach
 
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
-
-
+        </div>
     </div>
 
 
-</div> --}}
-
-
-    <div wire:poll class="flex mx-auto sm:mx-12 py-8 ">
+    <div wire:poll class="flex mx-auto sm:mx-12 py-2 ">
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0 w-full">
 
             {{-- MAIN BAR FOR JOB POST --}}

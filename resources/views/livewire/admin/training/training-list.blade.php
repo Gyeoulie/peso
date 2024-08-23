@@ -218,7 +218,7 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{ $data->program_reg }}
+                                                {{ $data->program_reg_count }}
                                             </td>
                                             <td class="px-6 py-4 text-center">
                                                 <div class="text-base font-semibold">
@@ -268,9 +268,10 @@
                                                         </a>
                                                     </div>
 
-                                                    <div x-data="{ tooltip: 'View Event Tool' }">
-                                                        <a wire:navigate {{-- href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}" --}} x-tooltip="tooltip"
-                                                            type="button"
+                                                    <div x-data="{ tooltip: 'View Registrants' }">
+                                                        <a wire:navigate
+                                                            href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
+                                                            x-tooltip="tooltip" type="button"
                                                             class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                             <svg class="w-5 h-5 " aria-hidden="true"
                                                                 xmlns="http://www.w3.org/2000/svg" width="24"

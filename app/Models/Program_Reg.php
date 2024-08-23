@@ -17,9 +17,11 @@ class Program_Reg extends Model
         'employee_id',
         'program_id',
         'program_reg_Status',
+        'responded_at',
     ];
 
     protected $casts = [
+        'responded_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',

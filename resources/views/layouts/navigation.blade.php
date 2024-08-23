@@ -12,190 +12,237 @@
 
 
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    @if (auth()->user()->usertype == 4)
-                        <x-nav-link wire:navigate :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
-                            {{ __('Profile') }}
+                @if (Auth::check())
+                    <!-- Navigation Links -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
                         </x-nav-link>
-                    @endif
-                    @if (auth()->user()->usertype == 5)
-                        <x-nav-link wire:navigate :href="route('employer.profile', ['id' => auth()->user()->company->company_id])" :active="request()->routeIs('employer.profile')">
-                            {{ __('Profile') }}
-                        </x-nav-link>
-                    @endif
-                    @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                        <x-nav-link wire:navigate :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
-                            {{ __('Job Postings') }}
-                        </x-nav-link>
-                    @endif
-                    @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                        <x-nav-link wire:navigate :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
-                            {{ __('Job Applicants') }}
-                        </x-nav-link>
-                    @endif
-                    @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
-                        <x-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
-                            {{ __('My Applications') }}
-                            <livewire:components.applications-notif />
-                        </x-nav-link>
-                    @endif
-                    @if (auth()->user()->usertype >= 8)
-                        <x-nav-link wire:navigate :href="route('admin')" :active="Route::is('admin*')">
-                            {{ __('Admin Tools') }}
-                        </x-nav-link>
-                    @endif
-                </div>
-            </div>
-
-            <div class="hidden sm:flex mr-1 ml-auto w-96">
-
-
-                <livewire:components.profile-search />
-
-
-            </div>
-
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link wire:navigate :href="route('profile.edit')">
-                            {{ __('Settings') }}
-
-                        </x-dropdown-link>
-                        @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                            <x-dropdown-link wire:navigate :href="route('edit.details.emp')">
-                                {{ __('Company Details') }}
-                            </x-dropdown-link>
+                        @if (auth()->user()->usertype == 4)
+                            <x-nav-link wire:navigate :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
+                                {{ __('Profile') }}
+                            </x-nav-link>
                         @endif
+                        @if (auth()->user()->usertype == 5)
+                            <x-nav-link wire:navigate :href="route('employer.profile', ['id' => auth()->user()->company->company_id])" :active="request()->routeIs('employer.profile')">
+                                {{ __('Profile') }}
+                            </x-nav-link>
+                        @endif
+                        @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                            <x-nav-link wire:navigate :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
+                                {{ __('Job Postings') }}
+                            </x-nav-link>
+                        @endif
+                        @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                            <x-nav-link wire:navigate :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
+                                {{ __('Job Applicants') }}
+                            </x-nav-link>
+                        @endif
+                        @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
+                            <x-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
+                                {{ __('My Applications') }}
+                                <livewire:components.applications-notif />
+                            </x-nav-link>
+                        @endif
+                        @if (auth()->user()->usertype >= 8)
+                            <x-nav-link wire:navigate :href="route('admin')" :active="Route::is('admin*')">
+                                {{ __('Admin Tools') }}
+                            </x-nav-link>
+                        @endif
+                    </div>
+                @else
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+            </div>
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+            @if (Auth::check())
+                <div class="hidden sm:flex mr-1 ml-auto w-96">
 
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
+
+                    <livewire:components.profile-search />
+
+
+                </div>
+
+                <!-- Settings Dropdown -->
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ Auth::user()->name }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link wire:navigate :href="route('profile.edit')">
+                                {{ __('Settings') }}
+
                             </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
+                            @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                                <x-dropdown-link wire:navigate :href="route('edit.details.emp')">
+                                    {{ __('Company Details') }}
+                                </x-dropdown-link>
+                            @endif
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+
+                <!-- Hamburger -->
+                <div class="-me-2 flex items-center sm:hidden">
+                    <button @click="open = ! open"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            @else
+                <!-- Settings Dropdown -->
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div></div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link wire:navigate :href="route('login')">
+                                {{ __('Login') }}
+
+                            </x-dropdown-link>
+                            <x-dropdown-link wire:navigate :href="route('register')">
+                                {{ __('Register') }}
+
+                            </x-dropdown-link>
+
+
+                            <!-- Authentication -->
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+            @endif
         </div>
     </div>
-
-    <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden relative">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            @if (auth()->user()->usertype == 4)
-                <x-responsive-nav-link wire:navigate :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
-                    {{ __('Profile') }}
+    @if (Auth::check())
+        <!-- Responsive Navigation Menu -->
+        <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden relative">
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
                 </x-responsive-nav-link>
-            @endif
-            @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                <x-responsive-nav-link wire:navigate :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
-                    {{ __('Job Postings') }}
-                </x-responsive-nav-link>
-            @endif
-            @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                <x-responsive-nav-link wire:navigate :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
-                    {{ __('Job Applicants') }}
-
-                </x-responsive-nav-link>
-            @endif
-            @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
-                <x-responsive-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
-                    {{ __('My Applications') }}
-                    <span
-                        class="inline-flex relative bg-red-500 p-0.5 leading-none w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full"></span>
-                </x-responsive-nav-link>
-            @endif
-            @if (auth()->user()->usertype >= 8)
-                <x-responsive-nav-link wire:navigate :href="route('admin')" :active="request()->routeIs('admin')">
-                    {{ __('Admin Tools') }}
-                </x-responsive-nav-link>
-            @endif
-            <div class="flex px-4 ">
-
-
-
-                <livewire:components.profile-search />
-
-            </div>
-
-        </div>
-
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-
-                @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
-                    <x-responsive-nav-link wire:navigate :href="route('edit.details.emp')">
-                        {{ __('Company Details') }}
+                @if (auth()->user()->usertype == 4)
+                    <x-responsive-nav-link wire:navigate :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
+                        {{ __('Profile') }}
                     </x-responsive-nav-link>
                 @endif
-
-                <x-responsive-nav-link wire:navigate :href="route('profile.edit')">
-                    {{ __('Settings') }}
-                </x-responsive-nav-link>
-
-
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                    <x-responsive-nav-link wire:navigate :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
+                        {{ __('Job Postings') }}
                     </x-responsive-nav-link>
-                </form>
+                @endif
+                @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                    <x-responsive-nav-link wire:navigate :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
+                        {{ __('Job Applicants') }}
+
+                    </x-responsive-nav-link>
+                @endif
+                @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
+                    <x-responsive-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
+                        {{ __('My Applications') }}
+                        <span
+                            class="inline-flex relative bg-red-500 p-0.5 leading-none w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full"></span>
+                    </x-responsive-nav-link>
+                @endif
+                @if (auth()->user()->usertype >= 8)
+                    <x-responsive-nav-link wire:navigate :href="route('admin')" :active="request()->routeIs('admin')">
+                        {{ __('Admin Tools') }}
+                    </x-responsive-nav-link>
+                @endif
+                <div class="flex px-4 ">
+
+
+
+                    <livewire:components.profile-search />
+
+                </div>
+
+            </div>
+
+
+            <!-- Responsive Settings Options -->
+            <div class="pt-4 pb-1 border-t border-gray-200">
+                <div class="px-4">
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
+
+                <div class="mt-3 space-y-1">
+
+                    @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                        <x-responsive-nav-link wire:navigate :href="route('edit.details.emp')">
+                            {{ __('Company Details') }}
+                        </x-responsive-nav-link>
+                    @endif
+
+                    <x-responsive-nav-link wire:navigate :href="route('profile.edit')">
+                        {{ __('Settings') }}
+                    </x-responsive-nav-link>
+
+
+
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 </nav>

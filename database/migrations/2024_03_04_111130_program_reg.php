@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
             $table->unsignedBigInteger('program_id')->comment('Foreign Key');
             $table->string('program_reg_Status', 15);
+            $table->datetime('responded_at')->nullable();
             $table->timestamps(); // Adds created_at and updated_at columns
             $table->softDeletes();
 
