@@ -84,8 +84,8 @@
 
                     {{-- BUTTON --}}
                     <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                        <a href="#" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
-                            NSRP</a>
+                        {{-- <a href="#" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
+                        </a> --}}
                         <a href="#" class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
                             Resume</a>
                     </div>
@@ -333,10 +333,10 @@
                                     </div>
 
                                     {{-- SEARCH --}}
-                                    <input wire:model.live.prevent='searchJobs' type="text"
+                                    <input wire:model.live.prevent='searchEvents' type="text"
                                         id="table-search-users"
                                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="Search for Applications">
+                                        placeholder="Search for Events">
                                 </div>
                             </div>
 
@@ -345,19 +345,13 @@
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
-                                            Job Position
+                                            Training Name
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Company
+                                            Registered Date
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Application Status
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            PESO Recommendation
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Date
+                                            Status
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Action
@@ -365,14 +359,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($application_history as $data)
+                                    @foreach ($programHistory as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
 
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
-                                                        {{ $data->job_posting->job_Title }}
+                                                        {{ $data->programs->program_Title }}
                                                     </div>
 
                                                 </div>
@@ -380,53 +374,26 @@
                                             </th>
                                             <td class="px-6 py-4">
                                                 <div class="text-base font-semibold">
-                                                    {{ $data->job_posting->company->business_Name }}</div>
+                                                    {{ $data->created_at->format('F m, Y') }}</div>
                                             </td>
 
                                             <td class="px-6 py-4">
-                                                @if ($data->applicant_Status == 'PENDING')
+                                                @if ($data->program_reg_Status == 'REGISTERED')
                                                     <span
-                                                        class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                                                @elseif ($data->applicant_Status == 'INTERESTED')
+                                                        class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
+                                                @elseif ($data->program_reg_Status == 'COMPLETED')
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-sm font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">INTERESTED</span>
-                                                @elseif ($data->applicant_Status == 'INTERVIEW')
+                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
+                                                @elseif ($data->program_reg_Status == 'REJECTED')
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
-                                                @elseif ($data->applicant_Status == 'HIRED')
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
-                                                @elseif ($data->applicant_Status == 'ACCEPTED')
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-sm font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">ACCEPTED</span>
-                                                @elseif ($data->applicant_Status == 'REJECTED' || $data->applicant_Status == 'CANCELLED')
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->applicant_Status }}</span>
+                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
                                                 @endif
-
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                @if ($data->peso_Status == 'PENDING')
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                                                @elseif ($data->peso_Status == 'RECOMMENDED')
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
-                                                @elseif ($data->peso_Status == 'NOT')
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">NOT
-                                                        RECOMMENDED</span>
-                                                @endif
-
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="text-base">{{ $data->created_at->format('F m, Y') }}</div>
                                             </td>
                                             <td class="px-6 py-4 text-center">
                                                 <div class="flex flex-row  gap-5">
                                                     <div x-data="{ tooltip: 'Application Overview' }">
                                                         <a wire:navigate
-                                                            href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
+                                                            href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
                                                             x-tooltip="tooltip" type="button"
                                                             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -445,8 +412,9 @@
                                 </tbody>
                             </table>
                         </div>
-
-                        {{-- PAGINATION --}}
+                        <div class="mt-4">
+                            {{ $programHistory->links('vendor.livewire.tailwind') }}
+                        </div>
                     </div>
 
                     <div class="flex flex-col" x-show="openTab === 3"
@@ -470,7 +438,8 @@
                                     </div>
 
                                     {{-- SEARCH --}}
-                                    <input wire:model.live.prevent='searchJobs' type="text" id="table-search-users"
+                                    <input wire:model.live.prevent='searchJobs' type="text"
+                                        id="table-search-users"
                                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Search for Jobs">
                                 </div>
@@ -528,7 +497,7 @@
                                                 <td class="px-6 py-4 text-center">
                                                     <div class="flex flex-row  gap-5">
 
-                                                        <div x-data="{ tooltip: 'View Job Postin' }">
+                                                        <div x-data="{ tooltip: 'View Job Posting' }">
                                                             <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
                                                                 x-tooltip="tooltip" type="button"
                                                                 class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">

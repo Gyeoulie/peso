@@ -204,17 +204,26 @@
 
                         @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
                             @if ($isApplied == false)
-                                <div class="flex flex-row w-full items-center justify-center mt-2">
-                                    <h1>Applicantion ends: <span
-                                            class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
-                                    </h1>
-                                </div>
-                                <div class="flex flex-row items-center justify-center mt-2">
-                                    <x-primary-button class="w-[350px] h-[40px] justify-center" x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'apply-modal')">
-                                        Apply
-                                    </x-primary-button>
-                                </div>
+                                @if ($JobPost->job_Duration && \Carbon\Carbon::parse($JobPost->job_Duration)->isFuture())
+                                    <div class="flex flex-row w-full items-center justify-center mt-2">
+                                        <h1>Applicantion ends: <span
+                                                class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
+                                        </h1>
+                                    </div>
+                                    <div class="flex flex-row items-center justify-center mt-2">
+                                        <x-blue-button class="w-[350px] h-[40px] justify-center" x-data=""
+                                            x-on:click.prevent="$dispatch('open-modal', 'apply-modal')">
+                                            Apply
+                                        </x-blue-button>
+
+                                    </div>
+                                @else
+                                    <div class="flex flex-row w-full items-center justify-center mt-2">
+                                        <h1>Applicantion ended: <span
+                                                class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
+                                        </h1>
+                                    </div>
+                                @endif
                             @else
                                 <div class="flex flex-row w-full items-center justify-center mt-2">
                                     <h1 class="text-xl font-semibold text-blue-500">You have already applied for this

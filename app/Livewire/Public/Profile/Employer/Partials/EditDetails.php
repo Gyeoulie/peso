@@ -6,6 +6,8 @@ use App\Models\Barangay;
 use App\Models\Company;
 use App\Models\Company_Industry_Line;
 use App\Models\Job_Industry;
+use App\Models\Requirements;
+use App\Models\Requirements_Passed;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -22,6 +24,8 @@ class EditDetails extends Component
     use WithFileUploads;
 
     public $empID;
+
+    public $req = [];
 
     // COMPANY INFORMATION
     #[Validate]
@@ -41,6 +45,16 @@ class EditDetails extends Component
             // BASIC INFORMATION
             'companyImage' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ];
+    }
+
+    public function viewFile($id)
+    {
+        // dd($id);
+        $this->dispatch('viewFile', [
+            'url' => route('view.requirement'),
+            'req_passed_id' => $id,
+        ]);
+
     }
 
     public function saveCompany()
@@ -224,6 +238,74 @@ class EditDetails extends Component
         }
     }
 
+    public function saveReq()
+    {
+
+        $rules = [
+            'req.*' => 'nullable|file|mimes:pdf|max:5120', // Max size 5MB, PDF only
+        ];
+
+        $messages = [
+            'req.*.mimes' => 'Uploaded file must be a PDF.',
+            'req.*.max' => 'Uploaded file must be under 5MB.',
+        ];
+
+        $this->validate($rules, $messages);
+
+        if ($this->req) {
+
+            // Begin a database transaction
+            DB::beginTransaction();
+
+            // Array to keep track of paths of successfully uploaded files
+            $uploadedPaths = [];
+
+            try {
+                foreach ($this->req as $requirementId => $file) {
+                    if ($file && $file->isValid()) { // Check if file is valid
+                        // Retrieve the old record
+                        $oldRequirement = Requirements_Passed::where('company_id', $this->empID)
+                            ->where('requirement_id', $requirementId)
+                            ->first();
+
+                        // Store the new file
+                        $path = $file->store('requirements', 'public');
+                        $uploadedPaths[$requirementId] = $path;
+
+                        // Update or create the requirement record
+                        Requirements_Passed::updateOrCreate(
+                            ['company_id' => $this->empID, 'requirement_id' => $requirementId],
+                            ['req_passed_Input' => $path]
+                        );
+
+                        // Delete old file if a new file is uploaded
+                        if ($oldRequirement && $oldRequirement->req_passed_Input) {
+                            Storage::disk('public')->delete($oldRequirement->req_passed_Input);
+                        }
+                    }
+                }
+
+                // Commit the transaction
+                DB::commit();
+
+                toastr()->success('Requirements have been updated!');
+            } catch (\Exception $e) {
+                // Rollback the transaction if something goes wrong
+                DB::rollBack();
+
+                // Delete all successfully uploaded files if an error occurs
+                foreach ($uploadedPaths as $path) {
+                    Storage::disk('public')->delete($path);
+                }
+
+                toastr()->error('An error occurred while updating requirements.');
+            }
+        } else {
+            toastr()->info('No changes detected.');
+
+        }
+    }
+
     public function mountData()
     {
 
@@ -260,17 +342,40 @@ class EditDetails extends Component
         $this->resetValidation();
     }
 
+    public function mount()
+    {
+        $user = Auth::user();
+        $this->empID = $user->company->company_id;
+    }
+
     public function render()
     {
 
-        $user = Auth::user();
-        $this->empID = $user->company->company_id;
+        // $requirements = ModelsRequirements::leftJoin('requirements_passed', function ($join) {
+        //     $join->on('requirements.requirement_id', '=', 'requirements_passed.requirement_id')
+        //         ->where('requirements_passed.company_id', $this->empID);
+        // })
+        //     ->where('requirements.requirement_Status', 1)
+        //     ->select(
+        //         'requirements.*', // Select all columns from the requirements table
+        //         'requirements_passed.created_at as passed_at', // Alias for created_at from requirements_passed
+        //         'requirements_passed.req_passed_id as requirement_passed_id', // Alias for req_passed_id from requirements_passed
+        //         'requirements_passed.updated_at as req_updated_at' // Alias for updated_at from requirements_passed
+        //     )
+        //     ->get();
 
-        
+        // Fetch Requirements with related RequirementPassed data
+        $requirements = Requirements::with([
+            'requirementPassed' => function ($query) {
+                $query->where('company_id', $this->empID); // Use `where` for filtering
+            },
+        ])
+            ->where('requirement_Status', 1)
+            ->get();
 
         $employerDetails = Company::with(['company_industry_line'])
             ->findOrFail($this->empID);
 
-        return view('livewire.public.profile.employer.partials.edit-details', compact('employerDetails'));
+        return view('livewire.public.profile.employer.partials.edit-details', compact('employerDetails', 'requirements', ));
     }
 }

@@ -60,6 +60,9 @@ class EditDetails extends Component
     // DISABILITIES
     public $originalDisabilities = [], $disabilitiesToAdd = [], $disabilitiesToRemove = [], $displayDisabilities = [], $disabilitiesToRestore = [];
 
+    // RESUME
+    public $newResume;
+
     //RULES
     public function rules()
     {
@@ -67,6 +70,66 @@ class EditDetails extends Component
             // BASIC INFORMATION
             'pimg' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ];
+    }
+
+    public function viewFile($id, $fileToView)
+    {
+        $this->dispatch('viewFile', [
+            'url' => route('view.resume'),
+            'emp_id' => $id,
+            'resume_type' => $fileToView,
+        ]);
+
+    }
+
+    public function saveResume()
+    {
+        $this->validate([
+            'newResume' => ['required', 'file', 'mimes:pdf', 'max:5120'], // 'max' is in kilobytes (5MB = 5120KB)
+        ], [
+            'newResume.required' => 'The resume file is required.',
+            'newResume.file' => 'The resume must be a file.',
+            'newResume.mimes' => 'The resume must be a PDF file.',
+            'newResume.max' => 'The resume may not be greater than 5MB in size.',
+        ]);
+
+        // Start a transaction
+        DB::beginTransaction();
+
+        try {
+            // Upload the new resume
+            $resumePath = $this->newResume->store('resumes', 'public');
+
+            // Retrieve the current employee's record
+            $employee = Employee::findOrFail($this->empID);
+
+            // Delete the old resume if it exists
+            if ($employee->resume) {
+                Storage::disk('public')->delete($employee->resume);
+            }
+
+            // Update the employee's record with the new resume path
+            $employee->update([
+                'resume' => $resumePath,
+            ]);
+
+            // Commit the transaction
+            DB::commit();
+
+            toastr()->success('Resume uploaded and updated successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction if something goes wrong
+            DB::rollBack();
+
+            // Delete the newly uploaded resume file
+            if (isset($resumePath)) {
+                Storage::disk('public')->delete($resumePath);
+            }
+
+            toastr()->error('There was an error in uploading the resume!');
+        }
+
+        $this->reset('newResume');
     }
 
     //MODAL

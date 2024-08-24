@@ -134,7 +134,7 @@ class CreateTrainining extends Component
             'program_Location' => $this->progLoc,
             'program_Description' => $this->descPost,
             'program_Qualification' => $this->qualPost,
-            'program_Remarks' => $this->remPost,
+            '   ' => $this->remPost,
             'program_Status' => 'ACTIVE',
             'industry_id' => $this->jobIndustryHidden,
             'municipality_id' => $municipality_id,

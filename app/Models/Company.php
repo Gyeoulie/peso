@@ -60,4 +60,9 @@ class Company extends Model
         return $this->hasMany(Company_Industry_Line::class, 'company_id');
     }
 
+    public function requirements_passed()
+    {
+        return $this->hasMany(Requirements_Passed::class, 'company_id');
+    }
+
 }

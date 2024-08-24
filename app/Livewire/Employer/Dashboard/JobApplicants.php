@@ -230,7 +230,6 @@ class JobApplicants extends Component
         if ($this->selectedApplicant) {
             $applicantInfo = Job_Applicants::find($this->selectedApplicant);
 
-            // dd($applicantInfo);
         }
 
         return view('livewire.employer.dashboard.job-applicants', compact('jobs', 'applicants', 'applicantInfo'));

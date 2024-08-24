@@ -24,10 +24,23 @@ class TrainingRegistrants extends Component
 
     public $selectedJobseeker;
 
+    public $sortDate, $filter = 'All';
+
     public function getJobseeker($id)
     {
         $this->selectedJobseeker = $id;
-        // $this->reset('sortDate');
+        $this->reset('sortDate');
+    }
+
+    public function changeFilter($filter)
+    {
+        $this->filter = $filter;
+        $this->reset('sortDate');
+    }
+    public function updateSort($sort)
+    {
+        $this->sortDate = $sort;
+
     }
 
     public function confirmReg($action, $id)
@@ -73,6 +86,22 @@ class TrainingRegistrants extends Component
                     ->orWhere('lname', 'like', '%' . $this->search . '%');
             });
 
+        if ($this->filter != 'All') {
+            if ($this->filter == 'Others') {
+                $query->whereNotIn('program_reg_Status', ['REGISTERED', 'COMPLETED']);
+
+            } else {
+                $query->where('program_reg_Status', $this->filter);
+
+            }
+
+        }
+
+     
+
+        if ($this->sortDate !== null && $this->sortDate !== '') {
+            $query->orderBy('created_at', $this->sortDate);
+        }
         // Paginate the results
         $programRegistrants = $query->paginate(10);
 

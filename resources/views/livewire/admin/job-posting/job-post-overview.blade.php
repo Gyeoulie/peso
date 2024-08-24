@@ -3,12 +3,6 @@
 
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
-            <div class="col-span-4 sm:col-span-12">
-                {{-- TITLE --}}
-                <h1 class="text-2xl font-bold">Job Posting / Job Posting Overview</h1>
-
-            </div>
-
 
             {{-- FIRST CONTAINER --}}
             <div class="col-span-4 sm:col-span-12">
@@ -168,8 +162,8 @@
                         </div>
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg
-                                    class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg class="w-5 h-5"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
                                     <path fill-rule="evenodd"
@@ -296,7 +290,7 @@
 
 
                     <div class="flex flex-row flex-wrap mt-4 w-full gap-2">
-                        @foreach ($jobpost->requirements_passed->chunk(2) as $chunk)
+                        @foreach ($jobpost->company->requirements_passed->chunk(2) as $chunk)
                             <div class="flex flex-row w-full gap-2">
                                 @foreach ($chunk as $req)
                                     <div wire:key='req-{{ $req->req_passed_id }}' class="flex flex-col w-1/2">
@@ -312,6 +306,20 @@
                                                     d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
                                             </svg>
                                         </button>
+                                        @php
+                                            $oneYearAgo = now()->subYear()->format('Y-m-d');
+                                        @endphp
+
+                                        <div x-data="{
+                                            updatedAt: '{{ $req->updated_at->format('Y-m-d') }}',
+                                            isOld: new Date('{{ $req->updated_at->format('Y-m-d') }}') < new Date('{{ $oneYearAgo }}')
+                                        }">
+                                            <p x-bind:class="{ 'text-red-500': isOld, 'text-gray-800': !isOld }"
+                                                class="text-sm">
+                                                Last updated: {{ $req->updated_at->format('F j, Y') }}
+                                            </p>
+                                        </div>
+
                                     </div>
                                 @endforeach
                             </div>

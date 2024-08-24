@@ -9,6 +9,7 @@ use App\Models\Industry_preference;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
+use App\Models\Program_Reg;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -19,7 +20,7 @@ class JobseekerOverview extends Component
 
     public $id;
 
-    public $searchApplications, $searchJobs;
+    public $searchApplications, $searchEvents, $searchJobs;
     public function render()
     {
 
@@ -38,20 +39,15 @@ class JobseekerOverview extends Component
             })
             ->paginate(5);
 
-        // Get the highest education level of the user
-        // Get the highest education level of the user
         $highestEducationLevel = Education::where('employee_id', $jobseeker->employee_id)
             ->max('edu_level');
 
-// Get the user's municipality ID via their barangay
         $userMunicipalityId = Barangay::where('barangay_id', $jobseeker->employee_id)
             ->value('municipality_id');
 
-// Get the user's job preferences (array of position_id)
         $userJobPreferences = Job_Preference::where('employee_id', $jobseeker->employee_id)
             ->pluck('position_id');
 
-// Get the user's industry preference
         $userIndustryPreference = Industry_Preference::where('employee_id', $jobseeker->employee_id)
             ->pluck('industry_id');
 
@@ -113,6 +109,15 @@ class JobseekerOverview extends Component
             ->distinct()
             ->paginate(10);
 
-        return view('livewire.admin.accounts.jobseeker.jobseeker-overview', compact('jobseeker', 'application_history', 'joblist'));
+        $programHistory = Program_Reg::where('employee_id', $this->id)
+            ->where(function ($query) {
+                $query->whereHas('programs', function ($query) {
+                    $query->where('program_Title', 'like', '%' . $this->searchEvents . '%')
+                        ->orWhere('program_Host', 'like', '%' . $this->searchEvents . '%');
+                });
+            })
+            ->paginate(10);
+
+        return view('livewire.admin.accounts.jobseeker.jobseeker-overview', compact('jobseeker', 'application_history', 'joblist', 'programHistory'));
     }
 }

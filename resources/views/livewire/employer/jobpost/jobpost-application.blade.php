@@ -15,33 +15,10 @@
                     </span>
                 </li>
 
+
                 @if ($currentSlide < 2)
-                    <li
-                        class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
-                        <span
-                            class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
-                            <span class="me-2">2</span>
-                            Requirements
-                            <span class="hidden sm:inline-flex sm:ms-2"></span>
-                        </span>
-                    </li>
-                @else
-                    <li
-                        class="flex md:w-full items-center text-blue-600 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
-                        <span
-                            class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-                            </svg>
-                            Requirements
-                        </span>
-                    </li>
-                @endif
-                @if ($currentSlide < 3)
                     <li class="flex items-center">
-                        <span class="me-2">3</span>
+                        <span class="me-2">2</span>
                         Confirmation
                     </li>
                 @else
@@ -371,46 +348,7 @@
     </div>
 
 
-
-    <div class=" {{ $currentSlide != 2 ? 'hidden' : '' }} post-section py-3" id="step2">
-
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
-
-                <h1 class="text-3xl py-4 font-bold">Upload the Requirements</h1>
-                @foreach ($requirements->chunk(2) as $chunk)
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 w-full mt-4">
-                        @foreach ($chunk as $requirement)
-                            <div wire:key='jobRequirement-{{ $requirement->requirement_id }}'
-                                class="flex flex-col w-full sm:w-1/2">
-                                <label class="block text-sm font-medium text-gray-900"
-                                    for="file_input">{{ $requirement->requirement_Title }}</label>
-                                <input wire:model='req.{{ $requirement->requirement_id }}'
-                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                                    aria-describedby="file_input_help" type="file">
-                                <p class="mt-1 text-sm text-gray-500 0">PDF ONLY.</p>
-                                <x-input-error :messages="$errors->get('req.' . $requirement->requirement_id)" class="mt-2" />
-                            </div>
-                        @endforeach
-                    </div>
-                @endforeach
-
-                <div class="flex flex-row justify-between w-full mt-12 mb-4 ">
-                    <x-secondary-button wire:click.prevent='prevSection(1)'
-                        type="button">Previous</x-secondary-button>
-                    <x-blue-button wire:click.prevent='nextSection(3)' type="button">Next</x-blue-button>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
-
-
-
-
-    <div class=" {{ $currentSlide != 3 ? 'hidden' : '' }} post-section py-3" id="step3">
+    <div class=" {{ $currentSlide != 2 ? 'hidden' : '' }} post-section py-3" id="step3">
 
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">

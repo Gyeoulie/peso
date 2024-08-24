@@ -52,6 +52,11 @@
                             :class="openTab === 3 ? activeTab : inactiveTab" class="inline-block p-4">Company
                             Industry</button>
                     </li>
+                    <li class="me-2">
+                        <button x-on:click="$wire.mountData()" @click="openTab = 4"
+                            :class="openTab === 4 ? activeTab : inactiveTab"
+                            class="inline-block p-4">Requirements</button>
+                    </li>
                 </ul>
 
                 {{-- BASIC INFORMATION --}}
@@ -290,7 +295,7 @@
                 </div>
                 {{-- CONTACT PERSON --}}
 
-                {{-- ELIGIBILITY --}}
+                {{-- INDUSTRY --}}
                 <div class="flex flex-col" x-show="openTab === 3"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
@@ -343,7 +348,121 @@
 
                 </div>
 
+                <div class="flex flex-col" x-show="openTab === 4"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                    x-cloak>
+                    <div class="flex flex-col my-4 w-full gap-4 mt-4 w-full">
 
+
+
+                        @foreach ($requirements as $requirement)
+                            <div class="flex flex-row w-full gap-2 md:gap-4">
+
+                                @if ($requirement->requirementPassed)
+                                    <div class="flex flex-col w-full">
+                                        <button
+                                           wire:click.prevent='viewFile({{ $requirement->requirementPassed->req_passed_id }})'
+                                            type="button"
+                                            class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                            <i class="fa-solid fa-file-contract me-2"></i>
+                                            View {{ $requirement->requirement_Title }}
+                                            <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
+                                            </svg>
+                                        </button>
+                                        @php
+                                            $oneYearAgo = now()->subYear()->format('Y-m-d');
+                                        @endphp
+
+                                        <div x-data="{
+                                            updatedAt: '{{ $requirement->requirementPassed->updated_at->format('Y-m-d') }}',
+                                            isOld: new Date('{{ $requirement->requirementPassed->updated_at->format('Y-m-d') }}') < new Date('{{ $oneYearAgo }}')
+                                        }">
+                                            <p x-bind:class="{ 'text-red-500': isOld, 'text-gray-800': !isOld }"
+                                                class="text-sm">
+                                                Last updated:
+                                                {{ $requirement->requirementPassed->updated_at->format('F j, Y') }}
+                                            </p>
+                                        </div>
+
+
+                                    </div>
+                                @else
+                                    <div class="flex flex-col w-full">
+                                        <div
+                                            class="text-red-900 bg-red-400 border border-red-500 focus:ring-4 focus:outline-none focus:ring-red-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                            <i class="fa-solid fa-file-contract me-2"></i>
+                                            You have not uploaded {{ $requirement->requirement_Title }}.
+                                            <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="flex flex-col w-full h-full">
+                                    <div class="flex flex-row w-full h-full justify-center items-center gap-2">
+                                        <div class="flex flex-col w-full">
+                                            <input wire:model='req.{{ $requirement->requirement_id }}'
+                                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                                                aria-describedby="file_input_help" id="file_input" type="file">
+
+                                        </div>
+
+                                        <div wire:loading.delay.long
+                                            wire:target="req.{{ $requirement->requirement_id }}" role="status">
+                                            <svg aria-hidden="true"
+                                                class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                                viewBox="0 0 100 101" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                    fill="currentColor" />
+                                                <path
+                                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                    fill="currentFill" />
+                                            </svg>
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+
+                                    <p class="mt-1 text-sm text-gray-500 " id="file_input_help">PDF ONLY
+                                        (MAX
+                                        5MB)
+                                        .
+                                    </p>
+                                    <x-input-error :messages="$errors->get('req.' . $requirement->requirement_id)" class="mt-2" />
+                                </div>
+                            </div>
+                        @endforeach
+
+
+                        <x-blue-button wire:target="req, saveReq" wire:loading.attr="disabled"
+                            wire:click.prevent="saveReq" class="ml-auto mr-3" type="button"
+                            x-data="">
+                            Save
+                            <div wire:loading.delay.long wire:target="pimg, saveProfile" role="status">
+                                <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                    viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                        fill="currentColor" />
+                                    <path
+                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                        fill="currentFill" />
+                                </svg>
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </x-blue-button>
+                    </div>
+
+                </div>
 
             </div>
 
@@ -362,3 +481,64 @@
 
 
 </div>
+
+@script
+    <script>
+        Livewire.on('viewFile', event => {
+            // Check if the event is an array and has at least one element
+            if (Array.isArray(event) && event.length > 0) {
+                // Access the first element and then its properties
+                const data = event[0]; // Assuming the data object is the first element
+
+                // Log the entire data object for verification
+                console.log('Data:', data);
+
+                // Extract URL and handle dynamic keys
+                const url = data.url;
+                const formData = {
+                    ...data
+                }; // Spread the data object to use for form inputs
+
+                // Check if URL is present
+                if (url) {
+                    // Create and configure the form element
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.target = '_blank';
+
+                    // Add CSRF token as a hidden input
+                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    // Add all data inputs dynamically
+                    for (const [key, value] of Object.entries(formData)) {
+                        // Skip the URL and CSRF token from being added as form inputs
+                        if (key !== 'url') {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            input.value = value;
+                            form.appendChild(input);
+                        }
+                    }
+
+                    // Append form to the body and submit
+                    document.body.appendChild(form);
+                    form.submit();
+
+                    // Clean up by removing the form element
+                    document.body.removeChild(form);
+                } else {
+                    console.error('URL not found in event data');
+                }
+            } else {
+                console.error('Event is not in the expected format');
+            }
+        });
+    </script>
+@endscript

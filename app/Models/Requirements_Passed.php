@@ -14,7 +14,7 @@ class Requirements_Passed extends Model
     protected $primaryKey = 'req_passed_id';
 
     protected $fillable = [
-        'job_id',
+        'company_id',
         'requirement_id',
         'req_passed_Input',
     ];
@@ -25,13 +25,14 @@ class Requirements_Passed extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function job_posting()
+    public function company()
     {
-        return $this->belongsTo(Job_Posting::class, 'job_id');
+        return $this->belongsTo(Company::class, 'company_id');
     }
 
     public function requirement()
     {
         return $this->belongsTo(Requirements::class, 'requirement_id');
     }
+    
 }

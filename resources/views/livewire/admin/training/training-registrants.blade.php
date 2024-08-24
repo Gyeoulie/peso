@@ -117,23 +117,6 @@
 
             </div>
 
-            {{-- JOB QUALIFICATION CONTAINER --}}
-            {{-- <div class="bg-white shadow rounded-lg p-6 mt-4">
-
-                <div class="flex flex-row w-full gap-4">
-                    <div class="flex flex-col w-full">
-                        <x-input-label for="fname"> Job Qualification
-                        </x-input-label>
-                        <div
-                            class="h-[200px] overflow-auto block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none">
-                            <div class="no-tailwindcss-base">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div> --}}
 
         </div>
 
@@ -148,32 +131,118 @@
                 x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                 x-transition:enter-end="opacity-100 scale-100">
                 <div class="flex flex-row justify-between">
-                    <h1 class="text-lg sm:text-2xl font-bold mb">Applicant List</h1>
+                    <h1 class="text-lg sm:text-2xl font-bold mb">Registrant List</h1>
                     <h1 class="text-lg sm:text-2xl font-bold mb">Registered: {{ $programInfo->program_reg_count }}</h1>
 
                 </div>
                 <hr class="h-px my-4  bg-gray-200 border-0 dark:bg-gray-700">
 
-                <div class="relative overflow-x-auto">
-                    <div
-                        class="flex items-center  flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1 p-1">
+                <div class="relative overflow-visible">
+                    <div class="flex flex-col sm:flex-row justify-between gap-2 w-full">
+                        <div
+                            class="flex items-center flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1 p-1">
 
-                        <label for="table-search" class="sr-only">Search</label>
-                        <div class="relative">
-                            <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                </svg>
+                            <label for="table-search" class="sr-only">Search</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                    </svg>
+                                </div>
+
+                                {{-- SEARCH --}}
+                                <input wire:model.live='search' type="text" id="table-search-users"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Search for Applicants">
                             </div>
-
-                            {{-- SEARCH --}}
-                            <input wire:model.live='search' type="text" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Search for Applicants">
                         </div>
+
+                        <div class="flex flex-row gap-2">
+                            <x-dropdown align="left" width="[150px]">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        <div>
+                                            {{ $filter }}
+                                        </div>
+
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
+
+                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="changeFilter('All')">
+                                        All
+                                    </x-dropdown-link>
+                                    <x-dropdown-link class="cursor-pointer"
+                                        wire:click.prevent="changeFilter('Registered')">
+                                        Registered
+                                    </x-dropdown-link>
+                                    <x-dropdown-link class="cursor-pointer"
+                                        wire:click.prevent="changeFilter('Completed')">
+                                        Completed
+                                    </x-dropdown-link>
+                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="changeFilter('Others')">
+                                        Others
+                                    </x-dropdown-link>
+
+
+
+
+                                </x-slot>
+                            </x-dropdown>
+                            <x-dropdown align="left" width="[150px]">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        <div>
+                                            {{ $sortDate === 'ASC' ? 'Oldest' : ($sortDate == 'DESC' ? 'Newest' : 'Sort by Date') }}
+
+                                        </div>
+
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
+
+                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('DESC')">
+                                        Newest
+                                    </x-dropdown-link>
+
+                                    <!-- Authentication -->
+                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('ASC')">
+                                        Oldest
+                                    </x-dropdown-link>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+
                     </div>
 
                     {{-- APPLICANT LIST TABLE --}}
@@ -211,7 +280,7 @@
                                             </div>
 
                                             <div class="text-center text-black text-xl font-semibold mt-2">
-                                                No Applicants Found
+                                                No Registrants Found
                                             </div>
                                         </div>
 
@@ -247,7 +316,18 @@
 
                                         <td class="px-6 py-4">
                                             <div class="text-base text-sm">
-                                                {{ $data->program_reg_Status }}
+
+                                                @if ($data->program_reg_Status == 'REGISTERED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
+                                                @elseif ($data->program_reg_Status == 'COMPLETED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
+                                                @elseif ($data->program_reg_Status == 'REJECTED')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                                @endif
+
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 ">
@@ -419,18 +499,6 @@
                                     </a>
                                 </div>
 
-                                <div x-data="{ tooltip: 'View Recommendation Letter' }">
-
-                                    <button x-tooltip="tooltip" type="button"
-                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-                                        </svg>
-
-                                    </button>
-                                </div>
 
                             </div>
 

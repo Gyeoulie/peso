@@ -31,7 +31,7 @@
             <div class="col-span-4 sm:col-span-9">
                 <div class="bg-white shadow rounded-lg p-6 overflow-visible">
                     <div
-                        class="flex flex-col sm:flex-row p-1 sm:items-center sm:justify-between flex-column flex-wrap sm:flex-row space-y-4 sm:space-y-0 pb-4">
+                        class="flex flex-col sm:flex-row p-1 sm:items-center sm:justify-between flex-column flex-wrap sm:flex-row gap-2 space-y-4 sm:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
 
