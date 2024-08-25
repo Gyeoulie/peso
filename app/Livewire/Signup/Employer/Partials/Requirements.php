@@ -61,7 +61,7 @@ class Requirements extends Component
     public function render()
     {
 
-        $requirements = ModelsRequirements::All();
+        $requirements = ModelsRequirements::where('requirement_Status', 1);
 
         return view('livewire.signup.employer.partials.requirements', compact('requirements'));
     }

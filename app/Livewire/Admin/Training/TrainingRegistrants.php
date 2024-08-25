@@ -26,9 +26,12 @@ class TrainingRegistrants extends Component
 
     public $sortDate, $filter = 'All';
 
+    protected $listeners = ['qrCodeScanned' => 'qrCodeScanned'];
+
     public function getJobseeker($id)
     {
         $this->selectedJobseeker = $id;
+        // dd($id);
         $this->reset('sortDate');
     }
 
@@ -41,6 +44,26 @@ class TrainingRegistrants extends Component
     {
         $this->sortDate = $sort;
 
+    }
+
+    public function scanQr()
+    {
+        $this->dispatch('open-modal', 'qr-scanner-modal');
+        $this->dispatch('startScanner');
+
+    }
+    public function qrStop()
+    {
+        $this->dispatch('endScanner');
+
+    }
+
+    public function qrCodeScanned($decodedText)
+    {
+        // Example: Find a record by the QR code content
+        // You can replace this with your own logic
+        $this->selectedJobseeker = $decodedText;
+        $this->dispatch('close-modal', 'qr-scanner-modal');
     }
 
     public function confirmReg($action, $id)
@@ -96,8 +119,6 @@ class TrainingRegistrants extends Component
             }
 
         }
-
-     
 
         if ($this->sortDate !== null && $this->sortDate !== '') {
             $query->orderBy('created_at', $this->sortDate);

@@ -1,4 +1,16 @@
 <div class="container mx-auto py-8">
+    <style>
+        #QrScanner {
+            position: relative;
+            /* Adjust as needed */
+            width: 100%;
+            /* Make sure it fits within the modal */
+            height: 400px;
+            /* Set a specific height if necessary */
+            z-index: 10;
+            /* Ensure it's above the modal background but below other modal content */
+        }
+    </style>
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
         <div class="col-span-4 sm:col-span-12">
@@ -132,12 +144,13 @@
                 x-transition:enter-end="opacity-100 scale-100">
                 <div class="flex flex-row justify-between">
                     <h1 class="text-lg sm:text-2xl font-bold mb">Registrant List</h1>
-                    <h1 class="text-lg sm:text-2xl font-bold mb">Registered: {{ $programInfo->program_reg_count }}</h1>
+                    {{-- <h1 class="text-lg sm:text-2xl font-bold mb">Registered: {{ $programInfo->program_reg_count }}</h1> --}}
+                    <x-primary-button wire:click.prevent='scanQr'>QR Code</x-primary-button>
 
                 </div>
                 <hr class="h-px my-4  bg-gray-200 border-0 dark:bg-gray-700">
 
-                <div class="relative overflow-visible">
+                <div class="relative ">
                     <div class="flex flex-col sm:flex-row justify-between gap-2 w-full">
                         <div
                             class="flex items-center flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1 p-1">
@@ -246,111 +259,114 @@
                     </div>
 
                     {{-- APPLICANT LIST TABLE --}}
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    Name
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Registered Date
-                                </th>
-
-                                <th scope="col" class="px-6 py-3">
-                                    Status
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($programRegistrants->isEmpty())
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
-                                    <td colspan="6">
-                                        <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                            <div class="flex  bg-gray-100 rounded-full p-1">
-                                                <svg class="w-16 h-16 text-black" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M21 21l-3.5-3.5m0 0a7 7 0 1 1-9-10.5 7 7 0 0 1 9 10.5z" />
-                                                </svg>
-                                            </div>
+                                    <th scope="col" class="px-6 py-3">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Registered Date
+                                    </th>
 
-                                            <div class="text-center text-black text-xl font-semibold mt-2">
-                                                No Registrants Found
-                                            </div>
-                                        </div>
-
-
-                                    </td>
+                                    <th scope="col" class="px-6 py-3">
+                                        Status
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Action
+                                    </th>
                                 </tr>
-                            @else
-                                @foreach ($programRegistrants as $data)
-                                    <tr wire:key='reg-{{ $data->program_reg_id }}'
-                                        class="bg-white border-b hover:bg-gray-50">
-                                        <th scope="row"
-                                            class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                            <img class="w-10 h-10 rounded-full"
-                                                src="{{ asset('storage/' . $data->employee->pimg) }}"
-                                                alt="user-{{ $data->employee->employee_id }}">
-                                            <div class="ps-3 text-wrap">
-                                                <div class="text-base font-semibold">{{ $data->employee->fname }}
-                                                    {{ $data->employee->lname }}
-                                                </div>
-                                                <div class="font-normal text-gray-500 text-sm uppercase">
-                                                    {{ $data->employee->barangay->barangay_Name }},
-                                                    {{ $data->employee->barangay->municipality->municipality_Name }}
-                                                </div>
-                                            </div>
-
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-col  text-base  uppercase">
-                                                <span> {{ $data->created_at->format('g:i A') }}</span>
-                                                <span> {{ $data->created_at->format('F j, Y') }}</span>
-                                            </div>
-                                        </td>
-
-                                        <td class="px-6 py-4">
-                                            <div class="text-base text-sm">
-
-                                                @if ($data->program_reg_Status == 'REGISTERED')
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
-                                                @elseif ($data->program_reg_Status == 'COMPLETED')
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
-                                                @elseif ($data->program_reg_Status == 'REJECTED')
-                                                    <span
-                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
-                                                @endif
-
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 ">
-                                            <div x-data="{ tooltip: 'View Information' }">
-                                                <button wire:click.prevent="getJobseeker({{ $data->program_reg_id }})"
-                                                    x-tooltip="tooltip" type="button"
-                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="currentColor">
-                                                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                        <path fill-rule="evenodd"
-                                                            d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                            clip-rule="evenodd" />
+                            </thead>
+                            <tbody>
+                                @if ($programRegistrants->isEmpty())
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
+                                                <div class="flex  bg-gray-100 rounded-full p-1">
+                                                    <svg class="w-16 h-16 text-black" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M21 21l-3.5-3.5m0 0a7 7 0 1 1-9-10.5 7 7 0 0 1 9 10.5z" />
                                                     </svg>
-                                                </button>
+                                                </div>
+
+                                                <div class="text-center text-black text-xl font-semibold mt-2">
+                                                    No Registrants Found
+                                                </div>
                                             </div>
+
 
                                         </td>
                                     </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                                @else
+                                    @foreach ($programRegistrants as $data)
+                                        <tr wire:key='reg-{{ $data->program_reg_id }}'
+                                            class="bg-white border-b hover:bg-gray-50">
+                                            <th scope="row"
+                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                <img class="w-10 h-10 rounded-full"
+                                                    src="{{ asset('storage/' . $data->employee->pimg) }}"
+                                                    alt="user-{{ $data->employee->employee_id }}">
+                                                <div class="ps-3 text-wrap">
+                                                    <div class="text-base font-semibold">{{ $data->employee->fname }}
+                                                        {{ $data->employee->lname }}
+                                                    </div>
+                                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                                        {{ $data->employee->barangay->barangay_Name }},
+                                                        {{ $data->employee->barangay->municipality->municipality_Name }}
+                                                    </div>
+                                                </div>
+
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-col  text-base  uppercase">
+                                                    <span> {{ $data->created_at->format('g:i A') }}</span>
+                                                    <span> {{ $data->created_at->format('F j, Y') }}</span>
+                                                </div>
+                                            </td>
+
+                                            <td class="px-6 py-4">
+                                                <div class="text-base text-sm">
+
+                                                    @if ($data->program_reg_Status == 'REGISTERED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
+                                                    @elseif ($data->program_reg_Status == 'COMPLETED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
+                                                    @elseif ($data->program_reg_Status == 'REJECTED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                                    @endif
+
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 ">
+                                                <div x-data="{ tooltip: 'View Information' }">
+                                                    <button
+                                                        wire:click.prevent="getJobseeker({{ $data->program_reg_id }})"
+                                                        x-tooltip="tooltip" type="button"
+                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="currentColor">
+                                                            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                            <path fill-rule="evenodd"
+                                                                d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 {{-- PAGINATION --}}
@@ -459,6 +475,49 @@
 
                                     </p>
                                 </div>
+                                <div class="flex flex-col w-full mt-1">
+                                    <li class="mb-1 font-bold">Industry Preference:</li>
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseekerInfo->employee->industry_preference as $industryPref)
+                                            <span wire:key='skills-{{ $industryPref->industry_preference_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $industryPref->job_industry->industry_Title }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col w-full mt-1">
+                                    <li class="mb-1 font-bold">Job Preference:</li>
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseekerInfo->employee->job_preference as $jobPref)
+                                            <span wire:key='skills-{{ $jobPref->job_preference_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $jobPref->job_positions->position_Title }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="flex flex-col w-full mt-1">
+                                    <li class="mb-1 font-bold">Skills:</li>
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseekerInfo->employee->skills as $empSkills)
+                                            <span wire:key='skills-{{ $empSkills->skills_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $empSkills->skill_Type }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
 
 
                             </ul>
@@ -514,4 +573,94 @@
 
 
     </div>
+
+
+    <x-modal name="qr-scanner-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Scan a QR Code') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col w-full h-full items-center my-4">
+                <div id="QrScanner" class="flex h-full"></div>
+            </div>
+            <div class="mt-6 flex justify-between">
+                <x-secondary-button wire:click.prevent='qrStop'>
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+
+            </div>
+        </div>
+    </x-modal>
 </div>
+
+
+<script>
+    let qrCodeScanner = null;
+
+    Livewire.on('startScanner', () => {
+        // Initialize the Html5Qrcode instance if not already initialized
+        if (!qrCodeScanner) {
+            qrCodeScanner = new Html5Qrcode("QrScanner");
+
+            qrCodeScanner.start({
+                    facingMode: "environment"
+                }, // Camera facing mode
+                {
+                    fps: 10, // Frames per second to scan the QR code
+                    qrbox: {
+                        width: 250,
+                        height: 250
+                    } // Size of the scanning box
+                },
+                (decodedText, decodedResult) => {
+                    console.log("QR Code detected: ", decodedText);
+                    Livewire.dispatch('qrCodeScanned', {
+                        decodedText: decodedText
+                    });
+
+                    // Stop the scanner after a successful scan
+                    qrCodeScanner.stop().then(() => {
+                        console.log("QR Code scanner stopped.");
+                        qrCodeScanner = null; // Clear the reference to the instance
+
+                        // Trigger closing the modal
+                        window.dispatchEvent(new CustomEvent('close-modal'));
+                    }).catch((err) => {
+                        console.error("Error stopping the QR code scanner:", err);
+                    });
+                },
+                (errorMessage) => {
+                    console.warn("QR Code scanning error:", errorMessage);
+                }
+            ).catch((err) => {
+                console.error("Error starting the QR code scanner:", err);
+            });
+        }
+    });
+
+    Livewire.on('endScanner', () => {
+        console.log('Stopping QR scanner');
+
+        // Stop the QR scanner if it's running
+        if (qrCodeScanner) {
+            qrCodeScanner.stop().then(() => {
+                console.log("QR Code scanner stopped.");
+                qrCodeScanner = null; // Clear the reference to the instance
+
+                // Trigger closing the modal
+                window.dispatchEvent(new CustomEvent('close-modal', {
+                    detail: 'qr-scanner-modal' // Assuming $name holds the modal name
+                }));
+            }).catch((err) => {
+                console.error("Error stopping the QR code scanner:", err);
+            });
+        }
+    });
+
+    // Listen for the close-modal event and handle it
+    window.addEventListener('close-modal', () => {
+        document.querySelector('[x-data]').__x.$data.open = false;
+    });
+</script>

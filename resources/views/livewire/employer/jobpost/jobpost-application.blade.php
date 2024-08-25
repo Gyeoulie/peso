@@ -392,8 +392,8 @@
                             <input wire:model='agreePost' id="link-checkbox" type="checkbox" value=""
                                 class="sm:mr-2 font-medium rounded-lg text-sm px-3 py-3 justify-center">
                             <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 ">I
-                                agree with the <a href="#" class="text-blue-600 hover:underline">terms and
-                                    conditions.</a></label>
+                                agree with the <p class="text-blue-600 hover:underline">terms and
+                                    conditions.</p></label>
                         </div>
 
                         <x-input-error :messages="$errors->get('agreePost')" class="mt-2" />
@@ -404,7 +404,7 @@
 
 
                 <div class="flex flex-row justify-between w-full mt-24 mb-4 ">
-                    <x-secondary-button wire:click.prevent='prevSection(2)' type="button"
+                    <x-secondary-button wire:click.prevent='prevSection(1)' type="button"
                         wire:loading.attr="disabled">Previous</x-secondary-button>
                     <x-green-button wire:click.prevent='createApplication' type="button"
                         wire:loading.attr="disabled">Confirm

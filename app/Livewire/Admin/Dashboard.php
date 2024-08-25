@@ -17,6 +17,8 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class Dashboard extends Component
 {
+    protected $listeners = ['qrCodeScanned' => 'qrCodeScanned', 'scanQRCode' => 'addQRProduct'];
+
     public function render()
     {
 

@@ -362,7 +362,7 @@
                                 @if ($requirement->requirementPassed)
                                     <div class="flex flex-col w-full">
                                         <button
-                                           wire:click.prevent='viewFile({{ $requirement->requirementPassed->req_passed_id }})'
+                                            wire:click.prevent='viewFile({{ $requirement->requirementPassed->req_passed_id }})'
                                             type="button"
                                             class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
                                             <i class="fa-solid fa-file-contract me-2"></i>
@@ -398,10 +398,10 @@
                                             <i class="fa-solid fa-file-contract me-2"></i>
                                             You have not uploaded {{ $requirement->requirement_Title }}.
                                             <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                             </svg>
                                         </div>
                                     </div>

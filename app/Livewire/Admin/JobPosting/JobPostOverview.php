@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\JobPosting;
 
 use App\Models\Employee;
 use App\Models\Job_Posting;
+use App\Models\Requirements;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -47,7 +48,7 @@ class JobPostOverview extends Component
 
     public $selectedReqPassedId;
 
-    public function viewRequirement($reqPassedId)
+    public function viewFile($reqPassedId)
     {
         $this->selectedReqPassedId = $reqPassedId;
 
@@ -94,7 +95,6 @@ class JobPostOverview extends Component
 
     public function render()
     {
-
         $jobpost = Job_Posting::with(['job_tags'])->findOrFail($this->id);
 
         $jobMunicipalityId = $jobpost->peso_municipality_id;
@@ -128,6 +128,14 @@ class JobPostOverview extends Component
             ->orderByDesc('num_matched_tags')
             ->get();
 
+        $requirements = Requirements::with([
+            'requirementPassed' => function ($query) use ($jobpost) {
+                $query->where('company_id', $jobpost->company_id); // Use `where` for filtering
+            },
+        ])
+            ->where('requirement_Status', 1)
+            ->get();
+
         // Find applicants that match the job posting criteria
         // $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
         //     $query->where('municipality_id', $jobMunicipalityId);
@@ -139,6 +147,6 @@ class JobPostOverview extends Component
         //         $query->whereIn('position_id', $jobTagIds);
         //     })
         //     ->get();
-        return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees'));
+        return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees', 'requirements'));
     }
 }

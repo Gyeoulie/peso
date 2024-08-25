@@ -52,6 +52,8 @@ class JobApplicants extends Component
     public $applicantSearch, $postSearch;
     public $selectedJob, $selectedApplicant;
 
+    public $agreePost;
+
     public $filter = 'ALL', $sortDate, $jobFilter = 'ALL';
 
     public function viewFile($id, $fileToView)

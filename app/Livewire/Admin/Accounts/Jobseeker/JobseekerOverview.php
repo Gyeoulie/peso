@@ -21,37 +21,25 @@ class JobseekerOverview extends Component
     public $id;
 
     public $searchApplications, $searchEvents, $searchJobs;
-    public function render()
+
+    // SETTING FIELD
+    public $fname, $lname, $mname, $suffix, $birthdate, $gender, $civilstatus, $religion;
+
+    public function recommendedJobs($id)
     {
-
-        $jobseeker = Employee::findOrFail($this->id);
-
-        $application_history = Job_Applicants::with('employee', 'job_posting.company')
-            ->where('employee_id', $jobseeker->employee_id)
-            ->where(function ($query) {
-                $query->whereHas('job_posting', function ($query) {
-                    $query->where('job_Title', 'like', '%' . $this->searchApplications . '%')
-                        ->orWhereHas('company', function ($query) {
-                            $query->where('business_Name', 'like', '%' . $this->searchApplications . '%')
-                                ->orWhere('trade_Name', 'like', '%' . $this->searchApplications . '%');
-                        });
-                });
-            })
-            ->paginate(5);
-
-        $highestEducationLevel = Education::where('employee_id', $jobseeker->employee_id)
+        $highestEducationLevel = Education::where('employee_id', $id)
             ->max('edu_level');
 
-        $userMunicipalityId = Barangay::where('barangay_id', $jobseeker->employee_id)
+        $userMunicipalityId = Barangay::where('barangay_id', $id)
             ->value('municipality_id');
 
-        $userJobPreferences = Job_Preference::where('employee_id', $jobseeker->employee_id)
+        $userJobPreferences = Job_Preference::where('employee_id', $id)
             ->pluck('position_id');
 
-        $userIndustryPreference = Industry_Preference::where('employee_id', $jobseeker->employee_id)
+        $userIndustryPreference = Industry_Preference::where('employee_id', $id)
             ->pluck('industry_id');
 
-        $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
+        return Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
             ->select([
                 'job_posting.*',
                 DB::raw('
@@ -108,8 +96,27 @@ class JobseekerOverview extends Component
             ->orderByDesc('job_tags_count')
             ->distinct()
             ->paginate(10);
+    }
 
-        $programHistory = Program_Reg::where('employee_id', $this->id)
+    public function applicationHistory($id)
+    {
+        return Job_Applicants::with('employee', 'job_posting.company')
+            ->where('employee_id', $id)
+            ->where(function ($query) {
+                $query->whereHas('job_posting', function ($query) {
+                    $query->where('job_Title', 'like', '%' . $this->searchApplications . '%')
+                        ->orWhereHas('company', function ($query) {
+                            $query->where('business_Name', 'like', '%' . $this->searchApplications . '%')
+                                ->orWhere('trade_Name', 'like', '%' . $this->searchApplications . '%');
+                        });
+                });
+            })
+            ->paginate(5);
+    }
+
+    public function programHistory($id)
+    {
+        return $programHistory = Program_Reg::where('employee_id', $id)
             ->where(function ($query) {
                 $query->whereHas('programs', function ($query) {
                     $query->where('program_Title', 'like', '%' . $this->searchEvents . '%')
@@ -117,6 +124,100 @@ class JobseekerOverview extends Component
                 });
             })
             ->paginate(10);
+    }
+
+    public function mountFields($jobseeker)
+    {
+        $this->fname = $jobseeker->fname;
+        $this->lname = $jobseeker->lname;
+        $this->mname = $jobseeker->mname;
+        $this->suffix = $jobseeker->suffix;
+        $this->birthdate = $jobseeker->birthdate;
+        $this->gender = $jobseeker->gender;
+        $this->civilstatus = $jobseeker->civilstatus;
+        $this->religion = $jobseeker->religion;
+    }
+
+    public function saveDetails()
+    {
+
+        $rules = [
+            'fname' => ['required', 'string'],
+            'lname' => ['required', 'string'],
+            'birthdate' => [
+                'required',
+                'date',
+                'before_or_equal:' . now()->subYears(18)->toDateString(), // Must be at least 18 years old
+                'before_or_equal:' . now()->toDateString(), // Cannot be in the future
+            ],
+            'gender' => ['required'],
+            'civilstatus' => ['required'],
+            'religion' => ['required'],
+        ];
+
+        $messages = [
+            'fname.required' => 'First name is required.',
+            'lname.required' => 'Last name is required.',
+            'birthdate.required' => 'Birthdate is required.',
+            'birthdate.date' => 'Birthdate must be a valid date.',
+            'birthdate.before_or_equal' => 'You must be at least 18 years old.',
+            'gender.required' => 'Gender is required.',
+            'civilstatus.required' => 'Civil status is required.',
+            'religion.required' => 'Religion is required.',
+        ];
+
+        $this->validate($rules, $messages);
+
+        $jobseekerData = Employee::findOrFail($this->id);
+
+        DB::beginTransaction();
+
+        try {
+            // Delete old image if a new one is uploaded and there is an existing image
+
+            // Update model attributes
+            $jobseekerData->fname = $this->fname;
+            $jobseekerData->mname = $this->mname;
+            $jobseekerData->lname = $this->lname;
+            $jobseekerData->suffix = $this->suffix;
+            $jobseekerData->gender = $this->gender;
+            $jobseekerData->civilstatus = $this->civilstatus;
+            $jobseekerData->religion = $this->religion;
+            $jobseekerData->birthdate = $this->birthdate;
+
+            // Check if any attributes have changed
+            if ($jobseekerData->isDirty()) {
+                $jobseekerData->save();
+
+                DB::commit();
+
+                toastr()->success('Jobseeker has been updated!');
+
+            } else {
+                DB::rollBack();
+
+                toastr()->info('No changes detected.');
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            toastr()->error('There was an error updating the profile.');
+        }
+        $this->dispatch('close-modal', 'confirm-modal');
+
+    }
+    public function render()
+    {
+
+        $jobseeker = Employee::findOrFail($this->id);
+
+        $joblist = $this->recommendedJobs($jobseeker->employee_id);
+
+        $application_history = $this->applicationHistory($jobseeker->employee_id);
+
+        $programHistory = $this->programHistory($jobseeker->employee_id);
+
+        $this->mountFields($jobseeker);
 
         return view('livewire.admin.accounts.jobseeker.jobseeker-overview', compact('jobseeker', 'application_history', 'joblist', 'programHistory'));
     }

@@ -8,6 +8,8 @@ use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Job_Tags;
 use App\Models\Municipality;
+use App\Models\Requirements;
+use App\Models\Requirements_Passed;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -107,6 +109,8 @@ class JobpostApplication extends Component
         // Validate the input
         $this->validate([
             'agreePost' => ['required'],
+        ], [
+            'agreePost.required' => 'You must agree with the terms and conditions before proceeding.',
         ]);
 
         try {
@@ -116,6 +120,30 @@ class JobpostApplication extends Component
             // Retrieve the authenticated user and company ID
             $user = Auth::user();
             $companyId = $user->company->company_id;
+
+            // Get the current date and date one year ago
+            $currentDate = now();
+            $oneYearAgo = $currentDate->copy()->subYear();
+
+            // Fetch all active requirements
+            $activeRequirements = Requirements::where('requirement_Status', 1)->get();
+
+            // Check if the company has passed all active requirements within the last year
+            foreach ($activeRequirements as $requirement) {
+                $requirementPassed = Requirements_Passed::where('requirement_id', $requirement->id)
+                    ->where('company_id', $companyId)
+                    ->where('updated_at', '>=', $oneYearAgo)
+                    ->first();
+
+                if (!$requirementPassed) {
+                    // Display a toast error and rollback the transaction
+                    toastr()->error("The company has either not completed all required submissions or has not updated them within the last year.");
+
+                    // Rollback the transaction and return early
+                    DB::rollBack();
+                    return;
+                }
+            }
 
             // Create a new job posting
             $jobposting = Job_Posting::create([
@@ -135,7 +163,6 @@ class JobpostApplication extends Component
                 'job_Duration' => $this->durationPost,
                 'job_Status' => 'PENDING',
                 'peso_municipality_id' => $this->pesoPost,
-
             ]);
 
             // Check if job posting was created successfully
@@ -156,12 +183,13 @@ class JobpostApplication extends Component
                 $this->redirectRoute('jobpost.show', ['id' => $jobposting->job_id], navigate: true);
             }
         } catch (\Exception $e) {
-            // Handle validation exception
+            // Roll back the transaction if an error occurs
             DB::rollBack();
-            // Handle validation error (e.g., display errors to user)
+
+            // Handle the error (e.g., log it and display an error message to the user)
             toastr()->error('Application Failed. Please check your input.');
         } catch (\Exception $e) {
-            // Handle general exceptions
+            // Roll back the transaction in case of general exceptions
             DB::rollBack();
             // Handle other errors (e.g., log the error, display a generic error message)
             toastr()->error('An unexpected error occurred. Please try again.');

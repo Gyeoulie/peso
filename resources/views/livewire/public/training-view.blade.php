@@ -61,7 +61,7 @@
 
                         @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
                             @if ($isApplied == false)
-                                <div class="flex flex-row w-full items-center justify-center mt-2">
+                                <div class="flex flex-row w-ful::withTrashed()l items-center justify-center mt-2">
                                     <h1>Applicantion ends: <span
                                             class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
                                     </h1>
