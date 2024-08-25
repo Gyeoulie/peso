@@ -52,6 +52,8 @@ class JobApplicants extends Component
     public $applicantSearch, $postSearch;
     public $selectedJob, $selectedApplicant;
 
+    public $agreePost;
+
     public $filter = 'ALL', $sortDate, $jobFilter = 'ALL';
 
     public function viewFile($id, $fileToView)
@@ -230,7 +232,6 @@ class JobApplicants extends Component
         if ($this->selectedApplicant) {
             $applicantInfo = Job_Applicants::find($this->selectedApplicant);
 
-            // dd($applicantInfo);
         }
 
         return view('livewire.employer.dashboard.job-applicants', compact('jobs', 'applicants', 'applicantInfo'));

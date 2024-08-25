@@ -18,10 +18,13 @@ use App\Livewire\Admin\PositionIndustry\PositionIndustry;
 use App\Livewire\Admin\Reports\BarangayReports;
 use App\Livewire\Admin\Requirements\Requirements;
 use App\Livewire\Admin\Training\CreateTrainining;
+use App\Livewire\Admin\Training\TrainingDetails;
 use App\Livewire\Admin\Training\TrainingList;
+use App\Livewire\Admin\Training\TrainingRegistrants;
 use App\Livewire\Employer\Dashboard\JobApplicants;
 use App\Livewire\Employer\Dashboard\JobPostList;
 use App\Livewire\Employer\Jobpost\JobpostApplication;
+use App\Livewire\Employer\Jobpost\JobPostDetails;
 use App\Livewire\Jobseeker\ApplicationHistory;
 use App\Livewire\Public\Dashboard;
 use App\Livewire\Public\JobpostView;
@@ -83,6 +86,7 @@ Route::get('/profile/edit', EditDetails::class)->name('edit.details');
 // })->name('jobpost.apply');
 
 Route::get('/apply', JobpostApplication::class)->name('jobpost.apply');
+Route::get('/jobpost/details/{id}', JobPostDetails::class)->name('jobpost.details');
 
 Route::get('/employer/jobpost', JobPostList::class)->name('employer.dashboard');
 Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
@@ -135,6 +139,8 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/training', TrainingList::class)->name('admin-training');
     Route::get('/training/create', CreateTrainining::class)->name('admin-create-training');
+    Route::get('/training/details/{id}', TrainingDetails::class)->name('admin-view-training');
+    Route::get('/training/{id}', TrainingRegistrants::class)->name('admin-registrants-training');
 
     Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
 

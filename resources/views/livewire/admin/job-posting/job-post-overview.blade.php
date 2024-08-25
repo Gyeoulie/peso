@@ -3,12 +3,6 @@
 
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
-            <div class="col-span-4 sm:col-span-12">
-                {{-- TITLE --}}
-                <h1 class="text-2xl font-bold">Job Posting / Job Posting Overview</h1>
-
-            </div>
-
 
             {{-- FIRST CONTAINER --}}
             <div class="col-span-4 sm:col-span-12">
@@ -168,8 +162,8 @@
                         </div>
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg
-                                    class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg class="w-5 h-5"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
                                     <path fill-rule="evenodd"
@@ -296,23 +290,59 @@
 
 
                     <div class="flex flex-row flex-wrap mt-4 w-full gap-2">
-                        @foreach ($jobpost->requirements_passed->chunk(2) as $chunk)
+                        @foreach ($requirements->chunk(2) as $chunk)
                             <div class="flex flex-row w-full gap-2">
-                                @foreach ($chunk as $req)
-                                    <div wire:key='req-{{ $req->req_passed_id }}' class="flex flex-col w-1/2">
-                                        <button type="button"
-                                            wire:click="viewRequirement('{{ $req->req_passed_id }}')"
-                                            class="w-full h-full text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
-                                            <i class="fa-solid fa-file-contract me-2"></i>
-                                            {{ $req->requirement->requirement_Title }}
-                                            <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
-                                            </svg>
-                                        </button>
-                                    </div>
+                                @foreach ($chunk as $requirement)
+                                    @if ($requirement->requirementPassed)
+                                        <div class="flex flex-col w-full">
+                                            <button
+                                                wire:click.prevent='viewFile({{ $requirement->requirementPassed->req_passed_id }})'
+                                                type="button"
+                                                class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                                <i class="fa-solid fa-file-contract me-2"></i>
+                                                View {{ $requirement->requirement_Title }}
+                                                <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                    width="24" height="24" fill="none"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
+                                                </svg>
+                                            </button>
+                                            @php
+                                                $oneYearAgo = now()->subYear()->format('Y-m-d');
+                                            @endphp
+
+                                            <div x-data="{
+                                                updatedAt: '{{ $requirement->requirementPassed->updated_at->format('Y-m-d') }}',
+                                                isOld: new Date('{{ $requirement->requirementPassed->updated_at->format('Y-m-d') }}') < new Date('{{ $oneYearAgo }}')
+                                            }">
+                                                <p x-bind:class="{ 'text-red-500': isOld, 'text-gray-800': !isOld }"
+                                                    class="text-sm">
+                                                    Last updated:
+                                                    {{ $requirement->requirementPassed->updated_at->format('F j, Y') }}
+                                                </p>
+                                            </div>
+
+
+                                        </div>
+                                    @else
+                                        <div class="flex flex-col w-full">
+                                            <div
+                                                class="text-red-900 bg-red-400 border border-red-500 focus:ring-4 focus:outline-none focus:ring-red-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                                <i class="fa-solid fa-file-contract me-2"></i>
+                                                No uploaded {{ $requirement->requirement_Title }}.
+
+                                                <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+
+                                            </div>
+                                        </div>
+                                    @endif
                                 @endforeach
                             </div>
                         @endforeach
@@ -340,10 +370,10 @@
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4 ">
                     <h1 class="text-3xl font-bold mb-3">Matched Applicants</h1>
                     <div class="max-h-[500px] overflow-y-auto">
+                        @if ($matchingEmployees->isEmpty())
+                            <div>
 
-                        <div>
 
-                            @if ($matchingEmployees->isEmpty())
                                 <div class="flex flex-col justify-center items-center mt-20 mb-20">
                                     <div class="flex  bg-gray-100 rounded-full p-1">
 
@@ -361,38 +391,38 @@
                                     </div>
                                 </div>
 
-                        </div>
-                    @else
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-                            @foreach ($matchingEmployees as $data)
-                                <div wire:key='jobseeker-{{ $data->employee_id }}'
-                                    class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-blue-50 rounded-xl shrink-0 grow-0 w-full hover:bg-blue-200 transition-colors duration-300">
-                                    <img class="flex mx-auto w-[100px] h-[100px] object-cover rounded-full sm:mx-0 sm:grow-0 sm:shrink-0 shadow-xl"
-                                        src="{{ asset('storage/' . $data->pimg) }}"
-                                        alt="jobseeker-{{ $data->employee_id }}">
-                                    <div
-                                        class="flex flex-col items-center justify-center text-center  sm:text-left mt-2">
-                                        <div class="space-y-0.5">
-                                            <p class="text-lg text-black text-center font-semibold">
-                                                {{ $data->fname }}
-                                                {{ $data->mname ?? '' }}
-                                                {{ $data->lname }}@if (!empty($data->suffix))
-                                                    , {{ $data->suffix }}
-                                                @endif
-                                            </p>
-                                            <p class="text-slate-500 text-center font-medium">
-                                                {{ $data->empstatus == 1 ? 'Employed' : 'Unemployed' }}
-                                            </p>
+                            </div>
+                        @else
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                                @foreach ($matchingEmployees as $data)
+                                    <div wire:key='jobseeker-{{ $data->employee_id }}'
+                                        class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-blue-50 rounded-xl shrink-0 grow-0 w-full hover:bg-blue-200 transition-colors duration-300">
+                                        <img class="flex mx-auto w-[100px] h-[100px] object-cover rounded-full sm:mx-0 sm:grow-0 sm:shrink-0 shadow-xl"
+                                            src="{{ asset('storage/' . $data->pimg) }}"
+                                            alt="jobseeker-{{ $data->employee_id }}">
+                                        <div
+                                            class="flex flex-col items-center justify-center text-center  sm:text-left mt-2">
+                                            <div class="space-y-0.5">
+                                                <p class="text-lg text-black text-center font-semibold">
+                                                    {{ $data->fname }}
+                                                    {{ $data->mname ?? '' }}
+                                                    {{ $data->lname }}@if (!empty($data->suffix))
+                                                        , {{ $data->suffix }}
+                                                    @endif
+                                                </p>
+                                                <p class="text-slate-500 text-center font-medium">
+                                                    {{ $data->empstatus == 1 ? 'Employed' : 'Unemployed' }}
+                                                </p>
+                                            </div>
+                                            <a wire:navigate
+                                                href="{{ route('jobseeker.profile', ['id' => $data->employee_id]) }}"
+                                                class="mt-2 px-4 py-1 text-sm text-blue-600  bg-blue-300 font-semibold rounded-full border border-blue-200 hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
                                         </div>
-                                        <a wire:navigate
-                                            href="{{ route('jobseeker.profile', ['id' => $data->employee_id]) }}"
-                                            class="mt-2 px-4 py-1 text-sm text-blue-600  bg-blue-300 font-semibold rounded-full border border-blue-200 hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
 
 
-                        </div>
+                            </div>
 
 
                         @endif

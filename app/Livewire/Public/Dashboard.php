@@ -7,7 +7,9 @@ use App\Models\Education;
 use App\Models\Industry_preference;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
+use App\Models\Programs;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -53,6 +55,49 @@ class Dashboard extends Component
     public $filter, $sort = 'Newest';
     public $pagination = 5;
 
+    public function companyNotifications($empID)
+    {
+        $notifications = DB::table('job_posting')
+            ->leftJoin('job_applicants', 'job_posting.job_id', '=', 'job_applicants.job_id')
+            ->select(
+                'job_posting.job_id',
+                'job_posting.job_title',
+                'job_posting.responded_at as job_responded_at',
+                'job_applicants.responded_at as applicant_responded_at',
+                'job_applicants.applicant_Status'
+            )
+            ->where('job_posting.company_id', $empID) // Replace with the actual company ID
+            ->where(function ($query) {
+                // Filter job postings with a responded_at timestamp
+                $query->whereNotNull('job_posting.responded_at')
+                    ->orWhereNotNull('job_applicants.responded_at');
+            })
+            ->orderBy('job_posting.responded_at', 'desc')
+            ->orderBy('job_applicants.responded_at', 'desc')
+            ->get();
+
+        return $notifications->map(function ($notification) {
+            // Determine the type based on which responded_at is set
+            $type = $notification->applicant_responded_at ? 'applicant' : 'posting';
+
+            // Choose the responded_at value
+            $respondedAt = $notification->applicant_responded_at ?? $notification->job_responded_at;
+
+            // Construct the message based on the type
+            $message = $type === 'applicant'
+            ? 'A new applicant is has applied on your job "' . $notification->job_title . '".'
+            : 'The job post application for "' . $notification->job_title . '" has been responded to.';
+
+            return [
+                'type' => $type,
+                'job_title' => $notification->job_title,
+                'responded_at' => $respondedAt,
+                'message' => $message,
+            ];
+        })->toArray();
+
+    }
+
     public function mount()
     {
         $user = Auth::user();
@@ -81,6 +126,7 @@ class Dashboard extends Component
     {
         $joblist = null;
         $user = Auth::user();
+        $formattedNotifications = null;
 
         if ($this->filter == 'Recommended') {
 
@@ -253,6 +299,12 @@ class Dashboard extends Component
 
         $joblist = $joblist->paginate($this->pagination);
 
-        return view('livewire.public.dashboard', compact('joblist'));
+        $programList = Programs::orderBy('created_at', 'desc')->take(4)->get();
+
+        if ($user->company) {
+            $formattedNotifications = $this->companyNotifications($user->company->company_id);
+        }
+
+        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications'));
     }
 }

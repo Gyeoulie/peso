@@ -1,10 +1,18 @@
-<div wire:poll class="container mx-auto py-8">
+<div class="container mx-auto py-8">
 
 
 
 
     <div class="grid grid-cols-4 md:grid-cols-12 gap-4 p-3 md:p-0">
 
+
+        {{-- <div class="col-span-2 md:col-span-3">
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
+                <div id="QrScanner" class="flex w-full h-full"></div>
+
+            </div>
+
+        </div> --}}
 
 
         <div class="col-span-2 md:col-span-3">

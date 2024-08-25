@@ -27,4 +27,9 @@ class Requirements extends Model
     {
         return $this->hasMany(Requirements_Passed::class, 'requirement_id');
     }
+
+    public function requirementPassed()
+    {
+        return $this->hasOne(Requirements_Passed::class, 'requirement_id', 'requirement_id');
+    }
 }

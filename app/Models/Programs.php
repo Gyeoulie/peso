@@ -54,7 +54,6 @@ class Programs extends Model
         return $this->hasMany(Program_Tags::class, 'program_id');
     }
 
-
     public function attendedJobseekers()
     {
         return $this->hasMany(Program_Reg::class, 'program_id')

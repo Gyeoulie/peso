@@ -141,7 +141,7 @@
                                                 </img>
                                             </div>
                                             <div class="flex flex-col  w-full">
-                                                <h1 class="text-3xl font-bold underline">
+                                                <h1 class="text-2xl sm: font-bold underline">
                                                     {{ $data->job_posting->job_Title }}
                                                 </h1>
                                                 <h1 class="text-l text-gray-600">
@@ -235,12 +235,12 @@
             @if ($applicationInfo)
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col">
                     <div class="flex flex-row">
-                        <div class="flex flex-col w-full sm:w-auto">
+                        <div class="hidden sm:flex flex-col w-full sm:w-auto">
                             <img src="{{ asset('storage/' . $applicationInfo->job_posting->company->company_img) }}"
                                 class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                             </img>
                         </div>
-                        <div class="flex flex-col ml-4 w-full">
+                        <div class="flex flex-col sm:ml-4 w-full">
                             <h1 class="text-2xl sm:text-6xl  font-bold underline">
                                 {{ $applicationInfo->job_posting->job_Title }}
                             </h1>

@@ -155,7 +155,7 @@ class CompanyInformation extends Component
 
         $this->validate($rules, $messages);
 
-        $imgPath = $this->cimg->store('images/user_data', 'public');
+        $imgPath = $this->cimg->store('temp/user_img', 'public');
 
         $this->dispatch('handleStepData', $this->stepNumber, [
             'business' => $this->business,

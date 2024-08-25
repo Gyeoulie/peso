@@ -4,8 +4,10 @@ namespace App\Livewire\Signup\Employer;
 
 use App\Models\Company;
 use App\Models\Company_Industry_Line;
+use App\Models\Requirements_Passed;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -39,6 +41,15 @@ class EmployerInformation extends Component
 
             DB::beginTransaction();
 
+            $imgtempPath = $allData['cimg'];
+
+            // Define the new file name and path for storage
+            $imgnewFileName = basename($imgtempPath);
+            $imgfinalPath = 'images/user_data/' . $imgnewFileName;
+
+            // Move the file to the final storage location
+            Storage::disk('public')->move($imgtempPath, $imgfinalPath);
+
             $employer = Company::create([
                 'user_id' => $user->id,
                 'business_Name' => $allData['business'],
@@ -57,7 +68,7 @@ class EmployerInformation extends Component
                 'company_Fnum' => $allData['fax'],
                 'company_Email' => $allData['email'],
                 'company_Status' => 'ACTIVE',
-                'company_img' => $allData['cimg'],
+                'company_img' => $imgfinalPath,
             ]);
 
             if ($employer->company_id) {
@@ -67,6 +78,26 @@ class EmployerInformation extends Component
                     Company_Industry_Line::create([
                         'company_id' => $employer->company_id, // Assuming 'employee_id' is the foreign key column
                         'industry_id' => $industryPref['industry_id'],
+                    ]);
+                }
+
+                foreach ($allData['reqData'] as $reqData) {
+                    // Get the temporary file path
+                    $tempPath = $reqData['temp_path'];
+                    $requirementId = $reqData['requirement_id'];
+
+                    // Define the new file name and path for storage
+                    $newFileName = basename($tempPath);
+                    $finalPath = 'requirements/' . $newFileName;
+
+                    // Move the file to the final storage location
+                    Storage::disk('public')->move($tempPath, $finalPath);
+
+                    // Create a database record with the stored path
+                    Requirements_Passed::create([
+                        'company_id' => $employer->company_id, // Replace with actual job ID
+                        'requirement_id' => $requirementId,
+                        'req_passed_Input' => $finalPath,
                     ]);
                 }
 
@@ -85,6 +116,17 @@ class EmployerInformation extends Component
         } catch (\Exception $e) {
             DB::rollback();
             $success = false;
+
+            if (Storage::disk('public')->exists($imgfinalPath)) {
+                Storage::disk('public')->delete($imgfinalPath);
+            }
+            foreach ($allData['reqData'] as $reqData) {
+                $tempPath = $reqData['temp_path'];
+                // Check if the file exists and delete it
+                if (Storage::disk('public')->exists($tempPath)) {
+                    Storage::disk('public')->delete($tempPath);
+                }
+            }
             toastr()->error('Error in updating user details, please try again later');
 
         }

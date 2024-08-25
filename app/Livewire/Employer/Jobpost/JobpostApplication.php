@@ -12,6 +12,7 @@ use App\Models\Requirements;
 use App\Models\Requirements_Passed;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -40,22 +41,9 @@ class JobpostApplication extends Component
     public $remPost;
 
     public $mun, $prov;
-
-    public $req = [];
     public $agreePost;
 
     public $currentSlide = 1;
-
-    public function mount()
-    {
-        // Fetch all requirements
-        $requirements = Requirements::all();
-
-        // Initialize the $req array with requirement IDs
-        foreach ($requirements as $requirement) {
-            $this->req[$requirement->requirement_id] = null;
-        }
-    }
 
     public function prevSection($id)
     {
@@ -112,89 +100,99 @@ class JobpostApplication extends Component
             $this->validate($rules, $messages);
 
             $this->currentSlide++;
-        } else if ($id == 3) {
-            //dd($this->req);
-            $validationRules = [];
-
-            foreach ($this->req as $requirementId => $file) {
-                $validationRules['req.' . $requirementId] = 'mimes:pdf';
-            }
-
-            $this->validate($validationRules);
-            $this->currentSlide++;
-
-            // foreach ($this->req as $requirementId => $file) {
-            //     if ($file) {
-            //         // Store the file
-            //         $fileName = $file->store('requirements', 'public');
-
-            //         // Create a new RequirementsPassed record
-            //         RequirementsPassed::create([
-            //             'requirement_id' => $requirementId,
-            //             'req_passed_Input' => $fileName,
-            //         ]);
-            //     }
-            // }
-
         }
 
     }
 
     public function createApplication()
     {
-
+        // Validate the input
         $this->validate([
             'agreePost' => ['required'],
+        ], [
+            'agreePost.required' => 'You must agree with the terms and conditions before proceeding.',
         ]);
 
-        $user = Auth::user();
-        $companyId = $user->company->company_id;
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
 
-        $jobposting = Job_Posting::create([
-            'company_id' => $companyId,
-            'industry_id' => $this->jobIndustryHidden,
-            'job_Title' => $this->jobTitlePost,
-            'job_Description' => $this->descPost,
-            'job_Qualifications' => $this->qualPost,
-            'job_Remarks' => $this->remPost,
-            'job_MinWage' => $this->minWagePost,
-            'job_MaxWage' => $this->maxWagePost,
-            'job_Type' => $this->jtypePost,
-            'job_Edu' => $this->eduPost,
-            'job_Slots' => $this->slotsPost,
-            'job_Address' => $this->wAddPost,
-            'barangay_id' => $this->barHidden,
-            'job_Duration' => $this->durationPost,
-            'job_Status' => 'PENDING',
-            'peso_municipality_id' => $this->pesoPost,
+            // Retrieve the authenticated user and company ID
+            $user = Auth::user();
+            $companyId = $user->company->company_id;
 
-        ]);
+            // Get the current date and date one year ago
+            $currentDate = now();
+            $oneYearAgo = $currentDate->copy()->subYear();
 
-        if ($jobposting) {
+            // Fetch all active requirements
+            $activeRequirements = Requirements::where('requirement_Status', 1)->get();
 
-            foreach ($this->jobTags as $jobTag) {
-                Job_Tags::create([
-                    'job_id' => $jobposting->job_id,
-                    'position_id' => $jobTag['position_id'],
-                ]);
-            }
+            // Check if the company has passed all active requirements within the last year
+            foreach ($activeRequirements as $requirement) {
+                $requirementPassed = Requirements_Passed::where('requirement_id', $requirement->id)
+                    ->where('company_id', $companyId)
+                    ->where('updated_at', '>=', $oneYearAgo)
+                    ->first();
 
-            foreach ($this->req as $requirementId => $file) {
-                if ($file) {
-                    $fileName = $file->store('requirements', 'public');
+                if (!$requirementPassed) {
+                    // Display a toast error and rollback the transaction
+                    toastr()->error("The company has either not completed all required submissions or has not updated them within the last year.");
 
-                    Requirements_Passed::create([
-                        'job_id' => $jobposting->job_id,
-                        'requirement_id' => $requirementId,
-                        'req_passed_Input' => $fileName,
-                    ]);
+                    // Rollback the transaction and return early
+                    DB::rollBack();
+                    return;
                 }
             }
 
-            toastr()->success('You have successfully submitted an application!');
-            // return redirect()->route('jobpost.show', ['id' => $jobposting->id]);
-            $this->redirectRoute('jobpost.show', ['id' => $jobposting->job_id], navigate: true);
+            // Create a new job posting
+            $jobposting = Job_Posting::create([
+                'company_id' => $companyId,
+                'industry_id' => $this->jobIndustryHidden,
+                'job_Title' => $this->jobTitlePost,
+                'job_Description' => $this->descPost,
+                'job_Qualifications' => $this->qualPost,
+                'job_Remarks' => $this->remPost,
+                'job_MinWage' => $this->minWagePost,
+                'job_MaxWage' => $this->maxWagePost,
+                'job_Type' => $this->jtypePost,
+                'job_Edu' => $this->eduPost,
+                'job_Slots' => $this->slotsPost,
+                'job_Address' => $this->wAddPost,
+                'barangay_id' => $this->barHidden,
+                'job_Duration' => $this->durationPost,
+                'job_Status' => 'PENDING',
+                'peso_municipality_id' => $this->pesoPost,
+            ]);
 
+            // Check if job posting was created successfully
+            if ($jobposting) {
+                // Create job tags
+                foreach ($this->jobTags as $jobTag) {
+                    Job_Tags::create([
+                        'job_id' => $jobposting->job_id,
+                        'position_id' => $jobTag['position_id'],
+                    ]);
+                }
+
+                // Commit the transaction
+                DB::commit();
+
+                // Redirect to the job posting show route
+                toastr()->success('You have successfully submitted an application!');
+                $this->redirectRoute('jobpost.show', ['id' => $jobposting->job_id], navigate: true);
+            }
+        } catch (\Exception $e) {
+            // Roll back the transaction if an error occurs
+            DB::rollBack();
+
+            // Handle the error (e.g., log it and display an error message to the user)
+            toastr()->error('Application Failed. Please check your input.');
+        } catch (\Exception $e) {
+            // Roll back the transaction in case of general exceptions
+            DB::rollBack();
+            // Handle other errors (e.g., log the error, display a generic error message)
+            toastr()->error('An unexpected error occurred. Please try again.');
         }
     }
 
@@ -270,11 +268,9 @@ class JobpostApplication extends Component
     public function render()
     {
 
-        $requirements = Requirements::All();
         $pesoBranches = Municipality::whereHas('peso')->with('peso')->get();
 
         return view('livewire.employer.jobpost.jobpost-application', [
-            'requirements' => $requirements,
             'pesoBranches' => $pesoBranches,
         ]);
     }

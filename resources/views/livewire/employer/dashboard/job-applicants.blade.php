@@ -58,9 +58,7 @@
                             <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('ACTIVE')">
                                 Active
                             </x-dropdown-link>
-                            {{-- <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('PENDING')">
-                                Pending
-                            </x-dropdown-link> --}}
+
                             <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('COMPLETED')">
                                 Completed
                             </x-dropdown-link>

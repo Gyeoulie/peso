@@ -173,11 +173,13 @@
                     </svg>
                 </button>
                 <ul id="dropdown-3"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-training', 'admin-create-training') ? 'block' : 'hidden' }}">
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-training', 'admin-create-training', 'admin-view-training') ? 'block' : 'hidden' }}">
 
                     <li>
                         <a wire:navigate href="{{ route('admin-training') }}"
-                            :class="{{ request()->routeIs('admin-training') }} ? activeNav : inactiveNav"
+                            :class="{{ request()->routeIs('admin-training', 'admin-view-training', 'admin-registrants-training') }}
+                                ?
+                                activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Training
                             List</a>
                     </li>

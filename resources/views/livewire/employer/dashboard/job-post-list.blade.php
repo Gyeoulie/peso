@@ -247,11 +247,46 @@
 
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    <a wire:navigate
-                                                        href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
-                                                        class="font-medium text-blue-600  hover:underline">View
-                                                        Post</a>
+                                                    <div class="flex flex-row  gap-5">
+                                                        <div x-data="{ tooltip: 'View Job Post' }">
+                                                            <a wire:navigate
+                                                                href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="h-5 w-5"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 24 24" fill="currentColor">
+                                                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                        clip-rule="evenodd" />
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+
+
+                                                        <div x-data="{ tooltip: 'View Details' }">
+                                                            <a wire:navigate
+                                                                href="{{ route('jobpost.details', ['id' => $data->job_id]) }}"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5 "
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                                                                </svg>
+
+                                                            </a>
+                                                        </div>
+
+
+                                                    </div>
                                                 </td>
+
+
                                             </tr>
                                         @endforeach
                                     @endif

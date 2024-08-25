@@ -18,7 +18,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
@@ -41,7 +40,7 @@ class EditDetails extends Component
     public $fname, $mname, $lname, $suffix, $birthdate, $gender = 0, $civilstatus = 0, $religion = 0,
     $pnumber, $tinnum, $height, $address;
     public $barangayID, $mun, $prov, $bar;
-    public $disability, $selectDisability = "", $otherDisability = "";
+    public $selectDisability = "", $otherDisability = "";
     public $jobpreference, $industrypreference;
 
     // LANGUAGE
@@ -58,6 +57,12 @@ class EditDetails extends Component
     public $licName = 'Select License', $licValidity;
     public $licID, $licTypeID;
 
+    // DISABILITIES
+    public $originalDisabilities = [], $disabilitiesToAdd = [], $disabilitiesToRemove = [], $displayDisabilities = [], $disabilitiesToRestore = [];
+
+    // RESUME
+    public $newResume;
+
     //RULES
     public function rules()
     {
@@ -65,6 +70,66 @@ class EditDetails extends Component
             // BASIC INFORMATION
             'pimg' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ];
+    }
+
+    public function viewFile($id, $fileToView)
+    {
+        $this->dispatch('viewFile', [
+            'url' => route('view.resume'),
+            'emp_id' => $id,
+            'resume_type' => $fileToView,
+        ]);
+
+    }
+
+    public function saveResume()
+    {
+        $this->validate([
+            'newResume' => ['required', 'file', 'mimes:pdf', 'max:5120'], // 'max' is in kilobytes (5MB = 5120KB)
+        ], [
+            'newResume.required' => 'The resume file is required.',
+            'newResume.file' => 'The resume must be a file.',
+            'newResume.mimes' => 'The resume must be a PDF file.',
+            'newResume.max' => 'The resume may not be greater than 5MB in size.',
+        ]);
+
+        // Start a transaction
+        DB::beginTransaction();
+
+        try {
+            // Upload the new resume
+            $resumePath = $this->newResume->store('resumes', 'public');
+
+            // Retrieve the current employee's record
+            $employee = Employee::findOrFail($this->empID);
+
+            // Delete the old resume if it exists
+            if ($employee->resume) {
+                Storage::disk('public')->delete($employee->resume);
+            }
+
+            // Update the employee's record with the new resume path
+            $employee->update([
+                'resume' => $resumePath,
+            ]);
+
+            // Commit the transaction
+            DB::commit();
+
+            toastr()->success('Resume uploaded and updated successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction if something goes wrong
+            DB::rollBack();
+
+            // Delete the newly uploaded resume file
+            if (isset($resumePath)) {
+                Storage::disk('public')->delete($resumePath);
+            }
+
+            toastr()->error('There was an error in uploading the resume!');
+        }
+
+        $this->reset('newResume');
     }
 
     //MODAL
@@ -109,52 +174,103 @@ class EditDetails extends Component
         $this->resetValidation();
     }
 
-    //DISABILITY
+    // DISABILITY
     public function saveDisability()
     {
         if ($this->selectDisability === "other") {
             $this->selectDisability = $this->otherDisability;
-            $this->validate([
-                'selectDisability' => ['required', 'string', 'filled'],
-            ]);
         }
 
         $this->validate([
             'selectDisability' => [
                 'required', 'string', 'filled',
-                Rule::unique('disability', 'disability_Type')
-                    ->where(function ($query) {
-                        $query->where('employee_id', $this->empID)
-                            ->whereRaw('LOWER(disability_Type) = LOWER(?)', [$this->selectDisability]);
-                    }),
             ],
         ]);
 
-        try {
-            Disability::create([
-                'employee_id' => $this->empID,
-                'disability_Type' => strtoupper($this->selectDisability),
-            ]);
+        $disabilityType = strtoupper($this->selectDisability);
 
-            toastr()->success('Disability Record has been Added!');
-        } catch (\Exception $e) {
-            toastr()->error('There was an Error');
+        // Check if the disability is already in the original list, added list, or display list
+        if (
+            in_array($disabilityType, array_column($this->originalDisabilities, 'disability_Type')) ||
+            in_array($disabilityType, array_column($this->disabilitiesToAdd, 'disability_Type')) ||
+            in_array($disabilityType, array_column($this->displayDisabilities, 'disability_Type'))
+        ) {
+            toastr()->warning('This disability has already been added.');
+            return;
         }
-        $this->closeModal('disability');
+
+        // Check if the disability was previously soft deleted
+        $softDeletedDisability = Disability::withTrashed()
+            ->where('employee_id', $this->empID)
+            ->where('disability_Type', $disabilityType)
+            ->first();
+
+        if ($softDeletedDisability) {
+            // Store the disability for restoration during the save process
+            $this->disabilitiesToRestore[] = $softDeletedDisability->disability_id;
+            $this->closeModal('disability');
+        } else {
+            // Add the disability to the to-be-added list
+            $this->disabilitiesToAdd[] = ['disability_Type' => $disabilityType];
+            $this->closeModal('disability');
+        }
+
+        // Add to the display array
+        $this->displayDisabilities[] = ['disability_id' => $softDeletedDisability->disability_id ?? null, 'disability_Type' => $disabilityType];
     }
 
-    public function removeDisability($disID)
+    public function removeDisability($identifier)
     {
-        try {
-            Disability::where('disability_id', $disID)
+
+        // dd($identifier);
+        // Check if the identifier is numeric (indicating it's a disability_id)
+        if (is_numeric($identifier)) {
+            // Handle removal by disability_id
+            $disability = Disability::withTrashed()
+                ->where('disability_id', $identifier)
                 ->where('employee_id', $this->empID)
-                ->delete();
+                ->pluck('disability_Type')
+                ->first();
 
-            toastr()->success('Disability record has been deleted.');
-        } catch (\Exception $e) {
+            if ($disability) {
+                // Add to removal list if it exists in the original list
+                if (in_array(strtoupper($disability), array_column($this->originalDisabilities, 'disability_Type'))) {
+                    $this->disabilitiesToRemove[] = $identifier;
+                }
 
-            toastr()->error('There was an Error');
+                // Update display list
+                $this->displayDisabilities = array_filter($this->displayDisabilities, function ($dis) use ($identifier) {
+                    return $dis['disability_id'] !== (int) $identifier;
+                });
+
+                // Remove from disabilitiesToAdd if present
+                $this->disabilitiesToAdd = array_filter($this->disabilitiesToAdd, function ($dis) use ($disability) {
+                    return $dis['disability_Type'] !== $disability;
+                });
+
+                $this->disabilitiesToRestore = array_filter($this->disabilitiesToAdd, function ($dis) use ($disability) {
+                    return $dis['disability_Type'] !== $disability;
+                });
+            } else {
+                toastr()->warning('Disability not found.');
+            }
+        } else {
+            // Handle removal by disability_Type
+            $disabilityType = strtoupper($identifier);
+
+            // Remove from disabilitiesToAdd if present
+            $this->disabilitiesToAdd = array_filter($this->disabilitiesToAdd, function ($dis) use ($disabilityType) {
+                return $dis['disability_Type'] !== $disabilityType;
+            });
+
+            // Remove from displayDisabilities
+            $this->displayDisabilities = array_filter($this->displayDisabilities, function ($dis) use ($disabilityType) {
+                return $dis['disability_Type'] !== $disabilityType;
+            });
         }
+
+        $this->closeModal('disability');
+        // toastr()->info('Disability will be removed when you save the profile.');
     }
 
     //SET VARIABLES
@@ -256,7 +372,6 @@ class EditDetails extends Component
             'birthdate.required' => 'Birthdate is required.',
             'birthdate.date' => 'Birthdate must be a valid date.',
             'birthdate.before_or_equal' => 'You must be at least 18 years old.',
-            'birthdate.before_or_equal' => 'Birthdate cannot be a future date.',
             'gender.required' => 'Gender is required.',
             'civilstatus.required' => 'Civil status is required.',
             'religion.required' => 'Religion is required.',
@@ -275,6 +390,9 @@ class EditDetails extends Component
         if ($this->pimg) {
             $imgPath = $this->pimg->store('images/user_data', 'public');
         }
+
+        $profileChanged = false;
+        $disabilitiesChanged = false;
 
         DB::beginTransaction();
 
@@ -303,10 +421,45 @@ class EditDetails extends Component
             // Check if any attributes have changed
             if ($jobseekerData->isDirty()) {
                 $jobseekerData->save();
+                $profileChanged = true;
+            }
+
+            foreach ($this->disabilitiesToRestore as $disID) {
+                $disability = Disability::withTrashed()->find($disID);
+                if ($disability) {
+                    $disability->restore();
+                }
+                $disabilitiesChanged = true;
+            }
+
+            // Add new disabilities
+            foreach ($this->disabilitiesToAdd as $disability) {
+                if (!in_array($disability['disability_Type'], array_column($this->originalDisabilities, 'disability_Type'))) {
+                    Disability::create([
+                        'employee_id' => $this->empID,
+                        'disability_Type' => $disability['disability_Type'],
+                    ]);
+                    $disabilitiesChanged = true;
+                }
+            }
+
+            foreach ($this->disabilitiesToRemove as $disID) {
+                Disability::where('disability_id', $disID)
+                    ->where('employee_id', $this->empID)
+                    ->delete();
+                $disabilitiesChanged = true;
+            }
+
+            if ($profileChanged || $disabilitiesChanged) {
                 DB::commit();
+                $this->reset('disabilitiesToAdd', 'disabilitiesToRemove', 'displayDisabilities', 'disabilitiesToRestore');
+                $this->mount();
                 toastr()->success('Profile has been updated!');
+
             } else {
                 DB::rollBack();
+                $this->reset('disabilitiesToAdd', 'disabilitiesToRemove', 'displayDisabilities', 'disabilitiesToRestore');
+                $this->mount();
                 toastr()->info('No changes detected.');
             }
         } catch (\Exception $e) {
@@ -314,6 +467,8 @@ class EditDetails extends Component
             if (isset($imgPath)) {
                 Storage::disk('public')->delete($imgPath);
             }
+            $this->reset('disabilitiesToAdd', 'disabilitiesToRemove', 'displayDisabilities', 'disabilitiesToRestore');
+            $this->mount();
             toastr()->error('There was an error updating the profile.');
         }
     }
@@ -566,14 +721,30 @@ class EditDetails extends Component
         }
     }
 
-    public function render()
+    public function mount()
     {
+
         $user = Auth::user();
         $this->empID = $user->employee->employee_id;
 
-        $this->disability = Disability::where('employee_id', '=', $this->empID)->get();
+        // Fetch current disabilities from the database
+        $this->originalDisabilities = Disability::where('employee_id', $this->empID)
+            ->get()
+            ->map(function ($disability) {
+                return [
+                    'disability_id' => $disability->disability_id,
+                    'disability_Type' => strtoupper($disability->disability_Type),
+                ];
+            })->toArray();
 
-        // $langTypes = Language::where('language_Type', 'like', '%' . $this->search . '%')->get();
+        // Initialize display disabilities
+        $this->displayDisabilities = $this->originalDisabilities;
+
+    }
+
+    public function render()
+    {
+
         $elTypes = Eligibility_Type::where('eligibility_Name', 'like', '%' . $this->search . '%')->get();
         $liTypes = License_Type::where('license_Name', 'like', '%' . $this->search . '%')->get();
 

@@ -4,9 +4,8 @@ namespace App\Livewire\Admin\JobPosting;
 
 use App\Models\Employee;
 use App\Models\Job_Posting;
-use App\Models\Requirements_Passed;
+use App\Models\Requirements;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -49,7 +48,7 @@ class JobPostOverview extends Component
 
     public $selectedReqPassedId;
 
-    public function viewRequirement($reqPassedId)
+    public function viewFile($reqPassedId)
     {
         $this->selectedReqPassedId = $reqPassedId;
 
@@ -94,41 +93,8 @@ class JobPostOverview extends Component
         $this->dispatch('close-modal', $modal);
     }
 
-    public function downloadPDF($id)
-    {
-
-        try {
-            $reqpassed = Requirements_Passed::findOrFail($id);
-
-        } catch (\Exception $e) {
-            toastr()->error($e);
-        }
-
-        $pdfPath = $reqpassed->req_passed_Input;
-        $pdfName = $reqpassed->requirement->requirement_Title . '_' . $reqpassed->job_posting->company->business_Name . '.pdf';
-
-        //$path = storage_path('public/' . $pdfPath);
-        if (Storage::exists('public/' . $pdfPath)) {
-            // Get the URL of the PDF file
-            // $pdfUrl = Storage::url($path);
-
-            $fileContent = Storage::get('public/' . $pdfPath);
-
-            return response()->streamDownload(function () use ($fileContent) {
-                echo $fileContent;
-            }, $pdfName);
-            // Redirect the user to the PDF URL
-            toastr()->success('PDF file.');
-        } else {
-            // PDF file not found, handle the error accordingly
-            // For example, you can redirect the user or show a message
-            toastr()->error('PDF file not found.' . $pdfPath);
-        }
-    }
-
     public function render()
     {
-
         $jobpost = Job_Posting::with(['job_tags'])->findOrFail($this->id);
 
         $jobMunicipalityId = $jobpost->peso_municipality_id;
@@ -162,6 +128,14 @@ class JobPostOverview extends Component
             ->orderByDesc('num_matched_tags')
             ->get();
 
+        $requirements = Requirements::with([
+            'requirementPassed' => function ($query) use ($jobpost) {
+                $query->where('company_id', $jobpost->company_id); // Use `where` for filtering
+            },
+        ])
+            ->where('requirement_Status', 1)
+            ->get();
+
         // Find applicants that match the job posting criteria
         // $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
         //     $query->where('municipality_id', $jobMunicipalityId);
@@ -173,6 +147,6 @@ class JobPostOverview extends Component
         //         $query->whereIn('position_id', $jobTagIds);
         //     })
         //     ->get();
-        return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees'));
+        return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees', 'requirements'));
     }
 }

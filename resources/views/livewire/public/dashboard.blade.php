@@ -1,96 +1,37 @@
 <div class="w-full">
-    {{-- <div class="overflow-x-auto">
-    <div class="flex flex-row sm:grid sm:grid-cols-5 gap-2 py-8 mx-4 sm:mx-12 ">
+    <div class="overflow-x-auto">
+        <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
 
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
+            @foreach ($programList as $data)
+                <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
+                    class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                    <img class="w-full sm:w-60 object-cover h-48 sm:h-auto"
+                        src="{{ asset('storage/' . $data->program_pubmat) }}" alt="prog-{{ $data->program_id }}">
+                    <div class="flex flex-col justify-between  p-4 sm:p-6">
+                        <h5 class="mb-2  text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
+                            {{ $data->program_Title }}
+                        </h5>
+                        <p class="mb-4 text-sm font-normal text-gray-700 leading-relaxed">
 
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
+                            {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 90, '...') !!}
 
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
+                        </p>
+                    </div>
+                </a>
+            @endforeach
 
-        <a href="#"
-            class="flex flex-col max-w-72 items-center bg-white border border-gray-200 rounded-lg shadow sm:flex-row sm:max-w-sm hover:bg-gray-100 flex-shrink-0">
-            <img class="object-cover w-auto rounded-t-lg h-48 sm:h-auto sm:w-36 sm:rounded-none sm:rounded-s-lg"
-                src="{{ asset('assets/img/peso-1.png') }}" alt="">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 ">Noteworthy technology acquisitions
-                    2021
-                </h5>
-                <p class="mb-3 text-sm font-normal text-gray-700 ">Here are the biggest enterprise technology
-                    acquisitions
-                    of
-                    2021 so far, in reverse chronological order.</p>
-            </div>
-        </a>
-
-
+        </div>
     </div>
 
 
-</div> --}}
-
-
-    <div wire:poll class="flex mx-auto sm:mx-12 py-8 ">
+    <div wire:poll class="flex mx-auto sm:mx-12 py-2 ">
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0 w-full">
 
             {{-- MAIN BAR FOR JOB POST --}}
             <div class="col-span-4 sm:col-span-9">
                 <div class="bg-white shadow rounded-lg p-6 overflow-visible">
                     <div
-                        class="flex flex-col sm:flex-row p-1 sm:items-center sm:justify-between flex-column flex-wrap sm:flex-row space-y-4 sm:space-y-0 pb-4">
+                        class="flex flex-col sm:flex-row p-1 sm:items-center sm:justify-between flex-column flex-wrap sm:flex-row gap-2 space-y-4 sm:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -338,18 +279,59 @@
 
 
             {{-- SIDE BAR --}}
-            <div class="col-span-4 sm:col-span-3">
-                <div class="bg-white shadow rounded-lg p-6">
-                    <div class="p-6 text-gray-900 text-center w-full">
-                        <h1 class="font-bold text-2xl">Top Job Openings</h1>
-
+            @if (Auth::check() && auth()->user()->usertype == 5)
+                <div class="col-span-4 sm:col-span-3">
+                    <div class="bg-white shadow rounded-lg p-4">
+                        <div class="p-3 text-gray-900 text-center w-full">
+                            <h1 class="font-bold text-2xl">Notifications</h1>
+                            <div class="overflow-y-auto max-h-[900px]"> <!-- Set max height here -->
+                                <ul class="space-y-3 mt-5">
+                                    @foreach ($formattedNotifications as $notification)
+                                        <li>
+                                            <div class="flex items-start space-x-4">
+                                                <span class="flex-shrink-0">
+                                                    <div
+                                                        class="text-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 border border-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 bg-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                            stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="{{ $notification['type'] === 'applicant' ? 'M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75' : 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z' }}" />
+                                                        </svg>
+                                                    </div>
+                                                </span>
+                                                <div class="flex flex-col">
+                                                    <span class="flex-1">
+                                                        <div class="text-left text-md font-medium">
+                                                            {{ $notification['message'] }}
+                                                        </div>
+                                                    </span>
+                                                    <span
+                                                        class="text-left text-xs text-grey-400">{{ \Carbon\Carbon::parse($notification['responded_at'])->format('F j, Y g:i A') }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-            </div>
+            @else
+                <div class="col-span-4 sm:col-span-3">
+                    <div class="bg-white shadow rounded-lg p-4">
+                        <div class="p-3 text-gray-900 text-center w-full">
+                            <h1 class="font-bold text-2xl">Notifications</h1>
+
+                        </div>
+                    </div>
+
+                </div>
+            @endif
 
         </div>
 
+
     </div>
-
-
-</div>

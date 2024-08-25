@@ -127,11 +127,14 @@
                         <div class="flex flex-col w-full">
                             <x-input-label for="mname" :value="__('Middle Name')" />
                             <x-text-input wire:model="mname" class="block mt-1 w-full" type="text" disabled />
+                            <x-input-error :messages="$errors->get('mname')" class="mt-2" />
+
                         </div>
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="suffix" :value="__('Suffix')" />
-                            <select wire:model="suffix" name="suffixPost" class="block mt-1 w-full rounded-md" disabled>
+                            <select wire:model="suffix" name="suffixPost" class="block mt-1 w-full rounded-md"
+                                disabled>
                                 <option value="" disabled selected>Select Suffix</option>
                                 <option value="">None</option>
                                 <option value="Jr">Jr. (Junior)</option>
@@ -147,6 +150,8 @@
                                 <option value="IX">IX</option>
                                 <option value="X">X</option>
                             </select>
+                            <x-input-error :messages="$errors->get('mnsuffixame')" class="mt-2" />
+
                         </div>
                     </div>
 
@@ -310,13 +315,14 @@
                             <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
 
 
-                                @foreach ($disability as $dis)
-                                    <span wire:key="{{ $dis->disability_id }}"
-                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                        {{ $dis->disability_Type }}
-                                        <button wire:click.prevent="removeDisability({{ $dis->disability_id }})"
+                                @foreach ($displayDisabilities as $dis)
+                                    <span wire:key="{{ $dis['disability_id'] ?? md5($dis['disability_Type']) }}"
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {{ $dis['disability_Type'] }}
+                                        <button
+                                            wire:click.prevent="removeDisability('{{ $dis['disability_id'] ?? $dis['disability_Type'] }}')"
                                             type="button"
-                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
                                             <span class="sr-only">Remove badge</span>
                                             <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -328,6 +334,9 @@
                                         </button>
                                     </span>
                                 @endforeach
+
+
+
 
 
                             </div>
@@ -397,7 +406,7 @@
                                 <x-primary-button wire:click.prevent="openModal('language')" type="button"
                                     class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900">
                                     Add Language</x-primary-button>
-                            </div>  
+                            </div>
 
                         </div>
 
@@ -426,67 +435,91 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($employeeDetails->language as $data)
-                                        <tr wire:key='language-{{ $data->language_id }}'
-                                            class="bg-white border-b hover:bg-gray-50 content-center">
-                                            <th class="border px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                                {{ $data->language_Type }}
-                                            </th>
-                                            <td scope="row" class="border px-6 py-1">
-                                                <div class="flex items-center justify-center">
-                                                    <input type="checkbox"
-                                                        @if ($data->language_Read == '1') checked @endif
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                                        disabled>
-                                                    <label for="checkbox-read" class="sr-only">checkbox</label>
-                                                </div>
-                                            </td>
-                                            <td class="border px-6 py-1">
-                                                <div class="flex items-center justify-center">
-                                                    <input type="checkbox"
-                                                        @if ($data->language_Write == '1') checked @endif
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                                        disabled>
-                                                    <label for="checkbox-write" class="sr-only">checkbox</label>
-                                                </div>
-                                            </td>
-                                            <td class="border px-6 py-1">
-                                                <div class="flex items-center justify-center">
-                                                    <input type="checkbox"
-                                                        @if ($data->language_Speak == '1') checked @endif
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                                        disabled>
-                                                    <label for="checkbox-speak" class="sr-only">checkbox</label>
-                                                </div>
-                                            </td>
-                                            <td class="border px-6 py-1">
-                                                <div class="flex items-center justify-center">
-                                                    <input id="checkbox-understand" type="checkbox"
-                                                        @if ($data->language_Understand == '1') checked @endif
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                                        disabled>
-                                                    <label for="checkbox-understand" class="sr-only">checkbox</label>
-                                                </div>
-                                            </td>
-                                            <td class="border px-6 py-1 text-center">
-                                                {{-- EDIT BUTTON --}}
-                                                <div x-data="{ tooltip: 'Edit Language' }">
-                                                    <button
-                                                        wire:click.prevent="editRecord({{ $data->language_id }}, 'language')"
-                                                        x-tooltip="tooltip" type="button"
-                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                    @if ($employeeDetails->language->isEmpty())
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                    <div class="p-6 bg-gray-100 rounded-full">
+                                                        <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-width="2"
+                                                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                         </svg>
-                                                    </button>
+
+                                                    </div>
+                                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                                        No Records Found!
+                                                    </p>
                                                 </div>
+
                                             </td>
                                         </tr>
-                                    @endforeach
-
+                                    @else
+                                        @foreach ($employeeDetails->language as $data)
+                                            <tr wire:key='language-{{ $data->language_id }}'
+                                                class="bg-white border-b hover:bg-gray-50 content-center">
+                                                <th
+                                                    class="border px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                                    {{ $data->language_Type }}
+                                                </th>
+                                                <td scope="row" class="border px-6 py-1">
+                                                    <div class="flex items-center justify-center">
+                                                        <input type="checkbox"
+                                                            @if ($data->language_Read == '1') checked @endif
+                                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                                            disabled>
+                                                        <label for="checkbox-read" class="sr-only">checkbox</label>
+                                                    </div>
+                                                </td>
+                                                <td class="border px-6 py-1">
+                                                    <div class="flex items-center justify-center">
+                                                        <input type="checkbox"
+                                                            @if ($data->language_Write == '1') checked @endif
+                                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                                            disabled>
+                                                        <label for="checkbox-write" class="sr-only">checkbox</label>
+                                                    </div>
+                                                </td>
+                                                <td class="border px-6 py-1">
+                                                    <div class="flex items-center justify-center">
+                                                        <input type="checkbox"
+                                                            @if ($data->language_Speak == '1') checked @endif
+                                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                                            disabled>
+                                                        <label for="checkbox-speak" class="sr-only">checkbox</label>
+                                                    </div>
+                                                </td>
+                                                <td class="border px-6 py-1">
+                                                    <div class="flex items-center justify-center">
+                                                        <input id="checkbox-understand" type="checkbox"
+                                                            @if ($data->language_Understand == '1') checked @endif
+                                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                                            disabled>
+                                                        <label for="checkbox-understand"
+                                                            class="sr-only">checkbox</label>
+                                                    </div>
+                                                </td>
+                                                <td class="border px-6 py-1 text-center">
+                                                    {{-- EDIT BUTTON --}}
+                                                    <div x-data="{ tooltip: 'Edit Language' }">
+                                                        <button
+                                                            wire:click.prevent="editRecord({{ $data->language_id }}, 'language')"
+                                                            x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -553,52 +586,75 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    @foreach ($employeeDetails->eligibility as $eli)
-                                        <tr class="bg-white border-b hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="text-gray-500 font-medium text-lg uppercase">
-                                                    {{ $eli->eligibility_type->eligibility_Name }}
-                                                </div>
-                                            </td>
-
-                                            <td class="px-6 py-4">
-                                                <div class="text-black font-bold text-lg uppercase">
-                                                    {{ $eli->eligibility_Date->format('F j, Y') }}
-                                                </div>
-                                            </td>
-
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-row items-center justify-center gap-6">
-                                                    <button
-                                                        wire:click.prevent="editRecord({{ $eli->eligibility_id }}, 'eligibility')"
-                                                        type="button">
-
-
-                                                        <svg class="w-6 h-6 text-blue-600" aria-hidden="true"
+                                    @if ($employeeDetails->eligibility->isEmpty())
+                                        <tr>
+                                            <td colspan="3">
+                                                <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                    <div class="p-6 bg-gray-100 rounded-full">
+                                                        <svg class="w-24 h-24 text-black" aria-hidden="true"
                                                             xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" fill="currentColor" viewBox="0 0 24 24">
-
-                                                            <path fill-rule="evenodd"
-                                                                d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
-                                                                clip-rule="evenodd" />
-                                                            <path fill-rule="evenodd"
-                                                                d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
-                                                                clip-rule="evenodd" />
+                                                            height="24" fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-width="2"
+                                                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                         </svg>
-                                                    </button>
-                                                    <svg class="w-6 h-6 text-gray-800 text-red-500" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                        height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-linejoin="round" stroke-width="2"
-                                                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                                    </svg>
+
+                                                    </div>
+                                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                                        No Records Found!
+                                                    </p>
                                                 </div>
+
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @else
+                                        @foreach ($employeeDetails->eligibility as $eli)
+                                            <tr class="bg-white border-b hover:bg-gray-50">
+                                                <td class="px-6 py-4">
+                                                    <div class="text-gray-500 font-medium text-lg uppercase">
+                                                        {{ $eli->eligibility_type->eligibility_Name }}
+                                                    </div>
+                                                </td>
 
+                                                <td class="px-6 py-4">
+                                                    <div class="text-black font-bold text-lg uppercase">
+                                                        {{ $eli->eligibility_Date->format('F j, Y') }}
+                                                    </div>
+                                                </td>
+
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-row items-center justify-center gap-6">
+                                                        <button
+                                                            wire:click.prevent="editRecord({{ $eli->eligibility_id }}, 'eligibility')"
+                                                            type="button">
+
+
+                                                            <svg class="w-6 h-6 text-blue-600" aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" fill="currentColor"
+                                                                viewBox="0 0 24 24">
+
+                                                                <path fill-rule="evenodd"
+                                                                    d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
+                                                                    clip-rule="evenodd" />
+                                                                <path fill-rule="evenodd"
+                                                                    d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
+                                                                    clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                        <svg class="w-6 h-6 text-gray-800 text-red-500"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="none"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="2"
+                                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                        </svg>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
 
                                 </tbody>
                             </table>
@@ -667,52 +723,76 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($employeeDetails->license as $empLicense)
-                                        <tr wire:key="{{ $empLicense->license_id }}"
-                                            class="bg-white border-b hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="text-gray-500 font-medium text-lg uppercase">
-                                                    {{ $empLicense->license_type->license_Name }}
-                                                </div>
-                                            </td>
-
-                                            <td class="px-6 py-4">
-                                                <div class="text-black font-bold text-lg uppercase">
-                                                    {{ $empLicense->license_Validity->format('F j, Y') }}
-                                                </div>
-                                            </td>
-
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-row items-center justify-center gap-6">
-                                                    <button
-                                                        wire:click.prevent="editRecord({{ $empLicense->license_id }}, 'license')"
-                                                        type="button">
-
-
-                                                        <svg class="w-6 h-6 text-blue-600" aria-hidden="true"
+                                    @if ($employeeDetails->license->isEmpty())
+                                        <tr>
+                                            <td colspan="3">
+                                                <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                    <div class="p-6 bg-gray-100 rounded-full">
+                                                        <svg class="w-24 h-24 text-black" aria-hidden="true"
                                                             xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" fill="currentColor" viewBox="0 0 24 24">
-
-                                                            <path fill-rule="evenodd"
-                                                                d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
-                                                                clip-rule="evenodd" />
-                                                            <path fill-rule="evenodd"
-                                                                d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
-                                                                clip-rule="evenodd" />
+                                                            height="24" fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-width="2"
+                                                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                         </svg>
-                                                    </button>
-                                                    <svg class="w-6 h-6 text-gray-800 text-red-500" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                        height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-linejoin="round" stroke-width="2"
-                                                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                                    </svg>
+
+                                                    </div>
+                                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                                        No Records Found!
+                                                    </p>
                                                 </div>
+
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @else
+                                        @foreach ($employeeDetails->license as $empLicense)
+                                            <tr wire:key="{{ $empLicense->license_id }}"
+                                                class="bg-white border-b hover:bg-gray-50">
+                                                <td class="px-6 py-4">
+                                                    <div class="text-gray-500 font-medium text-lg uppercase">
+                                                        {{ $empLicense->license_type->license_Name }}
+                                                    </div>
+                                                </td>
 
+                                                <td class="px-6 py-4">
+                                                    <div class="text-black font-bold text-lg uppercase">
+                                                        {{ $empLicense->license_Validity->format('F j, Y') }}
+                                                    </div>
+                                                </td>
+
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-row items-center justify-center gap-6">
+                                                        <button
+                                                            wire:click.prevent="editRecord({{ $empLicense->license_id }}, 'license')"
+                                                            type="button">
+
+
+                                                            <svg class="w-6 h-6 text-blue-600" aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" fill="currentColor"
+                                                                viewBox="0 0 24 24">
+
+                                                                <path fill-rule="evenodd"
+                                                                    d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
+                                                                    clip-rule="evenodd" />
+                                                                <path fill-rule="evenodd"
+                                                                    d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
+                                                                    clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                        <svg class="w-6 h-6 text-gray-800 text-red-500"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="none"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="2"
+                                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                        </svg>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
 
 
                                 </tbody>
@@ -825,39 +905,61 @@
                     <div class="flex flex-col my-4 w-full gap-4 mt-4 w-full">
                         <div class="flex flex-col md:flex-row w-full gap-2 md:gap-4">
 
-                            <div class="flex flex-col w-full mt-4">
-                                <button type="button"
-                                    class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
-                                    <i class="fa-solid fa-file-contract me-2"></i>
-                                    View Resume
-                                    <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="flex flex-row w-full gap-2">
+                            @if ($employeeDetails->resume)
                                 <div class="flex flex-col w-full mt-4">
-                                    <input
+                                    <button wire:click.prevent="viewFile({{ $employeeDetails->employee_id }}, 1 )"
+                                        type="button"
+                                        class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                        <i class="fa-solid fa-file-contract me-2"></i>
+                                        View Resume
+                                        <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                            width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2"
+                                                d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            @else
+                                <div class="flex flex-col w-full mt-4">
+                                    <div
+                                        class="text-red-900 bg-red-400 border border-red-500 focus:ring-4 focus:outline-none focus:ring-red-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                        <i class="fa-solid fa-file-contract me-2"></i>
+                                        You have no uploaded resume.
+                                        <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            @endif
+
+
+                            <div class="flex flex-row w-full justify-center items-center gap-2">
+                                <div class="flex flex-col w-full mt-4">
+                                    <input wire:model='newResume'
                                         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
                                         aria-describedby="file_input_help" id="file_input" type="file">
                                     <p class="mt-1 text-sm text-gray-500 " id="file_input_help">PDF ONLY (MAX 5MB).
                                     </p>
+                                    <x-input-error :messages="$errors->get('newResume')" class="mt-2" />
                                 </div>
-                                <div wire:loading.delay.long wire:target="recLetter" role="status">
-                                    <svg aria-hidden="true"
-                                        class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
-                                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                            fill="currentColor" />
-                                        <path
-                                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                            fill="currentFill" />
-                                    </svg>
-                                    <span class="sr-only">Loading...</span>
+                                <div class="flex">
+                                    <div wire:loading.delay.long wire:target="newResume" role="status">
+                                        <svg aria-hidden="true"
+                                            class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                fill="currentColor" />
+                                            <path
+                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                fill="currentFill" />
+                                        </svg>
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -865,8 +967,8 @@
 
 
 
-                        <x-blue-button wire:target="pimg, saveProfile" wire:loading.attr="disabled"
-                            wire:click.prevent="saveProfile" class="ml-auto mr-3" type="button"
+                        <x-blue-button wire:target="newResume, saveResume" wire:loading.attr="disabled"
+                            wire:click.prevent="saveResume" class="ml-auto mr-3" type="button"
                             x-data="" {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> x-on:click.prevent="saveDetails(general)" --}}>
                             Save
                             <div wire:loading.delay.long wire:target="pimg, saveProfile" role="status">
@@ -900,7 +1002,7 @@
 
 
     <x-modal name="license-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('License Record') }}
             </h2>
@@ -972,7 +1074,7 @@
 
 
     <x-modal name="eligibility-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Eligibility Record') }}
             </h2>
@@ -1049,7 +1151,7 @@
 
 
     <x-modal name="disability-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Add Disaibility Record') }}
             </h2>
@@ -1090,7 +1192,7 @@
 
 
     <x-modal name="language-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Add Language/Dialect Record') }}
             </h2>
@@ -1201,3 +1303,59 @@
 
 
 </div>
+@script
+    <script>
+        Livewire.on('viewFile', event => {
+            // Check if the event is an array and has at least one element
+            if (Array.isArray(event) && event.length > 0) {
+                // Access the first element and then its properties
+                const data = event[0]; // Assuming the data object is the first element
+
+                // Log the entire data object for verification
+                console.log('Data:', data);
+
+                // Extract URL and handle dynamic keys
+                const url = data.url;
+
+                // Ensure URL is present
+                if (url) {
+                    // Create and configure the form element
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.target = '_blank';
+
+                    // Add CSRF token as a hidden input
+                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    // Add all data inputs dynamically
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (key !== 'url') {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            input.value = value;
+                            form.appendChild(input);
+                        }
+                    });
+
+                    // Append form to the body and submit
+                    document.body.appendChild(form);
+                    form.submit();
+
+                    // Clean up by removing the form element
+                    document.body.removeChild(form);
+                } else {
+                    console.error('URL not found in event data');
+                }
+            } else {
+                console.error('Event is not in the expected format');
+            }
+        });
+    </script>
+@endscript

@@ -134,7 +134,7 @@ class CreateTrainining extends Component
             'program_Location' => $this->progLoc,
             'program_Description' => $this->descPost,
             'program_Qualification' => $this->qualPost,
-            'program_Remarks' => $this->remPost,
+            '   ' => $this->remPost,
             'program_Status' => 'ACTIVE',
             'industry_id' => $this->jobIndustryHidden,
             'municipality_id' => $municipality_id,
@@ -144,7 +144,7 @@ class CreateTrainining extends Component
             // Combine progDate and progTime into a single datetime
             if ($this->progDate && $this->progTime) {
                 $programDatetime = Carbon::createFromFormat('Y-m-d H:i', $this->progDate . ' ' . $this->progTime);
-                $data['program_datetime'] = $programDatetime;
+                $data['program_Datetime'] = $programDatetime;
             }
         }
 
