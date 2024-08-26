@@ -55,6 +55,7 @@ class TrainingRegistrants extends Component
     public function qrStop()
     {
         $this->dispatch('endScanner');
+        $this->dispatch('close-modal', 'qr-scanner-modal');
 
     }
 
@@ -62,8 +63,26 @@ class TrainingRegistrants extends Component
     {
         // Example: Find a record by the QR code content
         // You can replace this with your own logic
-        $this->selectedJobseeker = $decodedText;
-        $this->dispatch('close-modal', 'qr-scanner-modal');
+        $ticketData = json_decode($decodedText, true);
+
+        // dd($ticketData);
+
+        $ticket = Program_Reg::where('program_reg_id', $ticketData['program_reg_id'])
+            ->where('program_id', $ticketData['program_id'])
+            ->where('employee_id', $ticketData['employee_id'])
+            ->where('created_at', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ticketData['created_at']))
+            ->first();
+
+        // dd($ticket->employee_id);
+
+        if ($ticket) {
+            $this->getJobseeker($ticket->employee_id);
+            $this->dispatch('close-modal', 'qr-scanner-modal');
+
+        } else {
+            toastr()->info('Ticket is not valid');
+            $this->qrStop();
+        }
     }
 
     public function confirmReg($action, $id)

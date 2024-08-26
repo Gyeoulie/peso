@@ -49,4 +49,8 @@ class Municipality extends Model
     {
         return $this->hasMany(Job_Posting::class, 'municipality_id');
     }
+    public function programs()
+    {
+        return $this->hasMany(Programs::class, 'municipality_id');
+    }
 }
