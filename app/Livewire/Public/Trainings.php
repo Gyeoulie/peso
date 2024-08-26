@@ -11,6 +11,33 @@ use Livewire\Component;
 #[Layout('layouts.app')]
 class Trainings extends Component
 {
+    public $ticket = [];
+
+    public function viewTicket($id)
+    {
+
+        $data = Program_Reg::findOrFail($id);
+
+        if ($data) {
+
+            $this->ticket = json_encode([
+                'program_reg_id' => $data->program_reg_id,
+                'program_id' => $data->program_id,
+                'employee_id' => $data->employee_id,
+                'created_at' => $data->created_at->format('Y-m-d H:i:s'), // Explicitly format the timestamp
+            ]);
+
+            $this->dispatch('open-modal', 'ticket-modal');
+
+        }
+
+    }
+
+    public function closeTicket()
+    {
+        $this->dispatch('close-modal', 'ticket-modal');
+        $this->reset('ticket');
+    }
     public function render()
     {
 

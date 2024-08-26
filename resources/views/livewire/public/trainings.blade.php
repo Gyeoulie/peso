@@ -155,10 +155,10 @@
 
 
     </div>
-    <div class="flex" x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
+    <div class="grid grid-cols-4 gap-10" x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
 
-        <div>
+        <div class="col-span-4">
             <div class="table-container overflow-visible">
                 <div class="max-w-7xl mx-auto overflow-visible">
                     <div class="bg-white overflow-hidden sm:rounded-lg p-2 overflow-visible">
@@ -326,7 +326,9 @@
 
 
                                                                 <div x-data="{ tooltip: 'View Ticket' }">
-                                                                    <button x-tooltip="tooltip" type="button"
+                                                                    <button
+                                                                        wire:click.prevent='viewTicket({{ $data->program_reg_id }})'
+                                                                        x-tooltip="tooltip" type="button"
                                                                         class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                         <svg class="w-5 h-5 "
                                                                             xmlns="http://www.w3.org/2000/svg"
@@ -370,5 +372,38 @@
 
 
     </div>
+
+    <x-modal name="ticket-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('My Event Ticket') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col my-4 w-full h-full justify-center items-center">
+                @if ($ticket)
+                    <div class="flex">
+
+                        @if ($ticket)
+                            {!! QrCode::size(300)->generate($ticket) !!}
+                        @endif
+                    </div>
+                @else
+                    <div class="flex">
+
+                        <h1 class="text-xl font-semibold text-blue-500">No ticket can be generated. Please try again
+                            later.</h1>
+
+                    </div>
+                @endif
+            </div>
+            <div class="mt-6 flex justify-between">
+                <x-secondary-button wire:click.prevent='closeTicket'>
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+
+            </div>
+        </div>
+    </x-modal>
 
 </div>
