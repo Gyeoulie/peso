@@ -44,6 +44,10 @@ class Programs extends Model
     {
         return $this->belongsTo(Job_Industry::class, 'industry_id');
     }
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class, 'municipality_id');
+    }
 
     public function program_reg()
     {

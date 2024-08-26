@@ -34,6 +34,7 @@ use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
 use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
 use App\Livewire\Public\Resume\ResumeView;
 use App\Livewire\Public\SearchProfiles;
+use App\Livewire\Public\Trainings;
 use App\Livewire\Public\TrainingView;
 use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
@@ -66,6 +67,7 @@ Route::get('/employer/details', EmployerInformation::class)->name('fill_employer
 
 //------------------------------ PUBLIC ------------------------------
 Route::get('/dashboard', Dashboard::class)->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/trainings', Trainings::class)->middleware(['auth', 'verified'])->name('trainings');
 
 Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
 
