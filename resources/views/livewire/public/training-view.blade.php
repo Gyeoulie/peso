@@ -389,8 +389,8 @@
 
 
 
-        <x-modal name="register-modal" focusable x-data="{ agreeBox: @entangle('agreeBox') }">
-            <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <x-modal name="register-modal" focusable>
+            <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ agreeBox: @entangle('agreeBox') }">
                 <h2 class="text-lg font-medium text-gray-900">
                     {{ __('Are you sure you want to register?') }}
                 </h2>
@@ -431,8 +431,8 @@
                         {{ __('Cancel') }}
                     </x-secondary-button>
 
-                    <x-green-button x-show="agreeBox" wire:loading.attr="disabled" wire:click.prevent="register"
-                        class="ms-3" type="button">
+                    <x-green-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled"
+                        wire:click.prevent="register" class="ms-3" type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="updateApplicant('REJECT', 'reject')" role="status">
                             <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"

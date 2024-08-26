@@ -44,7 +44,7 @@
                             , {{ $jobseeker->suffix }}
                         @endif
                     </h1>
-                    <p class="text-gray-700">#IDNUMBER</p>
+                    <p class="text-gray-700">#{{ $jobseeker->employee_id }}</p>
                 </div>
 
                 <hr class="my-6 border-t border-gray-300">

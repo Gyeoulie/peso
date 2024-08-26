@@ -44,14 +44,15 @@
                                 <livewire:components.applications-notif />
                             </x-nav-link>
                         @endif
+
+                        <x-nav-link wire:navigate :href="route('trainings')" :active="request()->routeIs('trainings')">
+                            {{ __('Trainings') }}
+                        </x-nav-link>
                         @if (auth()->user()->usertype >= 8)
                             <x-nav-link wire:navigate :href="route('admin')" :active="Route::is('admin*')">
                                 {{ __('Admin Tools') }}
                             </x-nav-link>
                         @endif
-                        <x-nav-link wire:navigate :href="route('trainings')" :active="request()->routeIs('trainings')">
-                            {{ __('Trainings') }}
-                        </x-nav-link>
                     </div>
                 @else
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">

@@ -67,20 +67,26 @@ class TrainingRegistrants extends Component
 
         // dd($ticketData);
 
-        $ticket = Program_Reg::where('program_reg_id', $ticketData['program_reg_id'])
-            ->where('program_id', $ticketData['program_id'])
-            ->where('employee_id', $ticketData['employee_id'])
-            ->where('created_at', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ticketData['created_at']))
-            ->first();
+        try {
+            // Fetch the ticket based on the provided data
+            $ticket = Program_Reg::where('program_reg_id', $ticketData['program_reg_id'])
+                ->where('program_id', $ticketData['program_id'])
+                ->where('employee_id', $ticketData['employee_id'])
+                ->where('created_at', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ticketData['created_at']))
+                ->first();
 
-        // dd($ticket->employee_id);
+            // Check if the ticket is found
+            if ($ticket) {
+                $this->getJobseeker($ticket->employee_id);
+                $this->dispatch('close-modal', 'qr-scanner-modal');
+            } else {
+                toastr()->info('Ticket is not valid');
+                $this->qrStop();
+            }
+        } catch (\Exception $e) {
+            // Handle database query exceptions
 
-        if ($ticket) {
-            $this->getJobseeker($ticket->employee_id);
-            $this->dispatch('close-modal', 'qr-scanner-modal');
-
-        } else {
-            toastr()->info('Ticket is not valid');
+            toastr()->error('An error occurred while processing the ticket.');
             $this->qrStop();
         }
     }

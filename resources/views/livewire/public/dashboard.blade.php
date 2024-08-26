@@ -3,11 +3,15 @@
         <div>
             <h1 class="text-lg sm:text-2xl font-semibold">Recommended Trainings</h1>
         </div>
-        <div>
-            <h1 class="text-md sm:text-lg font-semibold">View more</h1>
+        <div class="flex items-end">
+            <a wire:navigate href="{{ route('trainings') }}"
+                class="text-sm sm:text-md
+                font-semibold hover:text-blue-400">View more</a>
         </div>
 
     </div>
+    <hr class="h-1 mx-auto sm:mx-12  bg-gray-200 border-0 dark:bg-gray-700">
+
     <div class="overflow-x-auto">
         <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
 
