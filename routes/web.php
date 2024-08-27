@@ -204,11 +204,11 @@ Route::get('/admin/job/applicants/overview/{id}', ApplicantOverview::class)->nam
 // ------------------------------TEST ROUTES------------------------------
 // Route::get('/teste', EmployerInformation::class)->name('employer.test');
 
-Route::get('/resume', function () {
-    return view('resume');
-})->name('resume');
+// Route::get('/resume', function () {
+//     return view('resume');
+// })->name('resume');
 
-Route::get('/resume/view/{id}', ResumeView::class)->name('view.resume');
+// Route::get('/resume/view/{id}', ResumeView::class)->name('view.resume');
 
 require __DIR__ . '/auth.php';
 

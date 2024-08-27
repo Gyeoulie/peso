@@ -64,7 +64,7 @@
             </div>
 
             @if (Auth::check())
-                <div class="hidden sm:flex mr-1 ml-auto w-96">
+                <div class="hidden sm:flex mr-1 ml-auto  w-40 lg:w-96">
 
 
                     <livewire:components.profile-search />
