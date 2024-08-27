@@ -138,16 +138,13 @@
                                 </x-primary-button>
 
                             </div>
-
                             <div
-                                class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($jobTags)) h-[40px] @endif ">
-
-
-                                @foreach ($jobTags as $jobData)
+                                class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($programInfo->program_tags)) h-[40px] @endif ">
+                                @foreach ($programInfo->program_tags as $jobData)
                                     <span
                                         class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                        {{ $jobData['position_Title'] }}
-                                        <button wire:click.prevent='removeTag( {{ $jobData['position_id'] }})'
+                                        {{ $jobData->job_positions->position_Title }}
+                                        <button wire:click.prevent='removeTag( {{ $jobData->program_tags_id }})'
                                             type="button"
                                             class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
                                             <span class="sr-only">Remove badge</span>
@@ -162,6 +159,7 @@
                                     </span>
                                 @endforeach
                             </div>
+
                             <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
 
                         </div>
@@ -185,12 +183,16 @@
                         <div
                             class="w-[400px] h-[400px] bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
 
-                            <img id="uploadedImage"
-                                class="flex w-full-h-full uploaded-image object-cover shrink-0 grow-0"
-                                src="{{ isset($progImg) && $progImg->temporaryUrl() ? $progImg->temporaryUrl() : asset('assets/img/PESO-Logo.png') }}"
-                                alt="Uploaded Image" />
-
-
+                            @if ($progImg && !$errors->has('progImg'))
+                                <img id="uploadedImage"
+                                    class="flex w-full-h-full uploaded-image object-cover shrink-0 grow-0"
+                                    src="{{ $progImg->temporaryUrl() }}" alt="Uploaded Image" />
+                            @else
+                                <img id="uploadedImage"
+                                    class="flex w-full-h-full uploaded-image object-cover shrink-0 grow-0"
+                                    src="{{ asset('storage/' . $programInfo->program_pubmat) }}"
+                                    alt="Uploaded Image" />
+                            @endif
 
                         </div>
                     </div>
@@ -231,7 +233,7 @@
                         <x-input-label for="descPost">Program Description
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='descPost' id="descText"></textarea>
+                            <textarea wire:model='descPost' id="descText">{!! $descPost !!}</textarea>
                         </div>
 
                         @if ($errors->has('descPost'))
@@ -243,7 +245,7 @@
                         <x-input-label for="qualPost">Program Qualification
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='qualPost' id="qualText"></textarea>
+                            <textarea wire:model='qualPost' id="qualText">{!! $qualPost !!}</textarea>
                         </div>
 
                         @if ($errors->has('qualPost'))
@@ -257,7 +259,7 @@
                     <x-input-label for="remPost">Program Remarks
                     </x-input-label>
                     <div wire:ignore>
-                        <textarea wire:model='remPost' id="remText"></textarea>
+                        <textarea wire:model='remPost' id="remText">{!! $remPost !!}</textarea>
                     </div>
                     @if ($errors->has('remPost'))
                         <x-input-error :messages="$errors->get('remPost')" class="mt-2" />
@@ -266,7 +268,7 @@
 
                 <div class="flex flex-row justify-end mt-4 mb-2 ">
                     <x-green-button wire:loading.attr="disabled" wire:click.prevent='validateInput'
-                        type="button"><span class="text-lg mx-4">Post</span></x-green-button>
+                        type="button"><span class="text-lg mx-4">Save</span></x-green-button>
                 </div>
 
 
@@ -292,7 +294,7 @@
             <hr>
             <div class="flex flex-col justify-center items-center my-12">
 
-                <h1 class="text-2xl font-bold">Are you sure you want to create this training?</h1>
+                <h1 class="text-2xl font-bold">Are you sure you want to update this training?</h1>
 
             </div>
             <div class="mt-6 flex justify-end">
@@ -303,7 +305,7 @@
                 <x-green-button wire:loading.attr="disabled" wire:click.prevent="saveProgram" class="ms-3"
                     type="button">
                     {{ __('Confirm') }}
-                    <div wire:loading.delay.long wire:target="saveProgram" role="status">
+                    <div wire:loading.delay.long wire:target="updateApplicant('REJECT', 'reject')" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path

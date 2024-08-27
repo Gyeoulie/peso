@@ -92,9 +92,17 @@
 
                 <div class="flex flex-col w-full h-full p-5 space-y-2">
 
-                    <div class="flex flex-col">
+                    <div class="flex flex-row justify-between">
                         <h1 class="text-xl text-blue-900 sm:text-2xl font-bold">Program Information
                         </h1>
+                        <div class="flex flex-row gap-4">
+                            <x-danger-button>
+                                Cancel Training
+                            </x-danger-button>
+                            <x-blue-button wire:click.prevent='editTraining({{ $programInfo->program_id }})'>
+                                Edit Training
+                            </x-blue-button>
+                        </div>
                     </div>
                     <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
 

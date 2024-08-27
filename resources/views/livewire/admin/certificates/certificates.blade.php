@@ -5,7 +5,7 @@
 
         {{-- TITLE --}}
         <div class="col-span-4 sm:col-span-12">
-            <h1 class="text-2xl font-bold">Data Management - Certificates</h1>
+            <h1 class="text-2xl font-bold">Data Management / Certificates</h1>
         </div>
 
         <div class="col-span-4 sm:col-span-6">

@@ -18,6 +18,7 @@ use App\Livewire\Admin\PositionIndustry\PositionIndustry;
 use App\Livewire\Admin\Reports\BarangayReports;
 use App\Livewire\Admin\Requirements\Requirements;
 use App\Livewire\Admin\Training\CreateTrainining;
+use App\Livewire\Admin\Training\EditTraining;
 use App\Livewire\Admin\Training\TrainingDetails;
 use App\Livewire\Admin\Training\TrainingList;
 use App\Livewire\Admin\Training\TrainingRegistrants;
@@ -32,7 +33,6 @@ use App\Livewire\Public\Profile\Employer\EmployerProfile;
 use App\Livewire\Public\Profile\Employer\Partials\EditDetails as EmployerEditDetails;
 use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
 use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
-use App\Livewire\Public\Resume\ResumeView;
 use App\Livewire\Public\SearchProfiles;
 use App\Livewire\Public\Trainings;
 use App\Livewire\Public\TrainingView;
@@ -141,6 +141,7 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/training', TrainingList::class)->name('admin-training');
     Route::get('/training/create', CreateTrainining::class)->name('admin-create-training');
+    Route::get('/training/edit', EditTraining::class)->name('admin-edit-training');
     Route::get('/training/details/{id}', TrainingDetails::class)->name('admin-view-training');
     Route::get('/training/{id}', TrainingRegistrants::class)->name('admin-registrants-training');
 

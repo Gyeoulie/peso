@@ -30,6 +30,7 @@ class Programs extends Model
         'program_Status',
         'program_pubmat',
         'program_Status',
+        'municipality_id',
     ];
 
     protected $casts = [

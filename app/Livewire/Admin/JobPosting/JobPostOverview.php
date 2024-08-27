@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\JobPosting;
 
+use App\Mail\JobPostApplicationNotification;
 use App\Mail\JobPostingNotification;
 use App\Models\Employee;
 use App\Models\Job_Posting;
@@ -98,6 +99,7 @@ class JobPostOverview extends Component
 
             // Commit the transaction
             DB::commit();
+            Mail::to($jobPosting->company->user->email)->queue(new JobPostApplicationNotification($jobPosting));
 
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error

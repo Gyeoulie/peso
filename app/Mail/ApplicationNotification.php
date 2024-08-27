@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class JobPostingNotification extends Mailable implements ShouldQueue
+class ApplicationNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -17,12 +17,12 @@ class JobPostingNotification extends Mailable implements ShouldQueue
      * Create a new message instance.
      */
     public $employee;
-    public $jobPosting;
+    public $applicationData;
 
-    public function __construct($employee, $jobPosting)
+    public function __construct($employee, $applicationData)
     {
         $this->employee = $employee;
-        $this->jobPosting = $jobPosting;
+        $this->applicationData = $applicationData;
     }
 
     /**
@@ -31,7 +31,7 @@ class JobPostingNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Don’t Miss Out: New Job Posting in Your Area of Interest',
+            subject: "Update on Your Job Application Status"
         );
     }
 
@@ -41,14 +41,14 @@ class JobPostingNotification extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.job_posting_notification',
+            markdown: 'emails.application_notification',
             with: [
                 'employeeName' => $this->employee->fname . ' ' . $this->employee->lname,
-                'jobTitle' => $this->jobPosting->job_Title,
-                'companyName' => $this->jobPosting->company->business_Name,
-                'jobLocation' => $this->jobPosting->job_Address . ', ' . $this->jobPosting->barangay->barangay_Name . ', ' . $this->jobPosting->barangay->municipality->municipality_Name . ', ' . $this->jobPosting->barangay->municipality->province->province_Name,
-                'jobPostingUrl' => route('jobpost.show', ['id' => $this->jobPosting->job_id]),
-                'PESO' => $this->jobPosting->peso->municipality->municipality_Name,
+                'applicationStatus' => $this->applicationData->applicant_Status,
+                'companyRemarks' => $this->applicationData->company_Remarks,
+                'jobTitle' => $this->applicationData->job_posting->job_Title,
+                'companyName' => $this->applicationData->job_posting->company->business_Name,
+                'PESO' => $this->applicationData->job_posting->municipality->municipality_Name,
             ]
         );
     }

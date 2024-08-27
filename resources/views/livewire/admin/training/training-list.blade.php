@@ -197,12 +197,13 @@
                                     </tr>
                                 @else
                                     @foreach ($programList as $data)
-                                        <tr class="bg-white border-b hover:bg-gray-50">
+                                        <tr wire:key='prog-{{ $data->program_id }}'
+                                            class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                                 <img class="w-10 h-10 rounded-full"
                                                     src="{{ asset('storage/' . $data->program_pubmat) }}"
-                                                    alt="Jese image">
+                                                    alt="pubmat">
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">{{ $data->program_Title }}
                                                     </div>

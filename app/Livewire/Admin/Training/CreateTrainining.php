@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Admin\Training;
 
+use App\Mail\TrainingPostingNotification;
+use App\Models\Employee;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Programs;
@@ -9,6 +11,7 @@ use App\Models\Program_Tags;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -37,6 +40,36 @@ class CreateTrainining extends Component
             // BASIC INFORMATION
             'progImg' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
         ];
+    }
+
+    public function getMatched($programInfo)
+    {
+        $programMunicipalityId = $programInfo->municipality_id;
+        $jobIndustryId = $programInfo->industry_id;
+        $jobTagIds = $programInfo->program_tags->pluck('position_id');
+
+        return Employee::whereHas('barangay.municipality', function ($query) use ($programMunicipalityId) {
+            $query->where('municipality_id', $programMunicipalityId);
+        })
+            ->whereHas('job_preference', function ($query) use ($jobTagIds) {
+                $query->whereIn('position_id', $jobTagIds);
+            })
+            ->withCount(['job_preference as num_matched_tags' => function ($query) use ($jobTagIds) {
+                $query->whereIn('position_id', $jobTagIds);
+            }])
+            ->withCount(['industry_preference as num_matched_industry' => function ($query) use ($jobIndustryId) {
+                $query->where('industry_id', $jobIndustryId);
+            }])
+            ->orderByRaw('
+                CASE
+                    WHEN num_matched_industry > 0 AND num_matched_tags > 0 THEN 1
+                    WHEN num_matched_industry > 0 AND num_matched_tags = 0 THEN 2
+                    WHEN num_matched_industry = 0 AND num_matched_tags > 0 THEN 3
+                    ELSE 4
+                END
+            ')
+            ->orderByDesc('num_matched_tags')
+            ->get();
     }
 
     public function validateInput()
@@ -120,8 +153,7 @@ class CreateTrainining extends Component
     public function saveProgram()
     {
 
-        $municipality_id = Auth::user()->peso->peso_municipality_id;
-
+        $municipality_id = Auth::user()->peso->municipality_id;
         DB::beginTransaction();
 
         $data = [
@@ -134,11 +166,13 @@ class CreateTrainining extends Component
             'program_Location' => $this->progLoc,
             'program_Description' => $this->descPost,
             'program_Qualification' => $this->qualPost,
-            '   ' => $this->remPost,
+            'program_Remarks' => $this->remPost,
             'program_Status' => 'ACTIVE',
             'industry_id' => $this->jobIndustryHidden,
             'municipality_id' => $municipality_id,
         ];
+
+        // dd($data);
 
         if ($this->progType === 'PESO Hosted') {
             // Combine progDate and progTime into a single datetime
@@ -168,7 +202,17 @@ class CreateTrainining extends Component
 
             }
             DB::commit();
+
+            $matchingJobseekers = $this->getMatched($trainingProgram);
+
+            if (!empty($matchingJobseekers)) {
+                foreach ($matchingJobseekers as $employee) {
+                    Mail::to($employee->user->email)->queue(new TrainingPostingNotification($employee, $trainingProgram));
+                }
+            }
+
             $this->dispatch('close-modal', 'confirm-modal');
+            $this->redirectRoute('admin-view-training', ['id' => $trainingProgram->program_id], navigate: true);
             toastr()->success('Training has been posted!');
         } catch (\Exception $e) {
 
@@ -178,7 +222,8 @@ class CreateTrainining extends Component
             }
             $this->dispatch('close-modal', 'confirm-modal');
             // Return error response or handle the error
-            toastr()->error('There was an error in posting the program.');
+            // toastr()->error('There was an error in posting the program.');
+            toastr()->error($e->getMessage());
         }
 
     }

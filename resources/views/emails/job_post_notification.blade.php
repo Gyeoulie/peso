@@ -1,4 +1,3 @@
-
 <x-mail::message>
 # Hello, {{ $employeeName }}
 
@@ -13,6 +12,6 @@ We believe you might be interested in this opportunity. Take a look and apply if
 View Job Posting
 </x-mail::button>
 
-Thanks,<br>
-{{ config('app.name') }}
+Thank you,<br>
+{{ config('app.name') }} {{$PESO}}
 </x-mail::message>

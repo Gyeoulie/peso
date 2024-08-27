@@ -471,6 +471,8 @@ class EditDetails extends Component
             $this->mount();
             toastr()->error('There was an error updating the profile.');
         }
+
+        
     }
 
     // LANGUAGE

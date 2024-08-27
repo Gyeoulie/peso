@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Employer\Dashboard;
 
+use App\Mail\ApplicationNotification;
 use App\Models\Company;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
@@ -91,10 +94,11 @@ class JobApplicants extends Component
 
     public function updateApplicant($status, $modal)
     {
-
         $this->validate([
             'remarks' => ['required', 'string'],
         ]);
+
+        DB::beginTransaction(); // Start the transaction
 
         try {
             // Prepare update data
@@ -109,15 +113,29 @@ class JobApplicants extends Component
             }
 
             // Update applicant record
-            Job_Applicants::where('applicant_id', $this->applicantId)->update($updateData);
+            $applicant = Job_Applicants::where('applicant_id', $this->applicantId)->first();
+
+            if (!$applicant) {
+                throw new \Exception('Applicant not found.');
+            }
+
+            $applicant->update($updateData);
+
+            if ($status == 'INTERVIEW' || $status == 'HIRED' || $status == 'REJECTED') {
+                Mail::to($applicant->employee->user->email)->send(new ApplicationNotification($applicant->employee, $applicant));
+            }
+
+            DB::commit(); // Commit the transaction
 
             toastr()->success('Applicant has been updated!');
         } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction if there is an error
+
             toastr()->error('There was an error updating the applicant.');
+
         }
 
         $this->closeModal($modal);
-
     }
     public function getApplicant($id)
     {
