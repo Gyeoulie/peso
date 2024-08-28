@@ -294,7 +294,7 @@
                             <div class="flex flex-row w-full gap-2">
                                 @foreach ($chunk as $requirement)
                                     @if ($requirement->requirementPassed)
-                                        <div class="flex flex-col w-full">
+                                        <div class="flex flex-col w-full sm:w-1/2">
                                             <button
                                                 wire:click.prevent='viewFile({{ $requirement->requirementPassed->req_passed_id }})'
                                                 type="button"

@@ -16,6 +16,7 @@ use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Admin\LocationManagement\Location;
 use App\Livewire\Admin\PositionIndustry\PositionIndustry;
 use App\Livewire\Admin\Reports\BarangayReports;
+use App\Livewire\Admin\Reports\MunicipalityReports;
 use App\Livewire\Admin\Requirements\Requirements;
 use App\Livewire\Admin\Training\CreateTrainining;
 use App\Livewire\Admin\Training\EditTraining;
@@ -146,6 +147,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/training/{id}', TrainingRegistrants::class)->name('admin-registrants-training');
 
     Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
+    Route::get('/reports/municipality', MunicipalityReports::class)->name('admin-reports-municipality');
+
 
 });
 

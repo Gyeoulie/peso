@@ -65,7 +65,7 @@ class EditTraining extends Component
             'progTitle' => 'required|string|max:255',
             'progHost' => 'required|string|max:255',
             'regDeadline' => 'required|date|after:tomorrow',
-            'progSlots' => 'required|integer|min:1',
+            'progSlots' => 'required|integer|nullable',
             'progType' => 'required|string',
             'progDate' => 'required_if:progType,PESO Hosted|date|after:tomorrow',
             'progTime' => 'required_if:progType,PESO Hosted|date_format:H:i',
@@ -93,7 +93,6 @@ class EditTraining extends Component
 
             'progSlots.required' => 'The number of slots is required.',
             'progSlots.integer' => 'The number of slots must be an integer.',
-            'progSlots.min' => 'The number of slots must be at least 1.',
 
             'progType.required' => 'The program type is required.',
             'progType.string' => 'The program type must be a string.',
@@ -160,6 +159,11 @@ class EditTraining extends Component
         // dd($this->descPost);
     }
 
+    public function cancelEdit()
+    {
+        session()->forget('programData');
+        $this->redirectRoute('admin-view-training', ['id' => $this->programData], navigate: true);
+    }
     public function saveProgram()
     {
         $programInfo = Programs::findOrFail($this->programData);
@@ -192,7 +196,7 @@ class EditTraining extends Component
             $programInfo->program_Host = $this->progHost;
             $programInfo->program_Deadline = $this->regDeadline;
             $programInfo->program_Type = $this->progType;
-            $programInfo->program_Slots = $this->progSlots;
+            $programInfo->program_Slots = ($this->progSlots === 0 || $this->progSlots === null) ? null : $this->progSlots;
             $programInfo->program_Datetime = $programDatetime;
             $programInfo->program_Location = $this->progLoc;
             $programInfo->program_Modality = $this->progModality;

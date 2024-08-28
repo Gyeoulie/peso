@@ -4,10 +4,12 @@ namespace App\Livewire\Admin\Training;
 
 use App\Models\Programs;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 #[Layout('layouts.admin')]
 class TrainingList extends Component
@@ -38,11 +40,46 @@ class TrainingList extends Component
 
     }
 
-    public function render()
+    public function exportData()
     {
         $user = Auth::user();
 
-        $programList = Programs::where('municipality_id', '=', $user->peso->municipality_id)
+        $programList = $this->getProgramList($user->peso->municipality_id)->get();
+
+        if (!$programList->isEmpty()) {
+
+            $fileName = 'training_list-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+
+            $writer = SimpleExcelWriter::streamDownload($fileName);
+
+            foreach ($programList as $data) {
+                $writer->addRow([
+                    'Program Title' => $data->program_Title,
+                    'Host' => $data->program_Host,
+                    'Type' => $data->program_Type,
+                    'Date Posted' => $data->created_at->format('F j, Y'),
+                    'Deadline' => $data->program_Deadline->format('F j, Y'),
+                    'Event Time' => $data->program_Datetime ? $data->program_Datetime->format('F j, Y g:i A') : null,
+                    'Status' => $data->program_Status,
+                    'Registrants' => $data->program_reg_count,
+                    'Total Slots' => $data->program_Slots,
+                ]);
+            }
+
+            toastr()->success('Data Exported');
+            return Response::streamDownload(function () use ($writer) {
+                $writer->close();
+            }, $fileName, ['Content-Type' => 'text/csv']);
+        }
+
+        return toastr()->warning('No data in the table to be exported.');
+
+    }
+
+    public function getProgramList($id)
+    {
+
+        $programList = Programs::where('municipality_id', '=', $id)
             ->withCount(['program_reg', 'attendedJobseekers'])
             ->where(function ($query) {
                 $query->where('program_Title', 'like', '%' . $this->search . '%')
@@ -69,7 +106,14 @@ class TrainingList extends Component
             $programList->orderBy('created_at', $this->sortDate);
         }
 
-        $programList = $programList->orderBy('created_at', 'DESC')->paginate($this->rows);
+        return $programList->orderBy('created_at', 'DESC');
+    }
+
+    public function render()
+    {
+        $user = Auth::user();
+
+        $programList = $this->getProgramList($user->peso->municipality_id)->paginate($this->rows);
 
         return view('livewire.admin.training.training-list', compact('programList'));
     }

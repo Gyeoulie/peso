@@ -222,7 +222,7 @@
 
         </div>
 
-        <div class="col-span 4 sm:col-span-12">
+        <div class="col-span-4 sm:col-span-12">
             <div class="bg-white shadow rounded-lg p-6">
 
                 <div class="flex flex-col sm:flex-row w-full gap-2 sm:gap-4 ">

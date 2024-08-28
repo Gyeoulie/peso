@@ -85,7 +85,7 @@ class Employee extends Model
     }
     public function program_reg()
     {
-        return $this->hasMany(Job_Posting::class, 'employee_id');
+        return $this->hasMany(Program_Reg::class, 'employee_id');
     }
     public function skills()
     {
@@ -103,5 +103,12 @@ class Employee extends Model
     public function industry_preference()
     {
         return $this->hasMany(Industry_preference::class, 'employee_id');
+    }
+
+    public function activeApplications()
+    {
+        return $this->hasMany(Job_Applicants::class, 'employee_id')
+            ->whereNotIn('applicant_status', ['COMPLETED', 'REJECTED']);
+
     }
 }

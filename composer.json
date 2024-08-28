@@ -19,6 +19,7 @@
         "livewire/livewire": "3.5",
         "php-flasher/flasher-laravel": "^1.15",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/simple-excel": "^3.6",
         "wireui/heroicons": "^2.6",
         "yoeunes/toastr": "^2.3"
     },

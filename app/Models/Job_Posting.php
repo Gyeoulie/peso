@@ -78,11 +78,20 @@ class Job_Posting extends Model
     {
         return $this->hasMany(Job_Applicants::class, 'job_id');
     }
- 
+
     public function hiredApplicants()
     {
         return $this->hasMany(Job_Applicants::class, 'job_id')
             ->where('applicant_status', 'HIRED');
+    }
+
+    public function slotsLeft()
+    {
+        // Get the total number of hired applicants
+        $hiredApplicantsCount = $this->hiredApplicants()->count();
+
+        // Calculate the remaining slots, ensuring it can't be negative
+        return max($this->job_Slots - $hiredApplicantsCount, 0);
     }
 
 }

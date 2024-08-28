@@ -38,7 +38,17 @@ class CreateTrainining extends Component
     {
         return [
             // BASIC INFORMATION
-            'progImg' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
+            'progImg' => 'nullable|image|mimes:jpeg,png,jpg|max:10240', // Validation rules
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            // Custom messages for validation rules
+            'progImg.image' => 'The file must be an image.',
+            'progImg.mimes' => 'The image must be a file of type: jpeg, png, jpg.',
+            'progImg.max' => 'The image may not be greater than 10 MB.',
         ];
     }
 
@@ -79,7 +89,7 @@ class CreateTrainining extends Component
             'progTitle' => 'required|string|max:255',
             'progHost' => 'required|string|max:255',
             'regDeadline' => 'required|date|after:tomorrow',
-            'progSlots' => 'required|integer|min:1',
+            'progSlots' => 'required|integer|nullable',
             'progType' => 'required|string',
             'progDate' => 'required_if:progType,PESO Hosted|date|after:tomorrow',
             'progTime' => 'required_if:progType,PESO Hosted|date_format:H:i',
@@ -107,7 +117,6 @@ class CreateTrainining extends Component
 
             'progSlots.required' => 'The number of slots is required.',
             'progSlots.integer' => 'The number of slots must be an integer.',
-            'progSlots.min' => 'The number of slots must be at least 1.',
 
             'progType.required' => 'The program type is required.',
             'progType.string' => 'The program type must be a string.',
@@ -161,7 +170,7 @@ class CreateTrainining extends Component
             'program_Modality' => $this->progModality,
             'program_Type' => $this->progType,
             'program_Host' => $this->progHost,
-            'program_Slots' => $this->progSlots,
+            'program_Slots' => ($this->progSlots === 0 || $this->progSlots === null) ? null : $this->progSlots,
             'program_Deadline' => $this->regDeadline,
             'program_Location' => $this->progLoc,
             'program_Description' => $this->descPost,

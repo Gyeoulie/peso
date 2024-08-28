@@ -88,7 +88,7 @@
                             <x-text-input wire:model='progLoc' class="block mt-1 w-full" type="text" />
                             <x-input-error :messages="$errors->get('progLoc')" class="mt-2" />
                         </div>
-                        <div class="flex flex-col w-1/3">
+                        <div class="flex flex-col w-full sm:w-1/3">
                             <x-input-label for="progModality" :value="__('Modality Type')" />
                             <select wire:model='progModality' name="progModality" class="block mt-1 w-full rounded-md">
                                 <option value="" disabled selected>Select Modality Type</option>
@@ -181,17 +181,17 @@
                     <x-input-label class="" for="fname" :value="__('Program Image')" />
                     <div class="flex flex-col items-center mt-4">
                         <div
-                            class="w-[400px] h-[400px] bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
+                            class="w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
 
                             @if ($progImg && !$errors->has('progImg'))
                                 <img id="uploadedImage"
                                     class="flex w-full-h-full uploaded-image object-cover shrink-0 grow-0"
-                                    src="{{ $progImg->temporaryUrl() }}" alt="Uploaded Image" />
+                                    src="{{ $progImg->temporaryUrl() }}" alt="pubmat" />
                             @else
                                 <img id="uploadedImage"
                                     class="flex w-full-h-full uploaded-image object-cover shrink-0 grow-0"
                                     src="{{ asset('storage/' . $programInfo->program_pubmat) }}"
-                                    alt="Uploaded Image" />
+                                    alt="pubmat" />
                             @endif
 
                         </div>
@@ -224,8 +224,8 @@
 
         </div>
 
-        <div class="col-span 4 sm:col-span-12">
-            <div class="bg-white shadow rounded-lg p-6">
+        <div class="col-span-4 sm:col-span-12">
+            <div class="bg-white shadow rounded-lg w-full p-6">
 
                 <div class="flex flex-col sm:flex-row w-full gap-2 sm:gap-4 ">
 
@@ -266,9 +266,11 @@
                     @endif
                 </div>
 
-                <div class="flex flex-row justify-end mt-4 mb-2 ">
+                <div class="flex flex-row justify-between w-full mt-4 mb-2 ">
+                    <x-danger-button wire:loading.attr="disabled" wire:click.prevent='cancelEdit'
+                        type="button">Cancel</x-danger-button>
                     <x-green-button wire:loading.attr="disabled" wire:click.prevent='validateInput'
-                        type="button"><span class="text-lg mx-4">Save</span></x-green-button>
+                        type="button">Save</x-green-button>
                 </div>
 
 

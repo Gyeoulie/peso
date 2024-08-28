@@ -54,26 +54,26 @@
                     <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">Details</span>
 
                     <ul>
-                        <div class="flex flex-row">
-                            <li class="mb-2 font-bold">Email:</li>
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold text-left">Email:</li>
                             <p class="ms-4">{{ $jobseeker->user->email }}</p>
                         </div>
 
-                        <div class="flex flex-row">
-                            <li class="mb-2 font-bold">Status:</li>
-                            <p class="ms-4">
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold text-left">Status:</li>
+                            <p class="ms-4 text-left">
                                 {{ $jobseeker->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
                             </p>
                         </div>
 
-                        <div class="flex flex-row">
+                        <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Contact:</li>
                             <p class="ms-4">{{ $jobseeker->pnumber }}</p>
                         </div>
 
-                        <div class="flex flex-row">
+                        <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Address:</li>
-                            <p class="ms-4 uppercase"> {{ $jobseeker->address }},
+                            <p class="ms-4 uppercase text-left"> {{ $jobseeker->address }},
                                 {{ $jobseeker->barangay->barangay_Name }},
                                 {{ $jobseeker->barangay->municipality->municipality_Name }},
                                 {{ $jobseeker->barangay->municipality->province->province_Name }}</p>
@@ -705,7 +705,7 @@
 
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
-                                                                    {{ $data->license_type->license_type_Name }}
+                                                                    {{ $data->license_type->license_Name }}
                                                                 </div>
 
                                                             </div>
