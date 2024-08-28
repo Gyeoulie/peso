@@ -7,26 +7,134 @@ use App\Models\Employee;
 use App\Models\Industry_preference;
 use App\Models\Job_Applicants;
 use App\Models\Job_Preference;
+use App\Models\Programs;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 #[Layout('layouts.admin')]
 class BarangayReports extends Component
 {
     use WithPagination;
+    use WithoutUrlPagination;
 
     public $searchBar;
     public $selectedBar, $barTitle;
+
+    public $currentYear;
+    public $startYear;
+
+    public $searchJobseekers;
+
+    // MOUNT
+    public $mountGender, $mountAge = [], $mountEmpStatus;
+
+    // REAL FILTER VALUES
+    public $Gender, $Age = [], $EmpStatus;
+
+    public $mountSelectedMonths = [];
+
+    public $selectedMonths = [];
+    public $selectedYear;
+
+    public function changeYear($year)
+    {
+        $this->selectedYear = $year;
+    }
+
+    public function changeMonth()
+    {
+        $this->mountSelectedMonths = $this->selectedMonths;
+
+    }
 
     public function mount()
     {
         $user = auth()->user();
         $this->initializeBarangay($user);
+        $this->currentYear = date('Y');
+        $this->startYear = 2024;
+        $this->selectedYear = $this->startYear;
+
+    }
+
+    public function exportData()
+    {
+        $filters = ['barangay_id' => $this->selectedBar];
+        $employees = $this->getJobseekers($filters)->get();
+        if (!$employees->isEmpty()) {
+
+            $fileName = $this->barTitle . '-jobseekers-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+
+            $writer = SimpleExcelWriter::streamDownload($fileName);
+
+            foreach ($employees as $employee) {
+                $writer->addRow([
+                    'First Name' => $employee->fname,
+                    'Middle Name' => $employee->mname,
+                    'Last Name' => $employee->lname,
+                    'Gender' => $employee->gender == 1 ? 'MALE' : ($employee->gender == 2 ? 'FEMALE' : 'UNKNOWN'),
+                    'Date of Birth' => $employee->birthdate->format('Y-m-d'),
+                    'Employment Status' => $employee->empstatus == 1 ? 'EMPLOYED' : ($employee->empstatus == 2 ? 'UNEMPLOYED' : 'UNKNOWN'),
+                    'Active Applications' => $employee->active_applications_count,
+                    'Program Registrations' => $employee->program_reg_count,
+                ]);
+            }
+
+            return Response::streamDownload(function () use ($writer) {
+                $writer->close();
+            }, $fileName, ['Content-Type' => 'text/csv']);
+        }
+
+        return toastr()->warning('No data in the table to be exported.');
+
+    }
+    private function generateCsvContent($employees, $headers)
+    {
+        $output = fopen('php://temp', 'r+'); // Use a temporary stream for CSV content
+
+        // Add headers to the CSV
+        fputcsv($output, $headers);
+
+        foreach ($employees as $employee) {
+            fputcsv($output, [
+                $employee->fname,
+                $employee->mname,
+                $employee->lname,
+                $employee->gender,
+                $employee->birthdate->format('Y-m-d'),
+                $employee->empstatus,
+                $employee->active_applications_count,
+                $employee->program_reg_count,
+            ]);
+        }
+
+        rewind($output); // Rewind to the beginning of the stream
+        $csvContent = stream_get_contents($output); // Get the content of the stream
+        fclose($output); // Close the stream
+
+        return $csvContent;
+    }
+
+    public function mountFilter()
+    {
+        $this->Gender = $this->mountGender;
+        $this->Age = $this->mountAge;
+        $this->EmpStatus = $this->mountEmpStatus;
+        $this->dispatch('close-modal', 'filter-jobseekers-modal');
+    }
+
+    public function resetFilter()
+    {
+        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'Gender', 'Age', 'EmpStatus');
+
     }
 
     private function initializeBarangay($user)
@@ -48,19 +156,6 @@ class BarangayReports extends Component
         $this->selectedBar = $id;
         $this->barTitle = $barangay->barangay_Name;
     }
-
-    public function render()
-    {
-        $user = auth()->user();
-        $pesoMunicipalityId = optional($user->peso)->municipality_id;
-
-        $barangays = $this->getBarangays($pesoMunicipalityId);
-        $stats = $this->getStatistics();
-        $charts = $this->getCharts();
-
-        return view('livewire.admin.reports.barangay-reports', array_merge($barangays, $stats, $charts));
-    }
-
     private function getBarangays($municipalityId)
     {
         $barangay = Barangay::with('municipality')
@@ -77,23 +172,53 @@ class BarangayReports extends Component
         $filters = ['barangay_id' => $this->selectedBar];
 
         return [
-            'barangayJobSeekers' => $this->getJobseekers($filters),
+            'barangayJobSeekers' => $this->getJobseekers($filters)->paginate(10),
             'totalJobSeekers' => $this->getEmployeeCount($filters),
             'recentJobSeekers' => $this->getRecentEmployeeCount($filters),
             'totalEmployed' => $this->getEmployeeCount(array_merge($filters, ['empstatus' => 1])),
             'totalUnemployed' => $this->getEmployeeCount(array_merge($filters, ['empstatus' => 2])),
             'totalActiveApplicants' => $this->getActiveApplicantCount($filters),
             'recentActiveApplicants' => $this->getRecentActiveApplicantCount($filters),
+            'topPrograms' => $this->getTopPrograms($filters),
         ];
     }
     private function getJobseekers(array $filters)
     {
 
-        return Employee::where('barangay_id', $filters)
-            ->withCount(['job_applicants as active_applications' => function ($query) {
-                $query->whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED']);
-            }])
-            ->paginate(10);
+        // return Employee::where('barangay_id', $filters)
+        //     ->withCount(['job_applicants as active_applications' => function ($query) {
+        //         $query->whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED']);
+        //     }])
+        //     ->paginate(10);
+
+        $employee = Employee::where('barangay_id', $filters)
+            ->withCount(['activeApplications', 'program_reg'])
+            ->where(function ($query) {
+                $query->where('fname', 'like', '%' . $this->searchJobseekers . '%')
+                    ->orWhere('mname', 'like', '%' . $this->searchJobseekers . '%')
+                    ->orWhere('lname', 'like', '%' . $this->searchJobseekers . '%');
+            });
+
+        if ($this->Gender) {
+            $employee = $employee->where('gender', $this->Gender);
+        }
+        if ($this->EmpStatus) {
+            $employee = $employee->where('empstatus', $this->EmpStatus);
+        }
+        if ($this->Age) {
+            $employee = $employee->where(function ($query) {
+                $currentYear = Carbon::now()->year;
+                foreach ($this->Age as $range) {
+                    list($minAge, $maxAge) = explode('-', $range);
+                    $minYear = $currentYear - $maxAge;
+                    $maxYear = $currentYear - $minAge;
+                    $query->orWhereBetween('birthdate', [$minYear . '-01-01', $maxYear . '-12-31']);
+                }
+            });
+            $employee = $employee->orderByRaw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) ASC');
+        }
+
+        return $employee;
     }
 
     private function getEmployeeCount(array $filters)
@@ -143,12 +268,25 @@ class BarangayReports extends Component
             ->count();
     }
 
+    private function getTopPrograms(array $filters)
+    {
+        return Programs::withCount(['program_reg as registration_count' => function ($query) use ($filters) {
+            $query->whereHas('employee', function ($query) use ($filters) {
+                $query->where('barangay_id', $filters['barangay_id']);
+            });
+        }])
+            ->having('registration_count', '>', 0) // Ensure registration count is greater than zero
+            ->orderBy('registration_count', 'desc')
+            ->limit(10)
+            ->get();
+    }
+
     private function getCharts()
     {
         return [
             'jobtags_chart' => $this->createJobTagsChart(),
             'industries_chart' => $this->createIndustriesChart(),
-            'employment_chart' => $this->createLineChartModel(),
+            'employment_chart' => $this->createLineChartModel($this->selectedYear, $this->selectedMonths),
         ];
     }
 
@@ -200,25 +338,48 @@ class BarangayReports extends Component
         return $this->configureChart($chart);
     }
 
-    private function createLineChartModel()
+    private function createLineChartModel($selectedYear, $selectedMonths)
     {
-        $year = Carbon::now()->year;
+        $year = $selectedYear ?: Carbon::now()->year;
 
-        $monthlyHiredCounts = Job_Applicants::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
+        $query = Job_Applicants::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
             ->where('applicant_Status', 'PENDING')
             ->whereHas('employee', function ($query) {
                 $query->where('barangay_id', $this->selectedBar);
             })
-            ->whereYear('created_at', $year)
-            ->groupByRaw('MONTH(updated_at)')
+            ->whereYear('created_at', $year);
+
+        if (!empty($selectedMonths)) {
+            // Filter by the selected months
+            $query->whereIn(DB::raw('MONTH(updated_at)'), $selectedMonths);
+        }
+
+        $monthlyHiredCounts = $query->groupByRaw('MONTH(updated_at)')
             ->orderByRaw('MONTH(updated_at)')
             ->get()
             ->keyBy('month');
 
-        $monthlyData = array_fill(1, 12, 0);
+        // Determine the categories for the X-axis based on the selected months or default to all months
+        if (!empty($selectedMonths)) {
+            $monthNames = array_map(function ($month) {
+                return Carbon::create()->month($month)->format('M');
+            }, $selectedMonths);
+            $monthlyData = array_fill(0, count($selectedMonths), 0);
+        } else {
+            $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            $monthlyData = array_fill(0, 12, 0); // Ensure correct indexing
+        }
 
+        // Populate the data
         foreach ($monthlyHiredCounts as $month => $data) {
-            $monthlyData[$month] = $data->total;
+            if (!empty($selectedMonths)) {
+                $index = array_search($month, $selectedMonths);
+                if ($index !== false) {
+                    $monthlyData[$index] = $data->total;
+                }
+            } else {
+                $monthlyData[$month - 1] = $data->total; // Adjust index for all months
+            }
         }
 
         $chart = new LineChartModel();
@@ -227,10 +388,11 @@ class BarangayReports extends Component
             ->setSmoothCurve()
             ->setXAxisVisible(true)
             ->setDataLabelsEnabled(true)
-            ->setXAxisCategories(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+            ->setXAxisCategories($monthNames);
 
-        foreach ($monthlyData as $month => $count) {
-            $chart->addPoint($month, $count, ['month' => $month]);
+        // Add points to the chart
+        foreach ($monthlyData as $index => $count) {
+            $chart->addPoint($monthNames[$index], $count, ['month' => $selectedMonths[$index] ?? ($index + 1)]);
         }
 
         return $this->configureChart($chart);
@@ -251,4 +413,17 @@ class BarangayReports extends Component
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
             ]);
     }
+    public function render()
+    {
+        $user = auth()->user();
+        $pesoMunicipalityId = optional($user->peso)->municipality_id;
+
+        $barangays = $this->getBarangays($pesoMunicipalityId);
+        $stats = $this->getStatistics();
+
+        $charts = $this->getCharts();
+
+        return view('livewire.admin.reports.barangay-reports', array_merge($barangays, $stats, $charts));
+    }
+
 }

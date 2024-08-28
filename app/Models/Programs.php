@@ -30,6 +30,7 @@ class Programs extends Model
         'program_Status',
         'program_pubmat',
         'program_Status',
+        'municipality_id',
     ];
 
     protected $casts = [
@@ -43,6 +44,10 @@ class Programs extends Model
     public function job_industry()
     {
         return $this->belongsTo(Job_Industry::class, 'industry_id');
+    }
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class, 'municipality_id');
     }
 
     public function program_reg()

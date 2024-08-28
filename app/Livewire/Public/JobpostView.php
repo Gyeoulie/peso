@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Public;
 
+use App\Mail\NewJobApplicationNotification;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -135,15 +138,19 @@ class JobpostView extends Component
     {
         $this->validate([
             'option' => ['required'],
+        ], [
+            'option.required' => 'You must choose a resume option.',
         ]);
 
         // Get the authenticated user
         $user = auth()->user();
 
-        // If the user selected option 2
-        if ($this->option == 2) {
-            // If the user doesn't have a resume already
-            if (empty($user->employee->resume)) {
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            // If the user selected option 2 and doesn't have a resume already
+            if ($this->option == 2 && empty($user->employee->resume)) {
                 // Validate the resume upload
                 $this->validate([
                     'resume' => ['required', 'file', 'mimes:pdf', 'max:5120'], // 'max' is in kilobytes (5MB = 5120KB)
@@ -158,34 +165,36 @@ class JobpostView extends Component
                 $resumePath = $this->resume->store('resumes', 'public');
 
                 // Update the user's employee record with the resume path
-                try {
-                    $user->employee->update([
-                        'resume' => $resumePath,
-                    ]);
-                } catch (\Exception $e) {
-                    toastr()->error('There was an error in uploading the resume!');
-                    return;
-                }
-
+                $user->employee->update([
+                    'resume' => $resumePath,
+                ]);
             }
-        }
 
-        // Create a new job applicant record
-        try {
-            Job_Applicants::create([
+            // Create a new job applicant record
+            $application = Job_Applicants::create([
                 'employee_id' => $user->employee->employee_id,
                 'job_id' => $this->id,
                 'applicant_Resume' => $this->option,
                 'applicant_Status' => "PENDING",
                 'peso_Status' => "PENDING",
             ]);
+
+            // Send email notification
+            if ($application) {
+                Mail::to($application->employee->user->email)->queue(new NewJobApplicationNotification($application));
+            }
+
+            // Commit the transaction
+            DB::commit();
+
             $this->close();
             toastr()->success('Application submitted successfully.');
-            // session()->flash('message', );
-        } catch (\Exception $e) {
-            toastr()->error('There was an error in the application!');
-        }
 
+        } catch (\Exception $e) {
+            // Rollback the transaction if there's an error
+            DB::rollBack();
+            toastr()->error('There was an error in the application: ' . $e->getMessage());
+        }
     }
 
     public function close()

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Employer\Jobpost;
 
+use App\Mail\JobPostApplicationNotification;
 use App\Models\Barangay;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
@@ -13,6 +14,7 @@ use App\Models\Requirements_Passed;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -179,6 +181,8 @@ class JobpostApplication extends Component
                 DB::commit();
 
                 // Redirect to the job posting show route
+                Mail::to($jobposting->company->user->email)->queue(new JobPostApplicationNotification($jobposting));
+
                 toastr()->success('You have successfully submitted an application!');
                 $this->redirectRoute('jobpost.show', ['id' => $jobposting->job_id], navigate: true);
             }

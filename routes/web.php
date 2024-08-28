@@ -16,8 +16,10 @@ use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Admin\LocationManagement\Location;
 use App\Livewire\Admin\PositionIndustry\PositionIndustry;
 use App\Livewire\Admin\Reports\BarangayReports;
+use App\Livewire\Admin\Reports\MunicipalityReports;
 use App\Livewire\Admin\Requirements\Requirements;
 use App\Livewire\Admin\Training\CreateTrainining;
+use App\Livewire\Admin\Training\EditTraining;
 use App\Livewire\Admin\Training\TrainingDetails;
 use App\Livewire\Admin\Training\TrainingList;
 use App\Livewire\Admin\Training\TrainingRegistrants;
@@ -32,8 +34,8 @@ use App\Livewire\Public\Profile\Employer\EmployerProfile;
 use App\Livewire\Public\Profile\Employer\Partials\EditDetails as EmployerEditDetails;
 use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
 use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
-use App\Livewire\Public\Resume\ResumeView;
 use App\Livewire\Public\SearchProfiles;
+use App\Livewire\Public\Trainings;
 use App\Livewire\Public\TrainingView;
 use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
@@ -66,6 +68,7 @@ Route::get('/employer/details', EmployerInformation::class)->name('fill_employer
 
 //------------------------------ PUBLIC ------------------------------
 Route::get('/dashboard', Dashboard::class)->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/trainings', Trainings::class)->middleware(['auth', 'verified'])->name('trainings');
 
 Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
 
@@ -139,10 +142,13 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/training', TrainingList::class)->name('admin-training');
     Route::get('/training/create', CreateTrainining::class)->name('admin-create-training');
+    Route::get('/training/edit', EditTraining::class)->name('admin-edit-training');
     Route::get('/training/details/{id}', TrainingDetails::class)->name('admin-view-training');
     Route::get('/training/{id}', TrainingRegistrants::class)->name('admin-registrants-training');
 
     Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
+    Route::get('/reports/municipality', MunicipalityReports::class)->name('admin-reports-municipality');
+
 
 });
 
@@ -202,11 +208,11 @@ Route::get('/admin/job/applicants/overview/{id}', ApplicantOverview::class)->nam
 // ------------------------------TEST ROUTES------------------------------
 // Route::get('/teste', EmployerInformation::class)->name('employer.test');
 
-Route::get('/resume', function () {
-    return view('resume');
-})->name('resume');
+// Route::get('/resume', function () {
+//     return view('resume');
+// })->name('resume');
 
-Route::get('/resume/view/{id}', ResumeView::class)->name('view.resume');
+// Route::get('/resume/view/{id}', ResumeView::class)->name('view.resume');
 
 require __DIR__ . '/auth.php';
 

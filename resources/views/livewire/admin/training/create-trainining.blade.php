@@ -222,7 +222,7 @@
 
         </div>
 
-        <div class="col-span 4 sm:col-span-12">
+        <div class="col-span-4 sm:col-span-12">
             <div class="bg-white shadow rounded-lg p-6">
 
                 <div class="flex flex-col sm:flex-row w-full gap-2 sm:gap-4 ">
@@ -303,7 +303,7 @@
                 <x-green-button wire:loading.attr="disabled" wire:click.prevent="saveProgram" class="ms-3"
                     type="button">
                     {{ __('Confirm') }}
-                    <div wire:loading.delay.long wire:target="updateApplicant('REJECT', 'reject')" role="status">
+                    <div wire:loading.delay.long wire:target="saveProgram" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path

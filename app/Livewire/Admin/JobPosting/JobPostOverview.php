@@ -2,10 +2,14 @@
 
 namespace App\Livewire\Admin\JobPosting;
 
+use App\Mail\JobPostApplicationNotification;
+use App\Mail\JobPostingNotification;
 use App\Models\Employee;
 use App\Models\Job_Posting;
 use App\Models\Requirements;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -61,29 +65,69 @@ class JobPostOverview extends Component
         ]);
 
     }
-
     public function updateJob($id, $status, $modal)
     {
-
         $user = Auth::user();
 
+        // Validate the input
         $this->validate([
             'remarks' => 'required|string',
         ]);
 
+        // Initialize variables
+        $jobPosting = null;
+        $matchingEmployees = [];
+
+        // Begin a transaction
+        DB::beginTransaction();
+
         try {
-            Job_Posting::where('job_id', $id)->update([
+            // Find and update the job posting
+            $jobPosting = Job_Posting::where('job_id', $id)->firstOrFail();
+
+            $jobPosting->update([
                 'job_Status' => $status,
                 'peso_Remarks' => $this->remarks,
                 'peso_id' => $user->id,
+                'responded_at' => now(),
             ]);
-            $this->dispatch('close-modal', $modal);
-            toastr()->success('Job Posting Approved');
+
+            // If the status is ACTIVE, get the matching employees
+            if ($status === 'ACTIVE') {
+                $matchingEmployees = $this->getMatched($jobPosting);
+            }
+
+            // Commit the transaction
+            DB::commit();
+            Mail::to($jobPosting->company->user->email)->queue(new JobPostApplicationNotification($jobPosting));
 
         } catch (\Exception $e) {
-            toastr()->error($e);
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            // Log the error for debugging
+
+            // Show an error message
+            toastr()->error('An error occurred while updating the job posting.');
+            return;
         }
 
+        // Send emails if the status is ACTIVE and the transaction was committed
+        if ($status === 'ACTIVE' && !empty($matchingEmployees)) {
+            foreach ($matchingEmployees as $employee) {
+                Mail::to($employee->user->email)->queue(new JobPostingNotification($employee, $jobPosting));
+            }
+        }
+
+        // Dispatch the event to close the modal
+        $this->dispatch('close-modal', $modal);
+
+        // Show a success message depending on the status
+        if ($status === 'ACTIVE') {
+            toastr()->success('Job Posting Approved');
+        } elseif ($status === 'REJECTED') {
+            toastr()->success('Job Posting Rejected');
+        }
     }
 
     public function close($modal)
@@ -93,16 +137,15 @@ class JobPostOverview extends Component
         $this->dispatch('close-modal', $modal);
     }
 
-    public function render()
+    public function getMatched($jobpost)
     {
-        $jobpost = Job_Posting::with(['job_tags'])->findOrFail($this->id);
 
         $jobMunicipalityId = $jobpost->peso_municipality_id;
         $jobEducationLevel = $jobpost->job_Edu;
         $jobIndustryId = $jobpost->industry_id;
         $jobTagIds = $jobpost->job_tags->pluck('position_id');
 
-        $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
+        return Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
             $query->where('municipality_id', $jobMunicipalityId);
         })
             ->whereHas('education', function ($query) use ($jobEducationLevel) {
@@ -127,6 +170,13 @@ class JobPostOverview extends Component
         ')
             ->orderByDesc('num_matched_tags')
             ->get();
+    }
+
+    public function render()
+    {
+        $jobpost = Job_Posting::with(['job_tags'])->findOrFail($this->id);
+
+        $matchingEmployees = $this->getMatched($jobpost);
 
         $requirements = Requirements::with([
             'requirementPassed' => function ($query) use ($jobpost) {

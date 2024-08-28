@@ -44,6 +44,10 @@
                                 <livewire:components.applications-notif />
                             </x-nav-link>
                         @endif
+
+                        <x-nav-link wire:navigate :href="route('trainings')" :active="request()->routeIs('trainings')">
+                            {{ __('Trainings') }}
+                        </x-nav-link>
                         @if (auth()->user()->usertype >= 8)
                             <x-nav-link wire:navigate :href="route('admin')" :active="Route::is('admin*')">
                                 {{ __('Admin Tools') }}
@@ -60,7 +64,7 @@
             </div>
 
             @if (Auth::check())
-                <div class="hidden sm:flex mr-1 ml-auto w-96">
+                <div class="hidden sm:flex mr-1 ml-auto  w-40 lg:w-96">
 
 
                     <livewire:components.profile-search />

@@ -1,4 +1,17 @@
 <div class="w-full">
+    <div class="flex flex-row justify-between mx-auto sm:mx-12 py-2 mt-4">
+        <div>
+            <h1 class="text-lg sm:text-2xl font-semibold">Recommended Trainings</h1>
+        </div>
+        <div class="flex items-end">
+            <a wire:navigate href="{{ route('trainings') }}"
+                class="text-sm sm:text-md
+                font-semibold hover:text-blue-400">View more</a>
+        </div>
+
+    </div>
+    <hr class="h-1 mx-auto sm:mx-12  bg-gray-200 border-0 dark:bg-gray-700">
+
     <div class="overflow-x-auto">
         <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
 
@@ -7,11 +20,22 @@
                     class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
                     <img class="w-full sm:w-60 object-cover h-48 sm:h-auto"
                         src="{{ asset('storage/' . $data->program_pubmat) }}" alt="prog-{{ $data->program_id }}">
-                    <div class="flex flex-col justify-between  p-4 sm:p-6">
-                        <h5 class="mb-2  text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
+                    <div class="flex flex-col justify-between  p-4 sm:p-4">
+                        <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
                             {{ $data->program_Title }}
                         </h5>
-                        <p class="mb-4 text-sm font-normal text-gray-700 leading-relaxed">
+                        <hr class="mb-1">
+                        <span class="mb-2 text-sm font-medium text-gray-900 leading-relaxed flex items-center">
+                            <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            {{ $data->created_at->format('F j, Y g:i A') }}
+                        </span>
+
+
+                        <p class="mb-2 text-sm font-normal text-gray-700 leading-relaxed">
 
                             {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 90, '...') !!}
 
@@ -284,7 +308,7 @@
                     <div class="bg-white shadow rounded-lg p-4">
                         <div class="p-3 text-gray-900 text-center w-full">
                             <h1 class="font-bold text-2xl">Notifications</h1>
-                            <div class="overflow-y-auto max-h-[900px]"> <!-- Set max height here -->
+                            <div class="overflow-y-auto max-h-[300px] sm:max-h-[900px]"> <!-- Set max height here -->
                                 <ul class="space-y-3 mt-5">
                                     @foreach ($formattedNotifications as $notification)
                                         <li>
