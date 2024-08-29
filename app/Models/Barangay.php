@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Barangay extends Model
+class Barangay extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasFactory, SoftDeletes;
 
     protected $table = 'barangay';
@@ -50,6 +52,16 @@ class Barangay extends Model
     public function employee()
     {
         return $this->hasMany(Employee::class, 'barangay_id');
+    }
+
+    public static function fieldMappings()
+    {
+        return [
+            'barangay_id' => 'Barangay ID',
+            'municipality_id' => 'Municipality ID',
+            'barangay_Name' => 'Barangay Name',
+            'barangay_Code' => 'Barangay Code',
+        ];
     }
 
 }

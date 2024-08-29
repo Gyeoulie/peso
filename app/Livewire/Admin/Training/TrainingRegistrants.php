@@ -95,15 +95,27 @@ class TrainingRegistrants extends Component
 
     public function confirmReg($action, $id)
     {
+        DB::beginTransaction();
 
         try {
-            DB::beginTransaction();
+            // Retrieve the model instance using Eloquent
+            $programReg = Program_Reg::find($id);
 
-            // Perform the update
-            Program_Reg::where('program_reg_id', $id)->update([
-                'program_reg_Status' => $action,
-                'responded_at' => now(),
-            ]);
+            if (!$programReg) {
+                toastr()->error('Job seeker not found.');
+                DB::rollBack();
+                return;
+            }
+
+            // Update the model attributes
+            $programReg->program_reg_Status = $action;
+            $programReg->responded_at = now();
+
+            // Check if any attributes are dirty
+            if ($programReg->isDirty()) {
+                // Save changes only if there are modifications
+                $programReg->save();
+            }
 
             // Commit the transaction
             DB::commit();
@@ -112,7 +124,7 @@ class TrainingRegistrants extends Component
             toastr()->success('Job seeker successfully updated.');
 
         } catch (\Exception $e) {
-            // Rollback the transaction
+            // Rollback the transaction on error
             DB::rollBack();
 
             // Show error notification

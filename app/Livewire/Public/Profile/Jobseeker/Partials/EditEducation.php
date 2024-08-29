@@ -4,6 +4,7 @@ namespace App\Livewire\Public\Profile\Jobseeker\Partials;
 
 use App\Models\Education;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class EditEducation extends Component
@@ -63,29 +64,30 @@ class EditEducation extends Component
 
         $this->validate($rules, $messages);
 
-        if ($this->eduID) {
-            try {
-                // Create the user record
-                Education::where('education_id', $this->eduID)->update([
-                    'edu_School' => $this->eduSchool,
-                    'edu_Level' => $this->eduLevel,
-                    'edu_Course' => $this->eduCourse,
-                    'edu_Started' => Carbon::parse($this->eduStart)->format('Y-m-d'),
-                    'edu_Ended' => $this->eduEnd ? Carbon::parse($this->eduEnd)->format('Y-m-d') : null,
-                    'edu_Ongoing' => $this->eduOngoing === true ? 1 : 2,
-                ]);
+        DB::beginTransaction(); // Start transaction
 
-                toastr()->success('Education Record has been Updated!');
-            } catch (\Exception $e) {
+        try {
+            if ($this->eduID) {
+                // Update existing record
+                $education = Education::findOrFail($this->eduID);
 
-                // Show error toastr notification
-                toastr()->error('There was an Error');
-            }
+                // Set attributes
+                $education->edu_School = $this->eduSchool;
+                $education->edu_Level = $this->eduLevel;
+                $education->edu_Course = $this->eduCourse;
+                $education->edu_Started = Carbon::parse($this->eduStart)->format('Y-m-d');
+                $education->edu_Ended = $this->eduEnd ? Carbon::parse($this->eduEnd)->format('Y-m-d') : null;
+                $education->edu_Ongoing = $this->eduOngoing ? 1 : 2;
 
-        } else {
-
-            try {
-                // Create the user record
+                // Check if any attributes are dirty (i.e., have changed)
+                if ($education->isDirty()) {
+                    $education->save();
+                    toastr()->success('Education Record has been Updated!');
+                } else {
+                    toastr()->info('No changes detected. Education Record remains the same.');
+                }
+            } else {
+                // Create new record
                 Education::create([
                     'employee_id' => $this->userID,
                     'edu_School' => $this->eduSchool,
@@ -93,16 +95,18 @@ class EditEducation extends Component
                     'edu_Course' => $this->eduCourse,
                     'edu_Started' => Carbon::parse($this->eduStart)->format('Y-m-d'),
                     'edu_Ended' => $this->eduEnd ? Carbon::parse($this->eduEnd)->format('Y-m-d') : null,
-                    'edu_Ongoing' => $this->eduOngoing === true ? 1 : 2,
+                    'edu_Ongoing' => $this->eduOngoing ? 1 : 2,
                 ]);
+
                 toastr()->success('New Education Record Created!');
-
-            } catch (\Exception $e) {
-
-                // Show error toastr notification
-                toastr()->error('There was an Error');
             }
+
+            DB::commit(); // Commit transaction
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback transaction on error
+            toastr()->error('There was an error, please try again later.');
         }
+
         $this->close();
         $this->dispatch('reload-table');
     }

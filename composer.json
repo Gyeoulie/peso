@@ -17,6 +17,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "3.5",
+        "owen-it/laravel-auditing": "^13.6",
         "php-flasher/flasher-laravel": "^1.15",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/simple-excel": "^3.6",
@@ -37,7 +38,11 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/AuditFormatter.php"
+        ]
+        
     },
     "autoload-dev": {
         "psr-4": {

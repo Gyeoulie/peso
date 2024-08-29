@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Job_Posting extends Model
+class Job_Posting extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $table = 'job_posting';
     protected $primaryKey = 'job_id';
@@ -92,6 +94,32 @@ class Job_Posting extends Model
 
         // Calculate the remaining slots, ensuring it can't be negative
         return max($this->job_Slots - $hiredApplicantsCount, 0);
+    }
+
+    public static function fieldMappings()
+    {
+        return [
+            'job_id' => 'Job ID',
+            'company_id' => 'Company ID',
+            'industry_id' => 'Industry ID',
+            'job_Title' => 'Job Title',
+            'job_Description' => 'Job Description',
+            'job_Qualifications' => 'Job Qualifications',
+            'job_Remarks' => 'Job Remarks',
+            'job_MinWage' => 'Minimum Wage',
+            'job_MaxWage' => 'Maximum Wage',
+            'job_Type' => 'Job Type',
+            'job_Edu' => 'Education Required',
+            'job_Slots' => 'Available Slots',
+            'job_Address' => 'Job Address',
+            'barangay_id' => 'Barangay ID',
+            'job_Duration' => 'Job Duration',
+            'job_Status' => 'Job Status',
+            'peso_id' => 'PESO ID',
+            'peso_municipality_id' => 'PESO Municipality ID',
+            'peso_Remarks' => 'PESO Remarks',
+            'responded_at' => 'Responded At',
+        ];
     }
 
 }

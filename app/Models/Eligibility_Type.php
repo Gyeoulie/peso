@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Eligibility_Type extends Model
+class Eligibility_Type extends Model implements Auditable
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $table = 'eligibility_type';
     protected $primaryKey = 'eligibility_type_id';
@@ -37,6 +39,15 @@ class Eligibility_Type extends Model
     public function job_posting()
     {
         return $this->hasMany(Eligibility::class, 'eligibility_id');
+    }
+
+    public static function fieldMappings()
+    {
+        return [
+            'eligibility_type_id' => 'Eligibility Type ID',
+            'eligibility_Name' => 'Eligibility Name',
+            'eligibility_Code' => 'Eligibility Code',
+        ];
     }
 
 }

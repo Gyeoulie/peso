@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Reports;
 
+use App\Helpers\AuditFormatter;
 use App\Models\Barangay;
 use App\Models\Job_Applicants;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
@@ -11,12 +12,18 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
+use OwenIt\Auditing\Models\Audit;
 
 #[Layout('layouts.admin')]
 class MunicipalityReports extends Component
 {
 
+    use WithPagination;
+
     public $currentYear = 2024;
+    public $modelFilter;
+    public $perPage = 10;
     public $selectedMonths = []; // Default to all months if empty
 
     public function getBarangayChart($id)
@@ -262,8 +269,28 @@ class MunicipalityReports extends Component
         $recommendedLineModel = $this->getRecommendationTrends($pesoMunicipalityId);
         $employmentLineModel = $this->getEmploymentTrends($pesoMunicipalityId);
 
-        // dd($recommendedChartModel);
+        $audits = Audit::when($this->modelFilter, function ($query) {
+            $query->where('auditable_type', $this->modelFilter);
+        })
+            ->latest()
+            ->paginate($this->perPage);
 
-        return view('livewire.admin.reports.municipality-reports', compact('barangayChartModel', 'recommendedLineModel', 'employmentLineModel'));
+        // Format each audit entry
+        $municipalityId = 1;
+        $audits = Audit::whereHas('user.employee.barangay.municipality', function ($query) use ($municipalityId) {
+            $query->where('municipality_id', $municipalityId);
+        })
+            ->latest()
+            ->paginate(5); // Adjust the number of items per page as needed
+        // Adjust the number of items per page as needed
+
+        // Format each audit entry
+        $formattedAudits = $audits->map(function ($audit) {
+            return AuditFormatter::format($audit);
+        });
+
+        // dd($formattedAudits);
+
+        return view('livewire.admin.reports.municipality-reports', compact('barangayChartModel', 'recommendedLineModel', 'employmentLineModel', 'formattedAudits', 'audits'));
     }
 }

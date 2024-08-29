@@ -6,6 +6,8 @@ use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
 use App\Livewire\Admin\Accounts\Employer\EmployerOverview;
 use App\Livewire\Admin\Accounts\Jobseeker\JobseekerManagement;
 use App\Livewire\Admin\Accounts\Jobseeker\JobseekerOverview;
+use App\Livewire\Admin\Accounts\Peso\PesoManagement;
+use App\Livewire\Admin\Accounts\Peso\PesoOverview;
 use App\Livewire\Admin\Certificates\Certificates;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\EligibilityLicense\EligibilityLicense;
@@ -136,9 +138,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/manage/employer', EmployerManagement::class)->name('admin-users-employer');
     Route::get('/manage/employer/{id}', EmployerOverview::class)->name('admin-users-employer-overview');
 
-    Route::get('/manage-admin', function () {
-        return view('admin.admin_partials.admin-accounts');
-    })->name('admin-admin');
+    Route::get('/manage/peso/', PesoManagement::class)->name('admin-users-peso');
+    Route::get('/manage/peso/{id}', PesoOverview::class)->name('admin-users-peso-overview');
+
+    // Route::get('/manage-admin', function () {
+    //     return view('admin.admin_partials.admin-accounts');
+    // })->name('admin-admin');
 
     Route::get('/training', TrainingList::class)->name('admin-training');
     Route::get('/training/create', CreateTrainining::class)->name('admin-create-training');
@@ -148,7 +153,6 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
     Route::get('/reports/municipality', MunicipalityReports::class)->name('admin-reports-municipality');
-
 
 });
 

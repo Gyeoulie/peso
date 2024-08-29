@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Certificate_Type extends Model
+class Certificate_Type extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
-
+    use \OwenIt\Auditing\Auditable;
     protected $table = 'certificate_type';
     protected $primaryKey = 'cert_type_id';
 
@@ -23,7 +24,6 @@ class Certificate_Type extends Model
         'cert_Code',
     ];
 
-    
     /**
      * The attributes that should be cast to native types.
      *
@@ -37,6 +37,15 @@ class Certificate_Type extends Model
     public function certificate()
     {
         return $this->hasMany(Certificate::class, 'cert_type_id');
+    }
+
+    public static function fieldMappings()
+    {
+        return [
+            'cert_type_id' => 'Certificate Type ID',
+            'cert_Name' => 'Certificate Name',
+            'cert_Code' => 'Certificate Code',
+        ];
     }
 
 }

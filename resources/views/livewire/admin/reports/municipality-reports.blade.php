@@ -170,6 +170,85 @@
             </div>
         </div>
 
+        <div class="col-span-4 md:col-span-6">
+            <div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
+                <div class="mb-5">
+                    <h1 class="text-2xl font-bold">Audit Logs</h1>
+                    <hr class="h-px my-2 bg-gray-200 border-0">
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+                        <thead class="text-xs text-gray-700 uppercase bg-blue-300">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 ">
+                                    <span class="text-black font-bold text-md">Model</span>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="text-black font-bold text-md">User</span>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="text-black font-bold text-md">Date</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($formattedAudits->isEmpty())
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                            <div class="p-6 bg-gray-100 rounded-full">
+                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-width="2"
+                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                </svg>
+                                            </div>
+                                            <p class="text-xl font-bold text-black text-center mt-2">
+                                                No audit logs available!
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @else
+                                @foreach ($formattedAudits as $audit)
+                                    <tr wire:key='audit-{{ $loop->index }}'
+                                        class="bg-white border-b hover:bg-gray-50">
+                                        <td class="px-6 py-4">
+                                            <ul class="list-disc pl-5">
+                                                @foreach ($audit['changes'] as $index => $change)
+                                                    @if ($index == 0)
+                                                        <b>{{ $change }}</b>
+                                                    @else
+                                                        <li>{{ $change }}</li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            {{ $audit['changed_by'] }} (ID: {{ $audit['user_id'] }}, Type:
+                                            {{ $audit['user_type'] }})<br>
+                                            {{ $audit['ipaddress'] }}
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+
+                                            {{ $audit['date'] }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            @endif
+                        </tbody>
+                    </table>
+                    <div class="mt-4">
+                        {{ $audits->links('vendor.pagination.tailwind') }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
 
 
 

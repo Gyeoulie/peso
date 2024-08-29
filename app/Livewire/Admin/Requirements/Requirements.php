@@ -96,25 +96,43 @@ class Requirements extends Component
         ];
 
         $this->validate($rules, $messages);
+
+        // Start a database transaction
         DB::beginTransaction();
 
         try {
-            // Create the user record
-            ModelsRequirements::where('requirement_id', $this->editreqID)->update([
-                'requirement_Title' => strtoupper($this->editreqPost),
-                'requirement_Status' => $this->editstatusPost,
-            ]);
+            // Retrieve the model instance
+            $requirement = ModelsRequirements::find($this->editreqID);
 
-            DB::commit();
-            toastr()->success('Requirement Updated!');
+            if (!$requirement) {
+                toastr()->error('Requirement not found!');
+                DB::rollBack();
+                return;
+            }
 
+            // Update the requirement using Eloquent
+            $requirement->requirement_Title = strtoupper($this->editreqPost);
+            $requirement->requirement_Status = $this->editstatusPost;
+
+            // Check if there are any changes
+            if ($requirement->isDirty()) {
+                $requirement->save();
+                // Commit the transaction if changes were made
+                DB::commit();
+                toastr()->success('Requirement Updated!');
+            } else {
+                // No changes to save
+                DB::rollBack();
+                toastr()->info('No changes detected.');
+            }
         } catch (\Exception $e) {
+            // Roll back the transaction on error
             DB::rollBack();
-            // Show error toastr notification
-            toastr()->error('There was an Error');
+            toastr()->error('There was an error.');
         }
-        $this->close();
 
+        // Close the modal after updating
+        $this->close();
     }
 
     public function close()
