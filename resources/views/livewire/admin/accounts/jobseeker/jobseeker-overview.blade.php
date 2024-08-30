@@ -132,6 +132,23 @@
                         Security
                     </button>
                 </li>
+                <li>
+                    <button @click="selectedTab = 3" :class="selectedTab === 3 ? activeTab : inactiveTab"
+                        class="inline-flex items-center px-4 py-3 rounded-lg w-full" aria-current="page">
+
+                        <svg :class="selectedTab === 3 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M15.988 3.012A2.25 2.25 0 0 1 18 5.25v6.5A2.25 2.25 0 0 1 15.75 14H13.5V7A2.5 2.5 0 0 0 11 4.5H8.128a2.252 2.252 0 0 1 1.884-1.488A2.25 2.25 0 0 1 12.25 1h1.5a2.25 2.25 0 0 1 2.238 2.012ZM11.5 3.25a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 .75.75v.25h-3v-.25Z"
+                                clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M2 7a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7Zm2 3.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Zm0 3.5a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z"
+                                clip-rule="evenodd" />
+                        </svg>
+
+                        Audits
+                    </button>
+                </li>
             </ul>
 
             {{-- 2ND TAB --}}
@@ -802,6 +819,8 @@
 
 
             </div>
+
+            {{-- SECURITY --}}
             <div x-show="selectedTab === 2" x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
 
@@ -953,14 +972,100 @@
                         <p class="text-yellow-700 font-normal">New password will be sent thru the user's email</p>
                     </div>
 
-                    <x-blue-button>Reset
-                        Password</x-blue-button>
+                    <x-blue-button x-data=""
+                    x-on:click.prevent="$dispatch('open-modal', 'reset-password-modal')">Reset
+                    Password</x-blue-button>
                 </div>
 
             </div>
 
+            {{-- AUDITS --}}
+            <div x-show="selectedTab === 3" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
 
 
+                <div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto mt-4">
+                    <div class="mb-5">
+                        <h1 class="text-2xl font-bold">Audit Logs</h1>
+                        <hr class="h-px my-2 bg-gray-200 border-0">
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+                            <thead class="text-xs text-gray-700 uppercase bg-blue-300">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 ">
+                                        <span class="text-black font-bold text-md">Model</span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        <span class="text-black font-bold text-md">User</span>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        <span class="text-black font-bold text-md">Date</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($formattedAudits->isEmpty())
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                <div class="p-6 bg-gray-100 rounded-full">
+                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-width="2"
+                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                    </svg>
+                                                </div>
+                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                    No audit logs available!
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @else
+                                    @foreach ($formattedAudits as $audit)
+                                        <tr wire:key='audit-{{ $loop->index }}'
+                                            class="bg-white border-b hover:bg-gray-50">
+                                            <td class="px-6 py-4">
+                                                <ul class="list-disc pl-5">
+                                                    @foreach ($audit['changes'] as $index => $change)
+                                                        @if ($index == 0)
+                                                            <b>{{ $change }}</b>
+                                                        @else
+                                                            <li>{{ $change }}</li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ $audit['changed_by'] }} (ID: {{ $audit['user_id'] }}, Type:
+                                                {{ $audit['user_type'] }})<br>
+                                                {{ $audit['ipaddress'] }}
+                                            </td>
+                                            <td class="px-6 py-4">
+
+                                                {{ $audit['date'] }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                @endif
+                            </tbody>
+                        </table>
+                        <div class="mt-4">
+                            {{ $audits->links('vendor.livewire.tailwind') }}
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            
 
 
 
@@ -1007,4 +1112,63 @@
         </div>
     </x-modal>
 
+
+    <x-modal name="reset-password-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ agreeBox: @entangle('agreeBox') }">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Action Confirmation') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col my-4">
+                <div class="flex flex-col mt-4 mb-4 w-full justify-center items-center px-4">
+                    <span class="text-xl font-semibold">Are you sure you want to reset this user's password?</span>
+
+                </div>
+
+
+                <div class="inline-flex justify-center items-center mt-4 w-full">
+                    <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="agreeBox">
+                        <input wire:model="agreeBox" type="checkbox" id="agreeBox"
+                            class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                        <span
+                            class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                fill="currentColor" stroke="currentColor" stroke-width="1">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                    </label>
+                    <label class="mt-px font-light text-gray-700 cursor-pointer select-none" for="agreeBox">
+                        Confirm the transaction
+                    </label>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-between">
+                <x-secondary-button x-on:click="agreeBox = false; $dispatch('close-modal', 'reset-password-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+
+
+                <x-danger-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled" wire:target='resetPassword'
+                    wire:click.prevent="resetPassword" class="ms-3" type="button">
+                    {{ __('Confirm') }}
+                    <div wire:loading.delay.long wire:target="resetPassword" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
 </div>

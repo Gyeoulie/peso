@@ -242,7 +242,7 @@
                         </tbody>
                     </table>
                     <div class="mt-4">
-                        {{ $audits->links('vendor.pagination.tailwind') }}
+                        {{ $audits->links('vendor.livewire.tailwind') }}
                     </div>
 
                 </div>

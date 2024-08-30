@@ -260,6 +260,7 @@
                                 <option value="" disabled selected>Select PESO Role</option>
                                 <option value="8">PESO Consultant</option>
                                 <option value="9">PESO Officer</option>
+                                <option value="10">PESO Manager</option>
                             </select>
                             <x-input-error :messages="$errors->get('role')" class="mt-2" />
                         </div>

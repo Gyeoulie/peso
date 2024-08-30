@@ -9,33 +9,27 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AdminCreationNotification extends Mailable implements ShouldQueue
+class AdminResetPasswordNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    protected $employeeName;
-    protected $email;
-    protected $password;
-    protected $verificationUrl;
-
-    public function __construct($employeeName, $email, $password, $verificationUrl)
+    protected $userName;
+    protected $newPassword;
+    public function __construct($userName, $newPassword)
     {
-        $this->employeeName = $employeeName;
-        $this->email = $email;
-        $this->password = $password;
-        $this->verificationUrl = $verificationUrl;
+        $this->userName = $userName;
+        $this->newPassword = $newPassword;
     }
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Admin Account Creation',
+            subject: 'Password Reset',
         );
     }
 
@@ -45,12 +39,10 @@ class AdminCreationNotification extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.admin_creation_notification',
+            markdown: 'emails.admin_reset_password_notification',
             with: [
-                'employeeName' => $this->employeeName,
-                'email' => $this->email,
-                'password' => $this->password,
-                'verificationUrl' => $this->verificationUrl,
+                'userName' => $this->userName,
+                'newPassword' => $this->newPassword,
             ]
         );
     }

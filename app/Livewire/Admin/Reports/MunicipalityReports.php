@@ -9,9 +9,11 @@ use Asantibanez\LivewireCharts\Facades\LivewireCharts;
 use Asantibanez\LivewireCharts\Models\LineChartModel;
 use Asantibanez\LivewireCharts\Models\PieChartModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 use OwenIt\Auditing\Models\Audit;
 
@@ -19,7 +21,7 @@ use OwenIt\Auditing\Models\Audit;
 class MunicipalityReports extends Component
 {
 
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination;
 
     public $currentYear = 2024;
     public $modelFilter;

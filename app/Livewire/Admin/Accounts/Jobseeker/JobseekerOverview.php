@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Admin\Accounts\Jobseeker;
 
+use App\Helpers\AuditFormatter;
+use App\Mail\AdminResetPasswordNotification;
 use App\Models\Barangay;
 use App\Models\Education;
 use App\Models\Employee;
@@ -11,12 +13,20 @@ use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use App\Models\Program_Reg;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
+use OwenIt\Auditing\Models\Audit;
 
 #[Layout('layouts.admin')]
 class JobseekerOverview extends Component
 {
+
+    use WithPagination;
+    use WithoutUrlPagination;
 
     public $id;
 
@@ -24,6 +34,8 @@ class JobseekerOverview extends Component
 
     // SETTING FIELD
     public $fname, $lname, $mname, $suffix, $birthdate, $gender, $civilstatus, $religion;
+
+    public $agreeBox = false;
 
     public function recommendedJobs($id)
     {
@@ -206,6 +218,63 @@ class JobseekerOverview extends Component
         $this->dispatch('close-modal', 'confirm-modal');
 
     }
+
+    public function generatePassword()
+    {
+        // Define the password criteria
+        $length = 12;
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_=+';
+
+        // Generate a random password
+        $password = '';
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        // Set the generated password to the pwdPost property
+        return $password;
+
+    }
+
+    public function resetPassword()
+    {
+        $rules = [
+            'agreeBox' => 'required|boolean',
+        ];
+        $messages = [
+            'agreeBox.required' => 'Please check before you continue.',
+        ];
+        $this->validate($rules, $messages);
+
+        $jobseekerData = Employee::findOrFail($this->id);
+
+        $this->agreeBox = false;
+        if ($jobseekerData->user) {
+            DB::beginTransaction();
+
+            try {
+                // Generate a new password
+                $newPassword = $this->generatePassword();
+
+                // Update the user's password (assuming 'password' is the column name)
+                $jobseekerData->user->password = Hash::make($newPassword);
+                $jobseekerData->user->save();
+
+                DB::commit();
+
+                $name = $jobseekerData->fname . ' ' . $jobseekerData->lname;
+                Mail::to($jobseekerData->user->email)->queue(new AdminResetPasswordNotification($name, $newPassword));
+                toastr()->success('Password has been reset successfully!');
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                toastr()->error('There was an error resetting the password.');
+            }
+        } else {
+            toastr()->error('User not found.');
+        }
+        $this->dispatch('close-modal', 'reset-password-modal');
+    }
     public function render()
     {
 
@@ -219,6 +288,20 @@ class JobseekerOverview extends Component
 
         $this->mountFields($jobseeker);
 
-        return view('livewire.admin.accounts.jobseeker.jobseeker-overview', compact('jobseeker', 'application_history', 'joblist', 'programHistory'));
+        $audits = Audit::where('user_id', $jobseeker->user_id)
+            ->latest()
+            ->paginate(5);
+
+        $formattedAudits = $audits->map(function ($audit) {
+            return AuditFormatter::format($audit);
+        });
+
+        return view('livewire.admin.accounts.jobseeker.jobseeker-overview',
+            compact('jobseeker',
+                'application_history',
+                'joblist',
+                'programHistory',
+                'audits',
+                'formattedAudits'));
     }
 }
