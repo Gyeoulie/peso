@@ -1,4 +1,4 @@
-<div class="container mx-auto py-8">
+<div class="container mx-auto py-8 overflow-y-auto overscroll-auto no-scrollbar">
 
 
 
@@ -15,10 +15,10 @@
         <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
-                    <h1 class="font-thin font-mono text-sm">Job Postings</h1>
+                    <h1 class="font-thin font-mono text-sm">Active Job Postings</h1>
                 </div>
                 <div class="flex flex-row justify-between mb-5">
-                    <h1 class="font-extrabold font-mono text-4xl">data</h1>
+                    <h1 class="font-extrabold font-mono text-4xl">{{ $activeJobPosting }}</h1>
 
                     <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -32,7 +32,7 @@
 
                     <h1 class="font-thin font-mono text-sm"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-green-300"></i>data</span>New Job
+                            </i>{{ $recentJobPosting }}</span>New Job
                         Postings
                     </h1>
                 </div>
@@ -45,10 +45,10 @@
         <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
-                    <h1 class="font-thin font-mono text-sm">Jobseekers</h1>
+                    <h1 class="font-thin font-mono text-sm">Active Job Slots</h1>
                 </div>
                 <div class="flex flex-row justify-between mb-5">
-                    <h1 class="font-extrabold font-mono text-4xl">data</h1>
+                    <h1 class="font-extrabold font-mono text-4xl">{{ $remainingSlots }}</h1>
 
                     <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -61,8 +61,9 @@
 
                     <h1 class="font-thin font-mono text-sm"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-green-300"></i> data</span>New Job
-                        Seekers
+                            </i> {{ $totalJobSlots }}</span>Total
+                        Active
+                        Job Slots
                     </h1>
                 </div>
 
@@ -91,7 +92,7 @@
 
                     <h1 class="font-thin font-mono text-sm"><span
                             class="bg-yellow-100 text-yellow-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-yellow-300"></i>
+                            </i>
                             data</span>Unemployed
                     </h1>
                 </div>
@@ -104,25 +105,26 @@
         <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
-                    <h1 class="font-thin font-mono text-sm">Employed Users</h1>
+                    <h1 class="font-thin font-mono text-sm">Active Job Applicants</h1>
                 </div>
                 <div class="flex flex-row justify-between mb-5">
-                    <h1 class="font-extrabold font-mono text-4xl">data</h1>
+                    <h1 class="font-extrabold font-mono text-4xl">{{ $activeApplicants }}</h1>
 
                     <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                            d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
                     </svg>
+
 
 
                 </div>
                 <div class="flex flex-row justify-content">
 
                     <h1 class="font-thin font-mono text-sm"><span
-                            class="bg-yellow-100 text-yellow-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-yellow-300"></i>
-                            data</span>Unemployed
+                            class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
+
+                            {{ $recentApplicants }}</span>Recent Job Applications
                     </h1>
                 </div>
 
@@ -142,111 +144,31 @@
             </div>
         </div>
         <div class="col-span-4 h-full">
-            <div class="bg-white shadow rounded-lg p-6 h-full">
-                <div class="mb-10">
-                    <h1 class="text-2xl font-bold">Recommendation Trends</h1>
-                    <hr class="h-px my-2 bg-gray-200 border-0">
-                </div>
-                <div class="flex h-full items-end">
-                    {{-- <livewire:livewire-column-chart key="{{ $recommendedChartModel->reactiveKey() }}" :column-chart-model="$recommendedChartModel" /> --}}
-                    <livewire:livewire-line-chart key="{{ $recommendedLineModel->reactiveKey() }}" :line-chart-model="$recommendedLineModel" />
-
-
-                </div>
-            </div>
+            <livewire:admin.reports.municipality-partials.recommendation-trends
+                municipalityID="{{ $pesoMunicipalityId }}" />
         </div>
 
         <div class="col-span-4 h-full">
-            <div class="bg-white shadow rounded-lg p-6 h-full">
-                <div class="mb-10">
-                    <h1 class="text-2xl font-bold">Employment Trends</h1>
-                    <hr class="h-px my-2 bg-gray-200 border-0">
-                </div>
-                <div class="flex h-full items-end">
-                    <livewire:livewire-line-chart key="{{ $employmentLineModel->reactiveKey() }}" :line-chart-model="$employmentLineModel" />
-
-
-                </div>
-            </div>
+            <livewire:admin.reports.municipality-partials.employment-trends
+                municipalityID="{{ $pesoMunicipalityId }}" />
         </div>
 
         <div class="col-span-4 md:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
-                <div class="mb-5">
-                    <h1 class="text-2xl font-bold">Audit Logs</h1>
-                    <hr class="h-px my-2 bg-gray-200 border-0">
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
-                        <thead class="text-xs text-gray-700 uppercase bg-blue-300">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 ">
-                                    <span class="text-black font-bold text-md">Model</span>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <span class="text-black font-bold text-md">User</span>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <span class="text-black font-bold text-md">Date</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($formattedAudits->isEmpty())
-                                <tr>
-                                    <td colspan="5">
-                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
-                                            <div class="p-6 bg-gray-100 rounded-full">
-                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-width="2"
-                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                                </svg>
-                                            </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                No audit logs available!
-                                            </p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @else
-                                @foreach ($formattedAudits as $audit)
-                                    <tr wire:key='audit-{{ $loop->index }}'
-                                        class="bg-white border-b hover:bg-gray-50">
-                                        <td class="px-6 py-4">
-                                            <ul class="list-disc pl-5">
-                                                @foreach ($audit['changes'] as $index => $change)
-                                                    @if ($index == 0)
-                                                        <b>{{ $change }}</b>
-                                                    @else
-                                                        <li>{{ $change }}</li>
-                                                    @endif
-                                                @endforeach
-                                            </ul>
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            {{ $audit['changed_by'] }} (ID: {{ $audit['user_id'] }}, Type:
-                                            {{ $audit['user_type'] }})<br>
-                                            {{ $audit['ipaddress'] }}
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-
-                                            {{ $audit['date'] }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-                            @endif
-                        </tbody>
-                    </table>
-                    <div class="mt-4">
-                        {{ $audits->links('vendor.livewire.tailwind') }}
-                    </div>
-
-                </div>
+                <livewire:admin.reports.municipality-partials.jobseekers-list
+                    municipalityID="{{ $pesoMunicipalityId }}" />
             </div>
+        </div>
+
+        <div class="col-span-4 md:col-span-6">
+
+            <livewire:admin.reports.municipality-partials.popular-trainings
+                municipalityID="{{ $pesoMunicipalityId }}" />
+
+
+            <livewire:admin.reports.municipality-partials.top-tags-programs
+                municipalityID="{{ $pesoMunicipalityId }}" />
+
         </div>
 
 

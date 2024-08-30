@@ -57,16 +57,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/search/profile', SearchProfiles::class)->name('search.profiles');
 Route::middleware('auth')->group(function () {
+    Route::get('/search/profile', SearchProfiles::class)->name('search.profiles');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 //------------------------------ SIGN UP ------------------------------
-Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile');
-Route::get('/employer/details', EmployerInformation::class)->name('fill_employer');
+Route::middleware('auth')->group(function () {
+    Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile');
+    Route::get('/employer/details', EmployerInformation::class)->name('fill_employer');
+});
 
 //------------------------------ PUBLIC ------------------------------
 Route::get('/dashboard', Dashboard::class)->middleware(['auth', 'verified'])->name('dashboard');
@@ -77,9 +80,11 @@ Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
 Route::get('/training/{id}', TrainingView::class)->name('training.show');
 
 //------------------------------ PUBLIC - PROFILE ------------------------------
-Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
 
-Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
+    Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
+});
 
 //------------------------------ JOBSEEKER ------------------------------
 Route::get('/applications/history', ApplicationHistory::class)->name('jobseeker.application');
@@ -89,13 +94,14 @@ Route::get('/profile/edit', EditDetails::class)->name('edit.details');
 // Route::get('/apply', function () {
 //     return view('dashboard.partials.employer-jobpost');
 // })->name('jobpost.apply');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/apply', JobpostApplication::class)->name('jobpost.apply');
+    Route::get('/jobpost/details/{id}', JobPostDetails::class)->name('jobpost.details');
 
-Route::get('/apply', JobpostApplication::class)->name('jobpost.apply');
-Route::get('/jobpost/details/{id}', JobPostDetails::class)->name('jobpost.details');
-
-Route::get('/employer/jobpost', JobPostList::class)->name('employer.dashboard');
-Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
-Route::get('/employer/edit', EmployerEditDetails::class)->name('edit.details.emp');
+    Route::get('/employer/jobpost', JobPostList::class)->name('employer.dashboard');
+    Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
+    Route::get('/employer/edit', EmployerEditDetails::class)->name('edit.details.emp');
+});
 
 //------------------------------ ADMIN  NAVIGATION ------------------------------
 Route::prefix('admin')->group(function () {
@@ -154,6 +160,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
     Route::get('/reports/municipality', MunicipalityReports::class)->name('admin-reports-municipality');
 
+    Route::get('/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
+    Route::get('/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
+    Route::get('/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
+
 });
 
 // Route::get('/admin', function () {
@@ -205,9 +215,6 @@ Route::prefix('admin')->group(function () {
 // })->name('admin-admin');
 
 //ADMIN JOBPOST
-Route::get('/admin/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
-Route::get('/admin/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
-Route::get('/admin/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
 
 // ------------------------------TEST ROUTES------------------------------
 // Route::get('/teste', EmployerInformation::class)->name('employer.test');
@@ -244,6 +251,8 @@ require __DIR__ . '/auth.php';
 // Route::get('/fill/employer', [NSRP::class, 'loadEmployer'])->name('fill_employer');
 // Route::post('/fill/employer', [NSRP::class, 'postEmployer'])->name('postEmployer');
 
-Route::post('/resume/view', [PDFView::class, 'viewResume'])->name('view.resume');
-Route::post('/recommendation/view', [PDFView::class, 'viewRecommendation'])->name('view.recommendation');
-Route::post('/requirement/view', [PDFView::class, 'viewRequirement'])->name('view.requirement');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/resume/view', [PDFView::class, 'viewResume'])->name('view.resume');
+    Route::post('/recommendation/view', [PDFView::class, 'viewRecommendation'])->name('view.recommendation');
+    Route::post('/requirement/view', [PDFView::class, 'viewRequirement'])->name('view.requirement');
+});

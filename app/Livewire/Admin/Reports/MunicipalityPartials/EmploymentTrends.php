@@ -1,0 +1,119 @@
+<?php
+
+namespace App\Livewire\Admin\Reports\MunicipalityPartials;
+
+use App\Models\Job_Applicants;
+use Asantibanez\LivewireCharts\Models\LineChartModel;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+
+class EmploymentTrends extends Component
+{
+
+    public $startYear, $currentYear;
+
+    public $selectedMonths = [], $selectedYear;
+    public $mountSelectedMonths = [], $mountSelectedYear;
+    public $municipalityID;
+
+    public function mount()
+    {
+        $this->startYear = 2024;
+        $this->currentYear = date('Y');
+
+    }
+
+    public function resetFilter()
+    {
+        $this->reset('mountSelectedMonths', 'mountSelectedYear', 'selectedMonths', 'selectedYear');
+
+    }
+
+    public function mountFilter()
+    {
+
+        $this->selectedMonths = $this->mountSelectedMonths;
+        $this->selectedYear = $this->mountSelectedYear;
+
+        $this->dispatch('close-modal', 'filter-employment-trends-modal');
+    }
+
+    public function getEmploymentTrends($pesoMunicipalityId)
+    {
+        // Use the provided year or default to the current year
+        $year = $this->selectedYear ?? Carbon::now()->year;
+
+        // Use the provided months or default to all months (1 through 12)
+        $months = !empty($this->selectedMonths) ? $this->selectedMonths : range(1, 12);
+
+        // Fetch the job applicants with relevant data
+        $query = Job_Applicants::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
+            ->where('applicant_Status', 'PENDING')
+            ->whereHas('employee.barangay', function ($query) use ($pesoMunicipalityId) {
+                $query->where('municipality_id', $pesoMunicipalityId);
+            });
+
+        // Apply year filter if selectedYear is set
+        if ($this->selectedYear) {
+            $query->whereYear('updated_at', $year);
+        }
+
+        // Apply months filter if selectedMonths is set
+        if (!empty($this->selectedMonths)) {
+            $query->whereIn(DB::raw('MONTH(updated_at)'), $months);
+        }
+
+        $monthlyHiredCounts = $query->groupByRaw('MONTH(updated_at)')
+            ->orderByRaw('MONTH(updated_at)')
+            ->get()
+            ->keyBy('month');
+
+        // Define month names
+        $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $monthlyData = array_fill(0, count($monthNames), 0); // Initialize array with months
+
+        // Populate the counts
+        foreach ($monthlyHiredCounts as $month => $data) {
+            if (in_array($month, $months)) {
+                $index = $month - 1; // Adjust index for zero-based array
+                $monthlyData[$index] = $data->total;
+            }
+        }
+
+        // Create the line chart model
+        $chart = new LineChartModel();
+        $chart->setAnimated(true)
+            ->setTitle("Monthly Employment for {$year}")
+            ->withOnPointClickEvent('onPointClick')
+            ->setSmoothCurve()
+            ->setXAxisVisible(true)
+            ->setDataLabelsEnabled(true)
+            ->setXAxisCategories($monthNames)
+            ->setJsonConfig([
+                'chart' => [
+                    'width' => '100%',
+                    'height' => '300px',
+                ],
+                'yaxis.tickAmount' => 1,
+                'yaxis.labels.formatter' => '(val) => Math.floor(val)',
+            ]);
+
+        // Add points to the chart
+        foreach ($monthNames as $index => $monthName) {
+            if (in_array($index + 1, $months)) { // Ensure only selected months are included
+                $chart->addPoint($monthName, $monthlyData[$index]);
+            }
+        }
+
+        return $chart;
+    }
+
+    public function render()
+    {
+
+        $employmentLineModel = $this->getEmploymentTrends($this->municipalityID);
+
+        return view('livewire.admin.reports.municipality-partials.employment-trends', compact('employmentLineModel'));
+    }
+}

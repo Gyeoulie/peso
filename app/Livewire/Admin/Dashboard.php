@@ -10,6 +10,7 @@ use App\Models\Job_Preference;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Asantibanez\LivewireCharts\Models\PieChartModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -22,7 +23,7 @@ class Dashboard extends Component
     public function render()
     {
 
-        $user = auth()->user(); // Assuming you are fetching the current authenticated user
+        $user = Auth::user(); // Assuming you are fetching the current authenticated user
 
         // Get the current user's municipality ID from PESO relation
         $pesoMunicipalityId = optional($user->peso)->municipality_id;
