@@ -4,8 +4,10 @@ namespace App\Livewire\Admin\JobPosting\Applicants;
 
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
+use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 #[Layout('layouts.admin')]
 class JobPostApplicants extends Component
@@ -44,6 +46,54 @@ class JobPostApplicants extends Component
         '26' => 'MASTERAL/POST GRADUATE',
     ];
 
+    public function exportData()
+    {
+
+        $jobApplicants = $this->getApplicants($this->id)->get();
+
+        if (!$jobApplicants->isEmpty()) {
+
+            $fileName = $jobApplicants->first()->job_id . '-job_applicants-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+
+            $writer = SimpleExcelWriter::streamDownload($fileName);
+
+            foreach ($jobApplicants as $data) {
+                $writer->addRow([
+                    'Last Name' => $data->employee->lname,
+                    'First Name' => $data->employee->mname,
+                    'Middle Name' => $data->employee->fname,
+                    'Status' => $data->applicant_Status,
+                    'Date Applied' => $data->created_at->format('F j, Y'),
+                    'PESO Status' => $data->peso_Status,
+                    'Gender' => $data->employee->gender == 1 ? 'MALE' : ($data->employee->gender == 2 ? 'FEMALE' : 'UNKNOWN'),
+                    'Birth Date' => $data->employee->birthdate->format('Y-m-d'),
+                    'Address' => $data->employee->address . " " . $data->employee->barangay->barangay_Name,
+
+                ]);
+            }
+
+            toastr()->success('Data Exported');
+            return Response::streamDownload(function () use ($writer) {
+                $writer->close();
+            }, $fileName, ['Content-Type' => 'text/csv']);
+        }
+
+        return toastr()->warning('No data in the table to be exported.');
+
+    }
+
+    public function getApplicants($id)
+    {
+        return Job_Applicants::with(['employee'])
+            ->join('employee', 'job_applicants.employee_id', '=', 'employee.employee_id')
+            ->where('job_applicants.job_id', $id)
+            ->where(function ($query) {
+                $query->where('employee.fname', 'like', '%' . $this->search . '%')
+                    ->orWhere('employee.mname', 'like', '%' . $this->search . '%')
+                    ->orWhere('employee.lname', 'like', '%' . $this->search . '%');
+            });
+    }
+
     public function render()
     {
         // Fetch job posting details
@@ -57,14 +107,7 @@ class JobPostApplicants extends Component
         }
 
         // Fetch job applicants
-        $jobApplicants = Job_Applicants::with(['employee'])
-            ->join('employee', 'job_applicants.employee_id', '=', 'employee.employee_id')
-            ->where('job_applicants.job_id', $this->id)
-            ->where(function ($query) {
-                $query->where('employee.fname', 'like', '%' . $this->search . '%')
-                    ->orWhere('employee.mname', 'like', '%' . $this->search . '%')
-                    ->orWhere('employee.lname', 'like', '%' . $this->search . '%');
-            })
+        $jobApplicants = $this->getApplicants($jobpost->job_id)
             ->paginate(10);
 
         return view('livewire.admin.job-posting.applicants.job-post-applicants', compact('jobpost', 'jobApplicants'));

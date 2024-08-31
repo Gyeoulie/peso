@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="text-md font-medium">
 
-                                        {{ $jobseeker->gender == 1 ? 'Male' : 'Female' }}
+                                        {{ $jobseeker->gender == 1 ? 'MALE' : 'FEMALE' }}
 
                                     </div>
 
@@ -88,7 +88,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Email
                                     </div>
-                                    <div class="text-md font-medium">
+                                    <div class="text-md font-medium uppercase">
                                         {{ $jobseeker->user->email }}
 
                                     </div>
@@ -360,24 +360,25 @@
 
 
 
+                                @if ($jobseeker->disability->count() > 1)
+                                    <div class="flex flex-col md:w-1/2">
 
-                                <div class="flex flex-col md:w-1/2">
+                                        <h2 class="text-xl font-medium mt-4">Disability</h2>
+                                        <ul
+                                            class="max-w-md space-y-1 text-base font-medium text-blue-700 list-disc list-inside mt-4 ml-2">
+                                            @foreach ($jobseeker->disability as $empDisability)
+                                                <li class="uppercase"
+                                                    wire:key='disability-{{ $empDisability->disability_id }}'>
+                                                    {{ $empDisability->disability_Type }}
+                                                </li>
+                                            @endforeach
 
-                                    <h2 class="text-xl font-medium mt-4">Disability</h2>
-                                    <ul
-                                        class="max-w-md space-y-1 text-base font-medium text-blue-700 list-disc list-inside mt-4 ml-2">
-                                        @foreach ($jobseeker->disability as $empDisability)
-                                            <li wire:key='disability-{{ $empDisability->disability_id }}'>
-                                                {{ $empDisability->disability_Type }}
-                                            </li>
-                                        @endforeach
-
-                                    </ul>
-
+                                        </ul>
 
 
-                                </div>
 
+                                    </div>
+                                @endif
                             </div>
 
 

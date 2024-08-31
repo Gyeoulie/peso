@@ -100,6 +100,7 @@ class Dashboard extends Component
 
     public function mount()
     {
+
         $user = Auth::user();
 
         if ($user && $user->usertype == 4) {
@@ -124,6 +125,11 @@ class Dashboard extends Component
 
     public function render()
     {
+        if (!Auth::check()) {
+            dd('yes');
+            return redirect()->route('dashboard'); // Redirect to login page
+        }
+
         $joblist = null;
         $user = Auth::user();
         $formattedNotifications = null;

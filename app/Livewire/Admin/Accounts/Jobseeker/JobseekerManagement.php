@@ -6,13 +6,14 @@ use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 #[Layout('layouts.admin')]
 class JobseekerManagement extends Component
 {
-    use WithPagination;
-    public $paginate = 7;
+    use WithPagination, WithoutUrlPagination;
+    public $paginate = 10;
     public $searchUsers;
 
     public $userFilter = 'ALL';
@@ -37,7 +38,7 @@ class JobseekerManagement extends Component
             $jobseeker = $jobseeker->where('empstatus', $this->userFilter);
         }
 
-        $jobseeker = $jobseeker->paginate($this->paginate, ['*'], 'jobseekers');
+        $jobseeker = $jobseeker->paginate($this->paginate);
 
         return view('livewire.admin.accounts.jobseeker.jobseeker-management', compact('jobseeker'));
     }

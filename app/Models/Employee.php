@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Employee extends Model
+class Employee extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $table = 'employee';
     protected $primaryKey = 'employee_id';
@@ -85,7 +87,7 @@ class Employee extends Model
     }
     public function program_reg()
     {
-        return $this->hasMany(Job_Posting::class, 'employee_id');
+        return $this->hasMany(Program_Reg::class, 'employee_id');
     }
     public function skills()
     {
@@ -104,4 +106,38 @@ class Employee extends Model
     {
         return $this->hasMany(Industry_preference::class, 'employee_id');
     }
+
+    public function activeApplications()
+    {
+        return $this->hasMany(Job_Applicants::class, 'employee_id')
+            ->whereNotIn('applicant_status', ['COMPLETED', 'REJECTED']);
+
+    }
+
+    public static function fieldMappings()
+{
+    return [
+        'employee_id' => 'Employee ID',
+        'user_id' => 'User ID',
+        'fname' => 'First Name',
+        'mname' => 'Middle Name',
+        'lname' => 'Last Name',
+        'suffix' => 'Suffix',
+        'height' => 'Height',
+        'gender' => 'Gender',
+        'civilstatus' => 'Civil Status',
+        'religion' => 'Religion',
+        'birthdate' => 'Birthdate',
+        'pnumber' => 'Phone Number',
+        'address' => 'Address',
+        'barangay_id' => 'Barangay ID',
+        'tinnum' => 'TIN Number',
+        'empstatus' => 'Employment Status',
+        'empstatusdesc' => 'Employment Status Description',
+        'pimg' => 'Profile Image',
+        'resume' => 'Resume',
+        'empDesc' => 'Employee Description',
+    ];
+}
+
 }

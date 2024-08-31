@@ -125,7 +125,7 @@
                     <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="tin" :value="__('TIN')" />
-                            <x-text-input wire:model="tin" class="block mt-1 w-full" type="text" disabled />
+                            <x-text-input wire:model="TIN" class="block mt-1 w-full" type="text" disabled />
                             <x-input-error :messages="$errors->get('TIN')" class="mt-2" />
                         </div>
 
@@ -136,6 +136,7 @@
                                 <option value="1">Main</option>
                                 <option value="2">Branch</option>
                             </select>
+                            <x-input-error :messages="$errors->get('loctype')" class="mt-2" />
                         </div>
 
                         <div class="flex flex-col w-full">

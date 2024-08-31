@@ -8,10 +8,12 @@ use App\Models\Job_Preference;
 use App\Models\Programs;
 use App\Models\Program_Reg;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 #[Layout('layouts.admin')]
 class TrainingRegistrants extends Component
@@ -67,35 +69,53 @@ class TrainingRegistrants extends Component
 
         // dd($ticketData);
 
-        $ticket = Program_Reg::where('program_reg_id', $ticketData['program_reg_id'])
-            ->where('program_id', $ticketData['program_id'])
-            ->where('employee_id', $ticketData['employee_id'])
-            ->where('created_at', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ticketData['created_at']))
-            ->first();
+        try {
+            // Fetch the ticket based on the provided data
+            $ticket = Program_Reg::where('program_reg_id', $ticketData['program_reg_id'])
+                ->where('program_id', $ticketData['program_id'])
+                ->where('employee_id', $ticketData['employee_id'])
+                ->where('created_at', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ticketData['created_at']))
+                ->first();
 
-        // dd($ticket->employee_id);
+            // Check if the ticket is found
+            if ($ticket) {
+                $this->getJobseeker($ticket->employee_id);
+                $this->dispatch('close-modal', 'qr-scanner-modal');
+            } else {
+                toastr()->info('Ticket is not valid');
+                $this->qrStop();
+            }
+        } catch (\Exception $e) {
+            // Handle database query exceptions
 
-        if ($ticket) {
-            $this->getJobseeker($ticket->employee_id);
-            $this->dispatch('close-modal', 'qr-scanner-modal');
-
-        } else {
-            toastr()->info('Ticket is not valid');
+            toastr()->error('An error occurred while processing the ticket.');
             $this->qrStop();
         }
     }
 
     public function confirmReg($action, $id)
     {
+        DB::beginTransaction();
 
         try {
-            DB::beginTransaction();
+            // Retrieve the model instance using Eloquent
+            $programReg = Program_Reg::find($id);
 
-            // Perform the update
-            Program_Reg::where('program_reg_id', $id)->update([
-                'program_reg_Status' => $action,
-                'responded_at' => now(),
-            ]);
+            if (!$programReg) {
+                toastr()->error('Job seeker not found.');
+                DB::rollBack();
+                return;
+            }
+
+            // Update the model attributes
+            $programReg->program_reg_Status = $action;
+            $programReg->responded_at = now();
+
+            // Check if any attributes are dirty
+            if ($programReg->isDirty()) {
+                // Save changes only if there are modifications
+                $programReg->save();
+            }
 
             // Commit the transaction
             DB::commit();
@@ -104,7 +124,7 @@ class TrainingRegistrants extends Component
             toastr()->success('Job seeker successfully updated.');
 
         } catch (\Exception $e) {
-            // Rollback the transaction
+            // Rollback the transaction on error
             DB::rollBack();
 
             // Show error notification
@@ -112,16 +132,73 @@ class TrainingRegistrants extends Component
         }
     }
 
-    public function render()
+    public function exportData()
     {
 
-        $programInfo = Programs::withCount('program_reg')
-            ->findOrFail($this->id);
-        $jobseekerInfo = null;
-        $isMatch = false;
+        $registrants = $this->getRegistrants($this->id)->get();
 
+        if (!$registrants->isEmpty()) {
+
+            $fileName = $registrants->first()->program_id . '-program_registrants-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+
+            $writer = SimpleExcelWriter::streamDownload($fileName);
+
+            foreach ($registrants as $data) {
+                $writer->addRow([
+                    'Last Name' => $data->employee->lname,
+                    'First Name' => $data->employee->mname,
+                    'Middle Name' => $data->employee->fname,
+                    'Status' => $data->program_reg_Status,
+                    'Date Registered' => $data->created_at->format('F j, Y'),
+                    'Gender' => $data->employee->gender == 1 ? 'MALE' : ($data->employee->gender == 2 ? 'FEMALE' : 'UNKNOWN'),
+                    'Birth Date' => $data->employee->birthdate->format('Y-m-d'),
+                    'Address' => $data->employee->address . " " . $data->employee->barangay->barangay_Name,
+
+                ]);
+            }
+
+            toastr()->success('Data Exported');
+            return Response::streamDownload(function () use ($writer) {
+                $writer->close();
+            }, $fileName, ['Content-Type' => 'text/csv']);
+        }
+
+        return toastr()->warning('No data in the table to be exported.');
+
+    }
+
+    public function isMatch($programID, $jobseekerInfo)
+    {
+
+        $employeeMunicipalityId = Barangay::where('barangay_id', $jobseekerInfo->employee->barangay_id)
+            ->value('municipality_id');
+
+        // Get the employee's job preferences (array of position_id)
+        $employeeJobPreferences = Job_Preference::where('employee_id', $jobseekerInfo->employee->employee_id)
+            ->pluck('position_id')->toArray();
+
+        $employeeIndustryPreference = Industry_preference::where('employee_id', $jobseekerInfo->employee->employee_id)
+            ->pluck('industry_id')->toArray();
+
+        return Programs::where('program_id', $this->id)
+            ->where('program_Status', 'ACTIVE')
+            ->where('municipality_id', $employeeMunicipalityId)
+            ->where(function ($query) use ($employeeJobPreferences) {
+                $query->whereHas('program_tags', function ($query) use ($employeeJobPreferences) {
+                    $query->whereIn('position_id', $employeeJobPreferences);
+                });
+            })
+            ->orWhere(function ($query) use ($employeeIndustryPreference) {
+                $query->whereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
+                    $query->whereIn('industry_id', $employeeIndustryPreference);
+                });
+            })
+            ->exists();
+    }
+    public function getRegistrants($id)
+    {
         $query = Program_Reg::with(['employee', 'programs.program_tags', 'programs.job_industry'])
-            ->where('program_id', $this->id)
+            ->where('program_id', $id)
             ->whereHas('employee', function ($query) {
                 $query->where('fname', 'like', '%' . $this->search . '%')
                     ->orWhere('mname', 'like', '%' . $this->search . '%')
@@ -142,38 +219,27 @@ class TrainingRegistrants extends Component
         if ($this->sortDate !== null && $this->sortDate !== '') {
             $query->orderBy('created_at', $this->sortDate);
         }
+
+        return $query;
+
+    }
+
+    public function render()
+    {
+
+        $programInfo = Programs::withCount('program_reg')
+            ->findOrFail($this->id);
+        $jobseekerInfo = null;
+        $isMatch = false;
+
         // Paginate the results
-        $programRegistrants = $query->paginate(10);
+        $programRegistrants = $this->getRegistrants($programInfo->program_id)->paginate(10);
 
         if ($this->selectedJobseeker) {
             $jobseekerInfo = Program_Reg::findOrFail($this->selectedJobseeker);
 
-            // Get the employee's municipality ID via their barangay
-            $employeeMunicipalityId = Barangay::where('barangay_id', $jobseekerInfo->employee->barangay_id)
-                ->value('municipality_id');
-
-            // Get the employee's job preferences (array of position_id)
-            $employeeJobPreferences = Job_Preference::where('employee_id', $jobseekerInfo->employee->employee_id)
-                ->pluck('position_id')->toArray();
-
-            $employeeIndustryPreference = Industry_preference::where('employee_id', $jobseekerInfo->employee->employee_id)
-                ->pluck('industry_id')->toArray();
-
             // Determine if the jobseeker matches the program criteria
-            $isMatch = Programs::where('program_id', $this->id)
-                ->where('program_Status', 'ACTIVE')
-                ->where('municipality_id', $employeeMunicipalityId)
-                ->where(function ($query) use ($employeeJobPreferences) {
-                    $query->whereHas('program_tags', function ($query) use ($employeeJobPreferences) {
-                        $query->whereIn('position_id', $employeeJobPreferences);
-                    });
-                })
-                ->orWhere(function ($query) use ($employeeIndustryPreference) {
-                    $query->whereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
-                        $query->whereIn('industry_id', $employeeIndustryPreference);
-                    });
-                })
-                ->exists();
+            $isMatch = $this->isMatch($programInfo->program_id, $jobseekerInfo);
 
         }
 

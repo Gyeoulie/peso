@@ -10,6 +10,7 @@ use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -110,89 +111,101 @@ class ApplicantOverview extends Component
 
     }
 
-    public function printRecom($id)
-    {
+    // public function printRecom($id)
+    // {
 
-        $applicant = Job_Applicants::findOrFail($id);
+    //     $applicant = Job_Applicants::findOrFail($id);
 
-        if (Storage::exists('public/' . $applicant->peso_Letter)) {
-            $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_recommendation.pdf';
+    //     if (Storage::exists('public/' . $applicant->peso_Letter)) {
+    //         $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_recommendation.pdf';
 
-            $fileContent = Storage::get('public/' . $applicant->peso_Letter);
+    //         $fileContent = Storage::get('public/' . $applicant->peso_Letter);
 
-            return response()->streamDownload(function () use ($fileContent) {
-                echo $fileContent;
-            }, $filename);
-            // Redirect the user to the PDF URL
-            toastr()->success('Download Success');
-        } else {
-            // PDF file not found, handle the error accordingly
-            // For example, you can redirect the user or show a message
-            toastr()->error('Recommendation Letter not found!');
+    //         return response()->streamDownload(function () use ($fileContent) {
+    //             echo $fileContent;
+    //         }, $filename);
+    //         // Redirect the user to the PDF URL
+    //         toastr()->success('Download Success');
+    //     } else {
+    //         // PDF file not found, handle the error accordingly
+    //         // For example, you can redirect the user or show a message
+    //         toastr()->error('Recommendation Letter not found!');
 
-        }
+    //     }
 
-    }
+    // }
+
     public function updateApplicant($action, $modal)
     {
-
         // Check if action is valid
         if (!in_array($action, ['RECOMMENDED', 'REJECT'])) {
             toastr()->error('Invalid action specified!');
             return;
         }
 
-        // Handle recommended action
-        if ($action === 'RECOMMENDED') {
-            // Validate recommendation letter
-            $this->validate([
-                'recommendationRemarks' => ['required', 'string', 'min:10'],
-                'recLetter' => [
-                    'required',
-                    'file',
-                    'mimes:pdf',
-                    'max:5120', // 'max' is in kilobytes (5MB = 5120KB)
-                ],
-            ], [
-                'recLetter.required' => 'The recommendation letter is required.',
-                'recLetter.file' => 'The recommendation letter must be a file.',
-                'recLetter.mimes' => 'The recommendation letter must be a PDF file.',
-                'recLetter.max' => 'The recommendation letter may not be greater than 5MB in size.',
-            ]);
+        // Retrieve the job applicant instance
+        $applicant = Job_Applicants::find($this->id);
 
-            // Store recommendation letter
-            $recLetterPath = $this->recLetter->store('peso/recommendation', 'public');
+        if (!$applicant) {
+            toastr()->error('Applicant not found!');
+            return;
+        }
 
-            try {
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            if ($action === 'RECOMMENDED') {
+                // Validate recommendation letter
+                $this->validate([
+                    'recommendationRemarks' => ['required', 'string', 'min:10'],
+                    'recLetter' => [
+                        'required',
+                        'file',
+                        'mimes:pdf',
+                        'max:5120', // 'max' is in kilobytes (5MB = 5120KB)
+                    ],
+                ], [
+                    'recLetter.required' => 'The recommendation letter is required.',
+                    'recLetter.file' => 'The recommendation letter must be a file.',
+                    'recLetter.mimes' => 'The recommendation letter must be a PDF file.',
+                    'recLetter.max' => 'The recommendation letter may not be greater than 5MB in size.',
+                ]);
+
+                // Store recommendation letter
+                $recLetterPath = $this->recLetter->store('peso/recommendation', 'public');
+
                 // Update job applicant with recommended status and recommendation letter path
-                Job_Applicants::where('applicant_id', $this->id)->update([
-                    'peso_Status' => $action,
-                    'peso_Remarks' => $this->recommendationRemarks,
-                    'peso_Letter' => $recLetterPath,
-                    'applicant_Notif' => 1,
+                $applicant->peso_Status = $action;
+                $applicant->peso_Remarks = $this->recommendationRemarks;
+                $applicant->peso_Letter = $recLetterPath;
+                $applicant->applicant_Notif = 1;
+            } elseif ($action === 'REJECT') {
+                $this->validate([
+                    'rejectRemarks' => ['required', 'string', 'min:10'],
                 ]);
-                toastr()->success('Applicant updated successfully!');
-            } catch (\Exception $e) {
-                toastr()->error('There was an error in uploading the recommendation letter!');
-                return;
-            }
-        } elseif ($action === 'REJECT') {
 
-            $this->validate([
-                'rejectRemarks' => ['required', 'string', 'min:10'],
-            ]);
-            try {
                 // Update job applicant with rejected status
-                Job_Applicants::where('applicant_id', $this->id)->update([
-                    'peso_Status' => $action,
-                    'peso_Remarks' => $this->rejectRemarks,
-                    'applicant_Notif' => 1,
-                ]);
-                toastr()->success('Applicant updated successfully!');
-            } catch (\Exception $e) {
-                toastr()->error('There was an error in rejecting the applicant!');
+                $applicant->peso_Status = $action;
+                $applicant->peso_Remarks = $this->rejectRemarks;
+                $applicant->applicant_Notif = 1;
+            } else {
+                toastr()->error('Invalid action specified!');
+                DB::rollBack();
                 return;
             }
+
+            // Save the changes
+            $applicant->save();
+
+            // Commit the transaction
+            DB::commit();
+
+            toastr()->success('Applicant updated successfully!');
+        } catch (\Exception $e) {
+            // Roll back the transaction on error
+            DB::rollBack();
+            toastr()->error('There was an error in updating the applicant!');
         }
 
         // Close the modal after updating

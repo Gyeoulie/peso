@@ -4,10 +4,12 @@ namespace App\Livewire\Admin\JobPosting;
 
 use App\Models\Job_Posting;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 #[Layout('layouts.admin')]
 class JobPosting extends Component
@@ -22,13 +24,50 @@ class JobPosting extends Component
     {
         $this->filter = $filter;
     }
-    public function render()
+
+    public function exportData()
     {
         $user = Auth::user();
 
-        $jobpost = Job_Posting::with('company', 'barangay.municipality.province')
+        $jobpost = $this->getJobPost($user->peso->municipality_id)->get();
+        foreach ($jobpost as $jobposts) {
+            $jobposts->slotsLeft = $jobposts->slotsLeft();
+        }
+
+        if (!$jobpost->isEmpty()) {
+
+            $fileName = '-jobposting-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+
+            $writer = SimpleExcelWriter::streamDownload($fileName);
+
+            foreach ($jobpost as $data) {
+                $writer->addRow([
+                    'Company' => $data->company->business_Name,
+                    'Job Offering' => $data->job_Title,
+                    'Employment Type' => $data->job_Title == 1 ? 'PART TIME' : 'FULL TIME',
+                    'Date Posted' => $data->created_at->format('F j, Y'),
+                    'Deadline' => $data->job_Duration->format('F j, Y'),
+                    'Status' => $data->job_Status,
+                    'Posted Slots' => $data->job_Slots,
+                    'Slots Left' => $data->slotsLeft,
+                    'Total Applicants' => $data->job_applicants_count,
+                ]);
+            }
+
+            return Response::streamDownload(function () use ($writer) {
+                $writer->close();
+            }, $fileName, ['Content-Type' => 'text/csv']);
+        }
+
+        return toastr()->warning('No data in the table to be exported.');
+
+    }
+
+    public function getJobPost($id)
+    {
+        $jobposts = Job_Posting::with('company', 'barangay.municipality.province')
             ->withCount(['job_applicants', 'hiredApplicants'])
-            ->where('job_posting.peso_municipality_id', '=', $user->peso->municipality_id)
+            ->where('job_posting.peso_municipality_id', '=', $id)
             ->where(function ($query) {
                 $query->where('job_Title', 'like', '%' . $this->search . '%')
                     ->orWhereHas('company', function ($query) {
@@ -48,22 +87,28 @@ class JobPosting extends Component
             });
 
         if ($this->filter == "") {
-            $jobpost->orderByRaw("FIELD(job_Status, 'PENDING') DESC");
-        } else if ($this->filter == 'PENDING') {
-            $jobpost->where('job_Status', '=', 'PENDING');
+            $jobposts->orderByRaw("FIELD(job_Status, 'PENDING') DESC");
+        } elseif ($this->filter == 'PENDING') {
+            $jobposts->where('job_Status', '=', 'PENDING');
         } elseif ($this->filter == 'ACTIVE') {
-            $jobpost->where('job_Status', '=', 'ACTIVE');
+            $jobposts->where('job_Status', '=', 'ACTIVE');
         } elseif ($this->filter == 'OTHERS') {
-            $jobpost->whereNotIn('job_Status', ['PENDING', 'ACTIVE']);
+            $jobposts->whereNotIn('job_Status', ['PENDING', 'ACTIVE']);
         }
 
-        $jobpost = $jobpost->orderBy('job_posting.created_at', 'DESC')->paginate(10);
+        return $jobposts->orderBy('job_posting.created_at', 'DESC');
+    }
 
-        // Calculate slots left
-        foreach ($jobpost as $job) {
-            $job->slotsLeft = $job->job_Slots - $job->hired_applicants_count;
+    public function render()
+    {
+        $user = Auth::user();
+
+        $jobpost = $this->getJobPost($user->peso->municipality_id)->paginate(10);
+
+// Calculate slots left dynamically for each job posting
+        foreach ($jobpost as $jobposts) {
+            $jobposts->slotsLeft = $jobposts->slotsLeft();
         }
-
         // Fetch job counts for filtering
         $allCount = Job_Posting::where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
         $pendingCount = Job_Posting::where('job_Status', '=', 'PENDING')

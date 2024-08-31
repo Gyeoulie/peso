@@ -3,11 +3,15 @@
         <div>
             <h1 class="text-lg sm:text-2xl font-semibold">Recommended Trainings</h1>
         </div>
-        <div>
-            <h1 class="text-md sm:text-lg font-semibold">View more</h1>
+        <div class="flex items-end">
+            <a wire:navigate href="{{ route('trainings') }}"
+                class="text-sm sm:text-md
+                font-semibold hover:text-blue-400">View more</a>
         </div>
 
     </div>
+    <hr class="h-1 mx-auto sm:mx-12  bg-gray-200 border-0 dark:bg-gray-700">
+
     <div class="overflow-x-auto">
         <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
 
@@ -242,7 +246,7 @@
 
                                                         <div class="flex flex-col w-full">
                                                             <div class="flex flex-col sm:flex-row">
-                                                                <div class="sm:w-1/4 text-left">
+                                                                <div class="sm:w-1/5 text-left">
 
                                                                     <h3
                                                                         class="text-xs sm:text-sm text-blue-900 uppercase">
@@ -253,25 +257,33 @@
                                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/4 text-left sm:text-center">
+                                                                <div class="sm:w-1/5 text-left sm:text-center">
                                                                     <h3
                                                                         class="text-xs sm:text-sm text-blue-900 uppercase">
                                                                         <i class="fa-solid fa-graduation-cap"></i>
                                                                         {{ $eduLevels[$data->job_Edu] }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/4 text-left sm:text-center">
+                                                                <div class="sm:w-1/5 text-left sm:text-center">
                                                                     <h3
                                                                         class="text-xs sm:text-sm uppercase text-blue-900">
                                                                         <i class="fa-solid fa-briefcase uppercase"></i>
                                                                         {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/4 text-left sm:text-center">
+                                                                <div class="sm:w-1/5 text-left sm:text-center">
                                                                     <h3
                                                                         class="text-xs sm:text-sm uppercase text-blue-900">
                                                                         <i class="fa-solid fa-calendar"></i>
                                                                         {{ $data->job_Duration->format('F j, Y') }}
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="sm:w-1/5 text-left sm:text-center">
+                                                                    <h3
+                                                                        class="text-xs sm:text-sm uppercase text-blue-900">
+                                                                        <i class="fa-solid fa-building-ngo"></i>
+                                                                        PESO
+                                                                        {{ $data->municipality->municipality_Name }}
                                                                     </h3>
                                                                 </div>
                                                             </div>

@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Programs extends Model
+class Programs extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $table = 'programs';
     protected $primaryKey = 'program_id';
@@ -30,6 +32,7 @@ class Programs extends Model
         'program_Status',
         'program_pubmat',
         'program_Status',
+        'municipality_id',
     ];
 
     protected $casts = [
@@ -63,4 +66,30 @@ class Programs extends Model
         return $this->hasMany(Program_Reg::class, 'program_id')
             ->where('program_reg_Status', 'ATTENDED');
     }
+
+    public static function fieldMappings()
+    {
+        return [
+            'program_id' => 'Program ID',
+            'program_Title' => 'Program Title',
+            'program_Modality' => 'Program Modality',
+            'program_Type' => 'Program Type',
+            'program_Host' => 'Program Host',
+            'program_Slots' => 'Program Slots',
+            'industry_id' => 'Industry ID',
+            'program_Datetime' => 'Program Datetime',
+            'program_Deadline' => 'Program Deadline',
+            'program_Location' => 'Program Location',
+            'program_Description' => 'Program Description',
+            'program_Qualification' => 'Program Qualification',
+            'program_Remarks' => 'Program Remarks',
+            'program_Status' => 'Program Status',
+            'program_pubmat' => 'Program Publication Material',
+            'municipality_id' => 'Municipality ID',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'deleted_at' => 'Deleted At',
+        ];
+    }
+
 }

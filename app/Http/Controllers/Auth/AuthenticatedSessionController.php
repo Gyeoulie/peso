@@ -32,6 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         // Get the authenticated user
         $user = $request->user();
+        $request->session()->put('user_type', $user->usertype);
 
         return $this->redirectBasedOnRole($user->usertype);
 

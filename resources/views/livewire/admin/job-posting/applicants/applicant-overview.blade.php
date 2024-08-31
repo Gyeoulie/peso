@@ -54,7 +54,7 @@
                         </img>
 
                         <h1 class="text-xl font-bold">{{ $applicant->job_posting->company->business_Name }}</h1>
-                        <p class="text-gray-700">#IDNUMBER</p>
+                        <p class="text-gray-700">#{{ $applicant->job_posting->company->company_id }}</p>
 
                         <div class="flex flex-row mt-6 justify-between w-full">
                             <p class="text-md text-gray-800">{{ $applicant->job_posting->company->company_Email }}</p>
@@ -71,30 +71,31 @@
                             Details</span>
 
                         <ul>
-                            <div class="flex flex-row">
+                            <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Job Position:</li>
-                                <p class="ms-4">{{ $applicant->job_posting->job_Title }}</p>
+                                <p class="ms-4 text-right">{{ $applicant->job_posting->job_Title }}</p>
                             </div>
 
-                            <div class="flex flex-row">
+                            <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Industry:</li>
-                                <p class="ms-4">{{ $applicant->job_posting->job_industry->industry_Title }}</p>
+                                <p class="ms-4 text-right">{{ $applicant->job_posting->job_industry->industry_Title }}
+                                </p>
                             </div>
 
-                            <div class="flex flex-row">
+                            <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Education Attainment:</li>
-                                <p class="ms-4">{{ $eduLevels[$applicant->job_posting->job_Edu] }}</p>
+                                <p class="ms-4 text-right">{{ $eduLevels[$applicant->job_posting->job_Edu] }}</p>
                             </div>
 
-                            <div class="flex flex-row">
+                            <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Salary Range:</li>
-                                <p class="ms-4">₱{{ number_format($applicant->job_posting->job_MinWage) }} -
+                                <p class="ms-4 text-right">₱{{ number_format($applicant->job_posting->job_MinWage) }} -
                                     ₱{{ number_format($applicant->job_posting->job_MaxWage) }}</p>
                             </div>
 
-                            <div class="flex flex-row">
+                            <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Address:</li>
-                                <p class="ms-4 uppercase">{{ $applicant->job_posting->job_Address }},
+                                <p class="ms-4 uppercase text-right">{{ $applicant->job_posting->job_Address }},
                                     {{ $applicant->job_posting->barangay->barangay_Name }},
                                     {{ $applicant->job_posting->barangay->municipality->municipality_Name }},
                                     {{ $applicant->job_posting->barangay->municipality->province->province_Name }}</p>
@@ -151,7 +152,9 @@
                             <div
                                 class="h-[200px] overflow-auto block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none">
                                 <div class="no-tailwindcss-base">
-                                    {!! trim($applicant->job_posting->job_Qualifications) ? $applicant->job_posting->job_Qualifications : 'Qualifications: No details available.' !!}
+                                    {!! trim($applicant->job_posting->job_Qualifications)
+                                        ? $applicant->job_posting->job_Qualifications
+                                        : 'Qualifications: No details available.' !!}
                                 </div>
                             </div>
                         </div>

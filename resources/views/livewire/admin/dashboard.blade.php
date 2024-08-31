@@ -3,10 +3,10 @@
 
 
 
-    <div class="grid grid-cols-4 md:grid-cols-12 gap-4 p-3 md:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
 
-        {{-- <div class="col-span-2 md:col-span-3">
+        {{-- <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div id="QrScanner" class="flex w-full h-full"></div>
 
@@ -15,7 +15,7 @@
         </div> --}}
 
 
-        <div class="col-span-2 md:col-span-3">
+        <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Job Postings</h1>
@@ -45,7 +45,7 @@
 
         </div>
 
-        <div class="col-span-2 md:col-span-3">
+        <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Jobseekers</h1>
@@ -74,7 +74,7 @@
 
         </div>
 
-        <div class="col-span-2 md:col-span-3">
+        <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Employed Users</h1>
@@ -104,7 +104,7 @@
 
         </div>
 
-        <div class="col-span-2 md:col-span-3">
+        <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
                 <div class="flex flex-row justify-start">
                     <h1 class="font-thin font-mono text-sm">Active Applicants</h1>
@@ -135,7 +135,7 @@
         </div>
 
 
-        <div class="col-span-4 md:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6  h-full w-full ">
                 <h1 class="text-2xl font-bold">Recent Job Posting</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
@@ -205,18 +205,18 @@
         </div>
 
 
-        <div class="col-span-4 md:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full ">
                 <h1 class="text-2xl font-bold">Most Preferred Job Tags</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                <div class="flex flex-col h-[400px] md:h-full items-end">
-                    <livewire:livewire-column-chart {{-- key="{{ $columnChartModel->reactiveKey() }}" --}} :column-chart-model="$columnChartModel" />
+                <div class="flex flex-col h-[400px] lg:h-full items-end">
+                    <livewire:livewire-column-chart key="{{ $columnChartModel->reactiveKey() }}" :column-chart-model="$columnChartModel" />
                 </div>
             </div>
 
         </div>
 
-        <div class="col-span-4 md:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
                 <h1 class="text-2xl font-bold">Recent Job Applications</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
@@ -309,7 +309,7 @@
 
 
 
-        <div class="col-span-4 md:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full">
                 <h1 class="text-2xl font-bold">Top Job Industries</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">

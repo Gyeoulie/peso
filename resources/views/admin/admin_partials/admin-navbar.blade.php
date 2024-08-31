@@ -53,7 +53,7 @@
                     </svg>
                 </button>
                 <ul id="dropdown-1"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-admin', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview', 'admin-users-employer-overview') ? 'block' : 'hidden' }}">
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-users-peso', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview', 'admin-users-employer-overview') ? 'block' : 'hidden' }}">
                     <li>
                         <a wire:navigate href="{{ route('admin-users-jobseeker') }}"
                             :class="{{ request()->routeIs('admin-users-jobseeker') || request()->routeIs('admin-users-jobseeker-overview') }}
@@ -71,10 +71,10 @@
                             Management</a>
                     </li>
                     <li>
-                        <a wire:navigate href="{{ route('admin-admin') }}"
-                            :class="{{ request()->routeIs('admin-admin') }} ? activeNav : inactiveNav"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Admin
-                            Account Management</a>
+                        <a wire:navigate href="{{ route('admin-users-peso') }}"
+                            :class="{{ request()->routeIs('admin-users-peso') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">PESO
+                            Accounts</a>
                     </li>
 
                 </ul>
@@ -212,7 +212,7 @@
                     </svg>
                 </button>
                 <ul id="dropdown-4"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-reports-barangay') ? 'block' : 'hidden' }}">
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-reports-barangay', 'admin-reports-municipality') ? 'block' : 'hidden' }}">
 
                     <li>
                         <a wire:navigate href="{{ route('admin-reports-barangay') }}"
@@ -220,8 +220,8 @@
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Barangay</a>
                     </li>
                     <li>
-                        <a wire:navigate href="{{ route('admin-eligibility') }}"
-                            :class="{{ request()->routeIs('admin-eligibility') }} ? activeNav : inactiveNav"
+                        <a wire:navigate href="{{ route('admin-reports-municipality') }}"
+                            :class="{{ request()->routeIs('admin-reports-municipality') }} ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Municipality</a>
                     </li>
 

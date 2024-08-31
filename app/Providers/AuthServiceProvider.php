@@ -25,13 +25,13 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
-            return (new MailMessage)
-                ->subject('Test Verification')
-                ->line('Lets try it')
-                ->line('<b>Barbecue</b>')
-                ->action('New button try lang', $url);
+        // VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+        //     return (new MailMessage)
+        //         ->subject('Test Verification')
+        //         ->line('Lets try it')
+        //         ->line('<b>Barbecue</b>')
+        //         ->action('New button try lang', $url);
 
-        });
+        // });
     }
 }

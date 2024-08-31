@@ -5,7 +5,7 @@
 
         {{-- TITLE --}}
         <div class="col-span-4 sm:col-span-12">
-            <h1 class="text-2xl font-bold">Data Management - Certificates</h1>
+            <h1 class="text-2xl font-bold">Data Management / Certificates</h1>
         </div>
 
         <div class="col-span-4 sm:col-span-6">
@@ -96,7 +96,7 @@
 
                                         {{-- ACTIONS --}}
                                         <td class="px-6 py-4">
-                                            
+
                                             <div class="flex flex-row items-center justify-center gap-6">
                                                 <div x-data="{ tooltip: 'Edit Certificate' }">
                                                     <button
@@ -113,6 +113,7 @@
                                                 </div>
                                                 <div x-data="{ tooltip: 'Delete Certificate' }">
                                                     <button x-tooltip="tooltip" type="button"
+                                                        x-on:click.prevent="$dispatch('open-modal', { id: 'confirm-modal', myData: 'hello' })"
                                                         class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -241,6 +242,33 @@
                 <x-primary-button class="ms-3" type="button" wire:click.prevent='updateCertificate'>
                     {{ __('Save') }}
                 </x-primary-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <x-modal name="confirm-modal" x-data="{ myData: null }">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Action Confirmation') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col my-4">
+                <div class="flex flex-col mt-4 mb-4 w-full justify-center items-center px-4">
+                    <span class="text-xl font-semibold">Are you sure you want to delete this certificate?</span>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-between">
+                <x-secondary-button x-on:click="$dispatch('close-modal', 'confirm-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button wire:loading.attr="disabled" x-on:click="$wire.deleteData(myData)"
+                    wire:click.prevent="" class="ms-3" type="button">
+                    {{ __('Confirm') }}
+                    <div wire:loading.delay.long wire:target="" role="status">
+                        <!-- Loading spinner... -->
+                    </div>
+                </x-danger-button>
             </div>
         </div>
     </x-modal>

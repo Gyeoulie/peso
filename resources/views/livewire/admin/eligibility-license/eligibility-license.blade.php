@@ -346,7 +346,7 @@
 
                     <x-primary-button wire:click.prevent='saveEligibility' class="ms-3" type="button"
                         id="eligibilityAdd">
-                        {{ __('Add Eligibility') }}
+                        {{ __('Save Eligibility') }}
                     </x-primary-button>
                 </div>
             </div>
