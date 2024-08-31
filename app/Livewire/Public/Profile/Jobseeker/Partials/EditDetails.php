@@ -14,10 +14,13 @@ use App\Models\Job_Preference;
 use App\Models\Language;
 use App\Models\License;
 use App\Models\License_Type;
+use App\Models\Skills;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
@@ -42,6 +45,7 @@ class EditDetails extends Component
     public $barangayID, $mun, $prov, $bar;
     public $selectDisability = "", $otherDisability = "";
     public $jobpreference, $industrypreference;
+    public $skills;
 
     // LANGUAGE
     public $langID;
@@ -59,6 +63,8 @@ class EditDetails extends Component
 
     // DISABILITIES
     public $originalDisabilities = [], $disabilitiesToAdd = [], $disabilitiesToRemove = [], $displayDisabilities = [], $disabilitiesToRestore = [];
+
+    public $originalSkills = [], $skillsToAdd = [], $skillsToRemove = [], $displaySkills = [], $skillsToRestore = [];
 
     // RESUME
     public $newResume;
@@ -139,6 +145,9 @@ class EditDetails extends Component
         if ($modalName == "disability") {
             $this->reset('selectDisability', 'otherDisability', );
             $this->dispatch('open-modal', 'disability-modal');
+        } elseif ($modalName == "skills") {
+            $this->reset('skills');
+            $this->dispatch('open-modal', 'skills-modal');
         } elseif ($modalName == "language") {
             $this->reset('read', 'write', 'speak', 'understand', 'otherLanguage');
             $this->selectedLanguage = '';
@@ -160,6 +169,9 @@ class EditDetails extends Component
         if ($modalName == "disability") {
             $this->reset('selectDisability', 'otherDisability');
             $this->dispatch('close-modal', 'disability-modal');
+        } elseif ($modalName == "skills") {
+            $this->reset('skills');
+            $this->dispatch('close-modal', 'skills-modal');
         } elseif ($modalName == "language") {
             $this->reset('read', 'write', 'speak', 'understand', 'otherLanguage');
             $this->selectedLanguage = '';
@@ -219,6 +231,49 @@ class EditDetails extends Component
         $this->displayDisabilities[] = ['disability_id' => $softDeletedDisability->disability_id ?? null, 'disability_Type' => $disabilityType];
     }
 
+    public function saveSkills()
+    {
+        $this->validate([
+            'skills' => [
+                'required', 'string', 'filled',
+            ],
+        ]);
+
+        $skillsType = strtoupper($this->skills);
+
+        // Check if the skill is already in the original list, added list, or display list
+        if (
+            in_array($skillsType, array_column($this->originalSkills, 'skill_Type')) ||
+            in_array($skillsType, array_column($this->skillsToAdd, 'skill_Type')) ||
+            in_array($skillsType, array_column($this->displaySkills, 'skill_Type'))
+        ) {
+            toastr()->warning('This skill has already been added.');
+            return;
+        }
+
+        // Check if the skill was previously soft deleted
+        $softDeletedSkill = Skills::withTrashed()
+            ->where('employee_id', $this->empID)
+            ->where('skill_Type', $skillsType)
+            ->first();
+
+        if ($softDeletedSkill) {
+            // Store the skill for restoration during the save process
+            $this->skillsToRestore[] = $softDeletedSkill->skills_id;
+        } else {
+            // Add the skill to the to-be-added list
+            $this->skillsToAdd[] = ['skill_Type' => $skillsType];
+        }
+
+        // Add to the display array
+        $this->displaySkills[] = [
+            'skills_id' => $softDeletedSkill->skills_id ?? null,
+            'skill_Type' => $skillsType,
+        ];
+
+        $this->closeModal('skills');
+    }
+
     public function removeDisability($identifier)
     {
 
@@ -229,12 +284,11 @@ class EditDetails extends Component
             $disability = Disability::withTrashed()
                 ->where('disability_id', $identifier)
                 ->where('employee_id', $this->empID)
-                ->pluck('disability_Type')
-                ->first();
+                ->first(['disability_id', 'disability_Type']); // Retrieve the first matching record
 
             if ($disability) {
                 // Add to removal list if it exists in the original list
-                if (in_array(strtoupper($disability), array_column($this->originalDisabilities, 'disability_Type'))) {
+                if (in_array(strtoupper($disability->disability_Type), array_column($this->originalDisabilities, 'disability_Type'))) {
                     $this->disabilitiesToRemove[] = $identifier;
                 }
 
@@ -245,14 +299,14 @@ class EditDetails extends Component
 
                 // Remove from disabilitiesToAdd if present
                 $this->disabilitiesToAdd = array_filter($this->disabilitiesToAdd, function ($dis) use ($disability) {
-                    return $dis['disability_Type'] !== $disability;
+                    return $dis['disability_Type'] !== $disability->disability_Type;
                 });
 
-                $this->disabilitiesToRestore = array_filter($this->disabilitiesToAdd, function ($dis) use ($disability) {
-                    return $dis['disability_Type'] !== $disability;
+                // Ensure that disabilitiesToRestore does not include the removed disability
+                $this->disabilitiesToRestore = array_filter($this->disabilitiesToRestore, function ($disID) use ($disability) {
+                    // $disID should be an ID and compared with $disability->disability_id
+                    return $disID !== $disability->disability_id;
                 });
-            } else {
-                toastr()->warning('Disability not found.');
             }
         } else {
             // Handle removal by disability_Type
@@ -272,6 +326,102 @@ class EditDetails extends Component
         $this->closeModal('disability');
         // toastr()->info('Disability will be removed when you save the profile.');
     }
+    public function removeSkills($identifier)
+    {
+
+        if (is_numeric($identifier)) {
+            // Handle removal by skills_id
+            $skill = Skills::withTrashed()
+                ->where('skills_id', $identifier)
+                ->where('employee_id', $this->empID)
+                ->first(['skills_id', 'skill_Type']); // Retrieve the first matching record
+
+            if ($skill) {
+                // Add to removal list if it exists in the original list
+                if (in_array(strtoupper($skill->skill_Type), array_column($this->originalSkills, 'skill_Type'))) {
+                    $this->skillsToRemove[] = $identifier;
+                }
+
+                // Update display list
+                $this->displaySkills = array_filter($this->displaySkills, function ($dis) use ($identifier) {
+                    return $dis['skills_id'] !== (int) $identifier;
+                });
+
+                // Remove from skillsToAdd if present
+                $this->skillsToAdd = array_filter($this->skillsToAdd, function ($dis) use ($skill) {
+                    return $dis['skill_Type'] !== $skill->skill_Type;
+                });
+
+                // Ensure that skillsToRestore does not include the removed skill
+                $this->skillsToRestore = array_filter($this->skillsToRestore, function ($disID) use ($skill) {
+                    return $disID !== $skill->skills_id;
+                });
+            }
+        } else {
+            // Handle removal by skill_Type
+            $skillType = strtoupper($identifier);
+
+            // Remove from skillsToAdd if present
+            $this->skillsToAdd = array_filter($this->skillsToAdd, function ($dis) use ($skillType) {
+                return $dis['skill_Type'] !== $skillType;
+            });
+
+            // Remove from displaySkills
+            $this->displaySkills = array_filter($this->displaySkills, function ($dis) use ($skillType) {
+                return $dis['skill_Type'] !== $skillType;
+            });
+        }
+
+        $this->closeModal('skills');
+    }
+
+    // public function removeSkills($identifier)
+    // {
+    //     if (is_numeric($identifier)) {
+    //         // Handle removal by skills_id
+    //         $skill = Skills::withTrashed()
+    //             ->where('skills_id', $identifier)
+    //             ->where('employee_id', $this->empID)
+    //             ->first(['skills_id', 'skill_Type']); // Retrieve the first matching record
+
+    //         if ($skill) {
+    //             // Add to removal list if it exists in the original list
+    //             if (in_array(strtoupper($skill->skill_Type), array_column($this->originalSkills, 'skill_Type'))) {
+    //                 $this->skillsToRemove[] = $identifier;
+    //             }
+
+    //             // Update display list
+    //             $this->displaySkills = array_filter($this->displaySkills, function ($dis) use ($identifier) {
+    //                 return $dis['skills_id'] !== (int) $identifier;
+    //             });
+
+    //             // Remove from skillsToAdd if present
+    //             $this->skillsToAdd = array_filter($this->skillsToAdd, function ($dis) use ($skill) {
+    //                 return $dis['skill_Type'] !== $skill->skill_Type;
+    //             });
+
+    //             // Ensure that skillsToRestore does not include the removed skill
+    //             $this->skillsToRestore = array_filter($this->skillsToRestore, function ($disID) use ($skill) {
+    //                 return $disID !== $skill->skills_id;
+    //             });
+    //         }
+    //     } else {
+    //         // Handle removal by skill_Type
+    //         $skillType = strtoupper($identifier);
+
+    //         // Remove from skillsToAdd if present
+    //         $this->skillsToAdd = array_filter($this->skillsToAdd, function ($dis) use ($skillType) {
+    //             return $dis['skill_Type'] !== $skillType;
+    //         });
+
+    //         // Remove from displaySkills
+    //         $this->displaySkills = array_filter($this->displaySkills, function ($dis) use ($skillType) {
+    //             return $dis['skill_Type'] !== $skillType;
+    //         });
+    //     }
+
+    //     $this->closeModal('skills');
+    // }
 
     //SET VARIABLES
     public function setVar($id, $name)
@@ -336,7 +486,7 @@ class EditDetails extends Component
             $this->dispatch('open-modal', 'eligibility-modal');
 
             $eliData = Eligibility::find($id);
-            $this->eli_Name = $eliData->eligibilityType->eligibility_Name;
+            $this->eli_Name = $eliData->eligibility_type->eligibility_Name;
             $this->eli_Date = Carbon::parse($eliData->eligibility_Date)->format('Y-m-d');
 
             $this->eliTypeID = $eliData->eligibility_Type;
@@ -393,6 +543,7 @@ class EditDetails extends Component
 
         $profileChanged = false;
         $disabilitiesChanged = false;
+        $skillsChanged = false;
 
         DB::beginTransaction();
 
@@ -424,6 +575,7 @@ class EditDetails extends Component
                 $profileChanged = true;
             }
 
+            // DISABILITIES
             foreach ($this->disabilitiesToRestore as $disID) {
                 $disability = Disability::withTrashed()->find($disID);
                 if ($disability) {
@@ -442,23 +594,57 @@ class EditDetails extends Component
                     $disabilitiesChanged = true;
                 }
             }
-
             foreach ($this->disabilitiesToRemove as $disID) {
-                Disability::where('disability_id', $disID)
-                    ->where('employee_id', $this->empID)
-                    ->delete();
+                $jobseekerData->disability()->find($disID)->delete();
                 $disabilitiesChanged = true;
+
             }
 
-            if ($profileChanged || $disabilitiesChanged) {
+            // foreach ($this->disabilitiesToRemove as $disID) {
+            //     Disability::where('disability_id', $disID)
+            //         ->where('employee_id', $this->empID)
+            //         ->delete();
+            //     $disabilitiesChanged = true;
+            // }
+
+            // SKILLS
+
+            foreach ($this->skillsToRestore as $skillID) {
+                $skills = Skills::withTrashed()->find($skillID);
+                if ($skills) {
+                    $skills->restore();
+                }
+                $skillsChanged = true;
+            }
+
+            // Add new disabilities
+            foreach ($this->skillsToAdd as $skill) {
+                if (!in_array($skill['skill_Type'], array_column($this->originalSkills, 'skill_Type'))) {
+                    Skills::create([
+                        'employee_id' => $this->empID,
+                        'skill_Type' => $skill['skill_Type'],
+                    ]);
+                    $skillsChanged = true;
+                }
+            }
+            foreach ($this->skillsToRemove as $skillID) {
+                $jobseekerData->skills()->find($skillID)->delete();
+                $skillsChanged = true;
+
+            }
+
+            if ($profileChanged || $disabilitiesChanged || $skillsChanged) {
                 DB::commit();
-                $this->reset('disabilitiesToAdd', 'disabilitiesToRemove', 'displayDisabilities', 'disabilitiesToRestore');
+                $this->reset('disabilitiesToAdd', 'disabilitiesToRemove', 'displayDisabilities', 'disabilitiesToRestore',
+                    'skillsToAdd', 'skillsToRemove', 'displaySkills', 'skillsToRestore');
                 $this->mount();
                 toastr()->success('Profile has been updated!');
 
             } else {
                 DB::rollBack();
-                $this->reset('disabilitiesToAdd', 'disabilitiesToRemove', 'displayDisabilities', 'disabilitiesToRestore');
+                $this->reset('disabilitiesToAdd', 'disabilitiesToRemove', 'displayDisabilities', 'disabilitiesToRestore',
+                    'skillsToAdd', 'skillsToRemove', 'displaySkills', 'skillsToRestore');
+                $this->reset();
                 $this->mount();
                 toastr()->info('No changes detected.');
             }
@@ -467,12 +653,12 @@ class EditDetails extends Component
             if (isset($imgPath)) {
                 Storage::disk('public')->delete($imgPath);
             }
-            $this->reset('disabilitiesToAdd', 'disabilitiesToRemove', 'displayDisabilities', 'disabilitiesToRestore');
+            $this->reset('disabilitiesToAdd', 'disabilitiesToRemove', 'displayDisabilities', 'disabilitiesToRestore',
+                'skillsToAdd', 'skillsToRemove', 'displaySkills', 'skillsToRestore');
             $this->mount();
             toastr()->error('There was an error updating the profile.');
         }
 
-        
     }
 
     // LANGUAGE
@@ -572,29 +758,61 @@ class EditDetails extends Component
     //LICENSE
     public function saveLicense()
     {
-        if ($this->licID) {
-            try {
-                License::where('license_id', $this->licID)->update([
+        // Define validation rules
+        $rules = [
+            'licValidity' => [
+                'required',
+                'date',
+                'after:today', // Ensure the date is in the future
+            ],
+            'licTypeID' => [
+                'required',
+                Rule::unique('license', 'license_type_id') // Specify the correct column name
+                    ->where('employee_id', $this->empID) // Ensure uniqueness for this employee
+                    ->ignore($this->licID, 'license_id'), // Ignore the current record when updating
+            ],
+        ];
+
+        // Define custom validation messages
+        $messages = [
+            'licValidity.required' => 'The license validity date is required.',
+            'licValidity.date' => 'The license validity date must be a valid date.',
+            'licValidity.after' => 'The license validity date must be a future date.',
+            'licTypeID.required' => 'The license type is required.',
+            'licTypeID.unique' => 'The license type has already been taken for this user.',
+        ];
+
+        // Validate input
+        $this->validate($rules, $messages);
+
+        DB::beginTransaction(); // Start transaction
+
+        try {
+            if ($this->licID) {
+                // Update existing record
+                $license = License::findOrFail($this->licID);
+                $license->update([
                     'license_type_id' => $this->licTypeID,
-                    'license_Validity' => $this->licValidity,
+                    'license_validity' => $this->licValidity, // Ensure column name matches
                 ]);
 
                 toastr()->success('License Record has been Updated!');
-            } catch (\Exception $e) {
-                toastr()->error('There was an Error');
-            }
-        } else {
-            try {
+            } else {
+                // Create new record
                 License::create([
                     'employee_id' => $this->empID,
                     'license_type_id' => $this->licTypeID,
-                    'license_Validity' => $this->licValidity,
+                    'license_validity' => $this->licValidity, // Ensure column name matches
                 ]);
 
                 toastr()->success('License Record has been Added!');
-            } catch (\Exception $e) {
-                toastr()->error('There was an Error');
             }
+
+            DB::commit(); // Commit transaction
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback transaction
+
+            toastr()->error('There was an Error: ' . $e->getMessage());
         }
 
         $this->closeModal('license');
@@ -603,19 +821,48 @@ class EditDetails extends Component
     //ELIGIBILITY
     public function saveEligibility()
     {
-        if ($this->eliID) {
-            try {
-                Eligibility::where('eligibility_id', $this->eliID)->update([
+        // Define validation rules
+        $rules = [
+            'eli_Date' => [
+                'required',
+                'date',
+                'after:today', // Ensure the date is in the future
+            ],
+            'eliTypeID' => [
+                'required',
+
+                Rule::unique('eligibility', 'eligibility_Type') // Specify the correct column name
+                    ->where('employee_id', $this->empID) // Ensure uniqueness for this employee
+                    ->ignore($this->eliID, 'eligibility_id'), // Ignore the current record when updating
+            ],
+        ];
+
+        // Define custom validation messages
+        $messages = [
+            'eli_Date.required' => 'The eligibility date is required.',
+            'eli_Date.date' => 'The eligibility date must be a valid date.',
+            'eli_Date.after' => 'The eligibility date must be a future date.',
+            'eliTypeID.required' => 'The eligibility type is required.',
+            'eliTypeID.unique' => 'The eligibility type has already been taken for this user.',
+        ];
+
+        // Validate input
+        $this->validate($rules, $messages);
+
+        DB::beginTransaction(); // Start transaction
+
+        try {
+            if ($this->eliID) {
+                // Update existing record
+                $eligibility = Eligibility::findOrFail($this->eliID);
+                $eligibility->update([
                     'eligibility_Type' => $this->eliTypeID,
                     'eligibility_Date' => $this->eli_Date,
                 ]);
 
                 toastr()->success('Eligibility Record has been Updated!');
-            } catch (\Exception $e) {
-                toastr()->error('There was an Error');
-            }
-        } else {
-            try {
+            } else {
+                // Create new record
                 Eligibility::create([
                     'employee_id' => $this->empID,
                     'eligibility_Type' => $this->eliTypeID,
@@ -623,14 +870,17 @@ class EditDetails extends Component
                 ]);
 
                 toastr()->success('Eligibility Record has been Added!');
-            } catch (\Exception $e) {
-                toastr()->error('There was an Error');
             }
+
+            DB::commit(); // Commit transaction
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback transaction
+
+            toastr()->error('There was an error, please try again later.');
         }
 
         $this->closeModal('eligibility');
     }
-
     //ADDRESS + POSITIONS
     #[On('barSelect')]
     public function barSelect($id)
@@ -694,54 +944,82 @@ class EditDetails extends Component
         }
     }
 
-    public function removePosition($positionId)
+    public function removeJobPreference($positionId)
     {
+        DB::beginTransaction(); // Start transaction
+
         try {
-            Job_Preference::where('job_preference_id', $positionId)
+            // Find the record using Eloquent
+            $jobPreference = Job_Preference::where('job_preference_id', $positionId)
                 ->where('employee_id', $this->empID)
-                ->delete();
+                ->firstOrFail();
 
+            // Delete the record
+            $jobPreference->delete();
+
+            DB::commit(); // Commit transaction
             toastr()->success('Job Preference record has been deleted.');
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack(); // Rollback transaction on not found
 
-            toastr()->error('There was an Error');
+            toastr()->error('Job Preference record not found.');
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback transaction on other errors
+
+            toastr()->error('There was an error, please try again later');
         }
     }
 
     public function removeIndustry($industryId)
     {
+        DB::beginTransaction(); // Start the transaction
 
         try {
-            Industry_Preference::where('industry_pref_id', $industryId)
+            // Find the Industry_Preference record or fail
+            $industryPreference = Industry_Preference::where('industry_pref_id', $industryId)
                 ->where('employee_id', $this->empID)
-                ->delete();
+                ->firstOrFail();
+
+            // Delete the record
+            $industryPreference->delete();
+
+            DB::commit(); // Commit the transaction
 
             toastr()->success('Industry Preference record has been deleted.');
         } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction on general exceptions
 
-            toastr()->error('There was an Error');
+            toastr()->error('There was an error, please try again later');
         }
     }
 
     public function mount()
     {
-
         $user = Auth::user();
         $this->empID = $user->employee->employee_id;
 
-        // Fetch current disabilities from the database
-        $this->originalDisabilities = Disability::where('employee_id', $this->empID)
-            ->get()
-            ->map(function ($disability) {
-                return [
-                    'disability_id' => $disability->disability_id,
-                    'disability_Type' => strtoupper($disability->disability_Type),
-                ];
-            })->toArray();
+        // Fetch current disabilities and skills from the database
+        $disabilities = Disability::where('employee_id', $this->empID)->get();
+        $skills = Skills::where('employee_id', $this->empID)->get();
 
-        // Initialize display disabilities
+        // Map disabilities and skills to arrays with proper formatting
+        $this->originalDisabilities = $disabilities->map(function ($disability) {
+            return [
+                'disability_id' => $disability->disability_id,
+                'disability_Type' => strtoupper($disability->disability_Type),
+            ];
+        })->toArray();
+
+        $this->originalSkills = $skills->map(function ($skill) {
+            return [
+                'skills_id' => $skill->skills_id,
+                'skill_Type' => strtoupper($skill->skill_Type),
+            ];
+        })->toArray();
+
+        // Initialize display arrays
         $this->displayDisabilities = $this->originalDisabilities;
-
+        $this->displaySkills = $this->originalSkills;
     }
 
     public function render()

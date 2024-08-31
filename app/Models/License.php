@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class License extends Model
+class License extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $table = 'license';
     protected $primaryKey = 'license_id';
@@ -35,4 +37,18 @@ class License extends Model
     {
         return $this->belongsTo(License_Type::class, 'license_type_id');
     }
+
+    public static function fieldMappings()
+    {
+        return [
+            'license_id' => 'License ID',
+            'employee_id' => 'Employee ID',
+            'license_type_id' => 'License Type ID',
+            'license_Validity' => 'License Validity',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'deleted_at' => 'Deleted At',
+        ];
+    }
+
 }

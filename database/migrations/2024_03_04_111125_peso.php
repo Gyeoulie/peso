@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id('peso_id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('peso_Pnum', 20)->nullable();
-            $table->string('peso_Tnum', 20)->nullable();
-            $table->string('peso_Fnum', 20)->nullable();
-            $table->string('peso_Email', 255)->nullable();
             $table->unsignedBigInteger('municipality_id');
+            $table->string('peso_Fname', 255);
+            $table->string('peso_Mname', 255);
+            $table->string('peso_Lname', 255);
+            $table->string('peso_Pnumber', 255);
             $table->timestamps(); // Adds created_at and updated_at columns
             $table->softDeletes();
 

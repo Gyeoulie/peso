@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('employee_id');
             $table->unsignedBigInteger('user_id')->unsigned()->comment('Foreign Key');
             $table->string('fname', 255);
-            $table->string('mname', 255);
+            $table->string('mname', 255)->nullable();
             $table->string('lname', 255);
             $table->string('suffix', 255)->nullable();
             $table->string('height', 3)->nullable();

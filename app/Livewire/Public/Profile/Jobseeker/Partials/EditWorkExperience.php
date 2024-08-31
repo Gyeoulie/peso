@@ -5,6 +5,7 @@ namespace App\Livewire\Public\Profile\Jobseeker\Partials;
 use App\Models\Job_Positions;
 use App\Models\Work_Exp;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class EditWorkExperience extends Component
@@ -41,49 +42,80 @@ class EditWorkExperience extends Component
 
     public function save()
     {
-        $this->validate();
+        // Validation rules and messages
+        $rules = [
+            'workName' => ['required', 'string'],
+            'workAdd' => ['required', 'string'],
+            'workPosition' => ['required', 'integer'],
+            'workStart' => ['required', 'date', 'before_or_equal:today'],
+            'workEnd' => ['nullable', 'date', 'after_or_equal:workStart'],
+            'workStatus' => ['required', 'string'],
+        ];
 
-        if ($this->workID) {
+        $messages = [
+            'workName.required' => 'The company name is required.',
+            'workName.string' => 'The company name must be a string.',
+            'workAdd.required' => 'The address is required.',
+            'workAdd.string' => 'The address must be a string.',
+            'workPosition.required' => 'The position is required.',
+            'workPosition.integer' => 'The position must be an integer.',
+            'workStart.required' => 'The start date is required.',
+            'workStart.date' => 'The start date must be a valid date.',
+            'workStart.before_or_equal' => 'The start date must be today or before.',
+            'workEnd.date' => 'The end date must be a valid date.',
+            'workEnd.after_or_equal' => 'The end date must be today or after the start date.',
+            'workStatus.required' => 'The status is required.',
+            'workStatus.string' => 'The status must be a string.',
+        ];
 
-            try {
-                // Create the user record
-                Work_Exp::where('workexp_id', $this->workID)->update([
-                    'work_Name' => $this->workName,
-                    'work_Address' => $this->workAdd,
-                    'position_id' => $this->workPosition,
-                    'work_Start' => $this->workStart,
-                    'work_End' => $this->workEnd,
-                    'work_Status' => $this->workStatus,
-                ]);
+        $this->validate($rules, $messages);
 
-                toastr()->success('Work Experience Record has been Updated!');
-            } catch (\Exception $e) {
+        DB::beginTransaction(); // Start transaction
 
-                // Show error toastr notification
-                toastr()->error('There was an Error');
-            }
+        try {
+            if ($this->workID) {
+                // Update existing record using Eloquent
+                $workExp = Work_Exp::find($this->workID);
 
-        } else {
+                if ($workExp) {
+                    $workExp->work_Name = $this->workName;
+                    $workExp->work_Address = $this->workAdd;
+                    $workExp->position_id = $this->workPosition;
+                    $workExp->work_Start = Carbon::parse($this->workStart)->format('Y-m-d');
+                    $workExp->work_End = $this->workEnd ? Carbon::parse($this->workEnd)->format('Y-m-d') : null;
+                    $workExp->work_Status = $this->workStatus;
 
-            try {
-                // Create the user record
+                    if ($workExp->isDirty()) {
+                        $workExp->save();
+                        toastr()->success('Work Experience Record has been Updated!');
+                    } else {
+                        toastr()->info('No changes detected. Work Experience Record remains the same.');
+                    }
+                } else {
+                    toastr()->error('Work experience record not found.');
+                }
+            } else {
+                // Create new record
                 Work_Exp::create([
                     'employee_id' => $this->userID,
                     'work_Name' => $this->workName,
                     'work_Address' => $this->workAdd,
                     'position_id' => $this->workPosition,
-                    'work_Start' => $this->workStart,
-                    'work_End' => $this->workEnd,
+                    'work_Start' => Carbon::parse($this->workStart)->format('Y-m-d'),
+                    'work_End' => $this->workEnd ? Carbon::parse($this->workEnd)->format('Y-m-d') : null,
                     'work_Status' => $this->workStatus,
                 ]);
+
                 toastr()->success('New Work Experience Record Created!');
-
-            } catch (\Exception $e) {
-
-                // Show error toastr notification
-                toastr()->error('There was an Error');
             }
+
+            DB::commit(); // Commit transaction
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback transaction on failure
+            toastr()->error('There was an error, please try again later.');
+
         }
+
         $this->close();
         $this->dispatch('reload-table');
     }

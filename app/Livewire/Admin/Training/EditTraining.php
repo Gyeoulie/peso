@@ -161,8 +161,9 @@ class EditTraining extends Component
 
     public function cancelEdit()
     {
-        session()->forget('programData');
         $this->redirectRoute('admin-view-training', ['id' => $this->programData], navigate: true);
+        // session()->forget('programData');
+
     }
     public function saveProgram()
     {
@@ -213,8 +214,9 @@ class EditTraining extends Component
                 $programInfo->save();
                 DB::commit();
 
-                session()->forget('programData');
                 $this->redirectRoute('admin-view-training', ['id' => $programInfo->program_id], navigate: true);
+                // session()->forget('programData');
+
                 toastr()->success('Program has been updated!');
 
             } else {

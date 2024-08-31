@@ -9,8 +9,8 @@ use App\Models\Job_Applicants;
 use App\Models\Job_Preference;
 use App\Models\Programs;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
-use Asantibanez\LivewireCharts\Models\LineChartModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
@@ -57,7 +57,7 @@ class BarangayReports extends Component
 
     public function mount()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $this->initializeBarangay($user);
         $this->currentYear = date('Y');
         $this->startYear = 2024;
@@ -155,6 +155,7 @@ class BarangayReports extends Component
 
         $this->selectedBar = $id;
         $this->barTitle = $barangay->barangay_Name;
+        $this->dispatch('updateBar', $id);
     }
     private function getBarangays($municipalityId)
     {
@@ -286,7 +287,6 @@ class BarangayReports extends Component
         return [
             'jobtags_chart' => $this->createJobTagsChart(),
             'industries_chart' => $this->createIndustriesChart(),
-            'employment_chart' => $this->createLineChartModel($this->selectedYear, $this->selectedMonths),
         ];
     }
 
@@ -338,66 +338,6 @@ class BarangayReports extends Component
         return $this->configureChart($chart);
     }
 
-    private function createLineChartModel($selectedYear, $selectedMonths)
-    {
-        $year = $selectedYear ?: Carbon::now()->year;
-
-        $query = Job_Applicants::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
-            ->where('applicant_Status', 'PENDING')
-            ->whereHas('employee', function ($query) {
-                $query->where('barangay_id', $this->selectedBar);
-            })
-            ->whereYear('created_at', $year);
-
-        if (!empty($selectedMonths)) {
-            // Filter by the selected months
-            $query->whereIn(DB::raw('MONTH(updated_at)'), $selectedMonths);
-        }
-
-        $monthlyHiredCounts = $query->groupByRaw('MONTH(updated_at)')
-            ->orderByRaw('MONTH(updated_at)')
-            ->get()
-            ->keyBy('month');
-
-        // Determine the categories for the X-axis based on the selected months or default to all months
-        if (!empty($selectedMonths)) {
-            $monthNames = array_map(function ($month) {
-                return Carbon::create()->month($month)->format('M');
-            }, $selectedMonths);
-            $monthlyData = array_fill(0, count($selectedMonths), 0);
-        } else {
-            $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            $monthlyData = array_fill(0, 12, 0); // Ensure correct indexing
-        }
-
-        // Populate the data
-        foreach ($monthlyHiredCounts as $month => $data) {
-            if (!empty($selectedMonths)) {
-                $index = array_search($month, $selectedMonths);
-                if ($index !== false) {
-                    $monthlyData[$index] = $data->total;
-                }
-            } else {
-                $monthlyData[$month - 1] = $data->total; // Adjust index for all months
-            }
-        }
-
-        $chart = new LineChartModel();
-        $chart->setAnimated(true)
-            ->withOnPointClickEvent('onPointClick')
-            ->setSmoothCurve()
-            ->setXAxisVisible(true)
-            ->setDataLabelsEnabled(true)
-            ->setXAxisCategories($monthNames);
-
-        // Add points to the chart
-        foreach ($monthlyData as $index => $count) {
-            $chart->addPoint($monthNames[$index], $count, ['month' => $selectedMonths[$index] ?? ($index + 1)]);
-        }
-
-        return $this->configureChart($chart);
-    }
-
     private function configureChart($chart)
     {
         return $chart->setAnimated(true)
@@ -415,7 +355,8 @@ class BarangayReports extends Component
     }
     public function render()
     {
-        $user = auth()->user();
+        $user = Auth::user();
+
         $pesoMunicipalityId = optional($user->peso)->municipality_id;
 
         $barangays = $this->getBarangays($pesoMunicipalityId);

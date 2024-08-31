@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Company extends Model
+class Company extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $table = 'company';
     protected $primaryKey = 'company_id';
@@ -64,5 +66,31 @@ class Company extends Model
     {
         return $this->hasMany(Requirements_Passed::class, 'company_id');
     }
+
+    public static function fieldMappings()
+{
+    return [
+        'company_id' => 'Company ID',
+        'user_id' => 'User ID',
+        'business_Name' => 'Business Name',
+        'trade_Name' => 'Trade Name',
+        'company_TIN' => 'Company TIN',
+        'company_Type' => 'Company Type',
+        'employer_Type' => 'Employer Type',
+        'employer_Type_Desc' => 'Employer Type Description',
+        'company_Total_workforce' => 'Total Workforce',
+        'company_Address' => 'Company Address',
+        'barangay_id' => 'Barangay ID',
+        'contact_Person' => 'Contact Person',
+        'contact_Person_position' => 'Contact Person Position',
+        'company_Pnum' => 'Company Phone Number',
+        'company_Tnum' => 'Company Telephone Number',
+        'company_Fnum' => 'Company Fax Number',
+        'company_Email' => 'Company Email',
+        'company_Status' => 'Company Status',
+        'company_img' => 'Company Image',
+        'company_Desc' => 'Company Description',
+    ];
+}
 
 }

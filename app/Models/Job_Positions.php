@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Job_Positions extends Model
+class Job_Positions extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $table = 'job_positions';
     protected $primaryKey = 'position_id';
@@ -40,4 +42,14 @@ class Job_Positions extends Model
     {
         return $this->hasMany(Job_Tags::class, 'position_id');
     }
+
+    public static function fieldMappings()
+{
+    return [
+        'position_id' => 'Position ID',
+        'position_Title' => 'Position Title',
+        'position_Code' => 'Position Code',
+    ];
+}
+
 }

@@ -312,7 +312,8 @@
 
                             </div>
 
-                            <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
+                            <div
+                                class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($displayDisabilities)) h-[40px] @endif ">
 
 
                                 @foreach ($displayDisabilities as $dis)
@@ -344,7 +345,58 @@
 
                         </div>
                     </div>
-                    {{-- DISABILITY --}}
+                    {{-- SKILLS --}}
+
+                    <div class="flex flex-row my-4 w-full gap-4">
+                        <div class="flex flex-col w-full">
+
+                            <div class="flex flex-row w-full items-center">
+
+                                <x-input-label for="fname"> </i>Skills
+                                </x-input-label>
+
+                                <x-primary-button wire:click.prevent="openModal('skills')" class="ml-auto mr-3"
+                                    type="button" x-data="">
+                                    {{-- x-on:click.prevent="$dispatch('open-modal', 'disability-modal')" --}}
+                                    Add Skills
+                                </x-primary-button>
+
+                            </div>
+
+                            <div
+                                class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($originalSkills)) h-[40px] @endif ">
+
+
+                                @foreach ($displaySkills as $skill)
+                                    <span wire:key="{{ $skill['skills_id'] ?? md5($skill['skill_Type']) }}"
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {{ $skill['skill_Type'] }}
+                                        <button
+                                            wire:click.prevent="removeSkills('{{ $skill['skills_id'] ?? $skill['skill_Type'] }}')"
+                                            type="button"
+                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
+                                            <span class="sr-only">Remove badge</span>
+                                            <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M18 6 6 18" />
+                                                <path d="m6 6 12 12" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                @endforeach
+
+
+
+
+
+
+                            </div>
+                            <x-input-error :messages="$errors->get('disability')" class="mt-2" />
+
+                        </div>
+                    </div>
 
 
                     <div class="flex flex-row">
@@ -624,32 +676,38 @@
 
                                                 <td class="px-6 py-4">
                                                     <div class="flex flex-row items-center justify-center gap-6">
-                                                        <button
-                                                            wire:click.prevent="editRecord({{ $eli->eligibility_id }}, 'eligibility')"
-                                                            type="button">
+
+                                                        <div x-data="{ tooltip: 'Edit Eligibility' }">
+                                                            <button
+                                                                wire:click.prevent="editRecord({{ $eli->eligibility_id }}, 'eligibility')"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="h-5 w-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        <div x-data="{ tooltip: 'Delete Eligibility' }">
+                                                            <button x-tooltip="tooltip" type="button"
+                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="h-5 w-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                                </svg>
+
+                                                            </button>
+                                                        </div>
 
 
-                                                            <svg class="w-6 h-6 text-blue-600" aria-hidden="true"
-                                                                xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" fill="currentColor"
-                                                                viewBox="0 0 24 24">
-
-                                                                <path fill-rule="evenodd"
-                                                                    d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
-                                                                    clip-rule="evenodd" />
-                                                                <path fill-rule="evenodd"
-                                                                    d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
-                                                                    clip-rule="evenodd" />
-                                                            </svg>
-                                                        </button>
-                                                        <svg class="w-6 h-6 text-gray-800 text-red-500"
-                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                            width="24" height="24" fill="none"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke="currentColor" stroke-linecap="round"
-                                                                stroke-linejoin="round" stroke-width="2"
-                                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                                        </svg>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -762,32 +820,37 @@
 
                                                 <td class="px-6 py-4">
                                                     <div class="flex flex-row items-center justify-center gap-6">
-                                                        <button
-                                                            wire:click.prevent="editRecord({{ $empLicense->license_id }}, 'license')"
-                                                            type="button">
 
+                                                        <div x-data="{ tooltip: 'Edit License' }">
+                                                            <button
+                                                                wire:click.prevent="editRecord({{ $empLicense->license_id }}, 'license')"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="h-5 w-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        <div x-data="{ tooltip: 'Delete License' }">
+                                                            <button x-tooltip="tooltip" type="button"
+                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="h-5 w-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                                </svg>
 
-                                                            <svg class="w-6 h-6 text-blue-600" aria-hidden="true"
-                                                                xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" fill="currentColor"
-                                                                viewBox="0 0 24 24">
+                                                            </button>
+                                                        </div>
 
-                                                                <path fill-rule="evenodd"
-                                                                    d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
-                                                                    clip-rule="evenodd" />
-                                                                <path fill-rule="evenodd"
-                                                                    d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
-                                                                    clip-rule="evenodd" />
-                                                            </svg>
-                                                        </button>
-                                                        <svg class="w-6 h-6 text-gray-800 text-red-500"
-                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                            width="24" height="24" fill="none"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke="currentColor" stroke-linecap="round"
-                                                                stroke-linejoin="round" stroke-width="2"
-                                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                                        </svg>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -824,8 +887,8 @@
 
                             </div>
 
-                            <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
-
+                            <div
+                                class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($employeeDetails->job_preference)) h-[40px] @endif ">
 
                                 @foreach ($employeeDetails->job_preference as $jobPref)
                                     <span
@@ -866,7 +929,10 @@
 
                             </div>
 
-                            <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 ">
+                            <div
+                                class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (!empty($employeeDetails->industry_preference) && count($employeeDetails->industry_preference) > 0) h-[40px] @endif ">
+
+                          
 
 
                                 @foreach ($employeeDetails->industry_preference as $industryPref)
@@ -1052,11 +1118,14 @@
 
                     </x-dropdown>
 
+                    <x-input-error :messages="$errors->get('licTypeID')" class="mt-2" />
 
                 </div>
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="licenseDate" :value="__('Date Validity')" />
                     <x-text-input wire:model='licValidity' class="block mt-1 w-full" type="date" />
+                    <x-input-error :messages="$errors->get('licValidity')" class="mt-2" />
+
                 </div>
 
             </div>
@@ -1081,7 +1150,7 @@
             <hr>
             <div class="flex flex-col mt-2">
                 <div class="flex flex-col mt-2 w-full">
-                    <x-input-label for="licenseType" :value="__('Eligibility')" />
+                    <x-input-label for="eligibilityType" :value="__('Eligibility')" />
 
                     <x-dropdown align="left" width="full">
                         <x-slot name="trigger">
@@ -1125,12 +1194,14 @@
                         </x-slot>
 
                     </x-dropdown>
+                    <x-input-error :messages="$errors->get('eliTypeID')" class="mt-2" />
 
 
                 </div>
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="licenseDate" :value="__('Date Validity')" />
                     <x-text-input wire:model='eli_Date' class="block mt-1 w-full" type="date" />
+                    <x-input-error :messages="$errors->get('eli_Date')" class="mt-2" />
                 </div>
 
             </div>
@@ -1185,6 +1256,32 @@
 
                 <x-primary-button wire:click.prevent="saveDisability" class="ms-3" type="button">
                     {{ __('Add Disability Record') }}
+                </x-primary-button>
+            </div>
+        </div>
+    </x-modal>
+
+
+    <x-modal name="skills-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Add Skill Record') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+                <div class="mt-2">
+                    <x-input-label for="addSkills" :value="__('Others')" />
+                    <x-text-input wire:model='skills' class="block mt-1 w-full" type="text" />
+                    <x-input-error :messages="$errors->get('skills')" class="mt-2" />
+                </div>
+            </div>
+            <div class="mt-8 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('skills')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-primary-button wire:click.prevent="saveSkills" class="ms-3" type="button">
+                    {{ __('Add Skill Record') }}
                 </x-primary-button>
             </div>
         </div>

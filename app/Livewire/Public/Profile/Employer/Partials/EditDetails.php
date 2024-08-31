@@ -217,30 +217,112 @@ class EditDetails extends Component
 
     public function removeIndustry($industryId)
     {
+        DB::beginTransaction(); // Start transaction
+
         try {
             // Check the count of industry lines associated with the company
             $industryCount = Company_Industry_Line::where('company_id', $this->empID)->count();
 
             if ($industryCount <= 1) {
                 toastr()->warning('The company must have at least one industry line.');
-                $this->addError('industrypreference', 'A company must have atleast 1 industry line.');
+                $this->addError('industrypreference', 'A company must have at least 1 industry line.');
+                DB::rollBack(); // Rollback transaction if validation fails
                 return; // Exit the function early if only one industry line exists
             }
 
-            // Proceed to delete the industry line
-            Company_Industry_Line::where('company_industry_line_id', $industryId)
+            // Find the industry line to delete
+            $industryLine = Company_Industry_Line::where('company_industry_line_id', $industryId)
                 ->where('company_id', $this->empID)
-                ->delete();
+                ->firstOrFail();
 
+            // Proceed to delete the industry line
+            $industryLine->delete();
+
+            DB::commit(); // Commit transaction
             toastr()->success('Industry Line record has been deleted.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            DB::rollBack(); // Rollback transaction if record not found
+
+            toastr()->error('Industry Line record not found.');
         } catch (\Exception $e) {
-            toastr()->error('There was an error deleting the Industry Line record.');
+            DB::rollBack(); // Rollback transaction on other errors
+
+            toastr()->error('There was an error, please try again later');
+
         }
     }
 
+    // public function saveReq()
+    // {
+
+    //     $rules = [
+    //         'req.*' => 'nullable|file|mimes:pdf|max:5120', // Max size 5MB, PDF only
+    //     ];
+
+    //     $messages = [
+    //         'req.*.mimes' => 'Uploaded file must be a PDF.',
+    //         'req.*.max' => 'Uploaded file must be under 5MB.',
+    //     ];
+
+    //     $this->validate($rules, $messages);
+
+    //     if ($this->req) {
+
+    //         // Begin a database transaction
+    //         DB::beginTransaction();
+
+    //         // Array to keep track of paths of successfully uploaded files
+    //         $uploadedPaths = [];
+
+    //         try {
+    //             foreach ($this->req as $requirementId => $file) {
+    //                 if ($file && $file->isValid()) { // Check if file is valid
+    //                     // Retrieve the old record
+    //                     $oldRequirement = Requirements_Passed::where('company_id', $this->empID)
+    //                         ->where('requirement_id', $requirementId)
+    //                         ->first();
+
+    //                     // Store the new file
+    //                     $path = $file->store('requirements', 'public');
+    //                     $uploadedPaths[$requirementId] = $path;
+
+    //                     // Update or create the requirement record
+    //                     Requirements_Passed::updateOrCreate(
+    //                         ['company_id' => $this->empID, 'requirement_id' => $requirementId],
+    //                         ['req_passed_Input' => $path]
+    //                     );
+
+    //                     // Delete old file if a new file is uploaded
+    //                     if ($oldRequirement && $oldRequirement->req_passed_Input) {
+    //                         Storage::disk('public')->delete($oldRequirement->req_passed_Input);
+    //                     }
+    //                 }
+    //             }
+
+    //             // Commit the transaction
+    //             DB::commit();
+
+    //             toastr()->success('Requirements have been updated!');
+    //         } catch (\Exception $e) {
+    //             // Rollback the transaction if something goes wrong
+    //             DB::rollBack();
+
+    //             // Delete all successfully uploaded files if an error occurs
+    //             foreach ($uploadedPaths as $path) {
+    //                 Storage::disk('public')->delete($path);
+    //             }
+
+    //             toastr()->error('An error occurred while updating requirements.');
+    //         }
+    //     } else {
+    //         toastr()->info('No changes detected.');
+
+    //     }
+    // }
+
     public function saveReq()
     {
-
+        // Define validation rules and messages
         $rules = [
             'req.*' => 'nullable|file|mimes:pdf|max:5120', // Max size 5MB, PDF only
         ];
@@ -252,8 +334,8 @@ class EditDetails extends Component
 
         $this->validate($rules, $messages);
 
+        // Check if there are files to process
         if ($this->req) {
-
             // Begin a database transaction
             DB::beginTransaction();
 
@@ -298,11 +380,10 @@ class EditDetails extends Component
                     Storage::disk('public')->delete($path);
                 }
 
-                toastr()->error('An error occurred while updating requirements.');
+                toastr()->error('An error occurred while updating requirements: ' . $e->getMessage());
             }
         } else {
             toastr()->info('No changes detected.');
-
         }
     }
 

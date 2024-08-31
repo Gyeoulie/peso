@@ -78,8 +78,10 @@ class Certificates extends Component
 
     public function updateCertificate()
     {
-        $rules = ['editcertCode' => ['required', 'string', Rule::unique('certificate_type', 'cert_Code')->ignore($this->editcertID, 'cert_type_id')],
-            'editcertName' => ['required', 'string', Rule::unique('certificate_type', 'cert_Name')->ignore($this->editcertID, 'cert_type_id')]];
+        $rules = [
+            'editcertCode' => ['required', 'string', Rule::unique('certificate_type', 'cert_Code')->ignore($this->editcertID, 'cert_type_id')],
+            'editcertName' => ['required', 'string', Rule::unique('certificate_type', 'cert_Name')->ignore($this->editcertID, 'cert_type_id')],
+        ];
 
         $messages = [
             'editcertCode.required' => 'The certificate code is required.',
@@ -91,25 +93,42 @@ class Certificates extends Component
         ];
 
         $this->validate($rules, $messages);
+
         DB::beginTransaction();
 
         try {
-            // Create the user record
-            Certificate_Type::where('cert_type_id', $this->editcertID)->update([
-                'cert_Code' => strtoupper($this->editcertCode),
-                'cert_Name' => $this->editcertName,
-            ]);
+            // Use Eloquent to find the record
+            $certificate = Certificate_Type::find($this->editcertID);
 
-            DB::commit();
-            toastr()->success('Certificate Updated!');
+            if (!$certificate) {
+                toastr()->error('Certificate not found!');
+                DB::rollBack();
+                return;
+            }
 
+            // Update the certificate attributes
+            $certificate->cert_Code = strtoupper($this->editcertCode);
+            $certificate->cert_Name = $this->editcertName;
+
+            // Check if any attributes are dirty
+            if ($certificate->isDirty()) {
+                $certificate->save(); // Save only if there are changes
+
+                // Commit the transaction
+                DB::commit();
+                toastr()->success('Certificate Updated!');
+            } else {
+                // No changes to save
+                DB::rollBack();
+                toastr()->info('No changes detected.');
+            }
         } catch (\Exception $e) {
+            // Roll back the transaction on error
             DB::rollBack();
-            // Show error toastr notification
             toastr()->error('There was an Error');
         }
-        $this->close();
 
+        $this->close();
     }
 
     public function close()

@@ -393,6 +393,34 @@
                                     <div class="flex flex-row gap-4 w-full">
                                         <div class="flex flex-col">
 
+                                            <svg class="w-10 h-10 text-blue-500" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" />
+                                                <path
+                                                    d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8" />
+                                                <line x1="13" y1="7" x2="13" y2="7.01" />
+                                                <line x1="17" y1="7" x2="17" y2="7.01" />
+                                                <line x1="17" y1="11" x2="17" y2="11.01" />
+                                                <line x1="17" y1="15" x2="17" y2="15.01" />
+                                            </svg>
+                                        </div>
+                                        <div class="flex flex-col gap-1">
+                                            <div class="text-xl font-bold text-black">
+                                                PESO Branch
+                                            </div>
+
+                                            <div class="text-md font-medium ">
+                                                {{ $JobPost->municipality->municipality_Name }}
+
+                                            </div>
+
+                                        </div>
+                                </li>
+                                <li class="mb-4">
+                                    <div class="flex flex-row gap-4 w-full">
+                                        <div class="flex flex-col">
+
                                             <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                 stroke="currentColor">
@@ -413,6 +441,7 @@
 
                                         </div>
                                 </li>
+
 
                             </ul>
                         </div>

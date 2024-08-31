@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Municipality extends Model
+class Municipality extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $table = 'municipality';
     protected $primaryKey = 'municipality_id';
@@ -53,4 +55,18 @@ class Municipality extends Model
     {
         return $this->hasMany(Programs::class, 'municipality_id');
     }
+
+    public static function fieldMappings()
+    {
+        return [
+            'municipality_id' => 'Municipality ID',
+            'province_id' => 'Province ID',
+            'municipality_Name' => 'Municipality Name',
+            'municipality_Code' => 'Municipality Code',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'deleted_at' => 'Deleted At',
+        ];
+    }
+
 }
