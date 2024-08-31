@@ -3,12 +3,13 @@
 namespace App\Livewire\Admin\Reports;
 
 use App\Helpers\AuditFormatter;
-use App\Models\Barangay;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
-use Asantibanez\LivewireCharts\Models\PieChartModel;
+use Asantibanez\LivewireCharts\Facades\LivewireCharts;
+use Asantibanez\LivewireCharts\Models\AreaChartModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
@@ -20,91 +21,22 @@ class MunicipalityReports extends Component
 {
 
     use WithPagination, WithoutUrlPagination;
-
+    public $selectedAnalytics;
     public $currentYear = 2024;
     public $modelFilter;
     public $perPage = 10;
+    public $selectedYear; // Default to all months if empty
+
     public $selectedMonths = []; // Default to all months if empty
 
-    public function getBarangayChart($id)
+    public function updateAnalytics($id)
     {
-        $barangays = Barangay::where('municipality_id', $id)
-            ->withCount('employee') // Ensure this relationship exists
-            ->get();
+        $this->selectedAnalytics = $id;
+    }
 
-        // Calculate the total count of residents across all barangays
-        $totalResidents = $barangays->sum('employee_count');
-
-        // Create a pie chart model
-        $barangayChartModel = new PieChartModel();
-
-        // Add each barangay to the pie chart
-        foreach ($barangays as $barangay) {
-            $barangayChartModel->addSlice(
-                $barangay->barangay_Name,
-                $barangay->employee_count,
-                $this->colors[$barangay->barangay_id] ?? '#' . substr(md5(rand()), 0, 6) // Use a default color if not set
-            );
-        }
-
-        // Optionally add a slice for 'Others' if there are remaining residents
-        if ($totalResidents > 0) {
-            $otherCount = 0; // You can define logic for counting 'Others' if needed
-            if ($otherCount > 0) {
-                $barangayChartModel->addSlice('Others', $otherCount, '#' . substr(md5(rand()), 0, 6));
-            }
-        }
-
-        $barangayChartModel->setTitle('Number of Job Seekers per Barangay')
-            ->setAnimated(true)
-            ->setType('pie')
-            ->withOnSliceClickEvent('onSliceClick')
-            ->withoutLegend()
-            ->setDataLabelsEnabled(true)
-            ->setColors([
-                '#' . substr(md5(rand()), 0, 6),
-                '#' . substr(md5(rand()), 0, 6),
-                '#' . substr(md5(rand()), 0, 6),
-                '#' . substr(md5(rand()), 0, 6),
-                '#' . substr(md5(rand()), 0, 6),
-            ])
-            ->setJsonConfig([
-                'chart' => [
-                    'width' => '100%', // Set to 100% or specify a pixel value like 400, 500, etc.
-                    'height' => '300px', // Specify the height for the chart
-                ],
-                'plotOptions' => [
-                    'pie' => [
-                        'dataLabels' => [
-                            'offset' => -15, // Adjust this to center the labels vertically
-                            'style' => [
-                                'fontSize' => '16px', // Corrected from '16x' to '16px'
-                                'fontFamily' => 'Helvetica, Arial, sans-serif',
-                                'fontWeight' => 'bold',
-                                'colors' => ['#FFFFFF'], // Set text color
-                                'textAlign' => 'center', // Align text in the center of each slice
-                            ],
-                        ],
-                    ],
-                ],
-                'dataLabels' => [
-                    'style' => [
-                        'fontSize' => '16px', // Adjust font size for data labels
-                        'fontWeight' => 'bold',
-                    ],
-                    'dropShadow' => [
-                        'enabled' => true,
-                        'top' => 1,
-                        'left' => 1,
-                        'blur' => 1,
-                        'color' => '#000000',
-                        'opacity' => 0.5,
-                    ],
-                ],
-
-            ]);
-
-        return $barangayChartModel;
+    public function mount()
+    {
+        $this->selectedAnalytics = 1;
     }
 
     public function getTotalJobSlots($municipalityId)
@@ -162,13 +94,89 @@ class MunicipalityReports extends Component
             ->count();
     }
 
+    public function getAreaJobPostingsTrend($municipalityId)
+    {
+        // Use the provided year or default to the current year
+        $year = $this->selectedYear ?? Carbon::now()->year;
+
+        // Use the provided months or default to all months (1 through 12)
+        $months = !empty($this->selectedMonths) ? $this->selectedMonths : range(1, 12);
+
+        // Fetch the job postings with relevant data
+        $query = Job_Posting::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->where('peso_municipality_id', $municipalityId);
+
+        // Apply year filter if selectedYear is set
+        if ($this->selectedYear) {
+            $query->whereYear('created_at', $year);
+        }
+
+        // Apply months filter if selectedMonths is set
+        if (!empty($this->selectedMonths)) {
+            $query->whereIn(DB::raw('MONTH(created_at)'), $months);
+        }
+
+        $monthlyPostings = $query->groupByRaw('MONTH(created_at)')
+            ->orderByRaw('MONTH(created_at)')
+            ->get()
+            ->keyBy('month');
+
+        // Define month names
+        $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $monthlyData = array_fill(0, count($monthNames), 0); // Initialize array with months
+
+        // Populate the counts
+        foreach ($monthlyPostings as $month => $data) {
+            if (in_array($month, $months)) {
+                $index = $month - 1; // Adjust index for zero-based array
+                $monthlyData[$index] = $data->total;
+            }
+        }
+
+        // Create the area chart model
+        $chart = LivewireCharts::areaChartModel()
+            ->setTitle("Monthly Job Postings for Municipality ID {$municipalityId} in {$year}")
+            ->setAnimated(true)
+            ->setSmoothCurve()
+            ->setXAxisVisible(true)
+            ->setDataLabelsEnabled(true)
+            ->setXAxisCategories($monthNames)
+            ->setJsonConfig([
+                'chart' => [
+                    'width' => '100%',
+                    'height' => '300px',
+                ],
+                'xaxis' => [
+                    'categories' => $monthNames,
+                ],
+                'dataLabels' => [
+                    'enabled' => true,
+                ],
+                'stroke' => [
+                    'curve' => 'smooth',
+                ],
+                'fill' => [
+                    'opacity' => 0.3, // Adjust the fill opacity as needed
+                ],
+            ]);
+
+        // Add points to the area chart
+        foreach ($monthNames as $index => $monthName) {
+            $chart->addPoint($monthName, $monthlyData[$index]);
+        }
+
+        return $chart;
+    }
+
     public function render()
     {
 
         $user = Auth::user();
         $pesoMunicipalityId = optional($user->peso)->municipality_id;
 
-        $barangayChartModel = $this->getBarangayChart($pesoMunicipalityId);
+        // dd($topJobCharts);
+
+        // dd($jobPostingTrend1);
 
         $activeJobPosting = $this->getJobPosting($pesoMunicipalityId);
         $recentJobPosting = $this->getRecentJobPosting($pesoMunicipalityId);
@@ -205,7 +213,7 @@ class MunicipalityReports extends Component
         // dd($formattedAudits);
 
         return view('livewire.admin.reports.municipality-reports',
-            compact('barangayChartModel', 'activeJobPosting', 'recentJobPosting',
+            compact('activeJobPosting', 'recentJobPosting',
                 'totalJobSlots', 'remainingSlots', 'activeApplicants', 'recentApplicants', 'formattedAudits', 'audits', 'pesoMunicipalityId'));
     }
 }

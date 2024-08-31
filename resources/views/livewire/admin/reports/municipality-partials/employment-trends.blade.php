@@ -1,4 +1,4 @@
-<div class="bg-white shadow rounded-lg p-6 h-full">
+<div class="bg-white shadow rounded-lg p-6 w-full h-full">
     <div class="mb-10">
         <div class="flex flex-col sm:flex-row w-full justify-between gap-2">
 

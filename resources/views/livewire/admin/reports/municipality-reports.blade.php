@@ -1,9 +1,9 @@
-<div class="container mx-auto py-8 overflow-y-auto overscroll-auto no-scrollbar">
+<div class="container mx-auto py-8">
 
 
 
 
-    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0" x-data="{ selectedAnalytics: @entangle('selectedAnalytics') }">
         <div class="col-span-4 sm:col-span-12">
 
             <h1 class="text-2xl font-bold">Reports / Municipality</h1>
@@ -11,6 +11,103 @@
         </div>
 
 
+
+        <div class="col-span-2 md:col-span-3">
+            <div class="bg-blue-100 shadow rounded-lg p-6 flex flex-col h-full">
+                <div class="flex flex-row justify-start">
+                    <h1 class="font-thin font-mono text-sm">Analytics:</h1>
+                </div>
+
+                <div class="flex flex-row w-full justify-between mb-5 mt-auto gap-5">
+                    <div class="flex flex-col w-full">
+                        <x-dropdown align="left" width="full">
+                            <x-slot name="trigger">
+                                <button
+                                    class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
+                                    <div class="w-full ml-2 text-left font-extrabold font-mono text-xl ">
+                                        Analytics
+                                    </div>
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+
+
+                                    </div>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <!-- Search input -->
+
+                                <!-- Dropdown content with scrollbar -->
+                                <div class="max-h-[300px] bg-white overflow-y-auto">
+                                    <!-- Dropdown links -->
+
+                                    <x-dropdown-link wire:click.prevent='updateAnalytics(1)'
+                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
+                                        <span>Jobseekers</span>
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                                        </svg>
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent='updateAnalytics(2)'
+                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
+                                        <span>Job Posting</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                                        </svg>
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent='updateAnalytics(3)'
+                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
+                                        <span>Trends</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                                        </svg>
+                                    </x-dropdown-link>
+
+
+                                </div>
+                            </x-slot>
+
+                        </x-dropdown>
+                    </div>
+
+
+                    <svg class="w-12 h-12 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                    </svg>
+
+
+
+
+
+                </div>
+
+
+
+
+            </div>
+
+        </div>
 
         <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
@@ -72,35 +169,7 @@
 
         </div>
 
-        <div class="col-span-2 lg:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
-                <div class="flex flex-row justify-start">
-                    <h1 class="font-thin font-mono text-sm">Employed Users</h1>
-                </div>
-                <div class="flex flex-row justify-between mb-5">
-                    <h1 class="font-extrabold font-mono text-4xl">data</h1>
 
-                    <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-                    </svg>
-
-
-                </div>
-                <div class="flex flex-row justify-content">
-
-                    <h1 class="font-thin font-mono text-sm"><span
-                            class="bg-yellow-100 text-yellow-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            </i>
-                            data</span>Unemployed
-                    </h1>
-                </div>
-
-
-            </div>
-
-        </div>
 
         <div class="col-span-2 lg:col-span-3">
             <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
@@ -132,27 +201,78 @@
             </div>
 
         </div>
-        <div class="col-span-4 h-full">
-            <div class="bg-white shadow rounded-lg p-6 h-full">
-                <div class="mb-10">
-                    <h1 class="text-2xl font-bold">Total of Jobseekers</h1>
-                    <hr class="h-px my-2 bg-gray-200 border-0">
+
+        <div class="col-span-4 sm:col-span-12 w-full h-full" x-show="selectedAnalytics == 1"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
+            x-transition:enter-end="opacity-100 scale-100" x-cloak>
+            @if ($selectedAnalytics === 1)
+                <div class="flex flex-col sm:flex-row w-full gap-4">
+                    <div class="flex w-full">
+                        <livewire:admin.reports.municipality-partials.barangay-jobseekers
+                            municipalityID="{{ $pesoMunicipalityId }}" />
+                    </div>
+
+                    <div class="flex w-full">
+                        <livewire:admin.reports.municipality-partials.employment-age-group
+                            municipalityID="{{ $pesoMunicipalityId }}" />
+                    </div>
+
+                    <div class="flex w-full">
+                        <livewire:admin.reports.municipality-partials.program-registrants-trends
+                            municipalityID="{{ $pesoMunicipalityId }}" />
+                    </div>
                 </div>
-                <div class="flex h-full items-end">
-                    <livewire:livewire-pie-chart key="{{ $barangayChartModel->reactiveKey() }}" :pie-chart-model="$barangayChartModel" />
-                </div>
-            </div>
-        </div>
-        <div class="col-span-4 h-full">
-            <livewire:admin.reports.municipality-partials.recommendation-trends
-                municipalityID="{{ $pesoMunicipalityId }}" />
+            @endif
         </div>
 
-        <div class="col-span-4 h-full">
-            <livewire:admin.reports.municipality-partials.employment-trends
-                municipalityID="{{ $pesoMunicipalityId }}" />
+        <div class="col-span-4 sm:col-span-12 w-full h-full" x-show="selectedAnalytics == 2"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
+            x-transition:enter-end="opacity-100 scale-100" x-cloak>
+            @if ($selectedAnalytics === 2)
+                <div class="flex flex-col sm:flex-row w-full gap-4">
+                    <div class="flex w-full">
+                        <livewire:admin.reports.municipality-partials.recommendation-trends
+                            municipalityID="{{ $pesoMunicipalityId }}" />
+                    </div>
+                    <div class="flex w-full">
+                        <livewire:admin.reports.municipality-partials.employment-trends
+                            municipalityID="{{ $pesoMunicipalityId }}" />
+                    </div>
+                    <div class="flex w-full">
+
+                        <livewire:admin.reports.municipality-partials.job-posting-trends
+                            municipalityID="{{ $pesoMunicipalityId }}" />
+
+                    </div>
+                </div>
+            @endif
         </div>
 
+        <div class="col-span-4 sm:col-span-12 w-full h-full" x-show="selectedAnalytics == 3"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
+            x-transition:enter-end="opacity-100 scale-100" x-cloak>
+            @if ($selectedAnalytics === 3)
+                <div class="flex flex-col sm:flex-row w-full gap-4">
+                    <div class="flex w-full">
+                        <livewire:admin.reports.municipality-partials.top-job-tags
+                            municipalityID="{{ $pesoMunicipalityId }}" />
+
+                    </div>
+                    <div class="flex w-full">
+                        <livewire:admin.reports.municipality-partials.top-job-industry
+                            municipalityID="{{ $pesoMunicipalityId }}" />
+                    </div>
+                    <div class="flex w-full">
+
+                        <livewire:admin.reports.municipality-partials.top-job-preference
+                            municipalityID="{{ $pesoMunicipalityId }}" />
+                    </div>
+                </div>
+            @endif
+
+        </div>
+
+        {{-- TABLES --}}
         <div class="col-span-4 md:col-span-6">
             <div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
                 <livewire:admin.reports.municipality-partials.jobseekers-list
@@ -165,11 +285,15 @@
             <livewire:admin.reports.municipality-partials.popular-trainings
                 municipalityID="{{ $pesoMunicipalityId }}" />
 
-
+            {{-- 
             <livewire:admin.reports.municipality-partials.top-tags-programs
-                municipalityID="{{ $pesoMunicipalityId }}" />
+                municipalityID="{{ $pesoMunicipalityId }}" /> --}}
 
         </div>
+
+
+
+
 
 
 

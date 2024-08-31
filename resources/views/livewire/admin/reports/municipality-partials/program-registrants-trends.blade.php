@@ -2,26 +2,24 @@
     <div class="mb-10">
         <div class="flex flex-col sm:flex-row w-full justify-between gap-2">
 
-            <h1 class="text-2xl font-bold">Recommendation Trends</h1>
+            <h1 class="text-2xl font-bold">Program Registrants</h1>
 
             <button type="button" x-data=""
-                x-on:click.prevent="$dispatch('open-modal', 'filter-recommendation-trends-modal')"
+                x-on:click.prevent="$dispatch('open-modal', 'filter-registrant-trends-modal')"
                 class="py-1.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
 
         </div>
         <hr class="h-px my-2 bg-gray-200 border-0">
     </div>
     <div class="flex h-full items-end">
-        {{-- <livewire:livewire-column-chart key="{{ $recommendedChartModel->reactiveKey() }}" :column-chart-model="$recommendedChartModel" /> --}}
-        <livewire:livewire-line-chart key="{{ $recommendedLineModel->reactiveKey() }}" :line-chart-model="$recommendedLineModel" />
-
-
+        <livewire:livewire-area-chart key="{{ $programRegistrants->reactiveKey() }}" :area-chart-model="$programRegistrants" />
     </div>
 
-    <x-modal name="filter-recommendation-trends-modal" focusable>
+
+    <x-modal name="filter-registrant-trends-modal" focusable>
         <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Filter Recommendation Trends') }}
+                {{ __('Filter Registrants Trends') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-4">
@@ -66,9 +64,10 @@
                                     @foreach (range(1, 12) as $month)
                                         <div class="flex items-center p-2">
                                             <input wire:model='mountSelectedMonths' type="checkbox"
-                                                id="checkRecTrends-{{ $month }}" value="{{ $month }}"
+                                                id="programRegisterTrends-{{ $month }}"
+                                                value="{{ $month }}"
                                                 class="h-4 w-4 text-blue-600 border-gray-300 rounded" />
-                                            <label for="checkRecTrends-{{ $month }}"
+                                            <label for="programRegisterTrends-{{ $month }}"
                                                 class="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
                                                 {{ date('F', mktime(0, 0, 0, $month, 1)) }}
                                             </label>
@@ -87,7 +86,7 @@
 
 
             <div class="mt-6 flex justify-between">
-                <x-secondary-button x-on:click="$dispatch('close-modal', 'filter-recommendation-trends-modal')">
+                <x-secondary-button x-on:click="$dispatch('close-modal', 'filter-registrant-trends-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 

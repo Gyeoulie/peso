@@ -72,8 +72,9 @@ Route::middleware('auth')->group(function () {
 });
 
 //------------------------------ PUBLIC ------------------------------
-Route::get('/dashboard', Dashboard::class)->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/trainings', Trainings::class)->middleware(['auth', 'verified'])->name('trainings');
+
+Route::get('/dashboard', Dashboard::class)->middleware(['verified'])->name('dashboard');
+Route::get('/trainings', Trainings::class)->middleware(['verified'])->name('trainings');
 
 Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
 

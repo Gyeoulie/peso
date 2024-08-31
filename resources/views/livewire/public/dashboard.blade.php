@@ -246,7 +246,7 @@
 
                                                         <div class="flex flex-col w-full">
                                                             <div class="flex flex-col sm:flex-row">
-                                                                <div class="sm:w-1/4 text-left">
+                                                                <div class="sm:w-1/5 text-left">
 
                                                                     <h3
                                                                         class="text-xs sm:text-sm text-blue-900 uppercase">
@@ -257,25 +257,33 @@
                                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/4 text-left sm:text-center">
+                                                                <div class="sm:w-1/5 text-left sm:text-center">
                                                                     <h3
                                                                         class="text-xs sm:text-sm text-blue-900 uppercase">
                                                                         <i class="fa-solid fa-graduation-cap"></i>
                                                                         {{ $eduLevels[$data->job_Edu] }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/4 text-left sm:text-center">
+                                                                <div class="sm:w-1/5 text-left sm:text-center">
                                                                     <h3
                                                                         class="text-xs sm:text-sm uppercase text-blue-900">
                                                                         <i class="fa-solid fa-briefcase uppercase"></i>
                                                                         {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/4 text-left sm:text-center">
+                                                                <div class="sm:w-1/5 text-left sm:text-center">
                                                                     <h3
                                                                         class="text-xs sm:text-sm uppercase text-blue-900">
                                                                         <i class="fa-solid fa-calendar"></i>
                                                                         {{ $data->job_Duration->format('F j, Y') }}
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="sm:w-1/5 text-left sm:text-center">
+                                                                    <h3
+                                                                        class="text-xs sm:text-sm uppercase text-blue-900">
+                                                                        <i class="fa-solid fa-building-ngo"></i>
+                                                                        PESO
+                                                                        {{ $data->municipality->municipality_Name }}
                                                                     </h3>
                                                                 </div>
                                                             </div>
