@@ -241,7 +241,7 @@ class ApplicantOverview extends Component
 // Query to check if the specific job posting matches the employee
         $isMatch = Job_Posting::where('job_id', $applicant->job_id)
             ->where('job_Status', 'ACTIVE')
-            ->whereHas('job_posting.peso.municipality', function ($query) use ($employeeMunicipalityId) {
+            ->whereHas('peso.municipality', function ($query) use ($employeeMunicipalityId) {
                 $query->where('municipality_id', $employeeMunicipalityId);
             })
             ->where('job_edu', '<=', $highestEducationLevel)
