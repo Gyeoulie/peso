@@ -2,21 +2,25 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+//
 
 use App\Redactors\FiveHashRedactor;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Redactors\LeftRedactor;
 
 class User extends Authenticatable implements Auditable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
+
+    protected $attributeModifiers = [
+        'password' => FiveHashRedactor::class,
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -37,9 +41,6 @@ class User extends Authenticatable implements Auditable
     protected $hidden = [
         'password',
         'remember_token',
-    ];
-    protected $attributeRedactors = [
-        'password' => FiveHashRedactor::class,
     ];
     /**
      * The attributes that should be cast.

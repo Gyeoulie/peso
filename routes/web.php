@@ -16,6 +16,7 @@ use App\Livewire\Admin\JobPosting\Applicants\JobPostApplicants;
 use App\Livewire\Admin\JobPosting\JobPosting;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Admin\LocationManagement\Location;
+use App\Livewire\Admin\Maintenance\Audits;
 use App\Livewire\Admin\PositionIndustry\PositionIndustry;
 use App\Livewire\Admin\Reports\BarangayReports;
 use App\Livewire\Admin\Reports\MunicipalityReports;
@@ -160,6 +161,10 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
     Route::get('/reports/municipality', MunicipalityReports::class)->name('admin-reports-municipality');
+
+
+    Route::get('/audits', Audits::class)->name('admin-audits');
+
 
     Route::get('/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
     Route::get('/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');

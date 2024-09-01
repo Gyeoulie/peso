@@ -45,9 +45,15 @@
                                     @elseif($jobpost->job_Status == 'ACTIVE')
                                         <span
                                             class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">ACTIVE</span>
+                                    @elseif($jobpost->job_Status == 'CLOSED')
+                                        <span
+                                            class="bg-cyan-100 text-cyan-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">CLOSED</span>
+                                    @elseif($jobpost->job_Status == 'COMPLETED')
+                                        <span
+                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">COMPLETED</span>
                                     @else
                                         <span
-                                            class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-22 rounded-lg ">{{ $jobpost->job_Status }}</span>
+                                            class="bg-red-100 text-red-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-22 rounded-lg ">{{ $jobpost->job_Status }}</span>
                                     @endif
                                 </div>
                             </div>
