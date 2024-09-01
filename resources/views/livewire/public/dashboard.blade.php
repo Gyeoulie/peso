@@ -283,7 +283,7 @@
                                                                         class="text-xs sm:text-sm uppercase text-blue-900">
                                                                         <i class="fa-solid fa-building-ngo"></i>
                                                                         PESO
-                                                                        {{ $data->municipality->municipality_Name }}
+                                                                        {{ $data->peso->municipality->municipality_Name }}
                                                                     </h3>
                                                                 </div>
                                                             </div>

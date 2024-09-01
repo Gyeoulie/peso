@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 class BarangaySignupModal extends Component
 {
 
-    use WithPagination, WithoutUrlPagination; 
+    use WithPagination, WithoutUrlPagination;
 
     public $search;
 

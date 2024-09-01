@@ -154,9 +154,11 @@ class Dashboard extends Component
                 ->pluck('industry_id');
 
 // Query for matching job postingsz`
-            $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
+            $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'peso.municipality', 'job_industry'])
                 ->where('job_Status', 'ACTIVE')
-                ->where('peso_municipality_id', $userMunicipalityId)
+                ->whereHas('peso', function ($query) use ($userMunicipalityId) {
+                    $query->where('municipality_id', $userMunicipalityId);
+                })
                 ->where('job_edu', '<=', $highestEducationLevel)
                 ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
                     // Ensure that either job tags match or industry matches, or both
@@ -206,9 +208,9 @@ class Dashboard extends Component
             // dd($this->filter);
             if ($user->usertype == 4) {
 
-                $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
+                $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'peso.municipality', 'job_industry'])
                     ->where('job_Status', 'ACTIVE')
-                    ->whereHas('municipality', function ($query) use ($user) {
+                    ->whereHas('peso.municipality', function ($query) use ($user) {
                         $query->where('municipality_id', $user->employee->barangay->municipality->municipality_id);
                     })
                     ->where(function ($query) {
@@ -228,7 +230,7 @@ class Dashboard extends Component
                                 $query->where('barangay_Name', 'like', '%' . $this->search . '%')
                                     ->orWhere('municipality_Name', 'like', '%' . $this->search . '%');
                             })
-                            ->orWhereHas('municipality', function ($query) {
+                            ->orWhereHas('peso.municipality', function ($query) {
                                 $query->where('municipality_Name', 'like', '%' . $this->search . '%');
 
                             });
@@ -236,10 +238,10 @@ class Dashboard extends Component
                     ->distinct(); // Ensure distinct job postings
 
             } else if ($user->usertype >= 8) {
-                $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
+                $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'peso.municipality', 'job_industry'])
                     ->where('job_Status', 'ACTIVE')
-                    ->whereHas('municipality', function ($query) use ($user) {
-                        $query->where('municipality_id', $user->peso->municipality->municipality_id);
+                    ->whereHas('peso.municipality', function ($query) use ($user) {
+                        $query->where('municipality_id', $user->peso_accounts->peso->municipality_id);
                     })
                     ->where(function ($query) {
                         // Additional search filters for company, job title, and position name
@@ -258,7 +260,7 @@ class Dashboard extends Component
                                 $query->where('barangay_Name', 'like', '%' . $this->search . '%')
                                     ->orWhere('municipality_Name', 'like', '%' . $this->search . '%');
                             })
-                            ->orWhereHas('municipality', function ($query) {
+                            ->orWhereHas('peso.municipality', function ($query) {
                                 $query->where('municipality_Name', 'like', '%' . $this->search . '%');
 
                             });
@@ -267,7 +269,7 @@ class Dashboard extends Component
             }
 
         } else if ($this->filter == 'All') {
-            $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
+            $joblist = Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'peso.municipality', 'job_industry'])
                 ->where('job_Status', 'ACTIVE')
                 ->where(function ($query) {
                     // Additional search filters for company, job title, and position name
@@ -286,7 +288,7 @@ class Dashboard extends Component
                             $query->where('barangay_Name', 'like', '%' . $this->search . '%')
                                 ->orWhere('municipality_Name', 'like', '%' . $this->search . '%');
                         })
-                        ->orWhereHas('municipality', function ($query) {
+                        ->orWhereHas('peso.municipality', function ($query) {
                             $query->where('municipality_Name', 'like', '%' . $this->search . '%');
                         });
                 })

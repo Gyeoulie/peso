@@ -95,7 +95,7 @@ class PesoManagement extends Component
         ];
         $this->validate($rules, $messages);
 
-        $municipalityID = Auth::user()->peso->municipality_id;
+        $pesoID = Auth::user()->peso_accounts->peso_id;
 
         $password = $this->generatePassword();
         DB::beginTransaction();
@@ -111,11 +111,11 @@ class PesoManagement extends Component
             // Create PESO entry
             PESO::create([
                 'user_id' => $user->id,
-                'municipality_id' => $municipalityID,
-                'peso_Fname' => $this->fname,
-                'peso_Mname' => $this->mname,
-                'peso_Lname' => $this->lname,
-                'peso_Pnumber' => $this->phone,
+                'peso_id' => $pesoID,
+                'peso_accounts_Fname' => $this->fname,
+                'peso_accounts_Mname' => $this->mname,
+                'peso_accounts_Lname' => $this->lname,
+                'peso_accounts_Pnumber' => $this->phone,
             ]);
 
             $name = $this->fname . ' ' . $this->lname;
@@ -145,15 +145,22 @@ class PesoManagement extends Component
     }
     public function render()
     {
-        $municipality = Auth::user()->peso->municipality->municipality_Name;
-        // Query with search functionality using whereHas
-        $adminAccounts = User::whereIn('usertype', [8, 9, 10])
-            ->whereHas('peso', function ($query) {
-                $query->where('peso_Fname', 'like', '%' . $this->search . '%')
-                    ->orWhere('peso_Mname', 'like', '%' . $this->search . '%')
-                    ->orWhere('peso_Lname', 'like', '%' . $this->search . '%');
-            });
+        $municipality = Auth::user()->peso_accounts->peso->municipality->municipality_Name;
+        $municipalityId = Auth::user()->peso_accounts->peso->municipality_id;
 
+        // Query with search functionality using whereHas
+
+        $adminAccounts = User::whereIn('usertype', [8, 9, 10])
+            ->whereHas('peso_accounts.peso', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
+            })
+            ->where(function ($query) {
+                $query->whereHas('peso_accounts', function ($subQuery) {
+                    $subQuery->where('peso_accounts_Fname', 'like', '%' . $this->search . '%')
+                        ->orWhere('peso_accounts_Mname', 'like', '%' . $this->search . '%')
+                        ->orWhere('peso_accounts_Lname', 'like', '%' . $this->search . '%');
+                });
+            });
         if ($this->filter) {
             $adminAccounts = $adminAccounts->where('usertype', $this->filter);
         }

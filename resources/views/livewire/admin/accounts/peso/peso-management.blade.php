@@ -138,14 +138,14 @@
                                             <div class="ps-3 text-wrap">
                                                 <div class="text-base font-semibold">
                                                     <div class="text-base font-semibold uppercase">
-                                                        {{ $data->peso->peso_Fname }}
-                                                        {{ $data->peso->peso_Mname ?? '' }}
-                                                        {{ $data->peso->peso_Lname }}
+                                                        {{ $data->peso_accounts->peso_accounts_Fname }}
+                                                        {{ $data->peso_accounts->peso_accounts_Mname ?? '' }}
+                                                        {{ $data->peso_accounts->peso_accounts_Lname }}
                                                     </div>
 
                                                 </div>
                                                 <div class="font-normal text-gray-500 text-sm uppercase">
-                                                    {{ $data->peso->peso_Pnumber }}
+                                                    {{ $data->peso_accounts->peso_accounts_Pnumber }}
 
                                                 </div>
                                             </div>
@@ -182,7 +182,7 @@
                                             <div class="flex flex-row items-center justify-center gap-6">
                                                 <div x-data="{ tooltip: 'PESO Account Overview' }">
                                                     <a wire:navigate
-                                                        href="{{ route('admin-users-peso-overview', ['id' => $data->peso->peso_id]) }}"
+                                                        href="{{ route('admin-users-peso-overview', ['id' => $data->peso_accounts->peso_accounts_id]) }}"
                                                         x-tooltip="tooltip" type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"

@@ -25,6 +25,7 @@ class Job_Applicants extends Model implements Auditable
         'peso_Remarks',
         'peso_Letter',
         'applicant_Notif',
+        'peso_accounts_id',
         'responded_at',
     ];
 
@@ -39,6 +40,10 @@ class Job_Applicants extends Model implements Auditable
     {
         return $this->belongsTo(Employee::class, 'employee_id');
     }
+    public function peso_accounts()
+    {
+        return $this->belongsTo(PESO_Accounts::class, 'peso_accounts_id');
+    }
 
     public function job_posting()
     {
@@ -46,20 +51,21 @@ class Job_Applicants extends Model implements Auditable
     }
 
     public static function fieldMappings()
-{
-    return [
-        'applicant_id' => 'Applicant ID',
-        'employee_id' => 'Employee ID',
-        'job_id' => 'Job ID',
-        'applicant_Resume' => 'Resume',
-        'applicant_Status' => 'Application Status',
-        'peso_Status' => 'PESO Status',
-        'company_Remarks' => 'Company Remarks',
-        'peso_Remarks' => 'PESO Remarks',
-        'peso_Letter' => 'PESO Letter',
-        'applicant_Notif' => 'Notification',
-        'responded_at' => 'Response Date',
-    ];
-}
+    {
+        return [
+            'applicant_id' => 'Applicant ID',
+            'employee_id' => 'Employee ID',
+            'job_id' => 'Job ID',
+            'applicant_Resume' => 'Resume',
+            'applicant_Status' => 'Application Status',
+            'peso_Status' => 'PESO Status',
+            'company_Remarks' => 'Company Remarks',
+            'peso_accounts_id' => 'PESO Account',
+            'peso_Remarks' => 'PESO Remarks',
+            'peso_Letter' => 'PESO Letter',
+            'applicant_Notif' => 'Notification',
+            'responded_at' => 'Response Date',
+        ];
+    }
 
 }

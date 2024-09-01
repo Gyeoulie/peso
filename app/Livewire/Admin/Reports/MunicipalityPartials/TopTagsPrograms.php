@@ -44,7 +44,9 @@ class TopTagsPrograms extends Component
             ->join('programs', 'program_tags.program_id', '=', 'programs.program_id')
             ->join('program_reg', 'program_reg.program_id', '=', 'programs.program_id')
             ->join('job_positions', 'program_tags.position_id', '=', 'job_positions.position_id')
-            ->where('programs.municipality_id', $id) // Filter programs by municipality_id
+            ->join('peso', 'programs.peso_id', '=', 'peso.id') // Assuming 'peso_id' is the foreign key in 'programs' table
+            ->join('municipality', 'peso.municipality_id', '=', 'municipality.id') // Assuming the correct foreign key relationship
+            ->where('municipality.id', $id) // Filter programs by municipality_id
             ->groupBy('job_positions.position_Title')
             ->orderBy('total_count', 'desc')
             ->limit(5);

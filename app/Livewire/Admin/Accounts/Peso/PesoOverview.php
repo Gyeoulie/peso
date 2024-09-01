@@ -4,7 +4,7 @@ namespace App\Livewire\Admin\Accounts\Peso;
 
 use App\Helpers\AuditFormatter;
 use App\Mail\AdminResetPasswordNotification;
-use App\Models\PESO;
+use App\Models\PESO_Accounts;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -23,10 +23,10 @@ class PesoOverview extends Component
 
     public function mountFields($pesoAdmin)
     {
-        $this->fname = $pesoAdmin->peso_Fname;
-        $this->mname = $pesoAdmin->peso_Mname;
-        $this->lname = $pesoAdmin->peso_Lname;
-        $this->phone = $pesoAdmin->peso_Pnumber;
+        $this->fname = $pesoAdmin->peso_accounts_Fname;
+        $this->mname = $pesoAdmin->peso_accounts_Mname;
+        $this->lname = $pesoAdmin->peso_accounts_Lname;
+        $this->phone = $pesoAdmin->peso_accounts_Pnumber;
         $this->role = $pesoAdmin->user->usertype;
 
     }
@@ -58,7 +58,7 @@ class PesoOverview extends Component
         ];
         $this->validate($rules, $messages);
 
-        $pesoData = PESO::findOrFail($this->id);
+        $pesoData = PESO_Accounts::findOrFail($this->id);
 
         $this->agreeBox = false;
         if ($pesoData->user) {
@@ -74,7 +74,7 @@ class PesoOverview extends Component
 
                 DB::commit();
 
-                $name = $pesoData->peso_Fname . ' ' . $pesoData->peso_Lname;
+                $name = $pesoData->peso_accounts_Fname . ' ' . $pesoData->peso_accounts_Lname;
                 Mail::to($pesoData->user->email)->queue(new AdminResetPasswordNotification($name, $newPassword));
                 toastr()->success('Password has been reset successfully!');
 
@@ -119,16 +119,16 @@ class PesoOverview extends Component
 
         $this->validate($rules, $messages);
 
-        $pesoData = PESO::findOrFail($this->id);
+        $pesoData = PESO_Accounts::findOrFail($this->id);
 
         DB::beginTransaction();
         $saved = false;
 
         try {
-            $pesoData->peso_Fname = $this->fname;
-            $pesoData->peso_Mname = $this->mname;
-            $pesoData->peso_Lname = $this->lname;
-            $pesoData->peso_Pnumber = $this->phone;
+            $pesoData->peso_accounts_Fname = $this->fname;
+            $pesoData->peso_accounts_Mname = $this->mname;
+            $pesoData->peso_accounts_Lname = $this->lname;
+            $pesoData->peso_accounts_Pnumber = $this->phone;
 
             // Update related user model
             if ($pesoData->user) { // Ensure user relationship is loaded
@@ -167,7 +167,7 @@ class PesoOverview extends Component
     public function render()
     {
 
-        $user = PESO::findOrFail($this->id);
+        $user = PESO_Accounts::findOrFail($this->id);
 
         if ($user) {
             $this->mountFields($user);

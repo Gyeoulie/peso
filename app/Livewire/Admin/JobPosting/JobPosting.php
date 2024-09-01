@@ -29,7 +29,7 @@ class JobPosting extends Component
     {
         $user = Auth::user();
 
-        $jobpost = $this->getJobPost($user->peso->municipality_id)->get();
+        $jobpost = $this->getJobPost($user->peso_accounts->peso->municipality_id)->get();
         foreach ($jobpost as $jobposts) {
             $jobposts->slotsLeft = $jobposts->slotsLeft();
         }
@@ -67,7 +67,9 @@ class JobPosting extends Component
     {
         $jobposts = Job_Posting::with('company', 'barangay.municipality.province')
             ->withCount(['job_applicants', 'hiredApplicants'])
-            ->where('job_posting.peso_municipality_id', '=', $id)
+            ->whereHas('peso.municipality', function ($query) use ($id) {
+                $query->where('municipality_id', $id);
+            })
             ->where(function ($query) {
                 $query->where('job_Title', 'like', '%' . $this->search . '%')
                     ->orWhereHas('company', function ($query) {
@@ -102,7 +104,7 @@ class JobPosting extends Component
     {
         $user = Auth::user();
 
-        $jobpost = $this->getJobPost($user->peso->municipality_id)->paginate(10);
+        $jobpost = $this->getJobPost($user->peso_accounts->peso->municipality_id)->paginate(10);
 
 // Calculate slots left dynamically for each job posting
         foreach ($jobpost as $jobposts) {
@@ -117,7 +119,9 @@ class JobPosting extends Component
         SUM(CASE WHEN job_Status = "COMPLETED" THEN 1 ELSE 0 END) AS completedCount,
         SUM(CASE WHEN job_Status IN ("REJECTED", "CANCELLED") THEN 1 ELSE 0 END) AS othersCount
     ')
-            ->where('peso_municipality_id', '=', $user->peso->municipality_id)
+            ->whereHas('peso.municipality', function ($query) use ($user) {
+                $query->where('municipality_id', $user->peso_accounts->peso->municipality_id);
+            })
             ->first();
 
         return view('livewire.admin.job-posting.job-posting', [

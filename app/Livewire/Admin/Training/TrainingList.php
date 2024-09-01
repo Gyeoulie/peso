@@ -44,7 +44,7 @@ class TrainingList extends Component
     {
         $user = Auth::user();
 
-        $programList = $this->getProgramList($user->peso->municipality_id)->get();
+        $programList = $this->getProgramList($user->peso_accounts->peso->municipality_id)->get();
 
         if (!$programList->isEmpty()) {
 
@@ -79,7 +79,9 @@ class TrainingList extends Component
     public function getProgramList($id)
     {
 
-        $programList = Programs::where('municipality_id', '=', $id)
+        $programList = Programs::whereHas('peso', function ($query) use ($id) {
+            $query->where('municipality_id', $id);
+        })
             ->withCount(['program_reg', 'attendedJobseekers'])
             ->where(function ($query) {
                 $query->where('program_Title', 'like', '%' . $this->search . '%')
@@ -113,7 +115,7 @@ class TrainingList extends Component
     {
         $user = Auth::user();
 
-        $programList = $this->getProgramList($user->peso->municipality_id)->paginate($this->rows);
+        $programList = $this->getProgramList($user->peso_accounts->peso->municipality_id)->paginate($this->rows);
 
         return view('livewire.admin.training.training-list', compact('programList'));
     }

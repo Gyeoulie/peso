@@ -61,9 +61,9 @@ class User extends Authenticatable implements Auditable
     {
         return $this->hasOne(Employee::class, 'user_id');
     }
-    public function peso()
+    public function peso_accounts()
     {
-        return $this->hasOne(PESO::class, 'user_id');
+        return $this->hasOne(PESO_Accounts::class, 'user_id');
     }
 
     public static function fieldMappings()

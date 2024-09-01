@@ -9,6 +9,7 @@ use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Job_Tags;
 use App\Models\Municipality;
+use App\Models\PESO;
 use App\Models\Requirements;
 use App\Models\Requirements_Passed;
 use App\Models\User;
@@ -272,7 +273,7 @@ class JobpostApplication extends Component
     public function render()
     {
 
-        $pesoBranches = Municipality::whereHas('peso')->with('peso')->get();
+        $pesoBranches = PESO::get();
 
         return view('livewire.employer.jobpost.jobpost-application', [
             'pesoBranches' => $pesoBranches,

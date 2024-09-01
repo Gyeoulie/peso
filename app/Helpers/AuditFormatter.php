@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\PESO;
+use App\Models\PESO_Accounts;
 use OwenIt\Auditing\Models\Audit;
 
 class AuditFormatter
@@ -22,8 +23,8 @@ class AuditFormatter
             $company = Company::where('user_id', $userId)->first();
             return $company ? $company->business_Name : 'Unknown User';
         } elseif ($userType === 8 || $userType === 9 || $userType === 10) { // PESO
-            $peso = PESO::where('user_id', $userId)->first();
-            return $peso ? "{$peso->peso_Fname} {$peso->peso_Lname}" : 'Unknown User';
+            $peso = PESO_Accounts::where('user_id', $userId)->first();
+            return $peso ? "{$peso->peso_accounts_Fname} {$peso->peso_accounts_Lname}" : 'Unknown User';
         } else {
             return 'Unknown User';
         }

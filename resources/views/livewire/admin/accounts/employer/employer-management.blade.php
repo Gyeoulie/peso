@@ -88,8 +88,8 @@
                                                 <img class="w-10 h-10 rounded-full"
                                                     src="{{ asset('storage/' . $data->company_img) }}" alt="img">
                                                 <div class="ps-3 text-wrap">
-                                                    <div class="text-base font-semibold">
-                                                        <div class="text-base font-semibold uppercase">
+                                                    <div class="text-base font-bold">
+                                                        <div class="text-base font-bold uppercase">
                                                             {{ $data->business_Name }}
 
                                                         </div>
@@ -105,7 +105,7 @@
                                             </th>
                                             <td class="px-6 py-4">
 
-                                                <div class="font-normal text-gray-500 text-sm">
+                                                <div class="font-normal text-gray-500 text-sm font-semibold">
                                                     {{ $data->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
 
                                                 </div>
