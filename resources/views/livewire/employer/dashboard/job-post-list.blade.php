@@ -166,6 +166,9 @@
                                             Candidates
                                         </th>
                                         <th scope="col" class="px-6 py-3 w-md">
+                                            PESO Branch
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 w-md">
                                             Status
                                         </th>
                                         <th scope="col" class="px-6 py-3 w-md">
@@ -236,7 +239,13 @@
                                                     </div>
                                                 </td>
 
+                                                <td class="px-6 py-4">
+                                                    <div class="font-normal text-gray-500 text-sm">
+                                                        {{ $data->peso->municipality->municipality_Name }}
 
+                                                    </div>
+
+                                                </td>
                                                 <td class="px-6 py-4">
                                                     <div class="flex items-center">
                                                         @if ($data->job_Status == 'ACTIVE')

@@ -141,7 +141,7 @@ class Trainings extends Component
 
     public function getMunicipailtyPrograms($id)
     {
-        return Programs::with(['program_tags.job_positions', 'municipality', 'job_industry'])
+        return Programs::with(['program_tags.job_positions', 'peso.municipality', 'job_industry'])
             ->where('program_Status', 'ACTIVE')
             ->whereHas('peso.municipality', function ($query) use ($id) {
                 $query->where('municipality_id', $id);

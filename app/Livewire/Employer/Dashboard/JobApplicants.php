@@ -246,7 +246,7 @@ class JobApplicants extends Component
             $query->whereNot('peso_Status', 'PENDING');
         }])
             ->where('company_id', $userCompanyId)
-            ->whereNot('job_Status', 'PENDING')
+            ->whereIn('job_Status', ['ACTIVE','CLOSED'])
             ->where(function ($query) {
                 $query->where('job_Title', 'like', '%' . $this->postSearch . '%');
             });
