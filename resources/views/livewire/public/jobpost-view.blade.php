@@ -187,7 +187,7 @@
                                 </div>
                             @endif
 
-                            @if (auth()->user()->usertype >= 8 && auth()->user()->peso->municipality_id == $JobPost->peso_municipality_id)
+                            @if (auth()->user()->usertype >= 8 && auth()->user()->peso_accounts->peso_id == $JobPost->peso_id)
                                 <div class="flex flex-row items-center justify-center mt-2">
                                     <a wire:navigate
                                         href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
@@ -441,7 +441,7 @@
                                                 </div>
 
                                                 <div class="text-md font-medium ">
-                                                    {{ $JobPost->municipality->municipality_Name }}
+                                                    {{ $JobPost->peso->municipality->municipality_Name }}
 
                                                 </div>
 
