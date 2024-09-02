@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.admin')]
 class EditAnnouncement extends Component
 {
+    use WithFileUploads;
+    
     public $announcementData;
 
     public $title, $contentPost;
