@@ -28,8 +28,8 @@ return new class extends Migration
             $table->unsignedBigInteger('barangay_id')->comment('Foreign Key');
             $table->date('job_Duration');
             $table->string('job_Status', 15);
-            $table->unsignedBigInteger('peso_id')->nullable()->comment('Foreign Key');
-            $table->unsignedBigInteger('peso_municipality_id');
+            $table->unsignedBigInteger('peso_accounts_id')->nullable()->comment('Foreign Key');
+            $table->unsignedBigInteger('peso_id')->comment('Foreign Key');
             $table->text('peso_Remarks')->nullable();
             $table->datetime('responded_at')->nullable();
             $table->timestamps();
@@ -39,7 +39,7 @@ return new class extends Migration
             $table->foreign('industry_id')->references('industry_id')->on('job_industry');
             $table->foreign('barangay_id')->references('barangay_id')->on('barangay');
             $table->foreign('peso_id')->references('peso_id')->on('peso');
-            $table->foreign('peso_municipality_id')->references('municipality_id')->on('municipality');
+            $table->foreign('peso_accounts_id')->references('peso_accounts_id')->on('peso_accounts');
         });
     }
 

@@ -16,11 +16,12 @@ class PESO extends Model implements Auditable
     protected $primaryKey = 'peso_id';
 
     protected $fillable = [
-        'user_id',
-        'peso_Fname',
-        'peso_Mname',
-        'peso_Lname',
-        'peso_Pnumber',
+        'peso_Description',
+        'peso_Email',
+        'peso_Phone',
+        'peso_Tel',
+        'peso_Fax',
+        'peso_Img',
         'municipality_id',
     ];
 
@@ -34,11 +35,11 @@ class PESO extends Model implements Auditable
     {
         return $this->belongsTo(Municipality::class, 'municipality_id');
     }
-
-    public function user()
+    public function peso_accounts()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasMany(PESO_Accounts::class, 'peso_id');
     }
+
     public function job_posting()
     {
         return $this->hasMany(Job_Posting::class, 'peso_id');
@@ -47,13 +48,13 @@ class PESO extends Model implements Auditable
     public static function fieldMappings()
     {
         return [
-            'peso_id' => 'PESO ID',
-            'user_id' => 'User ID',
-            'peso_Pnumber' => 'PESO Phone Number',
+            'peso_id' => 'PESO BRANCH ID',
             'municipality_id' => 'Municipality ID',
-            'peso_Fname' => 'PESO First Name',
-            'peso_Mname' => 'PESO Middle Name',
-            'peso_Lname' => 'PESO Last Name',
+            'peso_Description' => 'PESO Branch Description',
+            'peso_Email' => 'PESO Branch Email',
+            'peso_Phone' => 'PESO Branch Phone Number',
+            'peso_Tel' => 'PESO Branch Telephone Number',
+            'peso_Fax' => 'PESO Branch Fax Number',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',

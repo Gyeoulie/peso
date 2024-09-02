@@ -47,7 +47,9 @@ class JobPostingTrends extends Component
 
         // Fetch the job postings with relevant data
         $query = Job_Posting::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
-            ->where('peso_municipality_id', $municipalityId);
+            ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
+            });
 
         // Apply year filter if selectedYear is set
         if ($this->selectedYear) {

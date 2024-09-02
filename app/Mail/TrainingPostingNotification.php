@@ -49,7 +49,7 @@ class TrainingPostingNotification extends Mailable implements ShouldQueue
                 'programLocation' => $this->trainingPosting->program_Location,
                 'programUrl' => route('training.show', ['id' => $this->trainingPosting->program_id]),
               'registrationDeadline' => date('F j, Y', strtotime($this->trainingPosting->program_Deadline)),
-                'PESO' => $this->trainingPosting->municipality->municipality_Name,
+                'PESO' => $this->trainingPosting->peso->municipality->municipality_Name,
             ]
         );
     }

@@ -23,7 +23,7 @@ class TrainingDetails extends Component
 
     public function getMatched($programInfo)
     {
-        $programMunicipalityId = $programInfo->municipality_id;
+        $programMunicipalityId = $programInfo->peso->municipality_id;
         $jobIndustryId = $programInfo->industry_id;
         $jobTagIds = $programInfo->program_tags->pluck('position_id');
 

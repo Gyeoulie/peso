@@ -167,14 +167,16 @@ class Dashboard extends Component
         $user = Auth::user(); // Fetch the current authenticated user
 
         // Get the current user's municipality ID from PESO relation
-        $pesoMunicipalityId = optional($user->peso)->municipality_id;
+        $pesoMunicipalityId = optional($user->peso_accounts)->peso->municipality_id;
 
         // Fetch totals and recent counts
         $jobPostings = Job_Posting::selectRaw('
             COUNT(*) AS total_job_postings,
             SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) AS recent_job_postings
         ', [Carbon::now()->subHours(24)])
-            ->where('peso_municipality_id', $pesoMunicipalityId)
+            ->whereHas('peso.municipality', function ($query) use ($pesoMunicipalityId) {
+                $query->where('municipality_id', $pesoMunicipalityId);
+            })
             ->first();
 
         $employees = Employee::selectRaw('
@@ -193,18 +195,20 @@ class Dashboard extends Component
             SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) AS recent_active_applicants
         ', [Carbon::now()->subHours(24)])
             ->whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED', 'CANCELLED'])
-            ->whereHas('job_posting.barangay.municipality', function ($query) use ($pesoMunicipalityId) {
+            ->whereHas('job_posting.peso.municipality', function ($query) use ($pesoMunicipalityId) {
                 $query->where('municipality_id', $pesoMunicipalityId);
             })
             ->first();
 
-        $recentJobPost = Job_Posting::where('peso_municipality_id', $pesoMunicipalityId)
+        $recentJobPost = Job_Posting::whereHas('peso.municipality', function ($query) use ($pesoMunicipalityId) {
+            $query->where('municipality_id', $pesoMunicipalityId);
+        })
             ->orderByDesc('created_at')
             ->take(5)
             ->get();
 
         $recentApplicants = Job_Applicants::with('job_posting')
-            ->whereHas('job_posting.municipality', function ($query) use ($pesoMunicipalityId) {
+            ->whereHas('job_posting.peso.municipality', function ($query) use ($pesoMunicipalityId) {
                 $query->where('municipality_id', $pesoMunicipalityId);
             })
             ->where('peso_Status', 'PENDING')

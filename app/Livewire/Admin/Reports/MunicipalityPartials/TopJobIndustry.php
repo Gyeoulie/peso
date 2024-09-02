@@ -15,8 +15,9 @@ class TopJobIndustry extends Component
         // Fetch the top job industries directly from Job_Posting with a join to Job_Industry
         $topIndustries = Job_Posting::select('job_industry.industry_Title', DB::raw('COUNT(job_posting.industry_id) as total_count'))
             ->join('job_industry', 'job_posting.industry_id', '=', 'job_industry.industry_id') // Join Job_Industry
+            ->join('peso', 'job_posting.peso_id', '=', 'peso.peso_id') // Join Peso
             ->where('job_posting.job_Status', 'ACTIVE')
-            ->where('job_posting.peso_municipality_id', $municipalityId)
+            ->where('peso.municipality_id', $municipalityId) // Use Peso to filter by municipality_id
             ->groupBy('job_industry.industry_Title')
             ->orderByDesc('total_count')
             ->limit(5)
@@ -24,7 +25,9 @@ class TopJobIndustry extends Component
 
         // Calculate the total count of all active job postings for the given municipality
         $totalCount = Job_Posting::where('job_Status', 'ACTIVE')
-            ->where('peso_municipality_id', $municipalityId)
+            ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
+            })
             ->count();
 
         // Calculate the total count of the top industries

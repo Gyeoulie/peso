@@ -48,7 +48,7 @@ class ApplicationNotification extends Mailable implements ShouldQueue
                 'companyRemarks' => $this->applicationData->company_Remarks,
                 'jobTitle' => $this->applicationData->job_posting->job_Title,
                 'companyName' => $this->applicationData->job_posting->company->business_Name,
-                'PESO' => $this->applicationData->job_posting->municipality->municipality_Name,
+                'PESO' => $this->applicationData->job_posting->peso->municipality->municipality_Name,
             ]
         );
     }

@@ -122,8 +122,8 @@ class EditDetails extends Component
             'contactPerson' => ['required', 'string'],
             'contactPosition' => ['required', 'string'],
             'contactPnum' => ['required', 'regex:/^09\d{9}$/'], // must start with "09" and be followed by 9 digits
-            'contactTnum' => ['required', 'regex:/^0[0-9]{9,10}$/'],
-            'contactFnum' => ['required', 'digits:10'], // must have 10 digits
+            'contactTnum' => ['nullable', 'regex:/^0[0-9]{9,10}$/'],
+            'contactFnum' => ['nullable', 'digits:10'], // must have 10 digits
             'contactEmail' => ['required', 'email', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
         ];
 
@@ -134,9 +134,9 @@ class EditDetails extends Component
             'contactPnum.regex' => 'The contact mobile number must start with "09" and contain 11 digits.',
             'contactTnum.required' => 'The contact telephone number is required.',
             'contactTnum.regex' => 'The telephone number must start with "0" and contain 10 or 11 digits.',
-            'contactFnum.required' => 'The contact fax number is required.',
+            // 'contactFnum.required' => 'The contact fax number is required.',
             'contactFnum.digits' => 'The contact fax number must have exactly 10 digits.',
-            'contactEmail.required' => 'The contact email is required.',
+            // 'contactEmail.required' => 'The contact email is required.',
             'contactEmail.email' => 'The contact email must be a valid email address.',
             'contactEmail.regex' => 'The contact email must be a valid email address.',
         ];

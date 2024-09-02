@@ -9,6 +9,7 @@ use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Job_Tags;
 use App\Models\Municipality;
+use App\Models\PESO;
 use App\Models\Requirements;
 use App\Models\Requirements_Passed;
 use App\Models\User;
@@ -130,9 +131,8 @@ class JobpostApplication extends Component
             // Fetch all active requirements
             $activeRequirements = Requirements::where('requirement_Status', 1)->get();
 
-            // Check if the company has passed all active requirements within the last year
             foreach ($activeRequirements as $requirement) {
-                $requirementPassed = Requirements_Passed::where('requirement_id', $requirement->id)
+                $requirementPassed = Requirements_Passed::where('requirement_id', $requirement->requirement_id)
                     ->where('company_id', $companyId)
                     ->where('updated_at', '>=', $oneYearAgo)
                     ->first();
@@ -140,9 +140,9 @@ class JobpostApplication extends Component
                 if (!$requirementPassed) {
                     // Display a toast error and rollback the transaction
                     toastr()->error("The company has either not completed all required submissions or has not updated them within the last year.");
-
                     // Rollback the transaction and return early
                     DB::rollBack();
+
                     return;
                 }
             }
@@ -272,7 +272,7 @@ class JobpostApplication extends Component
     public function render()
     {
 
-        $pesoBranches = Municipality::whereHas('peso')->with('peso')->get();
+        $pesoBranches = PESO::get();
 
         return view('livewire.employer.jobpost.jobpost-application', [
             'pesoBranches' => $pesoBranches,

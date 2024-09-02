@@ -31,8 +31,8 @@ class Job_Posting extends Model implements Auditable
         'barangay_id',
         'job_Duration',
         'job_Status',
+        'peso_accounts_id',
         'peso_id',
-        'peso_municipality_id',
         'peso_Remarks',
         'job_Duration',
         'responded_at',
@@ -65,11 +65,11 @@ class Job_Posting extends Model implements Auditable
     {
         return $this->belongsTo(PESO::class, 'peso_id');
     }
-
-    public function municipality()
+    public function peso_accounts()
     {
-        return $this->belongsTo(Municipality::class, 'peso_municipality_id');
+        return $this->belongsTo(PESO_Accounts::class, 'peso_accounts_id');
     }
+
 
     public function job_tags()
     {
@@ -115,8 +115,8 @@ class Job_Posting extends Model implements Auditable
             'barangay_id' => 'Barangay ID',
             'job_Duration' => 'Job Duration',
             'job_Status' => 'Job Status',
-            'peso_id' => 'PESO ID',
-            'peso_municipality_id' => 'PESO Municipality ID',
+            'peso_accounts_id' => 'PESO Account ID',
+            'peso_id' => 'PESO Branch ID',
             'peso_Remarks' => 'PESO Remarks',
             'responded_at' => 'Responded At',
         ];

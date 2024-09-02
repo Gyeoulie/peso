@@ -27,12 +27,12 @@ return new class extends Migration
             $table->text('program_Remarks')->nullable();
             $table->string('program_Status', 15);
             $table->string('program_pubmat', 255)->nullable();
-            $table->unsignedBigInteger('municipality_id')->comment('Foreign Key');
+            $table->unsignedBigInteger('peso_id')->comment('Foreign Key');
             $table->timestamps(); // Adds created_at and updated_at columns
             $table->softDeletes();
 
             $table->foreign('industry_id')->references('industry_id')->on('job_industry');
-            $table->foreign('municipality_id')->references('municipality_id')->on('municipality');
+            $table->foreign('peso_id')->references('peso_id')->on('peso');
 
         });
     }

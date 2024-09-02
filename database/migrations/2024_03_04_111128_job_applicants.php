@@ -22,12 +22,15 @@ return new class extends Migration
             $table->text('peso_Remarks')->nullable();
             $table->string('peso_Letter', 255)->nullable();
             $table->tinyInteger('applicant_Notif')->default(2);
+            $table->unsignedBigInteger('peso_accounts_id')->nullable()->comment('Foreign Key');
             $table->timestamp('responded_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('employee_id')->references('employee_id')->on('employee');
             $table->foreign('job_id')->references('job_id')->on('job_posting');
+            $table->foreign('peso_accounts_id')->references('peso_accounts_id')->on('peso_accounts');
+
         });
     }
 

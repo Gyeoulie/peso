@@ -88,7 +88,7 @@ class JobPostOverview extends Component
             $jobPosting->update([
                 'job_Status' => $status,
                 'peso_Remarks' => $this->remarks,
-                'peso_id' => $user->id,
+                'peso_id' => $user->peso_accounts->peso_accounts_id,
                 'responded_at' => now(),
             ]);
 
@@ -140,7 +140,7 @@ class JobPostOverview extends Component
     public function getMatched($jobpost)
     {
 
-        $jobMunicipalityId = $jobpost->peso_municipality_id;
+        $jobMunicipalityId = $jobpost->peso->municipality_id;
         $jobEducationLevel = $jobpost->job_Edu;
         $jobIndustryId = $jobpost->industry_id;
         $jobTagIds = $jobpost->job_tags->pluck('position_id');

@@ -59,7 +59,7 @@
                                     </x-dropdown-link>
                                     <x-dropdown-link wire:click.prevent='updateAnalytics(2)'
                                         class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
-                                        <span>Job Posting</span>
+                                        <span>Trends</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -70,7 +70,7 @@
                                     </x-dropdown-link>
                                     <x-dropdown-link wire:click.prevent='updateAnalytics(3)'
                                         class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
-                                        <span>Trends</span>
+                                        <span>Top</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                             <path stroke-linecap="round" stroke-linejoin="round"

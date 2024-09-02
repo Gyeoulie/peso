@@ -32,7 +32,7 @@ class Programs extends Model implements Auditable
         'program_Status',
         'program_pubmat',
         'program_Status',
-        'municipality_id',
+        'peso_id',
     ];
 
     protected $casts = [
@@ -47,9 +47,9 @@ class Programs extends Model implements Auditable
     {
         return $this->belongsTo(Job_Industry::class, 'industry_id');
     }
-    public function municipality()
+    public function peso()
     {
-        return $this->belongsTo(Municipality::class, 'municipality_id');
+        return $this->belongsTo(PESO::class, 'peso_id');
     }
 
     public function program_reg()
@@ -85,7 +85,7 @@ class Programs extends Model implements Auditable
             'program_Remarks' => 'Program Remarks',
             'program_Status' => 'Program Status',
             'program_pubmat' => 'Program Publication Material',
-            'municipality_id' => 'Municipality ID',
+            'peso_id' => 'PESO Branch ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',

@@ -78,6 +78,15 @@ class EditDetails extends Component
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'pimg.image' => 'The file must be an image.',
+            'pimg.mimes' => 'The image must be of type: jpeg, png, jpg.',
+            'pimg.max' => 'The image size must not exceed 5 MB.',
+        ];
+    }
+
     public function viewFile($id, $fileToView)
     {
         $this->dispatch('viewFile', [
@@ -509,7 +518,7 @@ class EditDetails extends Component
             'gender' => ['required'],
             'civilstatus' => ['required'],
             'religion' => ['required'],
-            'pnumber' => ['required'],
+            'pnumber' => ['required', 'regex:/^09\d{9}$/'],
             'address' => ['required'],
             'bar' => ['required'],
             'mun' => ['required'],
@@ -526,6 +535,7 @@ class EditDetails extends Component
             'civilstatus.required' => 'Civil status is required.',
             'religion.required' => 'Religion is required.',
             'pnumber.required' => 'Phone number is required.',
+            'pnumber.regex' => 'Phone number must start with 09 and be followed by exactly 9 digits.',
             'address.required' => 'Address is required.',
             'bar.required' => 'Barangay is required.',
             'mun.required' => 'Municipality is required.',

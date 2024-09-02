@@ -92,9 +92,11 @@ class Trainings extends Component
         $userIndustryPreference = Industry_preference::where('employee_id', $id)
             ->pluck('industry_id');
 
-        return Programs::with(['program_tags.job_positions', 'municipality', 'job_industry'])
+        return Programs::with(['program_tags.job_positions', 'peso.municipality', 'job_industry'])
             ->where('program_Status', 'ACTIVE')
-            ->where('municipality_id', $userMunicipalityId)
+            ->whereHas('peso.municipality', function ($query) use ($userMunicipalityId) {
+                $query->where('municipality_id', $userMunicipalityId);
+            })
             ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
                 // Ensure that either job tags match or industry matches, or both
                 $query->where(function ($query) use ($userJobPreferences) {
@@ -139,9 +141,11 @@ class Trainings extends Component
 
     public function getMunicipailtyPrograms($id)
     {
-        return Programs::with(['program_tags.job_positions', 'municipality', 'job_industry'])
+        return Programs::with(['program_tags.job_positions', 'peso.municipality', 'job_industry'])
             ->where('program_Status', 'ACTIVE')
-            ->where('municipality_id', $id)
+            ->whereHas('peso.municipality', function ($query) use ($id) {
+                $query->where('municipality_id', $id);
+            })
             ->where(function ($query) {
                 // Additional search filters for company, job title, and position name
                 $query
@@ -158,7 +162,7 @@ class Trainings extends Component
 
     public function getProgramList()
     {
-        return Programs::with(['program_tags.job_positions', 'municipality', 'job_industry'])
+        return Programs::with(['program_tags.job_positions', 'peso.municipality', 'job_industry'])
             ->where('program_Status', 'ACTIVE')
             ->where(function ($query) {
                 // Additional search filters for company, job title, and position name
@@ -179,7 +183,7 @@ class Trainings extends Component
         if ($user->usertype == 4) {
             return $user->employee->barangay->municipality->municipality_id ?? null;
         } elseif ($user->usertype >= 8) {
-            return $user->peso->municipality->municipality_id ?? null;
+            return $user->peso_accounts->peso->municipality->municipality_id ?? null;
         }
 
         return null; // Return null if no valid municipality ID is found

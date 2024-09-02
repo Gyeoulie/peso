@@ -15,7 +15,9 @@ class TopJobTags extends Component
         // Fetch job postings with job tags and job positions
         $jobPostings = Job_Posting::with(['job_tags.job_positions'])
             ->where('job_Status', 'ACTIVE')
-            ->where('peso_municipality_id', $municipalityId)
+            ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
+            })
             ->get();
 
         // Count job tags

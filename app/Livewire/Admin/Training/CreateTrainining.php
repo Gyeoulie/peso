@@ -54,7 +54,7 @@ class CreateTrainining extends Component
 
     public function getMatched($programInfo)
     {
-        $programMunicipalityId = $programInfo->municipality_id;
+        $programMunicipalityId = $programInfo->peso->municipality_id;
         $jobIndustryId = $programInfo->industry_id;
         $jobTagIds = $programInfo->program_tags->pluck('position_id');
 
@@ -162,7 +162,7 @@ class CreateTrainining extends Component
     public function saveProgram()
     {
 
-        $municipality_id = Auth::user()->peso->municipality_id;
+        $peso_id = Auth::user()->peso_accounts->peso->peso_id;
         DB::beginTransaction();
 
         $data = [
@@ -178,7 +178,7 @@ class CreateTrainining extends Component
             'program_Remarks' => $this->remPost,
             'program_Status' => 'ACTIVE',
             'industry_id' => $this->jobIndustryHidden,
-            'municipality_id' => $municipality_id,
+            'peso_id' => $peso_id,
         ];
 
         // dd($data);

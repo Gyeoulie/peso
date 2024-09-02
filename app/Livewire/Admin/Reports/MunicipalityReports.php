@@ -42,14 +42,17 @@ class MunicipalityReports extends Component
     public function getTotalJobSlots($municipalityId)
     {
         // Get total number of job slots for the given municipality
-        $totalJobSlots = Job_Posting::where('peso_municipality_id', $municipalityId)
+        $totalJobSlots = Job_Posting::whereHas('peso.municipality', function ($query) use ($municipalityId) {
+            $query->where('municipality_id', $municipalityId);
+        })
             ->where('job_Status', 'ACTIVE')
             ->sum('job_Slots'); // Sum up all job slots for the municipality
 
         // Get the total number of hired applicants for the given municipality
-        $hiredApplicantsCount = Job_Applicants::join('job_posting', 'job_posting.job_id', '=', 'job_applicants.job_id')
-            ->where('job_posting.peso_municipality_id', $municipalityId)
-            ->whereIn('job_applicants.applicant_status', ['HIRED', 'COMPLETED'])
+        $hiredApplicantsCount = Job_Applicants::whereIn('applicant_status', ['HIRED', 'COMPLETED'])
+            ->whereHas('job_posting.peso.municipality', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
+            })
             ->count();
 
         // Calculate the remaining slots
@@ -63,14 +66,18 @@ class MunicipalityReports extends Component
 
     public function getJobPosting($id)
     {
-        return Job_Posting::where('peso_municipality_id', $id)
+        return Job_Posting::whereHas('peso.municipality', function ($query) use ($id) {
+            $query->where('municipality_id', $id);
+        })
             ->where('job_Status', 'ACTIVE')->count();
 
     }
 
     public function getRecentJobPosting($id)
     {
-        return Job_Posting::where('peso_municipality_id', $id)
+        return Job_Posting::whereHas('peso.municipality', function ($query) use ($id) {
+            $query->where('municipality_id', $id);
+        })
             ->where('job_Status', 'ACTIVE')
             ->where('created_at', '>=', Carbon::now()->subHours(24))
             ->count();
@@ -104,7 +111,9 @@ class MunicipalityReports extends Component
 
         // Fetch the job postings with relevant data
         $query = Job_Posting::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
-            ->where('peso_municipality_id', $municipalityId);
+          ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
+            $query->where('municipality_id', $municipalityId);
+        });
 
         // Apply year filter if selectedYear is set
         if ($this->selectedYear) {
@@ -172,7 +181,7 @@ class MunicipalityReports extends Component
     {
 
         $user = Auth::user();
-        $pesoMunicipalityId = optional($user->peso)->municipality_id;
+        $pesoMunicipalityId = optional($user->peso_accounts->peso)->municipality_id;
 
         // dd($topJobCharts);
 

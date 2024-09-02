@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('peso', function (Blueprint $table) {
             $table->id('peso_id');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('municipality_id');
-            $table->string('peso_Fname', 255);
-            $table->string('peso_Mname', 255);
-            $table->string('peso_Lname', 255);
-            $table->string('peso_Pnumber', 255);
+            $table->text('peso_Description')->nullable();
+            $table->string('peso_Email', 255)->nullable();
+            $table->string('peso_Phone', 15)->nullable();
+            $table->string('peso_Tel', 15)->nullable();
+            $table->string('peso_Fax', 20)->nullable();
+            $table->string('peso_Img', 255)->nullable();
             $table->timestamps(); // Adds created_at and updated_at columns
             $table->softDeletes();
 

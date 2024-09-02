@@ -9,19 +9,54 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.admin')]
 class PesoManagement extends Component
 {
 
+    use WithFileUploads;
+
     public $fname, $mname, $lname, $email, $phone, $role = '';
+
+    public $pesoEmail, $pesoPhone, $pesoTel, $pesoFax, $pesoDesc;
+
+    #[Validate]
+    public $pesoImg;
 
     public $agreeBox = false;
 
     public $search, $filter;
+
+    public function rules()
+    {
+        return [
+            // BASIC INFORMATION
+            'pesoImg' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'pesoImg.image' => 'The file must be an image.',
+            'pesoImg.mimes' => 'The image must be of type: jpeg, png, jpg.',
+            'pesoImg.max' => 'The image size must not exceed 5 MB.',
+        ];
+    }
+
+    public function mount()
+    {
+        $peso_id = Auth::user()->peso_accounts->peso_id;
+
+        $this->mountData($peso_id);
+    }
 
     public function updateFilter($type)
     {
@@ -95,7 +130,7 @@ class PesoManagement extends Component
         ];
         $this->validate($rules, $messages);
 
-        $municipalityID = Auth::user()->peso->municipality_id;
+        $pesoID = Auth::user()->peso_accounts->peso_id;
 
         $password = $this->generatePassword();
         DB::beginTransaction();
@@ -111,11 +146,11 @@ class PesoManagement extends Component
             // Create PESO entry
             PESO::create([
                 'user_id' => $user->id,
-                'municipality_id' => $municipalityID,
-                'peso_Fname' => $this->fname,
-                'peso_Mname' => $this->mname,
-                'peso_Lname' => $this->lname,
-                'peso_Pnumber' => $this->phone,
+                'peso_id' => $pesoID,
+                'peso_accounts_Fname' => $this->fname,
+                'peso_accounts_Mname' => $this->mname,
+                'peso_accounts_Lname' => $this->lname,
+                'peso_accounts_Pnumber' => $this->phone,
             ]);
 
             $name = $this->fname . ' ' . $this->lname;
@@ -143,23 +178,118 @@ class PesoManagement extends Component
         $this->dispatch('close-modal', 'confirm-modal');
 
     }
+
+    public function mountData($id)
+    {
+        $pesoData = PESO::findOrFail($id);
+
+        if ($pesoData) {
+            $this->pesoEmail = $pesoData->peso_Email;
+            $this->pesoPhone = $pesoData->peso_Phone;
+            $this->pesoTel = $pesoData->peso_Tel;
+            $this->pesoFax = $pesoData->peso_Fax;
+            $this->pesoDesc = $pesoData->peso_Description;
+
+        }
+    }
+
+    public function savePESO()
+    {
+
+        $peso_id = Auth::user()->peso_accounts->peso_id;
+
+        $rules = [
+            'pesoEmail' => [
+                'required',
+                'email',
+                Rule::unique('peso', 'peso_Email')->ignore($peso_id, 'peso_id'),
+            ],
+            'pesoPhone' => ['required', 'regex:/^09\d{9}$/'],
+            'pesoTel' => ['nullable', 'regex:/^0[0-9]{9,10}$/'],
+            'pesoFax' => ['nullable', 'digits:10'],
+            'pesoDesc' => ['nullable', 'min:10'],
+        ];
+
+        $messages = [
+            'pesoEmail.required' => 'The PESO email is required.',
+            'pesoEmail.email' => 'The PESO email must be a valid email address.',
+            'pesoEmail.unique' => 'The PESO email has already been taken.',
+            'pesoPhone.required' => 'The PESO phone number is required.',
+            'pesoPhone.regex' => 'The PESO phone number must start with 09 and be followed by 9 digits.',
+            'pesoTel.regex' => 'The PESO telephone number must start with 0 and be followed by 9 or 10 digits.',
+            'pesoFax.digits' => 'The PESO fax number must be exactly 10 digits.',
+            // 'pesoDesc.required' => 'The PESO description is required.',
+            'pesoDesc.min' => 'The PESO description must be at least 10 characters long.',
+        ];
+
+        $this->validate($rules, $messages);
+
+        $pesoData = PESO::findOrFail($peso_id);
+        $imgPath = null;
+
+        if ($this->pesoImg) {
+            $imgPath = $this->pesoImg->store('images/peso_branch', 'public');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // Delete old image if a new one is uploaded and there is an existing image
+            if ($this->pesoImg && $pesoData->peso_Img) {
+                Storage::disk('public')->delete($pesoData->peso_Img);
+            }
+
+            // Update model attributes
+            $pesoData->peso_Email = $this->pesoEmail;
+            $pesoData->peso_Phone = $this->pesoPhone;
+            $pesoData->peso_Tel = $this->pesoTel;
+            $pesoData->peso_Fax = $this->pesoFax;
+            $pesoData->peso_Description = $this->pesoDesc;
+
+            // Set the new image path if it exists
+            $pesoData->peso_Img = $imgPath ?? $pesoData->peso_Img;
+
+            // Check if any attributes have changed
+            if ($pesoData->isDirty()) {
+                $pesoData->save();
+                DB::commit();
+                toastr()->success('PESO profile has been updated!');
+            } else {
+                DB::rollBack();
+                toastr()->info('No changes detected.');
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error updating the PESO details.');
+        }
+    }
+
     public function render()
     {
-        $municipality = Auth::user()->peso->municipality->municipality_Name;
-        // Query with search functionality using whereHas
-        $adminAccounts = User::whereIn('usertype', [8, 9, 10])
-            ->whereHas('peso', function ($query) {
-                $query->where('peso_Fname', 'like', '%' . $this->search . '%')
-                    ->orWhere('peso_Mname', 'like', '%' . $this->search . '%')
-                    ->orWhere('peso_Lname', 'like', '%' . $this->search . '%');
-            });
+        $municipality = Auth::user()->peso_accounts->peso->municipality->municipality_Name;
+        $municipalityId = Auth::user()->peso_accounts->peso->municipality_id;
 
+        // Query with search functionality using whereHas
+
+        $adminAccounts = User::whereIn('usertype', [8, 9, 10])
+            ->whereHas('peso_accounts.peso', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
+            })
+            ->where(function ($query) {
+                $query->whereHas('peso_accounts', function ($subQuery) {
+                    $subQuery->where('peso_accounts_Fname', 'like', '%' . $this->search . '%')
+                        ->orWhere('peso_accounts_Mname', 'like', '%' . $this->search . '%')
+                        ->orWhere('peso_accounts_Lname', 'like', '%' . $this->search . '%');
+                });
+            });
         if ($this->filter) {
             $adminAccounts = $adminAccounts->where('usertype', $this->filter);
         }
 
         $adminAccounts = $adminAccounts->paginate(10);
 
-        return view('livewire.admin.accounts.peso.peso-management', compact('adminAccounts', 'municipality'));
+        $pesoInfo = PESO::findOrFail(Auth::user()->peso_accounts->peso_id);
+
+        return view('livewire.admin.accounts.peso.peso-management', compact('adminAccounts', 'municipality', 'pesoInfo'));
     }
 }

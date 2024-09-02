@@ -187,7 +187,7 @@
                                 </div>
                             @endif
 
-                            @if (auth()->user()->usertype >= 8 && auth()->user()->peso->municipality_id == $JobPost->peso_municipality_id)
+                            @if (auth()->user()->usertype >= 8 && auth()->user()->peso_accounts->peso_id == $JobPost->peso_id)
                                 <div class="flex flex-row items-center justify-center mt-2">
                                     <a wire:navigate
                                         href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
@@ -234,217 +234,247 @@
 
                             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-4">
                         @endif
-                        <div class="flex flex-col w-full px-5 mt-5">
 
-                            <ul>
-                                <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
-                                        <div class="flex flex-col">
-                                            <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
-                                            </svg>
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <div class="text-xl font-bold text-black">
-                                                Date Posted
+
+                        @if (!auth()->check())
+                            <!-- Show Apply button if no user is logged in -->
+                            @if ($JobPost->job_Duration && \Carbon\Carbon::parse($JobPost->job_Duration)->isFuture())
+                                <div class="flex flex-row w-full items-center justify-center mt-2">
+                                    <h1>Application ends: <span
+                                            class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
+                                    </h1>
+                                </div>
+                                <div class="flex flex-row items-center justify-center mt-2">
+                                    <x-blue-button class="w-[350px] h-[40px] justify-center" x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'apply-modal')">
+                                        Apply
+                                    </x-blue-button>
+                                </div>
+                            @else
+                                <div class="flex flex-row w-full items-center justify-center mt-2">
+                                    <h1>Application ended: <span
+                                            class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
+                                    </h1>
+                                </div>
+                            @endif
+                        @endif
+                            <div class="flex flex-col w-full px-5 mt-5">
+
+                                <ul>
+                                    <li class="mb-4">
+                                        <div class="flex flex-row gap-4 w-full">
+                                            <div class="flex flex-col">
+                                                <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
+                                                </svg>
                                             </div>
-                                            <div class="text-md font-medium">
-                                                {{ $JobPost->created_at->format('F j, Y') }}
-                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-xl font-bold text-black">
+                                                    Date Posted
+                                                </div>
+                                                <div class="text-md font-medium">
+                                                    {{ $JobPost->created_at->format('F j, Y') }}
+                                                </div>
 
-
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
-                                        <div class="flex flex-col">
-                                            <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
-                                            </svg>
-
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <div class="text-xl font-bold text-black">
-                                                Location
-                                            </div>
-                                            <div class="text-md font-medium">
-                                                {{ $JobPost->barangay->municipality->municipality_Name }},
-                                                {{ $JobPost->barangay->municipality->province->province_Name }}
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
-                                        <div class="flex flex-col">
-                                            <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                                    d="M8 7V6a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1M3 18v-7a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                                            </svg>
-
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <div class="text-xl font-bold text-black">
-                                                Salary Range
-                                            </div>
-                                            <div class="text-md font-medium">
-                                                ₱{{ number_format($JobPost->job_MinWage) }} -
-                                                ₱{{ number_format($JobPost->job_MaxWage) }}
 
                                             </div>
-
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
-                                        <div class="flex flex-col">
-                                            <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
-                                            </svg>
+                                    </li>
+                                    <li class="mb-4">
+                                        <div class="flex flex-row gap-4 w-full">
+                                            <div class="flex flex-col">
+                                                <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
+                                                </svg>
 
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <div class="text-xl font-bold text-black">
-                                                Education Level
                                             </div>
-                                            <div class="text-md font-medium">
-                                                {{ $eduLevels[$JobPost->job_Edu] }}
-                                                {{-- @if ($JobPost->job_Edu == 1)
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-xl font-bold text-black">
+                                                    Location
+                                                </div>
+                                                <div class="text-md font-medium">
+                                                    {{ $JobPost->barangay->municipality->municipality_Name }},
+                                                    {{ $JobPost->barangay->municipality->province->province_Name }}
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-4">
+                                        <div class="flex flex-row gap-4 w-full">
+                                            <div class="flex flex-col">
+                                                <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-width="2"
+                                                        d="M8 7V6a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1M3 18v-7a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                                                </svg>
+
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-xl font-bold text-black">
+                                                    Salary Range
+                                                </div>
+                                                <div class="text-md font-medium">
+                                                    ₱{{ number_format($JobPost->job_MinWage) }} -
+                                                    ₱{{ number_format($JobPost->job_MaxWage) }}
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-4">
+                                        <div class="flex flex-row gap-4 w-full">
+                                            <div class="flex flex-col">
+                                                <svg class="w-10 h-10 text-blue-500"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                                                </svg>
+
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-xl font-bold text-black">
+                                                    Education Level
+                                                </div>
+                                                <div class="text-md font-medium">
+                                                    {{ $eduLevels[$JobPost->job_Edu] }}
+                                                    {{-- @if ($JobPost->job_Edu == 1)
                                                         Highschool Graduate
                                                     @elseif ($JobPost->job_Edu == 2)
                                                         Master's Graduate
                                                     @endif --}}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
-                                        <div class="flex flex-col">
-                                            <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 7H5a2 2 0 0 0-2 2v4m5-6h8M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m0 0h3a2 2 0 0 1 2 2v4m0 0v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6m18 0s-4 2-9 2-9-2-9-2m9-2h.01" />
-                                            </svg>
-
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <div class="text-xl font-bold text-black">
-                                                Job Type
-                                            </div>
-
-                                            <div class="text-md font-medium ">
-                                                @if ($JobPost->job_Type == 1)
-                                                    Full Time
-                                                @elseif ($JobPost->job_Type == 2)
-                                                    Part Time
-                                                @endif
-                                            </div>
-
-                                        </div>
-                                </li>
-                                <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
-                                        <div class="flex flex-col">
-                                            <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z" />
-                                            </svg>
-
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <div class="text-xl font-bold text-black">
-                                                Industry
-                                            </div>
-                                            <div class="text-md font-medium">
-                                                {{ $JobPost->job_industry->industry_Title }}
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
-                                        <div class="flex flex-col">
-
-                                            <svg class="w-10 h-10 text-blue-500" width="24" height="24"
-                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" />
-                                                <path
-                                                    d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8" />
-                                                <line x1="13" y1="7" x2="13" y2="7.01" />
-                                                <line x1="17" y1="7" x2="17" y2="7.01" />
-                                                <line x1="17" y1="11" x2="17" y2="11.01" />
-                                                <line x1="17" y1="15" x2="17" y2="15.01" />
-                                            </svg>
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <div class="text-xl font-bold text-black">
-                                                PESO Branch
-                                            </div>
-
-                                            <div class="text-md font-medium ">
-                                                {{ $JobPost->municipality->municipality_Name }}
+                                    </li>
+                                    <li class="mb-4">
+                                        <div class="flex flex-row gap-4 w-full">
+                                            <div class="flex flex-col">
+                                                <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M8 7H5a2 2 0 0 0-2 2v4m5-6h8M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m0 0h3a2 2 0 0 1 2 2v4m0 0v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6m18 0s-4 2-9 2-9-2-9-2m9-2h.01" />
+                                                </svg>
 
                                             </div>
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-xl font-bold text-black">
+                                                    Job Type
+                                                </div>
 
-                                        </div>
-                                </li>
-                                <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
-                                        <div class="flex flex-col">
-
-                                            <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                            </svg>
-
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <div class="text-xl font-bold text-black">
-                                                Slots Left
-                                            </div>
-
-                                            <div class="text-md font-medium ">
-                                                {{ $JobPost->slotsLeft }}
+                                                <div class="text-md font-medium ">
+                                                    @if ($JobPost->job_Type == 1)
+                                                        Full Time
+                                                    @elseif ($JobPost->job_Type == 2)
+                                                        Part Time
+                                                    @endif
+                                                </div>
 
                                             </div>
+                                    </li>
+                                    <li class="mb-4">
+                                        <div class="flex flex-row gap-4 w-full">
+                                            <div class="flex flex-col">
+                                                <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z" />
+                                                </svg>
 
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-xl font-bold text-black">
+                                                    Industry
+                                                </div>
+                                                <div class="text-md font-medium">
+                                                    {{ $JobPost->job_industry->industry_Title }}
+                                                </div>
+
+
+                                            </div>
                                         </div>
-                                </li>
+                                    </li>
+                                    <li class="mb-4">
+                                        <div class="flex flex-row gap-4 w-full">
+                                            <div class="flex flex-col">
+
+                                                <svg class="w-10 h-10 text-blue-500" width="24" height="24"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                                    <path
+                                                        d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8" />
+                                                    <line x1="13" y1="7" x2="13"
+                                                        y2="7.01" />
+                                                    <line x1="17" y1="7" x2="17"
+                                                        y2="7.01" />
+                                                    <line x1="17" y1="11" x2="17"
+                                                        y2="11.01" />
+                                                    <line x1="17" y1="15" x2="17"
+                                                        y2="15.01" />
+                                                </svg>
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-xl font-bold text-black">
+                                                    PESO Branch
+                                                </div>
+
+                                                <div class="text-md font-medium ">
+                                                    {{ $JobPost->peso->municipality->municipality_Name }}
+
+                                                </div>
+
+                                            </div>
+                                    </li>
+                                    <li class="mb-4">
+                                        <div class="flex flex-row gap-4 w-full">
+                                            <div class="flex flex-col">
+
+                                                <svg class="w-10 h-10 text-blue-500"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                                </svg>
+
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-xl font-bold text-black">
+                                                    Slots Left
+                                                </div>
+
+                                                <div class="text-md font-medium ">
+                                                    {{ $JobPost->slotsLeft }}
+
+                                                </div>
+
+                                            </div>
+                                    </li>
 
 
-                            </ul>
-                        </div>
+                                </ul>
+                            </div>
 
                     </div>
                 </div>

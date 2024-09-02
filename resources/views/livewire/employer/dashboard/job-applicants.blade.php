@@ -58,9 +58,8 @@
                             <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('ACTIVE')">
                                 Active
                             </x-dropdown-link>
-
-                            <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('COMPLETED')">
-                                Completed
+                            <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateJobFilter('CLOSED')">
+                                Closed
                             </x-dropdown-link>
 
 
@@ -117,7 +116,7 @@
                                             <div class="flex w-full justify-end mb-auto mt-0">
                                                 <span
                                                     class="bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
-                                                    PESO {{ $data->municipality->municipality_Name }}
+                                                    PESO {{ $data->peso->municipality->municipality_Name }}
                                                 </span>
                                             </div>
                                         </div>

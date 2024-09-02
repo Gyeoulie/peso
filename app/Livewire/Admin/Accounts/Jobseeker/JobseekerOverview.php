@@ -51,7 +51,7 @@ class JobseekerOverview extends Component
         $userIndustryPreference = Industry_Preference::where('employee_id', $id)
             ->pluck('industry_id');
 
-        return Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'municipality', 'job_industry'])
+        return Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'peso.municipality', 'job_industry'])
             ->select([
                 'job_posting.*',
                 DB::raw('
@@ -64,7 +64,9 @@ class JobseekerOverview extends Component
                 '),
             ])
             ->where('job_Status', 'ACTIVE')
-            ->where('peso_municipality_id', $userMunicipalityId)
+            ->whereHas('peso.municipality', function ($query) use ($userMunicipalityId) {
+                $query->where('municipality_id', $userMunicipalityId);
+            })
             ->where('job_edu', '<=', $highestEducationLevel)
             ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
                 $query->where(function ($query) use ($userJobPreferences) {

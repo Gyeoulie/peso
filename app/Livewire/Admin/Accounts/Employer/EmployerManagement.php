@@ -24,6 +24,8 @@ class EmployerManagement extends Component
 
         $employer = $employer->paginate($this->paginate, ['*'], 'employer');
 
+        // dd($employer);
+
         return view('livewire.admin.accounts.employer.employer-management', compact('employer'));
     }
 }

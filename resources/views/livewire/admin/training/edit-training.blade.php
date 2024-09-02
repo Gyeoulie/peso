@@ -296,7 +296,7 @@
             <hr>
             <div class="flex flex-col justify-center items-center my-12">
 
-                <h1 class="text-2xl font-bold">Are you sure you want to update this training?</h1>
+            <h1 class="text-2xl font-bold">Are you sure you want to update this training?</h1>
 
             </div>
             <div class="mt-6 flex justify-end">

@@ -11,7 +11,7 @@
             <div class="flex flex-row">
 
                 <div class="flex flex-col">
-                    <h1 class="text-xl font-medium">PESO ID: {{ $user->peso_id }}</h1>
+                    <h1 class="text-xl font-medium">PESO ID: {{ $user->peso_accounts_id }}</h1>
                     <h1 class="text-md font-light text-gray-500">{{ $user->created_at->format('F j, Y, g:i A') }}
                     </h1>
                 </div>
@@ -38,10 +38,10 @@
 
                     </img> --}}
 
-                    <h1 class="text-xl font-bold uppercase"> {{ $user->peso_Fname }} {{ $user->peso_Mname }}
+                    <h1 class="text-xl font-bold uppercase"> {{ $user->peso_accounts_Fname }} {{ $user->peso_accounts_Mname }}
                         {{ $user->peso_Lname }}
                     </h1>
-                    <p class="text-gray-700">#{{ $user->user_id }}</p>
+                    <p class="text-gray-700">#{{ $user->peso_accounts_id }}</p>
                 </div>
 
                 <hr class="my-6 border-t border-gray-300">
@@ -59,7 +59,7 @@
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Phone Number:</li>
-                            <p class="ms-4 text-right">{{ $user->peso_Pnumber }}</p>
+                            <p class="ms-4 text-right">{{ $user->peso_accounts_Pnumber }}</p>
                         </div>
 
 
@@ -72,7 +72,7 @@
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">PESO Municipality:</li>
-                            <p class="ms-4 uppercase text-right"> {{ $user->municipality->municipality_Name }}</p>
+                            <p class="ms-4 uppercase text-right"> {{ $user->peso->municipality->municipality_Name }}</p>
                         </div>
 
                     </ul>

@@ -139,7 +139,7 @@ class BarangayReports extends Component
 
     private function initializeBarangay($user)
     {
-        $pesoMunicipalityId = optional($user->peso)->municipality_id;
+        $pesoMunicipalityId = optional($user->peso_accounts->peso)->municipality_id;
 
         $barangay = Barangay::with('municipality')
             ->where('municipality_id', $pesoMunicipalityId)
@@ -357,7 +357,7 @@ class BarangayReports extends Component
     {
         $user = Auth::user();
 
-        $pesoMunicipalityId = optional($user->peso)->municipality_id;
+        $pesoMunicipalityId = optional($user->peso_accounts->peso)->municipality_id;
 
         $barangays = $this->getBarangays($pesoMunicipalityId);
         $stats = $this->getStatistics();
