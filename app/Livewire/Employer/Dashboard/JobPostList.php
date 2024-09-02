@@ -13,7 +13,7 @@ use Livewire\WithPagination;
 class JobPostList extends Component
 {
 
-    use WithPagination, WithoutUrlPagination; 
+    use WithPagination, WithoutUrlPagination;
     public $search;
 
     public $filter = 'ALL', $sortDate;
@@ -74,12 +74,14 @@ class JobPostList extends Component
         $applicants = $applicantsQuery->paginate(5);
 
         $allCount = Job_Posting::where('company_id', $user->company->company_id)->count();
-        $activeCount = Job_Posting::where('company_id', $user->company->company_id)->where('job_status', 'active')->count();
-        $pendingCount = Job_Posting::where('company_id', $user->company->company_id)->where('job_status', 'pending')->count();
+        $activeCount = Job_Posting::where('company_id', $user->company->company_id)->where('job_status', 'ACTIVE')->count();
+        $pendingCount = Job_Posting::where('company_id', $user->company->company_id)->where('job_status', 'PENDING')->count();
+        $closedCount = Job_Posting::where('company_id', $user->company->company_id)->where('job_status', 'CLOSED')->count();
+        $completedCount = Job_Posting::where('company_id', $user->company->company_id)->where('job_status', 'COMPLETED')->count();
         $othersCount = Job_Posting::where('company_id', $user->company->company_id)
-            ->whereNotIn('job_status', ['active', 'pending'])->count();
+            ->whereIn('job_status', ['REJECTED', 'CANCELLED'])->count();
 
-        return view('livewire.employer.dashboard.job-post-list', compact('applicants', 'allCount', 'pendingCount', 'activeCount', 'othersCount'));
+        return view('livewire.employer.dashboard.job-post-list', compact('applicants', 'allCount', 'pendingCount', 'activeCount', 'closedCount', 'completedCount', 'othersCount'));
     }
 }
 

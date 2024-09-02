@@ -45,9 +45,13 @@
                             </option>
                             <option wire:click.prevent='changeFilter("PENDING")'>Pending
                                 ({{ $pendingCount }})</option>
-                            <option wire:click.prevent='changeFilter("INTERESTED")'>Interested
+                            <option wire:click.prevent='changeFilter("ACTIVE")'>Active
                                 ({{ $activeCount }})</option>
-                            <option wire:click.prevent='changeFilter("INTERVIEW")'>Interview
+                            <option wire:click.prevent='changeFilter("CLOSED")'>Closed
+                                ({{ $closedCount }})</option>
+                            <option wire:click.prevent='changeFilter("COMPLETED")'>Completed
+                                ({{ $completedCount }})</option>
+                            <option wire:click.prevent='changeFilter("OHTERS")'>Others
                                 ({{ $othersCount }})</option>
 
                         </select>
@@ -70,6 +74,18 @@
                                 :class="filter === 'ACTIVE' ? activeFilter : inactiveFilter"
                                 class="inline-block w-full p-4 border border-gray-200">Approved
                                 ({{ $activeCount }})</button>
+                        </li>
+                        <li class="w-full focus-within:z-10">
+                            <button wire:click.prevent='changeFilter("CLOSED")'
+                                :class="filter === 'CLOSED' ? activeFilter : inactiveFilter"
+                                class="inline-block w-full p-4 border border-gray-200">Closed
+                                ({{ $closedCount }})</button>
+                        </li>
+                        <li class="w-full focus-within:z-10">
+                            <button wire:click.prevent='changeFilter("COMPLETED")'
+                                :class="filter === 'COMPLETED' ? activeFilter : inactiveFilter"
+                                class="inline-block w-full p-4 border border-gray-200">Completed
+                                ({{ $completedCount }})</button>
                         </li>
                         <li class="w-full focus-within:z-10">
                             <button wire:click.prevent='changeFilter("OTHERS")'
@@ -150,6 +166,9 @@
                                             Candidates
                                         </th>
                                         <th scope="col" class="px-6 py-3 w-md">
+                                            PESO Branch
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 w-md">
                                             Status
                                         </th>
                                         <th scope="col" class="px-6 py-3 w-md">
@@ -220,7 +239,13 @@
                                                     </div>
                                                 </td>
 
+                                                <td class="px-6 py-4">
+                                                    <div class="font-normal text-gray-500 text-sm">
+                                                        {{ $data->peso->municipality->municipality_Name }}
 
+                                                    </div>
+
+                                                </td>
                                                 <td class="px-6 py-4">
                                                     <div class="flex items-center">
                                                         @if ($data->job_Status == 'ACTIVE')
@@ -231,6 +256,14 @@
                                                             <div
                                                                 class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2 uppercase">
                                                             </div> PENDING
+                                                        @elseif ($data->job_Status == 'CLOSED')
+                                                            <div
+                                                                class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2 uppercase">
+                                                            </div> CLOSED
+                                                        @elseif ($data->job_Status == 'COMPLETED')
+                                                            <div
+                                                                class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2 uppercase">
+                                                            </div> COMPLETED
                                                         @else
                                                             <div
                                                                 class="h-2.5 w-2.5 rounded-full bg-red-500 me-2 uppercase">

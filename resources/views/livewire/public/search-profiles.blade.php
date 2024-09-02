@@ -104,12 +104,41 @@
                                         </div>
                                     </div>
                                 </a>
+                            @elseif ($data->type === 'peso')
+                                <a 
+                                wire:navigate href="{{ route('peso.profile', ['id' => $data->id]) }}" wire:key='peso-{{ $data->id }}'>
+                                    <div
+                                        class="flex text-sm bg-gray-200 hover:bg-gray-300 shadow rounded-lg leading-6 h-full">
+                                        <div class="flex w-full h-full py-2 px-5">
+                                            <div>
+                                                <img src="{{ $data->pimage ? asset('storage/' . $data->pimage) : asset('assets/img/PESO-Logo.png') }}"
+                                                    alt="peso-{{ $data->id }}"
+                                                    class="flex-none w-24 h-24 rounded-full object-cover" loading="lazy"
+                                                    decoding="async">
+                                            </div>
+
+                                            <div class="flex-auto my-auto ml-4 h-full justify-center">
+                                                <div class="text-base text-xl text-slate-900 font-black">
+                                                    {{ $data->name }}
+                                                </div>
+                                                <div class="flex flex-row">
+                                                    <div class="mt-1 text-md font-bold text-blue-500">
+                                                        <span class="font-medium">
+                                                            PESO Branch</span>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </a>
                             @endif
                         @endforeach
                     @endif
                 </div>
                 <div class="m-4">
-                    {{ $results->links('vendor.pagination.tailwind') }}
+                    {{ $results->links('vendor.livewire.tailwind') }}
                 </div>
             </div>
 

@@ -10,7 +10,7 @@ Great news! PESO has recommended your application. You can view your recommendat
 
 @endif
 
-@if($recommendationStatus === 'NOT RECOMMENDED')
+@if($recommendationStatus === 'REJECT')
 We regret to inform you that PESO has decided not to recommend your application at this time. However, your application will still be visible to the employer. We encourage you to continue exploring other opportunities.
 
 @endif

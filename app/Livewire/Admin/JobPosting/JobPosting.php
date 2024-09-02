@@ -29,7 +29,7 @@ class JobPosting extends Component
     {
         $user = Auth::user();
 
-        $jobpost = $this->getJobPost($user->peso->municipality_id)->get();
+        $jobpost = $this->getJobPost($user->peso_accounts->peso->municipality_id)->get();
         foreach ($jobpost as $jobposts) {
             $jobposts->slotsLeft = $jobposts->slotsLeft();
         }
@@ -67,7 +67,9 @@ class JobPosting extends Component
     {
         $jobposts = Job_Posting::with('company', 'barangay.municipality.province')
             ->withCount(['job_applicants', 'hiredApplicants'])
-            ->where('job_posting.peso_municipality_id', '=', $id)
+            ->whereHas('peso.municipality', function ($query) use ($id) {
+                $query->where('municipality_id', $id);
+            })
             ->where(function ($query) {
                 $query->where('job_Title', 'like', '%' . $this->search . '%')
                     ->orWhereHas('company', function ($query) {
@@ -88,12 +90,11 @@ class JobPosting extends Component
 
         if ($this->filter == "") {
             $jobposts->orderByRaw("FIELD(job_Status, 'PENDING') DESC");
-        } elseif ($this->filter == 'PENDING') {
-            $jobposts->where('job_Status', '=', 'PENDING');
-        } elseif ($this->filter == 'ACTIVE') {
-            $jobposts->where('job_Status', '=', 'ACTIVE');
+
         } elseif ($this->filter == 'OTHERS') {
-            $jobposts->whereNotIn('job_Status', ['PENDING', 'ACTIVE']);
+            $jobposts->whereIn('job_Status', ['REJECTED', 'CANCELLED']);
+        } else {
+            $jobposts->where('job_Status', $this->filter);
         }
 
         return $jobposts->orderBy('job_posting.created_at', 'DESC');
@@ -103,21 +104,34 @@ class JobPosting extends Component
     {
         $user = Auth::user();
 
-        $jobpost = $this->getJobPost($user->peso->municipality_id)->paginate(10);
+        $jobpost = $this->getJobPost($user->peso_accounts->peso->municipality_id)->paginate(10);
 
 // Calculate slots left dynamically for each job posting
         foreach ($jobpost as $jobposts) {
             $jobposts->slotsLeft = $jobposts->slotsLeft();
         }
         // Fetch job counts for filtering
-        $allCount = Job_Posting::where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
-        $pendingCount = Job_Posting::where('job_Status', '=', 'PENDING')
-            ->where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
-        $activeCount = Job_Posting::where('job_Status', '=', 'ACTIVE')
-            ->where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
-        $othersCount = Job_Posting::whereNotIn('job_Status', ['PENDING', 'ACTIVE'])
-            ->where('peso_municipality_id', '=', $user->peso->municipality_id)->count();
+        $statusCounts = Job_Posting::selectRaw('
+        COUNT(*) AS allCount,
+        SUM(CASE WHEN job_Status = "PENDING" THEN 1 ELSE 0 END) AS pendingCount,
+        SUM(CASE WHEN job_Status = "ACTIVE" THEN 1 ELSE 0 END) AS activeCount,
+        SUM(CASE WHEN job_Status = "CLOSED" THEN 1 ELSE 0 END) AS closedCount,
+        SUM(CASE WHEN job_Status = "COMPLETED" THEN 1 ELSE 0 END) AS completedCount,
+        SUM(CASE WHEN job_Status IN ("REJECTED", "CANCELLED") THEN 1 ELSE 0 END) AS othersCount
+    ')
+            ->whereHas('peso.municipality', function ($query) use ($user) {
+                $query->where('municipality_id', $user->peso_accounts->peso->municipality_id);
+            })
+            ->first();
 
-        return view('livewire.admin.job-posting.job-posting', compact('jobpost', 'allCount', 'pendingCount', 'activeCount', 'othersCount'));
+        return view('livewire.admin.job-posting.job-posting', [
+            'jobpost' => $jobpost,
+            'allCount' => $statusCounts->allCount,
+            'pendingCount' => $statusCounts->pendingCount,
+            'activeCount' => $statusCounts->activeCount,
+            'closedCount' => $statusCounts->closedCount,
+            'completedCount' => $statusCounts->completedCount,
+            'othersCount' => $statusCounts->othersCount,
+        ]);
     }
 }

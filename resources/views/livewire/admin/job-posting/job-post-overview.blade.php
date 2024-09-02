@@ -36,9 +36,15 @@
                                     @elseif($jobpost->job_Status == 'ACTIVE')
                                         <span
                                             class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">ACTIVE</span>
+                                    @elseif($jobpost->job_Status == 'CLOSED')
+                                        <span
+                                            class="bg-cyan-100 text-cyan-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">CLOSED</span>
+                                    @elseif($jobpost->job_Status == 'COMPLETED')
+                                        <span
+                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">COMPLETED</span>
                                     @else
                                         <span
-                                            class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-22 rounded-lg ">{{ $jobpost->job_Status }}</span>
+                                            class="bg-red-100 text-red-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-22 rounded-lg ">{{ $jobpost->job_Status }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -162,8 +168,8 @@
                         </div>
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg class="w-5 h-5"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg
+                                    class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
                                     <path fill-rule="evenodd"
@@ -327,7 +333,7 @@
 
                                         </div>
                                     @else
-                                        <div class="flex flex-col w-full">
+                                        <div class="flex flex-col w-full sm:w-1/2">
                                             <div
                                                 class="text-red-900 bg-red-400 border border-red-500 focus:ring-4 focus:outline-none focus:ring-red-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
                                                 <i class="fa-solid fa-file-contract me-2"></i>
@@ -349,7 +355,7 @@
                     </div>
                 </div>
 
-                @if (($jobpost->job_Status == 'ACTIVE' || $jobpost->job_Status == 'REJECTED') && $jobpost->peso_Remarks)
+                @if ($jobpost->job_Status != 'PENDING' && $jobpost->peso_Remarks)
                     <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
 
                         <h1 class="text-3xl font-bold">PESO Remarks</h1>

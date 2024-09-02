@@ -143,7 +143,7 @@ class JobpostView extends Component
         ]);
 
         // Get the authenticated user
-        $user = auth()->user();
+        $user = Auth::user();
 
         // Start a database transaction
         DB::beginTransaction();
@@ -217,13 +217,13 @@ class JobpostView extends Component
             return redirect()->route('dashboard');
         }
 
-        if (auth()->user()->usertype <= 4 && $JobPost->job_Status == 'PENDING') {
+        if (Auth::user()->usertype <= 4 && $JobPost->job_Status == 'PENDING') {
             return redirect()->route('dashboard');
         }
 
-        if (auth()->user()->usertype === 4) {
+        if (Auth::user()->usertype === 4) {
             $isApplied = Job_Applicants::where('job_id', $this->id)
-                ->where('employee_id', auth()->user()->employee->employee_id)
+                ->where('employee_id', Auth::user()->employee->employee_id)
                 ->exists();
 
         }

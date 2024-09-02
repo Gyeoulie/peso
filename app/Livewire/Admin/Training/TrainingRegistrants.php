@@ -182,7 +182,9 @@ class TrainingRegistrants extends Component
 
         return Programs::where('program_id', $this->id)
             ->where('program_Status', 'ACTIVE')
-            ->where('municipality_id', $employeeMunicipalityId)
+            ->whereHas('peso', function ($query) use ($employeeMunicipalityId) {
+                $query->where('municipality_id', $employeeMunicipalityId);
+            })
             ->where(function ($query) use ($employeeJobPreferences) {
                 $query->whereHas('program_tags', function ($query) use ($employeeJobPreferences) {
                     $query->whereIn('position_id', $employeeJobPreferences);

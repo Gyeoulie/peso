@@ -45,7 +45,7 @@ class NewJobApplicationNotification extends Mailable implements ShouldQueue
                 'employeeName' => $this->applicationData->employee->fname . ' ' . $this->applicationData->employee->lname,
                 'jobTitle' => $this->applicationData->job_posting->job_Title,
                 'companyName' => $this->applicationData->job_posting->company->business_Name,
-                'PESO' => $this->applicationData->job_posting->municipality->municipality_Name,
+                'PESO' => $this->applicationData->job_posting->peso->municipality->municipality_Name,
             ]
         );
     }

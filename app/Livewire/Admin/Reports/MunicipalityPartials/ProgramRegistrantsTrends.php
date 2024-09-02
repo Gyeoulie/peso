@@ -50,7 +50,9 @@ class ProgramRegistrantsTrends extends Component
         // Fetch the registrations data from the program_reg table
         $query = Program_Reg::selectRaw('MONTH(program_reg.created_at) as month, COUNT(*) as total')
             ->join('programs', 'program_reg.program_id', '=', 'programs.program_id')
-            ->where('programs.municipality_id', $municipalityId)
+            ->join('peso', 'programs.peso_id', '=', 'peso.peso_id') // Assuming 'peso_id' is the foreign key in 'programs' table
+            ->join('municipality', 'peso.municipality_id', '=', 'municipality.municipality_id') // Ensure the correct foreign key relationship
+            ->where('municipality.municipality_id', $municipalityId)
             ->groupByRaw('MONTH(program_reg.created_at)')
             ->orderByRaw('MONTH(program_reg.created_at)');
 
