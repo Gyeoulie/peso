@@ -2,12 +2,15 @@
 
 namespace App\Console\Commands\JobPost;
 
+use App\Mail\JobpostClosedNotification;
 use App\Models\Job_Posting;
 use App\Services\CustomAuditLogger;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
-class CloseExpiredJobPostings extends Command
+class CloseExpiredJobPostings extends Command implements ShouldQueue
 {
     /**
      * The name and signature of the console command.
@@ -61,6 +64,8 @@ class CloseExpiredJobPostings extends Command
                 ['job_Status' => 'CLOSED'], // New values
                 0// System or user ID
             );
+
+            Mail::to($posting->company->user->email)->queue(new JobpostClosedNotification($posting));
         }
 
         // Output the result in the console

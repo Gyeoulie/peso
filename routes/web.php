@@ -8,6 +8,9 @@ use App\Livewire\Admin\Accounts\Jobseeker\JobseekerManagement;
 use App\Livewire\Admin\Accounts\Jobseeker\JobseekerOverview;
 use App\Livewire\Admin\Accounts\Peso\PesoManagement;
 use App\Livewire\Admin\Accounts\Peso\PesoOverview;
+use App\Livewire\Admin\Announcement\AnnouncementList;
+use App\Livewire\Admin\Announcement\CreateAnnouncement;
+use App\Livewire\Admin\Announcement\EditAnnouncement;
 use App\Livewire\Admin\Certificates\Certificates;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\EligibilityLicense\EligibilityLicense;
@@ -31,12 +34,14 @@ use App\Livewire\Employer\Dashboard\JobPostList;
 use App\Livewire\Employer\Jobpost\JobpostApplication;
 use App\Livewire\Employer\Jobpost\JobPostDetails;
 use App\Livewire\Jobseeker\ApplicationHistory;
+use App\Livewire\Public\AnnouncementView;
 use App\Livewire\Public\Dashboard;
 use App\Livewire\Public\JobpostView;
 use App\Livewire\Public\Profile\Employer\EmployerProfile;
 use App\Livewire\Public\Profile\Employer\Partials\EditDetails as EmployerEditDetails;
 use App\Livewire\Public\Profile\Jobseeker\JobseekerProfile;
 use App\Livewire\Public\Profile\Jobseeker\Partials\EditDetails;
+use App\Livewire\Public\Profile\Peso\PesoProfile;
 use App\Livewire\Public\SearchProfiles;
 use App\Livewire\Public\Trainings;
 use App\Livewire\Public\TrainingView;
@@ -78,7 +83,7 @@ Route::get('/dashboard', Dashboard::class)->middleware(['verified'])->name('dash
 Route::get('/trainings', Trainings::class)->middleware(['verified'])->name('trainings');
 
 Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
-
+Route::get('/announcements/{id}', AnnouncementView::class)->name('announcement.show');
 Route::get('/training/{id}', TrainingView::class)->name('training.show');
 
 //------------------------------ PUBLIC - PROFILE ------------------------------
@@ -86,6 +91,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
 
     Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
+    Route::get('/profile/pid={id}', PesoProfile::class)->name('peso.profile');
+
 });
 
 //------------------------------ JOBSEEKER ------------------------------
@@ -140,6 +147,10 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/requirements', Requirements::class)->name('admin-req');
 
+    Route::get('/announcements', AnnouncementList::class)->name('admin-announcement');
+    Route::get('/announcements/create', CreateAnnouncement::class)->name('admin-create-announcement');
+    Route::get('/announcements/edit', EditAnnouncement::class)->name('admin-edit-announcement');
+
     Route::get('/manage/jobseeker', JobseekerManagement::class)->name('admin-users-jobseeker');
     Route::get('/manage/jobseeker/{id}', JobseekerOverview::class)->name('admin-users-jobseeker-overview');
 
@@ -162,9 +173,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
     Route::get('/reports/municipality', MunicipalityReports::class)->name('admin-reports-municipality');
 
-
     Route::get('/audits', Audits::class)->name('admin-audits');
-
 
     Route::get('/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
     Route::get('/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');

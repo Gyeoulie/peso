@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use App\Models\Announcements;
 use App\Models\Barangay;
 use App\Models\Education;
 use App\Models\Industry_preference;
@@ -96,6 +97,17 @@ class Dashboard extends Component
             ];
         })->toArray();
 
+    }
+
+    public function getAnnouncements($pesoId = null)
+    {
+        $query = Announcements::query();
+
+        if ($pesoId) {
+            $query->where('peso_id', $pesoId);
+        }
+
+        return $query->latest()->limit(5)->get();
     }
 
     public function mount()
@@ -313,6 +325,8 @@ class Dashboard extends Component
             $formattedNotifications = $this->companyNotifications($user->company->company_id);
         }
 
-        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications'));
+        $announcements = $this->getAnnouncements();
+
+        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements'));
     }
 }

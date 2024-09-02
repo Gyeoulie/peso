@@ -218,62 +218,195 @@
 
         <div class="col-span-4 sm:col-span-6">
             {{-- @livewire('admin.requirements.requirements-add') --}}
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="bg-white shadow rounded-lg p-6" x-data="{
+                openTab: 1,
+                activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
+                inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
+            }">
+                <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+                    <li class="me-2">
+                        <button @click="openTab = 1" :class="openTab === 1 ? activeTab : inactiveTab"
+                            aria-current="page" class="inline-block p-4">PESO Branch</button>
+                    </li>
+                    <li class="me-2">
+                        <button @click="openTab = 2" :class="openTab === 2 ? activeTab : inactiveTab"
+                            aria-current="page" class="inline-block p-4">PESO Accounts</button>
+                    </li>
+                </ul>
 
-                <h1 class="text-2xl font-bold mb-4">Create An Account</h1>
-                <div>
-                    <div class="flex flex-col sm:flex-row w-full mt-6 gap-2 ">
-                        <div class="flex flex-col mt-2 w-full">
-                            <x-input-label for="fname" :value="__('First Name')" />
-                            <x-text-input wire:model="fname" class="block mt-1 w-full" type="text" />
-                            <x-input-error :messages="$errors->get('fname')" class="mt-2" />
-                        </div>
-                        <div class="flex flex-col mt-2 w-full">
-                            <x-input-label for="mname" :value="__('Middle Name')" />
-                            <x-text-input wire:model="mname" class="block mt-1 w-full" type="text" />
-                            <x-input-error :messages="$errors->get('mname')" class="mt-2" />
-                        </div>
-                        <div class="flex flex-col mt-2 w-full">
-                            <x-input-label for="lname" :value="__('Last Name')" />
-                            <x-text-input wire:model="lname" class="block mt-1 w-full" type="text" />
-                            <x-input-error :messages="$errors->get('lname')" class="mt-2" />
+
+                <div class="mt-4">
+                    <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                        x-cloak>
+                        <h1 class="text-2xl font-bold mb-4">PESO Profile</h1>
+
+                        <div class="flex flex-col items-center mt-4">
+                            <div class="flex flex-col items-center">
+                                <div
+                                    class="w-[160] h-[160] bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
+                                    <!-- Display uploaded image here -->
+
+                                    @if ($pesoImg && !$errors->has('pesoImg'))
+                                        <img id="uploadedImage"
+                                            class="flex uploaded-image object-contain w-[200px] h-[200px] shrink-0 grow-0"
+                                            src="{{ $pesoImg->temporaryUrl() }}" alt="Uploaded Image" />
+                                    @else
+                                        <img id="uploadedImage"
+                                            class="flex uploaded-image object-contain w-[200px] h-[200px] shrink-0 grow-0"
+                                            src="{{ $pesoInfo->peso_Img ? asset('storage/' . $pesoInfo->peso_Img) : asset('assets/img/PESO-Logo.png') }}"
+                                            alt="Uploaded Image" />
+                                    @endif
+                                </div>
+                            </div>
+
+
+                            <x-input-error :messages="$errors->get('pesoImg')" class="mt-2" />
+                            <div class="mt-4 w-160 flex justify-center">
+                                <label for="imageUpload" wire:loading.attr="disabled"
+                                    class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                    Upload Image
+                                    <div wire:loading.delay.long wire:target="pesoImg" role="status">
+                                        <svg aria-hidden="true"
+                                            class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                fill="currentColor" />
+                                            <path
+                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                fill="currentFill" />
+                                        </svg>
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </label>
+                                <input wire:model="pesoImg" type="file" id="imageUpload" class="hidden"
+                                    accept="image/*">
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                                <div class="flex flex-col w-full">
+                                    <x-input-label for="pesoEmail" :value="__('PESO Email*')" />
+                                    <x-text-input wire:model="pesoEmail" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('pesoEmail')" class="mt-2" />
+
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <x-input-label for="pesoPhone" :value="__('PESO Phone Number*')" />
+                                    <x-text-input wire:model="pesoPhone" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('pesoPhone')" class="mt-2" />
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                                <div class="flex flex-col w-full">
+                                    <x-input-label for="pesoTel" :value="__('PESO Telephone Number')" />
+                                    <x-text-input wire:model="pesoTel" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('pesoTel')" class="mt-2" />
+
+                                </div>
+                                <div class="flex flex-col w-full">
+                                    <x-input-label for="pesoFax" :value="__('PESO Fax Number')" />
+                                    <x-text-input wire:model="pesoFax" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('pesoFax')" class="mt-2" />
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col w-full mt-2">
+                                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 ">PESO
+                                    Description</label>
+                                <textarea id="descModal" maxlength="400" rows="4"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                                    placeholder="Write your description here..." name="descPost" wire:model='pesoDesc'></textarea>
+                                    <x-input-error :messages="$errors->get('pesoDesc')" class="mt-2" />
+
+                            </div>
+
+                            <div class="flex flex-row w-full justify-end mt-6 ">
+                                <x-green-button wire:loading.attr="disabled" wire:click.prevent="savePESO"
+                                    wire:target='savePESO, pesoImg' class="ms-3" type="button">
+                                    {{ __('Save') }}
+                                    <div wire:loading.delay.long wire:target="savePESO" role="status">
+                                        <svg aria-hidden="true"
+                                            class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                fill="currentColor" />
+                                            <path
+                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                fill="currentFill" />
+                                        </svg>
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </x-green-button>
+
+                            </div>
+
+
+
                         </div>
 
                     </div>
-                    <div class="flex flex-col sm:flex-row w-full mt-6 gap-2 ">
 
-                        <div class="flex flex-col mt-2 w-full">
-                            <x-input-label for="email" :value="__('Email')" />
-                            <x-text-input wire:model="email" class="block mt-1 w-full" type="email" />
-                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                        </div>
-                        <div class="flex flex-col mt-2 w-full">
-                            <x-input-label for="phone" :value="__('Phone Number')" />
-                            <x-text-input wire:model="phone" class="block mt-1 w-full" type="tel" />
-                            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+
+                    <div x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                        x-cloak>
+                        <h1 class="text-2xl font-bold mb-4">Create An Account</h1>
+                        <div>
+                            <div class="flex flex-col sm:flex-row w-full mt-6 gap-2 ">
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="fname" :value="__('First Name*')" />
+                                    <x-text-input wire:model="fname" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('fname')" class="mt-2" />
+                                </div>
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="mname" :value="__('Middle Name')" />
+                                    <x-text-input wire:model="mname" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('mname')" class="mt-2" />
+                                </div>
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="lname" :value="__('Last Name*')" />
+                                    <x-text-input wire:model="lname" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('lname')" class="mt-2" />
+                                </div>
+
+                            </div>
+                            <div class="flex flex-col sm:flex-row w-full mt-6 gap-2 ">
+
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="email" :value="__('Email*')" />
+                                    <x-text-input wire:model="email" class="block mt-1 w-full" type="email" />
+                                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                </div>
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="phone" :value="__('Phone Number*')" />
+                                    <x-text-input wire:model="phone" class="block mt-1 w-full" type="tel" />
+                                    <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                                </div>
+                            </div>
+                            <div class="flex flex-col w-full sm:w-1/2 mt-6">
+                                <div class="flex flex-col w-full">
+                                    <x-input-label for="role" :value="__('PESO Role*')" />
+                                    <select wire:model="role" class="block mt-1 w-full rounded-md">
+                                        <option value="" disabled selected>Select PESO Role</option>
+                                        <option value="8">PESO Consultant</option>
+                                        <option value="9">PESO Officer</option>
+                                        <option value="10">PESO Manager</option>
+                                    </select>
+                                    <x-input-error :messages="$errors->get('role')" class="mt-2" />
+                                </div>
+                            </div>
+                            <div class="flex flex-row w-full mt-6 justify-end">
+                                <x-green-button wire:click.prevent='validateAccount' type="submit"
+                                    class="ml-auto mr-3">
+                                    {{ __('Create Account') }}
+                                </x-green-button>
+
+                            </div>
+
                         </div>
                     </div>
-                    <div class="flex flex-col w-full sm:w-1/2 mt-6">
-                        <div class="flex flex-col w-full">
-                            <x-input-label for="role" :value="__('PESO Role')" />
-                            <select wire:model="role" class="block mt-1 w-full rounded-md">
-                                <option value="" disabled selected>Select PESO Role</option>
-                                <option value="8">PESO Consultant</option>
-                                <option value="9">PESO Officer</option>
-                                <option value="10">PESO Manager</option>
-                            </select>
-                            <x-input-error :messages="$errors->get('role')" class="mt-2" />
-                        </div>
-                    </div>
-                    <div class="flex flex-row w-ful mt-6 ">
-                        <x-green-button wire:click.prevent='validateAccount' type="submit" class="ml-auto mr-3">
-                            {{ __('Create Account') }}
-                        </x-green-button>
-
-                    </div>
-
                 </div>
-
             </div>
         </div>
 
@@ -282,57 +415,6 @@
 
     </div>
 
-    <x-modal name="requirement-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center ">
-            <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Manage Requirement Record') }}
-            </h2>
-
-            <hr>
-
-            <div class="flex flex-row items-center gap-6 mt-4">
-
-
-                <div class="flex flex-col w-full">
-                    <x-input-label for="reqPost" :value="__('Requirement Type')" />
-                    <x-text-input wire:model='editreqPost' class="block mt-1 w-full uppercase" type="text" />
-                    <x-input-error :messages="$errors->get('editreqPost')" class="mt-2" />
-                </div>
-
-                <div class="flex flex-col ml-5 w-full">
-                    <x-input-label for="trainingComplete" :value="__('Requirement Status')" />
-                    <div class="flex flex-row h-10 w-full gap-2 mt-1.5">
-                        <div class="flex flex-row  items-center h-10 px-4 border border-gray-400 rounded">
-                            <input wire:model='editstatusPost' id="bordered-radio-3" type="radio" value="1"
-                                name="bordered-radio"
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="bordered-radio-3"
-                                class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Active</label>
-                        </div>
-                        <div class="flex items-center px-4 h-10 border border-gray-400 rounded">
-                            <input wire:model='editstatusPost' id="bordered-radio-4" type="radio" value="2"
-                                name="bordered-radio"
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="bordered-radio-4"
-                                class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Disabled</label>
-                        </div>
-                    </div>
-                    <x-input-error :messages="$errors->get('editstatusPost')" class="mt-2" />
-                </div>
-
-
-            </div>
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button wire:click.prevent='close' type="button">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
-
-                <x-primary-button wire:click.prevent='updateReq' class="ms-3" type="button">
-                    {{ __('Save') }}
-                </x-primary-button>
-            </div>
-        </div>
-    </x-modal>
 
     <x-modal name="confirm-modal" focusable>
         <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ agreeBox: @entangle('agreeBox') }">

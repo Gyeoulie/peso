@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id('peso_id');
             $table->unsignedBigInteger('municipality_id');
             $table->text('peso_Description')->nullable();
-            $table->string('peso_Email', 255);
-            $table->string('peso_Phone', 15);
+            $table->string('peso_Email', 255)->nullable();
+            $table->string('peso_Phone', 15)->nullable();
             $table->string('peso_Tel', 15)->nullable();
             $table->string('peso_Fax', 20)->nullable();
+            $table->string('peso_Img', 255)->nullable();
             $table->timestamps(); // Adds created_at and updated_at columns
             $table->softDeletes();
 

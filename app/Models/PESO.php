@@ -21,6 +21,7 @@ class PESO extends Model implements Auditable
         'peso_Phone',
         'peso_Tel',
         'peso_Fax',
+        'peso_Img',
         'municipality_id',
     ];
 

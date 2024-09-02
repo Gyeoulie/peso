@@ -12,7 +12,7 @@
     </div>
     <hr class="h-1 mx-auto sm:mx-12  bg-gray-200 border-0 dark:bg-gray-700">
 
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto no-scrollbar">
         <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
 
             @foreach ($programList as $data)
@@ -37,7 +37,7 @@
 
                         <p class="mb-2 text-sm font-normal text-gray-700 leading-relaxed">
 
-                            {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 90, '...') !!}
+                            {!! Str::limit(strip_tags($data->program_Description), 90, '...') !!}
 
                         </p>
                     </div>
@@ -353,17 +353,49 @@
                 </div>
             @else
                 <div class="col-span-4 sm:col-span-3">
-                    <div class="bg-white shadow rounded-lg p-4">
-                        <div class="p-3 text-gray-900 text-center w-full">
-                            <h1 class="font-bold text-2xl">Notifications</h1>
+                    <div class="text-gray-900 text-center w-full">
+                        <h1 class="font-bold text-2xl">ANNOUNCEMENTS</h1>
+                        <div class="mt-2 flex flex-row sm:flex-col gap-4 overflow-x-auto no-scrollbar">
+                            @foreach ($announcements as $data)
+                                <a wire:navigate
+                                    href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}">
+                                    <div class="flex justify-center items-center p-6">
+                                        <!-- Centering wrapper -->
+                                        <div
+                                            class="relative flex flex-col max-w-md w-auto sm:w-full overflow-hidden rounded-lg bg-white text-gray-700 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg hover:bg-gray-100">
+                                            <div class="relative w-full overflow-hidden rounded-t-lg">
+                                                <img src="{{ asset('storage/' . $data->announcement_pubmat) }}"
+                                                    alt="announcement-{{ $data->announcement_id }}"
+                                                    class="object-cover w-full h-20 sm:h-60 rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-110" />
+                                            </div>
+                                            <div class="p-4">
+                                                <h4
+                                                    class="text-xl font-semibold text-blue-gray-900 transition-colors duration-300 ease-in-out hover:text-blue-700">
+                                                    {{ Str::limit(strip_tags($data->announcement_Title), 80, '...') }}
+                                                </h4>
+                                            </div>
+                                            <div class="flex items-center justify-between p-4">
+                                                <p class="text-xs sm:text-sm font-normal text-gray-600">
+                                                    PESO {{ $data->peso->municipality->municipality_Name }}
+                                                </p>
+                                                <p class="text-xs sm:text-sm font-normal text-gray-600">
+                                                    {{ $data->created_at->format('F j, Y') }}
 
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
                         </div>
                     </div>
-
                 </div>
-            @endif
+
 
         </div>
-
+        @endif
 
     </div>
+
+
+</div>

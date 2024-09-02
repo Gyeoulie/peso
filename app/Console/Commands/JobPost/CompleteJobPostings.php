@@ -2,11 +2,14 @@
 
 namespace App\Console\Commands\JobPost;
 
+use App\Mail\JobApplicationExpiredNotification;
+use App\Mail\JobpostCompletedNotification;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Services\CustomAuditLogger;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class CompleteJobPostings extends Command
 {
@@ -34,7 +37,7 @@ class CompleteJobPostings extends Command
 
         // Fetch job postings that have been closed for more than 2 weeks
         $expiredJobPostings = Job_Posting::where('job_Status', 'CLOSED')
-            ->where('updated_at', '<', $now->subWeeks(2)) // Update condition to `updated_at`
+            ->where('job_Duration', '<', $now->subWeeks(2)) // Update condition to `updated_at`
             ->get();
 
         // Store old values for auditing
@@ -44,7 +47,7 @@ class CompleteJobPostings extends Command
 
         // Update job postings to COMPLETED
         $affectedRows = Job_Posting::where('job_Status', 'CLOSED')
-            ->where('updated_at', '<', $now)
+            ->where('job_Duration', '<', $now)
             ->update(['job_Status' => 'COMPLETED']);
 
         // Log the audit for job postings
@@ -57,6 +60,7 @@ class CompleteJobPostings extends Command
                 ['job_Status' => 'COMPLETED'], // New values
                 0// System or user ID
             );
+            Mail::to($posting->company->user->email)->queue(new JobpostCompletedNotification($posting));
         }
 
         // Fetch job postings that are now COMPLETED
@@ -70,7 +74,7 @@ class CompleteJobPostings extends Command
 
         // Store old values for auditing
         $oldApplicantValues = $affectedApplicants->mapWithKeys(function ($applicant) {
-            return [$applicant->applicant_id  => ['applicant_Status' => $applicant->applicant_Status]];
+            return [$applicant->applicant_id => ['applicant_Status' => $applicant->applicant_Status]];
         })->toArray();
 
         // Update applicants to REJECTED
@@ -82,12 +86,14 @@ class CompleteJobPostings extends Command
         foreach ($affectedApplicants as $applicant) {
             CustomAuditLogger::log(
                 Job_Applicants::class,
-                $applicant->applicant_id ,
+                $applicant->applicant_id,
                 'updated',
-                $oldApplicantValues[$applicant->applicant_id ] ?? [], // Old values
+                $oldApplicantValues[$applicant->applicant_id] ?? [], // Old values
                 ['applicant_Status' => 'REJECTED'], // New values
                 0// System or user ID
             );
+            Mail::to($applicant->employee->user->email)->queue(new JobApplicationExpiredNotification($applicant));
+
         }
 
         // Output the result in the console
