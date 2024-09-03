@@ -20,6 +20,8 @@ use App\Livewire\Admin\JobPosting\JobPosting;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Admin\LocationManagement\Location;
 use App\Livewire\Admin\Maintenance\Audits;
+use App\Livewire\Admin\Partnership\PartnershipDetails;
+use App\Livewire\Admin\Partnership\PartnershipList;
 use App\Livewire\Admin\PositionIndustry\PositionIndustry;
 use App\Livewire\Admin\Reports\BarangayReports;
 use App\Livewire\Admin\Reports\MunicipalityReports;
@@ -72,10 +74,10 @@ Route::middleware('auth')->group(function () {
 });
 
 //------------------------------ SIGN UP ------------------------------
-Route::middleware('auth')->group(function () {
-    Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile');
-    Route::get('/employer/details', EmployerInformation::class)->name('fill_employer');
-});
+// Route::middleware('auth')->group(function () {
+Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile');
+Route::get('/employer/details', EmployerInformation::class)->name('fill_employer');
+// });
 
 //------------------------------ PUBLIC ------------------------------
 
@@ -130,6 +132,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/eligibility', EligibilityLicense::class)->name('admin-eligibility');
 
     Route::get('/jobs', JobPosting::class)->name('admin-joblist');
+
+    Route::get('/partnership', PartnershipList::class)->name('admin-partnership');
+    Route::get('/partnership/{id}', PartnershipDetails::class)->name('admin-partnership-details');
 
     Route::get('/jobs/overview', function () {
         return view('admin.admin_partials.job-posting-overview');

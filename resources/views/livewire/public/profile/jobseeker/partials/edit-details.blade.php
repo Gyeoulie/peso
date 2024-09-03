@@ -16,7 +16,7 @@
                         </svg>
                     </div>
                 </a>
-                <h2 class="text-2xl font-bold">Edit Profile</h2>
+                <h2 class="text-2xl font-bold">Edit Profiedle</h2>
 
             </div>
 

@@ -2,12 +2,12 @@
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
         <div class="col-span-4 sm:col-span-12">
-            <h1 class="text-2xl font-bold">Role Management / Employer Management</h1>
+            <h1 class="text-2xl font-bold">Partnerships</h1>
         </div>
 
         <div class="col-span-4 sm:col-span-12">
             <div class="bg-white shadow rounded-lg p-6">
-                <h1 class="text-3xl text-center font-bold">Employers / Companies
+                <h1 class="text-3xl text-center font-bold">Pending Partnerships
                 </h1>
 
                 <div class="relative p-1 mt-4">
@@ -27,7 +27,7 @@
                             </div>
 
                             {{-- SEARCH --}}
-                            <input wire:model.live.prevent='searhEmployers' type="text"
+                            <input wire:model.live.prevent='search' type="text"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-64 md:w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
@@ -49,7 +49,7 @@
                                         Employment Type
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Partnered
+                                        Joined Date
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Action
@@ -73,7 +73,7 @@
 
                                                 </div>
                                                 <p class="text-xl font-bold text-black text-center mt-2">
-                                                    No Records Found!
+                                                    No Pending Partnerships Found!
                                                 </p>
                                             </div>
 
@@ -121,15 +121,15 @@
 
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{ $data->responded_at->format('F j, Y') }}
+                                                {{ $data->company->created_at->format('F j, Y') }}
                                             </td>
 
 
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-row  gap-5">
-                                                    <div x-data="{ tooltip: 'Employer Overview' }">
+                                                    <div x-data="{ tooltip: 'View Details' }">
                                                         <a wire:navigate
-                                                            href="{{ route('admin-users-employer-overview', ['id' => $data->company->company_id]) }}"
+                                                            href="{{ route('admin-partnership-details', ['id' => $data->partnership_id]) }}"
                                                             x-tooltip="tooltip" type="button"
                                                             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"

@@ -67,6 +67,13 @@ class Company extends Model implements Auditable
         return $this->hasMany(Requirements_Passed::class, 'company_id');
     }
 
+    public function partnerships()
+    {
+        return $this->hasMany(Partnerships::class, 'company_id');
+    }
+
+    
+
     public static function fieldMappings()
 {
     return [
