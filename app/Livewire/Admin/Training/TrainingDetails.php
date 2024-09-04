@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Training;
 
 use App\Models\Employee;
 use App\Models\Programs;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -53,10 +54,18 @@ class TrainingDetails extends Component
 
     public function render()
     {
+        $user = Auth::user();
+        $matchingEmployees = null;
 
         $programInfo = Programs::findOrFail($this->id);
 
-        $matchingEmployees = $this->getMatched($programInfo);
+        if ($programInfo) {
+            if ($user->peso_accounts->peso_id != $programInfo->peso_id) {
+                return redirect()->back();
+            }
+
+            $matchingEmployees = $this->getMatched($programInfo);
+        }
 
         return view('livewire.admin.training.training-details', compact('programInfo', 'matchingEmployees'));
     }

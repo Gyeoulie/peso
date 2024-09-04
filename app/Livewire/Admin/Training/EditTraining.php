@@ -7,6 +7,7 @@ use App\Models\Job_Positions;
 use App\Models\Programs;
 use App\Models\Program_Tags;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
@@ -136,7 +137,13 @@ class EditTraining extends Component
 
     public function mountData($id)
     {
+        $user = Auth::user();
+
         $programInfo = Programs::findOrFail($id);
+
+        if ($user->peso_accounts->peso_id != $programInfo->peso_id) {
+            return redirect()->back();
+        }
 
         $this->progTitle = $programInfo->program_Title;
         $this->progHost = $programInfo->program_Host;

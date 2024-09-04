@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\JobPosting\Applicants;
 
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -96,14 +97,22 @@ class JobPostApplicants extends Component
 
     public function render()
     {
-        // Fetch job posting details
+        $user = Auth::user();
+
         $jobpost = Job_Posting::with(['company'])
             ->withCount('hiredApplicants')
-            ->where('job_id', $this->id)
-            ->first();
+            ->findOrFail($this->id);
+
+        if ($user->peso_accounts->peso_id != $jobpost->peso_id) {
+            return redirect()->back();
+        }
 
         if ($jobpost) {
             $jobpost->slotsLeft = $jobpost->job_Slots - $jobpost->hired_applicants_count;
+        } else {
+            toastr()->error('Job posting cant be found.');
+            return redirect()->route('admin-joblist');
+
         }
 
         // Fetch job applicants

@@ -222,31 +222,46 @@
 
                 <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
-                        <x-input-label for="emptype" :value="__('Employment Type')" />
-                        <x-text-input wire:model="empType" class="block mt-1 w-full" type="text" disabled />
+                        <x-input-label for="empType" :value="__('Employment Status')" />
+                        <select wire:model='empType' class="block mt-1 w-full rounded" disabled>
+                            <option value="" disabled selected>Select Employment Type</option>
+                            <option value="1">Public</option>
+                            <option value="2">Private</option>
+                        </select>
                         <x-input-error :messages="$errors->get('empType')" class="mt-2" />
-                    </div>
 
+
+                    </div>
                     <div class="flex flex-col w-full">
-                        <x-input-label for="empdesc" :value="__('Employment Description')" />
-                        <x-text-input wire:model="empDesc" class="block mt-1 w-full" type="text" disabled />
+                        <x-input-label for="empDesc" :value="__('Description')" />
+                        <select wire:model='empDesc' class="block mt-1 w-full rounded" disabled>
+                            <option value="" disabled selected>Select Description</option>
+                            <option value="1">National Government Agency</option>
+                            <option value="2">Local Government Unit</option>
+                            <option value="3">Government-owned and Controlled Corporation</option>
+                            <option value="4">State/Local University or College</option>
+                            <option value="5">Direct Hire</option>
+                            <option value="6">Private Employment Agency</option>
+                            <option value="7">Overseas Recruitment Agency</option>
+                            <option value="8">'D.O. 174, s. 2017</option>
+                        </select>
                         <x-input-error :messages="$errors->get('empDesc')" class="mt-2" />
+
                     </div>
                 </div>
+
 
                 <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="companyAddress" :value="__('Company Address')" />
-                        <x-text-input wire:model="companyAddress" class="block mt-1 w-full" type="text" />
+                        <x-text-input wire:model="companyAddress" class="block mt-1 w-full" type="text"
+                            disabled />
                         <x-input-error :messages="$errors->get('companyAddress')" class="mt-2" />
 
                     </div>
                     <div class="flex flex-col w-full">
-                        <livewire:modals.barangay-modal />
                         <x-input-label for="city" :value="__('Barangay')" />
-                        <x-text-input wire:model='bar' class="block mt-1 w-full" type="text" readonly
-                            x-data="" x-on:click.prevent="dispatch('open-modal', 'barangay-modal')"
-                            x-on:focus="$dispatch('open-modal', 'barangay-modal')" />
+                        <x-text-input wire:model='bar' class="block mt-1 w-full" type="text" disabled />
                         <x-input-error :messages="$errors->get('bar')" class="mt-2" />
                     </div>
                 </div>
@@ -254,12 +269,12 @@
                 <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="mun" :value="__('Municipality')" />
-                        <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
+                        <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" disabled />
                         <x-input-error :messages="$errors->get('mun')" class="mt-2" />
                     </div>
                     <div class="flex flex-col w-full">
                         <x-input-label for="province" :value="__('Province')" />
-                        <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
+                        <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" disabled />
                         <x-input-error :messages="$errors->get('prov')" class="mt-2" />
                     </div>
                 </div>

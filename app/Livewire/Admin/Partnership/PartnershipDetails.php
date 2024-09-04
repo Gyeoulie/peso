@@ -7,6 +7,7 @@ use App\Models\Barangay;
 use App\Models\Company;
 use App\Models\Partnerships;
 use App\Models\Requirements;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
@@ -18,7 +19,7 @@ class PartnershipDetails extends Component
 
     public $id;
 
-    public $businessName, $tradeName, $tin, $locType, $workforce, $empType, $empDesc;
+    public $businessName, $tradeName, $tin, $locType, $workforce, $empType, $empDesc, $companyAddress;
     public $bar, $mun, $prov;
 
     public $remarks;
@@ -96,6 +97,7 @@ class PartnershipDetails extends Component
         $this->workforce = $employerDetails->company_Total_workforce;
         $this->empType = $employerDetails->employer_Type;
         $this->empDesc = $employerDetails->employer_Type_Desc;
+        $this->companyAddress = $employerDetails->company_Address;
 
         $barangay = Barangay::findOrFail($employerDetails->barangay_id);
 
@@ -110,9 +112,14 @@ class PartnershipDetails extends Component
 
     public function render()
     {
+        $user = Auth::user();
 
         // dd('hello');
         $partnersData = Partnerships::findOrFail($this->id);
+
+        if ($user->peso_accounts->peso_id != $partnersData->peso_id) {
+            return redirect()->back();
+        }
 
         $this->mountData($partnersData->company_id);
 

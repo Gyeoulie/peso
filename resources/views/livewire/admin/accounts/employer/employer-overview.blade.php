@@ -95,10 +95,10 @@
 
 
                     {{-- BUTTON --}}
-                    <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                    {{-- <div class="mt-6 flex flex-wrap gap-4 justify-center">
                         <a href="#" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                             NSRP</a>
-                    </div>
+                    </div> --}}
 
                 </div>
 
@@ -167,7 +167,7 @@
 
 
                 <div class="bg-white shadow rounded-lg p-6 mt-4">
-                    <h1 class="text-2xl font-bold ">Preference</h1>
+                    <h1 class="text-2xl font-bold ">Overview</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                     <p>Hello</p>

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Mail\DisableAccountNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -49,9 +51,16 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        // Set user status, description, and disabled_at timestamp
+        $user->userstatus = 2; // Assuming userstatus is a field on the User model
+        $user->description = 'Self Disable'; // Set the description
+        $user->disabled_at = now(); // Set the disabled_at timestamp
+        $user->save(); // Save the changes
+        Mail::to($user->email)->queue(new DisableAccountNotification());
+
         Auth::logout();
 
-        $user->delete();
+        // $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

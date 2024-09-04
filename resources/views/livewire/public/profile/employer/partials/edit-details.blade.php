@@ -153,6 +153,35 @@
 
                         </div>
                     </div>
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                        <div class="flex flex-col w-full">
+                            <x-input-label for="empType" :value="__('Employment Status')" />
+                            <select wire:model='empType' class="block mt-1 w-full rounded" disabled>
+                                <option value="" disabled selected>Select Employment Type</option>
+                                <option value="1">Public</option>
+                                <option value="2">Private</option>
+                            </select>
+                            <x-input-error :messages="$errors->get('empType')" class="mt-2" />
+
+
+                        </div>
+                        <div class="flex flex-col w-full">
+                            <x-input-label for="empDesc" :value="__('Description')" />
+                            <select wire:model='empDesc' class="block mt-1 w-full rounded" disabled>
+                                <option value="" disabled selected>Select Description</option>
+                                <option value="1">National Government Agency</option>
+                                <option value="2">Local Government Unit</option>
+                                <option value="3">Government-owned and Controlled Corporation</option>
+                                <option value="4">State/Local University or College</option>
+                                <option value="5">Direct Hire</option>
+                                <option value="6">Private Employment Agency</option>
+                                <option value="7">Overseas Recruitment Agency</option>
+                                <option value="8">'D.O. 174, s. 2017</option>
+                            </select>
+                            <x-input-error :messages="$errors->get('empDesc')" class="mt-2" />
+
+                        </div>
+                    </div>
 
                     <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
