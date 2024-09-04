@@ -19,6 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Define routes
-Route::get('/fetch-municipalities/{province}', [NSRP::class, 'fetchMunicipalities']);
-Route::get('/fetch-barangays/{municipality}', [NSRP::class, 'fetchBarangays']);
+// // Define routes
+// Route::get('/fetch-municipalities/{province}', [NSRP::class, 'fetchMunicipalities']);
+// Route::get('/fetch-barangays/{municipality}', [NSRP::class, 'fetchBarangays']);

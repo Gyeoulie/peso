@@ -4,7 +4,7 @@
 
         {{-- TITLE --}}
         <div class="col-span-4 sm:col-span-12">
-            <h1 class="text-2xl font-bold">Role Management / PESO {{ $municipality }}</h1>
+            <h1 class="text-2xl font-bold">Maintenance / PESO Branches</h1>
         </div>
 
         <div class="col-span-4 sm:col-span-6">
@@ -12,9 +12,9 @@
             <div class="bg-white shadow rounded-lg p-6">
 
                 {{-- TITLE --}}
-                <div class="flex items-center mb-2">
-                    <h1 class="text-xl font-bold">Account List</h1>
-                </div>
+                {{-- <div class="flex items-center mb-2">
+                    <h1 class="text-xl font-bold">PESO Branches</h1>
+                </div> --}}
 
                 <div class="relative overflow-x-auto">
 
@@ -42,7 +42,7 @@
                         <div class="mr-3">
 
 
-                            <x-dropdown align="right" width="48">
+                            {{-- <x-dropdown align="right" width="48">
                                 <x-slot name="trigger">
                                     <button
                                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
@@ -79,7 +79,7 @@
 
                                     </form>
                                 </x-slot>
-                            </x-dropdown>
+                            </x-dropdown> --}}
 
                         </div>
 
@@ -92,10 +92,13 @@
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
                                 <th scope="col" class="px-6 py-3 w-1/4">
-                                    Name
+                                    PESO ID
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Role
+                                <th scope="col" class="px-6 py-3 w-1/4">
+                                    Municipality
+                                </th>
+                                <th scope="col" class="px-6 py-3 w-full">
+                                    PESO Manager
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Status
@@ -109,7 +112,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($adminAccounts->isEmpty())
+                            @if ($pesoData->isEmpty())
                                 <tr>
                                     <td colspan="5">
                                         <div class="flex flex-col items-center justify-center mt-24 mb-24">
@@ -130,60 +133,55 @@
                                     </td>
                                 </tr>
                             @else
-                                @foreach ($adminAccounts as $data)
-                                    <tr wire:key='requirement-{{ $data->requirement_id }}'
-                                        class="bg-white border-b hover:bg-gray-50">
+                                @foreach ($pesoData as $data)
+                                    <tr wire:key='peso-data' class="bg-white border-b hover:bg-gray-50">
+                                        <td class="px-6 py-4">
+                                            {{ $data->peso_id }}
+                                        </td>
                                         <th scope="row" class="text-gray-900 whitespace-nowrap">
 
                                             <div class="ps-3 text-wrap">
                                                 <div class="text-base font-semibold">
                                                     <div class="text-base font-semibold uppercase">
-                                                        {{ $data->peso_accounts->peso_accounts_Fname }}
-                                                        {{ $data->peso_accounts->peso_accounts_Mname ?? '' }}
-                                                        {{ $data->peso_accounts->peso_accounts_Lname }}
+                                                        {{ $data->municipality->municipality_Name }}
+
                                                     </div>
 
                                                 </div>
-                                                <div class="font-normal text-gray-500 text-sm uppercase">
-                                                    {{ $data->peso_accounts->peso_accounts_Pnumber }}
 
-                                                </div>
                                             </div>
 
 
                                         </th>
                                         <td class="px-6 py-4">
                                             <div class="flex items-center uppercase">
-                                                @if ($data->usertype == 8)
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
-                                                    PESO Consultant
-                                                @elseif ($data->usertype == 9)
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2"></div>
-                                                    PESO Officer
-                                                @elseif ($data->usertype == 10)
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
-                                                    PESO Manager
-                                                @endif
+                                                @foreach ($data->peso_accounts as $account)
+                                                    <div class="text-base font-semibold text-sm uppercase">
+                                                        {{ $account->peso_accounts_Fname }}
+                                                        {{ $account->peso_accounts_Mname ?? '' }}
+                                                        {{ $account->peso_accounts_Lname }}
+
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            Status
+                                            {{ $data->peso_accounts_count }}
                                         </td>
                                         <td class="px-6 py-4 text-center">
                                             <div class="text-base font-light uppercase text-sm">
-                                                {{ $data->updated_at->format('h:i A') }}
+                                                {{ $data->created_at->format('h:i A') }}
                                             </div>
                                             <div class="text-base font-medium uppercase text-sm">
-                                                {{ $data->updated_at->format('F d Y') }}
+                                                {{ $data->created_at->format('F d Y') }}
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
 
                                             <div class="flex flex-row items-center justify-center gap-6">
                                                 <div x-data="{ tooltip: 'PESO Account Overview' }">
-                                                    <a wire:navigate
-                                                        href="{{ route('admin-users-peso-overview', ['id' => $data->peso_accounts->peso_accounts_id]) }}"
-                                                        x-tooltip="tooltip" type="button"
+                                                    <a wire:navigate {{-- href="{{ route('admin-users-peso-overview', ['id' => $data->peso_accounts->peso_accounts_id]) }}" --}} x-tooltip="tooltip"
+                                                        type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 24 24" fill="currentColor">
@@ -206,7 +204,7 @@
 
                 {{-- PAGINATION --}}
                 <div class="mt-4">
-                    {{ $adminAccounts->links('vendor.livewire.tailwind') }}
+                    {{-- {{ $adminAccounts->links('vendor.livewire.tailwind') }} --}}
                 </div>
 
             </div>
@@ -223,137 +221,67 @@
                 activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
                 inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
             }">
-                <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200">
-                    <li class="me-2">
-                        <button @click="openTab = 1" :class="openTab === 1 ? activeTab : inactiveTab"
-                            aria-current="page" class="inline-block p-4">PESO Branch</button>
-                    </li>
-                    <li class="me-2">
-                        <button @click="openTab = 2" :class="openTab === 2 ? activeTab : inactiveTab"
-                            aria-current="page" class="inline-block p-4">PESO Accounts</button>
-                    </li>
-                </ul>
 
 
-                <div class="mt-4">
+                <div class="">
+
                     <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-cloak>
-                        <h1 class="text-2xl font-bold mb-4">PESO Profile</h1>
+                        <h1 class="text-xl font-bold ">Create PESO Branch</h1>
+                        <hr class="h-px my-2 bg-gray-200 border-0">
 
-                        <div class="flex flex-col items-center mt-4">
-                            <div class="flex flex-col items-center">
-                                <div
-                                    class="w-[160] h-[160] bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
-                                    <!-- Display uploaded image here -->
-
-                                    @if ($pesoImg && !$errors->has('pesoImg'))
-                                        <img id="uploadedImage"
-                                            class="flex uploaded-image object-contain w-[200px] h-[200px] shrink-0 grow-0"
-                                            src="{{ $pesoImg->temporaryUrl() }}" alt="Uploaded Image" />
-                                    @else
-                                        <img id="uploadedImage"
-                                            class="flex uploaded-image object-contain w-[200px] h-[200px] shrink-0 grow-0"
-                                            src="{{ $pesoInfo->peso_Img ? asset('storage/' . $pesoInfo->peso_Img) : asset('assets/img/PESO-Logo.png') }}"
-                                            alt="Uploaded Image" />
-                                    @endif
-                                </div>
-                            </div>
+                        <div class="flex flex-col w-full">
+                            <x-input-label for="phone" :value="__('PESO Municipality')" />
+                            <x-dropdown align="left" width="full">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
+                                        <div class="w-full ml-2 text-left font-extrabold font-mono text-xl ">
+                                            {{ $mun && $prov ? $mun . ', ' . $prov : 'Select a Municipality' }}
 
 
-                            <x-input-error :messages="$errors->get('pesoImg')" class="mt-2" />
-                            <div class="mt-4 w-160 flex justify-center">
-                                <label for="imageUpload" wire:loading.attr="disabled"
-                                    class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                    Upload Image
-                                    <div wire:loading.delay.long wire:target="pesoImg" role="status">
-                                        <svg aria-hidden="true"
-                                            class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
-                                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                fill="currentFill" />
-                                        </svg>
-                                        <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+
+                                        </div>
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <!-- Search input -->
+                                    <div class="p-2">
+                                        <input wire:model.live.prevent='searchMun' type="text"
+                                            placeholder="Search..."
+                                            class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
+                                            @click.stop>
                                     </div>
-                                </label>
-                                <input wire:model="pesoImg" type="file" id="imageUpload" class="hidden"
-                                    accept="image/*">
-                            </div>
-                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
-                                <div class="flex flex-col w-full">
-                                    <x-input-label for="pesoEmail" :value="__('PESO Email*')" />
-                                    <x-text-input wire:model="pesoEmail" class="block mt-1 w-full" type="text" />
-                                    <x-input-error :messages="$errors->get('pesoEmail')" class="mt-2" />
 
-                                </div>
-                                <div class="flex flex-col w-full">
-                                    <x-input-label for="pesoPhone" :value="__('PESO Phone Number*')" />
-                                    <x-text-input wire:model="pesoPhone" class="block mt-1 w-full" type="text" />
-                                    <x-input-error :messages="$errors->get('pesoPhone')" class="mt-2" />
-                                </div>
-                            </div>
-                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
-                                <div class="flex flex-col w-full">
-                                    <x-input-label for="pesoTel" :value="__('PESO Telephone Number')" />
-                                    <x-text-input wire:model="pesoTel" class="block mt-1 w-full" type="text" />
-                                    <x-input-error :messages="$errors->get('pesoTel')" class="mt-2" />
-
-                                </div>
-                                <div class="flex flex-col w-full">
-                                    <x-input-label for="pesoFax" :value="__('PESO Fax Number')" />
-                                    <x-text-input wire:model="pesoFax" class="block mt-1 w-full" type="text" />
-                                    <x-input-error :messages="$errors->get('pesoFax')" class="mt-2" />
-                                </div>
-                            </div>
-
-                            <div class="flex flex-col w-full mt-2">
-                                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 ">PESO
-                                    Description</label>
-                                <textarea id="descModal" maxlength="400" rows="4"
-                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
-                                    placeholder="Write your description here..." name="descPost" wire:model='pesoDesc'></textarea>
-                                    <x-input-error :messages="$errors->get('pesoDesc')" class="mt-2" />
-
-                            </div>
-
-                            <div class="flex flex-row w-full justify-end mt-6 ">
-                                <x-green-button wire:loading.attr="disabled" wire:click.prevent="savePESO"
-                                    wire:target='savePESO, pesoImg' class="ms-3" type="button">
-                                    {{ __('Save') }}
-                                    <div wire:loading.delay.long wire:target="savePESO" role="status">
-                                        <svg aria-hidden="true"
-                                            class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
-                                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                fill="currentFill" />
-                                        </svg>
-                                        <span class="sr-only">Loading...</span>
+                                    <!-- Dropdown content with scrollbar -->
+                                    <div class="max-h-[300px] bg-white overflow-y-auto">
+                                        <!-- Dropdown links -->
+                                        @foreach ($municipalityData as $data)
+                                            <x-dropdown-link
+                                                wire:click.prevent='selectMunicipality({{ $data->municipality_id }})'
+                                                class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->municipality_Name }},
+                                                {{ $data->province->province_Name }}</x-dropdown-link>
+                                        @endforeach
                                     </div>
-                                </x-green-button>
+                                </x-slot>
 
-                            </div>
-
-
+                            </x-dropdown>
+                            <x-input-error :messages="$errors->get('munID')" class="mt-2" />
 
                         </div>
-
-                    </div>
-
-
-                    <div x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
-                        x-cloak>
-                        <h1 class="text-2xl font-bold mb-4">Create An Account</h1>
-                        <div>
-                            <div class="flex flex-col sm:flex-row w-full mt-6 gap-2 ">
+                        <div class="mt-4">
+                            <h1 class="text-lg font-bold">PESO Manager </h1>
+                            <hr class="h-px my-2 bg-gray-200 border-0">
+                            <div class="flex flex-col sm:flex-row w-full gap-2 ">
                                 <div class="flex flex-col mt-2 w-full">
                                     <x-input-label for="fname" :value="__('First Name*')" />
                                     <x-text-input wire:model="fname" class="block mt-1 w-full" type="text" />
@@ -384,22 +312,10 @@
                                     <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                                 </div>
                             </div>
-                            <div class="flex flex-col w-full sm:w-1/2 mt-6">
-                                <div class="flex flex-col w-full">
-                                    <x-input-label for="role" :value="__('PESO Role*')" />
-                                    <select wire:model="role" class="block mt-1 w-full rounded-md">
-                                        <option value="" disabled selected>Select PESO Role</option>
-                                        <option value="8">PESO Consultant</option>
-                                        <option value="9">PESO Officer</option>
-                                        <option value="10">PESO Manager</option>
-                                    </select>
-                                    <x-input-error :messages="$errors->get('role')" class="mt-2" />
-                                </div>
-                            </div>
                             <div class="flex flex-row w-full mt-6 justify-end">
                                 <x-green-button wire:click.prevent='validateAccount' type="submit"
                                     class="ml-auto mr-3">
-                                    {{ __('Create Account') }}
+                                    {{ __('Create') }}
                                 </x-green-button>
 
                             </div>
@@ -425,6 +341,12 @@
             <div class="flex flex-col my-4 items-center justify-center">
                 <div class="flex flex-col mt-4 w-full  px-4">
                     <div class="flex flex-col gap-4">
+                        <div class="flex flex-col ">
+                            <span class="text-xl font-bold ">Municipality:</span>
+                            <span>
+                                {{ $mun }}
+                            </span>
+                        </div>
                         <div class="flex flex-col">
                             <span class="text-xl font-bold ">Full Name:</span>
                             <span>{{ $fname }}
@@ -445,16 +367,7 @@
                                 {{ $phone }}
                             </span>
                         </div>
-                        <div class="flex flex-col ">
-                            <span class="text-xl font-bold ">Role:</span>
-                            <span>
-                                @if ($role == 8)
-                                    PESO Consultant
-                                @elseif ($role == 9)
-                                    PESO Officer
-                                @endif
-                            </span>
-                        </div>
+
                     </div>
 
                     <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 mt-4" role="alert">
@@ -487,9 +400,9 @@
                 </x-secondary-button>
 
                 <x-green-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled"
-                    wire:click.prevent="createAccount" class="ms-3" type="button">
+                    wire:click.prevent="createPESO" class="ms-3" type="button">
                     {{ __('Create') }}
-                    <div wire:loading.delay.long wire:target="createAccount" role="status">
+                    <div wire:loading.delay.long wire:target="createPESO" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -505,6 +418,7 @@
             </div>
         </div>
     </x-modal>
+
 
 
 </div>

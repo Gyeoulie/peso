@@ -20,6 +20,7 @@ use App\Livewire\Admin\JobPosting\JobPosting;
 use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Admin\LocationManagement\Location;
 use App\Livewire\Admin\Maintenance\Audits;
+use App\Livewire\Admin\Maintenance\PesoBranch;
 use App\Livewire\Admin\Partnership\PartnershipDetails;
 use App\Livewire\Admin\Partnership\PartnershipList;
 use App\Livewire\Admin\PositionIndustry\PositionIndustry;
@@ -81,8 +82,8 @@ Route::get('/employer/details', EmployerInformation::class)->name('fill_employer
 
 //------------------------------ PUBLIC ------------------------------
 
-Route::get('/dashboard', Dashboard::class)->middleware(['verified'])->name('dashboard');
-Route::get('/trainings', Trainings::class)->middleware(['verified'])->name('trainings');
+Route::get('/dashboard', Dashboard::class)->middleware(['verifiedOrPublic'])->name('dashboard');
+Route::get('/trainings', Trainings::class)->middleware(['verifiedOrPublic'])->name('trainings');
 
 Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
 Route::get('/announcements/{id}', AnnouncementView::class)->name('announcement.show');
@@ -178,6 +179,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
     Route::get('/reports/municipality', MunicipalityReports::class)->name('admin-reports-municipality');
 
+    Route::get('/peso', PesoBranch::class)->name('admin-peso');
     Route::get('/audits', Audits::class)->name('admin-audits');
 
     Route::get('/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');

@@ -10,7 +10,9 @@ use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -137,7 +139,9 @@ class ApplicantOverview extends Component
 
     public function updateApplicant($action, $modal)
     {
-        // Check if action is valid
+        $pesoAdmin = Auth::user();
+
+        // Validate the action
         if (!in_array($action, ['RECOMMENDED', 'REJECT'])) {
             toastr()->error('Invalid action specified!');
             return;
@@ -155,44 +159,44 @@ class ApplicantOverview extends Component
         DB::beginTransaction();
 
         try {
+            // Determine the validation rules and messages based on the action
+            $validationRules = [];
+            $validationMessages = [];
+
             if ($action === 'RECOMMENDED') {
-                // Validate recommendation letter
-                $this->validate([
+                $validationRules = [
                     'recommendationRemarks' => ['required', 'string', 'min:10'],
                     'recLetter' => [
                         'required',
                         'file',
                         'mimes:pdf',
-                        'max:5120', // 'max' is in kilobytes (5MB = 5120KB)
+                        'max:5120', // 5MB
                     ],
-                ], [
+                ];
+                $validationMessages = [
                     'recLetter.required' => 'The recommendation letter is required.',
                     'recLetter.file' => 'The recommendation letter must be a file.',
                     'recLetter.mimes' => 'The recommendation letter must be a PDF file.',
                     'recLetter.max' => 'The recommendation letter may not be greater than 5MB in size.',
-                ]);
-
-                // Store recommendation letter
-                $recLetterPath = $this->recLetter->store('peso/recommendation', 'public');
-
-                // Update job applicant with recommended status and recommendation letter path
-                $applicant->peso_Status = $action;
-                $applicant->peso_Remarks = $this->recommendationRemarks;
-                $applicant->peso_Letter = $recLetterPath;
-                $applicant->applicant_Notif = 1;
+                ];
             } elseif ($action === 'REJECT') {
-                $this->validate([
+                $validationRules = [
                     'rejectRemarks' => ['required', 'string', 'min:10'],
-                ]);
+                ];
+            }
 
-                // Update job applicant with rejected status
-                $applicant->peso_Status = $action;
-                $applicant->peso_Remarks = $this->rejectRemarks;
-                $applicant->applicant_Notif = 1;
-            } else {
-                toastr()->error('Invalid action specified!');
-                DB::rollBack();
-                return;
+            // Validate the input based on the action
+            $this->validate($validationRules, $validationMessages);
+
+            // Update the job applicant based on the action
+            $applicant->peso_Status = $action;
+            $applicant->peso_Remarks = $action === 'RECOMMENDED' ? $this->recommendationRemarks : $this->rejectRemarks;
+            $applicant->applicant_Notif = 1;
+            $applicant->peso_accounts_id = $pesoAdmin->peso_accounts->peso_accounts_id;
+
+            if ($action === 'RECOMMENDED') {
+                // Store the recommendation letter and update the path
+                $applicant->peso_Letter = $this->recLetter->store('peso/recommendation', 'public');
             }
 
             // Save the changes
@@ -201,11 +205,15 @@ class ApplicantOverview extends Component
             // Commit the transaction
             DB::commit();
 
+            // Send notification mail after transaction success
+            // Mail::to($applicant->user->email)->queue(new ApplicantStatusNotification($applicant));
+
             toastr()->success('Applicant updated successfully!');
         } catch (\Exception $e) {
             // Roll back the transaction on error
             DB::rollBack();
-            toastr()->error('There was an error in updating the applicant!');
+            toastr()->error('There was an error updating the applicant!');
+            Log::error('Error updating applicant: ' . $e->getMessage());
         }
 
         // Close the modal after updating

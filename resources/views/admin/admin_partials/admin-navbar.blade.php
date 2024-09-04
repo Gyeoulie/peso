@@ -286,14 +286,21 @@
 
                 </button>
                 <ul id="dropdown-5"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-audits') ? 'block' : 'hidden' }}">
-
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-audits', 'admin-peso') ? 'block' : 'hidden' }}">
+                    <li>
+                        <a wire:navigate href="{{ route('admin-peso') }}"
+                            :class="{{ request()->routeIs('admin-peso') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">PESO
+                            Branch</a>
+                    </li>
                     <li>
                         <a wire:navigate href="{{ route('admin-audits') }}"
                             :class="{{ request()->routeIs('admin-audits') }} ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Audit
                             Log</a>
                     </li>
+
+
 
                 </ul>
             </li>

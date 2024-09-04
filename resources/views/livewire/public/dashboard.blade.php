@@ -79,7 +79,7 @@
                         <div class="flex flex-row mr-3 gap-3">
 
 
-                            @if (auth()->user()->usertype != 5)
+                            @if (Auth::check() && auth()->user()->usertype != 5)
                                 <x-dropdown align="left" width="36">
                                     <x-slot name="trigger">
                                         <button

@@ -46,7 +46,9 @@ class PartnershipDetails extends Component
 
             // If the status is ACTIVE, get the matching employees
             $user = $partnership->company->user;
-            $user->update(['usertype' => 6]);
+            if ($user->usertype == 5) {
+                $user->update(['usertype' => 6]);
+            }
 
             Mail::to($partnership->company->user->email)->queue(new PartnershipNotification($partnership));
 

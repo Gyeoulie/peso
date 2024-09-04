@@ -326,11 +326,6 @@
                                 </p>
                             </div>
 
-                            <div class="flex flex-row">
-                                <li class="mb-2 font-bold">Date Applied:</li>
-                                <p class="ms-4">{{ $applicationInfo->created_at->format('F j, Y') }}</p>
-                            </div>
-
                             <div class="flex flex-row ">
                                 <li class="mb-2 font-bold">PESO Status:</li>
                                 <p class="ms-4">
