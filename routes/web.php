@@ -52,6 +52,7 @@ use App\Livewire\Public\TrainingView;
 use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -299,4 +300,15 @@ Route::get('/test-google-drive', function () {
 Route::get('upload', function (Request $request) {
     $files = Storage::disk("google")->allFiles();
     dd($files);
+});
+
+Route::get('test-backup', function () {
+    $exitCode = Artisan::call('backup:restore', [
+        '--disk' => 'local', // Use 'local' since the file is saved locally
+        '--backup' => 'peso/2024-09-06-01-44-04.zip' , // Path within the local disk
+        '--connection' => 'mysql', // Database connection
+        '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
+        '--reset' => true,
+    ]);
+    dd($exitCode);
 });

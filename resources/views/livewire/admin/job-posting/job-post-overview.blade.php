@@ -297,10 +297,10 @@
 
                     <div class="flex flex-row flex-wrap mt-4 w-full gap-2">
                         @foreach ($requirements->chunk(2) as $chunk)
-                            <div class="flex flex-row w-full gap-2">
+                            <div class="flex flex-col sm:flex-row w-full gap-2">
                                 @foreach ($chunk as $requirement)
                                     @if ($requirement->requirementPassed)
-                                        <div class="flex flex-col w-full sm:w-1/2">
+                                        <div class="flex flex-col w-full w-full sm:w-1/2">
                                             <button
                                                 wire:click.prevent='viewFile({{ $requirement->requirementPassed->req_passed_id }})'
                                                 type="button"
@@ -333,7 +333,7 @@
 
                                         </div>
                                     @else
-                                        <div class="flex flex-col w-full sm:w-1/2">
+                                        <div class="flex flex-col w-full w-full sm:w-1/2">
                                             <div
                                                 class="text-red-900 bg-red-400 border border-red-500 focus:ring-4 focus:outline-none focus:ring-red-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
                                                 <i class="fa-solid fa-file-contract me-2"></i>

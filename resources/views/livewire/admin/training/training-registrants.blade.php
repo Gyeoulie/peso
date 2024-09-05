@@ -356,9 +356,9 @@
                                                     @elseif ($data->program_reg_Status == 'COMPLETED')
                                                         <span
                                                             class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
-                                                    @elseif ($data->program_reg_Status == 'REJECTED')
+                                                    @elseif ($data->program_reg_Status == 'CANCELLED')
                                                         <span
-                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                                     @endif
 
                                                 </div>
@@ -422,10 +422,16 @@
                                 </img>
                             </div>
                             <div class="flex flex-col ml-4  justify-center">
-                                <h1 class="text-2xl sm:text-4xl  font-bold">
-                                    {{ $jobseekerInfo->employee->fname }} {{ $jobseekerInfo->employee->mname }}
-                                    {{ $jobseekerInfo->employee->lname }}
-                                </h1>
+                                <div x-data="{ tooltip: 'View Profile' }">
+                                    <a x-tooltip="tooltip"
+                                        href="{{ route('jobseeker.profile', ['id' => $jobseekerInfo->employee->employee_id]) }}">
+                                        <h1 class="text-2xl sm:text-4xl font-bold hover:text-blue-500">
+                                            {{ $jobseekerInfo->employee->fname }}
+                                            {{ $jobseekerInfo->employee->mname }}
+                                            {{ $jobseekerInfo->employee->lname }}
+                                        </h1>
+                                    </a>
+                                </div>
                                 <h1 class="text-lg text-gray-600">
                                     {{ $jobseekerInfo->employee->barangay->municipality->municipality_Name }},
                                     {{ $jobseekerInfo->employee->barangay->municipality->province->province_Name }}
@@ -540,30 +546,9 @@
 
 
                             </ul>
-
-                            @if ($jobseekerInfo->program_reg_Status == 'REGISTERED')
-                                <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                                    <div x-data="{ tooltip: 'View Resume' }">
-                                        <x-danger-button
-                                            wire:click.prevent="confirmReg('REJECTED', {{ $jobseekerInfo->program_reg_id }})"
-                                            x-tooltip="tooltip" type="button">Reject</x-danger-button>
-
-
-                                    </div>
-
-                                    <div x-data="{ tooltip: 'View Recommendation Letter' }">
-
-                                        <x-green-button
-                                            wire:click.prevent="confirmReg('COMPLETED', {{ $jobseekerInfo->program_reg_id }})"
-                                            x-tooltip="tooltip" type="button">Confirm</x-green-button>
-                                    </div>
-
-                                </div>
-                            @endif
-
-                            <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                            <div class="mt-2 flex flex-wrap gap-4 justify-center">
                                 <div x-data="{ tooltip: 'View Profile' }">
-                                    <a a wire:navigate
+                                    <a wire:navigate
                                         href="{{ route('jobseeker.profile', ['id' => $jobseekerInfo->employee->employee_id]) }}"
                                         x-tooltip="tooltip" type="button"
                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
@@ -579,6 +564,23 @@
 
 
                             </div>
+
+                            @if ($jobseekerInfo->program_reg_Status == 'REGISTERED' && in_array($programInfo->program_Status, ['ACTIVE', 'CLOSED']))
+                                <div class="mt-6 flex flex-wrap gap-4 justify-center">
+
+                                    <x-danger-button
+                                        wire:click.prevent="confirmReg('CANCELLED', {{ $jobseekerInfo->program_reg_id }})"
+                                        type="button">Reject</x-danger-button>
+
+                                    <x-green-button
+                                        wire:click.prevent="confirmReg('COMPLETED', {{ $jobseekerInfo->program_reg_id }})"
+                                        type="button">Confirm</x-green-button>
+
+
+                                </div>
+                            @endif
+
+
 
                         </div>
                     </div>

@@ -17,10 +17,27 @@
                 </div>
 
                 {{-- DEACTIVATE BUTTON --}}
-                <div class="flex flex-col ml-auto mr-0">
-                    <button type="button"
-                        class="text-red-900 font-bold bg-red-300 hover:bg-red-500 focus:ring-4 focus:ring-red-100 font-medium rounded-lg text-md px-5 py-2.5 me-2 mb-2 focus:outline-none">Deactivate
-                        Account</button>
+                <div class="flex flex-row gap-2 ml-auto mr-0">
+                    <button type="button" x-data=""
+                        x-on:click.prevent="$dispatch('open-modal', 'partnership-modal')"
+                        class="bg-blue-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-blue-600 hover:scale-105 focus:ring-4 focus:ring-blue-300 focus:outline-none">
+                        Cancel Partnership
+                    </button>
+                    @if ($employer->user->userstatus == 1)
+                        <button type="button" x-data=""
+                            x-on:click.prevent="$dispatch('open-modal', 'deactivate-modal')"
+                            class="bg-red-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-red-600 hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
+                            Deactivate Account
+                        </button>
+                    @elseif($employer->user->userstatus == 2)
+                        <button type="button" x-data=""
+                            x-on:click.prevent="$dispatch('open-modal', 'reactivate-modal')"
+                            class="bg-green-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-green-600 hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
+                            Reactivate Account
+                        </button>
+                    @endif
+
+
                 </div>
 
             </div>
@@ -50,6 +67,13 @@
                     <span class="text-gray-700 uppercase font-black tracking-wider mb-2 text-xl">Contact Details</span>
 
                     <ul>
+                        @if ($partnership)
+                            <div class="flex flex-row justify-between">
+                                <li class="mb-2 font-bold">Partnership Date:</li>
+                                <p class="ms-4 uppercase text-right"> {{ $partnership->responded_at->format('F j, Y') }}
+                                </p>
+                            </div>
+                        @endif
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Contact Person:</li>
                             <p class="ms-4 text-right">{{ $employer->contact_Person }}</p>
@@ -91,6 +115,7 @@
                                 {{ $employer->barangay->municipality->province->province_Name }}</p>
                         </div>
 
+
                     </ul>
 
 
@@ -102,6 +127,64 @@
 
                 </div>
 
+            </div>
+
+
+            <div class="bg-white shadow rounded-lg p-6 mt-4">
+                <h1 class="text-2xl font-bold">Company Requirements</h1>
+                <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+                <div class="flex flex-row flex-wrap w-full gap-2">
+                    @foreach ($requirements as $requirement)
+                        @if ($requirement->requirementPassed)
+                            <div class="flex flex-col w-full ">
+                                <button
+                                    wire:click.prevent='viewFile({{ $requirement->requirementPassed->req_passed_id }})'
+                                    type="button"
+                                    class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                    <i class="fa-solid fa-file-contract me-2"></i>
+                                    View {{ $requirement->requirement_Title }}
+                                    <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
+                                    </svg>
+                                </button>
+                                @php
+                                    $oneYearAgo = now()->subYear()->format('Y-m-d');
+                                @endphp
+
+                                <div x-data="{
+                                    updatedAt: '{{ $requirement->requirementPassed->updated_at->format('Y-m-d') }}',
+                                    isOld: new Date('{{ $requirement->requirementPassed->updated_at->format('Y-m-d') }}') < new Date('{{ $oneYearAgo }}')
+                                }">
+                                    <p x-bind:class="{ 'text-red-500': isOld, 'text-gray-800': !isOld }"
+                                        class="text-sm">
+                                        Last updated:
+                                        {{ $requirement->requirementPassed->updated_at->format('F j, Y') }}
+                                    </p>
+                                </div>
+
+
+                            </div>
+                        @else
+                            <div class="flex flex-col w-full">
+                                <div
+                                    class="text-red-900 bg-red-400 border border-red-500 focus:ring-4 focus:outline-none focus:ring-red-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                    <i class="fa-solid fa-file-contract me-2"></i>
+                                    No uploaded {{ $requirement->requirement_Title }}.
+
+                                    <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
             </div>
         </div>
 
@@ -115,7 +198,7 @@
         }">
 
             {{-- TAB BUTTON --}}
-            <ul class="flex flex-row space-x space-x-4 text-sm font-medium text-gray-500 md:me-4 mb-4 md:mb-0">
+            <ul class="flex flex-wrap gap-4 text-sm font-medium text-gray-500 md:me-4 mb-4 md:mb-0">
                 <li>
                     <button @click="selectedTab = 1" :class="selectedTab === 1 ? activeTab : inactiveTab"
                         class="inline-flex items-center px-4 py-3 rounded-lg w-full" aria-current="page">
@@ -169,8 +252,58 @@
                 <div class="bg-white shadow rounded-lg p-6 mt-4">
                     <h1 class="text-2xl font-bold ">Overview</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+                    <div class="flex flex-col  w-full  gap-4">
+                        <div class="flex flex-col ">
 
-                    <p>Hello</p>
+                            <span class="mb-1 font-bold">Company Industry:</span>
+
+
+                            {{-- BADGE CONTAINER --}}
+                            <div id= "otherSkillRow" class="flex-inline p-1">
+                                {{-- BADGE --}}
+
+                                @foreach ($employer->company_industry_line as $industryLine)
+                                    <span wire:key='skills-{{ $industryLine->company_industry_line_id }}'
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                        {{ $industryLine->job_industry->industry_Title }}
+                                    </span>
+                                @endforeach
+                            </div>
+
+                        </div>
+                        <div class="flex flex-col ">
+
+                            <span class="mb-1 font-bold">Company Partnerships:</span>
+
+
+                            {{-- BADGE CONTAINER --}}
+                            <div id= "otherSkillRow" class="flex-inline p-1">
+                                {{-- BADGE --}}
+
+                                @foreach ($employer->partnerships as $partnership)
+                                    <span wire:key='skills-{{ $partnership->partnership_id }}'
+                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                        PESO {{ $partnership->peso->municipality->municipality_Name }}
+                                    </span>
+                                @endforeach
+                            </div>
+
+                        </div>
+                        <div class="flex flex-col w-full">
+                            <span class="mb-1 font-bold">Company Job Posting Tags:</span>
+                            <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+                            <div class="flex flex-col h-[400px] lg:h-full items-end">
+                                <livewire:livewire-column-chart key="{{ $topTags->reactiveKey() }}"
+                                    :column-chart-model="$topTags" />
+                            </div>
+
+
+                        </div>
+
+
+
+
+                    </div>
                 </div>
 
                 {{-- APPLICATION HISTORY CONTAINER --}}
@@ -190,8 +323,8 @@
                         </ul>
                         <div class="flex flex-col" x-show="openTab === 1"
                             x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
-                            x-cloak>
+                            x-transition:enter-start="opacity-0 scale-90"
+                            x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
                                 <div
                                     class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
@@ -212,7 +345,7 @@
                                         {{-- SEARCH --}}
                                         <input wire:model.live.prevent='searchJobs' type="text"
                                             id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-40 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Jobs">
                                     </div>
                                 </div>
@@ -289,12 +422,15 @@
                                                             @elseif ($data->job_Status == 'ACTIVE')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
+                                                            @elseif ($data->job_Status == 'CLOSED')
+                                                                <span
+                                                                    class="inline-flex items-center rounded-md bg-cyan-200 px-2 py-1 text-sm font-medium text-cyan-800 ring-1 ring-inset ring-cyan-600/20">COMPLETED</span>
                                                             @elseif ($data->job_Status == 'COMPLETED')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">COMPLETED</span>
-                                                            @elseif ($data->job_Status == 'REJECTED')
+                                                            @elseif ($data->job_Status == 'REJECTED' || $data->job_Status == 'CANCELLED')
                                                                 <span
-                                                                    class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">REJECTED</span>
+                                                                    class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->job_Status }}</span>
                                                             @endif
 
                                                         </td>
@@ -527,6 +663,131 @@
         </div>
     </div>
 
+    <x-modal name="partnership-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to cancel the partnership with this company?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label for="remarks" :value="__('Remarks')" />
+                    <textarea wire:model='partRemarks' rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('partRemarks')" class="mt-2" />
+                </div>
+
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('partnership')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="updatePartnership()" class="ms-3"
+                    type="button">
+                    {{ __('Remove Partnership') }}
+                    <div wire:loading.delay.long wire:target="updatePartnership()" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <x-modal name="reactivate-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to reactivate this account?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label for="remarks" :value="__('Remarks')" />
+                    <textarea wire:model='reactRemarks' rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('reactRemarks')" class="mt-2" />
+                </div>
+
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('reactivate')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-green-button wire:loading.attr="disabled" wire:click.prevent="statusUser(1)" class="ms-3"
+                    type="button">
+                    {{ __('Activate') }}
+                    <div wire:loading.delay.long wire:target="statusUser(1)" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-green-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <x-modal name="deactivate-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to deactivate this account?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label for="remarks" :value="__('Remarks')" />
+                    <textarea wire:model='deactRemarks' rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('deactRemarks')" class="mt-2" />
+                </div>
+
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('deactivate')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="statusUser(2)" class="ms-3"
+                    type="button">
+                    {{ __('Deactivate') }}
+                    <div wire:loading.delay.long wire:target="statusUser(2)" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
 
 
     <x-modal name="confirm-modal" focusable>

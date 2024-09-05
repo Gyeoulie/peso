@@ -6,12 +6,46 @@
         </div>
 
         <div class="col-span-4 sm:col-span-12">
-            <div class="bg-white shadow rounded-lg p-6">
-                <h1 class="text-3xl text-center font-bold">Pending Partnerships
-                </h1>
+            <div class="bg-white shadow rounded-lg p-6" x-data="{
+                openTab: 1,
+                activeClasses: 'text-gray-900 bg-gray-400 active',
+                inactiveClasses: 'bg-gray-100 hover:text-gray-700 hover:bg-gray-50'
+            }">
+                <div class="sm:hidden">
+                    <label for="tabs" class="sr-only">Select your country</label>
+                    <select id="tabs"
+                        class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option wire:click.prevent='updateFilter("")'>All</option>
+                        <option wire:click.prevent='updateFilter("PENDING")'>PENDING</option>
+                        <option wire:click.prevent='updateFilter("APPROVED")'>ACTIVE</option>
+                        <option wire:click.prevent='updateFilter("OTHERS")'>OTHERS</option>
 
-                <div class="relative p-1 mt-4">
+                    </select>
+                </div>
+                <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                    <li class="w-full focus-within:z-10">
+                        <button wire:click.prevent='updateFilter("")' @click="openTab = 1"
+                            :class="openTab === 1 ? activeClasses : inactiveClasses"
+                            class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-s-lg"
+                            aria-current="page">All</button>
+                    </li>
+                    <li wire:click.prevent='updateFilter("PENDING")' class="w-full focus-within:z-10">
+                        <button @click="openTab = 2" :class="openTab === 2 ? activeClasses : inactiveClasses"
+                            class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">PENDING</button>
+                    </li>
+                    <li wire:click.prevent='updateFilter("APPROVED")' class="w-full focus-within:z-10">
+                        <button @click="openTab = 3" :class="openTab === 3 ? activeClasses : inactiveClasses"
+                            class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">ACTIVE</button>
+                    </li>
+                    <li wire:click.prevent='updateFilter("OTHERS")' class="w-full focus-within:z-10">
+                        <button @click="openTab = 6" :class="openTab === 6 ? activeClasses : inactiveClasses"
+                            class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">OTHERS</button>
+                    </li>
 
+                </ul>
+
+
+                <div class="relative p-1 mt-2">
                     <div
                         class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
 
@@ -46,7 +80,7 @@
                                         Company Type
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Employment Type
+                                        Partnership Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Joined Date
@@ -115,7 +149,16 @@
                                             <td class="px-6 py-4">
 
                                                 <div class="font-normal text-gray-500 text-sm">
-                                                    {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
+                                                    @if ($data->partnership_Status == 'PENDING')
+                                                        <span
+                                                            class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                    @elseif ($data->partnership_Status == 'APPROVED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
+                                                    @elseif ($data->partnership_Status == 'REJECTED' || $data->partnership_Status == 'CANCELLED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->partnership_Status }}</span>
+                                                    @endif
 
                                                 </div>
 

@@ -9,27 +9,28 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RecommendationNotification extends Mailable implements ShouldQueue
+class ProgramCancelReminder extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $applicationData;
+    public $employee;
+    public $trainingPosting;
 
-    public function __construct($applicationData)
+    public function __construct($employee, $trainingPosting)
     {
-        $this->applicationData = $applicationData;
+        $this->employee = $employee;
+        $this->trainingPosting = $trainingPosting;
     }
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Update on Your Job Application',
+            subject: 'Training Program Has Been Cancelled',
         );
     }
 
@@ -39,13 +40,13 @@ class RecommendationNotification extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.recommendation_notification',
+            markdown: 'emails.program_cancel_notification',
             with: [
-                'applicantName' => $this->applicationData->employee->fname . ' ' . $this->applicationData->employee->lname,
-                'jobTitle' => $this->applicationData->job_posting->job_Title,
-                'companyName' => $this->applicationData->job_posting->company->business_Name,
-                'recommendationStatus' => $this->applicationData->peso_Remarks,
-                'PESO' => $this->applicationData->job_posting->peso->municipality->municipality_Name,
+                'employeeName' => $this->employee->fname . ' ' . $this->employee->lname,
+                'programTitle' => $this->trainingPosting->program_Title,
+                'providerName' => $this->trainingPosting->program_Host,
+                'programLocation' => $this->trainingPosting->program_Location,
+                'PESO' => $this->trainingPosting->peso->municipality->municipality_Name,
             ]
         );
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Redactors\LimiterRedactor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,12 @@ class Job_Posting extends Model implements Auditable
 {
     use HasFactory, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
+
+    protected $attributeModifiers = [
+        'job_Description' => LimiterRedactor::class,
+        'job_Qualifications' => LimiterRedactor::class,
+        'job_Remarks' => LimiterRedactor::class,
+    ];
 
     protected $table = 'job_posting';
     protected $primaryKey = 'job_id';
@@ -69,7 +76,6 @@ class Job_Posting extends Model implements Auditable
     {
         return $this->belongsTo(PESO_Accounts::class, 'peso_accounts_id');
     }
-
 
     public function job_tags()
     {

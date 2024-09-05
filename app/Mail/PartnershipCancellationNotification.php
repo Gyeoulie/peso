@@ -9,18 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RecommendationNotification extends Mailable implements ShouldQueue
+class PartnershipCancellationNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $applicationData;
-
-    public function __construct($applicationData)
+    public $partnershipData;
+    public function __construct($partnershipData)
     {
-        $this->applicationData = $applicationData;
+        $this->partnershipData = $partnershipData;
     }
 
     /**
@@ -29,7 +28,7 @@ class RecommendationNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Update on Your Job Application',
+            subject: 'Partnership Status Update',
         );
     }
 
@@ -39,13 +38,11 @@ class RecommendationNotification extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.recommendation_notification',
+            markdown: 'emails.partnership_cancellation_notification',
             with: [
-                'applicantName' => $this->applicationData->employee->fname . ' ' . $this->applicationData->employee->lname,
-                'jobTitle' => $this->applicationData->job_posting->job_Title,
-                'companyName' => $this->applicationData->job_posting->company->business_Name,
-                'recommendationStatus' => $this->applicationData->peso_Remarks,
-                'PESO' => $this->applicationData->job_posting->peso->municipality->municipality_Name,
+                'companyName' => $this->partnershipData->company->business_Name,
+                'pesoRemarks' => $this->partnershipData->partnership_Remarks,
+                'PESO' => $this->partnershipData->peso->municipality->municipality_Name,
             ]
         );
     }

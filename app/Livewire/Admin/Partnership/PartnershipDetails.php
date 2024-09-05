@@ -24,6 +24,39 @@ class PartnershipDetails extends Component
 
     public $remarks;
 
+    public function mount()
+    {
+        $user = Auth::user();
+
+        // dd('hello');
+        $partnersData = Partnerships::findOrFail($this->id);
+
+        if ($partnersData) {
+
+            if ($user->peso_accounts->peso_id != $partnersData->peso_id) {
+                return $this->redirectRoute('dashboard');
+
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+
+        }
+
+    }
+
+    public function viewFile($reqPassedId)
+    {
+
+        $url = route('view.requirement');
+        // Dispatch an event to trigger JavaScript for opening a new tab
+        $this->dispatch('viewFile', [
+            'url' => $url,
+            'req_passed_id' => $reqPassedId,
+
+        ]);
+
+    }
+
     public function updatePartnership($id, $status, $modal)
     {
 

@@ -3,6 +3,7 @@
 
         <div class="col-span-4 sm:col-span-12">
             <h1 class="text-2xl font-bold">Maintenance / Audit Logs</h1>
+            <x-primary-button wire:click.prevent='startBackup'>Backup Data</x-primary-button>
         </div>
 
         <div class="col-span-4 sm:col-span-12">

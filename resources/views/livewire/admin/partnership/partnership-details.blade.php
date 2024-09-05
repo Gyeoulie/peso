@@ -297,9 +297,42 @@
 
             </div>
 
+            @if ($partnersData->partnership_Status != 'PENDING')
+                <div class="bg-white shadow rounded-lg p-6 mt-4">
+                    <div class="flex sm:flex-row gap-4 sm:justify-between">
+                        <h1 class="text-2xl font-bold ">Partnership Details</h1>
+
+                        @if ($partnersData->partnership_Status == 'PENDING')
+                            <span
+                                class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                        @elseif ($partnersData->partnership_Status == 'APPROVED')
+                            <span
+                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
+                        @elseif ($partnersData->partnership_Status == 'REJECTED' || $partnersData->partnership_Status == 'CANCELLED')
+                            <span
+                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $partnersData->partnership_Status }}</span>
+                        @endif
+                    </div>
+                    <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+                    <div class="flex flex-col w-full">
+                        <div class="flex sm:flex-row gap-4 sm:justify-between">
+                            <h1 class="text-md font-semibold">Partnership Remarks</h1>
+                            <h1 class="text-md ">{{ $partnersData->responded_at->format('F j, Y') }}</h1>
+
+                        </div>
+                        <div
+                            class="mt-2 h-[200px] overflow-auto block p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none">
+
+                            {{ $partnersData->partnership_Remarks }}
+
+                        </div>
+                    </div>
 
 
 
+
+                </div>
+            @endif
 
 
         </div>
@@ -402,3 +435,63 @@
     </x-modal>
 
 </div>
+@script
+    <script>
+        Livewire.on('viewFile', event => {
+            // Check if the event is an array and has at least one element
+            if (Array.isArray(event) && event.length > 0) {
+                // Access the first element and then its properties
+                const data = event[0]; // Assuming the data object is the first element
+
+                // Log the entire data object for verification
+                console.log('Data:', data);
+
+                // Extract URL and handle dynamic keys
+                const url = data.url;
+                const formData = {
+                    ...data
+                }; // Spread the data object to use for form inputs
+
+                // Check if URL is present
+                if (url) {
+                    // Create and configure the form element
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.target = '_blank';
+
+                    // Add CSRF token as a hidden input
+                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    // Add all data inputs dynamically
+                    for (const [key, value] of Object.entries(formData)) {
+                        // Skip the URL and CSRF token from being added as form inputs
+                        if (key !== 'url') {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            input.value = value;
+                            form.appendChild(input);
+                        }
+                    }
+
+                    // Append form to the body and submit
+                    document.body.appendChild(form);
+                    form.submit();
+
+                    // Clean up by removing the form element
+                    document.body.removeChild(form);
+                } else {
+                    console.error('URL not found in event data');
+                }
+            } else {
+                console.error('Event is not in the expected format');
+            }
+        });
+    </script>
+@endscript

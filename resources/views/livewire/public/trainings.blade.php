@@ -211,7 +211,7 @@
             @else
                 @foreach ($programList as $data)
                     <a href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                        class="block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
+                        class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
                         <div>
                             <div class="relative">
                                 <img class="w-full" src="{{ asset('storage/' . $data->program_pubmat) }}"
@@ -230,7 +230,7 @@
                                     {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 150, '...') !!}
                                 </p>
                             </div>
-                            <div class="px-6 py-3 flex flex-row items-center justify-between bg-gray-100">
+                            <div class="px-6 py-3 flex flex-row items-center justify-between bg-white">
                                 <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
                                     <svg height="13px" width="13px" version="1.1"
                                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

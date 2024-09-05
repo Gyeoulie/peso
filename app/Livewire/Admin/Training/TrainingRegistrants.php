@@ -7,6 +7,7 @@ use App\Models\Industry_preference;
 use App\Models\Job_Preference;
 use App\Models\Programs;
 use App\Models\Program_Reg;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
@@ -29,6 +30,22 @@ class TrainingRegistrants extends Component
     public $sortDate, $filter = 'All';
 
     protected $listeners = ['qrCodeScanned' => 'qrCodeScanned'];
+
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $programInfo = Programs::findOrFail($this->id);
+
+        if ($programInfo) {
+            if ($user->peso_accounts->peso_id != $programInfo->peso_id) {
+                return $this->redirectRoute('dashboard');
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+        }
+
+    }
 
     public function getJobseeker($id)
     {

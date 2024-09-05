@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 use App\Models\Company;
 use App\Models\Employee;
-use App\Models\PESO;
 use App\Models\PESO_Accounts;
 use OwenIt\Auditing\Models\Audit;
 
@@ -19,12 +18,14 @@ class AuditFormatter
         if ($userType === 4) { // Employee
             $employee = Employee::where('user_id', $userId)->first();
             return $employee ? "{$employee->fname} {$employee->lname}" : 'Unknown User';
-        } elseif ($userType === 5) { // Company
+        } elseif ($userType === 5 || $userType = 6) { // Company
             $company = Company::where('user_id', $userId)->first();
             return $company ? $company->business_Name : 'Unknown User';
         } elseif ($userType === 8 || $userType === 9 || $userType === 10) { // PESO
             $peso = PESO_Accounts::where('user_id', $userId)->first();
             return $peso ? "{$peso->peso_accounts_Fname} {$peso->peso_accounts_Lname}" : 'Unknown User';
+        } elseif ($userType === 5 || $userType = 6) {
+            return 'Super Admin';
         } else {
             return 'Unknown User';
         }
@@ -38,8 +39,17 @@ class AuditFormatter
             return 'Jobseeker';
         } elseif ($userType === 5) {
             return 'Company';
-        } elseif ($userType === 8 || $userType === 9 || $userType === 10) {
-            return 'PESO Admin';
+        } elseif ($userType === 8) {
+            return 'PESO Consultant';
+        } elseif ($userType === 9) {
+            return 'PESO Officer';
+
+        } elseif ($userType === 10) {
+            return 'PESO Manager';
+
+        } elseif ($userType === 11) {
+            return 'Super Admin';
+
         } else {
             return 'User';
         }

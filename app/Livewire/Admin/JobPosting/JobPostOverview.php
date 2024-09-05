@@ -52,6 +52,24 @@ class JobPostOverview extends Component
 
     public $selectedReqPassedId;
 
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $jobpost = Job_Posting::findOrFail($this->id);
+
+        if ($jobpost) {
+            if ($user->peso_accounts->peso_id != $jobpost->peso_id) {
+                return $this->redirectRoute('dashboard');
+
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+
+        }
+
+    }
+
     public function viewFile($reqPassedId)
     {
         $this->selectedReqPassedId = $reqPassedId;

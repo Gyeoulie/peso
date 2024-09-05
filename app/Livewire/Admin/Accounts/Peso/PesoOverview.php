@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Accounts\Peso;
 
 use App\Helpers\AuditFormatter;
+use App\Mail\AdminDeactivationNotification;
 use App\Mail\AdminResetPasswordNotification;
 use App\Models\PESO_Accounts;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,73 @@ class PesoOverview extends Component
     public $fname, $mname, $lname, $phone, $role = '';
 
     public $agreeBox = false;
+
+    public $deactRemarks, $reactRemarks;
+
+    public function statusUser($type)
+    {
+        if ($type == 1) {
+            $rules = ['reactRemarks' => 'required|string'];
+            $messages = ['reactRemarks.required' => 'Reactivation remarks are required.',
+                'reactRemarks.string' => 'Reactivation remarks must be a valid string.'];
+
+            $this->validate($rules, $messages);
+        } elseif ($type == 2) {
+            $rules = ['deactRemarks' => 'required|string'];
+            $messages = ['deactRemarks.required' => 'Deactivation remarks are required.',
+                'deactRemarks.string' => 'Deactivation remarks must be a valid string.'];
+
+            $this->validate($rules, $messages);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // Fetch the company and user
+            $peso = PESO_Accounts::findOrFail($this->id);
+            $user = $peso->user;
+
+            // Check the type and update user status
+            if ($type == 1) {
+                $user->userstatus = 1; // Reactivating
+                $user->description = $this->reactRemarks; // Set the description
+                $user->disabled_at = null;
+                $user->save();
+
+                Mail::to($user->email)->queue(new AdminDeactivationNotification('reactivation'));
+
+                toastr()->success('Account is successfully reactivated.');
+                $this->closeModal('reactivate');
+
+            } elseif ($type == 2) {
+                $user->userstatus = 2; // Deactivating
+                $user->description = $this->deactRemarks; // Set the description
+                $user->disabled_at = now();
+                $user->save();
+
+                Mail::to($user->email)->queue(new AdminDeactivationNotification('deactivation'));
+
+                toastr()->success('Account is successfully deactivated.');
+                $this->closeModal('deactivate');
+            }
+
+            DB::commit(); // Commit the transaction if everything is successful
+
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction if something goes wrong
+
+            // Log the error and show a toastr message
+            toastr()->error($e->getMessage());
+
+            toastr()->error('There was an error processing the request. Please try again.');
+        }
+    }
+
+    public function closeModal($modal)
+    {
+        $this->reset('deactRemarks', 'reactRemarks');
+        $this->dispatch('close-modal', $modal . '-modal');
+    }
 
     public function mountFields($pesoAdmin)
     {

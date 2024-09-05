@@ -9,18 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RecommendationNotification extends Mailable implements ShouldQueue
+class JobpostReminder extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $applicationData;
-
-    public function __construct($applicationData)
+    public $jobposting;
+    public function __construct($jobposting)
     {
-        $this->applicationData = $applicationData;
+        $this->jobposting = $jobposting;
     }
 
     /**
@@ -29,7 +28,7 @@ class RecommendationNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Update on Your Job Application',
+            subject: 'Urgent: Pending Applications for Your Closed Job Post – Action Required',
         );
     }
 
@@ -39,13 +38,12 @@ class RecommendationNotification extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.recommendation_notification',
+            markdown: 'emails.jobpost_reminder_notification',
             with: [
-                'applicantName' => $this->applicationData->employee->fname . ' ' . $this->applicationData->employee->lname,
-                'jobTitle' => $this->applicationData->job_posting->job_Title,
-                'companyName' => $this->applicationData->job_posting->company->business_Name,
-                'recommendationStatus' => $this->applicationData->peso_Remarks,
-                'PESO' => $this->applicationData->job_posting->peso->municipality->municipality_Name,
+                'companyName' => $this->jobposting->company->business_Name,
+                'jobTitle' => $this->jobposting->job_Title,
+                'jobDeadline' => $this->jobposting->job_Duration->format('F j, Y'),
+                'PESO' => $this->jobposting->peso->municipality->municipality_Name,
             ]
         );
     }

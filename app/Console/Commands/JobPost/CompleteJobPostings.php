@@ -37,7 +37,7 @@ class CompleteJobPostings extends Command
 
         // Fetch job postings that have been closed for more than 2 weeks
         $expiredJobPostings = Job_Posting::where('job_Status', 'CLOSED')
-            ->where('job_Duration', '<', $now->subWeeks(2)) // Update condition to `updated_at`
+            ->where('job_Duration', '<', $now->subWeeks(3)) // Update condition to `updated_at`
             ->get();
 
         // Store old values for auditing
