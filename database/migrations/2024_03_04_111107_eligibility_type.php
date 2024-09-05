@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('eligibility_type_id');
             $table->string('eligibility_Name', 255);
             $table->string('eligibility_Code', 10);
+            $table->tinyInteger('eligibility_Status')->default(1)->comment('1 - active, 2 - inactive');
             $table->timestamps();
             $table->softDeletes();
         });

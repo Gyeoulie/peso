@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Certificates;
 
 use App\Models\Certificate_Type;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -24,6 +25,77 @@ class Certificates extends Component
 
     public $editcertID, $editcertCode, $editcertName;
 
+    public $archiveCert;
+    public $restoreCert;
+
+    public $filterCert = 'All';
+
+    public function updateFilter($value)
+    {
+
+        $this->filterCert = $value;
+
+    }
+    public function archiveConfirmation($id)
+    {
+        $this->reset('archiveCert');
+        $this->archiveCert = $id;
+        $this->dispatch('open-modal', 'delete-cert-modal');
+
+    }
+
+    public function confirmArchive()
+    {
+        DB::beginTransaction();
+
+        try {
+            $certificate = Certificate_Type::findOrFail($this->archiveCert);
+            $certificate->cert_Status = 2;
+            $certificate->save();
+
+            DB::commit();
+
+            $this->dispatch('close-modal', 'delete-cert-modal');
+            toastr()->success('Certifcate Type was successfully archived!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error. Please try again later.');
+            // Log the exception if necessary
+            Log::error('Error archiving: ' . $e->getMessage());
+        }
+        $this->reset('archiveCert');
+
+    }
+    public function restoreConfirmation($id)
+    {
+        $this->reset('restoreCert');
+        $this->restoreCert = $id;
+        $this->dispatch('open-modal', 'restore-cert-modal');
+
+    }
+
+    public function confirmRestore()
+    {
+        DB::beginTransaction();
+
+        try {
+            $certificate = Certificate_Type::findOrFail($this->restoreCert);
+            $certificate->cert_Status = 1;
+            $certificate->save();
+
+            DB::commit();
+
+            $this->dispatch('close-modal', 'restore-cert-modal');
+            toastr()->success('Certifcate Type was successfully restored!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error. Please try again later.');
+            // Log the exception if necessary
+            Log::error('Error archiving: ' . $e->getMessage());
+        }
+        $this->reset('restoreCert');
+
+    }
     public function saveCertificate()
     {
         $rules = ['certCode' => ['required', 'string', Rule::unique('certificate_type', 'cert_Code')],
@@ -141,8 +213,16 @@ class Certificates extends Component
     public function render()
     {
 
-        $query = Certificate_Type::where('cert_Name', 'like', '%' . $this->search . '%')
-            ->orWhere("cert_Code", "like", '%' . $this->search . '%');
+        $query = Certificate_Type::where('cert_Name', 'like', '%' . $this->search . '%');
+
+        // Apply filtering logic based on the selected filterCert value
+        if ($this->filterCert == 'All') {
+
+            $query->where('cert_Status', 1);
+        } elseif ($this->filterCert == 'Archived') {
+
+            $query->where('cert_Status', 2);
+        }
 
         $certificate_type = $query->paginate($this->rows);
 

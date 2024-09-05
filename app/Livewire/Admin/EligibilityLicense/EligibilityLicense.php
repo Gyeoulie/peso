@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\EligibilityLicense;
 use App\Models\Eligibility_Type;
 use App\Models\License_Type;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -24,6 +25,120 @@ class EligibilityLicense extends Component
     public $eligibilityPost, $ecodePost, $eligibilityID;
 
     public $licensePost, $lcodePost, $licenseID;
+
+    public $archiveEli, $archiveLic;
+    public $restoreEli, $restoreLic;
+
+    public $filterEligibility = 'All', $filterLicense = 'All';
+
+    public function updateFilter($type, $value)
+    {
+        if ($type == 1) {
+            $this->filterEligibility = $value;
+        } elseif ($type == 2) {
+            $this->filterLicense = $value;
+
+        }
+    }
+    public function archiveConfirmation($type, $id)
+    {
+        $this->reset('archiveEli', 'archiveLic');
+        if ($type == 1) {
+            $this->archiveEli = $id;
+            $this->dispatch('open-modal', 'delete-eligibility-modal');
+
+        } elseif ($type == 2) {
+            $this->archiveLic = $id;
+            $this->dispatch('open-modal', 'delete-license-modal');
+
+        } else {
+            toastr()->error('There was an error. Please try again later.');
+        }
+    }
+
+    public function confirmArchive($type)
+    {
+        DB::beginTransaction();
+
+        try {
+            if ($type == 1) {
+                $eligibility = Eligibility_Type::findOrFail($this->archiveEli);
+                $eligibility->eligibility_Status = 2;
+                $eligibility->save();
+
+                $this->dispatch('close-modal', 'delete-eligibility-modal');
+                toastr()->success('Eligibility Type was successfully archived!');
+            } elseif ($type == 2) {
+                $license = License_Type::findOrFail($this->archiveLic);
+                $license->license_Status = 2;
+                $license->save();
+
+                $this->dispatch('close-modal', 'delete-license-modal');
+                toastr()->success('License Type was successfully archived!');
+            } else {
+                toastr()->error('Invalid archive type. Please try again.');
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error. Please try again later.');
+            // Log the exception if necessary
+            Log::error('Error archiving: ' . $e->getMessage());
+        }
+        $this->reset('archiveEli', 'archiveLic');
+
+    }
+
+    public function restoreConfirmation($type, $id)
+    {
+        $this->reset('restoreEli', 'restoreLic');
+        if ($type == 1) {
+            $this->restoreEli = $id;
+            $this->dispatch('open-modal', 'restore-eligibility-modal');
+
+        } elseif ($type == 2) {
+            $this->restoreLic = $id;
+            $this->dispatch('open-modal', 'restore-license-modal');
+
+        } else {
+            toastr()->error('There was an error. Please try again later.');
+        }
+    }
+
+    public function confirmRestore($type)
+    {
+        DB::beginTransaction();
+
+        try {
+            if ($type == 1) {
+                $eligibility = Eligibility_Type::findOrFail($this->restoreEli);
+                $eligibility->eligibility_Status = 1;
+                $eligibility->save();
+
+                $this->dispatch('close-modal', 'restore-eligibility-modal');
+                toastr()->success('Eligibility Type was successfully restored!');
+            } elseif ($type == 2) {
+                $license = License_Type::findOrFail($this->restoreLic);
+                $license->license_Status = 1;
+                $license->save();
+
+                $this->dispatch('close-modal', 'restore-license-modal');
+                toastr()->success('License Type was successfully restored!');
+            } else {
+                toastr()->error('Invalid restore type. Please try again.');
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error. Please try again later.');
+            // Log the exception if necessary
+            Log::error('Error archiving: ' . $e->getMessage());
+        }
+        $this->reset('restoreEli', 'restoreLic');
+
+    }
 
     public function saveEligibility()
     {
@@ -223,13 +338,27 @@ class EligibilityLicense extends Component
 
     public function render()
     {
-        $eligibility = Eligibility_Type::where('eligibility_Name', 'like', '%' . $this->searchEligiblity . '%')
-            ->orderBy('eligibility_Name', 'asc')
-            ->paginate($this->rows);
+        $eligibilityQuery = Eligibility_Type::where('eligibility_Name', 'like', '%' . $this->searchEligiblity . '%')
+            ->orderBy('eligibility_Name', 'asc');
 
-        $license = License_Type::where('license_Name', 'like', '%' . $this->searchLicense . '%')
-            ->orderBy('license_Name', 'asc')
-            ->paginate($this->rows);
+        $licenseQuery = License_Type::where('license_Name', 'like', '%' . $this->searchLicense . '%')
+            ->orderBy('license_Name', 'asc');
+
+
+        if ($this->filterEligibility == 'All') {
+            $eligibilityQuery->where('eligibility_Status', 1);
+        } else if ($this->filterEligibility == 'Archived') {
+            $eligibilityQuery->where('eligibility_Status', 2);
+        }
+
+        if ($this->filterLicense == 'All') {
+            $licenseQuery->where('license_Status', 1);
+        } else if ($this->filterLicense == 'Archived') {
+            $licenseQuery->where('license_Status', 2);
+        }
+
+        $eligibility = $eligibilityQuery->paginate($this->rows);
+        $license = $licenseQuery->paginate($this->rows);
 
         return view('livewire.admin.eligibility-license.eligibility-license', compact('eligibility', 'license'));
     }

@@ -122,7 +122,7 @@ class CertificateModal extends Component
     public function render()
     {
 
-        $certTypes = Certificate_Type::where('cert_Name', 'like', '%' . $this->search . '%')
+        $certTypes = Certificate_Type::where('cert_Status', 1)->where('cert_Name', 'like', '%' . $this->search . '%')
             ->get();
 
         return view('livewire.modals.certificate-modal', compact('certTypes'));

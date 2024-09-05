@@ -4,8 +4,11 @@ namespace App\Livewire\Jobseeker;
 
 use App\Models\Employee;
 use App\Models\Job_Applicants;
+use App\Models\Job_Posting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -51,7 +54,6 @@ class ApplicationHistory extends Component
 
     public function handleResponse($status, $id)
     {
-
         $user = Auth::user();
 
         // Fetch the applicant record based on job_id and employee_id
@@ -59,27 +61,57 @@ class ApplicationHistory extends Component
 
         // Check if an applicant record was found
         if ($applicant) {
-            $applicant->update([
-                'applicant_Status' => $status,
-            ]);
+            DB::beginTransaction();
 
-            if ($status == 'ACCEPTED') {
-                // Check and update employee status if necessary
-                if ($user->employee->empstatus == 2) { // Assuming empstatus is stored as an integer
-                    $employee = Employee::find($applicant->employee->employee_id);
-                    $employee->update([
-                        'empstatus' => 1,
-                    ]);
+            try {
+                // Update the applicant's status
+                $applicant->update([
+                    'applicant_Status' => $status,
+                ]);
+
+                if ($status == 'ACCEPTED') {
+                    // Check and update employee status if necessary
+                    if ($user->employee->empstatus == 2) { // Assuming empstatus is stored as an integer
+                        $employee = Employee::find($applicant->employee->employee_id);
+                        $employee->update([
+                            'empstatus' => 1,
+                        ]);
+                    }
+
+                    // Check remaining slots in the job posting
+                    $jobPosting = Job_Posting::find($applicant->job_id);
+
+                    if ($jobPosting) {
+                        if ($jobPosting->slotsLeft() <= 0) {
+                            // Mark the job posting as closed if no slots are left
+                            $jobPosting->update([
+                                'job_Status' => 'CLOSED', // Assuming 'CLOSED' is the status for closed job postings
+                            ]);
+                        }
+                    }
+
+                    // Commit the transaction
+                    DB::commit();
+
+                    // Show success toastr notification
+                    $this->dispatch('close-modal', 'accept-modal');
+                    toastr()->success('Congratulations, job has been accepted!');
+
+                } elseif ($status == 'CANCELLED') {
+                    // Commit the transaction
+                    DB::commit();
+
+                    // Show error toastr notification
+                    $this->dispatch('close-modal', 'reject-modal');
+                    toastr()->error('Job has been rejected!');
                 }
+            } catch (\Exception $e) {
+                // Rollback the transaction if an error occurs
+                DB::rollBack();
 
-                // Show success toastr notification
-                $this->dispatch('close-modal', 'accept-modal');
-                toastr()->success('Congratulations, job has been accepted!');
-
-            } else if ($status == 'CANCELLED') {
-                // Show error toastr notification
-                $this->dispatch('close-modal', 'reject-modal');
-                toastr()->error('Job has been rejected!');
+                toastr()->error('Error in updating, please try again later.');
+                // Optionally, log the exception
+                Log::error('Error handling response: ' . $e->getMessage());
             }
         } else {
             // Show error toastr notification if applicant record not found

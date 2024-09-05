@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('industry_id');
             $table->string('industry_Title', 255);
             $table->string('industry_Code', 10);
+            $table->tinyInteger('industry_Status')->default(1)->comment('1 - active, 2 - inactive');
             $table->timestamps();
             $table->softDeletes();
 

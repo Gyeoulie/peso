@@ -164,7 +164,7 @@
                                                                 </svg>
                                                             </button>
                                                         </div>
-                                                        <div x-data="{ tooltip: 'Delete Barangay' }">
+                                                        {{-- <div x-data="{ tooltip: 'Delete Barangay' }">
                                                             <button x-tooltip="tooltip" type="button"
                                                                 class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                 <svg class="h-5 w-5"
@@ -177,7 +177,7 @@
                                                                 </svg>
 
                                                             </button>
-                                                        </div>
+                                                        </div> --}}
 
                                                     </div>
                                                 </td>
@@ -257,7 +257,7 @@
                                                                 </svg>
                                                             </button>
                                                         </div>
-                                                        <div x-data="{ tooltip: 'Delete Municipality' }">
+                                                        {{-- <div x-data="{ tooltip: 'Delete Municipality' }">
                                                             <button x-tooltip="tooltip" type="button"
                                                                 class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                 <svg class="h-5 w-5"
@@ -270,7 +270,7 @@
                                                                 </svg>
 
                                                             </button>
-                                                        </div>
+                                                        </div> --}}
 
                                                     </div>
                                                 </td>
@@ -340,7 +340,7 @@
                                                                 </svg>
                                                             </button>
                                                         </div>
-                                                        <div x-data="{ tooltip: 'Delete Province' }">
+                                                        {{-- <div x-data="{ tooltip: 'Delete Province' }">
                                                             <button x-tooltip="tooltip" type="button"
                                                                 class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                 <svg class="h-5 w-5"
@@ -353,7 +353,7 @@
                                                                 </svg>
 
                                                             </button>
-                                                        </div>
+                                                        </div> --}}
 
                                                     </div>
                                                 </td>

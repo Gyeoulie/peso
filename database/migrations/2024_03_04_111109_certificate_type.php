@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('cert_type_id');
             $table->string('cert_Name', 255);
             $table->string('cert_Code', 10);
+            $table->tinyInteger('cert_Status')->default(1)->comment('1 - active, 2 - inactive');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -21,7 +21,8 @@ class JobPositionModal extends Component
     public function render()
     {
 
-        $jobposition = Job_Positions::where('position_Title', 'like', '%' . $this->search . '%')
+        $jobposition = Job_Positions::where('position_Status', 1)
+            ->where('position_Title', 'like', '%' . $this->search . '%')
             ->paginate(8);
 
         return view('livewire.modals.job-position-modal', compact('jobposition'));

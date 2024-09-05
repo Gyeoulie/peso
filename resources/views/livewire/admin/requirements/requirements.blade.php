@@ -182,7 +182,7 @@
                                                         </svg>
                                                     </button>
                                                 </div>
-                                                <div x-data="{ tooltip: 'Delete Requirement' }">
+                                                {{-- <div x-data="{ tooltip: 'Delete Requirement' }">
                                                     <button x-tooltip="tooltip" type="button"
                                                         class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +193,7 @@
                                                         </svg>
 
                                                     </button>
-                                                </div>
+                                                </div> --}}
                                             </div>
 
                                         </td>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('position_id');
             $table->string('position_Title', 255);
             $table->string('position_Code', 10);
+            $table->tinyInteger('position_Status')->default(1)->comment('1 - active, 2 - inactive');
             $table->timestamps();
             $table->softDeletes();
         });

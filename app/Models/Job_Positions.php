@@ -22,6 +22,8 @@ class Job_Positions extends Model implements Auditable
     protected $fillable = [
         'position_Title',
         'position_Code',
+        'position_Status',
+
     ];
 
     /**
@@ -49,6 +51,7 @@ class Job_Positions extends Model implements Auditable
         'position_id' => 'Position ID',
         'position_Title' => 'Position Title',
         'position_Code' => 'Position Code',
+        'position_Status' => 'Position Status',
     ];
 }
 

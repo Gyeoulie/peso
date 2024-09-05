@@ -53,6 +53,7 @@ class SearchProfiles extends Component
                 ) as relevance_score")
             )
             ->where('users.usertype', '=', '4')
+            ->where('users.userstatus', '=', '1')
             ->where(function ($query) use ($search) {
                 $query->where('employee.fname', 'like', '%' . $search . '%')
                     ->orWhere('employee.mname', 'like', '%' . $search . '%')
@@ -81,6 +82,7 @@ class SearchProfiles extends Component
                 ) as relevance_score")
             )
             ->where('users.usertype', '=', '5')
+            ->where('users.userstatus', '=', '1')
             ->where(function ($query) use ($search) {
                 $query->where('company.business_Name', 'like', '%' . $search . '%')
                     ->orWhere('company.trade_Name', 'like', '%' . $search . '%');

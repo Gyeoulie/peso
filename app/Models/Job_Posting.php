@@ -90,7 +90,7 @@ class Job_Posting extends Model implements Auditable
     public function hiredApplicants()
     {
         return $this->hasMany(Job_Applicants::class, 'job_id')
-            ->where('applicant_status', 'HIRED');
+            ->where('applicant_status', 'ACCEPTED');
     }
 
     public function slotsLeft()

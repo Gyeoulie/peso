@@ -22,6 +22,7 @@ class License_Type extends Model implements Auditable
     protected $fillable = [
         'license_Name',
         'license_Code',
+        'license_Status',
     ];
 
     /**
@@ -48,6 +49,7 @@ class License_Type extends Model implements Auditable
         'created_at' => 'Created At',
         'updated_at' => 'Updated At',
         'deleted_at' => 'Deleted At',
+        'license_Status' => 'License Status'
     ];
 }
 

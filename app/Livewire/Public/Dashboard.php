@@ -8,6 +8,7 @@ use App\Models\Education;
 use App\Models\Industry_preference;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
+use App\Models\PESO;
 use App\Models\Programs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -235,6 +236,21 @@ class Dashboard extends Component
         return $query->latest()->limit(5)->get();
     }
 
+    public function setAnnouncements($user)
+    {
+        if ($user->employee) {
+            $peso = PESO::where('municipality_id', $user->employee->barangay->municipality_id)->first();
+            $pesoId = $peso ? $peso->id : null; // Ensure $pesoId is set or null
+        } elseif ($user->peso_accounts) {
+            $pesoId = $user->peso_accounts->peso_id;
+        } else {
+            $pesoId = null; // No specific PESO ID, fetch all announcements
+        }
+
+        // Optionally return the announcements if you need to
+        return $this->getAnnouncements($pesoId);
+    }
+
     public function render()
     {
         $joblist = $this->getPaginatedJobs();
@@ -242,7 +258,8 @@ class Dashboard extends Component
 
         $user = Auth::user();
         $formattedNotifications = $user && $user->company ? $this->companyNotifications($user->company->company_id) : [];
-        $announcements = $this->getAnnouncements();
+
+        $announcements = $this->setAnnouncements($user);
 
         return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements'));
     }
