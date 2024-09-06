@@ -70,7 +70,7 @@ use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
