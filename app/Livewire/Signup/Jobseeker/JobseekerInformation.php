@@ -216,6 +216,7 @@ class JobseekerInformation extends Component
         } catch (\Exception $e) {
             DB::rollback();
             $success = false;
+            dd($e->getMessage());
             toastr()->error('Error in updating user details, please try again later');
 
         }

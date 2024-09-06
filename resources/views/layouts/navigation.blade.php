@@ -15,13 +15,24 @@
                 @if (Auth::check())
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
-                        
-                        <x-nav-link wire:navigate :href="route('trainings')" :active="request()->routeIs('trainings')">
-                            {{ __('Trainings') }}
-                        </x-nav-link>
+
+                        @if (auth()->user()->usertype == 2)
+                            <x-nav-link wire:navigate :href="route('fill_profile')" :active="request()->routeIs('fill_profile')">
+                                {{ __('Complete Details') }}
+                            </x-nav-link>
+                        @elseif(auth()->user()->usertype == 3)
+                            <x-nav-link wire:navigate :href="route('fill_employer')" :active="request()->routeIs('fill_employer')">
+                                {{ __('Complete Details') }}
+                            </x-nav-link>
+                        @endif
+                        @if (auth()->user()->usertype > 3)
+                            <x-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                {{ __('Dashboard') }}
+                            </x-nav-link>
+                            <x-nav-link wire:navigate :href="route('trainings')" :active="request()->routeIs('trainings')">
+                                {{ __('Trainings') }}
+                            </x-nav-link>
+                        @endif
                         @if (auth()->user()->usertype == 4)
                             <x-nav-link wire:navigate :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
                                 {{ __('Profile') }}
@@ -49,6 +60,7 @@
                             </x-nav-link>
                         @endif
 
+
                         @if (auth()->user()->usertype >= 8)
                             <x-nav-link wire:navigate :href="route('admin')" :active="Route::is('admin*')">
                                 {{ __('Admin Tools') }}
@@ -61,13 +73,13 @@
                             {{ __('Dashboard') }}
                         </x-nav-link>
                         <x-nav-link wire:navigate :href="route('trainings')" :active="request()->routeIs('trainings')">
-                            {{ __('Trainings') }}
+                            {{ __('Training') }}
                         </x-nav-link>
                     </div>
                 @endif
             </div>
 
-            @if (Auth::check())
+            @if (Auth::check() && auth()->user()->usertype > 3)
                 <div class="hidden sm:flex mr-1 ml-auto  w-40 lg:w-96">
 
 
@@ -134,40 +146,28 @@
                         </svg>
                     </button>
                 </div>
-            @else
+            @endif
+            @if (Auth::check() && auth()->user()->usertype <= 3)
                 <!-- Settings Dropdown -->
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                <div></div>
+                <div class="flex flex-row gap-6 items-center justify-end">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-nav-link>
+                    </form>
+                </div>
+            @endif
 
-                                <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <x-dropdown-link wire:navigate :href="route('login')">
-                                {{ __('Login') }}
-
-                            </x-dropdown-link>
-                            <x-dropdown-link wire:navigate :href="route('register')">
-                                {{ __('Register') }}
-
-                            </x-dropdown-link>
-
-
-                            <!-- Authentication -->
-                        </x-slot>
-                    </x-dropdown>
+            @if (!Auth::check())
+                <!-- Settings Dropdown -->
+                <div class="flex flex-row gap-6 justify-end">
+                    <x-nav-link wire:navigate :href="route('login')" :active="request()->routeIs('login')">
+                        {{ __('Login') }}
+                    </x-nav-link>
+                    <x-nav-link wire:navigate :href="route('register')" :active="request()->routeIs('register')">
+                        {{ __('Register') }}
+                    </x-nav-link>
                 </div>
             @endif
         </div>

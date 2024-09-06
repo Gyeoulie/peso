@@ -29,7 +29,7 @@ class JobPostOverview extends Component
         '5' => 'GRADE V',
         '6' => 'GRADE VI',
         '7' => 'GRADE VII',
-        '8' => 'GRADE VIII',
+        '8' => 'GRADE VIII',    
         '9' => 'ELEMENTARY GRADUATE',
         '10' => '1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12)',
         '11' => '2ND YEAR HIGH SCHOOL/GRADE VIII (FOR K TO 12)',

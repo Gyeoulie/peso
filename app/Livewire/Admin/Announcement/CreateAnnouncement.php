@@ -92,7 +92,7 @@ class CreateAnnouncement extends Component
         $data = [
             'announcement_Title' => $this->title,
             'announcement_Content' => $this->contentPost,
-            'announcement_Status' => '$this->contentPost',
+            'announcement_Status' => 'ACTIVE',
             'peso_id' => $peso_id,
         ];
 
