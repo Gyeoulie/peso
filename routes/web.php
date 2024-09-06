@@ -79,16 +79,17 @@ Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11'])->group(funct
 });
 
 //------------------------------ SIGN UP ------------------------------
-// Route::middleware('auth')->group(function () {
-Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile');
-Route::get('/employer/details', EmployerInformation::class)->name('fill_employer');
-// });
+Route::middleware(['verified'])->group(function () {
+    Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile')->middleware(['usertype:2']);
+    Route::get('/employer/details', EmployerInformation::class)->name('fill_employer')->middleware(['usertype:3']);
+});
 
 //------------------------------ PUBLIC ------------------------------
+Route::middleware(['verifiedOrPublic', 'incomplete.user'])->group(function () {
 
-Route::middleware(['auth', 'verifiedOrPublic', 'check.user.status', 'usertype:4,5,6,7,8,9,10,11'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/trainings', Trainings::class)->name('trainings');
+
     Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
     Route::get('/announcements/{id}', AnnouncementView::class)->name('announcement.show');
     Route::get('/training/{id}', TrainingView::class)->name('training.show');

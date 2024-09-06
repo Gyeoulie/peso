@@ -31,21 +31,21 @@ class Handler extends ExceptionHandler
         });
     }
 
-    /**
-     * Render the exception into an HTTP response.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Throwable $exception
-     * @return \Illuminate\Http\Response
-     */
-    public function render($request, Throwable $exception)
-    {
-        // Handle 404 errors
-        if ($exception instanceof NotFoundHttpException) {
-            return response()->view('error.404', [], 404);
-        }
+    // /**
+    //  * Render the exception into an HTTP response.
+    //  *
+    //  * @param \Illuminate\Http\Request $request
+    //  * @param \Throwable $exception
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function render($request, Throwable $exception)
+    // {
+    //     // Handle 404 errors
+    //     if ($exception instanceof NotFoundHttpException) {
+    //         return response()->view('error.404', [], 404);
+    //     }
 
-        // Handle other types of exceptions
-        return response()->view('error.404', [], 404);
-    }
+    //     // Handle other types of exceptions
+    //     return response()->view('error.404', [], 404);
+    // }
 }
