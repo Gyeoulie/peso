@@ -5,7 +5,7 @@
             <h1 class="text-2xl font-bold">Employment Status</h1>
             <div class="flex flex-col sm:flex-row gap-4 mt-5">
                 <div class="flex flex-col w-full">
-                    <x-input-label for="empStatus" :value="__('Employment Status')" />
+                    <x-input-label for="empStatus" :value="__('Employment Status*')" />
                     <select wire:model='empStatus' x-model="empStatus" @change="updateEmpDesc"
                         class="block mt-1 w-full rounded">
                         <option value="" disabled selected>Select Employment Status</option>
@@ -16,7 +16,7 @@
                     </h1>
                 </div>
                 <div class="flex flex-col w-full">
-                    <x-input-label for="empDesc" :value="__('Description')" />
+                    <x-input-label for="empDesc" :value="__('Description*')" />
                     <select wire:model='empDescription' x-model="empDesc" class="block mt-1 w-full rounded">
                         <option value="" disabled selected>Select Description</option>
                         <template x-for="desc in empDescriptions" :key="desc.value">

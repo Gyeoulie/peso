@@ -48,7 +48,7 @@ class JobPostApplicants extends Component
     ];
     public function updatedsearch()
     {
-        $this->resetPage('');
+        $this->resetPage();
     }
 
     public function exportData()

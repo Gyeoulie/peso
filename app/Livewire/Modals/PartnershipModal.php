@@ -12,6 +12,11 @@ class PartnershipModal extends Component
     public $partnershipId, $partnershipName;
     public $search;
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
     #[Modelable]
     public $eligibilityData = [];
 

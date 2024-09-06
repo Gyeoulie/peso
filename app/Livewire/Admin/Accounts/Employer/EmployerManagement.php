@@ -19,7 +19,7 @@ class EmployerManagement extends Component
 
     public function updatedsearchEmployers()
     {
-        $this->resetPage(''); // Reset pagination for eligibility search
+        $this->resetPage(); // Reset pagination for eligibility search
     }
 
     public function render()

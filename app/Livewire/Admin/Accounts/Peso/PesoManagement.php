@@ -37,7 +37,7 @@ class PesoManagement extends Component
 
     public function updatedSearch()
     {
-        $this->resetPage(''); // Reset pagination for eligibility search
+        $this->resetPage(); // Reset pagination for eligibility search
     }
 
     public function rules()

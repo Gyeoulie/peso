@@ -18,20 +18,20 @@ class AnnouncementList extends Component
 
     public function updatedsearch()
     {
-        $this->resetPage(''); // Reset pagination for eligibility search
+        $this->resetPage(); // Reset pagination for eligibility search
     }
 
     public function updateSort($value)
     {
         $this->sortDate = $value;
-        $this->resetPage(''); // Reset pagination for eligibility search
+        $this->resetPage(); // Reset pagination for eligibility search
 
     }
 
     public function updateFilter($value)
     {
         $this->filter = $value;
-        $this->resetPage(''); // Reset pagination for eligibility search
+        $this->resetPage(); // Reset pagination for eligibility search
 
     }
 

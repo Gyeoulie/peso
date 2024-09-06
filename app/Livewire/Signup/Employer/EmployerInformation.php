@@ -4,6 +4,7 @@ namespace App\Livewire\Signup\Employer;
 
 use App\Models\Company;
 use App\Models\Company_Industry_Line;
+use App\Models\Partnerships;
 use App\Models\Requirements_Passed;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +81,14 @@ class EmployerInformation extends Component
                         'industry_id' => $industryPref['industry_id'],
                     ]);
                 }
+
+                foreach ($allData['partnershipData'] as $partnership) {
+                    Partnerships::create([
+                        'company_id' => $employer->company_id, // Assuming 'employee_id' is the foreign key column
+                        'peso_id' => $partnership['peso_id'],
+                    ]);
+                }
+
 
                 foreach ($allData['reqData'] as $reqData) {
                     // Get the temporary file path

@@ -21,12 +21,12 @@ class JobPosting extends Component
     public $filter;
     public function updatedsearch()
     {
-        $this->resetPage('');
+        $this->resetPage();
     }
     public function updateFilter($filter)
     {
         $this->filter = $filter;
-        $this->resetPage(''); // Reset pagination for eligibility search
+        $this->resetPage(); // Reset pagination for eligibility search
 
     }
 

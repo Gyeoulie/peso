@@ -20,13 +20,13 @@ class PartnershipList extends Component
     public $filter = '';
     public function updatedsearch()
     {
-        $this->resetPage('');
+        $this->resetPage();
     }
 
     public function updateFilter($filter)
     {
         $this->filter = $filter;
-        $this->resetPage('');
+        $this->resetPage();
 
     }
 
