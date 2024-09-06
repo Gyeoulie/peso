@@ -14,8 +14,14 @@ class EmployerManagement extends Component
 {
 
     use WithPagination, WithoutUrlPagination;
-    // public $paginate = ;
-    public $searhEmployers;
+
+    public $searchEmployers;
+
+    public function updatedsearchEmployers()
+    {
+        $this->resetPage(''); // Reset pagination for eligibility search
+    }
+
     public function render()
     {
 
@@ -24,8 +30,8 @@ class EmployerManagement extends Component
         $partnersData = Partnerships::where('peso_id', $user->peso_accounts->peso_id)
             ->where('partnership_Status', 'APPROVED')
             ->whereHas('company', function ($query) {
-                $query->where('trade_Name', 'like', '%' . $this->searhEmployers . '%')
-                    ->orWhere('business_Name', 'like', '%' . $this->searhEmployers . '%');
+                $query->where('trade_Name', 'like', '%' . $this->searchEmployers . '%')
+                    ->orWhere('business_Name', 'like', '%' . $this->searchEmployers . '%');
             })
             ->paginate(10);
 

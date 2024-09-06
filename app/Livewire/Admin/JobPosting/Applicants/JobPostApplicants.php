@@ -46,6 +46,10 @@ class JobPostApplicants extends Component
         '25' => 'MASTERAL/POST GRADUATE LEVEL',
         '26' => 'MASTERAL/POST GRADUATE',
     ];
+    public function updatedsearch()
+    {
+        $this->resetPage('');
+    }
 
     public function exportData()
     {

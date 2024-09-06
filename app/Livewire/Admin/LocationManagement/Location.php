@@ -57,7 +57,7 @@ class Location extends Component
                             ->where(function ($query) {
                                 return $query->where('municipality_id', $this->munHidden);
                             })],
-                    'bcodePost' => ['required', 'string', Rule::unique('barangay', 'barangay_Code')
+                    'bcodePost' => ['required', 'string', 'max:10', Rule::unique('barangay', 'barangay_Code')
                             ->where(function ($query) {
                                 return $query->where('municipality_id', $this->munHidden);
                             })],
@@ -69,6 +69,7 @@ class Location extends Component
                     'barPost.unique' => 'The barangay has already been taken.',
                     'bcodePost.required' => 'The barangay code is required.',
                     'bcodePost.unique' => 'The barangay code has already been taken.',
+                    'bcodePost.max' => 'The municipality barangay must not exceed 10 characters.',
                     'munSelect.required' => 'The municipality selection is required.',
                 ],
                 'model' => Barangay::class,
@@ -85,7 +86,7 @@ class Location extends Component
                             ->where(function ($query) {
                                 return $query->where('province_id', $this->provHidden);
                             })],
-                    'mcodePost' => ['required', 'string', Rule::unique('municipality', 'municipality_Code')
+                    'mcodePost' => ['required', 'string', 'max:10', Rule::unique('municipality', 'municipality_Code')
                             ->where(function ($query) {
                                 return $query->where('province_id', $this->provHidden);
                             })],
@@ -96,6 +97,7 @@ class Location extends Component
                     'munPost.unique' => 'The municipality has already been taken.',
                     'mcodePost.required' => 'The municipality code is required.',
                     'mcodePost.unique' => 'The municipality code has already been taken.',
+                    'mcodePost.max' => 'The municipality code must not exceed 10 characters.',
                     'provSelect.required' => 'The province selection is required.',
                 ],
                 'model' => Municipality::class,
@@ -109,13 +111,14 @@ class Location extends Component
             'province' => [
                 'rules' => [
                     'provPost' => ['required', 'string', Rule::unique('province', 'province_Name')],
-                    'pcodePost' => ['required', 'string', Rule::unique('province', 'province_Code')],
+                    'pcodePost' => ['required', 'string', 'max:10', Rule::unique('province', 'province_Code')],
                 ],
                 'messages' => [
                     'provPost.required' => 'The province is required.',
                     'provPost.unique' => 'The province has already been taken.',
                     'pcodePost.required' => 'The province code is required.',
                     'pcodePost.unique' => 'The province code has already been taken.',
+                    'pcodePost.max' => 'The province code must not exceed 10 characters.',
                 ],
                 'model' => Province::class,
                 'data' => [
@@ -138,6 +141,7 @@ class Location extends Component
 
                 toastr()->success($validationData[$type]['successMessage']);
             } catch (\Exception $e) {
+                dd($e->getMessage());
                 toastr()->error('There was an Error');
             }
         } else {
@@ -243,7 +247,7 @@ class Location extends Component
                     'editbarPost' => ['required', 'string', Rule::unique('barangay', 'barangay_Name')->where(function ($query) {
                         return $query->where('municipality_id', $this->editmunHidden);
                     })->ignore($this->editbarID, 'barangay_id')],
-                    'editbcodePost' => ['required', 'string', Rule::unique('barangay', 'barangay_Code')->where(function ($query) {
+                    'editbcodePost' => ['required', 'string', 'max:10', Rule::unique('barangay', 'barangay_Code')->where(function ($query) {
                         return $query->where('municipality_id', $this->editmunHidden);
                     })->ignore($this->editbarID, 'barangay_id')],
                     'editmunSelect' => 'required|string',
@@ -257,6 +261,7 @@ class Location extends Component
                     'editbcodePost.required' => 'The barangay code is required.',
                     'editbcodePost.string' => 'The barangay code must be a string.',
                     'editbcodePost.unique' => 'The barangay code has already been taken.',
+                    'editbcodePost.max' => 'The barangay must not exceed 10 characters.',
                     'editmunSelect.required' => 'The municipality select is required.',
                     'editmunSelect.string' => 'The municipality select must be a string.',
                     'editmunHidden.required' => 'The municipality field is required.',
@@ -294,7 +299,7 @@ class Location extends Component
                 'editmunPost' => ['required', 'string', Rule::unique('municipality', 'municipality_Name')->where(function ($query) {
                     return $query->where('province_id', $this->editprovHidden);
                 })->ignore($this->editmunID, 'municipality_id')],
-                'editmcodePost' => ['required', 'string', Rule::unique('municipality', 'municipality_Code')->where(function ($query) {
+                'editmcodePost' => ['required', 'string', 'max:10', Rule::unique('municipality', 'municipality_Code')->where(function ($query) {
                     return $query->where('province_id', $this->editprovHidden);
                 })->ignore($this->editmunID, 'municipality_id')],
                 'editprovSelect' => 'required|string',
@@ -308,6 +313,7 @@ class Location extends Component
                 'editmcodePost.required' => 'The municipality code is required.',
                 'editmcodePost.string' => 'The municipality code must be a string.',
                 'editmcodePost.unique' => 'The municipality code has already been taken.',
+                'editmcodePost.max' => 'The municipality must not exceed 10 characters.',
                 'editprovSelect.required' => 'The municipality select is required.',
                 'editprovSelect.string' => 'The municipality select must be a string.',
                 'editprovHidden.required' => 'The municipality field is required.',
@@ -341,7 +347,7 @@ class Location extends Component
         } else if ($type == 'province') {
             $rules = [
                 'editprovPost' => ['required', 'string', Rule::unique('province', 'province_Name')->ignore($this->editprovID, 'province_id')],
-                'editpcodePost' => ['required', 'string', Rule::unique('province', 'province_Code')->ignore($this->editprovID, 'province_id')],
+                'editpcodePost' => ['required', 'string', 'max:10', Rule::unique('province', 'province_Code')->ignore($this->editprovID, 'province_id')],
             ];
 
             $messages = [
@@ -350,6 +356,7 @@ class Location extends Component
                 'editprovPost.unique' => 'The municipality has already been taken.',
                 'editpcodePost.required' => 'The municipality code is required.',
                 'editpcodePost.string' => 'The municipality code must be a string.',
+                'editpcodePost.max' => 'The municipality must not exceed 10 characters.',
                 'editpcodePost.unique' => 'The municipality code has already been taken.',
             ];
             $this->validate($rules, $messages);

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Livewire\Features\SupportPagination\WithoutUrlPagination;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 #[Layout('layouts.admin')]
@@ -31,12 +31,26 @@ class EligibilityLicense extends Component
 
     public $filterEligibility = 'All', $filterLicense = 'All';
 
+    public function updatedsearchEligiblity()
+    {
+        $this->resetPage('eligibility'); // Reset pagination for eligibility search
+    }
+
+    // Listen for updates to the searchLicense variable
+    public function updatedsearchLicense()
+    {
+        $this->resetPage('license'); // Reset pagination for license search
+    }
+
     public function updateFilter($type, $value)
     {
         if ($type == 1) {
             $this->filterEligibility = $value;
+            $this->resetPage('eligibility'); // Reset pagination for eligibility search
+
         } elseif ($type == 2) {
             $this->filterLicense = $value;
+            $this->resetPage('license'); // Reset pagination for license search
 
         }
     }
@@ -303,7 +317,7 @@ class EligibilityLicense extends Component
 
             toastr()->success('License Created!');
         }
-        $this->close('License');
+        $this->close('license');
 
     }
 
@@ -344,7 +358,6 @@ class EligibilityLicense extends Component
         $licenseQuery = License_Type::where('license_Name', 'like', '%' . $this->searchLicense . '%')
             ->orderBy('license_Name', 'asc');
 
-
         if ($this->filterEligibility == 'All') {
             $eligibilityQuery->where('eligibility_Status', 1);
         } else if ($this->filterEligibility == 'Archived') {
@@ -357,8 +370,11 @@ class EligibilityLicense extends Component
             $licenseQuery->where('license_Status', 2);
         }
 
-        $eligibility = $eligibilityQuery->paginate($this->rows);
-        $license = $licenseQuery->paginate($this->rows);
+        // Paginate eligibility query
+        $eligibility = $eligibilityQuery->paginate($this->rows, ['*'], 'eligibility');
+
+// Paginate license query
+        $license = $licenseQuery->paginate($this->rows, ['*'], 'license');
 
         return view('livewire.admin.eligibility-license.eligibility-license', compact('eligibility', 'license'));
     }

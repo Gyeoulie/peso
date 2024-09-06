@@ -18,10 +18,16 @@ class PartnershipList extends Component
     public $search;
 
     public $filter = '';
+    public function updatedsearch()
+    {
+        $this->resetPage('');
+    }
 
     public function updateFilter($filter)
     {
         $this->filter = $filter;
+        $this->resetPage('');
+
     }
 
     public function render()

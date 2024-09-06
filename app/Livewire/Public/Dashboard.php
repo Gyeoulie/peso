@@ -55,6 +55,10 @@ class Dashboard extends Component
     public $sort = 'Newest';
     public $pagination = 5;
 
+    public function updatedsearch()
+    {
+        $this->resetPage('');
+    }
     public function mount()
     {
         $this->initializeFilter();
@@ -78,11 +82,13 @@ class Dashboard extends Component
     {
         $this->filter = $value;
         $this->sort = 'Newest';
+        $this->resetPage('');
     }
 
     public function updateSort($value)
     {
         $this->sort = $value;
+        $this->resetPage('');
     }
 
     private function getHighestEducationLevel()
@@ -230,7 +236,8 @@ class Dashboard extends Component
         $query = Announcements::query();
 
         if ($pesoId) {
-            $query->where('peso_id', $pesoId);
+            $query->where('peso_id', $pesoId)
+                ->where('announcement_Status', 'ACTIVE');
         }
 
         return $query->latest()->limit(5)->get();

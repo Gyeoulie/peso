@@ -40,6 +40,20 @@ class JobseekerOverview extends Component
     public $agreeBox = false;
     public $deactRemarks, $reactRemarks;
 
+    public function updatedsearchApplications()
+    {
+        $this->resetPage('applicants'); // Reset pagination for eligibility search
+    }
+
+    public function updatedsearchEvents()
+    {
+        $this->resetPage('history'); // Reset pagination for eligibility search
+    }
+    public function updatedsearchJobs()
+    {
+        $this->resetPage('recommended'); // Reset pagination for eligibility search
+    }
+
     public function mount()
     {
         $user = Auth::user();
@@ -208,7 +222,7 @@ class JobseekerOverview extends Component
             ')
             ->orderByDesc('job_tags_count')
             ->distinct()
-            ->paginate(10);
+            ->paginate(10, ['*'], 'recommended');
     }
 
     public function applicationHistory($id)
@@ -224,7 +238,7 @@ class JobseekerOverview extends Component
                         });
                 });
             })
-            ->paginate(5);
+            ->paginate(5, ['*'], 'applicants');
     }
 
     public function programHistory($id)
@@ -236,7 +250,7 @@ class JobseekerOverview extends Component
                         ->orWhere('program_Host', 'like', '%' . $this->searchEvents . '%');
                 });
             })
-            ->paginate(10);
+            ->paginate(10, ['*'], 'history');
     }
 
     public function mountFields($jobseeker)
@@ -391,7 +405,7 @@ class JobseekerOverview extends Component
 
         $audits = Audit::where('user_id', $jobseeker->user_id)
             ->latest()
-            ->paginate(5);
+            ->paginate(5, ['*'], 'audits');
 
         $formattedAudits = $audits->map(function ($audit) {
             return AuditFormatter::format($audit);

@@ -31,6 +31,11 @@ class TrainingRegistrants extends Component
 
     protected $listeners = ['qrCodeScanned' => 'qrCodeScanned'];
 
+    public function updatedsearch()
+    {
+        $this->resetPage('');
+    }
+
     public function mount()
     {
         $user = Auth::user();
@@ -58,11 +63,12 @@ class TrainingRegistrants extends Component
     {
         $this->filter = $filter;
         $this->reset('sortDate');
+        $this->resetPage('');
     }
     public function updateSort($sort)
     {
         $this->sortDate = $sort;
-
+        $this->resetPage('');
     }
 
     public function scanQr()

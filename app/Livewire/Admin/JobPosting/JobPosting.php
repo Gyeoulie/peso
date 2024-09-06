@@ -19,10 +19,15 @@ class JobPosting extends Component
     use WithoutUrlPagination;
     public $search;
     public $filter;
-
+    public function updatedsearch()
+    {
+        $this->resetPage('');
+    }
     public function updateFilter($filter)
     {
         $this->filter = $filter;
+        $this->resetPage(''); // Reset pagination for eligibility search
+
     }
 
     public function exportData()

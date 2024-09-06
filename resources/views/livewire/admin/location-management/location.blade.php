@@ -279,7 +279,9 @@
                                     @endif
                                 </tbody>
                             </table>
+                        </div>
                         @elseif ($defaultFilter === 'Provinces')
+                        <div class="overflow-x-auto">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                                     <tr>

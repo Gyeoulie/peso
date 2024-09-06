@@ -29,7 +29,10 @@ class Certificates extends Component
     public $restoreCert;
 
     public $filterCert = 'All';
-
+    public function updatedSearch()
+    {
+        $this->resetPage(); // This will reset the pagination to page 1
+    }
     public function updateFilter($value)
     {
 

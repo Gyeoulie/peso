@@ -31,12 +31,25 @@ class PositionIndustry extends Component
 
     public $filterJob = 'All', $filterIndustry = 'All';
 
+    public function updatedsearchIndustry()
+    {
+        $this->resetPage('industry'); // Reset pagination for eligibility search
+    }
+
+    // Listen for updates to the searchLicense variable
+    public function updatedsearchPosition()
+    {
+        $this->resetPage('position'); // Reset pagination for license search
+    }
+
     public function updateFilter($type, $value)
     {
         if ($type == 1) {
             $this->filterJob = $value;
+            $this->resetPage('position');
         } elseif ($type == 2) {
             $this->filterIndustry = $value;
+            $this->resetPage('industry');
 
         }
     }
@@ -242,7 +255,8 @@ class PositionIndustry extends Component
 
     public function open($modal)
     {
-        $this->reset('positionPost', 'pcodePost', 'positionID');
+        $this->reset('positionPost', 'pcodePost', 'positionID', 'industryPost', 'icodePost', 'industryID');
+
         $this->resetValidation();
         $this->dispatch('open-modal', $modal . '-modal');
 
@@ -251,7 +265,7 @@ class PositionIndustry extends Component
     public function close($modal)
     {
         $this->dispatch('close-modal', $modal . '-modal');
-        $this->reset('searchIndustry', 'searchPosition', 'positionPost', 'pcodePost', 'positionID');
+        $this->reset('searchIndustry', 'searchPosition', 'positionPost', 'pcodePost', 'positionID', 'industryPost', 'icodePost', 'industryID');
         $this->resetValidation();
     }
 
@@ -275,8 +289,8 @@ class PositionIndustry extends Component
             $industryQuery->where('industry_Status', 2);
         }
 
-        $industry = $industryQuery->paginate($this->rows);
-        $jobpositions = $jobpositionsQuery->paginate($this->rows);
+        $industry = $industryQuery->paginate($this->rows, ['*'], 'industry');
+        $jobpositions = $jobpositionsQuery->paginate($this->rows, ['*'], 'position');
 
         return view('livewire.admin.position-industry.position-industry', compact('industry', 'jobpositions'));
     }

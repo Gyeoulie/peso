@@ -44,6 +44,11 @@ class BarangayReports extends Component
     public $selectedMonths = [];
     public $selectedYear;
 
+    public function updatedsearchJobseekers()
+    {
+        $this->resetPage('');
+    }
+
     public function changeYear($year)
     {
         $this->selectedYear = $year;

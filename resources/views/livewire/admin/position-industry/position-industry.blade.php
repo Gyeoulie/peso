@@ -221,7 +221,7 @@
                     <x-primary-button type="button"
                         class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900"
                         x-data="" x-on:click.prevent="$dispatch('open-modal', 'industry-modal')">Add
-                        Job Position</x-primary-button>
+                        Industry</x-primary-button>
 
                 </div>
 
@@ -275,8 +275,7 @@
                                     class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">All</x-dropdown-link>
 
                                 <!-- Authentication -->
-                                <x-dropdown-link
-                                    wire:click.prevent="updateFilter(2, 'Archived')"
+                                <x-dropdown-link wire:click.prevent="updateFilter(2, 'Archived')"
                                     class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Archived</x-dropdown-link>
 
                             </x-slot>
@@ -485,7 +484,7 @@
                 </x-secondary-button>
 
                 <x-primary-button wire:click.prevent='saveIndustry' class="ms-3" type="button">
-                    {{ __('Save Position') }}
+                    {{ __('Save Industry') }}
                 </x-primary-button>
             </div>
         </div>

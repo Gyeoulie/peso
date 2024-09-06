@@ -16,14 +16,23 @@ class AnnouncementList extends Component
 
     public $archive, $delete, $restore, $restoredelete;
 
+    public function updatedsearch()
+    {
+        $this->resetPage(''); // Reset pagination for eligibility search
+    }
+
     public function updateSort($value)
     {
         $this->sortDate = $value;
+        $this->resetPage(''); // Reset pagination for eligibility search
+
     }
 
     public function updateFilter($value)
     {
         $this->filter = $value;
+        $this->resetPage(''); // Reset pagination for eligibility search
+
     }
 
     public function confirmationModal($type, $id)
