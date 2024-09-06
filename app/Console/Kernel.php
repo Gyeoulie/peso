@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\JobPost\CloseExpiredJobPostings::class,
         \App\Console\Commands\JobPost\CompleteJobPostings::class,
         \App\Console\Commands\JobPost\NotifyCompletionDeadline::class,
-        \App\Console\Commands\ProcessClosedJobPosting::class,
+        \App\Console\Commands\JobPost\ProcessClosedJobPosting::class,
         \App\Console\Commands\Training\CloseExpiredTrainings::class,
 
     ];
