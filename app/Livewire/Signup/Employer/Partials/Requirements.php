@@ -69,6 +69,12 @@ class Requirements extends Component
 
     }
 
+    public function prev()
+    {
+        $this->dispatch('prevStep');
+
+    }
+
     public function render()
     {
 

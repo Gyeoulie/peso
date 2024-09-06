@@ -30,20 +30,20 @@
         </div>
         <div class="flex flex-col w-full">
             <div class="flex flex-col mt-4 w-full">
-                <x-input-label for="TIN" :value="__('TIN')" />
+                <x-input-label for="TIN" :value="__('TIN*')" />
                 <x-text-input wire:model='tin' class="block mt-1" type="text" />
                 <x-input-error :messages="$errors->get('tin')" class="mt-2" />
 
             </div>
 
             <div class="flex flex-col mt-4 w-full">
-                <x-input-label for="businessname" :value="__('Business Name')" />
+                <x-input-label for="businessname" :value="__('Business Name*')" />
                 <x-text-input wire:model='business' class="block mt-1" type="text" />
                 <x-input-error :messages="$errors->get('business')" class="mt-2" />
 
             </div>
             <div class="flex flex-col mt-4 w-full">
-                <x-input-label for="tradename" :value="__('Trade Name')" />
+                <x-input-label for="tradename" :value="__('Trade Name*')" />
                 <x-text-input wire:model='trade' class="block mt-1" type="text" />
                 <x-input-error :messages="$errors->get('trade')" class="mt-2" />
             </div>
@@ -53,7 +53,7 @@
     </div>
     <div class="flex flex-col w-full sm:flex-row sm:w-1/2 mt-4 gap-4">
         <div class="flex flex-col w-full">
-            <x-input-label for="loctype" :value="__('Location Type')" />
+            <x-input-label for="loctype" :value="__('Location Type*')" />
             <select wire:model='locType' class="block mt-1 w-full rounded">
                 <option value="" disabled selected>Select Location Type</option>
                 <option value="1">Main</option>
@@ -63,7 +63,7 @@
 
         </div>
         <div class="flex flex-col w-full">
-            <x-input-label for="workforce" :value="__('Total Work Force')" />
+            <x-input-label for="workforce" :value="__('Total Work Force*')" />
             <select wire:model='workForce' class="block mt-1 w-full rounded">
                 <option value="" disabled selected>Select Total Work Force</option>
                 <option value="1">1 - 9 (Micro)</option>
@@ -78,7 +78,7 @@
     <div class="flex flex-col w-full sm:flex-row sm:w-1/2 mt-4 gap-4" x-data="employmentHandler()"
         @change-status.window="updateEmpDesc">
         <div class="flex flex-col w-full">
-            <x-input-label for="empStatus" :value="__('Employment Status')" />
+            <x-input-label for="empStatus" :value="__('Employment Status*')" />
             <select wire:model='empType' class="block mt-1 w-full rounded" x-model="empType"
                 x-on:change="updateEmpDesc">
                 <option value="" disabled selected>Select Employment Type</option>
@@ -90,7 +90,7 @@
 
         </div>
         <div class="flex flex-col w-full">
-            <x-input-label for="empDesc" :value="__('Description')" />
+            <x-input-label for="empDesc" :value="__('Description*')" />
             <select wire:model='empDesc' class="block mt-1 w-full rounded" x-model="empDesc">
                 <option value="" disabled selected>Select Description</option>
                 <template x-for="desc in empDescriptions" :key="desc.value">
@@ -101,7 +101,7 @@
 
         </div>
     </div>
-    <x-input-label for="lineofIndustry" :value="__('Line of Industry')" class="mt-4" />
+    <x-input-label for="lineofIndustry" :value="__('Line of Industry*')" class="mt-4" />
     <div class="flex flex-row w-full">
         <div class="flex-inline mt-2 ">
 
@@ -137,14 +137,14 @@
 
 
     <div class="flex flex-col w-full mt-4">
-        <x-input-label for="presentAddress" :value="__('Address')" />
+        <x-input-label for="presentAddress" :value="__('Address*')" />
         <x-text-input wire:model='address' class="block mt-1 sm:w-2/3" type="text"
             placeholder="HOUSE/BUILDING NO,. STREET, VILLAGE" />
-        <x-input-error :messages="$errors->get('empDescription')" class="mt-2" />
+        <x-input-error :messages="$errors->get('address')" class="mt-2" />
     </div>
     <div class="flex flex-col mt-4 w-full gap-4 sm:w-2/3">
         <div class="flex flex-col">
-            <x-input-label for="province" :value="__('Barangay')" />
+            <x-input-label for="province" :value="__('Barangay*')" />
             <x-text-input wire:model='bar' class="block mt-1 sm:w-2/3" type="text" readonly
                 x-data="" x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')"
                 x-on:focus="$dispatch('open-modal', 'barangay-modal')" />
@@ -152,12 +152,12 @@
         </div>
 
         <div class="flex flex-col">
-            <x-input-label for="province" :value="__('Municipality')" />
+            <x-input-label for="province" :value="__('Municipality*')" />
             <x-text-input wire:model='mun' class="block mt-1 sm:w-2/3" type="text" readonly />
         </div>
 
         <div class="flex flex-col">
-            <x-input-label for="province" :value="__('Province')" />
+            <x-input-label for="province" :value="__('Province*')" />
             <x-text-input wire:model='prov' class="block mt-1 sm:w-2/3" type="text" readonly />
         </div>
     </div>

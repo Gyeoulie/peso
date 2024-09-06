@@ -71,6 +71,13 @@ class Partnerships extends Component
         $this->dispatch('nextStep');
 
     }
+
+    public function prev()
+    {
+        $this->dispatch('prevStep');
+
+    }
+
     public function render()
     {
         return view('livewire.signup.employer.partials.partnerships');
