@@ -17,7 +17,7 @@ class IncompleteUser
             return redirect()->route('fill_employer'); // Route name for employer details
         }
 
-        // If the user type is not 2 or 3, redirect to a default route
-        return redirect()->route('dashboard');
+        return $next($request);
+
     }
 }
