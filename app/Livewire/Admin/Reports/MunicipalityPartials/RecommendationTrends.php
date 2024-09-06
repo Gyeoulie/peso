@@ -69,10 +69,12 @@ class RecommendationTrends extends Component
 
         $jobApplicants = $query->get();
 
-        // Initialize arrays for months and counts
+        // Define month names
         $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        $recommended = array_fill(0, 12, 0); // Initialize array with months
-        $notRecommended = array_fill(0, 12, 0); // Same for not recommended
+
+        // Initialize arrays for recommended and not recommended counts
+        $recommended = array_fill(0, 12, 0);
+        $notRecommended = array_fill(0, 12, 0);
 
         // Populate the counts
         foreach ($jobApplicants as $applicant) {
@@ -84,26 +86,28 @@ class RecommendationTrends extends Component
             }
         }
 
+        // Filter month names to include only selected months
+        $filteredMonthNames = array_filter($monthNames, function ($key) use ($months) {
+            return in_array($key + 1, $months);
+        }, ARRAY_FILTER_USE_KEY);
+
         // Create the multi-line chart model
         $multiLineChartModel = LivewireCharts::multiLineChartModel()
             ->setTitle("Monthly Job Applicant Recommendations for {$year}")
             ->setAnimated(true)
-            ->multiLine() // Ensures that the chart is a multi-line chart
-            ->setSmoothCurve() // Smooth the curves
-            ->setDataLabelsEnabled(true) // Display data labels
+            ->multiLine()
+            ->setSmoothCurve()
+            ->setDataLabelsEnabled(true)
             ->setColors(['#00FF00', '#FF0000']); // Green for RECOMMENDED, Red for NOT RECOMMENDED
 
         // Add data points for each selected month
-        foreach ($monthNames as $index => $monthName) {
-            if (in_array($index + 1, $months)) { // Ensure only selected months are included
-                $multiLineChartModel
-                    ->addSeriesPoint('RECOMMENDED', $monthName, $recommended[$index])
-                    ->addSeriesPoint('NOT RECOMMENDED', $monthName, $notRecommended[$index]);
-            }
+        foreach ($filteredMonthNames as $index => $monthName) {
+            $multiLineChartModel
+                ->addSeriesPoint('RECOMMENDED', $monthName, $recommended[$index])
+                ->addSeriesPoint('NOT RECOMMENDED', $monthName, $notRecommended[$index]);
         }
 
         return $multiLineChartModel
-            ->setAnimated(true)
             ->setYAxisVisible(true)
             ->setDataLabelsEnabled(true)
             ->setJsonConfig([
@@ -114,16 +118,16 @@ class RecommendationTrends extends Component
                 'yaxis.tickAmount' => 1,
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
                 'legend' => [
-                    'position' => 'top', // 'top', 'bottom', 'left', 'right'
-                    'horizontalAlign' => 'center', // Align horizontally at the center
-                    'verticalAlign' => 'middle', // Align vertically at the middle
-                    'fontSize' => '14px', // Font size
-                    'fontFamily' => 'Helvetica, Arial, sans-serif', // Font family
-                    'fontWeight' => 'normal', // Font weight (normal, bold, etc.)
+                    'position' => 'top',
+                    'horizontalAlign' => 'center',
+                    'verticalAlign' => 'middle',
+                    'fontSize' => '14px',
+                    'fontFamily' => 'Helvetica, Arial, sans-serif',
+                    'fontWeight' => 'normal',
                     'labels' => [
-                        'colors' => '#333333', // Legend text color
-                        'useSeriesColors' => true, // Use series colors for legend labels
-                        'formatter' => '(val) => val.toUpperCase()', // Formatter function to modify label text
+                        'colors' => '#333333',
+                        'useSeriesColors' => true,
+                        'formatter' => '(val) => val.toUpperCase()',
                     ],
                 ],
             ]);

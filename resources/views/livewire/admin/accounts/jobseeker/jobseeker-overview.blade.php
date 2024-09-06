@@ -18,9 +18,19 @@
 
                 {{-- DEACTIVATE BUTTON --}}
                 <div class="flex flex-col ml-auto mr-0">
-                    <button type="button"
-                        class="text-red-900 font-bold bg-red-300 hover:bg-red-500 focus:ring-4 focus:ring-red-100 font-medium rounded-lg text-md px-5 py-2.5 me-2 mb-2 focus:outline-none">Deactivate
-                        Account</button>
+                    @if ($jobseeker->user->userstatus == 1)
+                        <button type="button" x-data=""
+                            x-on:click.prevent="$dispatch('open-modal', 'deactivate-modal')"
+                            class="bg-red-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-red-600 hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
+                            Deactivate Account
+                        </button>
+                    @elseif($jobseeker->user->userstatus == 2)
+                        <button type="button" x-data=""
+                            x-on:click.prevent="$dispatch('open-modal', 'reactivate-modal')"
+                            class="bg-green-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-green-600 hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
+                            Reactivate Account
+                        </button>
+                    @endif
                 </div>
 
             </div>
@@ -86,8 +96,16 @@
                     <div class="mt-6 flex flex-wrap gap-4 justify-center">
                         {{-- <a href="#" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                         </a> --}}
-                        <a href="#" class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
-                            Resume</a>
+                        @if ($jobseeker->resume)
+                            <button wire:click.prevent="viewFile({{ $jobseeker->employee_id }}, 1)"
+                                class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
+                                Resume</button>
+                        @else
+                            <button wire:click.prevent="viewFile({{ $jobseeker->employee_id }}, 2)"
+                                class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
+                                Resume</button>
+                        @endif
+
                     </div>
 
                 </div>
@@ -973,8 +991,8 @@
                     </div>
 
                     <x-blue-button x-data=""
-                    x-on:click.prevent="$dispatch('open-modal', 'reset-password-modal')">Reset
-                    Password</x-blue-button>
+                        x-on:click.prevent="$dispatch('open-modal', 'reset-password-modal')">Reset
+                        Password</x-blue-button>
                 </div>
 
             </div>
@@ -1011,8 +1029,8 @@
                                             <div class="flex flex-col items-center justify-center mt-24 mb-24">
                                                 <div class="p-6 bg-gray-100 rounded-full">
                                                     <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        fill="none" viewBox="0 0 24 24">
+                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round"
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
@@ -1065,7 +1083,7 @@
             </div>
 
 
-            
+
 
 
 
@@ -1074,28 +1092,77 @@
 
 
 
-    <x-modal name="confirm-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+
+
+
+    <x-modal name="reactivate-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
             <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Action Confirmation') }}
+                {{ __('Are you sure you want to reactivate this account?') }}
             </h2>
             <hr>
-            <div class="flex flex-col my-4">
-                <div class="flex flex-col mt-4 mb-4 w-full justify-center items-center px-4">
-                    <span class="text-xl font-semibold">Are you sure you want to update this jobseeker's
-                        profile?</span>
+            <div class="flex flex-col mt-2">
 
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label for="remarks" :value="__('Remarks')" />
+                    <textarea wire:model='reactRemarks' rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('reactRemarks')" class="mt-2" />
                 </div>
+
             </div>
-            <div class="mt-6 flex justify-between">
-                <x-secondary-button x-on:click="$dispatch('close-modal', 'confirm-modal')">
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('reactivate')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button wire:loading.attr="disabled" wire:target='saveDetails'
-                    wire:click.prevent="saveDetails" class="ms-3" type="button">
-                    {{ __('Confirm') }}
-                    <div wire:loading.delay.long wire:target="saveDetails" role="status">
+                <x-green-button wire:loading.attr="disabled" wire:click.prevent="statusUser(1)" class="ms-3"
+                    type="button">
+                    {{ __('Activate') }}
+                    <div wire:loading.delay.long wire:target="statusUser(1)" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-green-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <x-modal name="deactivate-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to deactivate this account?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label for="remarks" :value="__('Remarks')" />
+                    <textarea wire:model='deactRemarks' rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('deactRemarks')" class="mt-2" />
+                </div>
+
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('deactivate')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="statusUser(2)" class="ms-3"
+                    type="button">
+                    {{ __('Deactivate') }}
+                    <div wire:loading.delay.long wire:target="statusUser(2)" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -1152,8 +1219,8 @@
 
 
 
-                <x-danger-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled" wire:target='resetPassword'
-                    wire:click.prevent="resetPassword" class="ms-3" type="button">
+                <x-danger-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled"
+                    wire:target='resetPassword' wire:click.prevent="resetPassword" class="ms-3" type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="resetPassword" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
@@ -1172,3 +1239,63 @@
         </div>
     </x-modal>
 </div>
+
+
+
+
+@script
+    <script>
+        Livewire.on('viewFile', event => {
+            // Check if the event is an array and has at least one element
+            if (Array.isArray(event) && event.length > 0) {
+                // Access the first element and then its properties
+                const data = event[0]; // Assuming the data object is the first element
+
+                // Log the entire data object for verification
+                console.log('Data:', data);
+
+                // Extract URL and handle dynamic keys
+                const url = data.url;
+
+                // Ensure URL is present
+                if (url) {
+                    // Create and configure the form element
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.target = '_blank';
+
+                    // Add CSRF token as a hidden input
+                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    // Add all data inputs dynamically
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (key !== 'url') {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            input.value = value;
+                            form.appendChild(input);
+                        }
+                    });
+
+                    // Append form to the body and submit
+                    document.body.appendChild(form);
+                    form.submit();
+
+                    // Clean up by removing the form element
+                    document.body.removeChild(form);
+                } else {
+                    console.error('URL not found in event data');
+                }
+            } else {
+                console.error('Event is not in the expected format');
+            }
+        });
+    </script>
+@endscript

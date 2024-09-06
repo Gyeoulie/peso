@@ -164,7 +164,7 @@ class JobpostApplication extends Component
                 'barangay_id' => $this->barHidden,
                 'job_Duration' => $this->durationPost,
                 'job_Status' => 'PENDING',
-                'peso_municipality_id' => $this->pesoPost,
+                'peso_id' => $this->pesoPost,
             ]);
 
             // Check if job posting was created successfully
@@ -272,7 +272,12 @@ class JobpostApplication extends Component
     public function render()
     {
 
-        $pesoBranches = PESO::get();
+        $user = Auth::user();
+
+        $pesoBranches = PESO::whereHas('partnerships', function ($query) use ($user) {
+            $query->where('partnership_Status', 'APPROVED')
+                ->where('company_id', $user->company->company_id);
+        })->get();
 
         return view('livewire.employer.jobpost.jobpost-application', [
             'pesoBranches' => $pesoBranches,

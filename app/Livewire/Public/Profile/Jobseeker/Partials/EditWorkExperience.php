@@ -16,6 +16,8 @@ class EditWorkExperience extends Component
 
     public $search;
 
+    public $deleteWork;
+
     public function rules()
     {
         return [
@@ -28,6 +30,43 @@ class EditWorkExperience extends Component
         ];
     }
 
+    public function deleteData($id)
+    {
+        $this->reset('deleteWork');
+        $this->deleteWork = $id;
+        $this->dispatch('open-modal', 'delete-workExp-modal');
+    }
+
+    public function deleteRecord()
+    {
+        // Fetch the education record to delete
+        $workExp = Work_Exp::findOrFail($this->deleteWork);
+
+        // Check if the user has only one education record
+
+        DB::beginTransaction();
+
+        try {
+            // Perform the deletion
+            $workExp->delete();
+
+            // Commit the transaction if everything is successful
+            DB::commit();
+
+            // Optionally, close any modals or provide a success message
+            $this->dispatch('close-modal', 'delete-workExp-modal');
+            toastr()->success('Work experience has been successfully deleted!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            toastr()->error('There was an error while deleting the work experience. Please try again later.');
+        }
+
+        // Optionally, reset variables or state after the operation
+        $this->reset('deleteWork');
+        $this->dispatch('close-modal', 'delete-workExp-modal');
+    }
     public function updateSelect($id)
     {
 
@@ -155,7 +194,7 @@ class EditWorkExperience extends Component
         $workexp = Work_Exp::where('employee_id', '=', $this->userID)
             ->orderBy('work_Start', 'desc')
             ->get();
-        $job_positions = Job_Positions::where('position_Title', 'like', '%' . $this->search . '%')->get();
+        $job_positions = Job_Positions::where('position_Status', 1)->where('position_Title', 'like', '%' . $this->search . '%')->get();
 
         return view('livewire.public.profile.jobseeker.partials.edit-work-experience', compact('workexp', 'job_positions'));
     }

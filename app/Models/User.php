@@ -11,7 +11,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Redactors\LeftRedactor;
 
 class User extends Authenticatable implements Auditable
 {
@@ -31,6 +30,9 @@ class User extends Authenticatable implements Auditable
         'email',
         'password',
         'usertype',
+        'userstatus',
+        'description',
+        'disabled_at',
     ];
 
     /**
@@ -50,6 +52,7 @@ class User extends Authenticatable implements Auditable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'disabled_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
 
@@ -73,6 +76,9 @@ class User extends Authenticatable implements Auditable
             'email' => 'Email Address',
             'password' => 'Password',
             'usertype' => 'User Type',
+            'userstatus' => 'Account Status',
+            'description' => 'Status Remarks',
+            'disabled_at' => 'Deactivated At',
             'email_verified_at' => 'Email Verified At',
             'remember_token' => 'Remember Token',
             'deleted_at' => 'Deleted At',

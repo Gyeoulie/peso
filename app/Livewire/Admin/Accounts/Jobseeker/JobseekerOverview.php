@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Accounts\Jobseeker;
 
 use App\Helpers\AuditFormatter;
+use App\Mail\AdminDeactivationNotification;
 use App\Mail\AdminResetPasswordNotification;
 use App\Models\Barangay;
 use App\Models\Education;
@@ -12,6 +13,7 @@ use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use App\Models\Program_Reg;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -36,6 +38,117 @@ class JobseekerOverview extends Component
     public $fname, $lname, $mname, $suffix, $birthdate, $gender, $civilstatus, $religion;
 
     public $agreeBox = false;
+    public $deactRemarks, $reactRemarks;
+
+    public function updatedsearchApplications()
+    {
+        $this->resetPage('applicants'); // Reset pagination for eligibility search
+    }
+
+    public function updatedsearchEvents()
+    {
+        $this->resetPage('history'); // Reset pagination for eligibility search
+    }
+    public function updatedsearchJobs()
+    {
+        $this->resetPage('recommended'); // Reset pagination for eligibility search
+    }
+
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $jobseeker = Employee::findOrFail($this->id);
+
+        if ($jobseeker) {
+            if ($jobseeker->barangay->municipality_id != $user->peso_accounts->peso->municipality_id) {
+                return $this->redirectRoute('dashboard');
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+
+        }
+
+    }
+    public function viewFile($id, $fileToView)
+    {
+
+        $this->dispatch('viewFile', [
+            'url' => route('view.resume'),
+            'emp_id' => $id,
+            'resume_type' => $fileToView,
+        ]);
+
+    }
+    public function statusUser($type)
+    {
+        // Define validation rules and messages based on the type
+        if ($type == 1) {
+            $rules = ['reactRemarks' => 'required|string'];
+            $messages = [
+                'reactRemarks.required' => 'Reactivation remarks are required.',
+                'reactRemarks.string' => 'Reactivation remarks must be a valid string.',
+            ];
+            $this->validate($rules, $messages);
+        } elseif ($type == 2) {
+            $rules = ['deactRemarks' => 'required|string'];
+            $messages = [
+                'deactRemarks.required' => 'Deactivation remarks are required.',
+                'deactRemarks.string' => 'Deactivation remarks must be a valid string.',
+            ];
+            $this->validate($rules, $messages);
+        }
+
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            // Fetch the company and user
+            $jobseeker = Employee::findOrFail($this->id);
+            $user = $jobseeker->user;
+
+            // Check the type and update user status
+            if ($type == 1) {
+                $user->userstatus = 1; // Reactivating
+                $user->description = $this->reactRemarks; // Set the description
+                $user->disabled_at = null;
+                $user->save();
+
+                // Uncomment this line if you want to send the notification
+                Mail::to($user->email)->queue(new AdminDeactivationNotification('reactivation'));
+
+                toastr()->success('Account is successfully reactivated.');
+                $this->closeModal('reactivate');
+
+            } elseif ($type == 2) {
+                $user->userstatus = 2; // Deactivating
+                $user->description = $this->deactRemarks; // Set the description
+                $user->disabled_at = now();
+                $user->save();
+
+                // Send notification email for deactivation
+                Mail::to($user->email)->queue(new AdminDeactivationNotification('deactivation'));
+
+                toastr()->success('Account is successfully deactivated.');
+                $this->closeModal('deactivate');
+            }
+
+            DB::commit(); // Commit the transaction if everything is successful
+
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction if something goes wrong
+
+            // Log the error and show a toastr message
+            // \Log::error('Error updating user status: ' . $e->getMessage());
+            toastr()->error('There was an error processing the request. Please try again.');
+        }
+    }
+
+    public function closeModal($modal)
+    {
+        $this->reset('deactRemarks', 'reactRemarks');
+        $this->dispatch('close-modal', $modal . '-modal');
+    }
 
     public function recommendedJobs($id)
     {
@@ -109,7 +222,7 @@ class JobseekerOverview extends Component
             ')
             ->orderByDesc('job_tags_count')
             ->distinct()
-            ->paginate(10);
+            ->paginate(10, ['*'], 'recommended');
     }
 
     public function applicationHistory($id)
@@ -125,7 +238,7 @@ class JobseekerOverview extends Component
                         });
                 });
             })
-            ->paginate(5);
+            ->paginate(5, ['*'], 'applicants');
     }
 
     public function programHistory($id)
@@ -137,7 +250,7 @@ class JobseekerOverview extends Component
                         ->orWhere('program_Host', 'like', '%' . $this->searchEvents . '%');
                 });
             })
-            ->paginate(10);
+            ->paginate(10, ['*'], 'history');
     }
 
     public function mountFields($jobseeker)
@@ -292,7 +405,7 @@ class JobseekerOverview extends Component
 
         $audits = Audit::where('user_id', $jobseeker->user_id)
             ->latest()
-            ->paginate(5);
+            ->paginate(5, ['*'], 'audits');
 
         $formattedAudits = $audits->map(function ($audit) {
             return AuditFormatter::format($audit);

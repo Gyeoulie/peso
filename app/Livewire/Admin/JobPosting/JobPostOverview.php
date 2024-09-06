@@ -52,6 +52,24 @@ class JobPostOverview extends Component
 
     public $selectedReqPassedId;
 
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $jobpost = Job_Posting::findOrFail($this->id);
+
+        if ($jobpost) {
+            if ($user->peso_accounts->peso_id != $jobpost->peso_id) {
+                return $this->redirectRoute('dashboard');
+
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+
+        }
+
+    }
+
     public function viewFile($reqPassedId)
     {
         $this->selectedReqPassedId = $reqPassedId;
@@ -174,8 +192,13 @@ class JobPostOverview extends Component
 
     public function render()
     {
+        $user = Auth::user();
+
         $jobpost = Job_Posting::with(['job_tags'])->findOrFail($this->id);
 
+        if ($user->peso_accounts->peso_id != $jobpost->peso_id) {
+            return redirect()->back();
+        }
         $matchingEmployees = $this->getMatched($jobpost);
 
         $requirements = Requirements::with([
@@ -186,17 +209,6 @@ class JobPostOverview extends Component
             ->where('requirement_Status', 1)
             ->get();
 
-        // Find applicants that match the job posting criteria
-        // $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
-        //     $query->where('municipality_id', $jobMunicipalityId);
-        // })
-        //     ->whereHas('education', function ($query) use ($jobEducationLevel) {
-        //         $query->where('edu_level', '<=', $jobEducationLevel);
-        //     })
-        //     ->whereHas('job_preference', function ($query) use ($jobTagIds) {
-        //         $query->whereIn('position_id', $jobTagIds);
-        //     })
-        //     ->get();
         return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees', 'requirements'));
     }
 }

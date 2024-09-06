@@ -13,17 +13,45 @@ class EditTrainings extends Component
     public $trainName, $trainStart, $trainEnd, $trainInstitution, $trainCert, $trainStat, $trainingID;
     public $userID;
 
-    // public function rules()
-    // {
-    //     return [
-    //         'trainName' => ['required', 'string'],
-    //         'trainInstitution' => ['required', 'string'],
-    //         'trainCert' => ['required'],
-    //         'trainStart' => ['required'],
-    //         // 'trainEnd' => ['required'],
-    //         'trainStat' => ['required'],
-    //     ];
-    // }
+    public $deleteTraining;
+
+    public function deleteData($id)
+    {
+        $this->reset('deleteTraining');
+        $this->deleteTraining = $id;
+        $this->dispatch('open-modal', 'delete-training-modal');
+    }
+
+    public function deleteRecord()
+    {
+        // Fetch the education record to delete
+        $training = Training::findOrFail($this->deleteTraining);
+
+        // Check if the user has only one education record
+
+        DB::beginTransaction();
+
+        try {
+            // Perform the deletion
+            $training->delete();
+
+            // Commit the transaction if everything is successful
+            DB::commit();
+
+            // Optionally, close any modals or provide a success message
+            $this->dispatch('close-modal', 'delete-training-modal');
+            toastr()->success('Training record has been successfully deleted!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            toastr()->error('There was an error while deleting the training record. Please try again later.');
+        }
+
+        // Optionally, reset variables or state after the operation
+        $this->reset('deleteTraining');
+        $this->dispatch('close-modal', 'delete-training-modal');
+    }
 
     public function save()
     {

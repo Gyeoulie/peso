@@ -32,8 +32,11 @@
                         Contact Details</li>
                     <li :class="currentStep === 3 ? activeTab : inactiveTab"
                         class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                        Requirements</li>
+                        Partnerships</li>
                     <li :class="currentStep === 4 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                        Requirements</li>
+                    <li :class="currentStep === 5 ? activeTab : inactiveTab"
                         class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Certification And Authorization</li>
                 </ul>
@@ -61,12 +64,20 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
+                        <livewire:signup.employer.partials.partnerships />
+
+                    </div>
+
+                    <div x-show="currentStep === 4" class="section comapnyContact-section h-full w-full"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         <livewire:signup.employer.partials.requirements />
 
                     </div>
 
                     {{-- employment status --}}
-                    <div x-show="currentStep === 4" class="section employmentStatus-section h-full w-full"
+                    <div x-show="currentStep === 5" class="section employmentStatus-section h-full w-full"
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>

@@ -66,57 +66,63 @@ class ProgramRegistrantsTrends extends Component
             $query->whereIn(DB::raw('MONTH(program_reg.created_at)'), $months);
         }
 
-        $monthlyData = $query->get()
-            ->keyBy('month');
+        $monthlyData = $query->get();
 
         // Define month names
         $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        $data = array_fill(0, count($monthNames), 0); // Initialize array with months
+
+        // Initialize an empty array for monthly data
+        $data = array_fill(0, 12, 0); // Initialize with 0s for all 12 months
 
         // Populate the counts
-        foreach ($monthlyData as $month => $dataEntry) {
-            if (in_array($month, $months)) {
-                $index = $month - 1; // Adjust index for zero-based array
-                $data[$index] = $dataEntry->total;
-            }
+        foreach ($monthlyData as $dataEntry) {
+            $index = $dataEntry->month - 1; // Adjust index for zero-based array
+            $data[$index] = $dataEntry->total;
         }
 
         // Create the area chart model
         $chart = LivewireCharts::areaChartModel()
-        // ->setTitle("Monthly Program Registrations for Municipality ID {$municipalityId} in {$year}")
+            ->setTitle("Monthly Program Registrations for Municipality ID {$municipalityId} in {$year}")
             ->setAnimated(true)
             ->setSmoothCurve()
             ->setXAxisVisible(true)
-            ->setDataLabelsEnabled(true)
-            ->setXAxisCategories($monthNames)
-            ->setJsonConfig([
-                'chart' => [
-                    'width' => '100%',
-                    'height' => '300px',
-                ],
-                'xaxis' => [
-                    'categories' => $monthNames,
-                ],
-                'dataLabels' => [
-                    'enabled' => true,
-                ],
-                'stroke' => [
-                    'curve' => 'smooth',
-                ],
-                'fill' => [
-                    'opacity' => 0.3, // Adjust the fill opacity
-                ],
-            ]);
+            ->setDataLabelsEnabled(true);
+
+        // Filter month names to include only selected months
+        $filteredMonthNames = array_filter($monthNames, function ($key) use ($months) {
+            return in_array($key + 1, $months);
+        }, ARRAY_FILTER_USE_KEY);
 
         // Add points to the chart for program registrations
-        foreach ($monthNames as $index => $monthName) {
-            if (in_array($index + 1, $months)) { // Ensure only selected months are included
-                $chart->addPoint($monthName, $data[$index]);
-            }
+        foreach ($filteredMonthNames as $index => $monthName) {
+            $chart->addPoint($monthName, $data[$index]);
         }
+
+        // Set X-axis categories to include only selected months
+        $chart->setXAxisCategories($filteredMonthNames);
+
+        $chart->setJsonConfig([
+            'chart' => [
+                'width' => '100%',
+                'height' => '300px',
+            ],
+            'xaxis' => [
+                'categories' => $filteredMonthNames,
+            ],
+            'dataLabels' => [
+                'enabled' => true,
+            ],
+            'stroke' => [
+                'curve' => 'smooth',
+            ],
+            'fill' => [
+                'opacity' => 0.3, // Adjust the fill opacity
+            ],
+        ]);
 
         return $chart;
     }
+
     public function render()
     {
         $programRegistrants = $this->getAreaProgramRegistrationsTrend($this->municipalityID);

@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -69,6 +70,8 @@ class EditDetails extends Component
     // RESUME
     public $newResume;
 
+    public $deleteEli, $deleteLic;
+
     //RULES
     public function rules()
     {
@@ -97,6 +100,50 @@ class EditDetails extends Component
 
     }
 
+    public function deleteData($type, $id)
+    {
+        $this->reset('deleteEli', 'deleteLic');
+
+        if ($type == 1) {
+            $this->deleteEli = $id;
+            $this->dispatch('open-modal', 'delete-eligibility-modal');
+
+        } elseif ($type == 2) {
+            $this->deleteLic = $id;
+            $this->dispatch('open-modal', 'delete-license-modal');
+
+        }
+
+    }
+
+    public function deleteRecord($type)
+    {
+        DB::beginTransaction();
+        try {
+            if ($type == 1) {
+                $eligibility = Eligibility::findOrFail($this->deleteEli);
+
+                $eligibility->delete();
+
+                $this->dispatch('close-modal', 'delete-eligibility-modal');
+                toastr()->success('Eligibilty record has been successfully deleted!');
+
+            } elseif ($type == 2) {
+                $license = License::findOrFail($this->deleteLic);
+                $license->delete();
+                $this->dispatch('close-modal', 'delete-license-modal');
+                toastr()->success('License record has been successfully deleted!');
+
+            }
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error while deleting the record. Please try again later.');
+        }
+
+        $this->reset('deleteEli', 'deleteLic');
+    }
     public function saveResume()
     {
         $this->validate([
@@ -383,54 +430,6 @@ class EditDetails extends Component
 
         $this->closeModal('skills');
     }
-
-    // public function removeSkills($identifier)
-    // {
-    //     if (is_numeric($identifier)) {
-    //         // Handle removal by skills_id
-    //         $skill = Skills::withTrashed()
-    //             ->where('skills_id', $identifier)
-    //             ->where('employee_id', $this->empID)
-    //             ->first(['skills_id', 'skill_Type']); // Retrieve the first matching record
-
-    //         if ($skill) {
-    //             // Add to removal list if it exists in the original list
-    //             if (in_array(strtoupper($skill->skill_Type), array_column($this->originalSkills, 'skill_Type'))) {
-    //                 $this->skillsToRemove[] = $identifier;
-    //             }
-
-    //             // Update display list
-    //             $this->displaySkills = array_filter($this->displaySkills, function ($dis) use ($identifier) {
-    //                 return $dis['skills_id'] !== (int) $identifier;
-    //             });
-
-    //             // Remove from skillsToAdd if present
-    //             $this->skillsToAdd = array_filter($this->skillsToAdd, function ($dis) use ($skill) {
-    //                 return $dis['skill_Type'] !== $skill->skill_Type;
-    //             });
-
-    //             // Ensure that skillsToRestore does not include the removed skill
-    //             $this->skillsToRestore = array_filter($this->skillsToRestore, function ($disID) use ($skill) {
-    //                 return $disID !== $skill->skills_id;
-    //             });
-    //         }
-    //     } else {
-    //         // Handle removal by skill_Type
-    //         $skillType = strtoupper($identifier);
-
-    //         // Remove from skillsToAdd if present
-    //         $this->skillsToAdd = array_filter($this->skillsToAdd, function ($dis) use ($skillType) {
-    //             return $dis['skill_Type'] !== $skillType;
-    //         });
-
-    //         // Remove from displaySkills
-    //         $this->displaySkills = array_filter($this->displaySkills, function ($dis) use ($skillType) {
-    //             return $dis['skill_Type'] !== $skillType;
-    //         });
-    //     }
-
-    //     $this->closeModal('skills');
-    // }
 
     //SET VARIABLES
     public function setVar($id, $name)
@@ -977,6 +976,30 @@ class EditDetails extends Component
             DB::rollBack(); // Rollback transaction on other errors
 
             toastr()->error('There was an error, please try again later');
+        }
+    }
+    public function removePosition($positionId)
+    {
+        DB::beginTransaction();
+
+        try {
+            // Perform the delete operation
+            Job_Preference::where('job_preference_id', $positionId)
+                ->where('employee_id', $this->empID)
+                ->delete();
+
+            // Commit the transaction if the operation is successful
+            DB::commit();
+
+            toastr()->success('Job Preference record has been deleted.');
+        } catch (\Exception $e) {
+            // Rollback the transaction if an error occurs
+            DB::rollBack();
+
+            toastr()->error('There was an error deleting the job preference record. Please try again later.');
+
+            // Optionally log the exception for debugging
+            Log::error('Error removing job preference: ' . $e->getMessage());
         }
     }
 

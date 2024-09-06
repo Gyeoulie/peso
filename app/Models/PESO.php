@@ -45,6 +45,11 @@ class PESO extends Model implements Auditable
         return $this->hasMany(Job_Posting::class, 'peso_id');
     }
 
+    public function partnerships()
+    {
+        return $this->hasMany(Partnerships::class, 'peso_id');
+    }
+
     public static function fieldMappings()
     {
         return [

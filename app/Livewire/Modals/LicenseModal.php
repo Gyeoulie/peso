@@ -106,7 +106,7 @@ class LicenseModal extends Component
     public function render()
     {
 
-        $license = License_Type::where('license_Name', 'like', '%' . $this->search . '%')
+        $license = License_Type::where('license_Status', 1)->where('license_Name', 'like', '%' . $this->search . '%')
             ->get();
 
         return view('livewire.modals.license-modal', compact('license'));

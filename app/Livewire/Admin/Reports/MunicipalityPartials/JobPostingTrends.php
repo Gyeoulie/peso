@@ -49,33 +49,24 @@ class JobPostingTrends extends Component
         $query = Job_Posting::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
             ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
                 $query->where('municipality_id', $municipalityId);
-            });
+            })
+            ->whereYear('created_at', $year) // Apply year filter
+            ->whereIn(DB::raw('MONTH(created_at)'), $months) // Apply month filter
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->orderBy(DB::raw('MONTH(created_at)'));
 
-        // Apply year filter if selectedYear is set
-        if ($this->selectedYear) {
-            $query->whereYear('created_at', $year);
-        }
-
-        // Apply months filter if selectedMonths is set
-        if (!empty($this->selectedMonths)) {
-            $query->whereIn(DB::raw('MONTH(created_at)'), $months);
-        }
-
-        $monthlyPostings = $query->groupByRaw('MONTH(created_at)')
-            ->orderByRaw('MONTH(created_at)')
-            ->get()
-            ->keyBy('month');
+        $monthlyPostings = $query->get();
 
         // Define month names
         $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        $monthlyData = array_fill(0, count($monthNames), 0); // Initialize array with months
+
+        // Initialize an empty array for monthly data
+        $monthlyData = array_fill(0, 12, 0); // Initialize with 0s for all 12 months
 
         // Populate the counts
-        foreach ($monthlyPostings as $month => $data) {
-            if (in_array($month, $months)) {
-                $index = $month - 1; // Adjust index for zero-based array
-                $monthlyData[$index] = $data->total;
-            }
+        foreach ($monthlyPostings as $data) {
+            $index = $data->month - 1; // Adjust index for zero-based array
+            $monthlyData[$index] = $data->total;
         }
 
         // Create the line chart model
@@ -84,23 +75,29 @@ class JobPostingTrends extends Component
             ->setAnimated(true)
             ->setSmoothCurve()
             ->setXAxisVisible(true)
-            ->setDataLabelsEnabled(true)
-            ->setXAxisCategories($monthNames)
-            ->setJsonConfig([
-                'chart' => [
-                    'width' => '100%',
-                    'height' => '300px',
-                ],
-                'yaxis.tickAmount' => 1,
-                'yaxis.labels.formatter' => '(val) => Math.floor(val)',
-            ]);
+            ->setDataLabelsEnabled(true);
+
+        // Filter month names to include only selected months
+        $filteredMonthNames = array_filter($monthNames, function ($key) use ($months) {
+            return in_array($key + 1, $months);
+        }, ARRAY_FILTER_USE_KEY);
 
         // Add points to the chart
-        foreach ($monthNames as $index => $monthName) {
-            if (in_array($index + 1, $months)) { // Ensure only selected months are included
-                $chart->addPoint($monthName, $monthlyData[$index]);
-            }
+        foreach ($filteredMonthNames as $index => $monthName) {
+            $chart->addPoint($monthName, $monthlyData[$index]);
         }
+
+        // Set X-axis categories to include only selected months
+        $chart->setXAxisCategories($filteredMonthNames);
+
+        $chart->setJsonConfig([
+            'chart' => [
+                'width' => '100%',
+                'height' => '300px',
+            ],
+            'yaxis.tickAmount' => 1,
+            'yaxis.labels.formatter' => '(val) => Math.floor(val)',
+        ]);
 
         return $chart;
     }

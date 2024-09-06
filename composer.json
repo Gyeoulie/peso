@@ -17,11 +17,14 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "3.5",
+        "masbug/flysystem-google-drive-ext": "^2.3",
         "owen-it/laravel-auditing": "^13.6",
         "php-flasher/flasher-laravel": "^1.15",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/laravel-backup": "^9.0",
         "spatie/simple-excel": "^3.6",
         "wireui/heroicons": "^2.6",
+        "wnx/laravel-backup-restore": "^1.4",
         "yoeunes/toastr": "^2.3"
     },
     "require-dev": {

@@ -80,29 +80,38 @@
                                 </div>
                             @endif --}}
 
-                        @if (Auth::check() && auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
+                        @php
+                            $currentDate = now(); // Get the current date and time
+                            $deadline = $ProgramInfo->program_Deadline; // Deadline from your data
+                        @endphp
 
+                        @if (!Auth::check() || (Auth::check() && auth()->user()->usertype <= 4))
                             <div class="flex flex-col items-center justify-center mt-5 mb-5">
-                                @if ($isRegistered === false)
-                                    <x-blue-button class="w-[350px] h-[40px] justify-center" x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'register-modal')">
-
-                                        PRE REGISTER
-
-                                    </x-blue-button>
-                                    <h1 class="mt-2">Registration ends: <span
-                                            class="text-red-500 text-md font-black">{{ $ProgramInfo->program_Deadline->format('F j, Y') }}</span>
-                                    </h1>
-                                @elseif($isRegistered === true)
-                                    <h1 class="text-xl font-semibold text-blue-500">You have already registered for this
-                                        program.
+                                @if ($currentDate->lessThan($deadline))
+                                    <!-- Check if current date is before the deadline -->
+                                    @if (!$isRegistered)
+                                        <x-blue-button class="w-[350px] h-[40px] justify-center"
+                                            wire:click.prevent='registerValidate'>
+                                            PRE REGISTER
+                                        </x-blue-button>
+                                        <h1 class="mt-2">
+                                            Registration ends: <span
+                                                class="text-red-500 text-md font-black">{{ $deadline->format('F j, Y') }}</span>
+                                        </h1>
+                                    @elseif (Auth::check() && $isRegistered)
+                                        <h1 class="text-xl font-semibold text-blue-500">
+                                            You have already registered for this program.
+                                        </h1>
+                                    @endif
+                                @else
+                                    <!-- Content to show after the deadline -->
+                                    <h1 class="text-xl font-semibold text-red-500">
+                                        Registration has ended.
                                     </h1>
                                 @endif
                             </div>
-
-
-
                         @endif
+
                         <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                         {{-- @endif --}}
                         <div class="flex flex-col w-full px-5 mt-5">
@@ -447,6 +456,46 @@
                             <span class="sr-only">Loading...</span>
                         </div>
                     </x-green-button>
+                </div>
+            </div>
+        </x-modal>
+
+        <x-modal name="login-modal" focusable>
+            <div
+                class="w-full max-w-2xl mx-auto px-6 py-8 bg-gradient-to-r from-blue-50 to-white rounded-lg shadow-xl border border-gray-200">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-gray-300 pb-2">
+                    {{ __('Action Required') }}
+                </h2>
+                <div class="flex flex-col items-center text-center mb-8">
+                    <h1 class="text-2xl font-extrabold text-gray-800 mb-4">You need to be logged in to apply.</h1>
+                    <p class="text-gray-600 text-lg">Please log in to register. If you don't have an
+                        account, you can register as well.</p>
+                </div>
+                <div class="flex justify-between mt-6 space-x-4">
+                    <x-secondary-button x-on:click="$dispatch('close-modal', 'login-modal')"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg shadow-sm transition-transform transform hover:scale-105"
+                        type="button">
+                        {{ __('Cancel') }}
+                    </x-secondary-button>
+
+                    <div class="flex space-x-4">
+                        <a href="{{ route('login') }}">
+                            <x-green-button
+                                class="bg-green-500 hover:bg-green-600 text-white rounded-lg shadow-md transition-transform transform hover:scale-105"
+                                type="button">
+                                {{ __('Log In') }}
+                            </x-green-button>
+                        </a>
+
+                        <a href="{{ route('register') }}">
+                            <x-primary-button x-on:click="$dispatch('register-modal')"
+                                class="bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition-transform transform hover:scale-105"
+                                type="button">
+                                {{ __('Register') }}
+                            </x-primary-button>
+                        </a>
+
+                    </div>
                 </div>
             </div>
         </x-modal>

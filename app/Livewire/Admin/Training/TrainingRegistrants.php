@@ -7,6 +7,7 @@ use App\Models\Industry_preference;
 use App\Models\Job_Preference;
 use App\Models\Programs;
 use App\Models\Program_Reg;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
@@ -30,6 +31,27 @@ class TrainingRegistrants extends Component
 
     protected $listeners = ['qrCodeScanned' => 'qrCodeScanned'];
 
+    public function updatedsearch()
+    {
+        $this->resetPage('');
+    }
+
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $programInfo = Programs::findOrFail($this->id);
+
+        if ($programInfo) {
+            if ($user->peso_accounts->peso_id != $programInfo->peso_id) {
+                return $this->redirectRoute('dashboard');
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+        }
+
+    }
+
     public function getJobseeker($id)
     {
         $this->selectedJobseeker = $id;
@@ -41,11 +63,12 @@ class TrainingRegistrants extends Component
     {
         $this->filter = $filter;
         $this->reset('sortDate');
+        $this->resetPage('');
     }
     public function updateSort($sort)
     {
         $this->sortDate = $sort;
-
+        $this->resetPage('');
     }
 
     public function scanQr()

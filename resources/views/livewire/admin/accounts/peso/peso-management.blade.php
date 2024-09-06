@@ -100,7 +100,7 @@
                                 <th scope="col" class="px-6 py-3">
                                     Status
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-6 py-3 text-center">
                                     Created
                                 </th>
                                 <th scope="col" class="px-6 py-3">

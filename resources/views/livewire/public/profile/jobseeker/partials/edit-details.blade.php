@@ -694,6 +694,7 @@
                                                         </div>
                                                         <div x-data="{ tooltip: 'Delete Eligibility' }">
                                                             <button x-tooltip="tooltip" type="button"
+                                                                wire:click.prevent="deleteData(1, {{ $eli->eligibility_id }})"
                                                                 class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                 <svg class="h-5 w-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -838,6 +839,7 @@
                                                         </div>
                                                         <div x-data="{ tooltip: 'Delete License' }">
                                                             <button x-tooltip="tooltip" type="button"
+                                                                wire:click.prevent="deleteData(2, {{ $empLicense->license_id }})"
                                                                 class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                 <svg class="h-5 w-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -928,11 +930,10 @@
                                 </x-primary-button>
 
                             </div>
-
                             <div
-                                class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (!empty($employeeDetails->industry_preference) && count($employeeDetails->industry_preference) > 0) h-[40px] @endif ">
+                                class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($employeeDetails->industry_preference)) h-[40px] @endif ">
 
-                          
+
 
 
                                 @foreach ($employeeDetails->industry_preference as $industryPref)
@@ -1291,7 +1292,7 @@
     <x-modal name="language-modal" focusable>
         <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Add Language/Dialect Record') }}
+                {{ __('Language/Dialect Record') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2" x-data="{ selectedLanguage: @entangle('selectedLanguage') }">
@@ -1398,6 +1399,78 @@
     <livewire:modals.job-position-modal />
     <livewire:modals.industry-modal />
 
+    <x-modal name="delete-eligibility-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Action Confirmation') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col justify-center items-center my-12">
+
+                <h1 class="text-2xl font-bold">Are you sure you want to delete this eligibility record?</h1>
+
+
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close-modal', 'delete-eligibility-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="deleteRecord(1)" class="ms-3"
+                    type="button">
+                    {{ __('Confirm') }}
+                    <div wire:loading.delay.long wire:target="deleteRecord(1)" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
+    <x-modal name="delete-license-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Action Confirmation') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col justify-center items-center my-12">
+
+                <h1 class="text-2xl font-bold">Are you sure you want to delete this license record?</h1>
+
+
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close-modal', 'delete-license-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="deleteRecord(2)" class="ms-3"
+                    type="button">
+                    {{ __('Confirm') }}
+                    <div wire:loading.delay.long wire:target="deleteRecord(2)" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
 
 </div>
 @script

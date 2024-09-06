@@ -17,6 +17,10 @@ class Requirements extends Component
     use WithPagination;
     use WithoutUrlPagination;
 
+    public function updatedsearch()
+    {
+        $this->resetPage('');
+    }
     public $search;
     public $filter = '';
     public $rows = 10;

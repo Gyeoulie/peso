@@ -79,7 +79,9 @@ class EmploymentTrends extends Component
 
         // Define month names
         $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        $monthlyData = array_fill(0, count($monthNames), 0); // Initialize array with months
+
+        // Initialize array with months
+        $monthlyData = array_fill(0, 12, 0);
 
         // Populate the counts
         foreach ($monthlyHiredCounts as $month => $data) {
@@ -89,6 +91,11 @@ class EmploymentTrends extends Component
             }
         }
 
+        // Filter month names to include only selected months
+        $filteredMonthNames = array_filter($monthNames, function ($key) use ($months) {
+            return in_array($key + 1, $months);
+        }, ARRAY_FILTER_USE_KEY);
+
         // Create the line chart model
         $chart = new LineChartModel();
         $chart->setAnimated(true)
@@ -97,7 +104,7 @@ class EmploymentTrends extends Component
             ->setSmoothCurve()
             ->setXAxisVisible(true)
             ->setDataLabelsEnabled(true)
-            ->setXAxisCategories($monthNames)
+            ->setXAxisCategories($filteredMonthNames)
             ->setJsonConfig([
                 'chart' => [
                     'width' => '100%',
@@ -108,14 +115,13 @@ class EmploymentTrends extends Component
             ]);
 
         // Add points to the chart
-        foreach ($monthNames as $index => $monthName) {
-            if (in_array($index + 1, $months)) { // Ensure only selected months are included
-                $chart->addPoint($monthName, $monthlyData[$index]);
-            }
+        foreach ($filteredMonthNames as $index => $monthName) {
+            $chart->addPoint($monthName, $monthlyData[$index]);
         }
 
         return $chart;
     }
+
     public function render()
     {
 

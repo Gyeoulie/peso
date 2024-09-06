@@ -22,6 +22,7 @@ class Job_Industry extends Model implements Auditable
     protected $fillable = [
         'industry_Title',
         'industry_Code',
+        'industry_Status'
     ];
 
     /**
@@ -54,6 +55,7 @@ class Job_Industry extends Model implements Auditable
         'industry_id' => 'Industry ID',
         'industry_Title' => 'Industry Title',
         'industry_Code' => 'Industry Code',
+        'industry_Status' => 'Industry Status',
     ];
 }
 

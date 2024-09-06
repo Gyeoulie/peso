@@ -20,7 +20,7 @@
                 </div>
                 <div class="flex flex-row gap-3 mr-3">
 
-                    <x-dropdown align="right" width="36">
+                    <x-dropdown align="left" width="36">
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
@@ -63,7 +63,7 @@
                     </x-dropdown>
 
 
-                    <x-dropdown align="right" width="36">
+                    <x-dropdown align="left" width="36">
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
@@ -101,7 +101,7 @@
                 </div>
 
             </div>
-            <div class="flex">
+            <div class="flex overflow-x-auto no-scrollbar">
                 @if ($applications->isEmpty())
                     <div class="flex w-full">
                         <div class="w-full rounded-lg p-10">
@@ -123,7 +123,7 @@
 
                     </div>
                 @else
-                    <div class="flex flex-row sm:flex-col gap-4  sm:overflow-visible	 w-full" x-data="{
+                    <div class="flex flex-row sm:flex-col gap-4  w-full" x-data="{
                         selectedJob: @entangle('selectedJob'),
                     }">
                         @foreach ($applications as $data)
@@ -324,11 +324,6 @@
                                     {{ $applicationInfo->job_posting->barangay->municipality->municipality_Name }},
                                     {{ $applicationInfo->job_posting->barangay->municipality->province->province_Name }}
                                 </p>
-                            </div>
-
-                            <div class="flex flex-row">
-                                <li class="mb-2 font-bold">Date Applied:</li>
-                                <p class="ms-4">{{ $applicationInfo->created_at->format('F j, Y') }}</p>
                             </div>
 
                             <div class="flex flex-row ">

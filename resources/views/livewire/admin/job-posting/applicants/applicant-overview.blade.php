@@ -313,8 +313,7 @@
 
                         <div class="flex flex-col w-full gap-5">
                             <div>
-                                <x-input-label for="fname"> </i> Job Position
-                                    Tags
+                                <x-input-label for="fname"> </i> Job Preferences
                                 </x-input-label>
                                 {{-- BADGE CONTAINER --}}
                                 <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
@@ -346,6 +345,18 @@
 
 
                     </div>
+                    @if ($applicant->peso_Status != 'PENDING' && $applicant->peso_Remarks)
+                        <hr class="my-6 border-t border-gray-300">
+
+                        <div class="flex flex-col  mt-2">
+                            <h1 class="mb-2 font-bold">PESO Remarks -
+                                {{ $applicant->peso_accounts->peso_accounts_Fname }}
+                                {{ $applicant->peso_accounts->peso_accounts_Lname }}</h1>
+                            <textarea id="message" rows="6"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                                placeholder="Company remarks..." maxlength="600" readonly>{{ $applicant->peso_Remarks }}</textarea>
+                        </div>
+                    @endif
 
                     {{-- BUTTONS --}}
                     <div class="flex flex-row mt-4 justify-center w-full">

@@ -8,10 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('layouts.app')]
 class TrainingView extends Component
 {
-
-    #[Layout('layouts.app')]
 
     public $id;
     public $agreeBox = false;
@@ -43,6 +42,37 @@ class TrainingView extends Component
 
         }
 
+    }
+
+    public function registerValidate()
+    {
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            // Open the login modal if the user is not logged in
+            $this->dispatch('open-modal', 'login-modal');
+            return; // Exit the method
+        }
+
+        // Get the job posting and user
+        $training = Programs::find($this->id); // Use find() for a single record
+        $user = Auth::user();
+        $userMunicipalityId = $user->employee->barangay->municipality_id;
+
+        if (!$training) {
+            // Handle the case where the job posting is not found
+            toastr()->error('Training not found.');
+            return;
+        }
+
+        $trainingMunicipalityId = $training->peso->municipality_id;
+
+        if ($userMunicipalityId == $trainingMunicipalityId) {
+            // Open the apply modal if the user's municipality matches the job posting's municipality
+            $this->dispatch('open-modal', 'register-modal');
+        } else {
+            // Show an error if the user's municipality does not match
+            toastr()->error('This event is only available to ' . $training->peso->municipality_Name . ' residents.');
+        }
     }
 
     public function render()

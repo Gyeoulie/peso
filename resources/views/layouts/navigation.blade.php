@@ -23,17 +23,17 @@
                                 {{ __('Profile') }}
                             </x-nav-link>
                         @endif
-                        @if (auth()->user()->usertype == 5)
+                        @if (auth()->user()->usertype == 6)
                             <x-nav-link wire:navigate :href="route('employer.profile', ['id' => auth()->user()->company->company_id])" :active="request()->routeIs('employer.profile')">
                                 {{ __('Profile') }}
                             </x-nav-link>
                         @endif
-                        @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                        @if (auth()->user()->usertype >= 6 && auth()->user()->usertype < 8)
                             <x-nav-link wire:navigate :href="route('employer.dashboard')" :active="request()->routeIs('employer.dashboard')">
                                 {{ __('Job Postings') }}
                             </x-nav-link>
                         @endif
-                        @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
+                        @if (auth()->user()->usertype >= 6 && auth()->user()->usertype < 8)
                             <x-nav-link wire:navigate :href="route('jobpost.applicants')" :active="request()->routeIs('jobpost.applicants')">
                                 {{ __('Job Applicants') }}
                             </x-nav-link>

@@ -22,6 +22,11 @@ class TrainingList extends Component
 
     public $filter, $sortType, $sortDate;
 
+    public function updatedsearch()
+    {
+        $this->resetPage('');
+    }
+
     public function updateFilter($filter)
     {
         $this->filter = $filter;

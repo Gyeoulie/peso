@@ -31,6 +31,15 @@ class JobseekersList extends Component
 
     public $filterOption;
 
+    public function updatedsearchJobseekers()
+    {
+        $this->resetPage('jobseeker');
+    }
+    public function updatedsearchCompany()
+    {
+        $this->resetPage('company');
+    }
+
     public function mount()
     {
         $this->startYear = 2024;
@@ -103,6 +112,7 @@ class JobseekersList extends Component
     {
         $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountJobseekerfilter', 'mountSelectedMonths', 'mountSelectedYear',
             'Gender', 'Age', 'EmpStatus', 'jobseekerfilter', 'selectedMonths', 'selectedYear');
+        $this->resetPage('jobseeker');
 
     }
 
@@ -115,6 +125,8 @@ class JobseekersList extends Component
         $this->selectedMonths = $this->mountSelectedMonths;
         $this->selectedYear = $this->mountSelectedYear;
 
+        $this->resetPage('jobseeker');
+
         $this->dispatch('close-modal', 'filter-jobseekers-modal');
     }
 
@@ -123,6 +135,7 @@ class JobseekersList extends Component
         $this->companyMun = $this->mountCompanyMun;
         $this->munYear = $this->mountMunYear;
         $this->munMonths = $this->mountMunMonths;
+        $this->resetPage('company');
 
         $this->dispatch('close-modal', 'filter-employers-modal');
 
@@ -130,7 +143,7 @@ class JobseekersList extends Component
     public function resetMunFilter()
     {
         $this->reset('companyMun', 'munYear', 'munMonths', 'mountCompanyMun', 'mountMunYear', 'mountMunMonths');
-
+        $this->resetPage('company');
     }
 
     private function getJobseekers($id)
@@ -298,8 +311,8 @@ class JobseekersList extends Component
     public function render()
     {
 
-        $jobseekers = $this->getJobseekers($this->municipalityID)->paginate(10);
-        $employers = $this->getEmployers($this->municipalityID)->paginate(10);
+        $jobseekers = $this->getJobseekers($this->municipalityID)->paginate(10, ['*'], 'jobseeker');
+        $employers = $this->getEmployers($this->municipalityID)->paginate(10, ['*'], 'company');
 
         // dd($employers);
 

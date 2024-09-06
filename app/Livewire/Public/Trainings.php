@@ -20,6 +20,16 @@ class Trainings extends Component
 
     public $sortTypeHistory, $sortDateHistory;
 
+    public function updatedsearch()
+    {
+        $this->resetPage('events');
+    }
+
+    public function updatedsearchHistory()
+    {
+        $this->resetPage('trainings');
+    }
+
     public function mount()
     {
         $user = Auth::user();
@@ -56,6 +66,8 @@ class Trainings extends Component
     public function updateFilter($value)
     {
         $this->filter = $value;
+        $this->resetPage('events');
+
     }
     public function updateSort($value, $type)
     {
@@ -66,6 +78,7 @@ class Trainings extends Component
             $this->sortDate = $value;
         }
         $this->reset('search');
+        $this->resetPage('events');
 
     }
     public function updateSortHistory($value, $type)
@@ -77,6 +90,7 @@ class Trainings extends Component
             $this->sortDateHistory = $value;
         }
         $this->reset('searchHistory');
+        $this->resetPage('trainings');
 
     }
 
@@ -228,7 +242,7 @@ class Trainings extends Component
             $query->orderBy('created_at', $this->sortDate);
         }
 
-        $programList = $query->paginate(10);
+        $programList = $query->paginate(10, ['*'], 'events');
 
         if ($user->employee) {
             // Start the query for Program_Reg
@@ -260,7 +274,7 @@ class Trainings extends Component
             }
 
             // Paginate the results
-            $programHistory = $query->paginate(10);
+            $programHistory = $query->paginate(10, ['*'], 'trainings');
         }
 
         return view('livewire.public.trainings', compact('programList', 'programHistory'));

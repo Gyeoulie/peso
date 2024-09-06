@@ -256,11 +256,14 @@
                                                     @if ($data->program_Status === 'ACTIVE')
                                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                                                         ACTIVE
+                                                    @elseif ($data->program_Status === 'CLOSED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
+                                                        CLOSED
                                                     @elseif ($data->program_Status === 'COMPLETED')
                                                         <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
                                                         COMPLETED
                                                     @elseif($data->program_Status === 'CANCELED')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
                                                         CANCELLED
                                                     @endif
                                                 </div>

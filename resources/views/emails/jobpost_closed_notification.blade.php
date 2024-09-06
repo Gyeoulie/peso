@@ -11,7 +11,7 @@ We hope this message finds you well. We are writing to inform you that your job 
 - **Municipality:** {{ $PESO }}
 - **Current Status:** Closed
 
-Please be reminded that you have **two weeks** from the date of this email to finalize and complete any remaining transactions, such as interviews or hiring decisions, related to this job post. After this period, the job post will be marked as **completed**.
+Please be reminded that you have **three weeks** from the date of this email to finalize and complete any remaining transactions, such as interviews or hiring decisions, related to this job post. After this period, the job post will be marked as **completed**.
 
 We encourage you to ensure that all necessary actions are taken within this timeframe to avoid any inconvenience. If you have any questions or need further assistance, please contact us.
 

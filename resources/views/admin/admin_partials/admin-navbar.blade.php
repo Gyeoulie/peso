@@ -15,6 +15,7 @@
                         <path
                             d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                     </svg>
+
                     <span class="ms-3">Dashboard</span>
                 </a>
             </li>
@@ -30,6 +31,21 @@
                             d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
                     </svg>
                     <span class="flex-1 ms-3 whitespace-nowrap">Job Posting</span>
+                </a>
+            </li>
+            <li>
+                <a wire:navigate href="{{ route('admin-partnership') }}"
+                    :class="{{ request()->routeIs('admin-partnership') }}
+                        ?
+                        activeNav : inactiveNav"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 ">
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Partnerships</span>
                 </a>
             </li>
             <li>
@@ -270,14 +286,21 @@
 
                 </button>
                 <ul id="dropdown-5"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-audits') ? 'block' : 'hidden' }}">
-
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-audits', 'admin-peso') ? 'block' : 'hidden' }}">
+                    <li>
+                        <a wire:navigate href="{{ route('admin-peso') }}"
+                            :class="{{ request()->routeIs('admin-peso') }} ? activeNav : inactiveNav"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">PESO
+                            Branch</a>
+                    </li>
                     <li>
                         <a wire:navigate href="{{ route('admin-audits') }}"
                             :class="{{ request()->routeIs('admin-audits') }} ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Audit
                             Log</a>
                     </li>
+
+
 
                 </ul>
             </li>
@@ -337,6 +360,7 @@
                         class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full ">Pro</span>
                 </a>
             </li>
+
             <li>
                 <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg group">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 "
