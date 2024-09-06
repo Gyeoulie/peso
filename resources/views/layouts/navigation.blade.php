@@ -18,6 +18,10 @@
                         <x-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
+                        
+                        <x-nav-link wire:navigate :href="route('trainings')" :active="request()->routeIs('trainings')">
+                            {{ __('Trainings') }}
+                        </x-nav-link>
                         @if (auth()->user()->usertype == 4)
                             <x-nav-link wire:navigate :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
                                 {{ __('Profile') }}
@@ -45,9 +49,6 @@
                             </x-nav-link>
                         @endif
 
-                        <x-nav-link wire:navigate :href="route('trainings')" :active="request()->routeIs('trainings')">
-                            {{ __('Trainings') }}
-                        </x-nav-link>
                         @if (auth()->user()->usertype >= 8)
                             <x-nav-link wire:navigate :href="route('admin')" :active="Route::is('admin*')">
                                 {{ __('Admin Tools') }}
@@ -58,6 +59,9 @@
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link wire:navigate :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link wire:navigate :href="route('trainings')" :active="request()->routeIs('trainings')">
+                            {{ __('Trainings') }}
                         </x-nav-link>
                     </div>
                 @endif

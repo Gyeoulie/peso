@@ -1,4 +1,4 @@
-<div wire:poll class="md:mx-10">
+<div  class="md:mx-10">
     <div class="container py-8">
 
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">

@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'verifiedOrPublic' => \App\Http\Middleware\EnsureUserIsVerified::class,
         'check.user.status' => \App\Http\Middleware\RedirectIfDisabled::class,
         'usertype' => \App\Http\Middleware\CheckUserType::class,
+        'check.jobpost' => \App\Http\Middleware\Routes\CheckJobPost::class,
     ];
 }

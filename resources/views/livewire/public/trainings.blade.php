@@ -56,7 +56,7 @@
             {{-- FILTER BUTTON --}}
 
             <div class="flex flex-row gap-2">
-                @if (auth()->user()->usertype != 5)
+                @if (Auth::check() && auth()->user()->usertype != 5)
                     <x-dropdown align="left" width="36">
                         <x-slot name="trigger">
                             <button
@@ -267,10 +267,14 @@
             @endif
 
 
-
+            <div>
+                {{ $programList->links() }}
+            </div>
         </div>
+
+
     </div>
-    @if (auth()->user()->usertype == 4)
+    @if (Auth::check() && auth()->user()->usertype == 4)
         <div class="grid grid-cols-4 gap-10" x-show="openTab === 2"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
             x-transition:enter-end="opacity-100 scale-100" x-cloak>

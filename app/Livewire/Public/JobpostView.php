@@ -51,6 +51,20 @@ class JobpostView extends Component
     public $option;
     public $resume;
 
+    public function mount()
+    {
+        $JobPost = Job_Posting::withCount('hiredApplicants')->find($this->id);
+        if ($JobPost) {
+            if (Auth::user()->usertype <= 6 && $JobPost->job_Status == 'PENDING') {
+                return redirect()->route('dashboard');
+            }
+        } else {
+            return redirect()->route('dashboard');
+
+        }
+
+    }
+
     public function applyValidate()
     {
         // Check if the user is authenticated
@@ -172,9 +186,6 @@ class JobpostView extends Component
         }
 
         if (Auth::check()) {
-            if (Auth::user()->usertype <= 6 && $JobPost->job_Status == 'PENDING') {
-                return redirect()->route('dashboard');
-            }
 
             if (Auth::user()->usertype === 4) {
                 $isApplied = Job_Applicants::where('job_id', $this->id)

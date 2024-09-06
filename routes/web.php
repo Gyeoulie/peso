@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Error\ErrorController;
 use App\Http\Controllers\PDF\PDFView;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
@@ -312,3 +313,5 @@ Route::get('test-backup', function () {
     ]);
     dd($exitCode);
 });
+
+Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
