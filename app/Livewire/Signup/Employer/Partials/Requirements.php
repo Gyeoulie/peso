@@ -17,8 +17,7 @@ class Requirements extends Component
     public function mount()
     {
         // Fetch all requirements
-        $requirements = ModelsRequirements::all();
-
+        $requirements = ModelsRequirements::where('requirement_Status', 1)->get();
         // Initialize the $req array with requirement IDs
         foreach ($requirements as $requirement) {
             $this->req[$requirement->requirement_id] = null;
