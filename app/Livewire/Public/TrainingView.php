@@ -15,6 +15,18 @@ class TrainingView extends Component
     public $id;
     public $agreeBox = false;
 
+    public function mount()
+    {
+        $ProgramInfo = Programs::withCount('attendedJobseekers')->findOrFail($this->id);
+
+        if (!$ProgramInfo) {
+            return $this->redirectRoute('dashboard');
+        } else if ($ProgramInfo->program_Status != 'ACTIVE') {
+            return $this->redirectRoute('dashboard');
+
+        }
+
+    }
     public function register()
     {
 

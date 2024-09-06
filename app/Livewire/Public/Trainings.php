@@ -10,10 +10,15 @@ use App\Models\Program_Reg;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class Trainings extends Component
 {
+
+    use WithPagination;
+    use WithoutUrlPagination;
     public $ticket = [];
 
     public $search, $searchHistory, $sortType, $sortDate, $filter;
@@ -244,37 +249,40 @@ class Trainings extends Component
 
         $programList = $query->paginate(10, ['*'], 'events');
 
-        if ($user->employee) {
-            // Start the query for Program_Reg
-            $query = Program_Reg::where('employee_id', $user->employee->employee_id)
-                ->where(function ($query) {
-                    $query->whereHas('programs', function ($query) {
-                        // Search by program title or host
-                        $query->where('program_Title', 'like', '%' . $this->searchHistory . '%')
-                            ->orWhere('program_Host', 'like', '%' . $this->searchHistory . '%');
-                    })
-                        ->orWhereHas('programs.program_tags.job_positions', function ($query) {
-                            // Search by job position title
-                            $query->where('position_Title', 'like', '%' . $this->searchHistory . '%');
+        if (Auth::check()) {
+
+            if ($user->employee) {
+                // Start the query for Program_Reg
+                $query = Program_Reg::where('employee_id', $user->employee->employee_id)
+                    ->where(function ($query) {
+                        $query->whereHas('programs', function ($query) {
+                            // Search by program title or host
+                            $query->where('program_Title', 'like', '%' . $this->searchHistory . '%')
+                                ->orWhere('program_Host', 'like', '%' . $this->searchHistory . '%');
                         })
-                        ->orWhereHas('programs.job_industry', function ($query) {
-                            // Search by industry title
-                            $query->where('industry_Title', 'like', '%' . $this->searchHistory . '%');
-                        });
-                });
+                            ->orWhereHas('programs.program_tags.job_positions', function ($query) {
+                                // Search by job position title
+                                $query->where('position_Title', 'like', '%' . $this->searchHistory . '%');
+                            })
+                            ->orWhereHas('programs.job_industry', function ($query) {
+                                // Search by industry title
+                                $query->where('industry_Title', 'like', '%' . $this->searchHistory . '%');
+                            });
+                    });
 
-            // Apply sorting conditions
-            if ($this->sortTypeHistory) {
-                $query->whereHas('programs', function ($query) {
-                    $query->where('program_Type', $this->sortTypeHistory);
-                });
-            }
-            if ($this->sortDateHistory) {
-                $query->orderBy('created_at', $this->sortDateHistory);
-            }
+                // Apply sorting conditions
+                if ($this->sortTypeHistory) {
+                    $query->whereHas('programs', function ($query) {
+                        $query->where('program_Type', $this->sortTypeHistory);
+                    });
+                }
+                if ($this->sortDateHistory) {
+                    $query->orderBy('created_at', $this->sortDateHistory);
+                }
 
-            // Paginate the results
-            $programHistory = $query->paginate(10, ['*'], 'trainings');
+                // Paginate the results
+                $programHistory = $query->paginate(10, ['*'], 'trainings');
+            }
         }
 
         return view('livewire.public.trainings', compact('programList', 'programHistory'));

@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class Dashboard extends Component
 {
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination;
 
     public $eduLevels = [
         '1' => 'GRADE I',
@@ -55,9 +56,9 @@ class Dashboard extends Component
     public $sort = 'Newest';
     public $pagination = 5;
 
-    public function updatedsearch()
+    public function updatedSearch()
     {
-        $this->resetPage('');
+        $this->resetPage();
     }
     public function mount()
     {
@@ -82,13 +83,14 @@ class Dashboard extends Component
     {
         $this->filter = $value;
         $this->sort = 'Newest';
-        $this->resetPage('');
+        $this->resetPage();
     }
 
     public function updateSort($value)
     {
         $this->sort = $value;
-        $this->resetPage('');
+        $this->resetPage();
+
     }
 
     private function getHighestEducationLevel()
@@ -169,7 +171,10 @@ class Dashboard extends Component
                     })
                     ->orWhereHas('job_industry', function ($q) {
                         $q->where('industry_Title', 'like', '%' . $this->search . '%');
-                    });
+                    })->orWhereHas('peso.municipality', function ($q) {
+                    $q->where('municipality_name', 'like', '%' . $this->search . '%');
+                });
+
             });
         }
 
@@ -236,25 +241,28 @@ class Dashboard extends Component
         $query = Announcements::query();
 
         if ($pesoId) {
-            $query->where('peso_id', $pesoId)
-                ->where('announcement_Status', 'ACTIVE');
-        }
+            $query->where('peso_id', $pesoId);
 
-        return $query->latest()->limit(5)->get();
+        }
+        return $query->where('announcement_Status', 'ACTIVE')->latest()->limit(5)->get();
     }
 
-    public function setAnnouncements($user)
+    public function setAnnouncements($user = null)
     {
-        if ($user->employee) {
+        // Check if a user is provided and authenticated
+        if ($user && $user->employee) {
+            // Fetch PESO ID based on employee's municipality
             $peso = PESO::where('municipality_id', $user->employee->barangay->municipality_id)->first();
-            $pesoId = $peso ? $peso->id : null; // Ensure $pesoId is set or null
-        } elseif ($user->peso_accounts) {
+            $pesoId = $peso ? $peso->id : null;
+        } elseif ($user && $user->peso_accounts) {
+            // Fetch PESO ID based on user's PESO account
             $pesoId = $user->peso_accounts->peso_id;
         } else {
-            $pesoId = null; // No specific PESO ID, fetch all announcements
+            // If no user or not logged in, set PESO ID to null and fetch all announcements
+            $pesoId = null;
         }
 
-        // Optionally return the announcements if you need to
+        // Return announcements based on the PESO ID or fetch all if no specific PESO ID
         return $this->getAnnouncements($pesoId);
     }
 

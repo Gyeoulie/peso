@@ -7,12 +7,30 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+
+    /**
+     * The Artisan commands provided by your application.
+     *
+     * @var array
+     */
+    protected $commands = [
+        \App\Console\Commands\JobPost\CloseExpiredJobPostings::class,
+        \App\Console\Commands\JobPost\CompleteJobPostings::class,
+        \App\Console\Commands\JobPost\NotifyCompletionDeadline::class,
+        \App\Console\Commands\ProcessClosedJobPosting::class,
+        \App\Console\Commands\Training\CloseExpiredTrainings::class,
+
+    ];
     /**
      * Define the application's command schedule.
      */
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('app:close-expired-job-postings')->dailyAt('00:00');
+        $schedule->command('app:complete-job-postings')->dailyAt('00:00');
+        $schedule->command('app:notify-completion-deadline')->dailyAt('00:00');
+        $schedule->command('app:close-expired-trainings')->dailyAt('00:00');
     }
 
     /**
@@ -20,7 +38,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

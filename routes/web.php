@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Error\ErrorController;
 use App\Http\Controllers\PDF\PDFView;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
@@ -85,13 +86,13 @@ Route::get('/employer/details', EmployerInformation::class)->name('fill_employer
 
 //------------------------------ PUBLIC ------------------------------
 
-Route::get('/dashboard', Dashboard::class)->middleware(['verifiedOrPublic', 'check.user.status'])->name('dashboard');
-Route::get('/trainings', Trainings::class)->middleware(['verifiedOrPublic', 'check.user.status'])->name('trainings');
-
-Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
-Route::get('/announcements/{id}', AnnouncementView::class)->name('announcement.show');
-Route::get('/training/{id}', TrainingView::class)->name('training.show');
-
+Route::middleware(['auth', 'verifiedOrPublic', 'check.user.status', 'usertype:4,5,6,7,8,9,10,11'])->group(function () {
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/trainings', Trainings::class)->name('trainings');
+    Route::get('/jobpost/{id}', JobpostView::class)->name('jobpost.show');
+    Route::get('/announcements/{id}', AnnouncementView::class)->name('announcement.show');
+    Route::get('/training/{id}', TrainingView::class)->name('training.show');
+});
 //------------------------------ PUBLIC - PROFILE ------------------------------
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11'])->group(function () {
     Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
@@ -305,10 +306,12 @@ Route::get('upload', function (Request $request) {
 Route::get('test-backup', function () {
     $exitCode = Artisan::call('backup:restore', [
         '--disk' => 'local', // Use 'local' since the file is saved locally
-        '--backup' => 'peso/2024-09-06-01-44-04.zip' , // Path within the local disk
+        '--backup' => 'peso/2024-09-06-01-44-04.zip', // Path within the local disk
         '--connection' => 'mysql', // Database connection
         '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
         '--reset' => true,
     ]);
     dd($exitCode);
 });
+
+Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');

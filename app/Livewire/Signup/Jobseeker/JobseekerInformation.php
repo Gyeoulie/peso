@@ -16,6 +16,7 @@ use App\Models\Training;
 use App\Models\Work_Exp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -49,6 +50,15 @@ class JobseekerInformation extends Component
 
             DB::beginTransaction();
 
+            $imgtempPath = $allData['pimage'];
+
+            // Define the new file name and path for storage
+            $imgnewFileName = basename($imgtempPath);
+            $imgfinalPath = 'images/user_data/' . $imgnewFileName;
+
+            // Move the file to the final storage location
+            Storage::disk('public')->move($imgtempPath, $imgfinalPath);
+
             $employee = Employee::create([
                 'user_id' => $user->id,
                 'fname' => $allData['fname'],
@@ -66,7 +76,7 @@ class JobseekerInformation extends Component
                 'tinnum' => $allData['tin'],
                 'empstatus' => $allData['empStatus'],
                 'empstatusdesc' => $allData['empDescription'],
-                'pimg' => $allData['pimage'],
+                'pimg' => $imgfinalPath,
             ]);
 
             if ($employee->employee_id) {

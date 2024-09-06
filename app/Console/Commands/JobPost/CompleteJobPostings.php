@@ -78,10 +78,35 @@ class CompleteJobPostings extends Command
         })->toArray();
 
         // Update applicants to REJECTED
+        // Update applicants to REJECTED
         Job_Applicants::whereIn('job_id', $completedJobPostings)
             ->whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED'])
-            ->update(['applicant_Status' => 'REJECTED']);
+            ->update([
+                'applicant_Status' => 'REJECTED',
+                'applicant_Remarks' => 'Job Posting Completed',
+            ]);
+        // Log the audit for job applicants
+        foreach ($affectedApplicants as $applicant) {
 
+            $oldValues = [
+                'applicant_Status' => $applicant->applicant_Status,
+                'applicant_Remarks' => $applicant->applicant_Remarks,
+            ];
+
+            CustomAuditLogger::log(
+                Job_Applicants::class,
+                $applicant->applicant_id,
+                'updated',
+                $oldValues, // Old values
+                [
+                    'applicant_Status' => 'REJECTED',
+                    'applicant_Remarks' => 'Job Posting Completed',
+                ], // New values
+                0// System or user ID
+            );
+            Mail::to($applicant->employee->user->email)->queue(new JobApplicationExpiredNotification($applicant));
+
+        }
         // Log the audit for job applicants
         foreach ($affectedApplicants as $applicant) {
             CustomAuditLogger::log(
