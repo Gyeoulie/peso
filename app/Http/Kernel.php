@@ -69,4 +69,6 @@ class Kernel extends HttpKernel
         'usertype' => \App\Http\Middleware\CheckUserType::class,
         'check.jobpost' => \App\Http\Middleware\Routes\CheckJobPost::class,
     ];
+
+    
 }

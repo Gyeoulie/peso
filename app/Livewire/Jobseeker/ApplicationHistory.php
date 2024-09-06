@@ -2,13 +2,17 @@
 
 namespace App\Livewire\Jobseeker;
 
+use App\Mail\ApplicationAccepted;
+use App\Mail\ApplicationCompleted;
 use App\Models\Employee;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -77,17 +81,17 @@ class ApplicationHistory extends Component
                             'empstatus' => 1,
                         ]);
                     }
+                    Mail::to($applicant->employee->user->email)
+                        ->queue(new ApplicationCompleted($applicant));
+                    Mail::to($applicant->employee->user->email)
+                        ->queue(new ApplicationAccepted($applicant));
 
                     // Check remaining slots in the job posting
                     $jobPosting = Job_Posting::find($applicant->job_id);
 
-                    if ($jobPosting) {
-                        if ($jobPosting->slotsLeft() <= 0) {
-                            // Mark the job posting as closed if no slots are left
-                            $jobPosting->update([
-                                'job_Status' => 'CLOSED', // Assuming 'CLOSED' is the status for closed job postings
-                            ]);
-                        }
+                    if ($jobPosting && $jobPosting->slotsLeft() <= 0) {
+                        // Dispatch the command to handle the job posting closure and notifications
+                        Artisan::call('jobposting:process', ['jobId' => $applicant->job_id]);
                     }
 
                     // Commit the transaction
@@ -109,7 +113,7 @@ class ApplicationHistory extends Component
                 // Rollback the transaction if an error occurs
                 DB::rollBack();
 
-                toastr()->error('Error in updating, please try again later.');
+                toastr()->error( $e->getMessage());
                 // Optionally, log the exception
                 Log::error('Error handling response: ' . $e->getMessage());
             }

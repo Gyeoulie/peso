@@ -74,7 +74,7 @@ class ApplicantName extends Component
 
         $this->validate($rules, $messages);
 
-        $imgPath = $this->pimage->store('images/user_data', 'public');
+        $imgPath = $this->pimage->store('temp/user_data', 'public');
 
         $this->dispatch('handleStepData', $this->stepNumber, [
             'fname' => $this->fname,

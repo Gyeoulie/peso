@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class Dashboard extends Component
 {
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination;
 
     public $eduLevels = [
         '1' => 'GRADE I',
@@ -55,9 +56,9 @@ class Dashboard extends Component
     public $sort = 'Newest';
     public $pagination = 5;
 
-    public function updatedsearch()
+    public function updatedSearch()
     {
-        $this->resetPage('');
+        $this->resetPage();
     }
     public function mount()
     {
@@ -82,13 +83,14 @@ class Dashboard extends Component
     {
         $this->filter = $value;
         $this->sort = 'Newest';
-        $this->resetPage('');
+        $this->resetPage();
     }
 
     public function updateSort($value)
     {
         $this->sort = $value;
-        $this->resetPage('');
+        $this->resetPage();
+
     }
 
     private function getHighestEducationLevel()
@@ -169,7 +171,10 @@ class Dashboard extends Component
                     })
                     ->orWhereHas('job_industry', function ($q) {
                         $q->where('industry_Title', 'like', '%' . $this->search . '%');
-                    });
+                    })->orWhereHas('peso.municipality', function ($q) {
+                    $q->where('municipality_name', 'like', '%' . $this->search . '%');
+                });
+
             });
         }
 

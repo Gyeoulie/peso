@@ -17,7 +17,7 @@ class TrainingView extends Component
 
     public function mount()
     {
-        $ProgramInfo = Programs::withCount('attendedJobseekers')->find($this->id);
+        $ProgramInfo = Programs::withCount('attendedJobseekers')->findOrFail($this->id);
 
         if (!$ProgramInfo) {
             return $this->redirectRoute('dashboard');
