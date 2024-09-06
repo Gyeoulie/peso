@@ -81,13 +81,6 @@ class EmployerInformation extends Component
                     ]);
                 }
 
-                foreach ($allData['partnershipData'] as $partnership) {
-                    Company_Industry_Line::create([
-                        'company_id' => $employer->company_id, // Assuming 'employee_id' is the foreign key column
-                        'peso_id' => $partnership['peso_id'],
-                    ]);
-                }
-
                 foreach ($allData['reqData'] as $reqData) {
                     // Get the temporary file path
                     $tempPath = $reqData['temp_path'];
@@ -134,6 +127,8 @@ class EmployerInformation extends Component
                     Storage::disk('public')->delete($tempPath);
                 }
             }
+
+            dd($e->getMessage());
             toastr()->error('Error in updating user details, please try again later');
 
         }
