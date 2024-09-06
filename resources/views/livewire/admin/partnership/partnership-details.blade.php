@@ -367,7 +367,7 @@
                     wire:loading.attr="disabled" class="ms-3" type="button">
 
 
-                    {{ __('Approve Job Posting') }}
+                    {{ __('Approve Partnership') }}
 
                     <div wire:loading.delay.long wire:target='updatePartnership' role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"

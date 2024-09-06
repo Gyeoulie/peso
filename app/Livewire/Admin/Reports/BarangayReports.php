@@ -46,7 +46,7 @@ class BarangayReports extends Component
 
     public function updatedsearchJobseekers()
     {
-        $this->resetPage('');
+        $this->resetPage();
     }
 
     public function changeYear($year)

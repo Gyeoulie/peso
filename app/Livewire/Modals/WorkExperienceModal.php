@@ -15,6 +15,7 @@ class WorkExperienceModal extends Component
 
     #[Modelable]
     public $workExperienceData = [];
+    
 
     public function save()
     {

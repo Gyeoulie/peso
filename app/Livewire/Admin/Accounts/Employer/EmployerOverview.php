@@ -38,7 +38,7 @@ class EmployerOverview extends Component
 
     public function updatedsearchJobs()
     {
-        $this->resetPage(''); // Reset pagination for eligibility search
+        $this->resetPage(); // Reset pagination for eligibility search
     }
 
     public function mount()

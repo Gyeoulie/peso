@@ -13,6 +13,11 @@ class JobPositionModal extends Component
     use WithPagination, WithoutUrlPagination;
     public $search;
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
     public function positionSelect($id)
     {
         $this->dispatch('positionSelect', id: $id);

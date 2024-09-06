@@ -2,12 +2,12 @@
     <h1 class="text-2xl font-bold">Personal Information</h1>
     <div class="flexflex-col sm:flex-row gap-4 w-full mt-5">
         <div class="flex flex-col w-full">
-            <x-input-label for="presentAddress" :value="__('Present Address')" />
+            <x-input-label for="presentAddress" :value="__('Present Address*')" />
             <x-text-input wire:model='address' class="block mt-1 w-full" type="text" />
             <x-input-error :messages="$errors->get('address')" class="mt-2" />
         </div>
         <div class="flex flex-col w-full">
-            <x-input-label for="city" :value="__('Barangay')" />
+            <x-input-label for="city" :value="__('Barangay*')" />
             <x-text-input wire:model='bar' class="block mt-1 w-full" type="text" readonly x-data=""
                 x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')"
                 x-on:focus="$dispatch('open-modal', 'barangay-modal')" />
@@ -16,17 +16,17 @@
     </div>
     <div class="flex flex-col sm:flex-row gap-4 mt-4">
         <div class="flex flex-col w-full">
-            <x-input-label for="city" :value="__('Municipality')" />
+            <x-input-label for="city" :value="__('Municipality*')" />
             <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
         </div>
         <div class="flex flex-col w-full">
-            <x-input-label for="province" :value="__('Province')" />
+            <x-input-label for="province" :value="__('Province*')" />
             <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
         </div>
     </div>
     <div class="flex flex-col sm:flex-row gap-4 mt-4">
         <div class="flex flex-col w-full">
-            <x-input-label for="civilstatus" :value="__('Civil Status')" />
+            <x-input-label for="civilstatus" :value="__('Civil Status*')" />
             <select wire:model='civilstatus' class="block mt-1 w-full rounded">
                 <option value="" disabled selected>Select Civil Status</option>
                 <option value="1">Single</option>
@@ -88,7 +88,7 @@
 
     <div class="flex flex-col sm:flex-row gap-4 mt-4">
         <div class="flex flex-col w-full">
-            <x-input-label for="phone" :value="__('Cellphone No.')" />
+            <x-input-label for="phone" :value="__('Cellphone No.*')" />
             <x-text-input wire:model='phone' class="block mt-1 w-full" type="tel" />
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>

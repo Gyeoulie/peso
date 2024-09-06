@@ -13,6 +13,11 @@ class BarangayModal extends Component
 
     public $search;
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
     public function barSelect($id)
     {
 

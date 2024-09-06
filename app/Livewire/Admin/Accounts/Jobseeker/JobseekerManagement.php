@@ -19,13 +19,13 @@ class JobseekerManagement extends Component
     public $userFilter = 'ALL';
     public function updatedsearchUsers()
     {
-        $this->resetPage(''); // Reset pagination for eligibility search
+        $this->resetPage(); // Reset pagination for eligibility search
     }
 
     public function updateUserFilter($filter)
     {
         $this->userFilter = $filter;
-        $this->resetPage(''); // Reset pagination for eligibility search
+        $this->resetPage(); // Reset pagination for eligibility search
     }
 
     public function render()

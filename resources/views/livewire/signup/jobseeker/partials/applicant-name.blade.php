@@ -2,7 +2,7 @@
     <h1 class="text-2xl font-bold">Applicant Name</h1>
     <div class="flex flex-col items-center mt-5">
         <div class="flex flex-col items-center">
-            <x-input-label for="image" :value="__('Upload Image')" />
+            <x-input-label for="image" :value="__('Upload Profile Image*')" />
             <div
                 class="bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0 grow-0">
                 <!-- Display uploaded image here -->
@@ -33,13 +33,13 @@
 
     <div class="flex flex-col sm:flex-row mt-4 gap-4 w-full">
         <div class="flex flex-col w-full">
-            <x-input-label for="fname" :value="__('First Name')" />
+            <x-input-label for="fname" :value="__('First Name*')" />
             <x-text-input wire:model='fname' class="block mt-1 w-full" type="text" />
             <x-input-error :messages="$errors->get('fname')" class="mt-2" />
 
         </div>
         <div class="flex flex-col  w-full">
-            <x-input-label for="lname" :value="__('Last Name')" />
+            <x-input-label for="lname" :value="__('Last Name*')" />
             <x-text-input wire:model='lname' class="block mt-1 w-full" type="text" />
             <x-input-error :messages="$errors->get('lname')" class="mt-2" />
         </div>
@@ -73,12 +73,12 @@
     </div>
     <div class="flex flex-col sm:flex-row mt-4 gap-4">
         <div wire:model='bday' class="flex flex-col w-full">
-            <x-input-label for="birthdate" :value="__('Birthdate')" />
+            <x-input-label for="birthdate" :value="__('Birthdate*')" />
             <x-text-input class="block mt-1 w-full" type="date" />
             <x-input-error :messages="$errors->get('bday')" class="mt-2" />
         </div>
         <div class="flex flex-col w-full">
-            <x-input-label for="gender" :value="__('Gender')" />
+            <x-input-label for="gender" :value="__('Gender*')" />
             <select wire:model='gender' class="block mt-1 w-full rounded">
                 <option value="" disabled selected>Select Gender</option>
                 <option value="1">Male</option>
