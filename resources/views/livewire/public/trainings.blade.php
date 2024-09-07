@@ -213,11 +213,12 @@
                     <a href="{{ route('training.show', ['id' => $data->program_id]) }}"
                         class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
                         <div>
-                            {{-- <div class="relative"> --}}
-                            <div class="w-full h-64 overflow-hidden">
-                                <img class="w-full h-full object-cover"
-                                    src="{{ asset('storage/' . $data->program_pubmat) }}"
-                                    alt="prog-{{ $data->program_id }}">
+                            <div class="relative">
+                                <div class="w-full h-64 overflow-hidden">
+                                    <img class="w-full h-full object-cover"
+                                        src="{{ asset('storage/' . $data->program_pubmat) }}"
+                                        alt="prog-{{ $data->program_id }}">
+                                </div>
                                 <div
                                     class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 transition duration-500 ease-in-out">
                                     {{ $data->program_Type }}
@@ -260,7 +261,8 @@
                                             d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                     </svg>
 
-                                    <span class="ml-1">PESO {{ $data->peso->municipality->municipality_Name }}</span>
+                                    <span class="ml-1">PESO
+                                        {{ $data->peso->municipality->municipality_Name }}</span>
                                 </span>
                             </div>
                         </div>

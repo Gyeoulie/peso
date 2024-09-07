@@ -17,7 +17,11 @@
     @else
         <div class="flex flex-row justify-between mx-auto sm:mx-12 py-2 mt-4">
             <div>
-                <h1 class="text-lg sm:text-2xl font-semibold">Recommended Trainings</h1>
+                @if (Auth::check() && Auth::user()->usertype == 4)
+                    <h1 class="text-lg sm:text-2xl font-semibold">Recommended Trainings</h1>
+                @else
+                    <h1 class="text-lg sm:text-2xl font-semibold">Available Trainings</h1>
+                @endif
             </div>
             <div class="flex items-end">
                 <a wire:navigate href="{{ route('trainings') }}"
@@ -64,7 +68,7 @@
         </div>
     @endif
 
-    <div wire:poll class="flex mx-auto sm:mx-12 py-2 ">
+    <div class="flex mx-auto sm:mx-12 py-2 ">
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0 w-full">
 
             {{-- MAIN BAR FOR JOB POST --}}
@@ -328,7 +332,7 @@
 
 
             {{-- SIDE BAR --}}
-            @if (Auth::check() && auth()->user()->usertype == 5)
+            @if (Auth::check() && (auth()->user()->usertype == 5 || auth()->user()->usertype == 6))
                 <div class="col-span-4 sm:col-span-3">
                     <div class="bg-white shadow rounded-lg p-4">
                         <div class="p-3 text-gray-900 text-center w-full">
@@ -337,11 +341,11 @@
                                 @if (empty($formattedNotifications))
                                     <div class="flex flex-col items-center justify-center  mt-12 mb-12">
                                         <div class="p-6 bg-gray-100 rounded-full">
-                                            <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                            <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
                                             </svg>
 
                                         </div>
@@ -390,41 +394,64 @@
                 <div class="col-span-4 sm:col-span-3">
                     <div class="text-gray-900 text-center w-full">
                         <h1 class="font-bold text-2xl">ANNOUNCEMENTS</h1>
-                        <div class="mt-2 flex flex-row sm:flex-col gap-4 overflow-x-auto no-scrollbar">
-                            @foreach ($announcements as $data)
-                                <a wire:navigate
-                                    href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}">
-                                    <div class="flex justify-center items-center p-6">
-                                        <!-- Centering wrapper -->
-                                        <div
-                                            class="relative flex flex-col max-w-md w-auto sm:w-full overflow-hidden rounded-lg bg-white text-gray-700 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg hover:bg-gray-100">
-                                            <div class="relative w-full overflow-hidden rounded-t-lg">
-                                                <img src="{{ asset('storage/' . $data->announcement_pubmat) }}"
-                                                    alt="announcement-{{ $data->announcement_id }}"
-                                                    class="object-cover w-full h-20 sm:h-60 rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-110" />
-                                            </div>
-                                            <div class="p-4">
-                                                <h4
-                                                    class="text-xl font-semibold text-blue-gray-900 transition-colors duration-300 ease-in-out hover:text-blue-700">
-                                                    {{ Str::limit(strip_tags($data->announcement_Title), 80, '...') }}
-                                                </h4>
-                                            </div>
-                                            <div class="flex items-center justify-between p-4">
-                                                <p class="text-xs sm:text-sm font-normal text-gray-600">
-                                                    PESO {{ $data->peso->municipality->municipality_Name }}
-                                                </p>
-                                                <p class="text-xs sm:text-sm font-normal text-gray-600">
-                                                    {{ $data->created_at->format('F j, Y') }}
+                        <div class = "flex flex-col items-center justify-center mt-4">
+                            @if ($announcements->isEmpty())
+                                <div class="flex flex-col items-center justify-center mt-12 mb-12">
+                                    <div
+                                        class="p-6 bg-white rounded-full my-12 transition-transform transform hover:scale-110">
+                                        <svg class="w-36 h-36 text-black" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46" />
+                                        </svg>
 
-                                                </p>
-                                            </div>
-                                        </div>
+
                                     </div>
-                                </a>
-                            @endforeach
+                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                        No New Announcements!
+                                    </p>
+                                </div>
+                            @else
+                                <div
+                                    class="mt-2 flex flex-row sm:flex-col  gap-4 overflow-x-auto sm:overflow-visible no-scrollbar">
+                                    @foreach ($announcements as $data)
+                                        <a wire:navigate
+                                            href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
+                                            class="flex-shrink-0 w-full sm:w-full">
+                                            <div
+                                                class="relative flex flex-col w-full max-w-sm h-96 overflow-hidden rounded-lg bg-white text-gray-700 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                                                <div class="relative w-full h-56 overflow-hidden rounded-t-lg">
+                                                    <img src="{{ asset('storage/' . $data->announcement_pubmat) }}"
+                                                        alt="announcement-{{ $data->announcement_id }}"
+                                                        class="object-cover w-full h-full rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-110" />
+                                                </div>
+                                                <div class="flex flex-col p-4  flex-grow">
+                                                    <h4
+                                                        class="text-lg font-semibold text-blue-gray-900 transition-colors duration-300 ease-in-out hover:text-blue-700 mb-2">
+                                                        {{ Str::limit(strip_tags($data->announcement_Title), 80, '...') }}
+                                                    </h4>
+                                                    <div
+                                                        class="flex items-end justify-between text-xs font-normal text-gray-600 mt-auto">
+                                                        <p class="truncate">PESO
+                                                            {{ $data->peso->municipality->municipality_Name }}</p>
+                                                        <p class="truncate">{{ $data->created_at->format('F j, Y') }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
+
+
+
+
+
 
 
         </div>

@@ -11,13 +11,17 @@ use Livewire\Component;
 class PesoProfile extends Component
 {
 
-
     public $id;
 
     public function render()
     {
 
-        $pesoInfo = PESO::findOrFail($this->id);
+    $pesoInfo = PESO::find($this->id);
+        if ($pesoInfo) {
+            dd('nice');
+        } else {
+            dd("notfound");
+        }
         $pesoAnnouncements = Announcements::where('peso_id', $this->id)
             ->where('announcement_Status', 'ACTIVE')->get();
 

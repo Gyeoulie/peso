@@ -80,13 +80,15 @@
             </div>
 
             @if (Auth::check() && auth()->user()->usertype > 3)
-                <div class="hidden sm:flex mr-1 ml-auto  w-40 lg:w-96">
+                @if (auth()->user()->usertype != 5)
+                    <div class="hidden sm:flex mr-1 ml-auto  w-40 lg:w-96">
 
 
-                    <livewire:components.profile-search />
+                        <livewire:components.profile-search />
 
 
-                </div>
+                    </div>
+                @endif
 
                 <!-- Settings Dropdown -->
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -207,13 +209,16 @@
                         {{ __('Admin Tools') }}
                     </x-responsive-nav-link>
                 @endif
-                <div class="flex px-4 ">
+
+                @if (auth()->user()->usertype != 5)
+                    <div class="flex px-4 ">
 
 
 
-                    <livewire:components.profile-search />
+                        <livewire:components.profile-search />
 
-                </div>
+                    </div>
+                @endif
 
             </div>
 
