@@ -286,7 +286,7 @@
 
                 </button>
                 <ul id="dropdown-5"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-audits', 'admin-peso', 'admin.backups') ? 'block' : 'hidden' }}">
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-audits', 'admin-peso', 'admin-backups') ? 'block' : 'hidden' }}">
                     <li>
                         <a wire:navigate href="{{ route('admin-peso') }}"
                             :class="{{ request()->routeIs('admin-peso') }} ? activeNav : inactiveNav"
@@ -300,8 +300,8 @@
                             Log</a>
                     </li>
                     <li>
-                        <a wire:navigate href="{{ route('admin.backups') }}"
-                            :class="{{ request()->routeIs('admin.backups') }} ? activeNav : inactiveNav"
+                        <a wire:navigate href="{{ route('admin-backups') }}"
+                            :class="{{ request()->routeIs('admin-backups') }} ? activeNav : inactiveNav"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Backups</a>
                     </li>
 
