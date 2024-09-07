@@ -42,7 +42,7 @@ class PersonalInformation extends Component
             'religion' => 'required',
             'phone' => 'required|regex:/^09\d{9}$/',
             'tin' => 'nullable|digits:9|unique:employee,tinnum',
-            'height' => 'nullable|numeric|min:1',
+            'height' => 'nullable|numeric|min:1|max:3',
         ];
 
         $messages = [
@@ -59,6 +59,8 @@ class PersonalInformation extends Component
             'tin.digits' => 'The TIN must be 11 digits long.',
             'height.numeric' => 'The height must be a number.',
             'height.min' => 'The height must be valid.',
+            'height.max' => 'The height must have only 3 digits.',
+
         ];
 
         $this->validate($rules, $messages);

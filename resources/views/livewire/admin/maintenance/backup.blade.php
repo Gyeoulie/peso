@@ -47,6 +47,10 @@
                                             class="text-blue-500 hover:text-blue-700">
                                             Restore
                                         </button>
+                                        <button wire:click="restoreDatabaseFirebase('{{ $file['path'] }}')"
+                                        class="text-red-500 hover:text-blue-700">
+                                        Restore
+                                    </button>
                                     </td>
                                 </tr>
                             @empty
