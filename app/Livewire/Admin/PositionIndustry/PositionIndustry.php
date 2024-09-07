@@ -272,9 +272,16 @@ class PositionIndustry extends Component
     public function render()
     {
 
-        $jobpositionsQuery = Job_Positions::where('position_Title', 'like', '%' . $this->searchPosition . '%')
+        $jobpositionsQuery = Job_Positions::where(function ($query) {
+            $query->where('position_Title', 'like', '%' . $this->searchPosition . '%')
+                ->orWhere('position_Code', 'like', '%' . $this->searchPosition . '%');
+        })
             ->orderBy('position_Title', 'asc');
-        $industryQuery = Job_Industry::where('industry_Title', 'like', '%' . $this->searchIndustry . '%')
+
+        $industryQuery = Job_Industry::where(function ($query) {
+            $query->where('industry_Title', 'like', '%' . $this->searchIndustry . '%')
+                ->orWhere('industry_Code', 'like', '%' . $this->searchIndustry . '%');
+        })
             ->orderBy('industry_Title', 'asc');
 
         if ($this->filterJob == 'All') {

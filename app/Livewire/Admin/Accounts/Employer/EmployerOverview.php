@@ -139,7 +139,7 @@ class EmployerOverview extends Component
         $rules = [
             'businessName' => 'required|string|max:255',
             'tradeName' => 'required|string|max:255',
-            'TIN' => 'required|digits:11', // Assuming TIN is exactly 9 digits
+            'TIN' => 'required|digits:9', // Assuming TIN is exactly 9 digits
             'locType' => 'required', // Example valid types
             'workforce' => 'required', // Nullable, but if present must be an integer and at least 1
             'empType' => 'required', // Example valid types
@@ -156,7 +156,7 @@ class EmployerOverview extends Component
             'tradeName.max' => 'The trade name cannot exceed 255 characters.',
 
             'TIN.required' => 'The TIN field is required.',
-            'TIN.digits' => 'The TIN must be exactly 11 digits.',
+            'TIN.digits' => 'The TIN must be exactly 9 digits.',
 
             'locType.required' => 'The location type field is required.',
 

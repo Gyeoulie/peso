@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Helpers\AuditFormatter;
+use App\Models\Announcements;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Models\Programs;
@@ -36,6 +37,7 @@ class Audits extends Component
             '3' => Job_Applicants::class,
             '4' => Programs::class,
             '5' => Program_Reg::class,
+            '6' => Announcements::class,
         ];
 
         // Build the query

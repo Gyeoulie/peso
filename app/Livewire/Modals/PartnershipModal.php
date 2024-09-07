@@ -18,7 +18,7 @@ class PartnershipModal extends Component
     }
 
     #[Modelable]
-    public $eligibilityData = [];
+    public $partnershipData = [];
 
     public function pesoSelect($id)
     {

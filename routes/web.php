@@ -52,10 +52,7 @@ use App\Livewire\Public\Trainings;
 use App\Livewire\Public\TrainingView;
 use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,9 +117,11 @@ Route::middleware(['auth', 'verified', 'usertype:6'])->group(function () {
 
     Route::get('/employer/jobpost', JobPostList::class)->name('employer.dashboard');
     Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
+
+});
+Route::middleware(['auth', 'verified', 'usertype:5,6'])->group(function () {
     Route::get('/employer/edit', EmployerEditDetails::class)->name('edit.details.emp');
 });
-
 //------------------------------ ADMIN  NAVIGATION ------------------------------
 Route::middleware(['auth', 'verified', 'usertype:8,9,10,11'])->group(function () {
     Route::prefix('admin')->group(function () {
@@ -198,6 +197,9 @@ Route::middleware(['auth', 'verified', 'usertype:8,9,10,11'])->group(function ()
 
     });
 });
+
+Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
+
 // Route::get('/admin', function () {
 //     return view('admin.admin_partials.admin-dashboard');
 // })->name('admin');
@@ -289,45 +291,29 @@ Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11'])->group(funct
     Route::post('/requirement/view', [PDFView::class, 'viewRequirement'])->name('view.requirement');
 });
 
-Route::get('/test-google-drive', function () {
-    try {
-        $disk = Storage::disk('google');
-        $files = $disk->files();
-        return response()->json($files);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
-});
+// Route::get('/test-google-drive', function () {
+//     try {
+//         $disk = Storage::disk('google');
+//         $files = $disk->files();
+//         return response()->json($files);
+//     } catch (\Exception $e) {
+//         return response()->json(['error' => $e->getMessage()], 500);
+//     }
+// });
 
-Route::get('upload', function (Request $request) {
-    $files = Storage::disk("google")->allFiles();
-    dd($files);
-});
+// Route::get('upload', function (Request $request) {
+//     $files = Storage::disk("google")->allFiles();
+//     dd($files);
+// });
 
-Route::get('list-backups', function () {
-    $exitCode = Artisan::call('backup:list'); // No disk option required
-    return Artisan::output(); // This will display the list of backups
-});
-Route::get('test-backup', function () {
-    // Check if the file exists in the specified disk
-    if (!Storage::disk('local')->exists('2024-09-04-23-55-04.zip')) {
-        return 'File not found';
-    }
-    // Run the backup restore command
-    $exitCode = Artisan::call('backup:restore', [
-        '--disk' => 'backuploc',
-        '--backup' => '2024-09-04-23-55-04.zip',
-        '--connection' => 'mysql',
-        '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''),
-        '--reset' => true,
-    ]);
-
-    // Check exit code
-    if ($exitCode !== 0) {
-        return 'Restore failed with exit code: ' . $exitCode;
-    }
-
-    return 'Backup restored successfully!';
-});
-
-Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
+// Route::get('list-backups', function () {
+//     $exitCode = Artisan::call('backup:list'); // No disk option required
+//     return Artisan::output(); // This will display the list of backups
+// });
+// Route::get('test-backup', function () {
+//     $exitCode = Artisan::call('backup:restore', [
+//         '--disk' => 'local',
+//         // '--backup' => '2024-09-04-23-55-04.zip',
+//         '--no-interaction' => true, // Avoids prompts during execution
+//     ]);
+// });
