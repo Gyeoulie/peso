@@ -54,6 +54,50 @@ class Backup extends Component
             $localPath = storage_path('app/temp/' . basename($filePath));
             file_put_contents($localPath, $fileContent);
 
+        // Verify the file is saved
+            if (!file_exists($localPath)) {
+                toastr()->error('Failed to save the backup file locally.');
+                return;
+            }
+
+            // Capture the output from the Artisan command
+            $output = Artisan::call('backup:restore', [
+                '--disk' => 'backuploc', // Use 'local' since the file is saved locally
+                '--backup' => 'temp/' . basename($filePath), // Path within the local disk
+                '--connection' => 'mysql', // Database connection
+                '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
+                '--reset' => true,
+            ]);
+
+            // Capture the output for debugging
+            $commandOutput = Artisan::output();
+            // Log::info('Backup restore command output: ' . $commandOutput);
+
+            if (str_contains($commandOutput, 'Error')) {
+                throw new \Exception('Restore command failed with errors: ' . $commandOutput);
+            }
+
+            toastr()->success('Database restored successfully.');
+        } catch (\Exception $e) {
+            // Log the error
+            // Log::error('Failed to restore database: ' . $e->getMessage());
+
+            toastr()->error('Failed to restore database: ' . $e->getMessage());
+        }
+    }
+
+    public function restoreDatabaseFirebase($filePath)
+    {
+        try {
+            $googleDisk = Storage::disk('google');
+
+            // Download the backup file from Google Drive
+            $fileContent = $googleDisk->get($filePath);
+
+            // Save it locally in the temp directory
+            $localPath = storage_path('app/temp/' . basename($filePath));
+            file_put_contents($localPath, $fileContent);
+
             // Verify the file is saved
             if (!file_exists($localPath)) {
                 toastr()->error('Failed to save the backup file locally.');
@@ -61,8 +105,13 @@ class Backup extends Component
             }
 
             // Capture the output from the Artisan command
-            $output = Artisan::call('backup:restore');
-
+            $output = Artisan::call('backup:restore', [
+                '--disk' => 'google', // Use 'local' since the file is saved locally
+                '--backup' => 'PESO/' . basename($filePath), // Path within the local disk
+                '--connection' => 'mysql', // Database connection
+                '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
+                '--reset' => true,
+            ]);
             // Capture the output for debugging
             $commandOutput = Artisan::output();
             // Log::info('Backup restore command output: ' . $commandOutput);
