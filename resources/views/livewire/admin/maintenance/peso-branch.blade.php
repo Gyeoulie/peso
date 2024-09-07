@@ -106,9 +106,9 @@
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Created
                                 </th>
-                                {{-- <th scope="col" class="px-6 py-3">
-
-                                </th> --}}
+                                <th scope="col" class="px-6 py-3">
+                                    
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -176,11 +176,11 @@
                                                 {{ $data->created_at->format('F d Y') }}
                                             </div>
                                         </td>
-                                        {{-- <td class="px-6 py-4">
+                                        <td class="px-6 py-4">
 
                                             <div class="flex flex-row items-center justify-center gap-6">
                                                 <div x-data="{ tooltip: 'PESO Account Overview' }">
-                                                    <a wire:navigate  x-tooltip="tooltip"
+                                                    <button wire:click='showBranch({{$data->peso_id}})' x-tooltip="tooltip"
                                                         type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -190,11 +190,11 @@
                                                                 d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
                                                                 clip-rule="evenodd" />
                                                         </svg>
-                                                    </a>
+                                                    </button>
                                                 </div>
                                             </div>
 
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -215,17 +215,13 @@
 
 
         <div class="col-span-4 sm:col-span-6">
-            {{-- @livewire('admin.requirements.requirements-add') --}}
             <div class="bg-white shadow rounded-lg p-6" x-data="{
-                openTab: 1,
-                activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
-                inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
-            }">
+            branchPESO: @entangle('branchPESO')}">
 
 
                 <div class="">
 
-                    <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
+                    <div x-show="!branchPESO" x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-cloak>
                         <h1 class="text-xl font-bold ">Create PESO Branch</h1>
@@ -322,6 +318,105 @@
 
                         </div>
                     </div>
+
+                    <div x-show="branchPESO" x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                        x-cloak>
+                        <h1 class="text-xl font-bold ">Create PESO Branch</h1>
+                        <hr class="h-px my-2 bg-gray-200 border-0">
+
+                        <div class="flex flex-col w-full">
+                            <x-input-label for="phone" :value="__('PESO Municipality')" />
+                            <x-dropdown align="left" width="full">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
+                                        <div class="w-full ml-2 text-left font-extrabold font-mono text-xl ">
+                                            {{ $mun && $prov ? $mun . ', ' . $prov : 'Select a Municipality' }}
+
+
+                                        </div>
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+
+                                        </div>
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <!-- Search input -->
+                                    <div class="p-2">
+                                        <input wire:model.live.prevent='searchMun' type="text"
+                                            placeholder="Search..."
+                                            class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
+                                            @click.stop>
+                                    </div>
+
+                                    <!-- Dropdown content with scrollbar -->
+                                    <div class="max-h-[300px] bg-white overflow-y-auto">
+                                        <!-- Dropdown links -->
+                                        @foreach ($municipalityData as $data)
+                                            <x-dropdown-link
+                                                wire:click.prevent='selectMunicipality({{ $data->municipality_id }})'
+                                                class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->municipality_Name }},
+                                                {{ $data->province->province_Name }}</x-dropdown-link>
+                                        @endforeach
+                                    </div>
+                                </x-slot>
+
+                            </x-dropdown>
+                            <x-input-error :messages="$errors->get('munID')" class="mt-2" />
+
+                        </div>
+                        <div class="mt-4">
+                            <h1 class="text-lg font-bold">PESO Manager </h1>
+                            <hr class="h-px my-2 bg-gray-200 border-0">
+                            <div class="flex flex-col sm:flex-row w-full gap-2 ">
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="fname" :value="__('First Name*')" />
+                                    <x-text-input wire:model="fname" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('fname')" class="mt-2" />
+                                </div>
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="mname" :value="__('Middle Name')" />
+                                    <x-text-input wire:model="mname" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('mname')" class="mt-2" />
+                                </div>
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="lname" :value="__('Last Name*')" />
+                                    <x-text-input wire:model="lname" class="block mt-1 w-full" type="text" />
+                                    <x-input-error :messages="$errors->get('lname')" class="mt-2" />
+                                </div>
+
+                            </div>
+                            <div class="flex flex-col sm:flex-row w-full mt-6 gap-2 ">
+
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="email" :value="__('Email*')" />
+                                    <x-text-input wire:model="email" class="block mt-1 w-full" type="email" />
+                                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                </div>
+                                <div class="flex flex-col mt-2 w-full">
+                                    <x-input-label for="phone" :value="__('Phone Number*')" />
+                                    <x-text-input wire:model="phone" class="block mt-1 w-full" type="tel" />
+                                    <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                                </div>
+                            </div>
+                            <div class="flex flex-row w-full mt-6 justify-end">
+                                <x-green-button wire:click.prevent='validateAccount' type="submit"
+                                    class="ml-auto mr-3">
+                                    {{ __('Create') }}
+                                </x-green-button>
+
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -103,6 +103,10 @@
                                         max-h-[300px] bg-white
                                     </x-slot>
 
+                                    <x-dropdown-link wire:click.prevent="updateSort('', 1)"
+                                        class="cursor-pointer">
+                                        All
+                                    </x-dropdown-link>
                                     <x-dropdown-link wire:click.prevent="updateSort('PESO Hosted', 1)"
                                         class="cursor-pointer">
                                         PESO Hosted

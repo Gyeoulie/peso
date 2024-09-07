@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
@@ -50,52 +51,14 @@ class Backup extends Component
             // Download the backup file from Google Drive
             $fileContent = $googleDisk->get($filePath);
 
-            // Save it locally in the temp directory
-            $localPath = storage_path('app/temp/' . basename($filePath));
-            file_put_contents($localPath, $fileContent);
-
-        // Verify the file is saved
-            if (!file_exists($localPath)) {
-                toastr()->error('Failed to save the backup file locally.');
-                return;
+            // Ensure the temp directory exists
+            $tempDir = storage_path('app/temp/');
+            if (!File::exists($tempDir)) {
+                File::makeDirectory($tempDir, 0755, true); // Create the directory with proper permissions
             }
 
-            // Capture the output from the Artisan command
-            $output = Artisan::call('backup:restore', [
-                '--disk' => 'backuploc', // Use 'local' since the file is saved locally
-                '--backup' => 'temp/' . basename($filePath), // Path within the local disk
-                '--connection' => 'mysql', // Database connection
-                '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
-                '--reset' => true,
-            ]);
-
-            // Capture the output for debugging
-            $commandOutput = Artisan::output();
-            // Log::info('Backup restore command output: ' . $commandOutput);
-
-            if (str_contains($commandOutput, 'Error')) {
-                throw new \Exception('Restore command failed with errors: ' . $commandOutput);
-            }
-
-            toastr()->success('Database restored successfully.');
-        } catch (\Exception $e) {
-            // Log the error
-            // Log::error('Failed to restore database: ' . $e->getMessage());
-
-            toastr()->error('Failed to restore database: ' . $e->getMessage());
-        }
-    }
-
-    public function restoreDatabaseFirebase($filePath)
-    {
-        try {
-            $googleDisk = Storage::disk('google');
-
-            // Download the backup file from Google Drive
-            $fileContent = $googleDisk->get($filePath);
-
-            // Save it locally in the temp directory
-            $localPath = storage_path('app/temp/' . basename($filePath));
+            // Save the backup file locally in the temp directory
+            $localPath = $tempDir . basename($filePath);
             file_put_contents($localPath, $fileContent);
 
             // Verify the file is saved
@@ -104,27 +67,73 @@ class Backup extends Component
                 return;
             }
 
-            // Capture the output from the Artisan command
-            $output = Artisan::call('backup:restore', [
-                '--disk' => 'google', // Use 'local' since the file is saved locally
-                '--backup' => 'PESO/' . basename($filePath), // Path within the local disk
+            // Run the restore command with Artisan
+            $exitCode = Artisan::call('backup:restore', [
+                '--disk' => 'local', // Use 'local' since the file is saved locally
+                '--backup' => 'temp/' . basename($filePath), // Path within the local disk
                 '--connection' => 'mysql', // Database connection
                 '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
-                '--reset' => true,
+                '--reset' => true, // Reset the database
             ]);
+
+            // Check if the restore command was successful
+            if ($exitCode !== 0) {
+                throw new \Exception('Restore command failed with exit code: ' . $exitCode);
+            }
+
             // Capture the output for debugging
             $commandOutput = Artisan::output();
-            // Log::info('Backup restore command output: ' . $commandOutput);
 
-            if (str_contains($commandOutput, 'Error')) {
-                throw new \Exception('Restore command failed with errors: ' . $commandOutput);
+            toastr()->success('Database restored successfully.');
+
+        } catch (\Exception $e) {
+            toastr()->error('Failed to restore database: ' . $e->getMessage());
+        }
+    }
+
+    public function restoreDatabaseGoogle($filePath)
+    {
+        try {
+            $googleDisk = Storage::disk('google');
+
+            // Step 1: Download the backup file from Google Drive
+            $fileContent = $googleDisk->get($filePath);
+
+            // Step 2: Save the file locally in the temp directory
+            $localPath = storage_path('app/temp/' . basename($filePath));
+
+            // Ensure the temp directory exists
+            $tempDir = storage_path('app/temp/');
+            if (!File::exists($tempDir)) {
+                File::makeDirectory($tempDir, 0755, true);
+            }
+
+            file_put_contents($localPath, $fileContent);
+
+            // Verify the file is saved locally
+            if (!file_exists($localPath)) {
+                throw new \Exception('Failed to save the backup file locally.');
+            }
+
+            // Step 3: Run the restore command using Artisan
+            $exitCode = Artisan::call('backup:restore', [
+                '--disk' => 'local', // Now the backup is on the local disk
+                '--backup' => 'temp/' . basename($filePath), // Use the file from the temp directory
+                '--connection' => 'mysql', // Specify the database connection
+                '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Provide the encryption password if needed
+                '--reset' => true, // Reset the database before restoring
+            ]);
+
+            // Step 4: Capture the Artisan command output for debugging
+            $commandOutput = Artisan::output();
+
+            // Check if the restore command encountered errors
+            if (str_contains($commandOutput, 'Error') || $exitCode !== 0) {
+                throw new \Exception('Restore command failed: ' . $commandOutput);
             }
 
             toastr()->success('Database restored successfully.');
         } catch (\Exception $e) {
-            // Log the error
-            // Log::error('Failed to restore database: ' . $e->getMessage());
-
             toastr()->error('Failed to restore database: ' . $e->getMessage());
         }
     }

@@ -24,7 +24,14 @@ class PesoBranch extends Component
 
     public $munID, $mun, $prov;
 
+    public $branchPESO;
+
     public $agreeBox = false;
+
+    public function showBranch($id){
+        $this->branchPESO = $id;
+
+    }
 
     public function validateAccount()
     {

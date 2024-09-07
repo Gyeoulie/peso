@@ -196,6 +196,8 @@ Route::middleware(['auth', 'verified', 'usertype:8,9,10,11'])->group(function ()
         Route::get('/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
         Route::get('/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
 
+
+
     });
 });
 // Route::get('/admin', function () {
