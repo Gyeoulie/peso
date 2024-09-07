@@ -196,8 +196,6 @@ Route::middleware(['auth', 'verified', 'usertype:8,9,10,11'])->group(function ()
         Route::get('/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
         Route::get('/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
 
-
-
     });
 });
 // Route::get('/admin', function () {
@@ -306,15 +304,30 @@ Route::get('upload', function (Request $request) {
     dd($files);
 });
 
+Route::get('list-backups', function () {
+    $exitCode = Artisan::call('backup:list'); // No disk option required
+    return Artisan::output(); // This will display the list of backups
+});
 Route::get('test-backup', function () {
+    // Check if the file exists in the specified disk
+    if (!Storage::disk('local')->exists('2024-09-04-23-55-04.zip')) {
+        return 'File not found';
+    }
+    // Run the backup restore command
     $exitCode = Artisan::call('backup:restore', [
-        '--disk' => 'local', // Use 'local' since the file is saved locally
-        '--backup' => 'peso/2024-09-06-01-44-04.zip', // Path within the local disk
-        '--connection' => 'mysql', // Database connection
-        '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
+        '--disk' => 'backuploc',
+        '--backup' => '2024-09-04-23-55-04.zip',
+        '--connection' => 'mysql',
+        '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''),
         '--reset' => true,
     ]);
-    dd($exitCode);
+
+    // Check exit code
+    if ($exitCode !== 0) {
+        return 'Restore failed with exit code: ' . $exitCode;
+    }
+
+    return 'Backup restored successfully!';
 });
 
 Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
