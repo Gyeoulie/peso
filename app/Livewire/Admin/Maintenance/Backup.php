@@ -67,10 +67,15 @@ class Backup extends Component
                 return;
             }
 
+            // Register the backup file
+            // Ensure the file is in the correct location expected by spatie/laravel-backup
+            $backupDisk = Storage::disk('local');
+            $backupDisk->put('backups/' . basename($filePath), $fileContent);
+
             // Run the restore command with Artisan
             $exitCode = Artisan::call('backup:restore', [
                 '--disk' => 'local', // Use 'local' since the file is saved locally
-                '--backup' => 'temp/' . basename($filePath), // Path within the local disk
+                '--backup' => 'backups/' . basename($filePath), // Path within the local disk
                 '--connection' => 'mysql', // Database connection
                 '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
                 '--reset' => true, // Reset the database
@@ -83,14 +88,17 @@ class Backup extends Component
 
             // Capture the output for debugging
             $commandOutput = Artisan::output();
+            Log::info('Backup restore command output: ' . $commandOutput);
 
             toastr()->success('Database restored successfully.');
 
         } catch (\Exception $e) {
+            // Log the error
+            Log::error('Failed to restore database: ' . $e->getMessage());
+
             toastr()->error('Failed to restore database: ' . $e->getMessage());
         }
     }
-
     public function restoreDatabaseGoogle($filePath)
     {
         try {
