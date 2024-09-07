@@ -24,6 +24,8 @@
                             <option wire:click.prevent='updateFilter("3")'>Job Applicants</option>
                             <option wire:click.prevent='updateFilter("4")'>Trainings</option>
                             <option wire:click.prevent='updateFilter("5")'>Training Registrants</option>
+                            <option wire:click.prevent='updateFilter("6")'>Announcements</option>
+
                         </select>
                     </div>
                     <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
@@ -53,9 +55,15 @@
                         </li>
                         <li wire:click.prevent='updateFilter("5")' class="w-full focus-within:z-10">
                             <button @click="openTab = 6" :class="openTab === 6 ? activeClasses : inactiveClasses"
-                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">Training
+                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Training
                                 Registrants</button>
                         </li>
+                        <li wire:click.prevent='updateFilter("6")' class="w-full focus-within:z-10">
+                            <button @click="openTab = 7" :class="openTab === 7 ? activeClasses : inactiveClasses"
+                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">Announcements
+                            </button>
+                        </li>
+
 
                     </ul>
                     <div id="tooltip-top" role="tooltip"

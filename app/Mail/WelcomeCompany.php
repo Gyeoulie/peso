@@ -3,27 +3,24 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AnnouncementNotification extends Mailable implements ShouldQueue
+class WelcomeCompany extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $announcementData;
-    public $employee;
+    public $company;
 
-    public function __construct($employee, $announcementData)
+    public function __construct($company)
     {
-        $this->announcementData = $announcementData;
-        $this->employee = $employee;
-
+        $this->company = $company;
+        //
     }
 
     /**
@@ -32,7 +29,7 @@ class AnnouncementNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Important Update from Your Local PESO Office',
+            subject: 'Thank You for Joining PESO: Important Next Steps for Your Company',
         );
     }
 
@@ -42,12 +39,9 @@ class AnnouncementNotification extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.announcement_notification',
+            markdown: 'emails.welcome_company_notification',
             with: [
-                'residentName' => $this->employee->fname . ' ' . $this->employee->lname,
-                'announcementTitle' => $this->announcementData->announcement_Title,
-                'announcementUrl' => route('announcement.show', ['id' => $this->announcementData->announcement_id]),
-                'PESO' => $this->announcementData->peso->municipality->municipality_Name,
+                'companyName' => $this->company->business_Name,
             ]
         );
     }

@@ -11,6 +11,7 @@ use Livewire\Component;
 class PesoProfile extends Component
 {
 
+
     public $id;
 
     public function render()

@@ -213,8 +213,10 @@
                     <a href="{{ route('training.show', ['id' => $data->program_id]) }}"
                         class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
                         <div>
-                            <div class="relative">
-                                <img class="w-full" src="{{ asset('storage/' . $data->program_pubmat) }}"
+                            {{-- <div class="relative"> --}}
+                            <div class="w-full h-64 overflow-hidden">
+                                <img class="w-full h-full object-cover"
+                                    src="{{ asset('storage/' . $data->program_pubmat) }}"
                                     alt="prog-{{ $data->program_id }}">
                                 <div
                                     class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 transition duration-500 ease-in-out">

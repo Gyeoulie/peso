@@ -3,7 +3,9 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
@@ -13,135 +15,130 @@ use Livewire\Component;
 class Backup extends Component
 {
 
-    public $files = [];
+    public $restore, $delete;
 
+    public $password;
     public function mount()
     {
-        $this->listFiles();
 
-        // dd($this->files);
+        // $this->listFiles();
     }
-    public function listFiles()
+    // public function listFiles()
+    // {
+    //     try {
+    //         // Access the Google Drive disk
+    //         $googleDisk = Storage::disk('google');
+
+    //         // List files in the specified folder
+    //         $files = $googleDisk->allFiles();
+
+    //         $this->files = collect($files)->map(function ($file) use ($googleDisk) {
+    //             return [
+    //                 'name' => basename($file),
+    //                 'path' => $file,
+    //                 'date' => \Carbon\Carbon::createFromTimestamp($googleDisk->lastModified($file))->toDateTimeString(),
+    //             ];
+    //         })->sortByDesc('date'); // Optionally sort by date, newest first
+    //     } catch (\Exception $e) {
+    //         // \Log::error('Failed to list files from Google Drive: ' . $e->getMessage());
+    //         $this->files = []; // Clear files on error
+    //     }
+    // }
+
+    // public function restoreDatabase($filePath)
+    // {
+    //     try {
+    //         $googleDisk = Storage::disk('google');
+
+    //         $fileContent = $googleDisk->get($filePath);
+
+    //         // Ensure the temp directory exists
+    //         $tempDir = storage_path('app/PESO/');
+    //         if (!File::exists($tempDir)) {
+    //             File::makeDirectory($tempDir, 0755, true); // Create the directory with proper permissions
+    //         }
+
+    //         $backupDisk = Storage::disk('local');
+    //         $backupDisk->put('PESO/' . basename($filePath), $fileContent);
+
+    //         // Run the restore command with Artisan
+    //         $exitCode = Artisan::call('backup:restore', [
+    //             '--disk' => 'local', // Use 'local' since the file is saved locally
+    //             '--backup' => 'PESO/' . basename($filePath), // Path within the local disk
+    //             '--connection' => 'mysql', // Database connection
+    //             '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
+    //             '--no-interaction' => true,
+    //         ]);
+
+    //         if ($exitCode !== 0) {
+    //             throw new \Exception('Restore command failed with exit code: ' . $exitCode);
+    //         }
+
+    //         // Capture the output for debugging
+    //         $commandOutput = Artisan::output();
+    //         Log::info('Backup restore command output: ' . $commandOutput);
+
+    //         toastr()->success('Database restored successfully.');
+
+    //     } catch (\Exception $e) {
+    //         // Log the error
+    //         Log::error('Failed to restore database: ' . $e->getMessage());
+
+    //         toastr()->error('Failed to restore database: ' . $e->getMessage());
+    //     }
+    // }
+
+    public function restoreDatabase()
     {
         try {
-            // Access the Google Drive disk
+            // Initialize Google disk and get file content
             $googleDisk = Storage::disk('google');
+            if (!$googleDisk->exists($this->restore)) {
+                throw new \Exception('Backup file does not exist on Google Disk.');
+            }
 
-            // List files in the specified folder
-            $files = $googleDisk->allFiles();
-
-            $this->files = collect($files)->map(function ($file) use ($googleDisk) {
-                return [
-                    'name' => basename($file),
-                    'path' => $file,
-                    'date' => \Carbon\Carbon::createFromTimestamp($googleDisk->lastModified($file))->toDateTimeString(),
-                ];
-            })->sortByDesc('date'); // Optionally sort by date, newest first
-        } catch (\Exception $e) {
-            // \Log::error('Failed to list files from Google Drive: ' . $e->getMessage());
-            $this->files = []; // Clear files on error
-        }
-    }
-
-    public function restoreDatabase($filePath)
-    {
-        try {
-            $googleDisk = Storage::disk('google');
-
-            // Download the backup file from Google Drive
-            $fileContent = $googleDisk->get($filePath);
+            $fileContent = $googleDisk->get($this->restore);
 
             // Ensure the temp directory exists
-            $tempDir = storage_path('app/temp/');
+            $tempDir = storage_path('app/PESO/');
             if (!File::exists($tempDir)) {
                 File::makeDirectory($tempDir, 0755, true); // Create the directory with proper permissions
             }
 
-            // Save the backup file locally in the temp directory
-            $localPath = $tempDir . basename($filePath);
-            file_put_contents($localPath, $fileContent);
-
-            // Verify the file is saved
-            if (!file_exists($localPath)) {
-                toastr()->error('Failed to save the backup file locally.');
-                return;
+            // Save file locally
+            $localFilePath = 'PESO/' . basename($this->restore);
+            $backupDisk = Storage::disk('local');
+            if (!$backupDisk->put($localFilePath, $fileContent)) {
+                throw new \Exception('Failed to save backup file locally.');
             }
 
-            // Register the backup file
-            // Ensure the file is in the correct location expected by spatie/laravel-backup
-            $backupDisk = Storage::disk('local');
-            $backupDisk->put('backups/' . basename($filePath), $fileContent);
+            // Verify if the file was successfully saved
+            if (!$backupDisk->exists($localFilePath)) {
+                throw new \Exception('Backup file not found locally after transfer.');
+            }
 
             // Run the restore command with Artisan
             $exitCode = Artisan::call('backup:restore', [
                 '--disk' => 'local', // Use 'local' since the file is saved locally
-                '--backup' => 'backups/' . basename($filePath), // Path within the local disk
+                '--backup' => $localFilePath, // Path within the local disk
                 '--connection' => 'mysql', // Database connection
                 '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Encryption password if needed
-                '--reset' => true, // Reset the database
+                '--no-interaction' => true,
             ]);
 
-            // Check if the restore command was successful
+            // Check for restore command success
             if ($exitCode !== 0) {
-                throw new \Exception('Restore command failed with exit code: ' . $exitCode);
+                $commandOutput = Artisan::output();
+                throw new \Exception('Restore command failed with exit code: ' . $exitCode . ' and output: ' . $commandOutput);
             }
 
-            // Capture the output for debugging
-            $commandOutput = Artisan::output();
-            Log::info('Backup restore command output: ' . $commandOutput);
-
+            // Success message
             toastr()->success('Database restored successfully.');
 
         } catch (\Exception $e) {
-            // Log the error
+            // Log the error with detailed message
             Log::error('Failed to restore database: ' . $e->getMessage());
 
-            toastr()->error('Failed to restore database: ' . $e->getMessage());
-        }
-    }
-    public function restoreDatabaseGoogle($filePath)
-    {
-        try {
-            $googleDisk = Storage::disk('google');
-
-            // Step 1: Download the backup file from Google Drive
-            $fileContent = $googleDisk->get($filePath);
-
-            // Step 2: Save the file locally in the temp directory
-            $localPath = storage_path('app/temp/' . basename($filePath));
-
-            // Ensure the temp directory exists
-            $tempDir = storage_path('app/temp/');
-            if (!File::exists($tempDir)) {
-                File::makeDirectory($tempDir, 0755, true);
-            }
-
-            file_put_contents($localPath, $fileContent);
-
-            // Verify the file is saved locally
-            if (!file_exists($localPath)) {
-                throw new \Exception('Failed to save the backup file locally.');
-            }
-
-            // Step 3: Run the restore command using Artisan
-            $exitCode = Artisan::call('backup:restore', [
-                '--disk' => 'local', // Now the backup is on the local disk
-                '--backup' => 'temp/' . basename($filePath), // Use the file from the temp directory
-                '--connection' => 'mysql', // Specify the database connection
-                '--password' => env('BACKUP_ENCRYPTION_PASSWORD', ''), // Provide the encryption password if needed
-                '--reset' => true, // Reset the database before restoring
-            ]);
-
-            // Step 4: Capture the Artisan command output for debugging
-            $commandOutput = Artisan::output();
-
-            // Check if the restore command encountered errors
-            if (str_contains($commandOutput, 'Error') || $exitCode !== 0) {
-                throw new \Exception('Restore command failed: ' . $commandOutput);
-            }
-
-            toastr()->success('Database restored successfully.');
-        } catch (\Exception $e) {
             toastr()->error('Failed to restore database: ' . $e->getMessage());
         }
     }
@@ -170,8 +167,107 @@ class Backup extends Component
         }
     }
 
+    public function listFiles()
+    {
+        try {
+            // Access the Google Drive disk
+            $googleDisk = Storage::disk('google');
+
+            // List files in the specified folder
+            $files = $googleDisk->allFiles();
+
+            return collect($files)->map(function ($file) use ($googleDisk) {
+                return [
+                    'name' => basename($file),
+                    'path' => $file,
+                    'date' => \Carbon\Carbon::createFromTimestamp($googleDisk->lastModified($file))->toDateTimeString(),
+                ];
+            })->sortByDesc('date'); // Optionally sort by date, newest first
+        } catch (\Exception $e) {
+            // Log the error if needed
+            Log::error('Failed to list files from Google Drive: ' . $e->getMessage());
+            return collect(); // Return an empty collection
+        }
+    }
+
+    public function removeBackup()
+    {
+        try {
+            $disk = Storage::disk('google'); // Adjust if needed
+            if ($disk->exists($this->delete)) {
+                $disk->delete($this->delete);
+                Log::info("Deleted backup file: {$this->delete}");
+                toastr()->success('Backup removed successfully.');
+            } else {
+                toastr()->error('Backup file not found.');
+            }
+        } catch (\Exception $e) {
+            Log::error("Failed to delete backup file {$this->delete}: " . $e->getMessage());
+            toastr()->error('error', 'Failed to remove backup.');
+        }
+    }
+
+    public function confirmResponse($type)
+    {
+        $rules = [
+            'password' => 'required|string|min:6',
+        ];
+
+        $messages = [
+            'password.required' => 'The password field is required.',
+            'password.string' => 'The password must be a string.',
+            'password.min' => 'The password must be at least 6 characters.',
+        ];
+
+        $this->validate($rules, $messages);
+
+        if (!Hash::check($this->password, Auth::user()->password)) {
+            // Use Laravel's validation system to return error messages
+            $this->reset('password');
+            return $this->addError('password', 'The provided password is incorrect.');
+
+        } else {
+            if ($type == 1) {
+                $this->restoreDatabase();
+                $this->closeModal("database-restore");
+
+            } elseif ($type == 2) {
+                $this->removeBackup();
+                $this->closeModal("database-deletion");
+
+            } elseif ($type == 3) {
+                $this->startBackup();
+                $this->closeModal("database-backup");
+
+            } else {
+                toastr()->error('There was an unexpected error. Please try again later.');
+            }
+        }
+
+    }
+
+    public function closeModal($modal)
+    {
+        $this->reset('password');
+        $this->dispatch('close-modal', $modal);
+    }
+
+    public function confirmAction($type, $data)
+    {
+        if ($type == 1) {
+            $this->restore = $data;
+            $this->dispatch('open-modal', 'database-restore');
+
+        } elseif ($type == 2) {
+            $this->delete = $data;
+            $this->dispatch('open-modal', 'database-deletion');
+
+        }
+    }
     public function render()
     {
-        return view('livewire.admin.maintenance.backup');
+
+        $files = $this->listFiles();
+        return view('livewire.admin.maintenance.backup', compact('files'));
     }
 }

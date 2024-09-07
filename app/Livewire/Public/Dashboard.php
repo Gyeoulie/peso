@@ -200,7 +200,7 @@ class Dashboard extends Component
         return $query->paginate($this->pagination);
     }
 
-    public function companyNotifications($empID)
+    public function companyNotificationsWait($empID)
     {
         $notifications = DB::table('job_posting')
             ->leftJoin('job_applicants', 'job_posting.job_id', '=', 'job_applicants.job_id')
@@ -236,6 +236,88 @@ class Dashboard extends Component
         })->toArray();
     }
 
+    public function companyNotifications($empID)
+    {
+        // Fetch job postings and applicants notifications
+        $jobPostingsAndApplicants = DB::table('job_posting')
+            ->leftJoin('job_applicants', 'job_posting.job_id', '=', 'job_applicants.job_id')
+            ->select(
+                'job_posting.job_id',
+                'job_posting.job_title',
+                'job_posting.responded_at as job_responded_at',
+                'job_applicants.responded_at as applicant_responded_at',
+                'job_applicants.applicant_Status as applicant_status'
+            )
+            ->where('job_posting.company_id', $empID)
+            ->where(function ($query) {
+                $query->whereNotNull('job_posting.responded_at')
+                    ->orWhereNotNull('job_applicants.responded_at');
+            })
+            ->orderBy('job_posting.responded_at', 'desc')
+            ->orderBy('job_applicants.responded_at', 'desc')
+            ->get();
+
+        // Fetch partnerships notifications
+        $partnerships = DB::table('partnerships')
+            ->leftJoin('peso', 'partnerships.peso_id', '=', 'peso.peso_id')
+            ->leftJoin('municipality', 'peso.municipality_id', '=', 'municipality.municipality_id')
+            ->select(
+                'partnerships.responded_at as partnership_responded_at',
+                'partnerships.partnership_Status as partnership_status',
+                'municipality.municipality_Name'
+            )
+            ->where('partnerships.company_id', $empID)
+            ->whereNotNull('partnerships.responded_at')
+            ->orderBy('partnerships.responded_at', 'desc')
+            ->get();
+
+        // Merge notifications
+        $notifications = $jobPostingsAndApplicants->merge($partnerships);
+
+        // Format notifications
+        $formattedNotifications = $notifications->map(function ($notification) {
+            if (isset($notification->partnership_responded_at)) {
+                // Handle partnership notifications
+                $type = 'partnership';
+                $status = $notification->partnership_status;
+                $respondedAt = $notification->partnership_responded_at;
+                $municipalityName = $notification->municipality_Name;
+                $message = match ($status) {
+                    'REJECTED' => 'Your partnership application with PESO' . $municipalityName . ' has been rejected.',
+                    'APPROVED' => 'Your partnership application with PESO ' . $municipalityName . ' has been accepted.',
+                    'CANCELLED' => 'Partnership with PESO ' . $municipalityName . ' has been cancelled.',
+                    default => 'Status unknown.',
+                };
+                // Municipality name for partnerships
+            } elseif (isset($notification->applicant_responded_at)) {
+                // Handle job applicant notifications
+                $type = 'applicant';
+                $status = $notification->applicant_status;
+                $respondedAt = $notification->applicant_responded_at;
+                $message = 'A new applicant has applied for your job "' . $notification->job_title . '".';
+                $municipalityName = null; // No municipality name for job postings
+            } else {
+                // Handle job posting notifications
+                $type = 'posting';
+                $status = null; // No status for postings
+                $respondedAt = $notification->job_responded_at;
+                $message = 'The job post application for "' . $notification->job_title . '" has been responded to.';
+                $municipalityName = null; // No municipality name for job postings
+            }
+
+            return [
+                'type' => $type,
+                'status' => $status,
+                'job_title' => $notification->job_title ?? null,
+                'responded_at' => $respondedAt,
+                'message' => $message,
+                'municipality_Name' => $municipalityName, // Include municipality name only for partnerships
+            ];
+        })->toArray();
+
+        return $formattedNotifications;
+    }
+
     public function getAnnouncements($pesoId = null)
     {
         $query = Announcements::query();
@@ -266,13 +348,77 @@ class Dashboard extends Component
         return $this->getAnnouncements($pesoId);
     }
 
+    private function buildProgramQuery()
+    {
+        $query = Programs::with([
+            'program_tags.job_positions',
+            'job_industry',
+            'peso.municipality',
+        ]);
+
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Get user preferences
+            if ($user->employee) {
+                $userJobPreferences = $this->getUserJobPreferences();
+                $userIndustryPreference = $this->getUserIndustryPreference();
+                $userMunicipalityId = $this->getUserMunicipalityId();
+            }
+
+            if ($this->filter === 'Recommended') {
+                $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
+                    $q->whereIn('position_id', $userJobPreferences);
+                })
+                    ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                        $q->whereIn('industry_id', $userIndustryPreference);
+                    })
+                    ->whereHas('peso.municipality', function ($q) use ($userMunicipalityId) {
+                        $q->where('municipality_id', $userMunicipalityId);
+                    });
+
+            } elseif ($this->filter === 'My Municipality') {
+                $municipalityId = $user->usertype == 4 ?
+                $user->employee->barangay->municipality->municipality_id :
+                $user->peso_accounts->peso->municipality_id;
+
+                $query->whereHas('peso.municipality', function ($q) use ($municipalityId) {
+                    $q->where('municipality_id', $municipalityId);
+                });
+            }
+        }
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->whereHas('program_tags.job_positions', function ($q) {
+                    $q->where('position_Title', 'like', '%' . $this->search . '%');
+                })
+                    ->orWhereHas('job_industry', function ($q) {
+                        $q->where('industry_Title', 'like', '%' . $this->search . '%');
+                    })
+                    ->orWhereHas('peso.municipality', function ($q) {
+                        $q->where('municipality_name', 'like', '%' . $this->search . '%');
+                    });
+            });
+        }
+
+        return $query;
+    }
+
+    public function getRecommendedPrograms()
+    {
+        $programQuery = $this->buildProgramQuery();
+        return $programQuery->orderBy('created_at', 'desc')->take(4)->get();
+    }
+
     public function render()
     {
         $joblist = $this->getPaginatedJobs();
-        $programList = Programs::orderBy('created_at', 'desc')->take(4)->get();
+        // $programList = Programs::orderBy('created_at', 'desc')->take(4)->get();
+        $programList = $this->buildProgramQuery()->orderBy('created_at', 'desc')->take(4)->get();
 
         $user = Auth::user();
         $formattedNotifications = $user && $user->company ? $this->companyNotifications($user->company->company_id) : [];
+        // dd($formattedNotifications);
 
         $announcements = $this->setAnnouncements($user);
 

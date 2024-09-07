@@ -1,52 +1,68 @@
 <div class="w-full">
-    <div class="flex flex-row justify-between mx-auto sm:mx-12 py-2 mt-4">
-        <div>
-            <h1 class="text-lg sm:text-2xl font-semibold">Recommended Trainings</h1>
+
+    @if (Auth::check() && Auth::user()->usertype == 5)
+        <div class="bg-yellow-100 shadow rounded-lg p-6 my-6 mx-12">
+            <div class="flex flex-row items-center justify-between">
+                <p class="text-yellow-700 font-bold text-xl">You don't have access to job post application. Must have an
+                    active partnership to be able to post.</p>
+                <svg class="w-9 h-9 sm:w-9 sm:h-9 text-yellow-700 me-2.5" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                        clip-rule="evenodd" />
+                </svg>
+
+            </div>
         </div>
-        <div class="flex items-end">
-            <a wire:navigate href="{{ route('trainings') }}"
-                class="text-sm sm:text-md
+    @else
+        <div class="flex flex-row justify-between mx-auto sm:mx-12 py-2 mt-4">
+            <div>
+                <h1 class="text-lg sm:text-2xl font-semibold">Recommended Trainings</h1>
+            </div>
+            <div class="flex items-end">
+                <a wire:navigate href="{{ route('trainings') }}"
+                    class="text-sm sm:text-md
                 font-semibold hover:text-blue-400">View more</a>
-        </div>
-
-    </div>
-    <hr class="h-1 mx-auto sm:mx-12  bg-gray-200 border-0 dark:bg-gray-700">
-
-    <div class="overflow-x-auto no-scrollbar">
-        <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
-
-            @foreach ($programList as $data)
-                <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                    class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                    <img class="w-full sm:w-60 object-cover h-48 sm:h-auto"
-                        src="{{ asset('storage/' . $data->program_pubmat) }}" alt="prog-{{ $data->program_id }}">
-                    <div class="flex flex-col justify-between  p-4 sm:p-4">
-                        <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
-                            {{ $data->program_Title }}
-                        </h5>
-                        <hr class="mb-1">
-                        <span class="mb-2 text-sm font-medium text-gray-900 leading-relaxed flex items-center">
-                            <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-                            {{ $data->created_at->format('F j, Y g:i A') }}
-                        </span>
-
-
-                        <p class="mb-2 text-sm font-normal text-gray-700 leading-relaxed">
-
-                            {!! Str::limit(strip_tags($data->program_Description), 90, '...') !!}
-
-                        </p>
-                    </div>
-                </a>
-            @endforeach
+            </div>
 
         </div>
-    </div>
+        <hr class="h-1 mx-auto sm:mx-12  bg-gray-200 border-0 dark:bg-gray-700">
 
+        <div class="overflow-x-auto no-scrollbar">
+            <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
+
+                @foreach ($programList as $data)
+                    <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
+                        class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                        <img class="w-full sm:w-60 object-cover h-48 sm:h-auto"
+                            src="{{ asset('storage/' . $data->program_pubmat) }}" alt="prog-{{ $data->program_id }}">
+                        <div class="flex flex-col justify-between  p-4 sm:p-4">
+                            <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
+                                {{ $data->program_Title }}
+                            </h5>
+                            <hr class="mb-1">
+                            <span class="mb-2 text-sm font-medium text-gray-900 leading-relaxed flex items-center">
+                                <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                {{ $data->created_at->format('F j, Y g:i A') }}
+                            </span>
+
+
+                            <p class="mb-2 text-sm font-normal text-gray-700 leading-relaxed">
+
+                                {!! Str::limit(strip_tags($data->program_Description), 90, '...') !!}
+
+                            </p>
+                        </div>
+                    </a>
+                @endforeach
+
+            </div>
+        </div>
+    @endif
 
     <div wire:poll class="flex mx-auto sm:mx-12 py-2 ">
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0 w-full">
@@ -186,7 +202,8 @@
                                                 <svg class="w-24 h-24 text-black" aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-width="2"
                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
 
@@ -317,35 +334,53 @@
                         <div class="p-3 text-gray-900 text-center w-full">
                             <h1 class="font-bold text-2xl">Notifications</h1>
                             <div class="overflow-y-auto max-h-[300px] sm:max-h-[900px]"> <!-- Set max height here -->
-                                <ul class="space-y-3 mt-5">
-                                    @foreach ($formattedNotifications as $notification)
-                                        <li>
-                                            <div class="flex items-start space-x-4">
-                                                <span class="flex-shrink-0">
-                                                    <div
-                                                        class="text-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 border border-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 bg-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="{{ $notification['type'] === 'applicant' ? 'M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75' : 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z' }}" />
-                                                        </svg>
-                                                    </div>
-                                                </span>
-                                                <div class="flex flex-col">
-                                                    <span class="flex-1">
-                                                        <div class="text-left text-md font-medium">
-                                                            {{ $notification['message'] }}
+                                @if (empty($formattedNotifications))
+                                    <div class="flex flex-col items-center justify-center  mt-12 mb-12">
+                                        <div class="p-6 bg-gray-100 rounded-full">
+                                            <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                            </svg>
+
+                                        </div>
+                                        <p class="text-xl font-bold text-black text-center mt-2">
+                                            No Notification Found!
+                                        </p>
+                                    </div>
+                                @else
+                                    <ul class="space-y-3 mt-5">
+                                        @foreach ($formattedNotifications as $notification)
+                                            <li>
+                                                <div class="flex items-start space-x-4">
+                                                    <span class="flex-shrink-0">
+                                                        <div
+                                                            class="text-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 border border-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 bg-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="{{ $notification['type'] === 'applicant' ? 'M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75' : 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z' }}" />
+                                                            </svg>
                                                         </div>
                                                     </span>
-                                                    <span
-                                                        class="text-left text-xs text-grey-400">{{ \Carbon\Carbon::parse($notification['responded_at'])->format('F j, Y g:i A') }}
-                                                    </span>
+                                                    <div class="flex flex-col">
+                                                        <span class="flex-1">
+                                                            <div class="text-left text-md font-medium">
+                                                                {{ $notification['message'] }}
+                                                            </div>
+                                                        </span>
+                                                        <span
+                                                            class="text-left text-xs text-grey-400">{{ \Carbon\Carbon::parse($notification['responded_at'])->format('F j, Y g:i A') }}
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                            </li>
+                                        @endforeach
+
+                                    </ul>
+                                @endif
                             </div>
                         </div>
                     </div>

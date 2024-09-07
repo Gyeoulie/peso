@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Signup\Employer;
 
+use App\Mail\WelcomeCompany;
 use App\Models\Company;
 use App\Models\Company_Industry_Line;
 use App\Models\Partnerships;
 use App\Models\Requirements_Passed;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -89,7 +91,6 @@ class EmployerInformation extends Component
                     ]);
                 }
 
-
                 foreach ($allData['reqData'] as $reqData) {
                     // Get the temporary file path
                     $tempPath = $reqData['temp_path'];
@@ -120,6 +121,7 @@ class EmployerInformation extends Component
                 // Update the user's role
 
                 DB::commit();
+
             }
 
         } catch (\Exception $e) {
@@ -143,7 +145,9 @@ class EmployerInformation extends Component
         }
 
         if ($success) {
-            toastr()->success('Account Successfully Updated!');
+            Mail::to($employer->user->email)->queue(new WelcomeCompany($employer));
+
+            toastr()->success('Account Successfully Updated, Please check your email for more information.');
             return redirect()->route('dashboard');
         }
 

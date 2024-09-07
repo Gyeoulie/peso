@@ -113,7 +113,7 @@ class PartnershipDetails extends Component
     public function close($modal)
     {
         $this->dispatch('close-modal', $modal);
-        $this->reste('remarks');
+        $this->reset('remarks');
 
     }
     public function mountData($id)
