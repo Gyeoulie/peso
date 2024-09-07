@@ -95,14 +95,14 @@ class Backup extends Component
             $fileContent = $googleDisk->get($filePath);
 
             // Save it locally in the temp directory
-            $localPath = storage_path('app/temp/' . basename($filePath));
-            file_put_contents($localPath, $fileContent);
+            // $localPath = storage_path('app/temp/' . basename($filePath));
+            // file_put_contents($localPath, $fileContent);
 
-            // Verify the file is saved
-            if (!file_exists($localPath)) {
-                toastr()->error('Failed to save the backup file locally.');
-                return;
-            }
+            // // Verify the file is saved
+            // if (!file_exists($localPath)) {
+            //     toastr()->error('Failed to save the backup file locally.');
+            //     return;
+            // }
 
             // Capture the output from the Artisan command
             $output = Artisan::call('backup:restore', [

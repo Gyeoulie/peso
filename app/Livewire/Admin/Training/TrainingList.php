@@ -24,7 +24,7 @@ class TrainingList extends Component
 
     public function updatedsearch()
     {
-        $this->resetPage('');
+        $this->resetPage();
     }
 
     public function updateFilter($filter)
