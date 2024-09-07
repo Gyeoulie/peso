@@ -356,36 +356,37 @@ class Dashboard extends Component
             'peso.municipality',
         ]);
 
-        $user = Auth::user();
+        if (Auth::check()) {
+            $user = Auth::user();
 
-        // Get user preferences
-        if ($user->employee) {
-            $userJobPreferences = $this->getUserJobPreferences();
-            $userIndustryPreference = $this->getUserIndustryPreference();
-            $userMunicipalityId = $this->getUserMunicipalityId();
-        }
+            // Get user preferences
+            if ($user->employee) {
+                $userJobPreferences = $this->getUserJobPreferences();
+                $userIndustryPreference = $this->getUserIndustryPreference();
+                $userMunicipalityId = $this->getUserMunicipalityId();
+            }
 
-        if ($this->filter === 'Recommended') {
-            $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
-                $q->whereIn('position_id', $userJobPreferences);
-            })
-                ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
-                    $q->whereIn('industry_id', $userIndustryPreference);
+            if ($this->filter === 'Recommended') {
+                $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
+                    $q->whereIn('position_id', $userJobPreferences);
                 })
-                ->whereHas('peso.municipality', function ($q) use ($userMunicipalityId) {
-                    $q->where('municipality_id', $userMunicipalityId);
+                    ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                        $q->whereIn('industry_id', $userIndustryPreference);
+                    })
+                    ->whereHas('peso.municipality', function ($q) use ($userMunicipalityId) {
+                        $q->where('municipality_id', $userMunicipalityId);
+                    });
+
+            } elseif ($this->filter === 'My Municipality') {
+                $municipalityId = $user->usertype == 4 ?
+                $user->employee->barangay->municipality->municipality_id :
+                $user->peso_accounts->peso->municipality_id;
+
+                $query->whereHas('peso.municipality', function ($q) use ($municipalityId) {
+                    $q->where('municipality_id', $municipalityId);
                 });
-
-        } elseif ($this->filter === 'My Municipality') {
-            $municipalityId = $user->usertype == 4 ?
-            $user->employee->barangay->municipality->municipality_id :
-            $user->peso_accounts->peso->municipality_id;
-
-            $query->whereHas('peso.municipality', function ($q) use ($municipalityId) {
-                $q->where('municipality_id', $municipalityId);
-            });
+            }
         }
-
         if ($this->search) {
             $query->where(function ($q) {
                 $q->whereHas('program_tags.job_positions', function ($q) {
