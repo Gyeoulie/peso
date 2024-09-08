@@ -1,4 +1,4 @@
-<div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
+<div class="bg-white shadow rounded-lg p-6 w-full overflow-auto">
     <div class="mb-4">
         <div class="flex flex-col md:flex-row w-full justify-between gap-2">
 

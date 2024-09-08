@@ -44,9 +44,9 @@ class TopTagsPrograms extends Component
             ->join('programs', 'program_tags.program_id', '=', 'programs.program_id')
             ->join('program_reg', 'program_reg.program_id', '=', 'programs.program_id')
             ->join('job_positions', 'program_tags.position_id', '=', 'job_positions.position_id')
-            ->join('peso', 'programs.peso_id', '=', 'peso.id') // Assuming 'peso_id' is the foreign key in 'programs' table
-            ->join('municipality', 'peso.municipality_id', '=', 'municipality.id') // Assuming the correct foreign key relationship
-            ->where('municipality.id', $id) // Filter programs by municipality_id
+            ->join('peso', 'programs.peso_id', '=', 'peso.peso_id') // Assuming 'peso_id' is the foreign key in 'programs' table
+            ->join('municipality', 'peso.municipality_id', '=', 'municipality.municipality_id') // Assuming the correct foreign key relationship
+            ->where('municipality.municipality_id', $id) // Filter programs by municipality_id
             ->groupBy('job_positions.position_Title')
             ->orderBy('total_count', 'desc')
             ->limit(5);
@@ -84,7 +84,7 @@ class TopTagsPrograms extends Component
             ->setJsonConfig([
                 'chart' => [
                     'width' => '100%',
-                    'height' => '300px',
+                    'height' => '200px',
                 ],
                 'yaxis.tickAmount' => 1,
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
