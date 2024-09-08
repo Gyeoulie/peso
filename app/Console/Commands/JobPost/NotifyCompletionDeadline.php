@@ -38,7 +38,7 @@ class NotifyCompletionDeadline extends Command
 
         // Fetch job postings with CLOSED status and deadline exactly 3 days ago (date only, time ignored)
         $jobPostings = Job_Posting::where('job_Status', 'CLOSED')
-            ->whereDate('job_Deadline', $threeDaysAgo->toDateString()) // Compare date only
+            ->whereDate('job_Duration', $threeDaysAgo->toDateString()) // Compare date only
             ->get();
 
         // Send an email to the employer for each job posting

@@ -47,7 +47,7 @@ class ProcessClosedJobPosting extends Command
                 foreach ($remainingApplicants as $remainingApplicant) {
                     $remainingApplicant->update([
                         'applicant_Status' => 'CANCELLED',
-                        'applicant_Remarks' => 'Position has already been filled',
+                        'company_Remarks' => 'Position has already been filled',
                     ]);
 
                     // Queue email to remaining applicants
