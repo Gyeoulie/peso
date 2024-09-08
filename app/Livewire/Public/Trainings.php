@@ -247,7 +247,7 @@ class Trainings extends Component
             $query->orderBy('created_at', $this->sortDate);
         }
 
-        $programList = $query->paginate(10, ['*'], 'events');
+        $programList = $query->paginate(15, ['*'], 'events');
 
         if (Auth::check()) {
 

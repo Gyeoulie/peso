@@ -322,7 +322,7 @@
                     </table>
                     {{-- PAGINATION --}}
                     <div>
-                        {{ $joblist->links() }}
+                        {{ $joblist->links('vendor.livewire.tailwind') }}
                     </div>
 
 
