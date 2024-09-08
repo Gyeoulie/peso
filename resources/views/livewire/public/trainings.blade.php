@@ -212,28 +212,31 @@
                 @foreach ($programList as $data)
                     <a href="{{ route('training.show', ['id' => $data->program_id]) }}"
                         class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
-                        <div>
-                            <div class="relative">
-                                <div class="w-full h-64 overflow-hidden">
-                                    <img class="w-full h-full object-cover"
-                                        src="{{ asset('storage/' . $data->program_pubmat) }}"
-                                        alt="prog-{{ $data->program_id }}">
+                        <div class="flex flex-col h-full">
+                            <div>
+                                <div class="relative">
+                                    <div class="w-full h-64 overflow-hidden">
+                                        <img class="w-full h-full object-cover"
+                                            src="{{ asset('storage/' . $data->program_pubmat) }}"
+                                            alt="prog-{{ $data->program_id }}">
+                                    </div>
+                                    <div
+                                        class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 transition duration-500 ease-in-out">
+                                        {{ $data->program_Type }}
+                                    </div>
                                 </div>
-                                <div
-                                    class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 transition duration-500 ease-in-out">
-                                    {{ $data->program_Type }}
+                                <div class="px-6 py-4 mb-auto ">
+                                    <span 
+                                        class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
+                                        {{ $data->program_Title }}
+                                    </span>
+                                    <p class="text-gray-500 text-sm flex justify-center text-justify">
+                                        {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 175, '...') !!}
+                                    </p>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 mb-auto">
-                                <span
-                                    class="font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
-                                    {{ $data->program_Title }}
-                                </span>
-                                <p class="text-gray-500 text-sm">
-                                    {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 150, '...') !!}
-                                </p>
-                            </div>
-                            <div class="px-6 py-3 flex flex-row items-center justify-between bg-white">
+                            <!-- Bottom section for PESO Municipality and Date -->
+                            <div class="mt-auto px-6 py-3 flex flex-row items-center justify-between bg-white">
                                 <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
                                     <svg height="13px" width="13px" version="1.1"
                                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -250,11 +253,6 @@
                                     <span class="ml-1">{{ $data->created_at->format('F j, Y g:i A') }}</span>
                                 </span>
                                 <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
-                                    {{-- <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
-                                        </path>
-                                    </svg> --}}
                                     <svg class="h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
