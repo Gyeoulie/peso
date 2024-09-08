@@ -841,6 +841,32 @@ class EditDetails extends Component
         $this->closeModal('license');
     }
 
+    public function mountData()
+    {
+
+        $employeeDetails = Employee::findOrFail($this->empID);
+
+        $this->fname = $employeeDetails->fname;
+        $this->mname = $employeeDetails->mname;
+        $this->lname = $employeeDetails->lname;
+        $this->suffix = $employeeDetails->suffix;
+        $this->birthdate = Carbon::parse($employeeDetails->birthdate)->format('Y-m-d');
+        $this->gender = $employeeDetails->gender;
+        $this->civilstatus = $employeeDetails->civilstatus;
+        $this->religion = $employeeDetails->religion;
+        $this->pnumber = $employeeDetails->pnumber;
+        $this->tinnum = $employeeDetails->tinnum;
+        $this->height = $employeeDetails->height;
+        $this->address = $employeeDetails->address;
+        $this->barangayID = $employeeDetails->barangay_id;
+
+        $barangayDetails = Barangay::find($employeeDetails->barangay_id);
+        $this->bar = $barangayDetails->barangay_Name;
+        $this->mun = $barangayDetails->municipality->municipality_Name;
+        $this->prov = $barangayDetails->municipality->province->province_Name;
+
+    }
+
     //ELIGIBILITY
     public function saveEligibility()
     {
@@ -918,6 +944,7 @@ class EditDetails extends Component
             $this->bar = $barangay->barangay_Name;
             $this->mun = $barangay->municipality->municipality_Name;
             $this->prov = $barangay->municipality->province->province_Name;
+
         }
     }
 
@@ -1070,6 +1097,8 @@ class EditDetails extends Component
         // Initialize display arrays
         $this->displayDisabilities = $this->originalDisabilities;
         $this->displaySkills = $this->originalSkills;
+
+        $this->mountData();
     }
 
     public function render()
@@ -1093,25 +1122,6 @@ class EditDetails extends Component
                 })->orderBy('license_Validity', 'desc');
             },
         ])->find($this->empID);
-
-        $this->fname = $employeeDetails->fname;
-        $this->mname = $employeeDetails->mname;
-        $this->lname = $employeeDetails->lname;
-        $this->suffix = $employeeDetails->suffix;
-        $this->birthdate = Carbon::parse($employeeDetails->birthdate)->format('Y-m-d');
-        $this->gender = $employeeDetails->gender;
-        $this->civilstatus = $employeeDetails->civilstatus;
-        $this->religion = $employeeDetails->religion;
-        $this->pnumber = $employeeDetails->pnumber;
-        $this->tinnum = $employeeDetails->tinnum;
-        $this->height = $employeeDetails->height;
-        $this->address = $employeeDetails->address;
-        $this->barangayID = $employeeDetails->barangay_id;
-
-        $barangayDetails = Barangay::find($employeeDetails->barangay_id);
-        $this->bar = $barangayDetails->barangay_Name;
-        $this->mun = $barangayDetails->municipality->municipality_Name;
-        $this->prov = $barangayDetails->municipality->province->province_Name;
 
         return view(
             'livewire.public.profile.jobseeker.partials.edit-details',

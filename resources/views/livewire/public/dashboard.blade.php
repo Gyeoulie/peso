@@ -359,15 +359,49 @@
                                             <li>
                                                 <div class="flex items-start space-x-4">
                                                     <span class="flex-shrink-0">
-                                                        <div
-                                                            class="text-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 border border-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 bg-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="{{ $notification['type'] === 'applicant' ? 'M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75' : 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z' }}" />
-                                                            </svg>
-                                                        </div>
+                                                        @if ($notification['type'] === 'partnership')
+                                                            @if ($notification['status'] === 'APPROVED')
+                                                                <div
+                                                                    class="text-green-700 border border-green-700 bg-green-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg class="h-5 w-5"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                    </svg>
+
+                                                                </div>
+                                                            @elseif ($notification['status'] === 'REJECTED' || $notification['status'] === 'REJECTED')
+                                                                <div
+                                                                    class="text-red-700 border border-red-700 bg-green-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg class="h-5 w-5"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                    </svg>
+
+
+                                                                </div>
+                                                            @endif
+                                                        @else
+                                                            <div
+                                                                class="text-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 border border-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 bg-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="h-5 w-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="{{ $notification['type'] === 'applicant' ? 'M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75' : 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z' }}" />
+                                                                </svg>
+                                                            </div>
+                                                        @endif
+                                                   
                                                     </span>
                                                     <div class="flex flex-col">
                                                         <span class="flex-1">
