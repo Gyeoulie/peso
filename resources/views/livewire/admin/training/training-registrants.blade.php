@@ -57,7 +57,7 @@
                             <p class="ms-4">{{ $programInfo->program_Host }}</p>
                         </div>
 
-                        @if ($programInfo->program_Slots !== null)
+                        @if ($programInfo->program_Slots != null)
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Slots Remaining:</li>
                                 <p class="ms-4">{{ $programInfo->program_Slots }}</p>
@@ -72,7 +72,7 @@
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Program Date:</li>
                                 <span>
-                                    <p class="ms-4">{{ $programInfo->program_Datetime > format('F j, Y') }}</p>
+                                    <p class="ms-4">{{ $programInfo->program_Datetime->format('F j, Y') }}</p>
                                     <p class="ms-4">{{ $programInfo->program_Datetime->format('g:i A') }}</p>
                                 </span>
 
