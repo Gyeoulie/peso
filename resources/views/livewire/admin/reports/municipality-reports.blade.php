@@ -285,9 +285,9 @@
             <livewire:admin.reports.municipality-partials.popular-trainings
                 municipalityID="{{ $pesoMunicipalityId }}" />
 
-            {{-- 
+            
             <livewire:admin.reports.municipality-partials.top-tags-programs
-                municipalityID="{{ $pesoMunicipalityId }}" /> --}}
+                municipalityID="{{ $pesoMunicipalityId }}" />
 
         </div>
 

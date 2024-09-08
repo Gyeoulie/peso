@@ -25,7 +25,7 @@ class EmployerProfile extends Component
     {
         $employerInfo = Company::find($this->id);
 
-        if (!$employerInfo || $employerInfo->user->usertype != 4 || $employerInfo->user->userstatus != 1) {
+        if (!$employerInfo || $employerInfo->user->usertype != 6 || $employerInfo->user->userstatus != 1) {
             return $this->redirectRoute('dashboard');
         }
 
@@ -80,7 +80,7 @@ class EmployerProfile extends Component
 
         $user = Auth::user();
 
-        if ($user->usertype == 5) {
+        if ($user->usertype == 6) {
             if ($user->company->company_id == $this->id) {
                 $isOwner = true;
             }

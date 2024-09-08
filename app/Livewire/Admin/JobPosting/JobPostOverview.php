@@ -9,6 +9,7 @@ use App\Models\Job_Posting;
 use App\Models\Requirements;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -29,7 +30,7 @@ class JobPostOverview extends Component
         '5' => 'GRADE V',
         '6' => 'GRADE VI',
         '7' => 'GRADE VII',
-        '8' => 'GRADE VIII',    
+        '8' => 'GRADE VIII',
         '9' => 'ELEMENTARY GRADUATE',
         '10' => '1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12)',
         '11' => '2ND YEAR HIGH SCHOOL/GRADE VIII (FOR K TO 12)',
@@ -111,19 +112,23 @@ class JobPostOverview extends Component
             ]);
 
             // If the status is ACTIVE, get the matching employees
-            if ($status === 'ACTIVE') {
+            if ($status == 'ACTIVE') {
                 $matchingEmployees = $this->getMatched($jobPosting);
             }
 
             // Commit the transaction
             DB::commit();
-            Mail::to($jobPosting->company->user->email)->queue(new JobPostApplicationNotification($jobPosting));
+
+            // Send email notification to the company
+            Mail::to($jobPosting->company->user->email)
+                ->queue(new JobPostApplicationNotification($jobPosting));
 
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error
             DB::rollBack();
 
             // Log the error for debugging
+            Log::error('Job update failed', ['error' => $e->getMessage()]);
 
             // Show an error message
             toastr()->error('An error occurred while updating the job posting.');
@@ -131,14 +136,15 @@ class JobPostOverview extends Component
         }
 
         // Send emails if the status is ACTIVE and the transaction was committed
-        if ($status === 'ACTIVE' && !empty($matchingEmployees)) {
+        if ($status == 'ACTIVE' && !empty($matchingEmployees)) {
             foreach ($matchingEmployees as $employee) {
-                Mail::to($employee->user->email)->queue(new JobPostingNotification($employee, $jobPosting));
+                Mail::to($employee->user->email)
+                    ->queue(new JobPostingNotification($employee, $jobPosting));
             }
         }
 
         // Dispatch the event to close the modal
-        $this->dispatch('close-modal', $modal);
+        $this->emit('close-modal', $modal);
 
         // Show a success message depending on the status
         if ($status === 'ACTIVE') {
