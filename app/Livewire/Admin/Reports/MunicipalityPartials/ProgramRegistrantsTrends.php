@@ -18,6 +18,14 @@ class ProgramRegistrantsTrends extends Component
     public $mountSelectedMonths = [], $mountSelectedYear;
     public $municipalityID;
 
+    public $provinceID;
+
+    #[On('updateProv')]
+    public function updateProv($id)
+    {
+        $this->provinceID = $id;
+    }
+
     #[On('updateMun')]
     public function updateMun($id)
     {
@@ -46,7 +54,7 @@ class ProgramRegistrantsTrends extends Component
         $this->dispatch('close-modal', 'filter-employment-trends-modal');
     }
 
-    public function getAreaProgramRegistrationsTrend($municipalityId)
+    public function getAreaProgramRegistrationsTrend($municipalityId = null, $provinceId = null)
     {
         // Use the provided year or default to the current year
         $year = $this->selectedYear ?? Carbon::now()->year;
@@ -57,10 +65,22 @@ class ProgramRegistrantsTrends extends Component
         // Fetch the registrations data from the program_reg table
         $query = Program_Reg::selectRaw('MONTH(program_reg.created_at) as month, COUNT(*) as total')
             ->join('programs', 'program_reg.program_id', '=', 'programs.program_id')
-            ->join('peso', 'programs.peso_id', '=', 'peso.peso_id') // Assuming 'peso_id' is the foreign key in 'programs' table
-            ->join('municipality', 'peso.municipality_id', '=', 'municipality.municipality_id') // Ensure the correct foreign key relationship
-            ->where('municipality.municipality_id', $municipalityId)
-            ->groupByRaw('MONTH(program_reg.created_at)')
+            ->join('peso', 'programs.peso_id', '=', 'peso.peso_id') // Join peso table
+            ->join('municipality', 'peso.municipality_id', '=', 'municipality.municipality_id'); // Join municipality table
+
+        // Apply filter for municipality or province
+        if ($municipalityId) {
+            // Filter by municipality if provided
+            $query->where('municipality.municipality_id', $municipalityId);
+        } elseif ($provinceId) {
+            // Otherwise, filter by all municipalities within the province
+            $query->whereHas('programs.peso.municipality.province', function ($query) use ($provinceId) {
+                $query->where('province.province_id', $provinceId);
+            });
+        }
+
+        // Group and order the results by month
+        $query->groupByRaw('MONTH(program_reg.created_at)')
             ->orderByRaw('MONTH(program_reg.created_at)');
 
         // Apply year filter if selectedYear is set
@@ -89,7 +109,7 @@ class ProgramRegistrantsTrends extends Component
 
         // Create the area chart model
         $chart = LivewireCharts::areaChartModel()
-            ->setTitle("Monthly Program Registrations for Municipality ID {$municipalityId} in {$year}")
+            ->setTitle("Monthly Program Registrations in {$year}")
             ->setAnimated(true)
             ->setSmoothCurve()
             ->setXAxisVisible(true)
@@ -132,7 +152,16 @@ class ProgramRegistrantsTrends extends Component
 
     public function render()
     {
-        $programRegistrants = $this->getAreaProgramRegistrationsTrend($this->municipalityID);
+
+        $programRegistrants = null;
+
+        if ($this->municipalityID) {
+            $programRegistrants = $this->getAreaProgramRegistrationsTrend($this->municipalityID);
+
+        } elseif ($this->provinceID) {
+            $programRegistrants = $this->getAreaProgramRegistrationsTrend(null, $this->provinceID);
+
+        }
 
         return view('livewire.admin.reports.municipality-partials.program-registrants-trends', compact('programRegistrants'));
     }

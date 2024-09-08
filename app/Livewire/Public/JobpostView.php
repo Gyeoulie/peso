@@ -53,11 +53,14 @@ class JobpostView extends Component
 
     public function mount()
     {
-        $JobPost = Job_Posting::findOrFail($this->id);
+        $JobPost = Job_Posting::find($this->id);
         if ($JobPost) {
-            if (Auth::user()->usertype <= 5 && $JobPost->job_Status == 'PENDING') {
+            if (Auth::check() && Auth::user()->usertype <= 5 && $JobPost->job_Status == 'PENDING') {
                 return redirect()->route('dashboard');
             }
+        } else {
+            return redirect()->route('dashboard');
+
         }
 
     }

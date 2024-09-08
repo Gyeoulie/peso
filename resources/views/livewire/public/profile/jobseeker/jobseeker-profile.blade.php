@@ -600,7 +600,7 @@
 
                                 @if ($isOwner)
                                     <div class="flex flex-row gap-4 items-center">
-                                        <div x-data="{ tooltip: 'Adit Training Record' }">
+                                        <div x-data="{ tooltip: 'Add Training Record' }">
                                             <div x-tooltip="tooltip" x-data=""
                                                 x-on:click.prevent="$dispatch('open-modal', 'training-modal')"
                                                 class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">

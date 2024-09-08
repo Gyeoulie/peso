@@ -205,8 +205,7 @@
                 @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
                     <x-responsive-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
                         {{ __('My Applications') }}
-                        <span
-                            class="inline-flex relative bg-red-500 p-0.5 leading-none w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full"></span>
+                        
                     </x-responsive-nav-link>
                 @endif
                 @if (auth()->user()->usertype >= 8)

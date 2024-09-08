@@ -15,7 +15,7 @@
         <div class="col-span-2 md:col-span-3">
             <div class="bg-blue-100 shadow rounded-lg p-6 flex flex-col h-full">
                 <div class="flex flex-row justify-start">
-                    <h1 class="font-thin font-mono text-sm">Analytics:</h1>
+                    <h1 class="font-thin font-mono text-sm">Municipality:</h1>
                 </div>
 
                 <div class="flex flex-row w-full justify-between mb-5 mt-auto gap-5">
@@ -24,8 +24,8 @@
                             <x-slot name="trigger">
                                 <button
                                     class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
-                                    <div class="w-full ml-2 text-left font-extrabold font-mono text-sm md:text-xl ">
-                                        {{ $analyticsValue ?? 'Analytics' }}
+                                    <div class="w-full ml-2 text-left font-extrabold font-mono text-xl ">
+                                        {{ $provTitle }}
                                     </div>
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -35,50 +35,24 @@
                                                 clip-rule="evenodd" />
                                         </svg>
 
-
                                     </div>
                                 </button>
                             </x-slot>
                             <x-slot name="content">
                                 <!-- Search input -->
+                                <div class="p-2">
+                                    <input wire:model.live.prevent='searchProv' type="text" placeholder="Search..."
+                                        class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
+                                        @click.stop>
+                                </div>
 
                                 <!-- Dropdown content with scrollbar -->
                                 <div class="max-h-[300px] bg-white overflow-y-auto">
                                     <!-- Dropdown links -->
-
-                                    <x-dropdown-link wire:click.prevent='updateAnalytics(1)'
-                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
-                                        <span>Jobseekers</span>
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
-                                        </svg>
-                                    </x-dropdown-link>
-                                    <x-dropdown-link wire:click.prevent='updateAnalytics(2)'
-                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
-                                        <span>Trends</span>
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                                        </svg>
-
-                                    </x-dropdown-link>
-                                    <x-dropdown-link wire:click.prevent='updateAnalytics(3)'
-                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
-                                        <span>Top</span>
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
-                                        </svg>
-
-                                    </x-dropdown-link>
-
-
+                                    @foreach ($province as $data)
+                                        <x-dropdown-link wire:click.prevent='munSelect({{ $data->province_id }})'
+                                            class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->province_Name }}</x-dropdown-link>
+                                    @endforeach
                                 </div>
                             </x-slot>
 
@@ -200,94 +174,47 @@
 
         </div>
 
-        <div class="col-span-4 md:col-span-12 w-full h-full" x-show="selectedAnalytics == 1"
-            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
-            x-transition:enter-end="opacity-100 scale-100" x-cloak>
-            @if ($selectedAnalytics === 1)
-                <div class="flex flex-col md:flex-row w-full gap-4">
-                    <div class="flex w-full">
-                        <livewire:admin.reports.municipality-partials.barangay-jobseekers
-                            municipalityID="{{ $pesoMunicipalityId }}" />
-                    </div>
-
-                    <div class="flex w-full">
-                        <livewire:admin.reports.municipality-partials.employment-age-group
-                            municipalityID="{{ $pesoMunicipalityId }}" />
-                    </div>
-
-                    <div class="flex w-full">
-                        <livewire:admin.reports.municipality-partials.program-registrants-trends
-                            municipalityID="{{ $pesoMunicipalityId }}" />
-                    </div>
-                </div>
-            @endif
+        <div class="col-span-4">
+            <livewire:admin.reports.municipality-partials.top-tags-programs provinceID="{{ $selectedProv }}" />
         </div>
 
-        <div class="col-span-4 md:col-span-12 w-full h-full" x-show="selectedAnalytics == 2"
-            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
-            x-transition:enter-end="opacity-100 scale-100" x-cloak>
-            @if ($selectedAnalytics === 2)
-                <div class="flex flex-col md:flex-row w-full gap-4">
-                    <div class="flex w-full">
-                        <livewire:admin.reports.municipality-partials.recommendation-trends
-                            municipalityID="{{ $pesoMunicipalityId }}" />
-                    </div>
-                    <div class="flex w-full">
-                        <livewire:admin.reports.municipality-partials.employment-trends
-                            municipalityID="{{ $pesoMunicipalityId }}" />
-                    </div>
-                    <div class="flex w-full">
-
-                        <livewire:admin.reports.municipality-partials.job-posting-trends
-                            municipalityID="{{ $pesoMunicipalityId }}" />
-
-                    </div>
-                </div>
-            @endif
+        <div class="col-span-4">
+            <livewire:admin.reports.municipality-partials.employment-age-group provinceID="{{ $selectedProv }}" />
         </div>
 
-        <div class="col-span-4 md:col-span-12 w-full h-full" x-show="selectedAnalytics == 3"
-            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
-            x-transition:enter-end="opacity-100 scale-100" x-cloak>
-            @if ($selectedAnalytics === 3)
-                <div class="flex flex-col md:flex-row w-full gap-4">
-                    <div class="flex w-full">
-                        <livewire:admin.reports.municipality-partials.top-job-tags
-                            municipalityID="{{ $pesoMunicipalityId }}" />
+        <div class="col-span-4">
+            <livewire:admin.reports.municipality-partials.program-registrants-trends
+                provinceID="{{ $selectedProv }}" />
+        </div>
 
-                    </div>
-                    <div class="flex w-full">
-                        <livewire:admin.reports.municipality-partials.top-job-industry
-                            municipalityID="{{ $pesoMunicipalityId }}" />
-                    </div>
-                    <div class="flex w-full">
 
-                        <livewire:admin.reports.municipality-partials.top-job-preference
-                            municipalityID="{{ $pesoMunicipalityId }}" />
-                    </div>
-                </div>
-            @endif
+
+        <div class="col-span-4">
+            <livewire:admin.reports.municipality-partials.recommendation-trends provinceID="{{ $selectedProv }}" />
+        </div>
+        <div class="col-span-4">
+            <livewire:admin.reports.municipality-partials.employment-trends provinceID="{{ $selectedProv }}" />
+        </div>
+        <div class="col-span-4">
+
+            <livewire:admin.reports.municipality-partials.job-posting-trends provinceID="{{ $selectedProv }}" />
 
         </div>
 
-        {{-- TABLES --}}
-        <div class="col-span-4 md:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
-                <livewire:admin.reports.municipality-partials.jobseekers-list
-                    municipalityID="{{ $pesoMunicipalityId }}" />
-            </div>
-        </div>
-
-        <div class="col-span-4 md:col-span-6">
-
-            <livewire:admin.reports.municipality-partials.popular-trainings
-                municipalityID="{{ $pesoMunicipalityId }}" />
 
 
-            <livewire:admin.reports.municipality-partials.top-tags-programs
-                municipalityID="{{ $pesoMunicipalityId }}" />
+        <div class="col-span-4">
+            <livewire:admin.reports.municipality-partials.top-job-tags provinceID="{{ $selectedProv }}" />
 
         </div>
+        <div class="col-span-4">
+            <livewire:admin.reports.municipality-partials.top-job-industry provinceID="{{ $selectedProv }}" />
+        </div>
+        <div class="col-span-4">
+
+            <livewire:admin.reports.municipality-partials.top-job-preference provinceID="{{ $selectedProv }}" />
+        </div>
+
 
 
 

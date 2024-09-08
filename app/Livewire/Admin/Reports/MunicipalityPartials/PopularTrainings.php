@@ -16,6 +16,14 @@ class PopularTrainings extends Component
     public $selectedMonths = [], $selectedYear;
     public $mountSelectedMonths = [], $mountSelectedYear;
 
+    public $provinceID;
+
+    #[On('updateProv')]
+    public function updateProv($id)
+    {
+        $this->provinceID = $id;
+    }
+
     #[On('updateMun')]
     public function updateMun($id)
     {
@@ -44,11 +52,20 @@ class PopularTrainings extends Component
         $this->dispatch('close-modal', 'filter-trainings-modal');
     }
 
-    private function getTopPrograms($id)
+    private function getTopPrograms($municipalityId = null, $provinceId = null)
     {
-        return Programs::withCount(['program_reg as registration_count' => function ($query) use ($id) {
-            $query->whereHas('employee.barangay', function ($query) use ($id) {
-                $query->where('municipality_id', $id);
+        return Programs::withCount(['program_reg as registration_count' => function ($query) use ($municipalityId, $provinceId) {
+            // Apply filter based on municipality or province
+            $query->whereHas('employee.barangay', function ($query) use ($municipalityId, $provinceId) {
+                if ($municipalityId) {
+                    // Filter by municipality if provided
+                    $query->where('municipality_id', $municipalityId);
+                } elseif ($provinceId) {
+                    // Otherwise, filter by all municipalities within the province
+                    $query->whereHas('municipality', function ($query) use ($provinceId) {
+                        $query->where('province_id', $provinceId);
+                    });
+                }
             });
         }])
             ->when($this->selectedYear, function ($query) {
@@ -61,13 +78,23 @@ class PopularTrainings extends Component
             })
             ->having('registration_count', '>', 0) // Ensure registration count is greater than zero
             ->orderBy('registration_count', 'desc')
-            ->limit(10);
+            ->limit(5)
+            ->get();
     }
 
     public function render()
     {
 
-        $topPrograms = $this->getTopPrograms($this->municipalityID)->get();
+        $topPrograms = null;
+
+        if ($this->municipalityID) {
+            $topPrograms = $this->getTopPrograms($this->municipalityID);
+
+        } elseif ($this->provinceID) {
+            $topPrograms = $this->getTopPrograms(null, $this->provinceID);
+
+        }
+
         return view('livewire.admin.reports.municipality-partials.popular-trainings', compact('topPrograms'));
     }
 }

@@ -30,6 +30,7 @@ use App\Livewire\Admin\Reports\MunicipalityReports;
 use App\Livewire\Admin\Requirements\Requirements;
 use App\Livewire\Admin\Super\Dashboard as SuperDashboard;
 use App\Livewire\Admin\Super\Reports\MunicipalityReports as ReportsMunicipalityReports;
+use App\Livewire\Admin\Super\Reports\ProvinceReports;
 use App\Livewire\Admin\Training\CreateTrainining;
 use App\Livewire\Admin\Training\EditTraining;
 use App\Livewire\Admin\Training\TrainingDetails;
@@ -163,6 +164,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('super/', SuperDashboard::class)->name('super-dashboard');
         Route::get('super/municipality', ReportsMunicipalityReports::class)->name('super-municipality');
+        Route::get('super/province', ProvinceReports::class)->name('super-province');
+
 
         // MAINTENANCE
 

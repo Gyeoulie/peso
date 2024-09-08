@@ -12,15 +12,23 @@ class EmploymentAgeGroup extends Component
 {
 
     public $municipalityID;
+    public $provinceID;
+
+    #[On('updateProv')]
+    public function updateProv($id)
+    {
+        $this->provinceID = $id;
+    }
+
 
     #[On('updateMun')]
     public function updateMun($id)
     {
         $this->municipalityID = $id;
     }
-
-    public function getEmploymentByAgeGroup($municipalityId)
+    public function getEmploymentByAgeGroup($municipalityId = null, $provinceId = null)
     {
+        // Age groups
         $ageGroups = [
             '18-19' => [18, 19],
             '20-29' => [20, 29],
@@ -30,35 +38,56 @@ class EmploymentAgeGroup extends Component
             '60-69' => [60, 69],
             '70+' => [70, 150], // Adjust the upper limit as needed
         ];
-
+    
         $employedCounts = [];
         $unemployedCounts = [];
-
+    
         foreach ($ageGroups as $label => $range) {
             [$minAge, $maxAge] = $range;
-
-            $employedCount = Employee::whereBetween(DB::raw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE())'), [$minAge, $maxAge])
-                ->where('empStatus', 1)
-                ->whereHas('barangay', function ($query) use ($municipalityId) {
+    
+            // Base query for employed employees
+            $employedQuery = Employee::whereBetween(DB::raw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE())'), [$minAge, $maxAge])
+                ->where('empStatus', 1);
+    
+            // Base query for unemployed employees
+            $unemployedQuery = Employee::whereBetween(DB::raw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE())'), [$minAge, $maxAge])
+                ->where('empStatus', 2);
+    
+            // If municipalityId is provided, filter by municipality
+            if ($municipalityId) {
+                $employedQuery->whereHas('barangay', function ($query) use ($municipalityId) {
                     $query->where('municipality_id', $municipalityId);
-                })
-                ->count();
-
-            $unemployedCount = Employee::whereBetween(DB::raw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE())'), [$minAge, $maxAge])
-                ->where('empStatus', 2)
-                ->whereHas('barangay', function ($query) use ($municipalityId) {
+                });
+    
+                $unemployedQuery->whereHas('barangay', function ($query) use ($municipalityId) {
                     $query->where('municipality_id', $municipalityId);
-                })
-                ->count();
-
+                });
+            }
+    
+            // If provinceId is provided, filter by province
+            if ($provinceId) {
+                $employedQuery->whereHas('barangay.municipality', function ($query) use ($provinceId) {
+                    $query->where('province_id', $provinceId);
+                });
+    
+                $unemployedQuery->whereHas('barangay.municipality', function ($query) use ($provinceId) {
+                    $query->where('province_id', $provinceId);
+                });
+            }
+    
+            // Count the number of employed and unemployed in the age group
+            $employedCount = $employedQuery->count();
+            $unemployedCount = $unemployedQuery->count();
+    
+            // Add the counts to the respective arrays
             $employedCounts[$label] = $employedCount;
             $unemployedCounts[$label] = $unemployedCount;
         }
-
+    
+        // Create column chart model
         $columnChartModel = LivewireCharts::multiColumnChartModel()
             ->setTitle('Employment by Age Group')
             ->setAnimated(true)
-        // ->withOnPointClickEvent('onPointClick')
             ->setSmoothCurve()
             ->setXAxisVisible(true)
             ->setDataLabelsEnabled(true)
@@ -71,20 +100,32 @@ class EmploymentAgeGroup extends Component
                 'yaxis.tickAmount' => 1,
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
             ]);
-
+    
+        // Add employed data to the chart
         foreach ($employedCounts as $ageGroup => $count) {
             $columnChartModel->addSeriesColumn('Employed', $ageGroup, $count);
         }
-
+    
+        // Add unemployed data to the chart
         foreach ($unemployedCounts as $ageGroup => $count) {
             $columnChartModel->addSeriesColumn('Unemployed', $ageGroup, $count);
         }
-
+    
         return $columnChartModel;
     }
+    
     public function render()
     {
-        $employmentAgeGroup = $this->getEmploymentByAgeGroup($this->municipalityID);
+
+        $employmentAgeGroup = null;
+
+        if($this->municipalityID){
+            $employmentAgeGroup = $this->getEmploymentByAgeGroup($this->municipalityID);
+
+        }elseif($this->provinceID){
+            $employmentAgeGroup = $this->getEmploymentByAgeGroup(null, $this->provinceID);
+
+        }
 
         return view('livewire.admin.reports.municipality-partials.employment-age-group', compact('employmentAgeGroup'));
     }

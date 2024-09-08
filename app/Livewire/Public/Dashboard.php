@@ -131,50 +131,87 @@ class Dashboard extends Component
         $user = Auth::user();
 
         if ($this->filter === 'Recommended') {
+            // Get the highest education level of the user
             $highestEducationLevel = $this->getHighestEducationLevel();
             $userMunicipalityId = $this->getUserMunicipalityId();
             $userJobPreferences = $this->getUserJobPreferences();
             $userIndustryPreference = $this->getUserIndustryPreference();
 
+            // Query for matching job postings
             $query->where('job_edu', '<=', $highestEducationLevel)
-                ->whereHas('peso', function ($q) use ($userMunicipalityId) {
-                    $q->where('municipality_id', $userMunicipalityId);
+                ->whereHas('peso', function ($query) use ($userMunicipalityId) {
+                    $query->where('municipality_id', $userMunicipalityId);
                 })
-                ->where(function ($q) use ($userJobPreferences, $userIndustryPreference) {
-                    $q->whereHas('job_tags', function ($q) use ($userJobPreferences) {
-                        $q->whereIn('position_id', $userJobPreferences);
-                    })
-                        ->orWhereHas('job_industry', function ($q) use ($userIndustryPreference) {
-                            $q->whereIn('industry_id', $userIndustryPreference);
+                ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                    $query->where(function ($query) use ($userJobPreferences) {
+                        $query->whereHas('job_tags', function ($query) use ($userJobPreferences) {
+                            $query->whereIn('position_id', $userJobPreferences);
                         });
-                });
-
+                    })
+                        ->orWhere(function ($query) use ($userIndustryPreference) {
+                            $query->whereHas('job_industry', function ($query) use ($userIndustryPreference) {
+                                $query->whereIn('industry_id', $userIndustryPreference);
+                            });
+                        });
+                })
+                ->where(function ($query) {
+                    $query->whereHas('company', function ($query) {
+                        $query->where('business_Name', 'like', '%' . $this->search . '%')
+                            ->orWhere('trade_Name', 'like', '%' . $this->search . '%');
+                    })
+                        ->orWhere('job_Title', 'like', '%' . $this->search . '%')
+                        ->orWhereHas('job_tags.job_positions', function ($query) {
+                            $query->where('position_Title', 'like', '%' . $this->search . '%');
+                        })
+                        ->orWhereHas('job_industry', function ($query) {
+                            $query->where('industry_Title', 'like', '%' . $this->search . '%');
+                        })
+                        ->orWhereHas('peso.municipality', function ($query) {
+                            $query->where('municipality_name', 'like', '%' . $this->search . '%');
+                        });
+                })
+                ->withCount(['job_tags as job_tags_count' => function ($query) use ($userJobPreferences) {
+                    $query->whereIn('position_id', $userJobPreferences);
+                }])
+                ->withCount(['job_industry as industry_count' => function ($query) use ($userIndustryPreference) {
+                    $query->whereIn('industry_id', $userIndustryPreference);
+                }])
+                ->orderByRaw('
+                    CASE
+                        WHEN industry_count > 0 AND job_tags_count > 0 THEN 1
+                        WHEN industry_count > 0 AND job_tags_count = 0 THEN 2
+                        WHEN industry_count = 0 AND job_tags_count > 0 THEN 3
+                        ELSE 4
+                    END
+                ')
+                ->orderByDesc('job_tags_count')
+                ->distinct();
         } elseif ($this->filter === 'My Municipality') {
-            $municipalityId = $user->usertype == 4 ?
-            $user->employee->barangay->municipality->municipality_id :
-            $user->peso_accounts->peso->municipality_id;
+            $municipalityId = $user->usertype == 4
+            ? $user->employee->barangay->municipality->municipality_id
+            : $user->peso_accounts->peso->municipality_id;
 
-            $query->whereHas('peso.municipality', function ($q) use ($municipalityId) {
-                $q->where('municipality_id', $municipalityId);
+            $query->whereHas('peso.municipality', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
             });
         }
 
         if ($this->search) {
-            $query->where(function ($q) {
-                $q->whereHas('company', function ($q) {
-                    $q->where('business_Name', 'like', '%' . $this->search . '%')
+            $query->where(function ($query) {
+                $query->whereHas('company', function ($query) {
+                    $query->where('business_Name', 'like', '%' . $this->search . '%')
                         ->orWhere('trade_Name', 'like', '%' . $this->search . '%');
                 })
                     ->orWhere('job_Title', 'like', '%' . $this->search . '%')
-                    ->orWhereHas('job_tags.job_positions', function ($q) {
-                        $q->where('position_Title', 'like', '%' . $this->search . '%');
+                    ->orWhereHas('job_tags.job_positions', function ($query) {
+                        $query->where('position_Title', 'like', '%' . $this->search . '%');
                     })
-                    ->orWhereHas('job_industry', function ($q) {
-                        $q->where('industry_Title', 'like', '%' . $this->search . '%');
-                    })->orWhereHas('peso.municipality', function ($q) {
-                    $q->where('municipality_name', 'like', '%' . $this->search . '%');
-                });
-
+                    ->orWhereHas('job_industry', function ($query) {
+                        $query->where('industry_Title', 'like', '%' . $this->search . '%');
+                    })
+                    ->orWhereHas('peso.municipality', function ($query) {
+                        $query->where('municipality_name', 'like', '%' . $this->search . '%');
+                    });
             });
         }
 

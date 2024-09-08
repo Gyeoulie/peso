@@ -273,7 +273,7 @@
                     </svg>
                 </button>
                 <ul id="dropdown-4"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-reports-barangay', 'admin-reports-municipality', 'super-municipality') ? 'block' : 'hidden' }}">
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-reports-barangay', 'admin-reports-municipality', 'super-municipality', 'super-province') ? 'block' : 'hidden' }}">
                     @if (Auth::check() && Auth::user()->usertype != 11)
                         <li>
                             <a wire:navigate href="{{ route('admin-reports-barangay') }}"
@@ -288,11 +288,15 @@
                     @endif
                     @if (Auth::check() && Auth::user()->usertype == 11)
                         <li>
-                    <li>
-                        <a wire:navigate href="{{ route('super-municipality') }}"
-                            :class="{{ request()->routeIs('super-municipality') }} ? activeNav : inactiveNav"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Municipality</a>
-                    </li>
+                            <a wire:navigate href="{{ route('super-municipality') }}"
+                                :class="{{ request()->routeIs('super-municipality') }} ? activeNav : inactiveNav"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Municipality</a>
+                        </li>
+                        <li>
+                            <a wire:navigate href="{{ route('super-province') }}"
+                                :class="{{ request()->routeIs('super-province') }} ? activeNav : inactiveNav"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300">Province</a>
+                        </li>
                     @endif
 
                 </ul>
