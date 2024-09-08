@@ -526,8 +526,26 @@
 
                     <div class="flex flex-row w-full gap-4 sm:gap-24 justify-center items-center mt-8">
 
+                        <div wire:click.prevent='updateOption(1)' @click="selectedOption = 2"
+                            :class="selectedOption === 2 ? selected : unselected"
+                            class="flex flex-col w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center  gap-2 shadow-lg cursor-pointer">
 
-                        <div wire:click.prevent='updateOption(1)' @click="selectedOption = 1"
+                            <div>
+                                <svg class="h-10 w-10 sm:h-14 sm:w-14" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                                </svg>
+
+
+                            </div>
+
+                            <div class="text-center"> <span class="font-bold">Uploaded Resume</span>
+                            </div>
+                        </div>
+
+
+                        <div wire:click.prevent='updateOption(2)' @click="selectedOption = 1"
                             :class="selectedOption === 1 ? selected : unselected"
                             class="flex flex-col  w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center gap-2 shadow-lg  cursor-pointer">
 
@@ -549,23 +567,6 @@
 
 
 
-                        <div wire:click.prevent='updateOption(2)' @click="selectedOption = 2"
-                            :class="selectedOption === 2 ? selected : unselected"
-                            class="flex flex-col w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center  gap-2 shadow-lg cursor-pointer">
-
-                            <div>
-                                <svg class="h-10 w-10 sm:h-14 sm:w-14" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                                </svg>
-
-
-                            </div>
-
-                            <div class="text-center"> <span class="font-bold">Uploaded Resume</span>
-                            </div>
-                        </div>
 
 
                     </div>

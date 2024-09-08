@@ -1,32 +1,19 @@
 <?php
 
-namespace App\Livewire\Admin\Reports\MunicipalityPartials;
+namespace App\Livewire\Admin\Super\DashboardPartials;
 
 use App\Models\Job_Posting;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Livewire\Component;
-use Livewire\Attributes\On;
 
-
-class TopJobTags extends Component
+class ActiveJobTags extends Component
 {
 
-    public $municipalityID;
-
-    #[On('updateMun')]
-    public function updateMun($id)
-    {
-        $this->municipalityID = $id;
-    }
-
-    public function getTopJobTags($municipalityId)
+    public function getTopJobTags()
     {
         // Fetch job postings with job tags and job positions
         $jobPostings = Job_Posting::with(['job_tags.job_positions'])
             ->where('job_Status', 'ACTIVE')
-            ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
-                $query->where('municipality_id', $municipalityId);
-            })
             ->get();
 
         // Count job tags
@@ -67,9 +54,8 @@ class TopJobTags extends Component
     }
     public function render()
     {
+        $topJobCharts = $this->getTopJobTags();
 
-        $topJobCharts = $this->getTopJobTags($this->municipalityID);
-
-        return view('livewire.admin.reports.municipality-partials.top-job-tags', compact('topJobCharts'));
+        return view('livewire.admin.super.dashboard-partials.active-job-tags', compact('topJobCharts'));
     }
 }

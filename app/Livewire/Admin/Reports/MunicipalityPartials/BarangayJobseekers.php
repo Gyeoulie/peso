@@ -4,11 +4,18 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 
 use App\Models\Barangay;
 use Asantibanez\LivewireCharts\Models\PieChartModel;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class BarangayJobseekers extends Component
 {
     public $municipalityID;
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
 
     public function getBarangayChart($id)
     {

@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 use App\Models\Program_Tags;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class TopTagsPrograms extends Component
@@ -15,6 +16,12 @@ class TopTagsPrograms extends Component
     public $selectedMonths = [], $selectedYear;
     public $mountSelectedMonths = [], $mountSelectedYear;
     public $municipalityID;
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
 
     public function mount()
     {

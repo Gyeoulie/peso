@@ -5,12 +5,19 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 use App\Models\Employee;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class EmploymentAgeGroup extends Component
 {
 
     public $municipalityID;
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
 
     public function getEmploymentByAgeGroup($municipalityId)
     {

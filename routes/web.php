@@ -29,6 +29,8 @@ use App\Livewire\Admin\PositionIndustry\PositionIndustry;
 use App\Livewire\Admin\Reports\BarangayReports;
 use App\Livewire\Admin\Reports\MunicipalityReports;
 use App\Livewire\Admin\Requirements\Requirements;
+use App\Livewire\Admin\Super\Dashboard as SuperDashboard;
+use App\Livewire\Admin\Super\Reports\MunicipalityReports as ReportsMunicipalityReports;
 use App\Livewire\Admin\Training\CreateTrainining;
 use App\Livewire\Admin\Training\EditTraining;
 use App\Livewire\Admin\Training\TrainingDetails;
@@ -107,10 +109,6 @@ Route::middleware(['auth', 'verified', 'usertype:4'])->group(function () {
     Route::get('/profile/edit', EditDetails::class)->name('edit.details');
 });
 
-//------------------------------ EMPLOYER ------------------------------
-// Route::get('/apply', function () {
-//     return view('dashboard.partials.employer-jobpost');
-// })->name('jobpost.apply');
 Route::middleware(['auth', 'verified', 'usertype:6'])->group(function () {
     Route::get('/apply', JobpostApplication::class)->name('jobpost.apply');
     Route::get('/jobpost/details/{id}', JobPostDetails::class)->name('jobpost.details');
@@ -127,39 +125,10 @@ Route::middleware(['auth', 'verified', 'usertype:8,9,10,11'])->group(function ()
     Route::prefix('admin')->group(function () {
         Route::get('/', AdminDashboard::class)->name('admin');
 
-        // Route::get('/job/applicants', function () {
-        //     return view('admin.admin_partials.applicant-list');
-        // })->name('admin-applicants');
-
-        // Route::get('/job/overview', function () {
-        //     return view('admin.admin_partials.applicant-overview');
-        // })->name('admin-appoverview');
-
-        // // Route::get('/eligibility', function () {
-        // //     return view('admin.admin_partials.eligibility-license');
-        // // })->name('admin-eligibility');
-        Route::get('/eligibility', EligibilityLicense::class)->name('admin-eligibility');
-
         Route::get('/jobs', JobPosting::class)->name('admin-joblist');
 
         Route::get('/partnership', PartnershipList::class)->name('admin-partnership');
         Route::get('/partnership/{id}', PartnershipDetails::class)->name('admin-partnership-details');
-
-        // Route::get('/jobs/overview', function () {
-        //     return view('admin.admin_partials.job-posting-overview');
-        // })->name('admin-jobs');
-
-        Route::get('/account/overview', function () {
-            return view('admin.admin_partials.jobseeker-overview');
-        })->name('admin-overview');
-
-        Route::get('/location', Location::class)->name('admin-location');
-
-        Route::get('/industry', PositionIndustry::class)->name('admin-industry');
-
-        Route::get('/certificate', Certificates::class)->name('admin-certificate');
-
-        Route::get('/requirements', Requirements::class)->name('admin-req');
 
         Route::get('/announcements', AnnouncementList::class)->name('admin-announcement');
         Route::get('/announcements/create', CreateAnnouncement::class)->name('admin-create-announcement');
@@ -174,10 +143,6 @@ Route::middleware(['auth', 'verified', 'usertype:8,9,10,11'])->group(function ()
         Route::get('/manage/peso/', PesoManagement::class)->name('admin-users-peso');
         Route::get('/manage/peso/{id}', PesoOverview::class)->name('admin-users-peso-overview');
 
-        // Route::get('/manage-admin', function () {
-        //     return view('admin.admin_partials.admin-accounts');
-        // })->name('admin-admin');
-
         Route::get('/training', TrainingList::class)->name('admin-training');
         Route::get('/training/create', CreateTrainining::class)->name('admin-create-training');
         Route::get('/training/edit', EditTraining::class)->name('admin-edit-training');
@@ -187,133 +152,41 @@ Route::middleware(['auth', 'verified', 'usertype:8,9,10,11'])->group(function ()
         Route::get('/reports/barangay', BarangayReports::class)->name('admin-reports-barangay');
         Route::get('/reports/municipality', MunicipalityReports::class)->name('admin-reports-municipality');
 
-        Route::get('/peso', PesoBranch::class)->name('admin-peso');
-        Route::get('/audits', Audits::class)->name('admin-audits');
-        Route::get('/backups', Backup::class)->name('admin-backups');
-
         Route::get('/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
         Route::get('/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
         Route::get('/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
 
+        // EVERYTHING UNDER HERE IS SUPER ADMIN
+
+        Route::middleware('usertype:11')->group(function () {
+            Route::get('super/', SuperDashboard::class)->name('super.dashboard');
+            Route::get('super/municipality', ReportsMunicipalityReports::class)->name('super.municipality');
+
+            // MAINTENANCE
+
+            Route::get('/peso', PesoBranch::class)->name('admin-peso');
+            Route::get('/audits', Audits::class)->name('admin-audits');
+            Route::get('/backups', Backup::class)->name('admin-backups');
+
+            Route::get('/eligibility', EligibilityLicense::class)->name('admin-eligibility');
+
+            Route::get('/location', Location::class)->name('admin-location');
+
+            Route::get('/industry', PositionIndustry::class)->name('admin-industry');
+
+            Route::get('/certificate', Certificates::class)->name('admin-certificate');
+
+            Route::get('/requirements', Requirements::class)->name('admin-req');
+        });
     });
 });
 
 Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
 
-// Route::get('/admin', function () {
-//     return view('admin.admin_partials.admin-dashboard');
-// })->name('admin');
-
-// Route::get('admin/job/applicants', function () {
-//     return view('admin.admin_partials.applicant-list');
-// })->name('admin-applicants');
-
-// Route::get('admin/job/overview', function () {
-//     return view('admin.admin_partials.applicant-overview');
-// })->name('admin-appoverview');
-
-// Route::get('/admin/eligibility', function () {
-//     return view('admin.admin_partials.eligibility-license');
-// })->name('admin-eligibility');
-
-// Route::get('/admin/jobs', function () {
-//     return view('admin.admin_partials.job-posting-list');
-// })->name('admin-joblist');
-
-// Route::get('/admin/jobs/overview', function () {
-//     return view('admin.admin_partials.job-posting-overview');
-// })->name('admin-jobs');
-
-// Route::get('/admin/account/overview', function () {
-//     return view('admin.admin_partials.jobseeker-overview');
-// })->name('admin-overview');
-
-// Route::get('/admin/location', function () {
-//     return view('admin.admin_partials.location-management');
-// })->name('admin-location');
-
-// Route::get('/admin/industry', function () {
-//     return view('admin.admin_partials.position-industry');
-// })->name('admin-industry');
-
-// Route::get('/admin/certificate', function () {
-//     return view('admin.admin_partials.admin-certificates');
-// })->name('admin-certificate');
-
-// Route::get('/admin/requirements', function () {
-//     return view('admin.admin_partials.requirements');
-// })->name('admin-req');
-
-// Route::get('/admin/manage-admin', function () {
-//     return view('admin.admin_partials.admin-accounts');
-// })->name('admin-admin');
-
-//ADMIN JOBPOST
-
-// ------------------------------TEST ROUTES------------------------------
-// Route::get('/teste', EmployerInformation::class)->name('employer.test');
-
-// Route::get('/resume', function () {
-//     return view('resume');
-// })->name('resume');
-
-// Route::get('/resume/view/{id}', ResumeView::class)->name('view.resume');
-
 require __DIR__ . '/auth.php';
-
-// ------------------------------OLD ROUTES------------------------------
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-//JOBSEEKER PROFILE
-// Route::get('/employee', [EmployeeProfile::class, 'employeeProfile'])->name('employeeProfile');
-// Route::post('/employee/update', [EmployeeProfile::class, 'updateDescEmp'])->name('updateDescEmp');
-
-//EMPLOYER PROFILE
-// Route::get('/company', [CompanyProfile::class, 'companyProfile'])->name('companyProfile');
-// Route::post('/company/update', [CompanyProfile::class, 'updateDescCompany'])->name('updateDescCompany');
-
-//LARAVEL DEFAULT ROUTES
-
-//JOBSEEKER FILL INFORMATION
-
-// Route::get('/fill', [NSRP::class, 'loadData'])->name('fill_profile');
-// Route::post('/fill', [NSRP::class, 'storeInfo'])->name('postInfo');
-
-// //EMPLOYER FILL INFORMATION
-// Route::get('/fill/employer', [NSRP::class, 'loadEmployer'])->name('fill_employer');
-// Route::post('/fill/employer', [NSRP::class, 'postEmployer'])->name('postEmployer');
 
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11'])->group(function () {
     Route::post('/resume/view', [PDFView::class, 'viewResume'])->name('view.resume');
     Route::post('/recommendation/view', [PDFView::class, 'viewRecommendation'])->name('view.recommendation');
     Route::post('/requirement/view', [PDFView::class, 'viewRequirement'])->name('view.requirement');
 });
-
-// Route::get('/test-google-drive', function () {
-//     try {
-//         $disk = Storage::disk('google');
-//         $files = $disk->files();
-//         return response()->json($files);
-//     } catch (\Exception $e) {
-//         return response()->json(['error' => $e->getMessage()], 500);
-//     }
-// });
-
-// Route::get('upload', function (Request $request) {
-//     $files = Storage::disk("google")->allFiles();
-//     dd($files);
-// });
-
-// Route::get('list-backups', function () {
-//     $exitCode = Artisan::call('backup:list'); // No disk option required
-//     return Artisan::output(); // This will display the list of backups
-// });
-// Route::get('test-backup', function () {
-//     $exitCode = Artisan::call('backup:restore', [
-//         '--disk' => 'local',
-//         // '--backup' => '2024-09-04-23-55-04.zip',
-//         '--no-interaction' => true, // Avoids prompts during execution
-//     ]);
-// });

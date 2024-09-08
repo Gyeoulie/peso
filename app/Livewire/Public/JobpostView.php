@@ -55,12 +55,9 @@ class JobpostView extends Component
     {
         $JobPost = Job_Posting::findOrFail($this->id);
         if ($JobPost) {
-            if (Auth::user()->usertype <= 6 && $JobPost->job_Status == 'PENDING') {
+            if (Auth::user()->usertype <= 5 && $JobPost->job_Status == 'PENDING') {
                 return redirect()->route('dashboard');
             }
-        } else {
-            return redirect()->route('dashboard');
-
         }
 
     }
@@ -118,7 +115,7 @@ class JobpostView extends Component
 
         try {
             // If the user selected option 2 and doesn't have a resume already
-            if ($this->option == 2 && empty($user->employee->resume)) {
+            if ($this->option == 1 && empty($user->employee->resume)) {
                 // Validate the resume upload
                 $this->validate([
                     'resume' => ['required', 'file', 'mimes:pdf', 'max:5120'], // 'max' is in kilobytes (5MB = 5120KB)

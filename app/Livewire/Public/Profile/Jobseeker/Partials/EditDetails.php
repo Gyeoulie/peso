@@ -70,7 +70,7 @@ class EditDetails extends Component
     // RESUME
     public $newResume;
 
-    public $deleteEli, $deleteLic;
+    public $deleteEli, $deleteLic, $deleteLang;
 
     //RULES
     public function rules()
@@ -102,7 +102,7 @@ class EditDetails extends Component
 
     public function deleteData($type, $id)
     {
-        $this->reset('deleteEli', 'deleteLic');
+        $this->reset('deleteEli', 'deleteLic', 'deleteLang');
 
         if ($type == 1) {
             $this->deleteEli = $id;
@@ -111,6 +111,10 @@ class EditDetails extends Component
         } elseif ($type == 2) {
             $this->deleteLic = $id;
             $this->dispatch('open-modal', 'delete-license-modal');
+
+        } elseif ($type == 3) {
+            $this->deleteLang = $id;
+            $this->dispatch('open-modal', 'delete-language-modal');
 
         }
 
@@ -134,6 +138,12 @@ class EditDetails extends Component
                 $this->dispatch('close-modal', 'delete-license-modal');
                 toastr()->success('License record has been successfully deleted!');
 
+            } elseif ($type == 3) {
+                $language = Language::findOrFail($this->deleteLang);
+                $language->delete();
+                $this->dispatch('close-modal', 'delete-language-modal');
+                toastr()->success('Language record has been successfully deleted!');
+
             }
             DB::commit();
 
@@ -142,7 +152,7 @@ class EditDetails extends Component
             toastr()->error('There was an error while deleting the record. Please try again later.');
         }
 
-        $this->reset('deleteEli', 'deleteLic');
+        $this->reset('deleteEli', 'deleteLic', 'deleteLang');
     }
     public function saveResume()
     {

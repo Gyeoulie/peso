@@ -187,14 +187,15 @@ class JobpostApplication extends Component
                 $this->redirectRoute('jobpost.show', ['id' => $jobposting->job_id], navigate: true);
             }
         } catch (\Exception $e) {
-            // Roll back the transaction if an error occurs
+         
             DB::rollBack();
-
-            // Handle the error (e.g., log it and display an error message to the user)
+            dd($e->getMessage());
             toastr()->error('Application Failed. Please check your input.');
         } catch (\Exception $e) {
             // Roll back the transaction in case of general exceptions
             DB::rollBack();
+            dd($e->getMessage());
+
             // Handle other errors (e.g., log the error, display a generic error message)
             toastr()->error('An unexpected error occurred. Please try again.');
         }
