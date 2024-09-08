@@ -25,7 +25,7 @@
                                 <button
                                     class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
                                     <div class="w-full ml-2 text-left font-extrabold font-mono text-xl ">
-                                        Analytics
+                                        {{ $analyticsValue ?? 'Analytics' }}
                                     </div>
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -60,24 +60,22 @@
                                     <x-dropdown-link wire:click.prevent='updateAnalytics(2)'
                                         class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
                                         <span>Trends</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                                                d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
                                         </svg>
+
                                     </x-dropdown-link>
                                     <x-dropdown-link wire:click.prevent='updateAnalytics(3)'
                                         class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase flex items-center space-x-2">
                                         <span>Top</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                                                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
                                         </svg>
+
                                     </x-dropdown-link>
 
 
@@ -285,7 +283,7 @@
             <livewire:admin.reports.municipality-partials.popular-trainings
                 municipalityID="{{ $pesoMunicipalityId }}" />
 
-            
+
             <livewire:admin.reports.municipality-partials.top-tags-programs
                 municipalityID="{{ $pesoMunicipalityId }}" />
 

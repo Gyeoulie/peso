@@ -8,7 +8,7 @@
                     <img src="{{ $jobseeker->pimg ? asset('storage/' . $jobseeker->pimg) : asset('https://randomuser.me/api/portraits/men/94.jpg') }}"
                         alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
                     </img>
-                    <h1 class="text-xl font-bold">{{ $jobseeker->fname }} {{ $jobseeker->lname }}</h1>
+                    <h1 class="text-xl font-bold break-all">{{ $jobseeker->fname }} {{ $jobseeker->lname }}</h1>
 
 
 
@@ -41,7 +41,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Gender
                                     </div>
-                                    <div class="text-md font-medium">
+                                    <div class="text-md font-medium break-all">
 
                                         {{ $jobseeker->gender == 1 ? 'MALE' : 'FEMALE' }}
 
@@ -65,7 +65,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Qualification
                                     </div>
-                                    <div class="text-md font-medium">
+                                    <div class="text-md font-medium break-all">
                                         {{ $highestEduTitle }}
                                     </div>
 
@@ -88,7 +88,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Email
                                     </div>
-                                    <div class="text-md font-medium uppercase">
+                                    <div class="text-md font-medium uppercase break-all">
                                         {{ $jobseeker->user->email }}
 
                                     </div>
@@ -114,7 +114,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Phone Number
                                     </div>
-                                    <div class="text-md font-medium">
+                                    <div class="text-md font-medium break-all">
                                         {{ $jobseeker->pnumber }}
                                     </div>
 
