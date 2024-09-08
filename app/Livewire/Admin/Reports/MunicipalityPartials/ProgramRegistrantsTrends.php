@@ -6,6 +6,7 @@ use App\Models\Program_Reg;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ProgramRegistrantsTrends extends Component
@@ -16,6 +17,12 @@ class ProgramRegistrantsTrends extends Component
     public $selectedMonths = [], $selectedYear;
     public $mountSelectedMonths = [], $mountSelectedYear;
     public $municipalityID;
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
 
     public function mount()
     {

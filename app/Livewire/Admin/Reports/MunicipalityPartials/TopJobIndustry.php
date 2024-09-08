@@ -5,11 +5,19 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 use App\Models\Job_Posting;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class TopJobIndustry extends Component
 {
     public $municipalityID;
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
+
     public function getTopJobIndustriesDonut($municipalityId)
     {
         // Fetch the top job industries directly from Job_Posting with a join to Job_Industry

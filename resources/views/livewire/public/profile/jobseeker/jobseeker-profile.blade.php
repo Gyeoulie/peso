@@ -360,7 +360,7 @@
 
 
 
-                                @if ($jobseeker->disability->count() > 1)
+                                @if ($jobseeker->disability->count() >= 1)
                                     <div class="flex flex-col md:w-1/2">
 
                                         <h2 class="text-xl font-medium mt-4">Disability</h2>

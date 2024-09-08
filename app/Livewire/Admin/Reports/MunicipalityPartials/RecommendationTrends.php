@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 use App\Models\Job_Applicants;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class RecommendationTrends extends Component
@@ -15,6 +16,12 @@ class RecommendationTrends extends Component
     public $selectedMonths = [], $selectedYear;
     public $mountSelectedMonths = [], $mountSelectedYear;
     public $municipalityID;
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
 
     public function mount()
     {

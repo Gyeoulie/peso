@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\Reports;
 
-use App\Helpers\AuditFormatter;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
@@ -14,7 +13,6 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
-use OwenIt\Auditing\Models\Audit;
 
 #[Layout('layouts.admin')]
 class MunicipalityReports extends Component
@@ -23,8 +21,6 @@ class MunicipalityReports extends Component
     use WithPagination, WithoutUrlPagination;
     public $selectedAnalytics, $analyticsValue;
     public $currentYear = 2024;
-    public $modelFilter;
-    public $perPage = 10;
     public $selectedYear; // Default to all months if empty
 
     public $selectedMonths = []; // Default to all months if empty
@@ -210,30 +206,8 @@ class MunicipalityReports extends Component
         $activeApplicants = $this->getActiveApplicantCount($pesoMunicipalityId);
         $recentApplicants = $this->getRecentActiveApplicantCount($pesoMunicipalityId);
 
-        $audits = Audit::when($this->modelFilter, function ($query) {
-            $query->where('auditable_type', $this->modelFilter);
-        })
-            ->latest()
-            ->paginate($this->perPage);
-
-        // Format each audit entry
-        $municipalityId = 1;
-        $audits = Audit::whereHas('user.employee.barangay.municipality', function ($query) use ($municipalityId) {
-            $query->where('municipality_id', $municipalityId);
-        })
-            ->latest()
-            ->paginate(5); // Adjust the number of items per page as needed
-        // Adjust the number of items per page as needed
-
-        // Format each audit entry
-        $formattedAudits = $audits->map(function ($audit) {
-            return AuditFormatter::format($audit);
-        });
-
-        // dd($formattedAudits);
-
         return view('livewire.admin.reports.municipality-reports',
             compact('activeJobPosting', 'recentJobPosting',
-                'totalJobSlots', 'remainingSlots', 'activeApplicants', 'recentApplicants', 'formattedAudits', 'audits', 'pesoMunicipalityId'));
+                'totalJobSlots', 'remainingSlots', 'activeApplicants', 'recentApplicants', 'pesoMunicipalityId'));
     }
 }

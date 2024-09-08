@@ -5,11 +5,18 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 use App\Models\Job_Preference;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class TopJobPreference extends Component
 {
     public $municipalityID;
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
 
     public function getTopJobPreferencesInMunicipality($municipalityId)
     {

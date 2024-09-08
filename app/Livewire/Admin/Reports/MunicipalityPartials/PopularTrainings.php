@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 
 use App\Models\Programs;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class PopularTrainings extends Component
@@ -14,6 +15,12 @@ class PopularTrainings extends Component
 
     public $selectedMonths = [], $selectedYear;
     public $mountSelectedMonths = [], $mountSelectedYear;
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
 
     public function mount()
     {

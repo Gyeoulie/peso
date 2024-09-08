@@ -216,7 +216,7 @@
 
                 <x-green-button wire:loading.attr="disabled" wire:click.prevent="confirmResponse(1)" class="ms-3"
                     type="button">
-                    {{ __('Delete Database') }}
+                    {{ __('Restore Database') }}
                     <div wire:loading.delay.long wire:target="confirmResponse(1)" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

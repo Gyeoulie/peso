@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Livewire\Admin\Reports\MunicipalityPartials;
+namespace App\Livewire\Admin\Super\DashboardPartials;
 
 use App\Models\Job_Applicants;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
-use Asantibanez\LivewireCharts\Models\LineChartModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
 class EmploymentTrends extends Component
@@ -17,13 +15,6 @@ class EmploymentTrends extends Component
 
     public $selectedMonths = [], $selectedYear;
     public $mountSelectedMonths = [], $mountSelectedYear;
-    public $municipalityID;
-
-    #[On('updateMun')]
-    public function updateMun($id)
-    {
-        $this->municipalityID = $id;
-    }
 
     public function mount()
     {
@@ -47,7 +38,7 @@ class EmploymentTrends extends Component
         $this->dispatch('close-modal', 'filter-employment-trends-modal');
     }
 
-    public function getEmploymentTrends($pesoMunicipalityId)
+    public function getEmploymentTrends()
     {
         // Use the provided year or default to the current year
         $year = $this->selectedYear ?? Carbon::now()->year;
@@ -57,10 +48,7 @@ class EmploymentTrends extends Component
 
         // Fetch the job applicants with relevant data
         $query = Job_Applicants::selectRaw('MONTH(updated_at) as month, COUNT(*) as total')
-            ->where('applicant_Status', 'PENDING')
-            ->whereHas('employee.barangay', function ($query) use ($pesoMunicipalityId) {
-                $query->where('municipality_id', $pesoMunicipalityId);
-            });
+            ->where('applicant_Status', 'PENDING');
 
         // Apply year filter if selectedYear is set
         if ($this->selectedYear) {
@@ -112,7 +100,7 @@ class EmploymentTrends extends Component
         $chart->setJsonConfig([
             'chart' => [
                 'width' => '100%',
-                'height' => '300px',
+                'height' => '400px',
             ],
             'yaxis.tickAmount' => 1,
             'yaxis.labels.formatter' => '(val) => Math.floor(val)',
@@ -120,12 +108,11 @@ class EmploymentTrends extends Component
 
         return $chart;
     }
-
     public function render()
     {
 
-        $employmentLineModel = $this->getEmploymentTrends($this->municipalityID);
+        $employmentLineModel = $this->getEmploymentTrends();
 
-        return view('livewire.admin.reports.municipality-partials.employment-trends', compact('employmentLineModel'));
+        return view('livewire.admin.super.dashboard-partials.employment-trends',compact('employmentLineModel'));
     }
 }
