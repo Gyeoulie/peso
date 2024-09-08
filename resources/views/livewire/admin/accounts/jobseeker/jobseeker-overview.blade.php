@@ -66,24 +66,24 @@
                     <ul>
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold text-left">Email:</li>
-                            <p class="ms-4">{{ $jobseeker->user->email }}</p>
+                            <p class="ms-4 break-all">{{ $jobseeker->user->email }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold text-left">Status:</li>
-                            <p class="ms-4 text-left">
+                            <p class="ms-4 text-left break-all">
                                 {{ $jobseeker->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
                             </p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Contact:</li>
-                            <p class="ms-4">{{ $jobseeker->pnumber }}</p>
+                            <p class="ms-4 break-all">{{ $jobseeker->pnumber }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Address:</li>
-                            <p class="ms-4 uppercase text-left"> {{ $jobseeker->address }},
+                            <p class="ms-4 uppercase text-left break-all"> {{ $jobseeker->address }},
                                 {{ $jobseeker->barangay->barangay_Name }},
                                 {{ $jobseeker->barangay->municipality->municipality_Name }},
                                 {{ $jobseeker->barangay->municipality->province->province_Name }}</p>

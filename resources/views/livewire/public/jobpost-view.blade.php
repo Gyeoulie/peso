@@ -187,7 +187,7 @@
                                 </div>
                             @endif --}}
 
-                        @if (auth()->check() && auth()->user()->usertype >= 8 && auth()->user()->peso_accounts->peso_id == $JobPost->peso_id)
+                        @if (auth()->check() && (auth()->user()->usertype >= 8 &&  auth()->user()->usertype < 11) && auth()->user()->peso_accounts->peso_id == $JobPost->peso_id)
                             <div class="flex flex-row items-center justify-center mt-2">
                                 <a wire:navigate
                                     href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">

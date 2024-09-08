@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Error\ErrorController;
 use App\Http\Controllers\PDF\PDFView;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
@@ -66,6 +65,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
  */
+// Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
 
 Route::get('/', function () {
     return view('welcome');
@@ -120,9 +120,10 @@ Route::middleware(['auth', 'verified', 'usertype:6'])->group(function () {
 Route::middleware(['auth', 'verified', 'usertype:5,6'])->group(function () {
     Route::get('/employer/edit', EmployerEditDetails::class)->name('edit.details.emp');
 });
-//------------------------------ ADMIN  NAVIGATION ------------------------------
-Route::middleware(['auth', 'verified', 'usertype:8,9,10,11'])->group(function () {
-    Route::prefix('admin')->group(function () {
+//------------------------------ ADMIN  NAVIGATION ------------------------------\
+Route::prefix('admin')->group(function () {
+
+    Route::middleware(['auth', 'verified', 'usertype:8,9,10'])->group(function () {
         Route::get('/', AdminDashboard::class)->name('admin');
 
         Route::get('/jobs', JobPosting::class)->name('admin-joblist');
@@ -155,33 +156,31 @@ Route::middleware(['auth', 'verified', 'usertype:8,9,10,11'])->group(function ()
         Route::get('/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
         Route::get('/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
         Route::get('/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
+    });
 
-        // EVERYTHING UNDER HERE IS SUPER ADMIN
+// EVERYTHING UNDER HERE IS SUPER ADMIN
+    Route::middleware(['auth', 'verified', 'usertype:8,9,11'])->group(function () {
 
-        Route::middleware('usertype:11')->group(function () {
-            Route::get('super/', SuperDashboard::class)->name('super.dashboard');
-            Route::get('super/municipality', ReportsMunicipalityReports::class)->name('super.municipality');
+        Route::get('super/', SuperDashboard::class)->name('super-dashboard');
+        Route::get('super/municipality', ReportsMunicipalityReports::class)->name('super-municipality');
 
-            // MAINTENANCE
+        // MAINTENANCE
 
-            Route::get('/peso', PesoBranch::class)->name('admin-peso');
-            Route::get('/audits', Audits::class)->name('admin-audits');
-            Route::get('/backups', Backup::class)->name('admin-backups');
+        Route::get('/peso', PesoBranch::class)->name('admin-peso');
+        Route::get('/audits', Audits::class)->name('admin-audits');
+        Route::get('/backups', Backup::class)->name('admin-backups');
 
-            Route::get('/eligibility', EligibilityLicense::class)->name('admin-eligibility');
+        Route::get('/eligibility', EligibilityLicense::class)->name('admin-eligibility');
 
-            Route::get('/location', Location::class)->name('admin-location');
+        Route::get('/location', Location::class)->name('admin-location');
 
-            Route::get('/industry', PositionIndustry::class)->name('admin-industry');
+        Route::get('/industry', PositionIndustry::class)->name('admin-industry');
 
-            Route::get('/certificate', Certificates::class)->name('admin-certificate');
+        Route::get('/certificate', Certificates::class)->name('admin-certificate');
 
-            Route::get('/requirements', Requirements::class)->name('admin-req');
-        });
+        Route::get('/requirements', Requirements::class)->name('admin-req');
     });
 });
-
-Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
 
 require __DIR__ . '/auth.php';
 
