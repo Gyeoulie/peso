@@ -1,5 +1,5 @@
 <x-mail::message>
-# Welcome {{ $   }}!
+# Welcome {{ $companyName }}!
 
 We are delighted to welcome you to the PESO job hiring platform! Thank you for registering and expressing interest in partnering with us to enhance job opportunities in our community.
 

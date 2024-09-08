@@ -1,10 +1,10 @@
 <x-guest-layout>
-    <div class="max-w-lg mx-auto mt-8 p-6">
+    <div class="max-w-xl mx-auto p-6">
         <div class="text-center mb-6">
             <h1 class="text-2xl font-bold text-gray-800 mb-2">
-                {{ __('Verify Your Email Address') }}
+                {{ __('VERIFY YOUR EMAIL ADDRESS') }}
             </h1>
-            <p class="text-gray-600">
+            <p class="text-gray-600 mt-4">
                 {{ __('Thank you for signing up! To get started, please verify your email address by clicking the link we just sent you. If you didn\'t receive the email, you can request a new one.') }}
             </p>
         </div>
@@ -15,7 +15,14 @@
             </div>
         @endif
 
-        <div class="flex justify-between mt-6">
+        {{-- Display Throttle Error --}}
+        @if (session('error'))
+            <div class="bg-red-100 border border-red-200 text-red-700 rounded-md p-4 mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <div class="flex justify-between mt-10">
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
                 <x-primary-button class="w-full">
@@ -25,10 +32,10 @@
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit"
-                    class="ml-4 text-sm text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <x-secondary-button type="submit"
+                    class="">
                     {{ __('Log Out') }}
-                </button>
+                </x-secondary-button>
             </form>
         </div>
     </div>
