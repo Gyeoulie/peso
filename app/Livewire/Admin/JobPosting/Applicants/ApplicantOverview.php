@@ -220,7 +220,7 @@ class ApplicantOverview extends Component
             DB::commit();
 
             // Send notification mail after transaction success
-            Mail::to($applicant->user->email)->queue(new RecommendationNotification($applicant));
+            Mail::to($applicant->employee->user->email)->queue(new RecommendationNotification($applicant));
 
             toastr()->success('Applicant updated successfully!');
         } catch (\Exception $e) {
