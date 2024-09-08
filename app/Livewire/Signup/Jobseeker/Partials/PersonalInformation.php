@@ -56,7 +56,8 @@ class PersonalInformation extends Component
             'religion.string' => 'The religion must be a string.',
             'phone.required' => 'The phone number is required.',
             'phone.regex' => 'The phone number must start with 09 and be exactly 11 digits long.',
-            'tin.digits' => 'The TIN must be 11 digits long.',
+            'tin.digits' => 'The TIN must be 9 digits long.',
+            'tin.unique' => 'The TIN is already in use by someone else.',
             'height.numeric' => 'The height must be a number.',
             'height.digits_between' => 'The height must be between 1 and 3 digits long.',
 
