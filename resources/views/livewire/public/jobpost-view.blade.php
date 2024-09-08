@@ -187,7 +187,9 @@
                                 </div>
                             @endif --}}
 
-                        @if (auth()->check() && (auth()->user()->usertype >= 8 &&  auth()->user()->usertype < 11) && auth()->user()->peso_accounts->peso_id == $JobPost->peso_id)
+                        @if (auth()->check() &&
+                                (auth()->user()->usertype >= 8 && auth()->user()->usertype < 11) &&
+                                auth()->user()->peso_accounts->peso_id == $JobPost->peso_id)
                             <div class="flex flex-row items-center justify-center mt-2">
                                 <a wire:navigate
                                     href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
@@ -573,23 +575,24 @@
 
                     <div class="mt-4 mb-4 text-center">
                         <x-input-error :messages="$errors->get('option')" class="mt-2" />
+
+
+
                         <span x-show="selectedOption === 1" x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 scale-90"
-                            x-transition:enter-end="opacity-100 scale-100" x-cloak class="text-md text-blue-700">*The
-                            automated resume generation process will utilize the
-                            information provided in your profile/NSRP inputs.</span>
-
-
-                        <span x-show="selectedOption === 2" x-transition:enter="transition ease-out duration-300"
                             x-transition:enter-start="opacity-0 scale-90"
                             x-transition:enter-end="opacity-100 scale-100" x-cloak class="text-md text-blue-700">*You
                             have to upload a resume if you haven't uploaded in
                             your
                             profile.</span>
+                        <span x-show="selectedOption === 2" x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 scale-90"
+                            x-transition:enter-end="opacity-100 scale-100" x-cloak class="text-md text-blue-700">*The
+                            automated resume generation process will utilize the
+                            information provided in your profile/NSRP inputs.</span>
                     </div>
 
 
-                    <div class="flex flex-col w-full mt-2" x-show="selectedOption === 2 && !resumeExists"
+                    <div class="flex flex-col w-full mt-2" x-show="selectedOption === 1 && !resumeExists"
                         x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-cloak>
