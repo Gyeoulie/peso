@@ -1,6 +1,6 @@
 <div class="bg-white shadow rounded-lg p-6 mt-4">
     <div class="mb-4">
-        <div class="flex flex-col sm:flex-row w-full justify-between gap-2">
+        <div class="flex flex-col md:flex-row w-full justify-between gap-2">
 
             <h1 class="text-2xl font-bold">Most Popular Trainings</h1>
 

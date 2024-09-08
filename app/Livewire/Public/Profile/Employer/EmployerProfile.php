@@ -21,6 +21,16 @@ class EmployerProfile extends Component
         ];
     }
 
+    public function mount()
+    {
+        $employerInfo = Company::find($this->id);
+
+        if (!$employerInfo || $employerInfo->user->usertype != 4 || $employerInfo->user->userstatus != 1) {
+            return $this->redirectRoute('dashboard');
+        }
+
+    }
+
     public function open()
     {
         $getDesc = Company::where('company_id', $this->id)->first();
@@ -31,6 +41,7 @@ class EmployerProfile extends Component
 
         $this->dispatch('open-modal', 'aboutme-modal');
     }
+
     public function close()
     {
         $this->reset('description');

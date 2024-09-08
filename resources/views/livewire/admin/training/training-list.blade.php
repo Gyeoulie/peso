@@ -126,9 +126,9 @@
                                         <div>
                                             @if (empty($sortDate))
                                                 Sort By Date
-                                            @elseif($sortDate === 'DESC')
-                                                Newest
                                             @elseif($sortDate === 'ASC')
+                                                Newest
+                                            @elseif($sortDate === 'DESC')
                                                 Oldest
                                             @endif
                                         </div>
@@ -150,10 +150,10 @@
                                         max-h-[300px] bg-white
                                     </x-slot>
 
-                                    <x-dropdown-link wire:click.prevent="updateSort('DESC', 2)" class="cursor-pointer">
+                                    <x-dropdown-link wire:click.prevent="updateSort('ASC', 2)" class="cursor-pointer">
                                         Newest
                                     </x-dropdown-link>
-                                    <x-dropdown-link wire:click.prevent="updateSort('ASC', 2)" class="cursor-pointer">
+                                    <x-dropdown-link wire:click.prevent="updateSort('DESC', 2)" class="cursor-pointer">
                                         Oldest
                                     </x-dropdown-link>
 

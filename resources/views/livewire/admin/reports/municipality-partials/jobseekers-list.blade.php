@@ -346,7 +346,7 @@
                 <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Gender</h1>
 
-                    <div class="flex flex-col sm:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
                         <div class="flex items-center">
                             <input wire:model='mountGender' id="gender-all" type="radio" value=""
                                 name="gender" checked
@@ -406,7 +406,7 @@
                 <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Employment Status</h1>
 
-                    <div class="flex flex-col sm:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
                         <div class="flex items-center">
                             <input wire:model='mountEmpStatus' id="emp-none" type="radio" value=""
                                 name="empStatus" checked
@@ -431,7 +431,7 @@
                 <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Applications</h1>
 
-                    <div class="flex flex-col sm:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
                         <div class="flex items-center">
                             <input wire:model='mountJobseekerfilter' id="job-all" type="radio" value=""
                                 name="JobseekerFilter" checked
@@ -558,7 +558,7 @@
                 <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort by Company Location</h1>
 
-                    <div class="flex flex-col sm:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
                         <div class="flex items-center">
                             <input wire:model='mountCompanyMun' id="empmun-all" type="radio" value=""
                                 name="munFil" checked

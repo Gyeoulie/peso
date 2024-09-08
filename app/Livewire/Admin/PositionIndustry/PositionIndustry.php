@@ -150,6 +150,80 @@ class PositionIndustry extends Component
         }
     }
 
+    public function savePosition()
+    {
+
+        if ($this->positionID) {
+            $rules = [
+                'positionID' => ['required'],
+                'pcodePost' => ['required', 'string', Rule::unique('job_positions', 'position_Code')->ignore($this->positionID, 'position_id')],
+                'positionPost' => ['required', 'string', Rule::unique('job_positions', 'position_Title')->ignore($this->positionID, 'position_id')],
+            ];
+
+            $messages = [
+                'positionID.required' => 'The position ID is required.',
+                'pcodePost.required' => 'The position code is required.',
+                'pcodePost.string' => 'The position code must be a string.',
+                'pcodePost.unique' => 'The position code has already been taken.',
+                'positionPost.required' => 'The position title is required.',
+                'positionPost.string' => 'The position title must be a string.',
+                'positionPost.unique' => 'The position title has already been taken.',
+            ];
+
+            $this->validate($rules, $messages);
+            DB::beginTransaction();
+
+            try {
+                $jobPosition = Job_Positions::findOrFail($this->positionID);
+
+                $jobPosition->position_Code = strtoupper($this->pcodePost);
+                $jobPosition->position_Title = strtoupper($this->positionPost);
+                if ($jobPosition->isDirty()) {
+                    $jobPosition->save();
+                    toastr()->success('Job Position has been updated!');
+                } else {
+                    toastr()->info('No changes detected.');
+                }
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                toastr()->error('There was an error updating the job position.');
+            }
+        } else {
+            $rules = [
+                'pcodePost' => ['required', 'string', Rule::unique('job_positions', 'position_Code')],
+                'positionPost' => ['required', 'string', Rule::unique('job_positions', 'position_Title')],
+            ];
+
+            $messages = [
+                'pcodePost.required' => 'The position code is required.',
+                'pcodePost.string' => 'The position code must be a string.',
+                'pcodePost.unique' => 'The position code has already been taken.',
+                'positionPost.required' => 'The position title is required.',
+                'positionPost.string' => 'The position title must be a string.',
+                'positionPost.unique' => 'The position title has already been taken.',
+            ];
+
+            $this->validate($rules, $messages);
+            DB::beginTransaction();
+            try {
+                Job_Positions::create([
+                    'position_Code' => strtoupper($this->pcodePost),
+                    'position_Title' => strtoupper($this->positionPost),
+                ]);
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                toastr()->error('There was an error updating the job position.');
+            }
+            toastr()->success('Job Position Created!');
+        }
+
+        $this->close('jobposition');
+
+    }
     public function editPosition($id)
     {
         $jobposition = Job_Positions::findOrFail($id);
