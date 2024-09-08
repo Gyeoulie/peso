@@ -526,8 +526,8 @@
 
                     <div class="flex flex-row w-full gap-4 sm:gap-24 justify-center items-center mt-8">
 
-                        <div wire:click.prevent='updateOption(1)' @click="selectedOption = 2"
-                            :class="selectedOption === 2 ? selected : unselected"
+                        <div wire:click.prevent='updateOption(1)' @click="selectedOption = 1"
+                            :class="selectedOption === 1 ? selected : unselected"
                             class="flex flex-col w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center  gap-2 shadow-lg cursor-pointer">
 
                             <div>
@@ -545,8 +545,8 @@
                         </div>
 
 
-                        <div wire:click.prevent='updateOption(2)' @click="selectedOption = 1"
-                            :class="selectedOption === 1 ? selected : unselected"
+                        <div wire:click.prevent='updateOption(2)' @click="selectedOption = 2"
+                            :class="selectedOption === 2 ? selected : unselected"
                             class="flex flex-col  w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center gap-2 shadow-lg  cursor-pointer">
 
                             <div>
