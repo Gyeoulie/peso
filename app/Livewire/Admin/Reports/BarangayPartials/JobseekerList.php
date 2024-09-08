@@ -124,7 +124,7 @@ class JobseekerList extends Component
         $employees = $this->getJobseekers()->get();
         if (!$employees->isEmpty()) {
 
-            $fileName = $this->barTitle . '-jobseekers-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+            $fileName = $this->barangayID . '-jobseekers-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
 
             $writer = SimpleExcelWriter::streamDownload($fileName);
 

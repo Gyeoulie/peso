@@ -240,20 +240,25 @@ class Backup extends Component
                 $this->closeModal("database-backup");
 
             } else {
+                
                 toastr()->error('There was an unexpected error. Please try again later.');
             }
         }
+        
 
     }
 
     public function closeModal($modal)
     {
         $this->reset('password');
+        $this->reset('restore', 'delete');
         $this->dispatch('close-modal', $modal);
+
     }
 
-    public function confirmAction($type, $data)
+    public function confirmAction($type, $data = null)
     {
+        $this->reset('restore', 'delete');
         if ($type == 1) {
             $this->restore = $data;
             $this->dispatch('open-modal', 'database-restore');
@@ -261,6 +266,9 @@ class Backup extends Component
         } elseif ($type == 2) {
             $this->delete = $data;
             $this->dispatch('open-modal', 'database-deletion');
+
+        } elseif ($type == 3) {
+            $this->dispatch('open-modal', 'database-backup');
 
         }
     }
