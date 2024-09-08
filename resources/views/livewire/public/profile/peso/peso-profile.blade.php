@@ -4,7 +4,7 @@
         <div class="flex flex-col md:w-1/4 h-full md:sticky top-5">
             <div class="bg-white shadow-xl rounded-lg p-6">
                 <div class="flex flex-col items-center">
-                    <img src="{{ $pesoInfo->peso_Img ? asset('storage/' . $dpesoInfoata->peso_Img) : asset('assets/img/PESO-Logo.png') }}"
+                    <img src="{{ $pesoInfo->peso_Img ? asset('storage/' . $pesoInfo->peso_Img) : asset('assets/img/PESO-Logo.png') }}"
                         alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
                     </img>
                     <h1 class="text-xl font-bold">PESO {{ $pesoInfo->municipality->municipality_Name }}</h1>
