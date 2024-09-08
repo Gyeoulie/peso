@@ -7,11 +7,11 @@
                     <img src="{{ $pesoInfo->peso_Img ? asset('storage/' . $pesoInfo->peso_Img) : asset('assets/img/PESO-Logo.png') }}"
                         alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
                     </img>
-                    <h1 class="text-xl font-bold">PESO {{ $pesoInfo->municipality->municipality_Name }}</h1>
+                    <h1 class="text-xl font-bold break-all">PESO {{ $pesoInfo->municipality->municipality_Name }}</h1>
 
 
 
-                    <p class="text-gray-700">{{ $pesoInfo->municipality->province->province_Name }}</p>
+                    <p class="text-gray-700 break-all">{{ $pesoInfo->municipality->province->province_Name }}</p>
 
                 </div>
                 <hr class="my-6 border-t border-gray-300">
@@ -33,7 +33,7 @@
                                         <div class="text-lg font-bold text-black">
                                             Email
                                         </div>
-                                        <div class="text-md font-medium uppercase">
+                                        <div class="text-md font-medium uppercase break-all">
                                             {{ $pesoInfo->peso_Email }}
 
                                         </div>
@@ -63,7 +63,7 @@
                                         <div class="text-lg font-bold text-black">
                                             Phone Number
                                         </div>
-                                        <div class="text-md font-medium">
+                                        <div class="text-md font-medium break-all">
                                             {{ $pesoInfo->peso_Phone }}
                                         </div>
 
@@ -88,7 +88,7 @@
                                         <div class="text-lg font-bold text-black">
                                             Telephone Number
                                         </div>
-                                        <div class="text-md font-medium uppercase">
+                                        <div class="text-md font-medium uppercase break-all">
                                             {{ $pesoInfo->peso_Tel }}
                                         </div>
 
@@ -116,7 +116,7 @@
                                         <div class="text-lg font-bold text-black">
                                             Fax Number
                                         </div>
-                                        <div class="text-md font-medium uppercase">
+                                        <div class="text-md font-medium uppercase break-all">
                                             {{ $pesoInfo->peso_Fax }}
                                         </div>
 

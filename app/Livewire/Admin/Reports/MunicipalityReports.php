@@ -21,7 +21,7 @@ class MunicipalityReports extends Component
 {
 
     use WithPagination, WithoutUrlPagination;
-    public $selectedAnalytics;
+    public $selectedAnalytics, $analyticsValue;
     public $currentYear = 2024;
     public $modelFilter;
     public $perPage = 10;
@@ -32,11 +32,22 @@ class MunicipalityReports extends Component
     public function updateAnalytics($id)
     {
         $this->selectedAnalytics = $id;
+
+        if ($id == 1) {
+            $this->analyticsValue = 'Jobseekers';
+
+        } elseif ($id == 2) {
+            $this->analyticsValue = 'Trends';
+
+        } elseif ($id == 3) {
+            $this->analyticsValue = 'Top';
+        }
     }
 
     public function mount()
     {
         $this->selectedAnalytics = 1;
+        $this->analyticsValue = 'Jobseekers';
     }
 
     public function getTotalJobSlots($municipalityId)
@@ -111,9 +122,9 @@ class MunicipalityReports extends Component
 
         // Fetch the job postings with relevant data
         $query = Job_Posting::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
-          ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
-            $query->where('municipality_id', $municipalityId);
-        });
+            ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
+            });
 
         // Apply year filter if selectedYear is set
         if ($this->selectedYear) {

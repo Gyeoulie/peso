@@ -35,7 +35,7 @@
 
                     <h1 class="font-thin font-mono text-sm"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-green-300"></i> {{ $recentJobPostings }}</span>New Job
+                            {{ $recentJobPostings }}</span>New Job
                         Postings
                     </h1>
                 </div>
@@ -64,7 +64,7 @@
 
                     <h1 class="font-thin font-mono text-sm"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-green-300"></i> {{ $recentJobSeekers }}</span>New Job
+                            {{ $recentJobSeekers }}</span>New Job
                         Seekers
                     </h1>
                 </div>
@@ -93,8 +93,7 @@
                 <div class="flex flex-row justify-content">
 
                     <h1 class="font-thin font-mono text-sm"><span
-                            class="bg-yellow-100 text-yellow-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-yellow-300"></i>
+                            class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
                             {{ $totalUnemployed }}</span>Unemployed
                     </h1>
                 </div>
@@ -124,7 +123,7 @@
 
                     <h1 class="font-thin font-mono text-sm"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-green-300"></i>
+
                             {{ $recentActiveApplicants }}</span>New Applications
                     </h1>
                 </div>
