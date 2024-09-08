@@ -42,7 +42,7 @@ class PersonalInformation extends Component
             'religion' => 'required',
             'phone' => 'required|regex:/^09\d{9}$/',
             'tin' => 'nullable|digits:9|unique:employee,tinnum',
-            'height' => 'nullable|numeric|min:1|max:3',
+            'height' => 'nullable|numeric|digits_between:1,3',
         ];
 
         $messages = [
@@ -58,8 +58,7 @@ class PersonalInformation extends Component
             'phone.regex' => 'The phone number must start with 09 and be exactly 11 digits long.',
             'tin.digits' => 'The TIN must be 11 digits long.',
             'height.numeric' => 'The height must be a number.',
-            'height.min' => 'The height must be valid.',
-            'height.max' => 'The height must have only 3 digits.',
+            'height.digits_between' => 'The height must be between 1 and 3 digits long.',
 
         ];
 

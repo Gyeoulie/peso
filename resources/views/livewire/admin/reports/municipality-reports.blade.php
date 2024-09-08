@@ -4,7 +4,7 @@
 
 
     <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0" x-data="{ selectedAnalytics: @entangle('selectedAnalytics') }">
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 md:col-span-12">
 
             <h1 class="text-2xl font-bold">Reports / Municipality</h1>
 
@@ -202,11 +202,11 @@
 
         </div>
 
-        <div class="col-span-4 sm:col-span-12 w-full h-full" x-show="selectedAnalytics == 1"
+        <div class="col-span-4 md:col-span-12 w-full h-full" x-show="selectedAnalytics == 1"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
             x-transition:enter-end="opacity-100 scale-100" x-cloak>
             @if ($selectedAnalytics === 1)
-                <div class="flex flex-col sm:flex-row w-full gap-4">
+                <div class="flex flex-col md:flex-row w-full gap-4">
                     <div class="flex w-full">
                         <livewire:admin.reports.municipality-partials.barangay-jobseekers
                             municipalityID="{{ $pesoMunicipalityId }}" />
@@ -225,11 +225,11 @@
             @endif
         </div>
 
-        <div class="col-span-4 sm:col-span-12 w-full h-full" x-show="selectedAnalytics == 2"
+        <div class="col-span-4 md:col-span-12 w-full h-full" x-show="selectedAnalytics == 2"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
             x-transition:enter-end="opacity-100 scale-100" x-cloak>
             @if ($selectedAnalytics === 2)
-                <div class="flex flex-col sm:flex-row w-full gap-4">
+                <div class="flex flex-col md:flex-row w-full gap-4">
                     <div class="flex w-full">
                         <livewire:admin.reports.municipality-partials.recommendation-trends
                             municipalityID="{{ $pesoMunicipalityId }}" />
@@ -248,11 +248,11 @@
             @endif
         </div>
 
-        <div class="col-span-4 sm:col-span-12 w-full h-full" x-show="selectedAnalytics == 3"
+        <div class="col-span-4 md:col-span-12 w-full h-full" x-show="selectedAnalytics == 3"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
             x-transition:enter-end="opacity-100 scale-100" x-cloak>
             @if ($selectedAnalytics === 3)
-                <div class="flex flex-col sm:flex-row w-full gap-4">
+                <div class="flex flex-col md:flex-row w-full gap-4">
                     <div class="flex w-full">
                         <livewire:admin.reports.municipality-partials.top-job-tags
                             municipalityID="{{ $pesoMunicipalityId }}" />

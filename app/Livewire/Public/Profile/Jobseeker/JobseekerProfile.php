@@ -24,6 +24,16 @@ class JobseekerProfile extends Component
         ];
     }
 
+    public function mount()
+    {
+        $employeeInfo = Employee::find($this->id);
+
+        if (!$employeeInfo || $employeeInfo->user->usertype != 4 || $employeeInfo->user->userstatus != 1) {
+            return $this->redirectRoute('dashboard');
+        }
+
+    }
+
     public function editModal()
     {
         $this->resetValidation();
