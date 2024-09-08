@@ -787,7 +787,11 @@ class EditDetails extends Component
             'licTypeID' => [
                 'required',
                 Rule::unique('license', 'license_type_id') // Specify the correct column name
-                    ->where('employee_id', $this->empID) // Ensure uniqueness for this employee
+                    ->where(function ($query) {
+                        // Ensure uniqueness for this employee and exclude trashed records
+                        $query->where('employee_id', $this->empID)
+                            ->whereNull('deleted_at'); // Exclude trashed records
+                    })
                     ->ignore($this->licID, 'license_id'), // Ignore the current record when updating
             ],
         ];
@@ -812,7 +816,7 @@ class EditDetails extends Component
                 $license = License::findOrFail($this->licID);
                 $license->update([
                     'license_type_id' => $this->licTypeID,
-                    'license_validity' => $this->licValidity, // Ensure column name matches
+                    'license_Validity' => $this->licValidity, // Ensure column name matches
                 ]);
 
                 toastr()->success('License Record has been Updated!');
@@ -821,7 +825,7 @@ class EditDetails extends Component
                 License::create([
                     'employee_id' => $this->empID,
                     'license_type_id' => $this->licTypeID,
-                    'license_validity' => $this->licValidity, // Ensure column name matches
+                    'license_Validity' => $this->licValidity, // Ensure column name matches
                 ]);
 
                 toastr()->success('License Record has been Added!');
@@ -849,9 +853,12 @@ class EditDetails extends Component
             ],
             'eliTypeID' => [
                 'required',
-
                 Rule::unique('eligibility', 'eligibility_Type') // Specify the correct column name
-                    ->where('employee_id', $this->empID) // Ensure uniqueness for this employee
+                    ->where(function ($query) {
+                        // Ensure uniqueness for this employee and exclude trashed records
+                        $query->where('employee_id', $this->empID)
+                            ->whereNull('deleted_at'); // Exclude trashed records
+                    })
                     ->ignore($this->eliID, 'eligibility_id'), // Ignore the current record when updating
             ],
         ];

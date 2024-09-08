@@ -16,6 +16,13 @@ class JobPostingTrends extends Component
     public $selectedMonths = [], $selectedYear;
     public $mountSelectedMonths = [], $mountSelectedYear;
     public $municipalityID;
+    public $provinceID;
+
+    #[On('updateProv')]
+    public function updateProv($id)
+    {
+        $this->provinceID = $id;
+    }
 
     #[On('updateMun')]
     public function updateMun($id)
@@ -44,7 +51,7 @@ class JobPostingTrends extends Component
 
         $this->dispatch('close-modal', 'filter-employment-trends-modal');
     }
-    public function getJobPostingsTrend($municipalityId)
+    public function getJobPostingsTrend($municipalityId = null, $provinceId = null)
     {
         // Use the provided year or default to the current year
         $year = $this->selectedYear ?? Carbon::now()->year;
@@ -52,17 +59,29 @@ class JobPostingTrends extends Component
         // Use the provided months or default to all months (1 through 12)
         $months = !empty($this->selectedMonths) ? $this->selectedMonths : range(1, 12);
 
-        // Fetch the job postings with relevant data
+        // Build the base query
         $query = Job_Posting::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
-            ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
-                $query->where('municipality_id', $municipalityId);
-            })
             ->whereYear('created_at', $year) // Apply year filter
-            ->whereIn(DB::raw('MONTH(created_at)'), $months) // Apply month filter
-            ->groupBy(DB::raw('MONTH(created_at)'))
-            ->orderBy(DB::raw('MONTH(created_at)'));
+            ->whereIn(DB::raw('MONTH(created_at)'), $months); // Apply month filter
 
-        $monthlyPostings = $query->get();
+        // If a municipality ID is provided, filter by municipality
+        if ($municipalityId) {
+            $query->whereHas('peso.municipality', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
+            });
+        }
+
+        // If a province ID is provided (and municipality is not), filter by province
+        if ($provinceId && !$municipalityId) {
+            $query->whereHas('peso.municipality', function ($query) use ($provinceId) {
+                $query->where('province_id', $provinceId);
+            });
+        }
+
+        // Group the results by month and order them
+        $monthlyPostings = $query->groupBy(DB::raw('MONTH(created_at)'))
+            ->orderBy(DB::raw('MONTH(created_at)'))
+            ->get();
 
         // Define month names
         $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -78,7 +97,7 @@ class JobPostingTrends extends Component
 
         // Create the line chart model
         $chart = LivewireCharts::lineChartModel()
-            ->setTitle("Monthly Job Postings for Municipality ID {$municipalityId} in {$year}")
+            ->setTitle("Monthly Job Postings for " . ($municipalityId ? "Municipality ID {$municipalityId}" : "Province ID {$provinceId}") . " in {$year}")
             ->setAnimated(true)
             ->setSmoothCurve()
             ->setXAxisVisible(true)
@@ -97,6 +116,7 @@ class JobPostingTrends extends Component
         // Set X-axis categories to include only selected months
         $chart->setXAxisCategories($filteredMonthNames);
 
+        // Set additional chart configuration
         $chart->setJsonConfig([
             'chart' => [
                 'width' => '100%',
@@ -112,7 +132,16 @@ class JobPostingTrends extends Component
     public function render()
     {
 
-        $jobPostingTrend = $this->getJobPostingsTrend($this->municipalityID);
+        $jobPostingTrend = null;
+
+
+        if ($this->municipalityID) {
+            $jobPostingTrend = $this->getJobPostingsTrend($this->municipalityID);
+
+        } elseif ($this->provinceID) {
+            $jobPostingTrend = $this->getJobPostingsTrend(null, $this->provinceID);
+
+        }
 
         return view('livewire.admin.reports.municipality-partials.job-posting-trends', compact('jobPostingTrend'));
     }

@@ -17,6 +17,14 @@ class RecommendationTrends extends Component
     public $mountSelectedMonths = [], $mountSelectedYear;
     public $municipalityID;
 
+    public $provinceID;
+
+    #[On('updateProv')]
+    public function updateProv($id)
+    {
+        $this->provinceID = $id;
+    }
+
     #[On('updateMun')]
     public function updateMun($id)
     {
@@ -45,7 +53,7 @@ class RecommendationTrends extends Component
         $this->dispatch('close-modal', 'filter-recommendation-trends-modal');
     }
 
-    public function getRecommendationTrends($pesoMunicipalityId)
+    public function getRecommendationTrends($pesoMunicipalityId = null, $provinceId = null)
     {
         // Use the provided year or default to $this->currentYear
         $year = $this->selectedYear ?? $this->currentYear;
@@ -54,10 +62,20 @@ class RecommendationTrends extends Component
         $months = !empty($this->selectedMonths) ? $this->selectedMonths : range(1, 12);
 
         // Fetch the job applicants with relevant data
-        $query = Job_Applicants::whereHas('employee', function ($query) use ($pesoMunicipalityId) {
-            $query->whereHas('barangay', function ($query) use ($pesoMunicipalityId) {
-                $query->where('municipality_id', $pesoMunicipalityId);
-            });
+        $query = Job_Applicants::whereHas('employee', function ($query) use ($pesoMunicipalityId, $provinceId) {
+            if ($pesoMunicipalityId) {
+                // Filter by municipality if provided
+                $query->whereHas('barangay', function ($query) use ($pesoMunicipalityId) {
+                    $query->where('municipality_id', $pesoMunicipalityId);
+                });
+            } elseif ($provinceId) {
+                // Otherwise, filter by all municipalities within the province
+                $query->whereHas('barangay.municipality', function ($query) use ($provinceId) {
+                    $query->whereHas('province', function ($query) use ($provinceId) {
+                        $query->where('province_id', $provinceId);
+                    });
+                });
+            }
         })
             ->whereNotNull('responded_at')
             ->selectRaw('MONTH(responded_at) as month, peso_Status, COUNT(*) as count')
@@ -143,7 +161,16 @@ class RecommendationTrends extends Component
     public function render()
     {
 
-        $recommendedLineModel = $this->getRecommendationTrends($this->municipalityID);
+        $recommendedLineModel = null;
+
+        
+        if ($this->municipalityID) {
+            $recommendedLineModel = $this->getRecommendationTrends($this->municipalityID);
+
+        } elseif ($this->provinceID) {
+            $recommendedLineModel = $this->getRecommendationTrends(null, $this->provinceID);
+
+        }
 
         return view('livewire.admin.reports.municipality-partials.recommendation-trends', compact('recommendedLineModel'));
     }

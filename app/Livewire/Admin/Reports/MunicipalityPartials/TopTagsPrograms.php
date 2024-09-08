@@ -17,6 +17,14 @@ class TopTagsPrograms extends Component
     public $mountSelectedMonths = [], $mountSelectedYear;
     public $municipalityID;
 
+    public $provinceID;
+
+    #[On('updateProv')]
+    public function updateProv($id)
+    {
+        $this->provinceID = $id;
+    }
+
     #[On('updateMun')]
     public function updateMun($id)
     {
@@ -45,35 +53,52 @@ class TopTagsPrograms extends Component
         $this->dispatch('close-modal', 'filter-trainings-tags-modal');
     }
 
-    private function getTopProgramTags($id)
+    private function getTopProgramTags($id = null, $provinceId = null)
     {
+        // Start building the query
         $query = Program_Tags::select('job_positions.position_Title', DB::raw('COUNT(program_reg.program_reg_id) as total_count'))
             ->join('programs', 'program_tags.program_id', '=', 'programs.program_id')
             ->join('program_reg', 'program_reg.program_id', '=', 'programs.program_id')
             ->join('job_positions', 'program_tags.position_id', '=', 'job_positions.position_id')
-            ->join('peso', 'programs.peso_id', '=', 'peso.peso_id') // Assuming 'peso_id' is the foreign key in 'programs' table
-            ->join('municipality', 'peso.municipality_id', '=', 'municipality.municipality_id') // Assuming the correct foreign key relationship
-            ->where('municipality.municipality_id', $id) // Filter programs by municipality_id
-            ->groupBy('job_positions.position_Title')
-            ->orderBy('total_count', 'desc')
-            ->limit(5);
-
+            ->join('peso', 'programs.peso_id', '=', 'peso.peso_id');
+    
+        // Conditionally add joins based on the presence of provinceId
+        if ($provinceId) {
+            $query->join('municipality', 'peso.municipality_id', '=', 'municipality.municipality_id')
+                  ->join('province', 'municipality.province_id', '=', 'province.province_id'); // Join province table
+        } else {
+            $query->join('municipality', 'peso.municipality_id', '=', 'municipality.municipality_id'); // Just use municipality
+        }
+    
+        // Apply filtering based on provided ID or province ID
+        $query->where(function ($query) use ($id, $provinceId) {
+            if ($id) {
+                $query->where('municipality.municipality_id', $id); // Filter by municipality_id
+            } elseif ($provinceId) {
+                $query->where('province.province_id', $provinceId); // Filter by province_id
+            }
+        })
+        ->groupBy('job_positions.position_Title')
+        ->orderBy('total_count', 'desc')
+        ->limit(5);
+    
         // Apply year filter if provided
         if (!empty($this->selectedYear)) {
             $query->whereYear('programs.created_at', $this->selectedYear);
         }
-
+    
         // Apply month filter if provided
         if (!empty($this->selectedMonths) && is_array($this->selectedMonths)) {
             $query->whereIn(DB::raw('MONTH(programs.created_at)'), $this->selectedMonths);
         }
-
+    
         return $query->get();
     }
+    
 
-    public function createProgramTagsChart($id)
+    public function createProgramTagsChart($id = null, $provinceId = null)
     {
-        $topProgramTags = $this->getTopProgramTags($id);
+        $topProgramTags = $this->getTopProgramTags($id, $provinceId);
 
         $columnChartModel = new ColumnChartModel();
 
@@ -91,7 +116,7 @@ class TopTagsPrograms extends Component
             ->setJsonConfig([
                 'chart' => [
                     'width' => '100%',
-                    'height' => '200px',
+                    'height' => '300px',
                 ],
                 'yaxis.tickAmount' => 1,
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
@@ -115,8 +140,16 @@ class TopTagsPrograms extends Component
 
     public function render()
     {
+        $programTagsChart = null;
 
-        $programTagsChart = $this->createProgramTagsChart($this->municipalityID);
+        if ($this->municipalityID) {
+            $programTagsChart = $this->createProgramTagsChart($this->municipalityID);
+
+        } elseif ($this->provinceID) {
+            $programTagsChart = $this->createProgramTagsChart(null, $this->provinceID);
+
+        }
+
         return view('livewire.admin.reports.municipality-partials.top-tags-programs', compact('programTagsChart'));
     }
 }
