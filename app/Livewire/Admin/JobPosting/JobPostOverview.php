@@ -144,7 +144,7 @@ class JobPostOverview extends Component
         }
 
         // Dispatch the event to close the modal
-        $this->emit('close-modal', $modal);
+        $this->dispatch('close-modal', $modal);
 
         // Show a success message depending on the status
         if ($status === 'ACTIVE') {
