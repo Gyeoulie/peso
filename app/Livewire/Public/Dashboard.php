@@ -96,25 +96,29 @@ class Dashboard extends Component
     private function getHighestEducationLevel()
     {
         $user = Auth::user();
-        return Education::where('employee_id', $user->employee->employee_id)->max('edu_level');
+        return Education::where('employee_id', $user->employee->employee_id)
+            ->max('edu_level');
     }
 
     private function getUserMunicipalityId()
     {
         $user = Auth::user();
-        return Barangay::where('barangay_id', $user->employee->barangay_id)->value('municipality_id');
+        return Barangay::where('barangay_id', $user->employee->barangay_id)
+            ->value('municipality_id');
     }
 
     private function getUserJobPreferences()
     {
         $user = Auth::user();
-        return Job_Preference::where('employee_id', $user->employee->employee_id)->pluck('position_id');
+        return Job_Preference::where('employee_id', $user->employee->employee_id)
+            ->pluck('position_id');
     }
 
     private function getUserIndustryPreference()
     {
         $user = Auth::user();
-        return Industry_preference::where('employee_id', $user->employee->employee_id)->pluck('industry_id');
+        return Industry_Preference::where('employee_id', $user->employee->employee_id)
+            ->pluck('industry_id');
     }
 
     private function buildJobQuery()
@@ -138,10 +142,11 @@ class Dashboard extends Component
             $userIndustryPreference = $this->getUserIndustryPreference();
 
             // Query for matching job postings
-            $query->where('job_edu', '<=', $highestEducationLevel)
+            $query
                 ->whereHas('peso', function ($query) use ($userMunicipalityId) {
                     $query->where('municipality_id', $userMunicipalityId);
-                })
+                })->where('job_edu', '<=', $highestEducationLevel)
+
                 ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
                     $query->where(function ($query) use ($userJobPreferences) {
                         $query->whereHas('job_tags', function ($query) use ($userJobPreferences) {
@@ -154,22 +159,7 @@ class Dashboard extends Component
                             });
                         });
                 })
-                ->where(function ($query) {
-                    $query->whereHas('company', function ($query) {
-                        $query->where('business_Name', 'like', '%' . $this->search . '%')
-                            ->orWhere('trade_Name', 'like', '%' . $this->search . '%');
-                    })
-                        ->orWhere('job_Title', 'like', '%' . $this->search . '%')
-                        ->orWhereHas('job_tags.job_positions', function ($query) {
-                            $query->where('position_Title', 'like', '%' . $this->search . '%');
-                        })
-                        ->orWhereHas('job_industry', function ($query) {
-                            $query->where('industry_Title', 'like', '%' . $this->search . '%');
-                        })
-                        ->orWhereHas('peso.municipality', function ($query) {
-                            $query->where('municipality_name', 'like', '%' . $this->search . '%');
-                        });
-                })
+
                 ->withCount(['job_tags as job_tags_count' => function ($query) use ($userJobPreferences) {
                     $query->whereIn('position_id', $userJobPreferences);
                 }])
@@ -229,9 +219,9 @@ class Dashboard extends Component
             case 'Oldest':
                 $query->orderBy('created_at', 'ASC');
                 break;
-            case 'Random':
-                $query->inRandomOrder();
-                break;
+                // case 'Random':
+                //     $query->inRandomOrder();
+                //     break;
         }
 
         return $query->paginate($this->pagination);
@@ -404,15 +394,46 @@ class Dashboard extends Component
             }
 
             if ($this->filter === 'Recommended') {
-                $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
-                    $q->whereIn('position_id', $userJobPreferences);
+                $query->whereHas('peso.municipality', function ($q) use ($userMunicipalityId) {
+                    $q->where('municipality_id', $userMunicipalityId);
                 })
-                    ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
-                        $q->whereIn('industry_id', $userIndustryPreference);
+                    ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                        $query->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                            $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
+                                $q->whereIn('position_id', $userJobPreferences);
+                            })
+                                ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                                    $q->whereIn('industry_id', $userIndustryPreference);
+                                });
+                        })
+                            ->orWhere(function ($query) use ($userIndustryPreference) {
+                                $query->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                                    $q->whereIn('industry_id', $userIndustryPreference);
+                                });
+                            })
+                            ->orWhere(function ($query) use ($userJobPreferences) {
+                                $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
+                                    $q->whereIn('position_id', $userJobPreferences);
+                                });
+                            });
                     })
-                    ->whereHas('peso.municipality', function ($q) use ($userMunicipalityId) {
-                        $q->where('municipality_id', $userMunicipalityId);
-                    });
+                    ->withCount(['program_tags as tags_count' => function ($query) use ($userJobPreferences) {
+                        $query->whereIn('position_id', $userJobPreferences);
+                    }])
+                    ->withCount(['job_industry as industry_count' => function ($query) use ($userIndustryPreference) {
+                        $query->whereIn('industry_id', $userIndustryPreference);
+                    }])
+                    ->orderByRaw('
+                CASE
+                    WHEN industry_count > 0 AND tags_count > 0 THEN 1
+                    WHEN industry_count > 0 AND tags_count = 0 THEN 2
+                    WHEN industry_count = 0 AND tags_count > 0 THEN 3
+                    ELSE 4
+                END
+            ')
+                    ->orderByDesc('tags_count')
+                    ->orderByDesc('industry_count')
+                    ->distinct();
 
             } elseif ($this->filter === 'My Municipality') {
                 $municipalityId = $user->usertype == 4 ?
@@ -423,19 +444,6 @@ class Dashboard extends Component
                     $q->where('municipality_id', $municipalityId);
                 });
             }
-        }
-        if ($this->search) {
-            $query->where(function ($q) {
-                $q->whereHas('program_tags.job_positions', function ($q) {
-                    $q->where('position_Title', 'like', '%' . $this->search . '%');
-                })
-                    ->orWhereHas('job_industry', function ($q) {
-                        $q->where('industry_Title', 'like', '%' . $this->search . '%');
-                    })
-                    ->orWhereHas('peso.municipality', function ($q) {
-                        $q->where('municipality_name', 'like', '%' . $this->search . '%');
-                    });
-            });
         }
 
         return $query;
