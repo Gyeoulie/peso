@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-
 #[Layout('layouts.admin')]
 class MunicipalityReports extends Component
 {
@@ -98,12 +97,12 @@ class MunicipalityReports extends Component
     private function getMunicipality()
     {
         $municipalities = Municipality::whereHas('PESO') // Ensure municipality has an associated PESO
+            ->where('municipality_Name', 'like', '%' . $this->searchMun . '%') // Search by municipality_Name
             ->whereHas('province', function ($query) {
                 $query->where('province_Name', 'like', '%' . $this->searchMun . '%');
             })
             ->orderBy('municipality_Name', 'ASC')
             ->get();
-
         return $municipalities;
     }
 

@@ -70,46 +70,46 @@
                         @if ($partnership)
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Partnership Date:</li>
-                                <p class="ms-4 uppercase text-right"> {{ $partnership->responded_at->format('F j, Y') }}
+                                <p class="ms-4 uppercase text-right break-all"> {{ $partnership->responded_at->format('F j, Y') }}
                                 </p>
                             </div>
                         @endif
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Contact Person:</li>
-                            <p class="ms-4 text-right">{{ $employer->contact_Person }}</p>
+                            <p class="ms-4 text-right break-all">{{ $employer->contact_Person }}</p>
                         </div>
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Position:</li>
-                            <p class="ms-4 text-right">{{ $employer->contact_Person_position }}</p>
+                            <p class="ms-4 text-right break-all">{{ $employer->contact_Person_position }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Phone Number:</li>
-                            <p class="ms-4 text-right">{{ $employer->company_Pnum }}</p>
+                            <p class="ms-4 text-right break-all">{{ $employer->company_Pnum }}</p>
                         </div>
 
                         @if ($employer->company_Tnum)
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Telephone Number:</li>
-                                <p class="ms-4 text-right">{{ $employer->company_Tnum }}</p>
+                                <p class="ms-4 text-right break-all">{{ $employer->company_Tnum }}</p>
                             </div>
                         @endif
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Email:</li>
-                            <p class="ms-4 text-right">{{ $employer->company_Email }}</p>
+                            <p class="ms-4 text-right break-all">{{ $employer->company_Email }}</p>
                         </div>
 
                         @if ($employer->company_Fnum)
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Fax:</li>
-                                <p class="ms-4" text-right>{{ $employer->company_Fnum }}</p>
+                                <p class="ms-4 text-right break-all">{{ $employer->company_Fnum }}</p>
                             </div>
                         @endif
 
                         <div class="flex flex-row justify-between">
-                            <li class="mb-2 font-bold">Address:</li>
-                            <p class="ms-4 uppercase text-right"> {{ $employer->company_Address }},
+                            <li class="mb-2 font-bold ">Address:</li>
+                            <p class="ms-4 uppercase text-right break-all"> {{ $employer->company_Address }},
                                 {{ $employer->barangay->barangay_Name }},
                                 {{ $employer->barangay->municipality->municipality_Name }},
                                 {{ $employer->barangay->municipality->province->province_Name }}</p>

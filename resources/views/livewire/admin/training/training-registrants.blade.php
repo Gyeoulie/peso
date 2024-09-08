@@ -54,25 +54,25 @@
                     <ul>
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Program Host:</li>
-                            <p class="ms-4">{{ $programInfo->program_Host }}</p>
+                            <p class="ms-4 break-all">{{ $programInfo->program_Host }}</p>
                         </div>
 
                         @if ($programInfo->program_Slots != null)
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Slots Remaining:</li>
-                                <p class="ms-4">{{ $programInfo->program_Slots }}</p>
+                                <p class="ms-4 break-all">{{ $programInfo->program_Slots }}</p>
                             </div>
                         @endif
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Registratin Deadline:</li>
-                            <p class="ms-4">{{ $programInfo->program_Deadline->format('F j, Y') }}</p>
+                            <p class="ms-4 break-all">{{ $programInfo->program_Deadline->format('F j, Y') }}</p>
                         </div>
 
                         @if ($programInfo->program_Datetime)
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Program Date:</li>
-                                <span>
-                                    <p class="ms-4">{{ $programInfo->program_Datetime->format('F j, Y') }}</p>
+                                <span class="break-all">
+                                    <p class="ms-4 ">{{ $programInfo->program_Datetime->format('F j, Y') }}</p>
                                     <p class="ms-4">{{ $programInfo->program_Datetime->format('g:i A') }}</p>
                                 </span>
 
@@ -80,17 +80,17 @@
                         @endif
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Industry Tag</li>
-                            <p class="ms-4">{{ $programInfo->job_industry->industry_Title }}</p>
+                            <p class="ms-4 break-all">{{ $programInfo->job_industry->industry_Title }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Program Status:</li>
-                            <p class="ms-4">{{ $programInfo->program_Status }}</p>
+                            <p class="ms-4 break-all">{{ $programInfo->program_Status }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Location:</li>
-                            <p class="ms-4">{{ $programInfo->program_Location }}</p>
+                            <p class="ms-4 break-all">{{ $programInfo->program_Location }}</p>
                         </div>
 
                     </ul>
@@ -459,7 +459,7 @@
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Date Registered:</li>
-                                    <p class="ms-4">
+                                    <p class="ms-4 break-all">
                                         {{ $jobseekerInfo->created_at->format('F j, Y') }}
                                     </p>
                                 </div>

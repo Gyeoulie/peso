@@ -190,17 +190,28 @@ class ApplicantOverview extends Component
             // Validate the input based on the action
             $this->validate($validationRules, $validationMessages);
 
+            // If action is 'RECOMMENDED', check if the file upload is successful
+            if ($action === 'RECOMMENDED') {
+                // Attempt to store the recommendation letter
+                $filePath = $this->recLetter->store('peso/recommendation', 'public');
+
+                if (!$filePath) {
+                    // If the file upload fails, show an error and rollback
+                    DB::rollBack();
+                    toastr()->error('Failed to upload the recommendation letter.');
+                    return;
+                }
+
+                // Store the file path in the applicant record
+                $applicant->peso_Letter = $filePath;
+            }
+
             // Update the job applicant based on the action
             $applicant->peso_Status = $action;
             $applicant->peso_Remarks = $action === 'RECOMMENDED' ? $this->recommendationRemarks : $this->rejectRemarks;
             $applicant->applicant_Notif = 1;
             $applicant->responded_at = now();
             $applicant->peso_accounts_id = $pesoAdmin->peso_accounts->peso_accounts_id;
-
-            if ($action === 'RECOMMENDED') {
-                // Store the recommendation letter and update the path
-                $applicant->peso_Letter = $this->recLetter->store('peso/recommendation', 'public');
-            }
 
             // Save the changes
             $applicant->save();

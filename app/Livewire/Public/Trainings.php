@@ -41,7 +41,7 @@ class Trainings extends Component
 
         if ($user && $user->employee) {
             $this->filter = 'Recommended';
-        } else if ($user && $user->usertype >= 8) {
+        } else if ($user && ($user->usertype >= 8 && $user->usertype < 11 )) {
             $this->filter = 'My Municipality';
         } else {
             $this->filter = 'All';
@@ -201,7 +201,7 @@ class Trainings extends Component
     {
         if ($user->usertype == 4) {
             return $user->employee->barangay->municipality->municipality_id ?? null;
-        } elseif ($user->usertype >= 8) {
+        } elseif ($user->usertype >= 8 && $user->usertype < 11) {
             return $user->peso_accounts->peso->municipality->municipality_id ?? null;
         }
 

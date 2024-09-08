@@ -61,8 +61,13 @@
                         @endif
 
 
-                        @if (auth()->user()->usertype >= 8)
+                        @if (auth()->user()->usertype >= 8 && auth()->user()->usertype < 11)
                             <x-nav-link wire:navigate :href="route('admin')" :active="Route::is('admin*')">
+                                {{ __('Admin Tools') }}
+                            </x-nav-link>
+                        @endif
+                        @if (auth()->user()->usertype == 11)
+                            <x-nav-link wire:navigate :href="route('super-dashboard')" :active="Route::is('admin*')">
                                 {{ __('Admin Tools') }}
                             </x-nav-link>
                         @endif

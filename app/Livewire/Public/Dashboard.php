@@ -71,7 +71,7 @@ class Dashboard extends Component
         if ($user) {
             if ($user->usertype == 4) {
                 $this->filter = 'Recommended';
-            } elseif ($user->usertype >= 8) {
+            } elseif ($user->usertype >= 8 && $user->usertype < 11) {
                 $this->filter = 'My Municipality';
             } else {
                 $this->filter = 'All';

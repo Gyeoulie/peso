@@ -487,6 +487,7 @@
                                                                 $data->applicant_Status != 'INTERESTED' &&
                                                                 $data->applicant_Status != 'INTERVIEW' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
+                                                                $data->applicant_Status != 'COMPLETED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'Interested' }">
                                                                 <button
@@ -509,6 +510,7 @@
                                                                 $filter != 'HIRED' &&
                                                                 $data->applicant_Status != 'INTERVIEW' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
+                                                                $data->applicant_Status != 'COMPLETED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'For Interview' }">
                                                                 <button
@@ -548,6 +550,7 @@
                                                             $filter != 'ACCEPTED' &&
                                                                 $filter != 'HIRED' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
+                                                                $data->applicant_Status != 'COMPLETED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'Reject' }">
                                                                 <button
