@@ -145,7 +145,7 @@ class Dashboard extends Component
             $query
                 ->whereHas('peso', function ($query) use ($userMunicipalityId) {
                     $query->where('municipality_id', $userMunicipalityId);
-                })->where('job_edu', '<=', $highestEducationLevel)
+                })->where('job_Edu', '<=', $highestEducationLevel)
 
                 ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
                     $query->where(function ($query) use ($userJobPreferences) {
@@ -176,7 +176,7 @@ class Dashboard extends Component
                 ')
                 ->orderByDesc('job_tags_count')
                 ->distinct();
-                dd($query->get(), $userJobPreferences, $userIndustryPreference, $highestEducationLevel, $userMunicipalityId);
+                // dd($query->get(), $userJobPreferences, $userIndustryPreference, $highestEducationLevel, $userMunicipalityId);
 
 
         } elseif ($this->filter === 'My Municipality') {
@@ -227,7 +227,7 @@ class Dashboard extends Component
                 //     break;
         }
 
-        return $query->paginate(5);
+        return $query->paginate($this->pagination);
     }
 
     public function companyNotificationsWait($empID)

@@ -33,17 +33,19 @@ class JobseekerManagement extends Component
 
         $user = Auth::user();
 
-        $jobseeker = Employee::where(function ($query) {
+        $jobseekers = Employee::whereHas('barangay', function ($query) use ($user) {
+            $query->where('municipality_id', $user->peso_accounts->peso->municipality_id);
+        })->where(function ($query) {
             $query->where('fname', 'like', '%' . $this->searchUsers . '%')
                 ->orWhere('mname', 'like', '%' . $this->searchUsers . '%')
                 ->orWhere('lname', 'like', '%' . $this->searchUsers . '%');
         });
 
         if ($this->userFilter != 'ALL') {
-            $jobseeker = $jobseeker->where('empstatus', $this->userFilter);
+            $jobseekers = $jobseekers->where('empstatus', $this->userFilter);
         }
 
-        $jobseeker = $jobseeker->paginate($this->paginate);
+        $jobseeker = $jobseekers->paginate($this->paginate);
 
         return view('livewire.admin.accounts.jobseeker.jobseeker-management', compact('jobseeker'));
     }
