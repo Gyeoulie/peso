@@ -40,25 +40,28 @@
                         class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
                         <img class="w-full sm:w-60 object-cover h-48 sm:h-auto"
                             src="{{ asset('storage/' . $data->program_pubmat) }}" alt="prog-{{ $data->program_id }}">
-                        <div class="flex flex-col justify-between  p-4 sm:p-4">
+
+                        <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">
                             <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
                                 {{ $data->program_Title }}
                             </h5>
-                            <hr class="mb-1">
-                            <span class="mb-2 text-sm font-medium text-gray-900 leading-relaxed flex items-center">
+                            <hr class="mb-2">
+
+                            <div class="flex items-center mb-2 text-sm font-medium text-gray-900">
                                 <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
                                 {{ $data->created_at->format('F j, Y g:i A') }}
-                            </span>
+                            </div>
 
-
-                            <p class="mb-2 text-sm font-normal text-gray-700 leading-relaxed">
-
+                            <p class="mb-4 text-sm font-normal text-gray-700 leading-relaxed flex-grow">
                                 {!! Str::limit(strip_tags($data->program_Description), 90, '...') !!}
+                            </p>
 
+                            <p class="text-sm font-medium text-gray-900">
+                                PESO {{ $data->peso->municipality->municipality_Name }}
                             </p>
                         </div>
                     </a>
