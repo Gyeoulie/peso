@@ -252,9 +252,9 @@ class ApplicationHistory extends Component
         }
 
         if ($this->sort == 'Newest') {
-            $applications = $applications->orderBy('created_at', 'ASC');
-        } else if ($this->sort == 'Oldest') {
             $applications = $applications->orderBy('created_at', 'DESC');
+        } else if ($this->sort == 'Oldest') {
+            $applications = $applications->orderBy('created_at', 'ASC');
 
         }
 

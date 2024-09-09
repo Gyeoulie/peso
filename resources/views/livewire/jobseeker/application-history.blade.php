@@ -101,7 +101,7 @@
                 </div>
 
             </div>
-            <div class="flex overflow-x-auto no-scrollbar">
+            <div class="flex overflow-x-auto overflow-visible no-scrollbar">
                 @if ($applications->isEmpty())
                     <div class="flex w-full">
                         <div class="w-full rounded-lg p-10">
@@ -140,18 +140,39 @@
                                                     class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                                                 </img>
                                             </div>
-                                            <div class="flex flex-col  w-full">
-                                                <h1 class="text-2xl sm: font-bold underline">
+                                            <div class="flex flex-col w-full gap-1">
+                                                <h1 class="text-xl sm:text-2xl sm:font-bold underline">
                                                     {{ $data->job_posting->job_Title }}
                                                 </h1>
-                                                <h1 class="text-l text-gray-600">
+                                                <h1 class="text-md sm:text-lg text-gray-600">
                                                     {{ $data->job_posting->company->business_Name }}</h1>
+                                                <div class="sm:hidden mt-[-5px]">
+                                                    @if ($data->applicant_Status == 'PENDING')
+                                                        <span
+                                                            class="inlineflex items-center rounded-md bg-yellow-200 px-1 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                    @elseif ($data->applicant_Status == 'INTERESTED')
+                                                        <span
+                                                            class="inlineflex items-center rounded-md bg-yellow-200 px-1 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                    @elseif ($data->applicant_Status == 'INTERVIEW')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-xs font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
+                                                    @elseif ($data->applicant_Status == 'HIRED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-green-200 px-1 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
+                                                    @elseif ($data->applicant_Status == 'ACCEPTED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-emerald-200 px-1 py-1 text-xs font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">ACCEPTED</span>
+                                                    @elseif ($data->applicant_Status == 'REJECTED' || $data->applicant_Status == 'CANCELLED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-red-200 px-1 py-1 text-xs font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->applicant_Status }}</span>
+                                                    @endif
+                                                </div>
                                                 <div class="flex flex-row">
                                                     <span
                                                         class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
-                                                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
-                                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                            viewBox="0 0 20 20">
+                                                        <svg class="w-1.5 h-1.5 me-1 sm:w-2.5 sm:h-2.5 sm:me-1.5"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="currentColor" viewBox="0 0 20 20">
                                                             <path
                                                                 d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
                                                         </svg>
@@ -159,8 +180,9 @@
                                                     </span>
                                                 </div>
 
+
                                             </div>
-                                            <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
+                                            <div class="hidden sm:flex flex-row ml-auto mr-0 mb-auto mt-0">
 
                                                 @if ($data->applicant_Status == 'PENDING')
                                                     <span
@@ -190,27 +212,31 @@
                                             @endif
                                         </div>
 
-                                        <div class="flex flex-col w-full mt-4">
+                                        <div class="flex flex-col w-full mt-2 sm:mt-4">
                                             <div class="flex flex-col md:flex-row">
                                                 <div class="md:w-1/4 text-left">
 
-                                                    <h3 class="text-sm"> <i class="fa-solid fa-location-dot"></i> SM
+                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                            class="fa-solid fa-location-dot"></i> SM
                                                         {{ $data->job_posting->company->barangay->municipality->municipality_Name }},
                                                         {{ $data->job_posting->company->barangay->municipality->province->province_Name }}
                                                     </h3>
 
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-sm"> <i class="fa-solid fa-graduation-cap"></i>
+                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                            class="fa-solid fa-graduation-cap"></i>
                                                         {{ $eduLevels[$data->job_posting->job_Edu] }}</h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-sm"> <i class="fa-solid fa-briefcase"></i>
+                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                            class="fa-solid fa-briefcase"></i>
                                                         {{ $data->job_posting->job_Type == 1 ? 'Full Time' : 'Part Time' }}
                                                     </h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-sm"> <i class="fa-solid fa-calendar"></i>
+                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                            class="fa-solid fa-calendar"></i>
                                                         {{ $data->job_posting->created_at->format('F j, Y') }}
                                                     </h3>
                                                 </div>
