@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\JobPosting\Applicants;
 
+use App\Mail\NewApplicantNotification;
 use App\Mail\RecommendationNotification;
 use App\Models\Barangay;
 use App\Models\Education;
@@ -222,6 +223,7 @@ class ApplicantOverview extends Component
 
             // Send notification mail after transaction success
             Mail::to($applicant->employee->user->email)->queue(new RecommendationNotification($applicant));
+            Mail::to($applicant->job_posting->company->user->email)->queue(new NewApplicantNotification($applicant));
 
             toastr()->success('Applicant updated successfully!');
         } catch (\Exception $e) {

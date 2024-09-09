@@ -30,7 +30,7 @@ class SlotsFilled extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Slots Filled',
+            subject: 'All Slots Filled for Your Job Posting',
         );
     }
 
