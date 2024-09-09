@@ -134,7 +134,7 @@ class Dashboard extends Component
 
         $user = Auth::user();
 
-        if ($this->filter === 'Recommended') {
+        if ($this->filter == 'Recommended') {
             // Get the highest education level of the user
             $highestEducationLevel = $this->getHighestEducationLevel();
             $userMunicipalityId = $this->getUserMunicipalityId();
@@ -176,6 +176,9 @@ class Dashboard extends Component
                 ')
                 ->orderByDesc('job_tags_count')
                 ->distinct();
+                dd($query->get(), $userJobPreferences, $userIndustryPreference, $highestEducationLevel, $userMunicipalityId)
+
+
         } elseif ($this->filter === 'My Municipality') {
             $municipalityId = $user->usertype == 4
             ? $user->employee->barangay->municipality->municipality_id
@@ -224,7 +227,7 @@ class Dashboard extends Component
                 //     break;
         }
 
-        return $query->paginate($this->pagination);
+        return $query->paginate(5);
     }
 
     public function companyNotificationsWait($empID)
@@ -393,7 +396,7 @@ class Dashboard extends Component
                 $userMunicipalityId = $this->getUserMunicipalityId();
             }
 
-            if ($this->filter === 'Recommended') {
+            if ($this->filter == 'Recommended') {
                 $query->whereHas('peso.municipality', function ($q) use ($userMunicipalityId) {
                     $q->where('municipality_id', $userMunicipalityId);
                 })
