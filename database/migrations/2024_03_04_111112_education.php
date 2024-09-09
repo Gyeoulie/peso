@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('education_id');
             $table->unsignedBigInteger('employee_id')->comment('Foreign Key');
             $table->string('edu_School', 255)->nullable();
-            $table->string('edu_Level', 255);
+            $table->tinyInteger('edu_Level');
             $table->string('edu_Course', 255)->nullable();
             $table->date('edu_Started')->nullable();
             $table->date('edu_Ended')->nullable();
