@@ -176,7 +176,7 @@ class Dashboard extends Component
                 ')
                 ->orderByDesc('job_tags_count')
                 ->distinct();
-                dd($query->get(), $userJobPreferences, $userIndustryPreference, $highestEducationLevel, $userMunicipalityId)
+                dd($query->get(), $userJobPreferences, $userIndustryPreference, $highestEducationLevel, $userMunicipalityId);
 
 
         } elseif ($this->filter === 'My Municipality') {
