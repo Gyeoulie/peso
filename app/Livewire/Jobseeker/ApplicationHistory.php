@@ -113,7 +113,7 @@ class ApplicationHistory extends Component
                 // Rollback the transaction if an error occurs
                 DB::rollBack();
 
-                toastr()->error( $e->getMessage());
+                toastr()->error($e->getMessage());
                 // Optionally, log the exception
                 Log::error('Error handling response: ' . $e->getMessage());
             }
@@ -243,9 +243,8 @@ class ApplicationHistory extends Component
 
         if ($this->filter == 'Pending') {
             $applications = $applications->whereIn('applicant_Status', ['PENDING', 'INTERESTED']);
-
         } else if ($this->filter == 'Interview') {
-            $applications = $applications->where('applicant_Status', '=', 'INTERVIEW');
+            $applications = $applications->where('applicant_Status', 'INTERVIEW');
         } else if ($this->filter == 'Others') {
             $applications = $applications->whereNotIn('applicant_Status', ['INTERVIEW', 'PENDING', 'INTERESTED']);
         }
