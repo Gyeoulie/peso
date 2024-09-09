@@ -176,8 +176,7 @@ class Dashboard extends Component
                 ')
                 ->orderByDesc('job_tags_count')
                 ->distinct();
-                // dd($query->get(), $userJobPreferences, $userIndustryPreference, $highestEducationLevel, $userMunicipalityId);
-
+            // dd($query->get(), $userJobPreferences, $userIndustryPreference, $highestEducationLevel, $userMunicipalityId);
 
         } elseif ($this->filter === 'My Municipality') {
             $municipalityId = $user->usertype == 4
@@ -230,42 +229,6 @@ class Dashboard extends Component
         return $query->paginate($this->pagination);
     }
 
-    public function companyNotificationsWait($empID)
-    {
-        $notifications = DB::table('job_posting')
-            ->leftJoin('job_applicants', 'job_posting.job_id', '=', 'job_applicants.job_id')
-            ->select(
-                'job_posting.job_id',
-                'job_posting.job_title',
-                'job_posting.responded_at as job_responded_at',
-                'job_applicants.responded_at as applicant_responded_at',
-                'job_applicants.applicant_Status'
-            )
-            ->where('job_posting.company_id', $empID)
-            ->where(function ($query) {
-                $query->whereNotNull('job_posting.responded_at')
-                    ->orWhereNotNull('job_applicants.responded_at');
-            })
-            ->orderBy('job_posting.responded_at', 'desc')
-            ->orderBy('job_applicants.responded_at', 'desc')
-            ->get();
-
-        return $notifications->map(function ($notification) {
-            $type = $notification->applicant_responded_at ? 'applicant' : 'posting';
-            $respondedAt = $notification->applicant_responded_at ?? $notification->job_responded_at;
-            $message = $type === 'applicant'
-            ? 'A new applicant has applied on your job "' . $notification->job_title . '".'
-            : 'The job post application for "' . $notification->job_title . '" has been responded to.';
-
-            return [
-                'type' => $type,
-                'job_title' => $notification->job_title,
-                'responded_at' => $respondedAt,
-                'message' => $message,
-            ];
-        })->toArray();
-    }
-
     public function companyNotifications($empID)
     {
         // Fetch job postings and applicants notifications
@@ -286,7 +249,7 @@ class Dashboard extends Component
             ->orderBy('job_posting.responded_at', 'desc')
             ->orderBy('job_applicants.responded_at', 'desc')
             ->get();
-
+    
         // Fetch partnerships notifications
         $partnerships = DB::table('partnerships')
             ->leftJoin('peso', 'partnerships.peso_id', '=', 'peso.peso_id')
@@ -300,10 +263,10 @@ class Dashboard extends Component
             ->whereNotNull('partnerships.responded_at')
             ->orderBy('partnerships.responded_at', 'desc')
             ->get();
-
+    
         // Merge notifications
         $notifications = $jobPostingsAndApplicants->merge($partnerships);
-
+    
         // Format notifications
         $formattedNotifications = $notifications->map(function ($notification) {
             if (isset($notification->partnership_responded_at)) {
@@ -313,41 +276,43 @@ class Dashboard extends Component
                 $respondedAt = $notification->partnership_responded_at;
                 $municipalityName = $notification->municipality_Name;
                 $message = match ($status) {
-                    'REJECTED' => 'Your partnership application with PESO' . $municipalityName . ' has been rejected.',
+                    'REJECTED' => 'Your partnership application with PESO ' . $municipalityName . ' has been rejected.',
                     'APPROVED' => 'Your partnership application with PESO ' . $municipalityName . ' has been accepted.',
                     'CANCELLED' => 'Partnership with PESO ' . $municipalityName . ' has been cancelled.',
                     default => 'Status unknown.',
                 };
-                // Municipality name for partnerships
             } elseif (isset($notification->applicant_responded_at)) {
                 // Handle job applicant notifications
                 $type = 'applicant';
                 $status = $notification->applicant_status;
                 $respondedAt = $notification->applicant_responded_at;
                 $message = 'A new applicant has applied for your job "' . $notification->job_title . '".';
-                $municipalityName = null; // No municipality name for job postings
+                $municipalityName = null;
             } else {
                 // Handle job posting notifications
                 $type = 'posting';
-                $status = null; // No status for postings
+                $status = null;
                 $respondedAt = $notification->job_responded_at;
                 $message = 'The job post application for "' . $notification->job_title . '" has been responded to.';
-                $municipalityName = null; // No municipality name for job postings
+                $municipalityName = null;
             }
-
+    
             return [
                 'type' => $type,
                 'status' => $status,
                 'job_title' => $notification->job_title ?? null,
                 'responded_at' => $respondedAt,
                 'message' => $message,
-                'municipality_Name' => $municipalityName, // Include municipality name only for partnerships
+                'municipality_Name' => $municipalityName,
             ];
-        })->toArray();
-
+        });
+    
+        // Order notifications by responded_at in descending order
+        $formattedNotifications = $formattedNotifications->sortByDesc('responded_at')->values()->toArray();
+    
         return $formattedNotifications;
     }
-
+    
     public function getAnnouncements($pesoId = null)
     {
         $query = Announcements::query();

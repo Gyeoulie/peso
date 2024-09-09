@@ -375,7 +375,7 @@
                                                                 </div>
                                                             @elseif ($notification['status'] === 'REJECTED' || $notification['status'] === 'REJECTED')
                                                                 <div
-                                                                    class="text-red-700 border border-red-700 bg-green-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    class="text-red-700 border border-red-700 bg-red-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                     <svg class="h-5 w-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         fill="none" viewBox="0 0 24 24"
