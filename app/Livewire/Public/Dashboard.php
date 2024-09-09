@@ -97,7 +97,7 @@ class Dashboard extends Component
     {
         $user = Auth::user();
         return Education::where('employee_id', $user->employee->employee_id)
-            ->max('edu_level');
+            ->max('edu_Level');
     }
 
     private function getUserMunicipalityId()
