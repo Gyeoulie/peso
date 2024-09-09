@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="{{ asset('assets/img/PESO-Logo.png') }}">
 
 
-    <title>PESO</title>
+    <title>{{ config('app.name', 'PESO') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -830,12 +830,42 @@
             }
         }
     </style>
+    <style>
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Apply the animation to the text */
+        .animated-text {
+            animation: pulse 2s infinite;
+        }
+    </style>
+
+
+    @vite(['resources/css/app.css'])
 </head>
 
 <body class="antialiased">
+    @include('layouts.navigation')
+
+
+
     <div
         class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
-        @if (Route::has('login'))
+        {{-- @if (Route::has('login'))
             <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                 @auth
                     <a href="{{ url('/dashboard') }}"
@@ -851,18 +881,48 @@
                     @endif
                 @endauth
             </div>
-        @endif
+        @endif --}}
 
-        <div class="max-w-7xl mx-auto p-6 lg:p-8">
+        {{-- <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <div class="flex justify-center">
                 <x-application-logo style="width: 150px; height: 150px;" class="fill-current text-gray-500" />
             </div>
+        </div> --}}
 
+        <div class="flex flex-wrap">
+            <div class="w-full sm:w-8/12 mb-10">
+                <div class="container mx-auto h-full sm:p-10">
+                    <nav class="flex mt-2 sm:mt-0 px-4 justify-between items-center">
+                        <div class="flex flex-row gap-4 items-center ">
+                            <div>
+                                <img src="{{ asset('assets/img/PESO-Logo.png') }}" alt="" class="w-12">
+                            </div>
+                            <div class="text-4xl font-bold">
 
-
-
-
-
+                                PESO Careers<span class="text-blue-500">.</span>
+                            </div>
+                        </div>
+                    </nav>
+                    <header class="container px-4 lg:flex mt-10 items-center h-full lg:mt-0">
+                        <div class="w-full">
+                            <h1 class="text-4xl lg:text-6xl font-bold">Find your perfect job <span
+                                    class="text-blue-500 animated-text">match</span> with PESO.</h1>
+                            <div class="w-20 h-2 bg-blue-700 my-4"></div>
+                            <p class="text-xl mb-10 text-justify">Explore job opportunities that fit your skills and
+                                interests with
+                                ease. PESO helps you connect with roles that are right for you, making the job search
+                                process straightforward and effective. Whether you’re looking for new challenges or a
+                                position that suits your abilities, PESO is here to support you in finding the right
+                                job.</p>
+                            <button
+                                class="bg-blue-500 text-white text-2xl font-medium px-4 py-2 rounded shadow transition-transform transform hover:scale-110">Learn
+                                More</button>
+                        </div>
+                    </header>
+                </div>
+            </div>
+            <img src="https://img.freepik.com/free-photo/medium-shot-male-farmer-facing-camera-holding-bowlfull-strawberries_1098-19417.jpg?t=st=1725890051~exp=1725893651~hmac=89cb6a6ffc8095ff70481c60f25756aee722e0a1f1847c847961022898dd6d26&w=740"
+                alt="Leafs" class="w-full h-48 object-cover sm:h-screen sm:w-4/12">
         </div>
     </div>
     </div>
