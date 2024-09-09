@@ -153,7 +153,7 @@ class JobseekerOverview extends Component
     public function recommendedJobs($id)
     {
         $highestEducationLevel = Education::where('employee_id', $id)
-            ->max('edu_level');
+            ->max('edu_Level');
 
         $userMunicipalityId = Barangay::where('barangay_id', $id)
             ->value('municipality_id');
@@ -180,7 +180,7 @@ class JobseekerOverview extends Component
             ->whereHas('peso.municipality', function ($query) use ($userMunicipalityId) {
                 $query->where('municipality_id', $userMunicipalityId);
             })
-            ->where('job_edu', '<=', $highestEducationLevel)
+            ->where('job_Edu', '<=', $highestEducationLevel)
             ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
                 $query->where(function ($query) use ($userJobPreferences) {
                     $query->whereHas('job_tags', function ($query) use ($userJobPreferences) {
