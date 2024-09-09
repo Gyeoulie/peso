@@ -380,10 +380,13 @@
                                                             @elseif ($data->peso_Status == 'RECOMMENDED')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
-                                                            @elseif ($data->peso_Status == 'NOT')
+                                                            @elseif ($data->peso_Status == 'REJECT')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">NOT
                                                                     RECOMMENDED</span>
+                                                            @elseif ($data->peso_Status == 'CANCELLED')
+                                                                <span
+                                                                    class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                                             @endif
 
                                                         </td>

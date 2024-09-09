@@ -285,6 +285,9 @@
                                                 @elseif($applicants->peso_Status == 'REJECT')
                                                     <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
                                                     NOT RECOMMENDED
+                                                @elseif($applicants->peso_Status == 'CANCELLED')
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                    CANCELLED
                                                 @endif
                                             </div>
                                         </td>

@@ -368,6 +368,9 @@
                                         <span
                                             class="inline-flex items-center rounded-md bg-red-200 px-1 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">NOT
                                             RECOMMENDED</span>
+                                    @elseif ($applicationInfo->peso_Status == 'CANCELLED')
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-red-200 px-1 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">CANCELLED</span>
                                     @endif
 
                                 </p>

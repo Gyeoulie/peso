@@ -106,7 +106,7 @@ class RecommendationTrends extends Component
             $index = $applicant->month - 1; // Adjust index for zero-based array
             if ($applicant->peso_Status == 'RECOMMENDED') {
                 $recommended[$index] = $applicant->count;
-            } else {
+            } else if ($applicant->peso_Status == 'REJECT') {
                 $notRecommended[$index] = $applicant->count;
             }
         }

@@ -34,7 +34,7 @@ class PESOBranchNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'P E S O Branch Notification',
+            subject: 'Welcome to PESOCareers',
         );
     }
 

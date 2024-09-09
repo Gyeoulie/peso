@@ -248,7 +248,6 @@ class ApplicationHistory extends Component
             $applications = $applications->where('applicant_Status', '=', 'INTERVIEW');
         } else if ($this->filter == 'Others') {
             $applications = $applications->whereNotIn('applicant_Status', ['INTERVIEW', 'PENDING', 'INTERESTED']);
-
         }
 
         if ($this->sort == 'Newest') {

@@ -714,6 +714,8 @@
                                             Recommended
                                         @elseif($applicantInfo->peso_Status === 'REJECT')
                                             Not Recommended
+                                        @elseif($applicantInfo->peso_Status === 'CANCELLED')
+                                            Cancelled
                                         @endif
 
                                     </p>
