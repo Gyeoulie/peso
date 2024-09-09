@@ -921,8 +921,8 @@
                     </header>
                 </div>
             </div>
-            <img src="https://img.freepik.com/free-photo/medium-shot-male-farmer-facing-camera-holding-bowlfull-strawberries_1098-19417.jpg?t=st=1725890051~exp=1725893651~hmac=89cb6a6ffc8095ff70481c60f25756aee722e0a1f1847c847961022898dd6d26&w=740"
-                alt="Leafs" class="w-full h-48 object-cover sm:h-screen sm:w-4/12">
+            <img src="{{ asset('assets/img/homepage.jpg') }}"
+                alt="Guy" class="w-full h-48 object-cover sm:h-screen sm:w-4/12">
         </div>
     </div>
     </div>
