@@ -101,7 +101,7 @@
                 </div>
 
             </div>
-            <div class="flex overflow-x-auto overflow-visible no-scrollbar">
+            <div class="flex overflow-x-auto sm:overflow-visible no-scrollbar">
                 @if ($applications->isEmpty())
                     <div class="flex w-full">
                         <div class="w-full rounded-lg p-10">
@@ -356,12 +356,18 @@
                                 <li class="mb-2 font-bold">PESO Status:</li>
                                 <p class="ms-4">
 
-                                    @if ($applicationInfo->peso_Status === 'PENDING')
-                                        Pending
-                                    @elseif($applicationInfo->peso_Status === 'RECOMMENDED')
-                                        Recommended
-                                    @elseif($applicationInfo->peso_Status === 'REJECT')
-                                        Not Recommended
+
+
+                                    @if ($applicationInfo->peso_Status == 'PENDING')
+                                        <span
+                                            class="inlineflex items-center rounded-md bg-yellow-200 px-1 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                    @elseif ($applicationInfo->peso_Status == 'RECOMMENDED')
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-green-200 px-1 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
+                                    @elseif ($applicationInfo->peso_Status == 'REJECT')
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-red-200 px-1 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">NOT
+                                            RECOMMENDED</span>
                                     @endif
 
                                 </p>

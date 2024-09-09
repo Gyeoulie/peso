@@ -8,6 +8,7 @@ use App\Models\Eligibility;
 use App\Models\Eligibility_Type;
 use App\Models\Employee;
 use App\Models\Industry_preference;
+use App\Models\Job_Applicants;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Job_Preference;
@@ -554,6 +555,28 @@ class EditDetails extends Component
         $this->validate($rules, $messages);
 
         $jobseekerData = Employee::findOrFail($this->empID);
+        $currentBarangayID = $jobseekerData->barangay_id;
+        $currentMunicipalityID = $jobseekerData->barangay->municipality_id;
+
+        if ($currentBarangayID != $this->barangayID) {
+            // dd('hello');
+            $newBarangayMunicipalityID = Barangay::findOrFail($this->barangayID)->municipality_id;
+            // dd($newBarangayMunicipalityID);
+            $hasActiveApplications = Job_Applicants::where('employee_id', $this->empID)
+                ->whereHas('job_posting.peso', function ($query) use ($currentMunicipalityID) {
+                    $query->where('municipality_id', $currentMunicipalityID);
+                })
+                ->whereNotIn('applicant_Status', ['COMPLETED', 'REJECTED', 'CANCELLED'])
+                ->exists();
+
+                // dd($hasActiveApplications);
+
+            if ($hasActiveApplications && $newBarangayMunicipalityID != $currentMunicipalityID) {
+                toastr()->warning('You have active job applications in your current municipality. Please complete  those applications before changing to a barangay in a different municipality.');
+                return; // Stop further execution
+            }
+        }
+
         $imgPath = null;
 
         if ($this->pimg) {

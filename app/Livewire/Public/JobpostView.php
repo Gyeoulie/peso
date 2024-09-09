@@ -92,7 +92,7 @@ class JobpostView extends Component
             $this->dispatch('open-modal', 'apply-modal');
         } else {
             // Show an error if the user's municipality does not match
-            toastr()->error('This job posting is only available to ' . $jobpost->peso->municipality_Name . ' residents.');
+            toastr()->error('This job posting is only available to ' . $jobpost->peso->municipality->municipality_Name . ' residents.');
         }
     }
 
