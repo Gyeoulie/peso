@@ -46,6 +46,8 @@
         });
 
         // Check local storage on page load
+    </script>
+    {{-- <script>
         function checkSessionOnLoad() {
             if (localStorage.getItem('user-logged-out')) {
                 localStorage.removeItem('user-logged-out'); // Clean up
@@ -55,7 +57,7 @@
 
         // Run check on page load
         checkSessionOnLoad();
-    </script>
+    </script> --}}
 </body>
 
 </html>

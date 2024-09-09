@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a wire:navigate href="{{ route('dashboard') }}">
+                    <a href="{{ route('welcome') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
@@ -275,16 +275,16 @@
                             <div x-show="dropdowns.roleManagement" x-cloak>
                                 <a :class="currentRoute === 'admin-users-jobseeker' ||
                                     currentRoute === 'admin-users-jobseeker-overview' ? activeItem : inactiveItem"
-                                    href="{{ route('admin-users-jobseeker') }}">
+                                    wire:navigate href="{{ route('admin-users-jobseeker') }}">
                                     Jobseekers Management
                                 </a>
                                 <a :class="currentRoute === 'admin-users-employer' ||
                                     currentRoute === 'admin-users-employer-overview' ? activeItem : inactiveItem"
-                                    href="{{ route('admin-users-employer') }}">
+                                    wire:navigate href="{{ route('admin-users-employer') }}">
                                     Employers Management
                                 </a>
                                 <a :class="currentRoute === 'admin-users-peso' ? activeItem : inactiveItem"
-                                    href="{{ route('admin-users-peso') }}">
+                                    wire:navigate href="{{ route('admin-users-peso') }}">
                                     PESO Accounts
                                 </a>
                             </div>
@@ -303,18 +303,18 @@
                             </div>
                             <div x-show="dropdowns.dataManagement" x-cloak>
                                 <a :class="currentRoute === 'admin-certificate' ? activeItem : inactiveItem"
-                                    href="{{ route('admin-certificate') }}">
+                                    wire:navigate href="{{ route('admin-certificate') }}">
                                     Certificates
                                 </a>
                                 <a :class="currentRoute === 'admin-eligibility' ? activeItem : inactiveItem"
-                                    href="{{ route('admin-eligibility') }}">
+                                    wire:navigate href="{{ route('admin-eligibility') }}">
                                     Eligibility and License
                                 </a>
-                                <a :class="currentRoute === 'admin-location' ? activeItem : inactiveItem"
+                                <a :class="currentRoute === 'admin-location' ? activeItem : inactiveItem" wire:navigate
                                     href="{{ route('admin-location') }}">
                                     Locations
                                 </a>
-                                <a :class="currentRoute === 'admin-industry' ? activeItem : inactiveItem"
+                                <a :class="currentRoute === 'admin-industry' ? activeItem : inactiveItem" wire:navigate
                                     href="{{ route('admin-industry') }}">
                                     Positions and Industry
                                 </a>
@@ -344,11 +344,11 @@
                             <div x-show="dropdowns.trainings" x-cloak>
                                 <a :class="currentRoute === 'admin-training' || currentRoute === 'admin-view-training' ||
                                     currentRoute === 'admin-registrants-training' ? activeItem : inactiveItem"
-                                    href="{{ route('admin-training') }}">
+                                    wire:navigate href="{{ route('admin-training') }}">
                                     Training List
                                 </a>
                                 <a :class="currentRoute === 'admin-create-training' ? activeItem : inactiveItem"
-                                    href="{{ route('admin-create-training') }}">
+                                    wire:navigate href="{{ route('admin-create-training') }}">
                                     Create Trainings
                                 </a>
                             </div>
@@ -373,17 +373,17 @@
                                     Barangay
                                 </a>
                                 <a :class="currentRoute === 'admin-reports-municipality' ? activeItem : inactiveItem"
-                                    href="{{ route('admin-reports-municipality') }}">
+                                    wire:navigate href="{{ route('admin-reports-municipality') }}">
                                     Municipality
                                 </a>
                             @endif
                             @if (Auth::check() && Auth::user()->usertype == 11)
                                 <a :class="currentRoute === 'super-municipality' ? activeItem : inactiveItem"
-                                    href="{{ route('super-municipality') }}">
+                                    wire:navigate href="{{ route('super-municipality') }}">
                                     Municipality
                                 </a>
                                 <a :class="currentRoute === 'super-province' ? activeItem : inactiveItem"
-                                    href="{{ route('super-province') }}">
+                                    wire:navigate href="{{ route('super-province') }}">
                                     Province
                                 </a>
                             @endif
@@ -401,15 +401,15 @@
                                 </svg>
                             </div>
                             <div x-show="dropdowns.maintenance" x-cloak>
-                                <a :class="currentRoute === 'admin-peso' ? activeItem : inactiveItem"
+                                <a :class="currentRoute === 'admin-peso' ? activeItem : inactiveItem" wire:navigate
                                     href="{{ route('admin-peso') }}">
                                     PESO Branch
                                 </a>
-                                <a :class="currentRoute === 'admin-audits' ? activeItem : inactiveItem"
+                                <a :class="currentRoute === 'admin-audits' ? activeItem : inactiveItem" wire:navigate
                                     href="{{ route('admin-audits') }}">
                                     Audit Logs
                                 </a>
-                                <a :class="currentRoute === 'admin-backups' ? activeItem : inactiveItem"
+                                <a :class="currentRoute === 'admin-backups' ? activeItem : inactiveItem" wire:navigate
                                     href="{{ route('admin-backups') }}">
                                     Backups
                                 </a>
