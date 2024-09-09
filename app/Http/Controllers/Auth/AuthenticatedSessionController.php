@@ -58,7 +58,18 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    // public function destroy(Request $request): RedirectResponse
+    // {
+    //     Auth::guard('web')->logout();
+
+    //     $request->session()->invalidate();
+
+    //     $request->session()->regenerateToken();
+
+    //     return redirect('/');
+    // }
+
+    public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
 
@@ -66,6 +77,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return response()->view('welcome', [], 200, [
+            'Content-Type' => 'text/html',
+        ])->header('Content-Type', 'text/html')
+            ->header('Cache-Control', 'no-store')
+            ->header('Pragma', 'no-cache')
+            ->setContent('<script>
+            localStorage.setItem("user-logged-out", "true");
+            window.location.href = "/";
+        </script>');
     }
+
 }
+
+// Set a flag in local storage and redirect to the welcome page

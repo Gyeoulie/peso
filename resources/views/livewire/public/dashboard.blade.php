@@ -401,7 +401,7 @@
                                                                 </svg>
                                                             </div>
                                                         @endif
-                                                   
+
                                                     </span>
                                                     <div class="flex flex-col">
                                                         <span class="flex-1">

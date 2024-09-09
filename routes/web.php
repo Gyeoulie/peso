@@ -166,7 +166,6 @@ Route::prefix('admin')->group(function () {
         Route::get('super/municipality', ReportsMunicipalityReports::class)->name('super-municipality');
         Route::get('super/province', ProvinceReports::class)->name('super-province');
 
-
         // MAINTENANCE
 
         Route::get('/peso', PesoBranch::class)->name('admin-peso');
