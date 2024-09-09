@@ -157,38 +157,39 @@ class ApplicantOverview extends Component
             return;
         }
 
+        $validationRules = [];
+        $validationMessages = [];
+
+        if ($action === 'RECOMMENDED') {
+            $validationRules = [
+                'recommendationRemarks' => ['required', 'string', 'min:10'],
+                'recLetter' => [
+                    'required',
+                    'file',
+                    'mimes:pdf',
+                    'max:5120', // 5MB
+                ],
+            ];
+            $validationMessages = [
+                'recLetter.required' => 'The recommendation letter is required.',
+                'recLetter.file' => 'The recommendation letter must be a file.',
+                'recLetter.mimes' => 'The recommendation letter must be a PDF file.',
+                'recLetter.max' => 'The recommendation letter may not be greater than 5MB in size.',
+            ];
+        } elseif ($action === 'REJECT') {
+            $validationRules = [
+                'rejectRemarks' => ['required', 'string', 'min:10'],
+            ];
+        }
+
+        // Validate the input based on the action
+        $this->validate($validationRules, $validationMessages);
+
         // Start a database transaction
         DB::beginTransaction();
 
         try {
             // Determine the validation rules and messages based on the action
-            $validationRules = [];
-            $validationMessages = [];
-
-            if ($action === 'RECOMMENDED') {
-                $validationRules = [
-                    'recommendationRemarks' => ['required', 'string', 'min:10'],
-                    'recLetter' => [
-                        'required',
-                        'file',
-                        'mimes:pdf',
-                        'max:5120', // 5MB
-                    ],
-                ];
-                $validationMessages = [
-                    'recLetter.required' => 'The recommendation letter is required.',
-                    'recLetter.file' => 'The recommendation letter must be a file.',
-                    'recLetter.mimes' => 'The recommendation letter must be a PDF file.',
-                    'recLetter.max' => 'The recommendation letter may not be greater than 5MB in size.',
-                ];
-            } elseif ($action === 'REJECT') {
-                $validationRules = [
-                    'rejectRemarks' => ['required', 'string', 'min:10'],
-                ];
-            }
-
-            // Validate the input based on the action
-            $this->validate($validationRules, $validationMessages);
 
             // If action is 'RECOMMENDED', check if the file upload is successful
             if ($action === 'RECOMMENDED') {

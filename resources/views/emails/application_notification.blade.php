@@ -1,7 +1,7 @@
 <x-mail::message>
 # Hello {{ $employeeName }},
 
-We are pleased to inform you about the current status of your job application for the position of **{{ $jobTitle }}** at **{{ $companyName }}**.
+We are pleased to inform you about the current status of your job application for the position of **{{$jobTitle}}** at **{{$companyName}}**.
 
 **Status:** {{ $applicationStatus }}
 
