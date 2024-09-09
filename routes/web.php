@@ -160,7 +160,7 @@ Route::prefix('admin')->group(function () {
     });
 
 // EVERYTHING UNDER HERE IS SUPER ADMIN
-    Route::middleware(['auth', 'verified', 'usertype:8,9,11'])->group(function () {
+    Route::middleware(['auth', 'verified', 'usertype:11'])->group(function () {
 
         Route::get('super/', SuperDashboard::class)->name('super-dashboard');
         Route::get('super/municipality', ReportsMunicipalityReports::class)->name('super-municipality');

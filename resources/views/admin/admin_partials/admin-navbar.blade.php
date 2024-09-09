@@ -59,7 +59,7 @@
                 </li>
                 <li>
                     <a wire:navigate href="{{ route('admin-partnership') }}"
-                        :class="{{ request()->routeIs('admin-partnership') }}
+                        :class="{{ request()->routeIs('admin-partnership', 'admin-partnership-details') }}
                             ?
                             activeNav : inactiveNav"
                         class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-300 ">
