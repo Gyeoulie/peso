@@ -89,7 +89,7 @@
                                 </x-dropdown-link>
                             @endif
 
-                            @if (auth()->user()->usertype == 4 || auth()->user()->usertype >= 8)
+                            @if (auth()->user()->usertype == 4 || (auth()->user()->usertype >= 8 && auth()->user()->usertype < 11))
                                 <x-dropdown-link wire:click.prevent="updateFilter('My Municipality')"
                                     class="cursor-pointer">
                                     My Municipality
@@ -226,7 +226,7 @@
                                     </div>
                                 </div>
                                 <div class="px-6 py-4 mb-auto ">
-                                    <span 
+                                    <span
                                         class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
                                         {{ $data->program_Title }}
                                     </span>
