@@ -9,6 +9,7 @@ use App\Models\Job_Posting;
 use App\Services\CustomAuditLogger;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class CompleteJobPostings extends Command
@@ -18,7 +19,7 @@ class CompleteJobPostings extends Command
      *
      * @var string
      */
-    protected $signature = 'app:complete-job-postings';
+    protected $signature = 'app:complete-job-postings {jobId}';
 
     /**
      * The console command description.
@@ -125,6 +126,7 @@ class CompleteJobPostings extends Command
             $this->info('Job posting closed and applicants notified.');
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error($e->getMessage());
             $this->error('Error closing job posting: ' . $e->getMessage());
         }
     }

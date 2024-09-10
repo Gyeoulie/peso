@@ -217,8 +217,10 @@ class CreateTrainining extends Component
             if (!empty($matchingJobseekers)) {
                 foreach ($matchingJobseekers as $employee) {
                     Mail::to($employee->user->email)->queue(new TrainingPostingNotification($employee, $trainingProgram));
+
                 }
             }
+            // SendMatchedEmails::dispatch($trainingProgram->program_id);
 
             $this->dispatch('close-modal', 'confirm-modal');
             $this->redirectRoute('admin-view-training', ['id' => $trainingProgram->program_id], navigate: true);

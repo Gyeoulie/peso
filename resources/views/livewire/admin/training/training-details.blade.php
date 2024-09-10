@@ -96,13 +96,12 @@
                         <h1 class="text-xl text-blue-900 sm:text-2xl font-bold">Program Information
                         </h1>
                         <div class="flex flex-row gap-4">
-                            @if ($programInfo->program_Status != 'CANCELLED')
+                            @if ($programInfo->program_Status == 'ACTIVE')
                                 <x-danger-button x-data=""
                                     x-on:click.prevent="$dispatch('open-modal', 'cancel-modal')">
                                     Cancel Training
                                 </x-danger-button>
-                            @endif
-                            @if ($programInfo->program_Status == 'ACTIVE')
+
                                 <x-blue-button wire:click.prevent='editTraining({{ $programInfo->program_id }})'>
                                     Edit Training
                                 </x-blue-button>
