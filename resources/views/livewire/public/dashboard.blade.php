@@ -38,7 +38,7 @@
                 @foreach ($programList as $data)
                     <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
                         class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                        <img class="w-full sm:w-60 object-cover h-48 sm:h-auto"
+                        <img class="w-full sm:w-60 object-cover h-48 sm:h-60"
                             src="{{ asset('storage/' . $data->program_pubmat) }}" alt="prog-{{ $data->program_id }}">
 
                         <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">

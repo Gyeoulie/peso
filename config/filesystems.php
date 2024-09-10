@@ -66,6 +66,16 @@ return [
             //'teamDriveId' => env('GOOGLE_DRIVE_TEAM_DRIVE_ID'),
             //'sharedFolderId' => env('GOOGLE_DRIVE_SHARED_FOLDER_ID'),
         ],
+        'googleFiles' => [
+            'driver' => 'google',
+            'clientId' => env('SECOND_GOOGLE_DRIVE_CLIENT_ID'),
+            'clientSecret' => env('SECOND_GOOGLE_DRIVE_CLIENT_SECRET'),
+            'refreshToken' => env('SECOND_GOOGLE_DRIVE_REFRESH_TOKEN'),
+            'folder' => env('SECOND_GOOGLE_DRIVE_FOLDER'), // without folder is root of drive or team drive
+            'folderId' => env('SECOND_GOOGLE_DRIVE_FOLDER_ID'),
+            //'teamDriveId' => env('GOOGLE_DRIVE_TEAM_DRIVE_ID'),
+            //'sharedFolderId' => env('GOOGLE_DRIVE_SHARED_FOLDER_ID'),
+        ],
         'backuploc' => [
             'driver' => 'local',
             'root' => storage_path('app/temp'), // Path to the temp directory

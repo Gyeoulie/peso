@@ -33,7 +33,7 @@
         }
 
         // Run check on page load
-        checkSessionOnLoad();
+        // checkSessionOnLoad();
     </script>
 </body>
 

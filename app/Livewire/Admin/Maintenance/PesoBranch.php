@@ -24,12 +24,18 @@ class PesoBranch extends Component
 
     public $munID, $mun, $prov;
 
-    public $branchPESO;
+    // EDIT MANAGER
+    public $upfname, $upmname, $uplname, $upemail, $upphone;
+    public $pesofname, $pesolname, $pesoid;
+    public $option;
+
+    public $selectedBranch;
 
     public $agreeBox = false;
 
-    public function showBranch($id){
-        $this->branchPESO = $id;
+    public function selectBranch($id)
+    {
+        $this->selectedBranch = $id;
 
     }
 
@@ -167,8 +173,20 @@ class PesoBranch extends Component
             $this->prov = $municipality->province->province_Name;
         }
     }
+
+    public function selectPESO($id)
+    {
+        $peso = PESO_Accounts::findOrFail($id);
+        if ($peso) {
+            $this->pesoid = $id;
+            $this->pesofname = $peso->peso_accounts_Fname;
+            $this->pesolname = $peso->peso_accounts_Lname;
+        }
+    }
     public function render()
     {
+
+        $pesoBranchAdmins = null;
 
         $pesoData = PESO::withCount('peso_accounts as peso_accounts_count')
             ->with(['peso_accounts' => function ($query) {
@@ -191,7 +209,19 @@ class PesoBranch extends Component
                     ->from('peso'); // Replace with actual table name if different
             })
             ->get();
+        if ($this->selectedBranch) {
+            $pesoBranchAdmins = PESO_Accounts::where('peso_id', $this->selectedBranch)
+                ->whereHas('user', function ($query) {
+                    $query->where('userstatus', 1);
+                })
+                ->where(function ($query) {
+                    $query->where('peso_accounts_Fname', 'like', '%' . $this->searchMun . '%')
+                        ->orWhere('peso_accounts_Mname', 'like', '%' . $this->searchMun . '%')
+                        ->orWhere('peso_accounts_Lname', 'like', '%' . $this->searchMun . '%');
+                })
+                ->get();
+        }
 
-        return view('livewire.admin.maintenance.peso-branch', compact('pesoData', 'municipalityData'));
+        return view('livewire.admin.maintenance.peso-branch', compact('pesoData', 'municipalityData', 'pesoBranchAdmins'));
     }
 }

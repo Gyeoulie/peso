@@ -107,7 +107,7 @@
                                     Created
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    
+
                                 </th>
                             </tr>
                         </thead>
@@ -180,8 +180,8 @@
 
                                             <div class="flex flex-row items-center justify-center gap-6">
                                                 <div x-data="{ tooltip: 'PESO Account Overview' }">
-                                                    <button wire:click='showBranch({{$data->peso_id}})' x-tooltip="tooltip"
-                                                        type="button"
+                                                    <button wire:click='selectBranch({{ $data->peso_id }})'
+                                                        x-tooltip="tooltip" type="button"
                                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 24 24" fill="currentColor">
@@ -216,12 +216,13 @@
 
         <div class="col-span-4 sm:col-span-6">
             <div class="bg-white shadow rounded-lg p-6" x-data="{
-            branchPESO: @entangle('branchPESO')}">
+                selectedBranch: @entangle('selectedBranch')
+            }">
 
 
                 <div class="">
 
-                    <div x-show="!branchPESO" x-transition:enter="transition ease-out duration-300"
+                    <div x-show="!selectedBranch" x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-cloak>
                         <h1 class="text-xl font-bold ">Create PESO Branch</h1>
@@ -319,102 +320,128 @@
                         </div>
                     </div>
 
-                    <div x-show="branchPESO" x-transition:enter="transition ease-out duration-300"
+                    <div x-show="selectedBranch" x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-cloak>
-                        <h1 class="text-xl font-bold ">Create PESO Branch</h1>
+                        <h1 class="text-xl font-bold ">Update PESO Manager</h1>
                         <hr class="h-px my-2 bg-gray-200 border-0">
+                        @if ($this->selectedBranch)
+                            <div x-data="{
+                                selectedOption: ' ' // Default selection
+                            }">
+                                <div class="flex flex-row w-full gap-5">
+                                    <!-- Radio button for creating new manager -->
+                                    <div class="flex w-full items-center ps-4 border border-gray-200 rounded">
+                                        <input wire:model='option' id="bordered-radio-1" type="radio"
+                                            value="1" name="bordered-radio" x-model="selectedOption"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                        <label for="bordered-radio-1"
+                                            class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Create New
+                                            Manager</label>
+                                    </div>
+                                    <!-- Radio button for selecting existing manager -->
+                                    <div class="flex w-full items-center ps-4 border border-gray-200 rounded">
+                                        <input wire:model='option' id="bordered-radio-2" type="radio"
+                                            value="2" name="bordered-radio" x-model="selectedOption"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                        <label for="bordered-radio-2"
+                                            class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Select Existing
+                                            Manager</label>
+                                    </div>
+                                </div>
 
-                        <div class="flex flex-col w-full">
-                            <x-input-label for="phone" :value="__('PESO Municipality')" />
-                            <x-dropdown align="left" width="full">
-                                <x-slot name="trigger">
-                                    <button
-                                        class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
-                                        <div class="w-full ml-2 text-left font-extrabold font-mono text-xl ">
-                                            {{ $mun && $prov ? $mun . ', ' . $prov : 'Select a Municipality' }}
+                                <!-- Conditional rendering based on the selected radio button -->
 
-
+                                <div x-show="selectedOption === '1'" class="mt-4">
+                                    <h1 class="text-lg font-bold">Create PESO Manager</h1>
+                                    <hr class="h-px my-2 bg-gray-200 border-0">
+                                    <div class="flex flex-col sm:flex-row w-full gap-2">
+                                        <div class="flex flex-col mt-2 w-full">
+                                            <x-input-label for="fname" :value="__('First Name*')" />
+                                            <x-text-input wire:model="fname" class="block mt-1 w-full"
+                                                type="text" />
+                                            <x-input-error :messages="$errors->get('fname')" class="mt-2" />
                                         </div>
-                                        <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-
+                                        <div class="flex flex-col mt-2 w-full">
+                                            <x-input-label for="mname" :value="__('Middle Name')" />
+                                            <x-text-input wire:model="mname" class="block mt-1 w-full"
+                                                type="text" />
+                                            <x-input-error :messages="$errors->get('mname')" class="mt-2" />
                                         </div>
-                                    </button>
-                                </x-slot>
-                                <x-slot name="content">
-                                    <!-- Search input -->
-                                    <div class="p-2">
-                                        <input wire:model.live.prevent='searchMun' type="text"
-                                            placeholder="Search..."
-                                            class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
-                                            @click.stop>
+                                        <div class="flex flex-col mt-2 w-full">
+                                            <x-input-label for="lname" :value="__('Last Name*')" />
+                                            <x-text-input wire:model="lname" class="block mt-1 w-full"
+                                                type="text" />
+                                            <x-input-error :messages="$errors->get('lname')" class="mt-2" />
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col sm:flex-row w-full mt-6 gap-2">
+                                        <div class="flex flex-col mt-2 w-full">
+                                            <x-input-label for="email" :value="__('Email*')" />
+                                            <x-text-input wire:model="email" class="block mt-1 w-full"
+                                                type="email" />
+                                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                        </div>
+                                        <div class="flex flex-col mt-2 w-full">
+                                            <x-input-label for="phone" :value="__('Phone Number*')" />
+                                            <x-text-input wire:model="phone" class="block mt-1 w-full"
+                                                type="tel" />
+                                            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                                        </div>
                                     </div>
 
-                                    <!-- Dropdown content with scrollbar -->
-                                    <div class="max-h-[300px] bg-white overflow-y-auto">
-                                        <!-- Dropdown links -->
-                                        @foreach ($municipalityData as $data)
-                                            <x-dropdown-link
-                                                wire:click.prevent='selectMunicipality({{ $data->municipality_id }})'
-                                                class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->municipality_Name }},
-                                                {{ $data->province->province_Name }}</x-dropdown-link>
-                                        @endforeach
-                                    </div>
-                                </x-slot>
-
-                            </x-dropdown>
-                            <x-input-error :messages="$errors->get('munID')" class="mt-2" />
-
-                        </div>
-                        <div class="mt-4">
-                            <h1 class="text-lg font-bold">PESO Manager </h1>
-                            <hr class="h-px my-2 bg-gray-200 border-0">
-                            <div class="flex flex-col sm:flex-row w-full gap-2 ">
-                                <div class="flex flex-col mt-2 w-full">
-                                    <x-input-label for="fname" :value="__('First Name*')" />
-                                    <x-text-input wire:model="fname" class="block mt-1 w-full" type="text" />
-                                    <x-input-error :messages="$errors->get('fname')" class="mt-2" />
                                 </div>
-                                <div class="flex flex-col mt-2 w-full">
-                                    <x-input-label for="mname" :value="__('Middle Name')" />
-                                    <x-text-input wire:model="mname" class="block mt-1 w-full" type="text" />
-                                    <x-input-error :messages="$errors->get('mname')" class="mt-2" />
-                                </div>
-                                <div class="flex flex-col mt-2 w-full">
-                                    <x-input-label for="lname" :value="__('Last Name*')" />
-                                    <x-text-input wire:model="lname" class="block mt-1 w-full" type="text" />
-                                    <x-input-error :messages="$errors->get('lname')" class="mt-2" />
-                                </div>
+                                <div x-show="selectedOption === '2'" class="flex flex-col w-full mt-4">
+                                    <h1 class="text-lg font-bold">Select PESO Manager</h1>
+                                    <hr class="h-px my-2 bg-gray-200 border-0">
+                                    <x-dropdown align="left" width="full">
+                                        <x-slot name="trigger">
+                                            <button
+                                                class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
+                                                <div class="w-full ml-2 text-left font-extrabold font-mono text-xl">
+                                                    {{ $pesofname && $pesolname ? $pesofname . ' ' . $pesolname : 'Select a PESO Employee' }}
+                                                </div>
+                                                <div class="ms-1">
+                                                    <svg class="fill-current h-4 w-4"
+                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd"
+                                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                        </x-slot>
+                                        <x-slot name="content">
+                                            <!-- Search input -->
+                                            <div class="p-2">
+                                                <input wire:model.live.prevent='searchMun' type="text"
+                                                    placeholder="Search..."
+                                                    class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
+                                                    @click.stop>
+                                            </div>
 
+                                            <!-- Dropdown content with scrollbar -->
+                                            <div class="max-h-[300px] bg-white overflow-y-auto">
+                                                <!-- Dropdown links -->
+                                                @foreach ($pesoBranchAdmins as $data)
+                                                    <x-dropdown-link
+                                                        wire:click.prevent='selectPESO({{ $data->peso_accounts_id }})'
+                                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->peso_accounts_Fname }}
+                                                        {{ $data->peso_accounts_Lname }}</x-dropdown-link>
+                                                @endforeach
+                                            </div>
+                                        </x-slot>
+                                    </x-dropdown>
+                                    <x-input-error :messages="$errors->get('pesoid')" class="mt-2" />
+                                </div>
+                                <div class="flex flex-row w-full mt-6 justify-end">
+                                    <x-green-button wire:click.prevent='' type="submit"
+                                        class="ml-auto mr-3">
+                                        {{ __('Save') }}
+                                    </x-green-button>
+                                </div>
                             </div>
-                            <div class="flex flex-col sm:flex-row w-full mt-6 gap-2 ">
-
-                                <div class="flex flex-col mt-2 w-full">
-                                    <x-input-label for="email" :value="__('Email*')" />
-                                    <x-text-input wire:model="email" class="block mt-1 w-full" type="email" />
-                                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                                </div>
-                                <div class="flex flex-col mt-2 w-full">
-                                    <x-input-label for="phone" :value="__('Phone Number*')" />
-                                    <x-text-input wire:model="phone" class="block mt-1 w-full" type="tel" />
-                                    <x-input-error :messages="$errors->get('phone')" class="mt-2" />
-                                </div>
-                            </div>
-                            <div class="flex flex-row w-full mt-6 justify-end">
-                                <x-green-button wire:click.prevent='validateAccount' type="submit"
-                                    class="ml-auto mr-3">
-                                    {{ __('Create') }}
-                                </x-green-button>
-
-                            </div>
-
-                        </div>
+                        @endif
                     </div>
 
                 </div>

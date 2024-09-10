@@ -148,9 +148,9 @@ class Backup extends Component
         try {
             // Call the Artisan command to start the backup
             Artisan::call('backup:run', [
-                '--only-db' => true, // Adjust options as needed
+                '--only-db' => true, // To backup only the database
+                '--only-disk' => 'google', // Specify the disk where the backup should be stored
             ]);
-
             // Set success message
             // $this->status = 'Backup started successfully.';
 
@@ -240,11 +240,10 @@ class Backup extends Component
                 $this->closeModal("database-backup");
 
             } else {
-                
+
                 toastr()->error('There was an unexpected error. Please try again later.');
             }
         }
-        
 
     }
 

@@ -862,6 +862,16 @@
             animation: pulse 2s infinite;
         }
     </style>
+    <style>
+        .purple_border {
+            box-shadow: 4px 4px 1px rgba(37, 99, 235, 0.7);
+        }
+
+        .black_border {
+            box-shadow: 4px 4px 1px rgb(0, 0, 0);
+        }
+    </style>
+
 
     @livewireStyles
     @livewireScripts
@@ -870,7 +880,7 @@
 </head>
 
 <body class="antialiased">
-    @include('layouts.navigation')
+    @include('layouts.navigation-home')
 
 
 
@@ -928,12 +938,33 @@
                             <button
                                 class="bg-blue-500 text-white text-2xl font-medium px-4 py-2 rounded shadow transition-transform transform hover:scale-110">Learn
                                 More</button>
+                            <div
+                                class="relative mx-12 sm:mx-auto my-16 max-w-4xl  hover:scale-105 transition-transform">
+                                <button
+                                    class="absolute py-1 px-3 -left-8 -top-2 -rotate-[10deg] border border-black black_border bg-blue-500 text-white font-bold">
+                                    NOTICE!
+                                </button>
+
+                                <div class="purple_border p-8 border border-black text-justify">
+                                    <p class="text-lg"> Please be aware that this content is intended solely for
+                                        educational purposes and is part of a
+                                        capstone project. The information and features presented here
+                                        should be viewed as part of a learning exercise and not for any commercial or
+                                        professional use.
+                                    </p>
+                                </div>
+                            </div>
+
+
                         </div>
                     </header>
+
                 </div>
             </div>
             <img src="{{ asset('assets/img/homepage.jpg') }}" alt="Guy"
-                class="w-full h-48 object-cover sm:h-screen sm:w-4/12">
+                class="hidden sm:flex w-full h-48 object-cover sm:h-screen sm:w-4/12">
+            <img src="{{ asset('assets/img/mobile-home.jpg') }}" alt="Guy"
+                class="sm:hidden flex w-full h-48 object-cover sm:shadow-none sm:rounded-none shadow-xl rounded-md mb-5 sm:h-screen sm:w-4/12">
         </div>
     </div>
     </div>
