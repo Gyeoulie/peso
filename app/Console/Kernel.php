@@ -31,7 +31,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:complete-job-postings')->dailyAt('00:00');
         $schedule->command('app:notify-completion-deadline')->dailyAt('00:00');
         $schedule->command('app:close-expired-trainings')->dailyAt('00:00');
-        $schedule->command('backup:run --only-db')->dailyAt('00:00');
+        $schedule->command('backup:run --only-db --only-to-disk=google')->dailyAt('00:00');
+        $schedule->command('backup:run --only-files --only-to-disk=googleFiles')->dailyAt('00:00');
+
     }
 
     /**
