@@ -149,7 +149,7 @@ class Backup extends Component
             // Call the Artisan command to start the backup
             Artisan::call('backup:run', [
                 '--only-db' => true, // To backup only the database
-                '--only-disk' => 'google', // Specify the disk where the backup should be stored
+                '--only-to-disk' => 'google', // Specify the disk where the backup should be stored
             ]);
             // Set success message
             // $this->status = 'Backup started successfully.';
