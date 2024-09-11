@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Console\Commands\Jobpost;
+
+namespace App\Console\Commands\JobPost;
 
 use Illuminate\Console\Command;
 

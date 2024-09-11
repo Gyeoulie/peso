@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Console\Commands\JobPost;
 
 use App\Mail\ApplicationFull;

@@ -11,11 +11,15 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 use OwenIt\Auditing\Models\Audit;
 
 #[Layout('layouts.admin')]
 class PesoOverview extends Component
 {
+
+    use  WithPagination, WithoutUrlPagination;
     public $id;
 
     public $fname, $mname, $lname, $phone, $role = '';
@@ -248,6 +252,7 @@ class PesoOverview extends Component
         $formattedAudits = $audits->map(function ($audit) {
             return AuditFormatter::format($audit);
         });
+        
 
         return view('livewire.admin.accounts.peso.peso-overview', compact('user', 'audits', 'formattedAudits'));
     }

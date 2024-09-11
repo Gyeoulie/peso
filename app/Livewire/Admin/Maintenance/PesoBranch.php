@@ -18,7 +18,7 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class PesoBranch extends Component
 {
-    public $searchMun;
+    public $searchMun, $searchName;
 
     public $fname, $mname, $lname, $email, $phone;
 
@@ -32,11 +32,20 @@ class PesoBranch extends Component
     public $selectedBranch;
 
     public $agreeBox = false;
+    public $updateBox = false;
 
     public function selectBranch($id)
     {
-        $this->selectedBranch = $id;
 
+        $this->selectedBranch = $id;
+        $this->selectPESO($id);
+        $this->resetExcept('selectedBranch');
+
+    }
+
+    public function resetValues()
+    {
+        $this->reset();
     }
 
     public function validateAccount()
@@ -80,6 +89,66 @@ class PesoBranch extends Component
 
     }
 
+    public function validateUpdate()
+    {
+        $rules = [
+            'option' => 'required',
+        ];
+        $messages = [
+            'option.required' => 'You must select an option.',
+        ];
+        $this->validate($rules, $messages);
+
+        if ($this->option == 1) {
+            $rules = [
+                'fname' => 'required|string|min:2|max:255',
+                'mname' => 'nullable|string|min:2|max:255',
+                'lname' => 'required|string|min:2|max:255',
+                'email' => 'required|email|unique:users,email',
+                'phone' => [
+                    'required',
+                    'regex:/^09\d{9}$/', // Starts with '09' followed by 9 digits
+                ],
+                'munID' => 'required|unique:peso,municipality_id', // Required and must be unique in the peso table
+            ];
+
+            $messages = [
+                'fname.required' => 'First name is required.',
+                'fname.string' => 'First name must be a string.',
+                'fname.min' => 'First name must be at least 2 characters.',
+                'fname.max' => 'First name cannot exceed 255 characters.',
+                'mname.string' => 'Middle name must be a string.',
+                'mname.min' => 'Middle name must be at least 2 characters.',
+                'mname.max' => 'Middle name cannot exceed 255 characters.',
+                'lname.required' => 'Last name is required.',
+                'lname.string' => 'Last name must be a string.',
+                'lname.min' => 'Last name must be at least 2 characters.',
+                'lname.max' => 'Last name cannot exceed 255 characters.',
+                'email.required' => 'Email is required.',
+                'email.email' => 'Email must be a valid email address.',
+                'email.unique' => 'This email is already taken.',
+                'phone.required' => 'Phone number is required.',
+                'phone.regex' => 'Phone number must start with 09 and be 11 digits long.',
+                'munID.required' => 'Municipality is required.',
+                'munID.unique' => 'The selected municipality already has a PESO account.',
+            ];
+
+            $this->validate($rules, $messages);
+            $this->dispatch('open-modal', 'create-manager-modal');
+        } elseif ($this->option == 1) {
+            $rules = [
+                'pesoid' => 'required', // Required and must be unique in the peso table
+            ];
+            $messages = [
+                'pesoid.required' => 'You must select a PESO Employee.',
+            ];
+
+            $this->validate($rules, $messages);
+            $this->dispatch('open-modal', 'select-manager-modal');
+        }
+
+    }
+
     public function generatePassword()
     {
         // Define the password criteria
@@ -99,6 +168,72 @@ class PesoBranch extends Component
     }
 
     public function createPESO()
+    {
+        // Validation rules and messages
+        $rules = [
+            'agreeBox' => 'required|boolean',
+        ];
+        $messages = [
+            'agreeBox.required' => 'Please check before you continue.',
+        ];
+        $this->validate($rules, $messages);
+
+        // Generate a password
+        $password = $this->generatePassword();
+
+        DB::beginTransaction();
+
+        try {
+            // Create the PESO entry
+            $peso = PESO::create([
+                'municipality_id' => $this->munID,
+            ]);
+
+            // Create the user
+            $user = User::create([
+                'email' => $this->email,
+                'password' => Hash::make($password),
+                'usertype' => 10, // Assuming 'usertype' indicates the user type
+            ]);
+
+            // Create PESO_Accounts entry with user ID and PESO ID
+            PESO_Accounts::create([
+                'user_id' => $user->id,
+                'peso_id' => $peso->peso_id, // Use $peso->id to get the correct ID
+                'peso_accounts_Fname' => $this->fname,
+                'peso_accounts_Mname' => $this->mname,
+                'peso_accounts_Lname' => $this->lname,
+                'peso_accounts_Pnumber' => $this->phone,
+            ]);
+
+            // Generate email verification URL
+            $verificationUrl = URL::temporarySignedRoute(
+                'verification.verify',
+                now()->addMinutes(60), // URL expiration time
+                ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())]
+            );
+
+            // Send notification email
+            Mail::to($user->email)->queue(new PESOBranchNotification($user, $password, $verificationUrl));
+
+            DB::commit();
+
+            toastr()->success('PESO Branch has been created successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            toastr()->error('Failed to create the account. Please try again.');
+            Log::error('Failed to create PESO Branch: ' . $e->getMessage()); // Log the error
+        }
+
+        // Dispatch an event or close the modal
+        $this->reset();
+        $this->resetValidation();
+        $this->dispatch('close-modal', 'confirm-modal');
+    }
+
+    public function createManager()
     {
         // Validation rules and messages
         $rules = [
@@ -187,6 +322,7 @@ class PesoBranch extends Component
     {
 
         $pesoBranchAdmins = null;
+        $pesoBranch = null;
 
         $pesoData = PESO::withCount('peso_accounts as peso_accounts_count')
             ->with(['peso_accounts' => function ($query) {
@@ -210,18 +346,23 @@ class PesoBranch extends Component
             })
             ->get();
         if ($this->selectedBranch) {
-            $pesoBranchAdmins = PESO_Accounts::where('peso_id', $this->selectedBranch)
-                ->whereHas('user', function ($query) {
-                    $query->where('userstatus', 1);
-                })
-                ->where(function ($query) {
-                    $query->where('peso_accounts_Fname', 'like', '%' . $this->searchMun . '%')
-                        ->orWhere('peso_accounts_Mname', 'like', '%' . $this->searchMun . '%')
-                        ->orWhere('peso_accounts_Lname', 'like', '%' . $this->searchMun . '%');
-                })
-                ->get();
+            $pesoBranch = PESO::find($this->selectedBranch);
+
+            if ($pesoBranch) {
+                $pesoBranchAdmins = PESO_Accounts::where('peso_id', $this->selectedBranch)
+                    ->whereHas('user', function ($query) {
+                        $query->where('userstatus', 1);
+                    })
+                    ->where(function ($query) {
+                        $query->where('peso_accounts_Fname', 'like', '%' . $this->searchName . '%')
+                            ->orWhere('peso_accounts_Mname', 'like', '%' . $this->searchName . '%')
+                            ->orWhere('peso_accounts_Lname', 'like', '%' . $this->searchName . '%');
+                    })
+                    ->get();
+            }
+
         }
 
-        return view('livewire.admin.maintenance.peso-branch', compact('pesoData', 'municipalityData', 'pesoBranchAdmins'));
+        return view('livewire.admin.maintenance.peso-branch', compact('pesoData', 'municipalityData', 'pesoBranch', 'pesoBranchAdmins'));
     }
 }

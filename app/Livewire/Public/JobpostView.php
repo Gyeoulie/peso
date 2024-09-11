@@ -20,6 +20,7 @@ class JobpostView extends Component
 
     public $id;
     public $eduLevels = [
+        '0' => 'NONE',
         '1' => 'GRADE I',
         '2' => 'GRADE II',
         '3' => 'GRADE III',

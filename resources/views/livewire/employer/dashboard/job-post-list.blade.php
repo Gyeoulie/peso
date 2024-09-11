@@ -246,27 +246,27 @@
                                                     </div>
 
                                                 </td>
-                                                <td class="px-6 py-4">
+                                                <td class="px-4">
                                                     <div class="flex items-center">
                                                         @if ($data->job_Status == 'ACTIVE')
                                                             <div
-                                                                class="h-2.5 w-2.5 rounded-full bg-green-500 me-2 uppercase">
+                                                                class="h-1.5 w-1.5 rounded-full bg-green-500 me-2 uppercase">
                                                             </div> ACTIVE
                                                         @elseif ($data->job_Status == 'PENDING')
                                                             <div
-                                                                class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2 uppercase">
+                                                                class="h-1.5 w-1.5 rounded-full bg-yellow-500 me-2 uppercase">
                                                             </div> PENDING
                                                         @elseif ($data->job_Status == 'CLOSED')
                                                             <div
-                                                                class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2 uppercase">
+                                                                class="h-1.5 w-1.5 rounded-full bg-cyan-500 me-2 uppercase">
                                                             </div> CLOSED
                                                         @elseif ($data->job_Status == 'COMPLETED')
                                                             <div
-                                                                class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2 uppercase">
+                                                                class="h-1.5 w-1.5 rounded-full bg-blue-500 me-2 uppercase">
                                                             </div> COMPLETED
                                                         @else
                                                             <div
-                                                                class="h-2.5 w-2.5 rounded-full bg-red-500 me-2 uppercase">
+                                                                class="h-1.5 w-1.5 rounded-full bg-red-500 me-2 uppercase">
                                                             </div>
                                                             {{ $data->job_Status }}
                                                         @endif

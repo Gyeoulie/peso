@@ -120,6 +120,7 @@ class TopTagsPrograms extends Component
                 ],
                 'yaxis.tickAmount' => 1,
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
+                'xaxis.labels.show' => false,
                 'legend' => [
                     'position' => 'top', // 'top', 'bottom', 'left', 'right'
                     'horizontalAlign' => 'center', // Align horizontally at the center

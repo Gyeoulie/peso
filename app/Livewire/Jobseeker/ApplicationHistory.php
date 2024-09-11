@@ -25,6 +25,7 @@ class ApplicationHistory extends Component
 
     use WithPagination, WithoutUrlPagination;
     public $eduLevels = [
+        '0' => 'NONE',
         '1' => 'GRADE I',
         '2' => 'GRADE II',
         '3' => 'GRADE III',

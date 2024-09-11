@@ -167,7 +167,7 @@ class Backup extends Component
         }
     }
 
-    public function listFiles()
+    public function listDB()
     {
         try {
             // Access the Google Drive disk
@@ -181,6 +181,7 @@ class Backup extends Component
                     'name' => basename($file),
                     'path' => $file,
                     'date' => \Carbon\Carbon::createFromTimestamp($googleDisk->lastModified($file))->toDateTimeString(),
+                    'size' => $this->formatSizeUnits($googleDisk->size($file)), // Add file size
                 ];
             })->sortByDesc('date'); // Optionally sort by date, newest first
         } catch (\Exception $e) {
@@ -188,6 +189,47 @@ class Backup extends Component
             Log::error('Failed to list files from Google Drive: ' . $e->getMessage());
             return collect(); // Return an empty collection
         }
+    }
+    public function listFiles()
+    {
+        try {
+            // Access the Google Drive disk
+            $googleDisk = Storage::disk('googleFiles');
+
+            // List files in the specified folder
+            $files = $googleDisk->allFiles();
+
+            return collect($files)->map(function ($file) use ($googleDisk) {
+                return [
+                    'name' => basename($file),
+                    'path' => $file,
+                    'date' => \Carbon\Carbon::createFromTimestamp($googleDisk->lastModified($file))->toDateTimeString(),
+                    'size' => $this->formatSizeUnits($googleDisk->size($file)), // Add file size
+                ];
+            })->sortByDesc('date'); // Optionally sort by date, newest first
+        } catch (\Exception $e) {
+            // Log the error if needed
+            Log::error('Failed to list files from Google Drive: ' . $e->getMessage());
+            return collect(); // Return an empty collection
+        }
+    }
+    private function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824) {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        } elseif ($bytes >= 1048576) {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        } elseif ($bytes >= 1024) {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        } elseif ($bytes > 1) {
+            $bytes = $bytes . ' bytes';
+        } elseif ($bytes == 1) {
+            $bytes = $bytes . ' byte';
+        } else {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
     }
 
     public function removeBackup()
@@ -274,7 +316,8 @@ class Backup extends Component
     public function render()
     {
 
+        $dbs = $this->listDB();
         $files = $this->listFiles();
-        return view('livewire.admin.maintenance.backup', compact('files'));
+        return view('livewire.admin.maintenance.backup', compact('dbs', 'files'));
     }
 }
