@@ -19,6 +19,7 @@ class JobPostApplicants extends Component
     public $search;
 
     public $eduLevels = [
+        '0' => 'NONE',
         '1' => 'GRADE I',
         '2' => 'GRADE II',
         '3' => 'GRADE III',

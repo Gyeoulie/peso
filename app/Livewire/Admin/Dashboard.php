@@ -57,6 +57,7 @@ class Dashboard extends Component
                 ],
                 'yaxis.tickAmount' => 1,
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
+                'xasxis.labels.show' => false,
                 // 'xaxis.labels.show' => false,
             ]);
         // dd($columnChartModel);

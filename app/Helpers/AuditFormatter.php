@@ -55,11 +55,12 @@ class AuditFormatter
         }
     }
 
-    protected static function getRecordValues($data)
+    protected static function getRecordValues($data, $fieldMappings)
     {
         $values = [];
         foreach ($data as $field => $value) {
-            $values[] = sprintf('%s: "%s"', ucfirst($field), $value);
+            $formattedField = $fieldMappings[$field] ?? ucfirst($field);
+            $values[] = sprintf('%s: "%s"', $formattedField, $value);
         }
         return $values;
     }
@@ -75,34 +76,34 @@ class AuditFormatter
         $model = class_basename($audit->auditable_type);
         $changes = [];
 
+        $modelInstance = app($audit->auditable_type);
+        $fieldMappings = method_exists($modelInstance, 'fieldMappings')
+            ? $modelInstance->fieldMappings()
+            : [];
+
         $oldValues = $audit->old_values; // Use values directly
         $newValues = $audit->new_values; // Use values directly
 
         switch ($action) {
             case 'created':
-                $recordValues = self::getRecordValues($newValues);
+                $recordValues = self::getRecordValues($newValues, $fieldMappings);
                 $changes[] = sprintf("A new record in %s has been created by %s (%s):", $model, $userName, $userTypeLabel);
                 $changes = array_merge($changes, $recordValues);
                 break;
 
             case 'deleted':
-                $recordValues = self::getRecordValues($oldValues);
+                $recordValues = self::getRecordValues($oldValues, $fieldMappings);
                 $changes[] = sprintf("A record in %s has been deleted by %s (%s):", $model, $userName, $userTypeLabel);
                 $changes = array_merge($changes, $recordValues);
                 break;
 
             case 'restored':
-                $recordValues = self::getRecordValues($newValues);
+                $recordValues = self::getRecordValues($newValues, $fieldMappings);
                 $changes[] = sprintf("A record in %s has been restored by %s (%s):", $model, $userName, $userTypeLabel);
                 $changes = array_merge($changes, $recordValues);
                 break;
 
             case 'updated':
-                $modelInstance = app($audit->auditable_type);
-                $fieldMappings = method_exists($modelInstance, 'fieldMappings')
-                ? $modelInstance->fieldMappings()
-                : [];
-
                 $changes[] = sprintf("A record in %s has been updated by %s (%s):", $model, $userName, $userTypeLabel);
 
                 foreach ($oldValues as $field => $oldValue) {

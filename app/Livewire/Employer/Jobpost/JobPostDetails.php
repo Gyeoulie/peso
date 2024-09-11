@@ -23,6 +23,7 @@ class JobPostDetails extends Component
     public function mount()
     {
         $this->eduLevels = [
+            '0' => 'NONE',
             '1' => 'GRADE I',
             '2' => 'GRADE II',
             '3' => 'GRADE III',
