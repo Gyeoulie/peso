@@ -37,8 +37,8 @@
 
                 @foreach ($programList as $data)
                     <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                        class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                        <img class="w-full sm:w-60 object-cover h-48 sm:h-60"
+                        class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl sm:max-h-72 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                        <img class="w-full sm:w-60 object-cover h-48 sm:h-full"
                             src="{{ asset('storage/' . $data->program_pubmat) }}" alt="prog-{{ $data->program_id }}">
 
                         <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">
@@ -53,7 +53,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
-                                {{ $data->created_at->format('F j, Y g:i A') }}
+                                <p class="truncate ...">{{ $data->created_at->format('F j, Y g:i A') }}</p>
                             </div>
 
                             <p class="mb-4 text-sm font-normal text-gray-700 leading-relaxed flex-grow">
