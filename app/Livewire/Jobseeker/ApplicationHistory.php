@@ -84,7 +84,7 @@ class ApplicationHistory extends Component
                     }
                     Mail::to($applicant->employee->user->email)
                         ->queue(new ApplicationCompleted($applicant));
-                    Mail::to($applicant->employee->user->email)
+                    Mail::to($applicant->job_posting->company->user->email)
                         ->queue(new ApplicationAccepted($applicant));
 
                     // Check remaining slots in the job posting

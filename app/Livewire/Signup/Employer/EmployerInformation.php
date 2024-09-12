@@ -147,8 +147,9 @@ class EmployerInformation extends Component
         if ($success) {
             Mail::to($employer->user->email)->queue(new WelcomeCompany($employer));
 
-            toastr()->success('Account Successfully Updated, Please check your email for more information.');
-            return redirect()->route('dashboard');
+            redirect()->route('dashboard');
+            return toastr()->success('Account Successfully Updated, Please check your email for more information.');
+
         }
 
     }
