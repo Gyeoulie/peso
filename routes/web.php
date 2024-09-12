@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Error\ErrorController;
 use App\Http\Controllers\PDF\PDFView;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\Accounts\Employer\EmployerManagement;
@@ -66,7 +67,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
  */
-// Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
+Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
 
 Route::get('/', function () {
     return view('welcome');
@@ -141,10 +142,10 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/manage/employer', EmployerManagement::class)->name('admin-users-employer');
         Route::get('/manage/employer/{id}', EmployerOverview::class)->name('admin-users-employer-overview');
-
-        Route::get('/manage/peso/', PesoManagement::class)->name('admin-users-peso');
-        Route::get('/manage/peso/{id}', PesoOverview::class)->name('admin-users-peso-overview');
-
+        Route::middleware('usertype:10')->group(function () {
+            Route::get('/manage/peso/', PesoManagement::class)->name('admin-users-peso');
+            Route::get('/manage/peso/{id}', PesoOverview::class)->name('admin-users-peso-overview');
+        });
         Route::get('/training', TrainingList::class)->name('admin-training');
         Route::get('/training/create', CreateTrainining::class)->name('admin-create-training');
         Route::get('/training/edit', EditTraining::class)->name('admin-edit-training');

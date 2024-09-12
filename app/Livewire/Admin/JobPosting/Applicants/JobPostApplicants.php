@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\JobPosting\Applicants;
 
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
@@ -17,6 +18,17 @@ class JobPostApplicants extends Component
     public $id;
 
     public $search;
+
+    public function mount($id)
+    {
+
+        try {
+            $this->id = decrypt($id);
+        } catch (DecryptException $e) {
+
+            return redirect()->route('error.404')->with('error', 'Invalid or tampered ID');
+        }
+    }
 
     public $eduLevels = [
         '0' => 'NONE',

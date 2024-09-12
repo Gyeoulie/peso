@@ -988,6 +988,8 @@ class EditDetails extends Component
                 'employee_id' => $this->empID,
                 'position_id' => $id,
             ]);
+            toastr()->warning('Job preference added.');
+
             $this->dispatch('close-modal', 'job-position-modal');
         } else {
             toastr()->error('Could not fetch data');
@@ -1013,6 +1015,8 @@ class EditDetails extends Component
                 'employee_id' => $this->empID,
                 'industry_id' => $id,
             ]);
+            toastr()->warning('Job industry added.');
+
             $this->dispatch('close-modal', 'industry-modal');
         } else {
             toastr()->error('Could not fetch data');

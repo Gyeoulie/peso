@@ -108,10 +108,9 @@ class EditDetails extends Component
                 $partnership->partnership_Status = 'PENDING';
                 $partnership->responded_at = null;
                 $partnership->save();
-                
+
                 DB::commit(); // Commit the transaction
                 toastr()->success('Partnership reapplied successfully.');
-
 
             } catch (\Exception $e) {
                 DB::rollBack(); // Rollback the transaction in case of error
@@ -335,6 +334,7 @@ class EditDetails extends Component
                 'company_id' => $this->empID,
                 'industry_id' => $id,
             ]);
+            toastr()->warning('Company industry added.');
             $this->dispatch('close-modal', 'industry-modal');
         } else {
             toastr()->error('Could not fetch data');

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Maintenance;
 
+use App\Mail\NewManagerNotification;
 use App\Mail\PESOBranchNotification;
 use App\Models\Municipality;
 use App\Models\PESO;
@@ -26,13 +27,14 @@ class PesoBranch extends Component
 
     // EDIT MANAGER
     public $upfname, $upmname, $uplname, $upemail, $upphone;
-    public $pesofname, $pesolname, $pesoid;
+    public $pesofname, $pesolname, $pesoid, $pesoemail, $pesophone;
     public $option;
 
     public $selectedBranch;
 
     public $agreeBox = false;
-    public $updateBox = false;
+    public $newBox = false;
+    public $existingBox = false;
 
     public function selectBranch($id)
     {
@@ -100,6 +102,7 @@ class PesoBranch extends Component
         $this->validate($rules, $messages);
 
         if ($this->option == 1) {
+            // dd('hello');
             $rules = [
                 'fname' => 'required|string|min:2|max:255',
                 'mname' => 'nullable|string|min:2|max:255',
@@ -109,7 +112,7 @@ class PesoBranch extends Component
                     'required',
                     'regex:/^09\d{9}$/', // Starts with '09' followed by 9 digits
                 ],
-                'munID' => 'required|unique:peso,municipality_id', // Required and must be unique in the peso table
+
             ];
 
             $messages = [
@@ -129,13 +132,12 @@ class PesoBranch extends Component
                 'email.unique' => 'This email is already taken.',
                 'phone.required' => 'Phone number is required.',
                 'phone.regex' => 'Phone number must start with 09 and be 11 digits long.',
-                'munID.required' => 'Municipality is required.',
-                'munID.unique' => 'The selected municipality already has a PESO account.',
+
             ];
 
             $this->validate($rules, $messages);
-            $this->dispatch('open-modal', 'create-manager-modal');
-        } elseif ($this->option == 1) {
+            $this->dispatch('open-modal', 'new-manager-modal');
+        } elseif ($this->option == 2) {
             $rules = [
                 'pesoid' => 'required', // Required and must be unique in the peso table
             ];
@@ -144,9 +146,8 @@ class PesoBranch extends Component
             ];
 
             $this->validate($rules, $messages);
-            $this->dispatch('open-modal', 'select-manager-modal');
+            $this->dispatch('open-modal', 'existing-manager-modal');
         }
-
     }
 
     public function generatePassword()
@@ -233,14 +234,14 @@ class PesoBranch extends Component
         $this->dispatch('close-modal', 'confirm-modal');
     }
 
-    public function createManager()
+    public function newManager()
     {
         // Validation rules and messages
         $rules = [
-            'agreeBox' => 'required|boolean',
+            'newBox' => 'required|boolean',
         ];
         $messages = [
-            'agreeBox.required' => 'Please check before you continue.',
+            'newBox.required' => 'Please check before you continue.',
         ];
         $this->validate($rules, $messages);
 
@@ -251,9 +252,6 @@ class PesoBranch extends Component
 
         try {
             // Create the PESO entry
-            $peso = PESO::create([
-                'municipality_id' => $this->munID,
-            ]);
 
             // Create the user
             $user = User::create([
@@ -265,7 +263,7 @@ class PesoBranch extends Component
             // Create PESO_Accounts entry with user ID and PESO ID
             PESO_Accounts::create([
                 'user_id' => $user->id,
-                'peso_id' => $peso->peso_id, // Use $peso->id to get the correct ID
+                'peso_id' => $this->selectedBranch, // Use $peso->id to get the correct ID
                 'peso_accounts_Fname' => $this->fname,
                 'peso_accounts_Mname' => $this->mname,
                 'peso_accounts_Lname' => $this->lname,
@@ -280,23 +278,69 @@ class PesoBranch extends Component
             );
 
             // Send notification email
-            Mail::to($user->email)->queue(new PESOBranchNotification($user, $password, $verificationUrl));
+            Mail::to($user->email)->queue(new NewManagerNotification($user, $password, $verificationUrl, 1));
 
             DB::commit();
 
-            toastr()->success('PESO Branch has been created successfully.');
+            toastr()->success('PESO Manager has been successfully created.');
 
         } catch (\Exception $e) {
             DB::rollBack();
 
             toastr()->error('Failed to create the account. Please try again.');
-            Log::error('Failed to create PESO Branch: ' . $e->getMessage()); // Log the error
+            Log::error('Failed to create PESO Manager: ' . $e->getMessage()); // Log the error
         }
 
         // Dispatch an event or close the modal
         $this->reset();
         $this->resetValidation();
-        $this->dispatch('close-modal', 'confirm-modal');
+        $this->dispatch('close-modal', 'new-manager-modal');
+    }
+
+    public function existingManager()
+    {
+        $rules = [
+            'existingBox' => 'required|boolean',
+        ];
+        $messages = [
+            'existingBox.required' => 'Please check before you continue.',
+        ];
+        $this->validate($rules, $messages);
+
+        // Generate a password
+        $password = $this->generatePassword();
+
+        DB::beginTransaction();
+
+        try {
+            // Find the PESO entry
+            $pesoAccount = PESO_Accounts::findOrFail($this->pesoid);
+
+            // Fetch the associated user
+            $user = $pesoAccount->user; // Assuming the relation 'user' exists on PESO_Accounts model
+
+            // Update the user's usertype to 10
+            $user->usertype = 10;
+            $user->save();
+
+            // Send notification email
+            Mail::to($user->email)->queue(new NewManagerNotification($user, $password = null, $verificationUrl = null, 2));
+
+            DB::commit();
+
+            toastr()->success('PESO Manager has been successfully created.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            toastr()->error('Failed to create the account. Please try again.');
+            Log::error('Failed to create PESO Manager: ' . $e->getMessage()); // Log the error
+        }
+
+        // Dispatch an event or close the modal
+        $this->reset();
+        $this->resetValidation();
+        $this->dispatch('close-modal', 'existing-manager-modal');
     }
 
     public function selectMunicipality($id)
@@ -316,6 +360,8 @@ class PesoBranch extends Component
             $this->pesoid = $id;
             $this->pesofname = $peso->peso_accounts_Fname;
             $this->pesolname = $peso->peso_accounts_Lname;
+            $this->pesophone = $peso->peso_accounts_Pnumber;
+            $this->pesoemail = $peso->user->email;
         }
     }
     public function render()

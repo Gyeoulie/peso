@@ -19,11 +19,14 @@ class NewManagerNotification extends Mailable
     protected $password;
     protected $verificationUrl;
 
-    public function __construct($user, $password, $verificationUrl)
+    protected $type;
+
+    public function __construct($user, $password, $verificationUrl, $type)
     {
         $this->password = $password;
         $this->user = $user;
         $this->verificationUrl = $verificationUrl;
+        $this->type = $type;
     }
 
     /**
@@ -49,6 +52,7 @@ class NewManagerNotification extends Mailable
                 'password' => $this->password,
                 'verificationUrl' => $this->verificationUrl,
                 'municipality' => $this->user->peso_accounts->peso->municipality->municipality_Name,
+                'type' => $this->type,
             ]
         );
     }
