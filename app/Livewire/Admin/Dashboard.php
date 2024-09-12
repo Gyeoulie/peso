@@ -54,11 +54,11 @@ class Dashboard extends Component
             ->setJsonConfig([
                 'chart' => [
                     'width' => '100%',
+
                 ],
                 'yaxis.tickAmount' => 1,
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
-                'xasxis.labels.show' => false,
-                // 'xaxis.labels.show' => false,
+                'xaxis.labels.show' => false,
             ]);
         // dd($columnChartModel);
         return $columnChartModel;
@@ -108,7 +108,7 @@ class Dashboard extends Component
             ->setJsonConfig([
                 'chart' => [
                     'width' => '100%', // Set to 100% or specify a pixel value like 400, 500, etc.
-                    'height' => '400px', // Specify the height for the chart
+                    // 'height' => '300px', // Specify the height for the chart
                 ],
                 'plotOptions' => [
                     'pie' => [
