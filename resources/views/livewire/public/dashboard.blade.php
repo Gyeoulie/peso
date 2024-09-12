@@ -32,43 +32,63 @@
         </div>
         <hr class="h-1 mx-auto sm:mx-12  bg-gray-200 border-0 dark:bg-gray-700">
 
-        <div class="overflow-x-auto no-scrollbar">
-            <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
+        @if ($programList->isEmpty())
+            <div class="flex w-full justify-center  mx-4">
+                <div class="flex flex-col items-center justify-center mt-4 mb-4">
+                    <div class="p-6 bg-white rounded-full my-2 transition-transform transform hover:scale-110">
+                        <svg class="w-36 h-36 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46" />
+                        </svg>
 
-                @foreach ($programList as $data)
-                    <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                        class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl sm:max-h-72 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                        <img class="w-full sm:w-60 object-cover h-48 sm:h-full"
-                            src="{{ asset('storage/' . $data->program_pubmat) }}" alt="prog-{{ $data->program_id }}">
 
-                        <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">
-                            <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
-                                {{ $data->program_Title }}
-                            </h5>
-                            <hr class="mb-2">
-
-                            <div class="flex items-center mb-2 text-sm font-medium text-gray-900">
-                                <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                                <p class="truncate ...">{{ $data->created_at->format('F j, Y g:i A') }}</p>
-                            </div>
-
-                            <p class="mb-4 text-sm font-normal text-gray-700 leading-relaxed flex-grow">
-                                {!! Str::limit(strip_tags($data->program_Description), 90, '...') !!}
-                            </p>
-
-                            <p class="text-sm font-medium text-gray-900">
-                                PESO {{ $data->peso->municipality->municipality_Name }}
-                            </p>
-                        </div>
-                    </a>
-                @endforeach
-
+                    </div>
+                    <p class="text-xl font-bold text-black text-center mt-2">
+                        No New Program!
+                    </p>
+                </div>
             </div>
-        </div>
+        @else
+            <div class="overflow-x-auto no-scrollbar">
+                <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
+
+                    @foreach ($programList as $data)
+                        <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
+                            class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl sm:max-h-72 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                            <img class="w-full sm:w-60 object-cover h-48 sm:h-full"
+                                src="{{ asset('storage/' . $data->program_pubmat) }}"
+                                alt="prog-{{ $data->program_id }}">
+
+                            <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">
+                                <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
+                                    {{ $data->program_Title }}
+                                </h5>
+                                <hr class="mb-2">
+
+                                <div class="flex items-center mb-2 text-sm font-medium text-gray-900">
+                                    <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                    <p class="truncate ...">{{ $data->created_at->format('F j, Y g:i A') }}</p>
+                                </div>
+
+                                <p class="mb-4 text-sm font-normal text-gray-700 leading-relaxed flex-grow">
+                                    {!! Str::limit(strip_tags($data->program_Description), 90, '...') !!}
+                                </p>
+
+                                <p class="text-sm font-medium text-gray-900">
+                                    PESO {{ $data->peso->municipality->municipality_Name }}
+                                </p>
+                            </div>
+                        </a>
+                    @endforeach
+
+                </div>
+            </div>
+        @endif
     @endif
 
     <div class="flex mx-auto sm:mx-12 py-2 ">

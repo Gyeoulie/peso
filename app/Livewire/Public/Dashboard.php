@@ -250,7 +250,7 @@ class Dashboard extends Component
             ->orderBy('job_posting.responded_at', 'desc')
             ->orderBy('job_applicants.responded_at', 'desc')
             ->get();
-    
+
         // Fetch partnerships notifications
         $partnerships = DB::table('partnerships')
             ->leftJoin('peso', 'partnerships.peso_id', '=', 'peso.peso_id')
@@ -264,10 +264,10 @@ class Dashboard extends Component
             ->whereNotNull('partnerships.responded_at')
             ->orderBy('partnerships.responded_at', 'desc')
             ->get();
-    
+
         // Merge notifications
         $notifications = $jobPostingsAndApplicants->merge($partnerships);
-    
+
         // Format notifications
         $formattedNotifications = $notifications->map(function ($notification) {
             if (isset($notification->partnership_responded_at)) {
@@ -297,7 +297,7 @@ class Dashboard extends Component
                 $message = 'The job post application for "' . $notification->job_title . '" has been responded to.';
                 $municipalityName = null;
             }
-    
+
             return [
                 'type' => $type,
                 'status' => $status,
@@ -307,13 +307,13 @@ class Dashboard extends Component
                 'municipality_Name' => $municipalityName,
             ];
         });
-    
+
         // Order notifications by responded_at in descending order
         $formattedNotifications = $formattedNotifications->sortByDesc('responded_at')->values()->toArray();
-    
+
         return $formattedNotifications;
     }
-    
+
     public function getAnnouncements($pesoId = null)
     {
         $query = Announcements::query();
@@ -350,7 +350,7 @@ class Dashboard extends Component
             'program_tags.job_positions',
             'job_industry',
             'peso.municipality',
-        ]);
+        ])->where('program_Status', 'ACTIVE');
 
         if (Auth::check()) {
             $user = Auth::user();
@@ -360,9 +360,7 @@ class Dashboard extends Component
                 $userJobPreferences = $this->getUserJobPreferences();
                 $userIndustryPreference = $this->getUserIndustryPreference();
                 $userMunicipalityId = $this->getUserMunicipalityId();
-            }
 
-            if ($this->filter == 'Recommended') {
                 $query->whereHas('peso.municipality', function ($q) use ($userMunicipalityId) {
                     $q->where('municipality_id', $userMunicipalityId);
                 })
@@ -404,7 +402,7 @@ class Dashboard extends Component
                     ->orderByDesc('industry_count')
                     ->distinct();
 
-            } elseif ($this->filter === 'My Municipality') {
+            } elseif ($user->employee || $user->peso_accounts) {
                 $municipalityId = $user->usertype == 4 ?
                 $user->employee->barangay->municipality->municipality_id :
                 $user->peso_accounts->peso->municipality_id;
