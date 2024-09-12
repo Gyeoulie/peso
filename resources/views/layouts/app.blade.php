@@ -92,7 +92,7 @@
     <script>
         // Listen for storage events
         window.addEventListener('storage', function(event) {
-            if (event.key === 'user-logged-out' && event.newValue === 'true') {
+            if (event.key === 'user-logged-out') {
                 localStorage.removeItem('user-logged-out'); // Clean up
                 window.location.href = '/'; // Redirect to the welcome page
             }
