@@ -123,8 +123,8 @@
                             <h3 class="text-lg font-semibold">Contact Information</h3>
                             <p>
                                 For inquiries about this web portal, please contact our support team via email at
-                                <a href="mailto:support@domain.com"
-                                    class="text-blue-500 underline">support@domain.com</a>.
+                                <a href="mailto:support@pesocareers.com"
+                                    class="text-blue-500 underline">support@pesocareers.com</a>.
                             </p>
                         </section>
 
@@ -229,8 +229,8 @@
                             <h3 class="text-lg font-semibold">Complaints and Queries</h3>
                             <p>
                                 For complaints or further information, please contact us at
-                                <a href="mailto:support@domain.com"
-                                    class="text-blue-500 underline">support@domain.com</a>. You may also contact
+                                <a href="mailto:support@pesocareers.com"
+                                    class="text-blue-500 underline">support@pesocareers.com</a>. You may also contact
                                 our Data Controller to request your personal data history or its removal from our
                                 servers.
                             </p>
@@ -364,8 +364,8 @@
                             <h3 class="text-lg font-semibold">Contact Us</h3>
                             <p>
                                 If you have any questions about these Terms and Conditions, please contact us at
-                                <a href="mailto:support@domain.com"
-                                    class="text-blue-500 underline">support@domain.com</a>.
+                                <a href="mailto:support@pesocareers.com"
+                                    class="text-blue-500 underline">support@pesocareers.com</a>.
                             </p>
                         </section>
                     </div>

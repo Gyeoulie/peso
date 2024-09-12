@@ -13,6 +13,10 @@ class AuditFormatter
     {
         if ($userId === 0) {
             return 'System'; // Handle system case
+        } elseif ($userType === 2) {
+            return 'New Jobseeker';
+        } elseif ($userType === 3) {
+            return 'New Employer';
         }
 
         if ($userType === 4) { // Employee
@@ -24,7 +28,7 @@ class AuditFormatter
         } elseif ($userType === 8 || $userType === 9 || $userType === 10) { // PESO
             $peso = PESO_Accounts::where('user_id', $userId)->first();
             return $peso ? "{$peso->peso_accounts_Fname} {$peso->peso_accounts_Lname}" : 'Unknown User';
-        } elseif ($userType === 5 || $userType = 6) {
+        } elseif ($userType === 11) {
             return 'Super Admin';
         } else {
             return 'Unknown User';
@@ -78,8 +82,8 @@ class AuditFormatter
 
         $modelInstance = app($audit->auditable_type);
         $fieldMappings = method_exists($modelInstance, 'fieldMappings')
-            ? $modelInstance->fieldMappings()
-            : [];
+        ? $modelInstance->fieldMappings()
+        : [];
 
         $oldValues = $audit->old_values; // Use values directly
         $newValues = $audit->new_values; // Use values directly

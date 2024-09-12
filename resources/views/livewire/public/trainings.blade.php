@@ -625,5 +625,27 @@
             </div>
         </div>
     </x-modal>
+    <div id="sticky-banner" tabindex="-1"
+    class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-8 border-b border-gray-200 bg-blue-500">
+    <div class="flex items-center mx-auto">
+        <p class="flex items-center text-xl  text-white font-bold">
+
+            </span>
+            <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Some
+                postings may be for testing purposes only and not reflect actual opportunities.</span>
+        </p>
+    </div>
+    <div class="flex items-center">
+        <button data-dismiss-target="#sticky-banner" type="button"
+            class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-black hover:bg-gray-100 hover:text-gray-900 rounded-lg text-sm p-1.5">
+            <svg class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close banner</span>
+        </button>
+    </div>
+</div>
 
 </div>

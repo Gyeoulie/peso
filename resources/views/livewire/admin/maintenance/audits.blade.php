@@ -6,7 +6,7 @@
         </div>
 
         <div class="col-span-4 sm:col-span-12">
-            <divclass="bg-white shadow rounded-lg p-6" x-data="{
+            <div class="bg-white shadow rounded-lg p-6" x-data="{
                 openTab: 1,
                 activeClasses: 'text-gray-900 bg-gray-400 active',
                 inactiveClasses: 'bg-gray-100 hover:text-gray-700 hover:bg-gray-50'
@@ -164,7 +164,7 @@
                     {{ $audits->links('vendor.livewire.tailwind') }}
                 </div>
 
-            </divclass=>
+            </div>
 
 
 

@@ -309,7 +309,7 @@
 
 
         <div class="col-span-4 lg:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6 h-full w-full">
+            <div class="bg-white shadow rounded-lg p-6 h-full w-full items-center">
                 <h1 class="text-2xl font-bold">Top Job Industries</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                 <div class="flex h-full items-end">

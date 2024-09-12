@@ -1,8 +1,9 @@
 <x-mail::message>
 # Hello, {{ $employeeName }},
 
-We are pleased to inform you that your account has been successfully created as the PESO Manager for the municipality of **{{ $municipality }}**.
+We are pleased to inform you that you have been assigned as the PESO Manager for the municipality of **{{ $municipality }}**.
 
+@if ($type == 1)
 ## Your Account Details:
 - **Email:** {{ $email }}
 - **Password:** {{ $password }}
@@ -15,6 +16,11 @@ To complete the setup of your account, please verify your email address by click
 <x-mail::button :url="$verificationUrl">
 Verify Email Address
 </x-mail::button>
+
+@else
+You are already registered on the platform. You can now log in using your existing credentials and manage your PESO branch.
+
+@endif
 
 If you have any questions or need assistance, please do not hesitate to contact our support team.
 
