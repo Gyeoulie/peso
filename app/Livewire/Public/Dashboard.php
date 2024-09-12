@@ -240,7 +240,8 @@ class Dashboard extends Component
                 'job_posting.job_title',
                 'job_posting.responded_at as job_responded_at',
                 'job_applicants.responded_at as applicant_responded_at',
-                'job_applicants.applicant_Status as applicant_status'
+                'job_applicants.applicant_Status as applicant_status',
+                'job_applicants.updated_at as applicant_updated_at' // Include updated_at for accepted date
             )
             ->where('job_posting.company_id', $empID)
             ->where(function ($query) {
@@ -265,8 +266,22 @@ class Dashboard extends Component
             ->orderBy('partnerships.responded_at', 'desc')
             ->get();
 
+        // Fetch accepted applicants notifications
+        $acceptedApplicants = DB::table('job_applicants')
+            ->join('job_posting', 'job_applicants.job_id', '=', 'job_posting.job_id')
+            ->select(
+                'job_posting.job_title',
+                'job_applicants.applicant_Status as applicant_status',
+                'job_applicants.updated_at as applicant_updated_at',
+                'job_posting.job_id'
+            )
+            ->where('job_posting.company_id', $empID)
+            ->where('job_applicants.applicant_Status', 'ACCEPTED')
+            ->orderBy('job_applicants.updated_at', 'desc')
+            ->get();
+
         // Merge notifications
-        $notifications = $jobPostingsAndApplicants->merge($partnerships);
+        $notifications = $jobPostingsAndApplicants->merge($partnerships)->merge($acceptedApplicants);
 
         // Format notifications
         $formattedNotifications = $notifications->map(function ($notification) {
@@ -282,6 +297,13 @@ class Dashboard extends Component
                     'CANCELLED' => 'Partnership with PESO ' . $municipalityName . ' has been cancelled.',
                     default => 'Status unknown.',
                 };
+            } elseif (isset($notification->applicant_updated_at) && $notification->applicant_status === 'ACCEPTED') {
+                // Handle accepted job applicant notifications
+                $type = 'applicant';
+                $status = $notification->applicant_status;
+                $respondedAt = $notification->applicant_updated_at; // Use updated_at for accepted applications
+                $message = 'An applicant has accepted your offer for the job "' . $notification->job_title . '".';
+                $municipalityName = null;
             } elseif (isset($notification->applicant_responded_at)) {
                 // Handle job applicant notifications
                 $type = 'applicant';
