@@ -10,47 +10,43 @@
 
     <title>{{ config('app.name', 'PESO') }}</title>
 
-    @push('styles')
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        <link href="https://fonts.bunny.net/css?family=ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet" />
 
-        {{-- ICONS --}}
-        <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.5.2-web/css/all.min.css') }}">
+    {{-- ICONS --}}
+    <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.5.2-web/css/all.min.css') }}">
 
-        {{-- FLOWBITE --}}
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
-
-
-        <link href="https://pagecdn.io/lib/easyfonts/fonts.css" rel="stylesheet" />
-
-        {{-- SUMMERNOTE --}}
-        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-
-        {{-- TOOLTIP --}}
-        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
-    @endpush
-
-    @push('scripts')
-        {{-- TOOLTIP --}}
-        <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
-
-        {{-- SUMMERNOTE --}}
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    {{-- FLOWBITE --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
 
 
-        {{-- QR CODE --}}
-        <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-        <script src="https://unpkg.com/html5-qrcode"></script>
+    <link href="https://pagecdn.io/lib/easyfonts/fonts.css" rel="stylesheet" />
 
-        {{-- CHARTS --}}
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        @livewireChartsScripts
-    @endpush
+    {{-- SUMMERNOTE --}}
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
+    {{-- TOOLTIP --}}
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+
+    {{-- TOOLTIP --}}
+    <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
+
+    {{-- SUMMERNOTE --}}
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+
+    {{-- QR CODE --}}
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    {{-- CHARTS --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    @livewireChartsScripts
 
 
     <!-- Scripts -->
@@ -105,34 +101,35 @@
 
 
 
+
+    <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script>
+        // Listen for storage events
+        // window.addEventListener('storage', function(event) {
+        //     if (event.key === 'user-logged-out' && event.newValue === 'true') {
+        //         localStorage.removeItem('user-logged-out'); // Clean up
+        //         window.location.href = '/'; // Redirect to the welcome page
+        //     }
+        // });
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'user-logged-out') {
+                localStorage.removeItem('user-logged-out'); // Clean up
+                window.location.href = '/'; // Redirect to the welcome page
+            }
+        });
+
+        // Check local storage on page load
+        function checkSessionOnLoad() {
+            if (localStorage.getItem('user-logged-out')) {
+                localStorage.removeItem('user-logged-out'); // Clean up
+                window.location.href = '/'; // Redirect to the welcome page
+            }
+        }
+
+        // Run check on page load
+        // checkSessionOnLoad();
+    </script>
 </body>
-<script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-<script>
-    // Listen for storage events
-    // window.addEventListener('storage', function(event) {
-    //     if (event.key === 'user-logged-out' && event.newValue === 'true') {
-    //         localStorage.removeItem('user-logged-out'); // Clean up
-    //         window.location.href = '/'; // Redirect to the welcome page
-    //     }
-    // });
-    window.addEventListener('storage', function(event) {
-        if (event.key === 'user-logged-out') {
-            localStorage.removeItem('user-logged-out'); // Clean up
-            window.location.href = '/'; // Redirect to the welcome page
-        }
-    });
-
-    // Check local storage on page load
-    function checkSessionOnLoad() {
-        if (localStorage.getItem('user-logged-out')) {
-            localStorage.removeItem('user-logged-out'); // Clean up
-            window.location.href = '/'; // Redirect to the welcome page
-        }
-    }
-
-    // Run check on page load
-    // checkSessionOnLoad();
-</script>
 
 </html>
