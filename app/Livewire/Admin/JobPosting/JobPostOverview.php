@@ -164,35 +164,47 @@ class JobPostOverview extends Component
 
     public function getMatched($jobpost)
     {
-
+        // Get job posting details
         $jobMunicipalityId = $jobpost->peso->municipality_id;
         $jobEducationLevel = $jobpost->job_Edu;
         $jobIndustryId = $jobpost->industry_id;
-        $jobTagIds = $jobpost->job_tags->pluck('position_id');
+        $jobTagIds = $jobpost->job_tags->pluck('position_id')->toArray();
 
+        // Build the query to get matched employees
         return Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
             $query->where('municipality_id', $jobMunicipalityId);
         })
             ->whereHas('education', function ($query) use ($jobEducationLevel) {
                 $query->where('edu_Level', '>=', $jobEducationLevel);
             })
-            ->whereHas('job_preference', function ($query) use ($jobTagIds) {
-                $query->whereIn('position_id', $jobTagIds);
+            ->where(function ($query) use ($jobTagIds, $jobIndustryId) {
+                $query->whereHas('job_preference', function ($query) use ($jobTagIds) {
+                    $query->whereIn('position_id', $jobTagIds);
+                })
+                    ->orWhere(function ($query) use ($jobIndustryId) {
+                        if ($jobIndustryId) {
+                            $query->whereHas('industry_preference', function ($query) use ($jobIndustryId) {
+                                $query->where('industry_id', $jobIndustryId);
+                            });
+                        }
+                    });
             })
             ->withCount(['job_preference as num_matched_tags' => function ($query) use ($jobTagIds) {
                 $query->whereIn('position_id', $jobTagIds);
             }])
             ->withCount(['industry_preference as num_matched_industry' => function ($query) use ($jobIndustryId) {
-                $query->where('industry_id', $jobIndustryId);
+                if ($jobIndustryId) {
+                    $query->where('industry_id', $jobIndustryId);
+                }
             }])
             ->orderByRaw('
-            CASE
-                WHEN num_matched_industry > 0 AND num_matched_tags > 0 THEN 1
-                WHEN num_matched_industry > 0 AND num_matched_tags = 0 THEN 2
-                WHEN num_matched_industry = 0 AND num_matched_tags > 0 THEN 3
-                ELSE 4
-            END
-        ')
+                CASE
+                    WHEN num_matched_industry > 0 AND num_matched_tags > 0 THEN 1
+                    WHEN num_matched_industry > 0 AND num_matched_tags = 0 THEN 2
+                    WHEN num_matched_industry = 0 AND num_matched_tags > 0 THEN 3
+                    ELSE 4
+                END
+            ')
             ->orderByDesc('num_matched_tags')
             ->get();
     }
