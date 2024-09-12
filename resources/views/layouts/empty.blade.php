@@ -9,23 +9,39 @@
 
 
     <title>{{ config('app.name', 'PESO') }}</title>
-    @push('styles')
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        {{-- ICON --}}
-        <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.5.2-web/css/all.min.css') }}">
-        {{-- FLOWBITE-CSS --}}
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
-        {{-- TOOLTIP --}}
-        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
-    @endpush
 
-    @push('scripts')
-        {{-- TOOLTIP --}}
-        <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
-    @endpush
-
+     <!-- Fonts -->
+     <link rel="preconnect" href="https://fonts.bunny.net">
+     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+     <link href="https://fonts.bunny.net/css?family=ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet" />
+ 
+     {{-- ICONS --}}
+     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.5.2-web/css/all.min.css') }}">
+ 
+     {{-- FLOWBITE --}}
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+     <!-- TOOLTIP -->
+     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+     {{-- SUMMERNOTE --}}
+     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+ 
+     {{-- SUMMERNOTE --}}
+     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+     </script>
+     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+     {{-- ALPINE TOOLTIP --}}
+     <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
+ 
+     <link href="https://pagecdn.io/lib/easyfonts/fonts.css" rel="stylesheet" />
+ 
+     {{-- QR CODE --}}
+     <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+     <script src="https://unpkg.com/html5-qrcode"></script>
+ 
+     {{-- CHARTS --}}
+     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+     @livewireChartsScripts
 
 
 
@@ -80,6 +96,8 @@
         // Run check on page load
         // checkSessionOnLoad();
     </script>
+
+
 </body>
 
 </html>
