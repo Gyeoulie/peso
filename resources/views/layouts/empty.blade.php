@@ -9,20 +9,24 @@
 
 
     <title>{{ config('app.name', 'PESO') }}</title>
+    @push('styles')
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        {{-- ICON --}}
+        <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.5.2-web/css/all.min.css') }}">
+        {{-- FLOWBITE-CSS --}}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+        {{-- TOOLTIP --}}
+        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+    @endpush
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    @push('scripts')
+        {{-- TOOLTIP --}}
+        <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
+    @endpush
 
-    {{-- ICON --}}
-    <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.5.2-web/css/all.min.css') }}">
 
-    {{-- FLOWBITE-CSS --}}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
-
-    {{-- TOOLTIP --}}
-    <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
-    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
 
 
     @livewireStyles

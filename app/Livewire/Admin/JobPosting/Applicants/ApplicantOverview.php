@@ -249,7 +249,7 @@ class ApplicantOverview extends Component
     {
         // Get the highest education level of the employee
         $highestEducationLevel = Education::where('employee_id', $applicant->employee->employee_id)
-            ->max('edu_Level');
+            ->max('edu_level');
 
         // Get the employee's municipality ID via their barangay
         $employeeMunicipalityId = Barangay::where('barangay_id', $applicant->employee->barangay_id)
@@ -257,26 +257,29 @@ class ApplicantOverview extends Component
 
         // Get the employee's job preferences (array of position_id)
         $employeeJobPreferences = Job_Preference::where('employee_id', $applicant->employee->employee_id)
-            ->pluck('position_id');
+            ->pluck('position_id')
+            ->toArray();
 
         // Get the employee's industry preferences (array of industry_id)
         $employeeIndustryPreference = Industry_Preference::where('employee_id', $applicant->employee->employee_id)
-            ->pluck('industry_id');
+            ->pluck('industry_id')
+            ->toArray();
 
         // Query to check if the specific job posting matches the employee
         return Job_Posting::where('job_id', $applicant->job_id)
-            ->where('job_Status', 'ACTIVE')
+            // ->where('job_Status', 'ACTIVE')
             ->whereHas('peso.municipality', function ($query) use ($employeeMunicipalityId) {
                 $query->where('municipality_id', $employeeMunicipalityId);
             })
-            ->where('job_edu', '<=', $highestEducationLevel)
-        // Either the job tags or industry should match
+            ->where('job_Edu', '<=', $highestEducationLevel)
             ->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
-                $query->whereHas('job_tags', function ($query) use ($employeeJobPreferences) {
-                    $query->whereIn('position_id', $employeeJobPreferences);
+                $query->where(function ($subQuery) use ($employeeJobPreferences) {
+                    $subQuery->whereHas('job_tags', function ($query) use ($employeeJobPreferences) {
+                        $query->whereIn('position_id', $employeeJobPreferences);
+                    });
                 })
-                    ->orWhereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
-                        $query->whereIn('industry_id', $employeeIndustryPreference);
+                    ->orWhere(function ($subQuery) use ($employeeIndustryPreference) {
+                        $subQuery->whereIn('industry_id', $employeeIndustryPreference);
                     });
             })
             ->exists();

@@ -70,7 +70,8 @@
                         @if ($partnership)
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Partnership Date:</li>
-                                <p class="ms-4 uppercase text-right break-all"> {{ $partnership->responded_at->format('F j, Y') }}
+                                <p class="ms-4 uppercase text-right break-all">
+                                    {{ $partnership->responded_at->format('F j, Y') }}
                                 </p>
                             </div>
                         @endif
@@ -424,7 +425,7 @@
                                                                     class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
                                                             @elseif ($data->job_Status == 'CLOSED')
                                                                 <span
-                                                                    class="inline-flex items-center rounded-md bg-cyan-200 px-2 py-1 text-sm font-medium text-cyan-800 ring-1 ring-inset ring-cyan-600/20">COMPLETED</span>
+                                                                    class="inline-flex items-center rounded-md bg-cyan-200 px-2 py-1 text-sm font-medium text-cyan-800 ring-1 ring-inset ring-cyan-600/20">CLOSED</span>
                                                             @elseif ($data->job_Status == 'COMPLETED')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">COMPLETED</span>
