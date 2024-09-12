@@ -569,7 +569,7 @@ class EditDetails extends Component
                 ->whereNotIn('applicant_Status', ['COMPLETED', 'REJECTED', 'CANCELLED'])
                 ->exists();
 
-                // dd($hasActiveApplications);
+            // dd($hasActiveApplications);
 
             if ($hasActiveApplications && $newBarangayMunicipalityID != $currentMunicipalityID) {
                 toastr()->warning('You have active job applications in your current municipality. Please complete  those applications before changing to a barangay in a different municipality.');

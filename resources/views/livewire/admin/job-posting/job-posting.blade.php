@@ -236,7 +236,7 @@
                                                     </a>
                                                 </div>
 
-                                                @if ($filter == 'ACTIVE')
+                                                @if ($filter == 'ACTIVE' || $filter == 'CLOSED')
                                                     <div x-data="{ tooltip: 'View Applicants' }">
                                                         <a wire:navigate
                                                             href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"

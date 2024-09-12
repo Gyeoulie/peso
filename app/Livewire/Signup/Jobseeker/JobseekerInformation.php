@@ -222,8 +222,10 @@ class JobseekerInformation extends Component
         }
 
         if ($success) {
-            toastr()->success('Account Successfully Updated!');
-            return redirect()->route('dashboard');
+
+            redirect()->route('dashboard');
+
+            return toastr()->success('Account Successfully Updated!');
         }
 
     }
