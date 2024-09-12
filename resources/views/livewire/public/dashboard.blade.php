@@ -1,4 +1,4 @@
-<div class="w-full">
+<div wire:poll.10s class="w-full">
 
     @if (Auth::check() && Auth::user()->usertype == 5)
         <div class="bg-yellow-100 shadow rounded-lg p-6 my-6 mx-12">
@@ -396,7 +396,7 @@
                                                                     </svg>
 
                                                                 </div>
-                                                            @elseif ($notification['status'] === 'REJECTED' || $notification['status'] === 'REJECTED')
+                                                            @elseif ($notification['status'] === 'CANCELLED' || $notification['status'] === 'REJECTED')
                                                                 <div
                                                                     class="text-red-700 border border-red-700 bg-red-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                     <svg class="h-5 w-5"

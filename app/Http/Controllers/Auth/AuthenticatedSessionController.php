@@ -83,9 +83,10 @@ class AuthenticatedSessionController extends Controller
             ->header('Cache-Control', 'no-store')
             ->header('Pragma', 'no-cache')
             ->setContent('<script>
-            localStorage.setItem("user-logged-out", "true");
+            localStorage.setItem("user-logged-out", "false");
             window.location.href = "/";
         </script>');
+        // return redirect('/');
     }
 
 }

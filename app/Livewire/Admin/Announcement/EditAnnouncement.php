@@ -14,7 +14,7 @@ use Livewire\WithFileUploads;
 class EditAnnouncement extends Component
 {
     use WithFileUploads;
-    
+
     public $announcementData;
 
     public $title, $contentPost;

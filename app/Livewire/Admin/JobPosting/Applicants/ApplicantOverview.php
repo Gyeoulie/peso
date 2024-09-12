@@ -249,7 +249,7 @@ class ApplicantOverview extends Component
     {
         // Get the highest education level of the employee
         $highestEducationLevel = Education::where('employee_id', $applicant->employee->employee_id)
-            ->max('edu_level');
+            ->max('edu_Level');
 
         // Get the employee's municipality ID via their barangay
         $employeeMunicipalityId = Barangay::where('barangay_id', $applicant->employee->barangay_id)
@@ -270,15 +270,14 @@ class ApplicantOverview extends Component
                 $query->where('municipality_id', $employeeMunicipalityId);
             })
             ->where('job_edu', '<=', $highestEducationLevel)
-            ->where(function ($query) use ($employeeJobPreferences) {
+        // Either the job tags or industry should match
+            ->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
                 $query->whereHas('job_tags', function ($query) use ($employeeJobPreferences) {
                     $query->whereIn('position_id', $employeeJobPreferences);
-                });
-            })
-            ->orWhere(function ($query) use ($employeeIndustryPreference) {
-                $query->whereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
-                    $query->whereIn('industry_id', $employeeIndustryPreference);
-                });
+                })
+                    ->orWhereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
+                        $query->whereIn('industry_id', $employeeIndustryPreference);
+                    });
             })
             ->exists();
     }

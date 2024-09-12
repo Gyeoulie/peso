@@ -487,7 +487,7 @@
                                                                 $data->applicant_Status != 'INTERESTED' &&
                                                                 $data->applicant_Status != 'INTERVIEW' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
-                                                                $data->applicant_Status != 'COMPLETED' &&
+                                                                $data->applicant_Status != 'ACCEPTED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'Interested' }">
                                                                 <button
@@ -510,7 +510,8 @@
                                                                 $filter != 'HIRED' &&
                                                                 $data->applicant_Status != 'INTERVIEW' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
-                                                                $data->applicant_Status != 'COMPLETED' &&
+                                                                $data->applicant_Status != 'ACCEPTED' &&
+                                                                $data->applicant_Status != 'HIRED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'For Interview' }">
                                                                 <button
@@ -528,7 +529,13 @@
                                                                 </button>
                                                             </div>
                                                         @endif
-                                                        @if ($filter != 'ACCEPTED' && $filter == 'INTERVIEW')
+                                                        @if (
+                                                            $filter != 'ACCEPTED' &&
+                                                                $data->applicant_Status != 'HIRED' &&
+                                                                $data->applicant_Status != 'ACCEPTED' &&
+                                                                $data->applicant_Status != 'REJECTED' &&
+                                                                $data->applicant_Status != 'CANCELLED' &&
+                                                                $filter == 'REJECTED')
                                                             <div x-data="{ tooltip: 'Hire' }">
                                                                 <button
                                                                     wire:click.prevent="openModal('hire', {{ $data->applicant_id }})"
@@ -550,7 +557,7 @@
                                                             $filter != 'ACCEPTED' &&
                                                                 $filter != 'HIRED' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
-                                                                $data->applicant_Status != 'COMPLETED' &&
+                                                                $data->applicant_Status != 'ACCEPTED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'Reject' }">
                                                                 <button

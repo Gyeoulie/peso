@@ -49,7 +49,7 @@ class CompleteJobPostings extends Command
 
                 // Mark the job posting as closed
                 $jobPosting->update([
-                    'job_Status' => 'CLOSED', // Assuming 'CLOSED' is the status for closed job postings
+                    'job_Status' => 'COMPLETED', // Assuming 'CLOSED' is the status for closed job postings
                 ]);
 
                 // Log the job posting update
@@ -58,7 +58,7 @@ class CompleteJobPostings extends Command
                     $jobId,
                     'updated',
                     $oldJobPostingValues, // Old values
-                    ['job_Status' => 'CLOSED'], // New values
+                    ['job_Status' => 'COMPLETED'], // New values
                     0// System or user ID
                 );
 
