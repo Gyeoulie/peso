@@ -973,7 +973,7 @@
         <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8 ">
             <div class="sm:flex sm:items-center sm:justify-between">
                 <a href="#" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                    <img src="{{ asset('assets/img/peso-1.png') }}" class="h-8" alt="Flowbite Logo" />
+                    <img src="{{ asset('assets/img/PESO-Logo.png') }}" class="h-8" alt="Flowbite Logo" />
                     <span class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap ">Public Employment
                         Service Office</span>
                 </a>
@@ -985,10 +985,7 @@
                         <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
                     </li>
                     <li>
-                        <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:underline">Contact</a>
+                        <a href="https://forms.gle/cjeY6uiV3TtUHwpi8" class="hover:underline">Report a Bug</a>
                     </li>
                 </ul>
             </div>
