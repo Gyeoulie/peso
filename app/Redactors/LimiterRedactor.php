@@ -2,8 +2,10 @@
 
 namespace App\Redactors;
 
+use Illuminate\Support\Str;
 use OwenIt\Auditing\Contracts\AttributeRedactor;
-use Illuminate\Support\Str; // Import Str class
+
+// Import Str class
 
 class LimiterRedactor implements AttributeRedactor
 {
@@ -16,6 +18,10 @@ class LimiterRedactor implements AttributeRedactor
     public static function redact($value): string
     {
         // Truncate the value to 250 characters
+
+        if ($value === null) {
+            return '';
+        }
         return Str::limit($value, 250);
     }
 }
