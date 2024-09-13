@@ -90,6 +90,8 @@ class TrainingRegistrants extends Component
         // You can replace this with your own logic
         $ticketData = json_decode($decodedText, true);
 
+        dd($ticketData);
+
         // dd($ticketData);
 
         try {
