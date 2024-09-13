@@ -797,7 +797,7 @@
             <hr>
 
             <div class="flex flex-col w-full mt-6 gap-6 ">
-                <div class="flex flex-row w-full gap-6">
+                <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
                     <div class="flex flex-col mt-2 w-full">
                         <x-input-label for="barPost" :value="__('Barangay Title')" />
                         <x-text-input wire:model="editbarPost" class="block mt-1 w-full uppercase" type="text" />
@@ -819,7 +819,7 @@
                     <x-dropdown align="left" width="[300px]">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-1.5 py-2 w-[300px]">
+                                class="w-full inline-flex text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-1.5 py-2 w-[300px]">
                                 <div class="w-full ml-2 text-left uppercase">{{ $editmunSelect }}</div>
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -892,7 +892,7 @@
             <hr>
 
             <div class="flex flex-col w-full mt-6 gap-6 ">
-                <div class="flex flex-row w-full gap-6">
+                <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
                     <div class="flex flex-col mt-2 w-full">
                         <x-input-label for="munPost" :value="__('Municipality Title')" />
                         <x-text-input wire:model="editmunPost" class="block mt-1 w-full uppercase" type="text" />
@@ -912,11 +912,11 @@
 
 
                     <x-input-label for="provSelect" class="mb-2" :value="__('Province')" />
-                    <x-dropdown align="left" width="48">
+                    <x-dropdown align="left" width="80">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex  items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 w-[150px]">
-                                <div class="w-full text-center uppercase">{{ $editprovSelect }}</div>
+                                class="w-full inline-flex text-left text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 w-[150px]">
+                                <div class="w-full  uppercase">{{ $editprovSelect }}</div>
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
@@ -986,7 +986,7 @@
             <hr>
 
             <div class="flex flex-col w-full mt-6 gap-6 ">
-                <div class="flex flex-row w-full gap-6">
+                <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
                     <div class="flex flex-col mt-2 w-full">
                         <x-input-label for="editprovPost" :value="__('Province Title')" />
                         <x-text-input wire:model="editprovPost" class="block mt-1 w-full uppercase" type="text" />

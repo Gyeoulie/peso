@@ -413,7 +413,7 @@
                         {{ __('Manage Eligibility Record') }}
                     </h2>
                     <hr>
-                    <div class="flex flex-row gap-6 mt-2 w-full">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
 
                         <div class="flex flex-col mt-2 w-full">
                             <x-input-label for="eligibilityPost" :value="__('Eligibility Title')" />
@@ -449,7 +449,7 @@
                         {{ __('Manage License Record') }}
                     </h2>
                     <hr>
-                    <div class="flex flex-row gap-6 mt-2 w-full">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
 
                         <div class="flex flex-col mt-2 w-full">
                             <x-input-label for="licensePost" :value="__('License Title')" />

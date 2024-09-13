@@ -87,102 +87,105 @@
                     </div>
 
                     {{-- REQUIREMENT TABLE --}}
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 w-1/4">
-                                    Requirement Type
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Status
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Date Created
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Date Updated
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($requirements->isEmpty())
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <td colspan="5">
-                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
-                                            <div class="p-6 bg-gray-100 rounded-full">
-                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                                </svg>
+                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                        Requirement Type
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Status
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Date Created
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Date Updated
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
 
-                                            </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                No Records Found!
-                                            </p>
-                                        </div>
-
-                                    </td>
+                                    </th>
                                 </tr>
-                            @else
-                                @foreach ($requirements as $data)
-                                    <tr wire:key='requirement-{{ $data->requirement_id }}'
-                                        class="bg-white border-b hover:bg-gray-50">
-                                        <th scope="row" class="text-gray-900 whitespace-nowrap">
+                            </thead>
+                            <tbody>
+                                @if ($requirements->isEmpty())
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                <div class="p-6 bg-gray-100 rounded-full">
+                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-width="2"
+                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                    </svg>
 
-                                            <div class="ps-3 uppercase">
-                                                <div class="text-base font-semibold">{{ $data->requirement_Title }}
                                                 </div>
+                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                    No Records Found!
+                                                </p>
                                             </div>
 
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center uppercase">
-                                                @if ($data->requirement_Status == 1)
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                                    ACTIVE
-                                                @else
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                    DISABLED
-                                                @endif
-                                            </div>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <div class="text-base font-light uppercase text-sm">
-                                                {{ $data->created_at->format('h:i A') }}
-                                            </div>
-                                            <div class="text-base font-medium uppercase text-sm">
-                                                {{ $data->created_at->format('F d Y') }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="text-base font-light uppercase text-sm">
-                                                {{ $data->updated_at->format('h:i A') }}
-                                            </div>
-                                            <div class="text-base font-medium uppercase text-sm">
-                                                {{ $data->updated_at->format('F d Y') }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
+                                    </tr>
+                                @else
+                                    @foreach ($requirements as $data)
+                                        <tr wire:key='requirement-{{ $data->requirement_id }}'
+                                            class="bg-white border-b hover:bg-gray-50">
+                                            <th scope="row" class="text-gray-900 whitespace-nowrap">
 
-                                            <div class="flex flex-row items-center justify-center gap-6">
-                                                <div x-data="{ tooltip: 'Edit Requirement' }">
-                                                    <button wire:click.prevent="editReq({{ $data->requirement_id }})"
-                                                        x-tooltip="tooltip" type="button"
-                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                                        </svg>
-                                                    </button>
+                                                <div class="ps-3 uppercase">
+                                                    <div class="text-base font-semibold">{{ $data->requirement_Title }}
+                                                    </div>
                                                 </div>
-                                                {{-- <div x-data="{ tooltip: 'Delete Requirement' }">
+
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center uppercase">
+                                                    @if ($data->requirement_Status == 1)
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                                        ACTIVE
+                                                    @else
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                        DISABLED
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="text-base font-light uppercase text-sm">
+                                                    {{ $data->created_at->format('h:i A') }}
+                                                </div>
+                                                <div class="text-base font-medium uppercase text-sm">
+                                                    {{ $data->created_at->format('F d Y') }}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="text-base font-light uppercase text-sm">
+                                                    {{ $data->updated_at->format('h:i A') }}
+                                                </div>
+                                                <div class="text-base font-medium uppercase text-sm">
+                                                    {{ $data->updated_at->format('F d Y') }}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+
+                                                <div class="flex flex-row items-center justify-center gap-6">
+                                                    <div x-data="{ tooltip: 'Edit Requirement' }">
+                                                        <button
+                                                            wire:click.prevent="editReq({{ $data->requirement_id }})"
+                                                            x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    {{-- <div x-data="{ tooltip: 'Delete Requirement' }">
                                                     <button x-tooltip="tooltip" type="button"
                                                         class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -194,14 +197,15 @@
 
                                                     </button>
                                                 </div> --}}
-                                            </div>
+                                                </div>
 
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 {{-- PAGINATION --}}
@@ -222,7 +226,7 @@
 
                 <h1 class="text-2xl font-bold mb-4">Add Requirements</h1>
                 <div>
-                    <div class="flex flex-row w-full mt-6 gap-6 ">
+                    <div class="flex flex-col sm:flex-row sm:gap-5 w-full mt-6 gap-6 ">
 
 
                         <div class="flex flex-col mt-2 w-full">
@@ -232,7 +236,7 @@
                             <x-input-error :messages="$errors->get('reqPost')" class="mt-2" />
                         </div>
 
-                        <div class="flex flex-col mt-2 ml-5 w-full">
+                        <div class="flex flex-col mt-2 w-full">
                             <x-input-label for="trainingComplete" :value="__('Requirement Status')" />
                             <div class="flex flex-row w-full gap-2 mt-1">
                                 <div class="flex flex-row items-center h-10  px-4 border border-gray-400 rounded">

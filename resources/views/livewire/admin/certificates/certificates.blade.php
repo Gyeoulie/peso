@@ -274,8 +274,7 @@
 
             <hr>
 
-            <div class="flex flex-row items-center gap-6 mt-4">
-
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="editcertName" :value="__('Certificate Title')" />

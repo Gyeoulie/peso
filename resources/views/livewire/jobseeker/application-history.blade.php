@@ -127,7 +127,7 @@
                         selectedJob: @entangle('selectedJob'),
                     }">
                         @foreach ($applications as $data)
-                            <div class="relative flex flex-col sm:w-full">
+                        <div class="relative flex-shrink-0 w-[90%] sm:w-full">
                                 <a class="cursor-pointer" wire:key='application-{{ $data->applicant_id }}'
                                     wire:click.prevent="updateSelection({{ $data->applicant_id }})">
                                     <div

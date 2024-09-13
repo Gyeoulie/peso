@@ -1,16 +1,14 @@
 <?php
 
-
 namespace App\Console\Commands\JobPost;
 
-use App\Mail\ApplicationFull;
-use App\Mail\SlotsFilled;
+use App\Mail\JobApplicationExpiredNotification;
+use App\Mail\JobpostCompletedNotification;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Services\CustomAuditLogger;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class CompleteJobPostings extends Command
@@ -20,7 +18,7 @@ class CompleteJobPostings extends Command
      *
      * @var string
      */
-    protected $signature = 'app:complete-job-postings {jobId}';
+    protected $signature = 'app:complete-job-postings';
 
     /**
      * The console command description.
@@ -34,102 +32,100 @@ class CompleteJobPostings extends Command
      */
     public function handle()
     {
-        $jobId = $this->argument('jobId');
+        // Get the current date
+        $now = Carbon::now();
 
-        DB::beginTransaction();
-        try {
-            // Find the job posting
-            $jobPosting = Job_Posting::find($jobId);
+        // Fetch job postings that have been closed for more than 2 weeks
+        $expiredJobPostings = Job_Posting::where('job_Status', 'CLOSED')
+            ->where('job_Duration', '<', $now->subWeeks(2)) // Ensure you use `job_Duration`
+            ->get();
 
-            if ($jobPosting && $jobPosting->slotsLeft() <= 0) {
-                // Store old values for auditing
-                $oldJobPostingValues = [
-                    'job_Status' => $jobPosting->job_Status,
-                ];
+        // Store old values for auditing
+        $oldJobPostingValues = $expiredJobPostings->mapWithKeys(function ($posting) {
+            return [$posting->job_id => ['job_Status' => $posting->job_Status]];
+        })->toArray();
 
-                // Mark the job posting as closed
-                $jobPosting->update([
-                    'job_Status' => 'COMPLETED', // Assuming 'CLOSED' is the status for closed job postings
-                ]);
+        // Update job postings to COMPLETED
+        $affectedRows = Job_Posting::where('job_Status', 'CLOSED')
+            ->where('job_Duration', '<', $now) // Ensure you use `job_Duration`
+            ->update(['job_Status' => 'COMPLETED']);
 
-                // Log the job posting update
-                CustomAuditLogger::log(
-                    Job_Posting::class,
-                    $jobId,
-                    'updated',
-                    $oldJobPostingValues, // Old values
-                    ['job_Status' => 'COMPLETED'], // New values
-                    0// System or user ID
-                );
+        // Log the audit for job postings
+        foreach ($expiredJobPostings as $posting) {
+            CustomAuditLogger::log(
+                Job_Posting::class,
+                $posting->job_id,
+                'updated',
+                $oldJobPostingValues[$posting->job_id] ?? [], // Old values
+                ['job_Status' => 'COMPLETED'], // New values
+                0// System or user ID
+            );
+            Mail::to($posting->company->user->email)->queue(new JobpostCompletedNotification($posting));
+        }
 
-                Mail::to($jobPosting->company->user->email)
-                    ->queue(new SlotsFilled($jobPosting));
+        // Fetch job postings that are now COMPLETED
+        $completedJobPostings = Job_Posting::where('job_Status', 'COMPLETED')
+            ->pluck('job_id');
 
-                // Find remaining applicants who are not ACCEPTED, REJECTED, or CANCELLED
-                $remainingApplicants = Job_Applicants::where('job_id', $jobId)
-                    ->whereNotIn('applicant_Status', ['ACCEPTED', 'REJECTED', 'CANCELLED'])
-                    ->get();
+        // Fetch and store old values for job applicants
+        $affectedApplicants = Job_Applicants::whereIn('job_id', $completedJobPostings)
+            ->whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED'])
+            ->get();
 
-                foreach ($remainingApplicants as $remainingApplicant) {
-                    $updateData = [
-                        'applicant_Status' => 'CANCELLED',
-                        'company_Remarks' => 'Position has already been filled',
-                        'applicant_Notif' => 2,
-                    ];
+        foreach ($affectedApplicants as $applicant) {
+            // Default update data
+            $updateData = [
+                'applicant_Status' => 'REJECTED',
+                'company_Remarks' => 'Job Posting Completed',
+            ];
 
-                    $oldApplicantValues = [];
+            // Prepare old values for audit logging
+            $oldValues = [
+                'applicant_Status' => $applicant->applicant_Status,
+                'company_Remarks' => $applicant->company_Remarks,
+            ];
 
-                    if ($remainingApplicant->peso_Status === 'PENDING') {
-                        $updateData['peso_Status'] = 'CANCELLED';
-                        $updateData['peso_Remarks'] = 'Job Posting was completed.';
-
-                        // Record old values including peso_Status and peso_Remarks
-                        $oldApplicantValues = [
-                            'applicant_Status' => $remainingApplicant->applicant_Status,
-                            'peso_Status' => $remainingApplicant->peso_Status,
-                            'peso_Remarks' => $remainingApplicant->peso_Remarks,
-                            'company_Remarks' => $remainingApplicant->company_Remarks,
-                            'applicant_Notif' => $remainingApplicant->applicant_Notif,
-                        ];
-                    } else {
-                        $updateData['peso_Remarks'] = $remainingApplicant->peso_Remarks; // Ensure this is set even if not updated
-
-                        // Record old values excluding peso_Status and peso_Remarks if not updated
-                        $oldApplicantValues = [
-                            'applicant_Status' => $remainingApplicant->applicant_Status,
-                            'company_Remarks' => $remainingApplicant->company_Remarks,
-                            'applicant_Notif' => $remainingApplicant->applicant_Notif,
-                        ];
-                    }
-
-                    // Update the applicant record
-                    $remainingApplicant->update($updateData);
-
-                    // Log the applicant update only if there are changes
-                    if (!empty($oldApplicantValues)) {
-                        CustomAuditLogger::log(
-                            Job_Applicants::class,
-                            $remainingApplicant->applicant_id,
-                            'updated',
-                            $oldApplicantValues, // Old values
-                            $updateData, // New values
-                            0// System or user ID
-                        );
-                    }
-
-                    // Queue email to remaining applicants
-                    Mail::to($remainingApplicant->employee->user->email)
-                        ->queue(new ApplicationFull($remainingApplicant->employee, $remainingApplicant));
-                }
+            // Check if peso_Status needs to be updated
+            if ($applicant->peso_Status === 'PENDING') {
+                $updateData['peso_Status'] = 'CANCELLED';
+                $updateData['peso_Remarks'] = 'Job Posting Was Completed';
+                $oldValues['peso_Status'] = $applicant->peso_Status;
+                $oldValues['peso_Remarks'] = $applicant->peso_Remarks;
             }
 
-            DB::commit();
-            $this->info('Job posting closed and applicants notified.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            $this->error('Error closing job posting: ' . $e->getMessage());
+            // Update the applicant record
+            $applicant->update($updateData);
+
+            // Prepare new values for audit logging, including peso_Status if updated
+            $newValues = [
+                'applicant_Status' => 'REJECTED',
+                'company_Remarks' => 'Job Posting Completed',
+            ];
+
+            // Include peso_Status and peso_Remarks in newValues only if they are updated
+            if (isset($updateData['peso_Status'])) {
+                $newValues['peso_Status'] = $updateData['peso_Status'];
+            }
+            if (isset($updateData['peso_Remarks'])) {
+                $newValues['peso_Remarks'] = $updateData['peso_Remarks'];
+            }
+
+            // Log the audit for applicant updates
+            CustomAuditLogger::log(
+                Job_Applicants::class,
+                $applicant->applicant_id,
+                'updated',
+                $oldValues, // Old values
+                $newValues, // New values
+                0// System or user ID
+            );
+
+            // Queue email to remaining applicants
+            Mail::to($applicant->employee->user->email)->queue(new JobApplicationExpiredNotification($applicant));
         }
+
+        // Output the result in the console
+        $this->info("Completed {$affectedRows} job postings and updated {$affectedApplicants->count()} job applicants.");
     }
 
 }

@@ -158,7 +158,7 @@
                                             </x-dropdown-link>
                                         @endif
 
-                                        @if (auth()->user()->usertype == 4 || auth()->user()->usertype >= 8)
+                                        @if (auth()->user()->usertype == 4 || (auth()->user()->usertype >= 8 && auth()->user()->usertype < 11))
                                             <x-dropdown-link wire:click.prevent="updateFilter('My Municipality')"
                                                 class="cursor-pointer">
                                                 My Municipality
