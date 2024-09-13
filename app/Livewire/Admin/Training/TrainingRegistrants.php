@@ -90,10 +90,6 @@ class TrainingRegistrants extends Component
         // You can replace this with your own logic
         $ticketData = json_decode($decodedText, true);
 
-        dd($ticketData);
-
-        // dd($ticketData);
-
         try {
             // Fetch the ticket based on the provided data
             $ticket = Program_Reg::where('program_reg_id', $ticketData['program_reg_id'])
@@ -104,7 +100,7 @@ class TrainingRegistrants extends Component
 
             // Check if the ticket is found
             if ($ticket) {
-                $this->getJobseeker($ticket->employee_id);
+                $this->getJobseeker($ticket->program_reg_id);
                 $this->dispatch('close-modal', 'qr-scanner-modal');
             } else {
                 toastr()->info('Ticket is not valid');
