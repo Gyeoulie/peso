@@ -18,7 +18,7 @@ class JobPosting extends Component
     use WithPagination;
     use WithoutUrlPagination;
     public $search;
-    public $filter;
+    public $filter = "ALL";
     public function updatedsearch()
     {
         $this->resetPage();
@@ -93,7 +93,7 @@ class JobPosting extends Component
                     });
             });
 
-        if ($this->filter == "") {
+        if ($this->filter == "ALL") {
             $jobposts->orderByRaw("FIELD(job_Status, 'PENDING') DESC");
 
         } elseif ($this->filter == 'OTHERS') {

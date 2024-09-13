@@ -419,7 +419,7 @@
 
             <hr>
 
-            <div class="flex flex-row gap-6 mt-2">
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="positionPost" :value="__('Job Position Title')" />
@@ -460,7 +460,7 @@
 
             <hr>
 
-            <div class="flex flex-row gap-6 mt-2">
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="industryPost" :value="__('Industry Title')" />

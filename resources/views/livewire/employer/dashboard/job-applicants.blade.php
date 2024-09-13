@@ -95,36 +95,43 @@
                             selectedJob: @entangle('selectedJob'),
                         }">
                         @foreach ($jobs as $data)
-                            <div class="flex flex-col sm:w-full">
+                            <div class="relative flex-shrink-0 w-[90%] sm:w-full">
                                 <a wire:key='jobPost-{{ $data->job_id }}'
                                     wire:click.prevent='getJob({{ $data->job_id }})' class="cursor-pointer">
 
                                     <div
-                                        class=" @if ($data->job_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
+                                        class="@if ($data->job_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col h-full sm:hover:scale-105 sm:transition-transform overflow-hidden">
 
                                         <div class="flex flex-row gap-4 sm:gap-0 justify-end">
 
                                             <div class="flex flex-col w-full">
-                                                <h1 class="text-3xl font-bold underline">{{ $data->job_Title }}</h1>
-                                                <h1 class="text-l text-gray-600">{{ $data->company->business_Name }}
+                                                <h1 class="text-xl sm:text-2xl font-bold underline">
+                                                    {{ $data->job_Title }}</h1>
+                                                <h1 class="text-md sm:text-lg text-gray-600">
+                                                    {{ $data->company->business_Name }}
                                                 </h1>
                                                 <div class="flex flex-row">
 
                                                 </div>
 
                                             </div>
-                                            <div class="flex w-full justify-end mb-auto mt-0">
+                                            <div class="hidden sm:flex w-full justify-end mb-auto mt-0">
                                                 <span
-                                                    class="bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
+                                                    class=" bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
                                                     PESO {{ $data->peso->municipality->municipality_Name }}
                                                 </span>
                                             </div>
                                         </div>
+                                        <div class="sm:hidden flex w-full">
+                                            <span
+                                                class=" bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
+                                                PESO {{ $data->peso->municipality->municipality_Name }}
+                                            </span>
+                                        </div>
 
-
-                                        <div class="flex flex-row">
+                                        <div class="text-sm sm:text-md flex flex-row mt-2">
                                             <p class="mb-2 font-bold">Applicants:</p>
-                                            <p class="ms-4">{{ $data->job_applicants_count }}</p>
+                                            <p class="ms-2">{{ $data->job_applicants_count }}</p>
                                         </div>
 
 
@@ -132,22 +139,25 @@
                                             <div class="flex flex-col md:flex-row">
                                                 <div class="md:w-1/4 text-left">
 
-                                                    <h3 class="text-sm uppercase"> <i
+                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
                                                             class="fa-solid fa-location-dot"></i>
                                                         {{ $data->barangay->municipality->municipality_Name }},
                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center uppercase">
-                                                    <h3 class="text-sm"> <i class="fa-solid fa-graduation-cap"></i>
+                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                            class="fa-solid fa-graduation-cap"></i>
                                                         {{ $eduLevels[$data->job_Edu] }}</h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-sm uppercase"> <i class="fa-solid fa-briefcase"></i>
+                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                            class="fa-solid fa-briefcase"></i>
                                                         {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
                                                     </h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-sm uppercase"> <i class="fa-solid fa-calendar"></i>
+                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                            class="fa-solid fa-calendar"></i>
                                                         {{ $data->created_at->format('F j, Y') }}
                                                     </h3>
                                                 </div>

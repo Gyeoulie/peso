@@ -132,12 +132,13 @@
 
 
                                         </div>
-                                        <div class="flex flex-col gap-1">
+                                        <div class="flex flex-col gap-1 ">
                                             <div class="text-xl font-bold text-black">
                                                 Program Host
                                             </div>
-                                            {{ $ProgramInfo->program_Host }}
-
+                                            <div class="text-md font-medium break-all">
+                                                {{ $ProgramInfo->program_Host }}
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
@@ -156,7 +157,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Date Posted
                                             </div>
-                                            <div class="text-md font-medium">
+                                            <div class="text-md font-medium break-all">
                                                 {{ $ProgramInfo->created_at->format('F j, Y') }}
                                             </div>
 
@@ -180,7 +181,7 @@
                                                 <div class="text-xl font-bold text-black">
                                                     Program Time
                                                 </div>
-                                                <div class="text-md font-medium">
+                                                <div class="text-md font-medium break-all">
                                                     {{ $ProgramInfo->program_Datetime->format('F j, Y g:i A') }}
 
                                                 </div>
@@ -208,7 +209,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Location
                                             </div>
-                                            <div class="text-md font-medium">
+                                            <div class="text-md font-medium break-all">
                                                 {{ $ProgramInfo->program_Location }}
                                             </div>
 
@@ -231,7 +232,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Program Modality
                                             </div>
-                                            <div class="text-md font-medium">
+                                            <div class="text-md font-medium break-all">
                                                 {{ $ProgramInfo->program_Modality }}
                                             </div>
                                         </div>
@@ -253,7 +254,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Industry
                                             </div>
-                                            <div class="text-md font-medium">
+                                            <div class="text-md font-medium break-all">
                                                 {{ $ProgramInfo->job_industry->industry_Title }}
                                             </div>
 
@@ -278,7 +279,7 @@
                                                 Slots Left
                                             </div>
 
-                                            <div class="text-md font-medium ">
+                                            <div class="text-md font-medium  break-all">
                                                 {{ $ProgramInfo->program_Slots }}
                                             </div>
 

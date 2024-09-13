@@ -281,7 +281,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Date Posted
                                             </div>
-                                            <div class="text-md font-medium">
+                                            <div class="text-md font-medium break-all">
                                                 {{ $JobPost->created_at->format('F j, Y') }}
                                             </div>
 
@@ -308,7 +308,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Location
                                             </div>
-                                            <div class="text-md font-medium">
+                                            <div class="text-md font-medium break-all">
                                                 {{ $JobPost->barangay->municipality->municipality_Name }},
                                                 {{ $JobPost->barangay->municipality->province->province_Name }}
                                             </div>
@@ -332,7 +332,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Salary Range
                                             </div>
-                                            <div class="text-md font-medium">
+                                            <div class="text-md font-medium break-all">
                                                 ₱{{ number_format($JobPost->job_MinWage) }} -
                                                 ₱{{ number_format($JobPost->job_MaxWage) }}
 
@@ -356,7 +356,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Education Level
                                             </div>
-                                            <div class="text-md font-medium">
+                                            <div class="text-md font-medium break-all">
                                                 {{ $eduLevels[$JobPost->job_Edu] }}
                                             </div>
                                         </div>
@@ -379,7 +379,7 @@
                                                 Job Type
                                             </div>
 
-                                            <div class="text-md font-medium ">
+                                            <div class="text-md font-medium break-all">
                                                 @if ($JobPost->job_Type == 1)
                                                     Full Time
                                                 @elseif ($JobPost->job_Type == 2)
@@ -402,7 +402,7 @@
 
                                         </div>
                                         <div class="flex flex-col gap-1">
-                                            <div class="text-xl font-bold text-black">
+                                            <div class="text-xl font-bold text-black break-all">
                                                 Industry
                                             </div>
                                             <div class="text-md font-medium">
@@ -434,7 +434,7 @@
                                                 PESO Branch
                                             </div>
 
-                                            <div class="text-md font-medium ">
+                                            <div class="text-md font-medium break-all">
                                                 {{ $JobPost->peso->municipality->municipality_Name }}
 
                                             </div>
@@ -458,7 +458,7 @@
                                                 Slots Left
                                             </div>
 
-                                            <div class="text-md font-medium ">
+                                            <div class="text-md font-medium break-all">
                                                 {{ $JobPost->slotsLeft }}
 
                                             </div>

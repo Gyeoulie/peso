@@ -32,69 +32,79 @@
             <div class="bg-white overflow-hidden sm:rounded-lg p-2 overflow-visible">
 
 
-                <div x-data="{
-                    filter: @entangle('filter'),
-                    activeFilter: 'text-gray-900 bg-gray-400 active',
-                    inactiveFilter: 'bg-white hover:text-gray-700 hover:bg-gray-50',
-                }" x-init="$wire.set('filter', filter)">
-                    <div class="sm:hidden">
-                        <label for="tabs" class="sr-only">Select Filter</label>
-                        <select id="tabs"
-                            class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option wire:click.prevent='changeFilter("ALL")'>All ({{ $allCount }})
-                            </option>
-                            <option wire:click.prevent='changeFilter("PENDING")'>Pending
-                                ({{ $pendingCount }})</option>
-                            <option wire:click.prevent='changeFilter("ACTIVE")'>Active
-                                ({{ $activeCount }})</option>
-                            <option wire:click.prevent='changeFilter("CLOSED")'>Closed
-                                ({{ $closedCount }})</option>
-                            <option wire:click.prevent='changeFilter("COMPLETED")'>Completed
-                                ({{ $completedCount }})</option>
-                            <option wire:click.prevent='changeFilter("OHTERS")'>Others
-                                ({{ $othersCount }})</option>
+               <div class="bg-white shadow rounded-lg p-6" x-data="{
+        filter: @entangle('filter').defer || 'ALL', // Set default value to 'ALL'
+        activeFilter: 'text-gray-900 bg-gray-400 active',
+        inactiveFilter: 'bg-gray-100 hover:text-gray-700 hover:bg-gray-50',
+        changeFilter(value) {
+            this.filter = value;
+            this.$wire.set('filter', value); // Update Livewire filter property
+        },
+        init() {
+            // Ensure Livewire and Alpine.js sync on initialization
+            this.$watch('filter', value => {
+                this.changeFilter(value); // Ensure Livewire is updated when filter changes
+            });
+        }
+    }" x-init="init()">
+        
+        <div class="relative overflow-x-auto p-1">
+            <!-- Mobile Dropdown -->
+            <div class="sm:hidden">
+                <label for="tabs" class="sr-only">Select Filter</label>
+                <select id="tabs"
+                    class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    x-model="filter" @change="changeFilter($event.target.value)">
+                    <option value="ALL">All ({{ $allCount }})</option>
+                    <option value="PENDING">Pending ({{ $pendingCount }})</option>
+                    <option value="ACTIVE">Active ({{ $activeCount }})</option>
+                    <option value="CLOSED">Closed ({{ $closedCount }})</option>
+                    <option value="COMPLETED">Completed ({{ $completedCount }})</option>
+                    <option value="OTHERS">Others ({{ $othersCount }})</option>
+                </select>
+            </div>
 
-                        </select>
-                    </div>
-                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
-                        <li class="w-full focus-within:z-10">
-                            <button wire:click.prevent='changeFilter("ALL")'
-                                :class="filter === 'ALL' ? activeFilter : inactiveFilter"
-                                class="inline-block w-full p-4 border border-gray-200 rounded-l-lg"
-                                aria-current="page">All ({{ $allCount }})</button>
-                        </li>
-                        <li class="w-full focus-within:z-10">
-                            <button wire:click.prevent='changeFilter("PENDING")'
-                                :class="filter === 'PENDING' ? activeFilter : inactiveFilter"
-                                class="inline-block w-full p-4 border border-gray-200">Pending
-                                ({{ $pendingCount }})</button>
-                        </li>
-                        <li class="w-full focus-within:z-10">
-                            <button wire:click.prevent='changeFilter("ACTIVE")'
-                                :class="filter === 'ACTIVE' ? activeFilter : inactiveFilter"
-                                class="inline-block w-full p-4 border border-gray-200">Approved
-                                ({{ $activeCount }})</button>
-                        </li>
-                        <li class="w-full focus-within:z-10">
-                            <button wire:click.prevent='changeFilter("CLOSED")'
-                                :class="filter === 'CLOSED' ? activeFilter : inactiveFilter"
-                                class="inline-block w-full p-4 border border-gray-200">Closed
-                                ({{ $closedCount }})</button>
-                        </li>
-                        <li class="w-full focus-within:z-10">
-                            <button wire:click.prevent='changeFilter("COMPLETED")'
-                                :class="filter === 'COMPLETED' ? activeFilter : inactiveFilter"
-                                class="inline-block w-full p-4 border border-gray-200">Completed
-                                ({{ $completedCount }})</button>
-                        </li>
-                        <li class="w-full focus-within:z-10">
-                            <button wire:click.prevent='changeFilter("OTHERS")'
-                                :class="filter === 'OTHERS' ? activeFilter : inactiveFilter"
-                                class="inline-block w-full p-4 border border-gray-200 rounded-r-lg">Others
-                                ({{ $othersCount }})</button>
-                        </li>
-                    </ul>
-                </div>
+            <!-- Desktop Tabs -->
+            <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                <li class="w-full focus-within:z-10">
+                    <button @click="changeFilter('ALL')"
+                        :class="filter === 'ALL' ? activeFilter : inactiveFilter"
+                        class="inline-block w-full p-4 border border-gray-200 rounded-l-lg"
+                        aria-current="page">All ({{ $allCount }})</button>
+                </li>
+                <li class="w-full focus-within:z-10">
+                    <button @click="changeFilter('PENDING')"
+                        :class="filter === 'PENDING' ? activeFilter : inactiveFilter"
+                        class="inline-block w-full p-4 border border-gray-200">Pending
+                        ({{ $pendingCount }})</button>
+                </li>
+                <li class="w-full focus-within:z-10">
+                    <button @click="changeFilter('ACTIVE')"
+                        :class="filter === 'ACTIVE' ? activeFilter : inactiveFilter"
+                        class="inline-block w-full p-4 border border-gray-200">Active
+                        ({{ $activeCount }})</button>
+                </li>
+                <li class="w-full focus-within:z-10">
+                    <button @click="changeFilter('CLOSED')"
+                        :class="filter === 'CLOSED' ? activeFilter : inactiveFilter"
+                        class="inline-block w-full p-4 border border-gray-200">Closed
+                        ({{ $closedCount }})</button>
+                </li>
+                <li class="w-full focus-within:z-10">
+                    <button @click="changeFilter('COMPLETED')"
+                        :class="filter === 'COMPLETED' ? activeFilter : inactiveFilter"
+                        class="inline-block w-full p-4 border border-gray-200">Completed
+                        ({{ $completedCount }})</button>
+                </li>
+                <li class="w-full focus-within:z-10">
+                    <button @click="changeFilter('OTHERS')"
+                        :class="filter === 'OTHERS' ? activeFilter : inactiveFilter"
+                        class="inline-block w-full p-4 border border-gray-200 rounded-r-lg">Others
+                        ({{ $othersCount }})</button>
+                </li>
+            </ul>
+            </div>
+            
 
 
 
