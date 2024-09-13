@@ -223,201 +223,201 @@
 
                 @if (auth()->user()->usertype >= 8)
                     <hr class="mx-4 mt-2">
-                @endif
 
 
-                <div x-data="{
-                    dropdowns: {
-                        roleManagement: ['admin-users-peso', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview', 'admin-users-employer-overview'].includes(@js(request()->route()->getName())),
-                        trainings: ['admin-training', 'admin-create-training', 'admin-view-training'].includes(@js(request()->route()->getName())),
-                        reports: ['admin-reports-barangay', 'admin-reports-municipality', 'super-municipality', 'super-province'].includes(@js(request()->route()->getName())),
-                        dataManagement: ['admin-certificate', 'admin-eligibility', 'admin-location', 'admin-industry'].includes(@js(request()->route()->getName())),
-                        maintenance: ['admin-audits', 'admin-peso', 'admin-backups'].includes(@js(request()->route()->getName())),
-                    },
-                    activeItem: 'ml-6 block p-2 w-full border-l-4 border-indigo-400 text-start text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out',
-                    inactiveItem: 'ml-6 block p-2 w-full border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out',
-                    currentRoute: @js(request()->route()->getName()), // Pass current route name from Laravel to Alpine.js
-                }">
-                    @if (auth()->user()->usertype >= 8 && auth()->user()->usertype < 11)
-                        <x-responsive-nav-link wire:navigate :href="route('admin')" :active="request()->routeIs('admin')">
-                            {{ __('Admin Dashboard') }}
-                        </x-responsive-nav-link>
-                    @endif
-                    @if (auth()->user()->usertype == 11)
-                        <x-responsive-nav-link wire:navigate :href="route('super-dashboard')" :active="request()->routeIs('super-dashboard')">
-                            {{ __('Admin Dashboard') }}
-                        </x-responsive-nav-link>
-                    @endif
-                    @if (Auth::check() && Auth::user()->usertype != 11)
-                        <x-responsive-nav-link wire:navigate :href="route('admin-joblist')" :active="request()->routeIs(
-                            'admin-joblist',
-                            'admin.jobpost',
-                            'admin.jobpost.applicants',
-                            'admin.jobpost.applicants.overview',
-                        )">
-                            {{ __('Job Posting') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link wire:navigate :href="route('admin-partnership')" :active="request()->routeIs('admin-partnership', 'admin-partnership-details')">
-                            {{ __('Partnerships') }}
-                        </x-responsive-nav-link>
-                        <!-- Role Management Dropdown -->
 
+                    <div x-data="{
+                        dropdowns: {
+                            roleManagement: ['admin-users-peso', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview', 'admin-users-employer-overview'].includes(@js(request()->route()->getName())),
+                            trainings: ['admin-training', 'admin-create-training', 'admin-view-training'].includes(@js(request()->route()->getName())),
+                            reports: ['admin-reports-barangay', 'admin-reports-municipality', 'super-municipality', 'super-province'].includes(@js(request()->route()->getName())),
+                            dataManagement: ['admin-certificate', 'admin-eligibility', 'admin-location', 'admin-industry'].includes(@js(request()->route()->getName())),
+                            maintenance: ['admin-audits', 'admin-peso', 'admin-backups'].includes(@js(request()->route()->getName())),
+                        },
+                        activeItem: 'ml-6 block p-2 w-full border-l-4 border-indigo-400 text-start text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out',
+                        inactiveItem: 'ml-6 block p-2 w-full border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out',
+                        currentRoute: @js(request()->route()->getName()), // Pass current route name from Laravel to Alpine.js
+                    }">
+                        @if (auth()->user()->usertype >= 8 && auth()->user()->usertype < 11)
+                            <x-responsive-nav-link wire:navigate :href="route('admin')" :active="request()->routeIs('admin')">
+                                {{ __('Admin Dashboard') }}
+                            </x-responsive-nav-link>
+                        @endif
+                        @if (auth()->user()->usertype == 11)
+                            <x-responsive-nav-link wire:navigate :href="route('super-dashboard')" :active="request()->routeIs('super-dashboard')">
+                                {{ __('Admin Dashboard') }}
+                            </x-responsive-nav-link>
+                        @endif
+                        @if (Auth::check() && Auth::user()->usertype != 11)
+                            <x-responsive-nav-link wire:navigate :href="route('admin-joblist')" :active="request()->routeIs(
+                                'admin-joblist',
+                                'admin.jobpost',
+                                'admin.jobpost.applicants',
+                                'admin.jobpost.applicants.overview',
+                            )">
+                                {{ __('Job Posting') }}
+                            </x-responsive-nav-link>
+                            <x-responsive-nav-link wire:navigate :href="route('admin-partnership')" :active="request()->routeIs('admin-partnership', 'admin-partnership-details')">
+                                {{ __('Partnerships') }}
+                            </x-responsive-nav-link>
+                            <!-- Role Management Dropdown -->
+
+                            <div>
+                                <div x-on:click="dropdowns.roleManagement = !dropdowns.roleManagement"
+                                    class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    Role Management
+                                    <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </div>
+                                <div x-show="dropdowns.roleManagement" x-cloak>
+                                    <a :class="currentRoute === 'admin-users-jobseeker' ||
+                                        currentRoute === 'admin-users-jobseeker-overview' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-users-jobseeker') }}">
+                                        Jobseekers Management
+                                    </a>
+                                    <a :class="currentRoute === 'admin-users-employer' ||
+                                        currentRoute === 'admin-users-employer-overview' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-users-employer') }}">
+                                        Employers Management
+                                    </a>
+                                    <a :class="currentRoute === 'admin-users-peso' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-users-peso') }}">
+                                        PESO Accounts
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+                        @if (Auth::check() && Auth::user()->usertype == 11)
+                            <div>
+                                <div x-on:click="dropdowns.dataManagement = !dropdowns.dataManagement"
+                                    class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    Data Management
+                                    <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </div>
+                                <div x-show="dropdowns.dataManagement" x-cloak>
+                                    <a :class="currentRoute === 'admin-certificate' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-certificate') }}">
+                                        Certificates
+                                    </a>
+                                    <a :class="currentRoute === 'admin-eligibility' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-eligibility') }}">
+                                        Eligibility and License
+                                    </a>
+                                    <a :class="currentRoute === 'admin-location' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-location') }}">
+                                        Locations
+                                    </a>
+                                    <a :class="currentRoute === 'admin-industry' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-industry') }}">
+                                        Positions and Industry
+                                    </a>
+                                </div>
+                            </div>
+                            <x-responsive-nav-link wire:navigate :href="route('admin-req')" :active="request()->routeIs('admin-req')">
+                                {{ __('Requirements') }}
+                            </x-responsive-nav-link>
+                        @endif
+                        @if (Auth::check() && Auth::user()->usertype != 11)
+                            <x-responsive-nav-link wire:navigate :href="route('admin-announcement')" :active="request()->routeIs('admin-announcement')">
+                                {{ __('Announcements') }}
+                            </x-responsive-nav-link>
+
+
+                            <!-- Trainings Dropdown -->
+                            <div>
+                                <div x-on:click="dropdowns.trainings = !dropdowns.trainings"
+                                    class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    Trainings
+                                    <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </div>
+                                <div x-show="dropdowns.trainings" x-cloak>
+                                    <a :class="currentRoute === 'admin-training' || currentRoute === 'admin-view-training' ||
+                                        currentRoute === 'admin-registrants-training' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-training') }}">
+                                        Training List
+                                    </a>
+                                    <a :class="currentRoute === 'admin-create-training' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-create-training') }}">
+                                        Create Trainings
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+
+                        <!-- Reports Dropdown -->
                         <div>
-                            <div x-on:click="dropdowns.roleManagement = !dropdowns.roleManagement"
+                            <div x-on:click="dropdowns.reports = !dropdowns.reports"
                                 class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
-                                Role Management
+                                Reports
                                 <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="m1 1 4 4 4-4" />
                                 </svg>
                             </div>
-                            <div x-show="dropdowns.roleManagement" x-cloak>
-                                <a :class="currentRoute === 'admin-users-jobseeker' ||
-                                    currentRoute === 'admin-users-jobseeker-overview' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('admin-users-jobseeker') }}">
-                                    Jobseekers Management
-                                </a>
-                                <a :class="currentRoute === 'admin-users-employer' ||
-                                    currentRoute === 'admin-users-employer-overview' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('admin-users-employer') }}">
-                                    Employers Management
-                                </a>
-                                <a :class="currentRoute === 'admin-users-peso' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('admin-users-peso') }}">
-                                    PESO Accounts
-                                </a>
+                            <div x-show="dropdowns.reports" x-cloak>
+                                @if (Auth::check() && Auth::user()->usertype != 11)
+                                    <a :class="currentRoute === 'admin-reports-barangay' ? activeItem : inactiveItem"
+                                        href="{{ route('admin-reports-barangay') }}">
+                                        Barangay
+                                    </a>
+                                    <a :class="currentRoute === 'admin-reports-municipality' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-reports-municipality') }}">
+                                        Municipality
+                                    </a>
+                                @endif
+                                @if (Auth::check() && Auth::user()->usertype == 11)
+                                    <a :class="currentRoute === 'super-municipality' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('super-municipality') }}">
+                                        Municipality
+                                    </a>
+                                    <a :class="currentRoute === 'super-province' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('super-province') }}">
+                                        Province
+                                    </a>
+                                @endif
                             </div>
                         </div>
-                    @endif
-                    @if (Auth::check() && Auth::user()->usertype == 11)
-                        <div>
-                            <div x-on:click="dropdowns.dataManagement = !dropdowns.dataManagement"
-                                class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
-                                Data Management
-                                <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg>
+                        @if (Auth::check() && Auth::user()->usertype == 11)
+                            <div>
+                                <div x-on:click="dropdowns.maintenance = !dropdowns.maintenance"
+                                    class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    Maintenance
+                                    <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </div>
+                                <div x-show="dropdowns.maintenance" x-cloak>
+                                    <a :class="currentRoute === 'admin-peso' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-peso') }}">
+                                        PESO Branch
+                                    </a>
+                                    <a :class="currentRoute === 'admin-audits' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-audits') }}">
+                                        Audit Logs
+                                    </a>
+                                    <a :class="currentRoute === 'admin-backups' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-backups') }}">
+                                        Backups
+                                    </a>
+                                </div>
                             </div>
-                            <div x-show="dropdowns.dataManagement" x-cloak>
-                                <a :class="currentRoute === 'admin-certificate' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('admin-certificate') }}">
-                                    Certificates
-                                </a>
-                                <a :class="currentRoute === 'admin-eligibility' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('admin-eligibility') }}">
-                                    Eligibility and License
-                                </a>
-                                <a :class="currentRoute === 'admin-location' ? activeItem : inactiveItem" wire:navigate
-                                    href="{{ route('admin-location') }}">
-                                    Locations
-                                </a>
-                                <a :class="currentRoute === 'admin-industry' ? activeItem : inactiveItem" wire:navigate
-                                    href="{{ route('admin-industry') }}">
-                                    Positions and Industry
-                                </a>
-                            </div>
-                        </div>
-                        <x-responsive-nav-link wire:navigate :href="route('admin-req')" :active="request()->routeIs('admin-req')">
-                            {{ __('Requirements') }}
-                        </x-responsive-nav-link>
-                    @endif
-                    @if (Auth::check() && Auth::user()->usertype != 11)
-                        <x-responsive-nav-link wire:navigate :href="route('admin-announcement')" :active="request()->routeIs('admin-announcement')">
-                            {{ __('Announcements') }}
-                        </x-responsive-nav-link>
-
-
-                        <!-- Trainings Dropdown -->
-                        <div>
-                            <div x-on:click="dropdowns.trainings = !dropdowns.trainings"
-                                class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
-                                Trainings
-                                <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg>
-                            </div>
-                            <div x-show="dropdowns.trainings" x-cloak>
-                                <a :class="currentRoute === 'admin-training' || currentRoute === 'admin-view-training' ||
-                                    currentRoute === 'admin-registrants-training' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('admin-training') }}">
-                                    Training List
-                                </a>
-                                <a :class="currentRoute === 'admin-create-training' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('admin-create-training') }}">
-                                    Create Trainings
-                                </a>
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Reports Dropdown -->
-                    <div>
-                        <div x-on:click="dropdowns.reports = !dropdowns.reports"
-                            class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
-                            Reports
-                            <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m1 1 4 4 4-4" />
-                            </svg>
-                        </div>
-                        <div x-show="dropdowns.reports" x-cloak>
-                            @if (Auth::check() && Auth::user()->usertype != 11)
-                                <a :class="currentRoute === 'admin-reports-barangay' ? activeItem : inactiveItem"
-                                    href="{{ route('admin-reports-barangay') }}">
-                                    Barangay
-                                </a>
-                                <a :class="currentRoute === 'admin-reports-municipality' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('admin-reports-municipality') }}">
-                                    Municipality
-                                </a>
-                            @endif
-                            @if (Auth::check() && Auth::user()->usertype == 11)
-                                <a :class="currentRoute === 'super-municipality' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('super-municipality') }}">
-                                    Municipality
-                                </a>
-                                <a :class="currentRoute === 'super-province' ? activeItem : inactiveItem"
-                                    wire:navigate href="{{ route('super-province') }}">
-                                    Province
-                                </a>
-                            @endif
-                        </div>
+                        @endif
                     </div>
-                    @if (Auth::check() && Auth::user()->usertype == 11)
-                        <div>
-                            <div x-on:click="dropdowns.maintenance = !dropdowns.maintenance"
-                                class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
-                                Maintenance
-                                <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg>
-                            </div>
-                            <div x-show="dropdowns.maintenance" x-cloak>
-                                <a :class="currentRoute === 'admin-peso' ? activeItem : inactiveItem" wire:navigate
-                                    href="{{ route('admin-peso') }}">
-                                    PESO Branch
-                                </a>
-                                <a :class="currentRoute === 'admin-audits' ? activeItem : inactiveItem" wire:navigate
-                                    href="{{ route('admin-audits') }}">
-                                    Audit Logs
-                                </a>
-                                <a :class="currentRoute === 'admin-backups' ? activeItem : inactiveItem" wire:navigate
-                                    href="{{ route('admin-backups') }}">
-                                    Backups
-                                </a>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-
+                @endif
 
 
 
