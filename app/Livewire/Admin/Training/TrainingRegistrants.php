@@ -99,11 +99,11 @@ class TrainingRegistrants extends Component
                 ->first();
 
             // Check if the ticket is found
-            if ($ticket) {
+            if ($ticket && $ticket->program_id == $this->id) {
                 $this->getJobseeker($ticket->program_reg_id);
                 $this->dispatch('close-modal', 'qr-scanner-modal');
             } else {
-                toastr()->info('Ticket is not valid');
+                toastr()->info('Ticket is not valid.');
                 $this->qrStop();
             }
         } catch (\Exception $e) {
