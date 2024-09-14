@@ -327,11 +327,14 @@
 </div>
 
 {{-- @scipt --}}
-<script>
+<script data-navigate-once>
+    console.log('Runs only on page one')
     $('#descText').summernote({
         placeholder: 'Write training description here...',
         tabsize: 2,
-        height: 120,
+        height: 300,
+        disableResizeEditor: true, // This is optional if you want to remove resize
+        disableDragAndDrop: true, // Set the height here (e.g., 300px)
         toolbar: [
             ['font', ['bold', 'underline']],
             ['para', ['ul', 'ol', 'paragraph']],
@@ -351,7 +354,9 @@
     $('#qualText').summernote({
         placeholder: 'Write training qualifications here...',
         tabsize: 2,
-        height: 120,
+        height: 300,
+        disableResizeEditor: true, // This is optional if you want to remove resize
+        disableDragAndDrop: true, // Set the height here (e.g., 300px)
         toolbar: [
             ['font', ['bold', 'underline']],
             ['para', ['ul', 'ol', 'paragraph']],
@@ -372,6 +377,8 @@
         placeholder: 'Write remarks here...',
         tabsize: 2,
         height: 120,
+        disableResizeEditor: true, // This is optional if you want to remove resize
+        disableDragAndDrop: true, // Set the height here (e.g., 300px)
         toolbar: [
             ['font', ['bold', 'underline']],
             ['para', ['ul', 'ol', 'paragraph']],
