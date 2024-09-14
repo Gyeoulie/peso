@@ -142,7 +142,7 @@
 </div>
 
 {{-- @scipt --}}
-<script>
+<script data-navigate-once>
     $('#descText').summernote({
         placeholder: 'Write training description here...',
         tabsize: 4,
