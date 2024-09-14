@@ -13,11 +13,13 @@
             <x-input-label for="role" :value="__('Select Role')" />
             <div class="flex items-center">
                 <label for="jobseeker" class="mr-2">
-                    <input id="jobseeker" type="radio" name="role" value="2" required autocomplete="off">
+                    <input id="jobseeker" type="radio" name="role" value="2" required autocomplete="off"
+                    {{ old('role') == '2' ? 'checked' : '' }}>
                     <span class="ml-1">{{ __('Job Seeker') }}</span>
                 </label>
                 <label for="employer" class="ml-4 mr-2">
-                    <input id="employer" type="radio" name="role" value="3" required autocomplete="off">
+                    <input id="employer" type="radio" name="role" value="3" required autocomplete="off"
+                    {{ old('role') == '3' ? 'checked' : '' }}>
                     <span class="ml-1">{{ __('Employer') }}</span>
                 </label>
             </div>
@@ -27,8 +29,8 @@
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                required autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
+            :value="old('email')" required autocomplete="off" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 

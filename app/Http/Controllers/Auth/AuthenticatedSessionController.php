@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use PragmaRX\Google2FA\Google2FA;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -36,6 +37,31 @@ class AuthenticatedSessionController extends Controller
 
         return $this->redirectBasedOnRole($user->usertype);
 
+    }
+    public function verify2FA(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|numeric|digits:6', // Validate OTP input
+        ]);
+
+        $user = Auth::user(); // Get the currently authenticated user
+        $google2fa = new Google2FA();
+
+        // Verify the OTP
+        $isValid = $google2fa->verifyKey($user->google2fa_secret, $request->input('otp'));
+
+        if ($isValid) {
+            $request->session()->put('google2fa', true);
+            // OTP is valid, log the user in
+            Auth::login($user);
+
+            // Redirect to intended page or home
+            return redirect()->intended('dashboard');
+        } else {
+            // OTP is invalid
+            return redirect()->back()->withInput()->withErrors(['otp' => 'The OTP you entered is invalid.']);
+
+        }
     }
 
     /**
