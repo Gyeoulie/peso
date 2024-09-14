@@ -94,6 +94,8 @@ class Google2fa extends Component
                 toastr()->success('Two-Factor Authentication has been enabled successfully!');
                 $this->dispatch('close-modal', '2fa-modal');
                 $this->reset('otpCodeEnable');
+                session()->put('google2fa', true);
+
                 $this->is2FAEnabled = true;
             } else {
                 // Rollback the transaction if the OTP is invalid
