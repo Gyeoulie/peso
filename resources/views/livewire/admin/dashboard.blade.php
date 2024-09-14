@@ -161,7 +161,8 @@
                                     <th scope="row"
                                         class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                         <img class="w-10 h-10 rounded-full object-cover"
-                                            src="{{ asset('storage/' . $data->company->company_img) }}" alt="img">
+                                            src="{{ asset('storage/' . $data->company->company_img) }}"
+                                            alt="company-{{ $data->job_id }}">
                                         <div class="ps-3 text-wrap">
                                             <div class="text-base font-semibold">
                                                 <div class="text-base font-semibold uppercase">
@@ -246,7 +247,8 @@
                                     <th scope="row"
                                         class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                         <img class="w-10 h-10 rounded-full object-cover"
-                                            src="{{ asset('storage/' . $data->employee->pimg) }}" alt="img">
+                                            src="{{ asset('storage/' . $data->employee->pimg) }}"
+                                            alt="applicant-{{ $data->job_id }}">
                                         <div class="ps-3 text-wrap">
                                             <div class="text-base font-semibold">
                                                 <div class="text-base font-semibold uppercase">

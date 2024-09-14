@@ -26,17 +26,20 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember'); // Check if 'remember' checkbox is checked
 
-        $request->authenticate();
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+            $user = $request->user();
+            $request->session()->put('user_type', $user->usertype);
 
-        $request->session()->regenerate();
+            return $this->redirectBasedOnRole($user->usertype);
+        }
 
-        // Get the authenticated user
-        $user = $request->user();
-        $request->session()->put('user_type', $user->usertype);
-
-        return $this->redirectBasedOnRole($user->usertype);
-
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
     public function verify2FA(Request $request)
     {

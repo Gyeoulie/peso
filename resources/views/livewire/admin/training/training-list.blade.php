@@ -229,8 +229,9 @@
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                                 <img class="w-10 h-10 rounded-full"
-                                                    src="{{ asset('storage/' . $data->program_pubmat) }}"
-                                                    alt="pubmat">
+                                                    src="{{ file_exists(public_path('storage/' . $data->program_pubmat)) ? asset('storage/' . $data->program_pubmat) : asset('assets/img/PESO-Logo.png') }}"
+                                                    alt="pubmat-{{ $data->program_id }}">
+
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">{{ $data->program_Title }}
                                                     </div>
