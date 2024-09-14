@@ -2,11 +2,11 @@
 
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Two Factor Authentication') }}
+            {{ __('Two-Factor Authentication') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Enable two factor authentication using an app authenticator app to further secure your account.') }}
+            {{ __('Enhance your account security by enabling Two-Factor Authentication (2FA). Use the Google Authenticator app to generate a time-based, one-time code that provides an extra layer of protection beyond your password.') }}
         </p>
     </header>
 
