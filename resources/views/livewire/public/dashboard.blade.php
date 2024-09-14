@@ -60,8 +60,9 @@
                         <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
                             class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl sm:max-h-72 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
                             <img class="w-full sm:w-60 object-cover h-48 sm:h-full"
-                                src="{{ asset('storage/' . $data->program_pubmat) }}"
+                                src="{{ $data->program_pubmat && file_exists(public_path('storage/' . $data->program_pubmat)) ? asset('storage/' . $data->program_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                 alt="prog-{{ $data->program_id }}">
+
 
                             <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">
                                 <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
@@ -257,8 +258,8 @@
                                                 <div class="flex flex-row w-full">
                                                     <div
                                                         class="flex flex-col justify-center items-center h-full  flex-shrink-0">
-                                                        <img src="{{ asset('storage/' . $data->company->company_img) }}"
-                                                            alt="Default Image"
+                                                        <img src="{{ file_exists(public_path('storage/' . $data->company->company_img)) ? asset('storage/' . $data->company->company_img) : asset('assets/img/PESO-Logo.png') }}"
+                                                            alt="company-{{ $data->job_id }}"
                                                             class="w-24 h-24 sm:w-48 sm:h-48 bg-gray-300 rounded object-contain">
                                                     </div>
                                                     <div class="flex-col w-full ml-5 space-y-1 sm:space-y-8">
@@ -482,9 +483,11 @@
                                             <div
                                                 class="relative flex flex-col w-full max-w-sm h-96 overflow-hidden rounded-lg bg-white text-gray-700 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
                                                 <div class="relative w-full h-56 overflow-hidden rounded-t-lg">
-                                                    <img src="{{ asset('storage/' . $data->announcement_pubmat) }}"
+                                                    <img src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                                         alt="announcement-{{ $data->announcement_id }}"
                                                         class="object-cover w-full h-full rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-110" />
+
+
                                                 </div>
                                                 <div class="flex flex-col p-4  flex-grow">
                                                     <h4
@@ -508,14 +511,10 @@
                     </div>
                 </div>
 
-
-
-
-
+            @endif
 
 
         </div>
-        @endif
 
     </div>
 

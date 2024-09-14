@@ -5,7 +5,7 @@
             <div class="bg-white shadow-xl rounded-lg p-6 text-wrap ">
                 <div class="flex flex-col items-center">
                     {{-- <img src="https://randomuser.me/api/portraits/men/94.jpg" --}}
-                    <img src="{{ $jobseeker->pimg ? asset('storage/' . $jobseeker->pimg) : asset('https://randomuser.me/api/portraits/men/94.jpg') }}"
+                    <img src="{{ $jobseeker->pimg ? asset('storage/' . $jobseeker->pimg) : asset('https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/') }}"
                         alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
                     </img>
                     <h1 class="text-xl font-bold break-all">{{ $jobseeker->fname }} {{ $jobseeker->lname }}</h1>
