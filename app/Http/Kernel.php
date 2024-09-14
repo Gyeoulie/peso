@@ -69,6 +69,8 @@ class Kernel extends HttpKernel
         'usertype' => \App\Http\Middleware\CheckUserType::class,
         'check.jobpost' => \App\Http\Middleware\Routes\CheckJobPost::class,
         'incomplete.user' => \App\Http\Middleware\IncompleteUser::class,
+        '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
+        'google2fa' => \App\Http\Middleware\Google2FAMiddleware::class,
 
     ];
 

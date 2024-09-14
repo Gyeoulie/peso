@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Redactors\FiveHashRedactor;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -34,6 +35,8 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         'userstatus',
         'description',
         'disabled_at',
+        'google2fa_secret',
+        'google2fa_enabled_at',
     ];
 
     /**
@@ -54,9 +57,17 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'disabled_at' => 'datetime',
+        'google2fa_enabled_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
 
+    protected function google2faSecret(): Attribute
+    {
+        return new Attribute(
+            get: fn($value) => $value ? decrypt($value) : null,
+            set: fn($value) => $value ? encrypt($value) : null,
+        );
+    }
     public function company()
     {
         return $this->hasOne(Company::class, 'user_id');

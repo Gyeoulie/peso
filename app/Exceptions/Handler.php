@@ -39,18 +39,18 @@ class Handler extends ExceptionHandler
             return redirect()->back()->with('error', __('You have requested too many verification emails. Please try again in a few minutes.'));
         }
 
-        // Handle 404 errors
-        if ($exception instanceof NotFoundHttpException) {
-            return response()->view('error.404', [], 404);
-        }
+        // // Handle 404 errors
+        // if ($exception instanceof NotFoundHttpException) {
+        //     return response()->view('error.404', [], 404);
+        // }
 
-        if ($exception instanceof MethodNotAllowedHttpException) {
-            return response()->view('error.404', [], 404);
-        }
+        // if ($exception instanceof MethodNotAllowedHttpException) {
+        //     return response()->view('error.404', [], 404);
+        // }
 
-        if ($exception instanceof AuthorizationException) {
-            return response()->view('error.404', [], 404);
-        }
+        // if ($exception instanceof AuthorizationException) {
+        //     return response()->view('error.404', [], 404);
+        // }
 
         // Handle other types of exceptions
         // return response()->view('error.404', [], 404);
