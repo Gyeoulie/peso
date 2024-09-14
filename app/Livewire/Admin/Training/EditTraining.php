@@ -26,7 +26,7 @@ class EditTraining extends Component
 
     public $progTitle, $progHost, $regDeadline, $progSlots, $progType = '', $progDate, $progTime, $progLoc, $progModality = '';
 
-    public $descPost = 'hello', $qualPost, $remPost;
+    public $descPost, $qualPost, $remPost;
 
     public $jobIndustryPost, $jobIndustryHidden;
 

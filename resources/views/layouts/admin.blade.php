@@ -50,34 +50,15 @@
 
 
     <!-- Scripts -->
-    @livewireScripts
     @livewireStyles
     @vite(['resources/css/app.css'])
 </head>
 
 <body class="font-sans antialiased bg-gray-100 flex flex-col min-h-screen">
-    {{-- < class=""> --}}
+
     @include('layouts.navigation')
 
-    <!-- Page Heading -->
-    {{-- @if (isset($header))
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
-        </header>
-    @endif
 
-    <div class="sm:hidden text-center">
-        <button
-            class="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation"
-            aria-controls="drawer-navigation">
-            Admin Navigation
-        </button>
-    </div>
-
- --}}
 
     <div class="flex flex-row">
         @include('admin.admin_partials.admin-navbar')
@@ -105,31 +86,22 @@
     <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script>
-        // Listen for storage events
-        // window.addEventListener('storage', function(event) {
-        //     if (event.key === 'user-logged-out' && event.newValue === 'true') {
-        //         localStorage.removeItem('user-logged-out'); // Clean up
-        //         window.location.href = '/'; // Redirect to the welcome page
-        //     }
-        // });
-        window.addEventListener('storage', function(event) {
-            if (event.key === 'user-logged-out') {
-                localStorage.removeItem('user-logged-out'); // Clean up
-                window.location.href = '/'; // Redirect to the welcome page
-            }
-        });
-
-        // Check local storage on page load
-        function checkSessionOnLoad() {
-            if (localStorage.getItem('user-logged-out')) {
+        function handleLogout() {
+            if (localStorage.getItem('user-logged-out') === 'true') {
                 localStorage.removeItem('user-logged-out'); // Clean up
                 window.location.href = '/'; // Redirect to the welcome page
             }
         }
 
-        // Run check on page load
-        // checkSessionOnLoad();
+        // Listen for storage events
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'user-logged-out') {
+                handleLogout();
+            }
+        });
     </script>
+    @livewireScripts
+
 </body>
 
 </html>

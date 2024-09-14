@@ -139,7 +139,7 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                    <th scope="col" class="px-6 py-3 ">
                                         Announcement Title
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -199,7 +199,7 @@
                                                     {{ $data->created_at->format('F j Y') }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 font-semibold">
                                                 {{ $data->announcement_Status }}
                                             </td>
 

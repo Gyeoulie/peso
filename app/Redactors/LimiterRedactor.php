@@ -17,11 +17,15 @@ class LimiterRedactor implements AttributeRedactor
      */
     public static function redact($value): string
     {
-        // Truncate the value to 250 characters
-
+        // Check if the value is null and return an empty string if it is
         if ($value === null) {
             return '';
         }
-        return Str::limit($value, 250);
+
+        // Remove HTML tags from the value
+        $cleanValue = strip_tags($value);
+
+        // Truncate the cleaned value to 250 characters
+        return Str::limit($cleanValue, 500);
     }
 }

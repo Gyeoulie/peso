@@ -16,9 +16,8 @@ class Google2fa extends Component
     public $qrCodeUrl;
     public $otpCodeEnable;
     public $otpCodeDisable;
-
     public $verified = false;
-    public $is2FAEnabled; // To track if the code is verified
+    public $is2FAEnabled = false;
 
     public function mount()
     {
@@ -94,9 +93,9 @@ class Google2fa extends Component
                 toastr()->success('Two-Factor Authentication has been enabled successfully!');
                 $this->dispatch('close-modal', '2fa-modal');
                 $this->reset('otpCodeEnable');
+                $this->is2FAEnabled = true;
                 session()->put('google2fa', true);
 
-                $this->is2FAEnabled = true;
             } else {
                 // Rollback the transaction if the OTP is invalid
                 DB::rollBack();
@@ -135,6 +134,7 @@ class Google2fa extends Component
                 $this->dispatch('close-modal', 'disable-modal');
                 $this->reset('otpCodeDisable');
                 $this->is2FAEnabled = false;
+                session()->forget('google2fa');
             } else {
                 // Rollback the transaction if the OTP is invalid
                 DB::rollBack();
