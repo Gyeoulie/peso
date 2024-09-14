@@ -95,7 +95,7 @@ class CreateTrainining extends Component
             'progTime' => 'required_if:progType,PESO Hosted|date_format:H:i',
             'progLoc' => 'required|string|max:255',
             'progModality' => 'required|string|max:255',
-            'progImg' => 'nullable|image|mimes:jpg,jpeg,png|max:10240', // 10MB max
+            'progImg' => 'required|image|mimes:jpg,jpeg,png|max:10240', // 10MB max
             'descPost' => 'required|string',
             'qualPost' => 'required|string',
             'remPost' => 'nullable|string', // Remarks are not required
@@ -136,6 +136,7 @@ class CreateTrainining extends Component
             'progModality.string' => 'The program modality must be a string.',
             'progModality.max' => 'The program modality may not be greater than 255 characters.',
 
+            'progImg.image' => 'The program image is required.',
             'progImg.image' => 'The program image must be an image file.',
             'progImg.mimes' => 'The program image must be a file of type: jpg, jpeg, png.',
             'progImg.max' => 'The program image may not be greater than 10MB.',

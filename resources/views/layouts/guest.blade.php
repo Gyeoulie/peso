@@ -45,7 +45,6 @@
 
     <!-- Scripts -->
     @livewireStyles
-    @livewireScripts
     @vite(['resources/css/app.css'])
 </head>
 
@@ -68,33 +67,22 @@
         </div>
     </div>
     <script>
-        // Listen for storage events
-        // window.addEventListener('storage', function(event) {
-        //     if (event.key === 'user-logged-out' && event.newValue === 'true') {
-        //         localStorage.removeItem('user-logged-out'); // Clean up
-        //         window.location.href = '/'; // Redirect to the welcome page
-        //     }
-        // });
-        window.addEventListener('storage', function(event) {
-            if (event.key === 'user-logged-out') {
-                localStorage.removeItem('user-logged-out'); // Clean up
-                window.location.href = '/'; // Redirect to the welcome page
-            }
-        });
-
-        // Check local storage on page load
-    </script>
-    {{-- <script>
-        function checkSessionOnLoad() {
-            if (localStorage.getItem('user-logged-out')) {
+        function handleLogout() {
+            if (localStorage.getItem('user-logged-out') === 'true') {
                 localStorage.removeItem('user-logged-out'); // Clean up
                 window.location.href = '/'; // Redirect to the welcome page
             }
         }
 
-        // Run check on page load
-        checkSessionOnLoad();
-    </script> --}}
+        // Listen for storage events
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'user-logged-out') {
+                handleLogout();
+            }
+        });
+    </script>
+
+    @livewireScripts
 </body>
 
 </html>
