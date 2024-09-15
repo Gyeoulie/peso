@@ -11,7 +11,6 @@ use App\Models\Job_Posting;
 use App\Models\Partnerships;
 use App\Models\Requirements;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -53,6 +52,19 @@ class EmployerOverview extends Component
         if ($partnership->partnership_Status != 'APPROVED') {
             return $this->redirectRoute('dashboard');
         }
+    }
+
+    public function viewFile($reqPassedId)
+    {
+
+        $url = route('view.requirement');
+        // Dispatch an event to trigger JavaScript for opening a new tab
+        $this->dispatch('viewFile', [
+            'url' => $url,
+            'req_passed_id' => $reqPassedId,
+
+        ]);
+
     }
 
     public function updatePartnership()
