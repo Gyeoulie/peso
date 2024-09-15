@@ -11,6 +11,7 @@ use App\Models\Industry_preference;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
+use App\Models\Work_Exp;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -267,7 +268,7 @@ class ApplicantOverview extends Component
 
         // Query to check if the specific job posting matches the employee
         return Job_Posting::where('job_id', $applicant->job_id)
-            // ->where('job_Status', 'ACTIVE')
+        // ->where('job_Status', 'ACTIVE')
             ->whereHas('peso.municipality', function ($query) use ($employeeMunicipalityId) {
                 $query->where('municipality_id', $employeeMunicipalityId);
             })
@@ -284,6 +285,7 @@ class ApplicantOverview extends Component
             })
             ->exists();
     }
+
     public function render()
     {
         $user = Auth::user();
@@ -294,9 +296,38 @@ class ApplicantOverview extends Component
             return redirect()->route('admin-joblist');
         }
 
+        $maxEduLevel = $applicant->employee->education->max('edu_Level');
+
+        // Get the corresponding education level label
+        $educationLabel = $this->eduLevels[$maxEduLevel] ?? 'NONE';
+
+        // Determine the education attainment category
+        $attainment = '';
+
+        if ($maxEduLevel >= 9 && $maxEduLevel <= 9) {
+            $attainment = 'Elementary Graduate';
+        } elseif ($maxEduLevel >= 10 && $maxEduLevel <= 15) {
+            $attainment = 'High School Level';
+        } elseif ($maxEduLevel == 16) {
+            $attainment = 'High School Graduate';
+        } elseif ($maxEduLevel >= 19 && $maxEduLevel <= 23) {
+            $attainment = 'College Level';
+        } elseif ($maxEduLevel == 24) {
+            $attainment = 'College Graduate';
+        } elseif ($maxEduLevel == 25) {
+            $attainment = 'Master Level';
+        } elseif ($maxEduLevel == 26) {
+            $attainment = 'Master Graduate';
+        } else {
+            $attainment = 'Other';
+        }
+        
+
+        $totalExperience = Work_Exp::getTotalExperience($applicant->employee_id);
+
         $isMatch = $this->checkIfJobSeekerMatches($applicant);
 
-        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant', 'isMatch'));
+        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant', 'isMatch', 'attainment', 'totalExperience'));
     }
 
 }

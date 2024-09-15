@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Reports\BarangayPartials;
 
 use App\Models\Employee;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -25,10 +26,10 @@ class JobseekerList extends Component
     public $searchJobseekers;
 
     // MOUNT
-    public $mountGender, $mountAge = [], $mountEmpStatus;
+    public $mountGender, $mountAge = [], $mountEmpStatus, $mountCivilStatus, $mountEducationAttainment;
 
     // REAL FILTER VALUES
-    public $Gender, $Age = [], $EmpStatus;
+    public $Gender, $Age = [], $EmpStatus, $civilStatus, $educationAttainment;
 
     public $mountSelectedMonths = [];
 
@@ -53,8 +54,8 @@ class JobseekerList extends Component
 
     public function resetFilter()
     {
-        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'Gender', 'Age', 'EmpStatus');
-
+        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountCivilStatus', 'mountEducationAttainment', 'Gender', 'Age', 'EmpStatus', 'civilStatus', 'educationAttainment');
+        $this->resetPage();
     }
 
     #[On('updateBar')]
@@ -77,7 +78,12 @@ class JobseekerList extends Component
         $this->Gender = $this->mountGender;
         $this->Age = $this->mountAge;
         $this->EmpStatus = $this->mountEmpStatus;
+        $this->civilStatus = $this->mountCivilStatus;
+        $this->educationAttainment = $this->mountEducationAttainment;
+
         $this->dispatch('close-modal', 'filter-jobseekers-modal');
+        $this->resetPage();
+
     }
 
     private function getJobseekers()
@@ -116,7 +122,36 @@ class JobseekerList extends Component
             $employee = $employee->orderByRaw('TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) ASC');
         }
 
+        if ($this->civilStatus) {
+            $employee->where('civilstatus', $this->civilStatus);
+        }
+        if (!empty($this->educationAttainment)) {
+            $employee->whereHas('education', function ($query) {
+                $query->select(DB::raw('MAX(edu_Level) as max_edu_level'))
+                    ->groupBy('employee_id')
+                    ->havingRaw($this->getEducationAttainmentCondition());
+            });
+        }
+
         return $employee;
+    }
+
+    private function getEducationAttainmentCondition()
+    {
+        switch ($this->educationAttainment) {
+            case 'Elementary Graduate':
+                return 'MAX(edu_Level) = 9';
+            case 'High School Level':
+                return 'MAX(edu_Level) BETWEEN 10 AND 15';
+            case 'High School Graduate':
+                return 'MAX(edu_Level) = 16';
+            case 'College Level':
+                return 'MAX(edu_Level) BETWEEN 19 AND 23';
+            case 'College Graduate':
+                return 'MAX(edu_Level) = 24';
+            default:
+                return '1=0'; // No valid condition, won't return results.
+        }
     }
 
     public function exportData()

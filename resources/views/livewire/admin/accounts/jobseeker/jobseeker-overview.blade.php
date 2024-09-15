@@ -72,13 +72,26 @@
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold text-left">Status:</li>
                             <p class="ms-4 text-left break-all">
-                                {{ $jobseeker->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
+                                {{ $jobseeker->empstatus == 1 ? 'Employed' : 'Unemployed' }}
                             </p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Contact:</li>
                             <p class="ms-4 break-all">{{ $jobseeker->pnumber }}</p>
+                        </div>
+
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold">Education:</li>
+                            <p class="ms-4 break-all">{{ $attainment }}</p>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold">Birthday:</li>
+                            <p class="ms-4 break-all">{{ $jobseeker->birthdate->format('F j, Y') }}</p>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold">Work Experience:</li>
+                            <p class="ms-4 break-all">{{ $totalExperience }} Months</p>
                         </div>
 
                         <div class="flex flex-row justify-between">

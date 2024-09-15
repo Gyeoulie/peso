@@ -13,6 +13,7 @@ use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use App\Models\Program_Reg;
+use App\Models\Work_Exp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -403,6 +404,34 @@ class JobseekerOverview extends Component
 
         $this->mountFields($jobseeker);
 
+        $maxEduLevel = $jobseeker->education->max('edu_Level');
+
+        // Get the corresponding education level label
+        $educationLabel = $this->eduLevels[$maxEduLevel] ?? 'NONE';
+
+        // Determine the education attainment category
+        $attainment = '';
+
+        if ($maxEduLevel >= 9 && $maxEduLevel <= 9) {
+            $attainment = 'Elementary Graduate';
+        } elseif ($maxEduLevel >= 10 && $maxEduLevel <= 15) {
+            $attainment = 'High School Level';
+        } elseif ($maxEduLevel == 16) {
+            $attainment = 'High School Graduate';
+        } elseif ($maxEduLevel >= 19 && $maxEduLevel <= 23) {
+            $attainment = 'College Level';
+        } elseif ($maxEduLevel == 24) {
+            $attainment = 'College Graduate';
+        } elseif ($maxEduLevel == 25) {
+            $attainment = 'Master Level';
+        } elseif ($maxEduLevel == 26) {
+            $attainment = 'Master Graduate';
+        } else {
+            $attainment = 'Other';
+        }
+
+        $totalExperience = Work_Exp::getTotalExperience($jobseeker->employee_id);
+
         $audits = Audit::where('user_id', $jobseeker->user_id)
             ->latest()
             ->paginate(5, ['*'], 'audits');
@@ -416,6 +445,8 @@ class JobseekerOverview extends Component
                 'application_history',
                 'joblist',
                 'programHistory',
+                'attainment',
+                'totalExperience',
                 'audits',
                 'formattedAudits'));
     }

@@ -51,7 +51,7 @@
                             <x-dropdown align="left" width="24">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
                                         <div>
                                             {{ $filter }}
                                         </div>
@@ -93,7 +93,7 @@
                             <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
                                         <div>
                                             @if (empty($sortDate))
                                                 Sort By Date

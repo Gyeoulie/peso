@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Job_Applicants;
+use App\Models\Work_Exp;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -23,8 +24,8 @@ class JobseekersList extends Component
     public $searchJobseekers, $searchCompany;
     public $startYear, $currentYear;
 
-    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $selectedMonths = [], $selectedYear;
-    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountSelectedMonths = [], $mountSelectedYear;
+    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $civilStatus, $educationAttainment, $selectedMonths = [], $selectedYear;
+    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountCivilStatus, $mountEducationAttainment, $mountSelectedMonths = [], $mountSelectedYear;
 
     public $companyMun, $munYear, $munMonths = [];
     public $mountCompanyMun, $mountMunYear, $mountMunMonths = [];
@@ -60,15 +61,29 @@ class JobseekersList extends Component
                 $writer = SimpleExcelWriter::streamDownload($fileName);
 
                 foreach ($jobseekers as $data) {
+                    $civilStatus = $data->civilstatus == 1 ? 'Single' :
+                    ($data->civilstatus == 2 ? 'Married' :
+                        ($data->civilstatus == 3 ? 'Widowed' : 'Unknown'));
+
+                    // Fetch the highest educational attainment
+                    $maxEduLevel = $data->education->max('edu_Level');
+                    $educationAttainment = $this->mapEducationAttainment($maxEduLevel);
+
+                    $totalWorkExperience = Work_Exp::getTotalExperience($data->employee_id);
+
                     $writer->addRow([
                         'First Name' => $data->fname,
                         'Middle Name' => $data->mname,
                         'Last Name' => $data->lname,
                         'Gender' => $data->gender == 1 ? 'MALE' : ($data->gender == 2 ? 'FEMALE' : 'UNKNOWN'),
                         'Date of Birth' => $data->birthdate->format('Y-m-d'),
+                        'Civil Status' => $civilStatus,
                         'Employment Status' => $data->empstatus == 1 ? 'EMPLOYED' : ($data->empstatus == 2 ? 'UNEMPLOYED' : 'UNKNOWN'),
                         'Job Applications' => $data->job_applications,
                         'Program Registrations' => $data->program_reg_count,
+                        'Educational Attainment' => $educationAttainment,
+                        'Work Experience' => $totalWorkExperience . ' Months',
+
                     ]);
                 }
 
@@ -108,10 +123,32 @@ class JobseekersList extends Component
         }
     }
 
+    private function mapEducationAttainment($eduLevel)
+    {
+        switch ($eduLevel) {
+            case 9:
+                return 'Elementary Graduate';
+            case ($eduLevel >= 10 && $eduLevel <= 15):
+                return 'High School Level';
+            case 16:
+                return 'High School Graduate';
+            case ($eduLevel >= 19 && $eduLevel <= 23):
+                return 'College Level';
+            case 24:
+                return 'College Graduate';
+            case ($eduLevel == 25):
+                return 'Master Level';
+            case ($eduLevel == 26):
+                return 'Master Graduate';
+            default:
+                return 'Lower than Elementary Graduate';
+        }
+    }
+
     public function resetFilter()
     {
-        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountJobseekerfilter', 'mountSelectedMonths', 'mountSelectedYear',
-            'Gender', 'Age', 'EmpStatus', 'jobseekerfilter', 'selectedMonths', 'selectedYear');
+        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountJobseekerfilter', 'mountCivilStatus', 'mountEducationAttainment', 'mountSelectedMonths', 'mountSelectedYear',
+            'Gender', 'Age', 'EmpStatus', 'jobseekerfilter', 'civilStatus', 'educationAttainment', 'selectedMonths', 'selectedYear');
         $this->resetPage('jobseeker');
 
     }
@@ -122,6 +159,9 @@ class JobseekersList extends Component
         $this->Age = $this->mountAge;
         $this->EmpStatus = $this->mountEmpStatus;
         $this->jobseekerfilter = $this->mountJobseekerfilter;
+        $this->civilStatus = $this->mountCivilStatus;
+        $this->educationAttainment = $this->mountEducationAttainment;
+
         $this->selectedMonths = $this->mountSelectedMonths;
         $this->selectedYear = $this->mountSelectedYear;
 
@@ -219,11 +259,52 @@ class JobseekersList extends Component
             }
         }
 
-        // Debug the query
-        // dd($employee->toSql(), $employee->getBindings());
+        if (isset($this->civilStatus)) {
+            $employee->where('civilstatus', $this->civilStatus);
+        }
 
-        // Return paginated results
+        // Filter for jobseekers based on job applications
+        if (isset($this->jobseekerfilter)) {
+            switch ($this->jobseekerfilter) {
+                case 'with_applications':
+                    $employee->whereHas('job_applicants');
+                    break;
+                case 'without_applications':
+                    $employee->doesntHave('job_applicants');
+                    break;
+                case 'all':
+                default:
+
+                    break;
+            }
+        }
+        if (!empty($this->educationAttainment)) {
+            $employee->whereHas('education', function ($query) {
+                $query->select(DB::raw('MAX(edu_Level) as max_edu_level'))
+                    ->groupBy('employee_id')
+                    ->havingRaw($this->getEducationAttainmentCondition());
+            });
+        }
+
         return $employee;
+    }
+
+    private function getEducationAttainmentCondition()
+    {
+        switch ($this->educationAttainment) {
+            case 'Elementary Graduate':
+                return 'MAX(edu_Level) = 9';
+            case 'High School Level':
+                return 'MAX(edu_Level) BETWEEN 10 AND 15';
+            case 'High School Graduate':
+                return 'MAX(edu_Level) = 16';
+            case 'College Level':
+                return 'MAX(edu_Level) BETWEEN 19 AND 23';
+            case 'College Graduate':
+                return 'MAX(edu_Level) = 24';
+            default:
+                return '1=0'; // No valid condition, won't return results.
+        }
     }
 
     private function getEmployers($adminMunicipalityId)

@@ -253,6 +253,49 @@
                     </div>
                 </div>
 
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Civil Status</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-all" type="radio" value=""
+                                name="civilStatus" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-single" type="radio" value="1"
+                                name="civilStatus" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-single" class="ms-2 text-sm font-medium text-gray-900">Single</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-married" type="radio" value="2"
+                                name="civilStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-married" class="ms-2 text-sm font-medium text-gray-900">Married</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-widowed" type="radio" value="3"
+                                name="civilStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-widowed" class="ms-2 text-sm font-medium text-gray-900">Widowed</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Educational Attainment</h1>
+
+                    <select wire:model="mountEducationAttainment" class="block mt-1 w-full rounded-md">
+                        <option value="" selected>None</option>
+                        <option value="Elementary Graduate">Elementary Graduate</option>
+                        <option value="High School Level">High School Level</option>
+                        <option value="High School Graduate">High School Graduate</option>
+                        <option value="College Level">College Level</option>
+                        <option value="College Graduate">College Graduate</option>
+                    </select>
+                </div>
+
             </div>
             <div class="mt-6 flex justify-between">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'filter-jobseekers-modal')">

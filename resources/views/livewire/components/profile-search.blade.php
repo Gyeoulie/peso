@@ -8,7 +8,7 @@
                     d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
             </svg>
         </div>
-        <input wire:model.debounce.500ms="search" wire:keydown.enter="searchProfile" type="text"
+        <input wire:model="search" wire:keydown.enter="searchProfile" type="text"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
             placeholder="Search profile..." />
     </div>
