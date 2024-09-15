@@ -11,6 +11,7 @@ use App\Models\Job_Posting;
 use App\Models\Partnerships;
 use App\Models\Requirements;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -91,6 +92,10 @@ class EmployerOverview extends Component
             // Commit the transaction
             DB::commit();
             Mail::to($partnership->company->user->email)->queue(new PartnershipCancellationNotification($partnership));
+            // Artisan::call('partnership:cancel', [
+            //     'companyId' => $this->id,
+            //     'pesoId' => $user->peso_accounts->peso_id,
+            // ]);
 
             toastr()->success('Partnership status has been updated successfully.');
 
@@ -309,6 +314,8 @@ class EmployerOverview extends Component
 
         // Optionally customize chart properties
         $columnChartModel
+            ->setTitle("Company Job Tags")
+
             ->setAnimated(true)
             ->setYAxisVisible(false)
             ->setDataLabelsEnabled(true)
@@ -322,6 +329,57 @@ class EmployerOverview extends Component
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
                 'xaxis.labels.show' => false,
             ]);
+
+        return $columnChartModel;
+    }
+
+    public function getHiredAndRejectedChart($pesoId)
+    {
+        // Retrieve job postings by company, filtered by peso_id and status
+        $jobPostings = Job_Posting::where('company_id', $this->id)
+            ->where('peso_id', $pesoId) // Filter by peso_id
+            ->where('job_Status', 'COMPLETED') // Filter by completed job postings
+            ->with('job_applicants') // Eager load job applicants
+            ->get();
+
+        // Initialize counts
+        $hiredCount = 0;
+        $rejectedCount = 0;
+
+        // Count applicants based on status
+        foreach ($jobPostings as $jobPosting) {
+            foreach ($jobPosting->job_applicants as $applicant) {
+                if ($applicant->applicant_Status === 'ACCEPTED') {
+                    $hiredCount++;
+                } elseif (in_array($applicant->applicant_Status, ['REJECTED', 'CANCELLED'])) {
+                    $rejectedCount++;
+                }
+            }
+        }
+
+        // Generate the column chart model
+        $columnChartModel = new ColumnChartModel();
+
+        $columnChartModel->addColumn('HIRED', $hiredCount, '#008000');
+        $columnChartModel->addColumn('REJECTED', $rejectedCount, '#FF0000');
+
+        $columnChartModel
+            ->setTitle("Job Applicants Hired")
+            ->setAnimated(true)
+            ->setYAxisVisible(false)
+            ->setDataLabelsEnabled(true)
+            ->setLegendVisibility(true)
+            ->setJsonConfig([
+                'chart' => [
+                    'height' => '300px',
+                    'width' => '100%',
+                ],
+                'yaxis.tickAmount' => 1,
+                'yaxis.labels.formatter' => '(val) => Math.floor(val)',
+                'xaxis.labels.show' => false,
+            ]);
+
+        // Add columns to the chart
 
         return $columnChartModel;
     }
@@ -372,6 +430,7 @@ class EmployerOverview extends Component
         $requirements = null;
         $partnership = null;
         $topTags = null;
+        $totalHired = 0;
 
         $employer = Company::findOrFail($this->id);
 
@@ -392,6 +451,9 @@ class EmployerOverview extends Component
                 ->where('peso_id', $user->peso_accounts->peso_id)
                 ->first();
 
+            $totalHired = $employer->getTotalHiredApplicants($user->peso_accounts->peso_id);
+            $countsAndChart = $this->getHiredAndRejectedChart($user->peso_accounts->peso_id);
+
         }
 
         $audits = Audit::where('user_id', $employer->user_id)
@@ -402,6 +464,6 @@ class EmployerOverview extends Component
             return AuditFormatter::format($audit);
         });
 
-        return view('livewire.admin.accounts.employer.employer-overview', compact('employer', 'joblist', 'requirements', 'topTags', 'partnership', 'audits', 'formattedAudits'));
+        return view('livewire.admin.accounts.employer.employer-overview', compact('employer', 'joblist', 'requirements', 'topTags', 'partnership', 'totalHired', 'countsAndChart', 'audits', 'formattedAudits'));
     }
 }

@@ -69,7 +69,7 @@ class CompleteJobPostings extends Command
 
         // Fetch and store old values for job applicants
         $affectedApplicants = Job_Applicants::whereIn('job_id', $completedJobPostings)
-            ->whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED'])
+            ->whereNotIn('applicant_Status', ['REJECTED', 'ACCEPTED', 'CANCELLED'])
             ->get();
 
         foreach ($affectedApplicants as $applicant) {

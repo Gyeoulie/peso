@@ -6,47 +6,11 @@
         </div>
 
         <div class="col-span-4 sm:col-span-12">
-            <div class="bg-white shadow rounded-lg p-6" x-data="{
-                openTab: 1,
-                activeClasses: 'text-gray-900 bg-gray-400 active',
-                inactiveClasses: 'bg-gray-100 hover:text-gray-700 hover:bg-gray-50'
-            }">
+            <div class="bg-white shadow rounded-lg p-6">
 
-                <h1 class="text-3xl text-center font-bold">Jobseekers</h1>
+
 
                 <div class="relative p-1 mt-4">
-                    <div class="sm:hidden">
-                        <label for="tabs" class="sr-only">Select Filters</label>
-                        <select id="tabs"
-                            class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option wire:click.prevent='updateUserFilter("ALL")' @click="openTab = 1">All</option>
-                            <option wire:click.prevent='updateUserFilter(1)' @click="openTab = 2">>Employed</option>
-                            <option wire:click.prevent='updateUserFilter(2)' @click="openTab = 4">>Unemployed</option>
-                        </select>
-                    </div>
-                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
-                        <li class="w-full focus-within:z-10">
-                            <button wire:click.prevent='updateUserFilter("ALL")' @click="openTab = 1"
-                                :class="openTab === 1 ? activeClasses : inactiveClasses"
-                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-s-lg"
-                                aria-current="page">All</button>
-                        </li>
-                        <li wire:click.prevent='updateUserFilter(1)' class="w-full focus-within:z-10">
-                            <button @click="openTab = 2" :class="openTab === 2 ? activeClasses : inactiveClasses"
-                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">EMPLOYED</button>
-                        </li>
-
-                        <li wire:click.prevent='updateUserFilter(2)' class="w-full focus-within:z-10">
-                            <button @click="openTab = 4" :class="openTab === 4 ? activeClasses : inactiveClasses"
-                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">UNEMPLOYED</button>
-                        </li>
-
-                    </ul>
-                    <div id="tooltip-top" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                        Tooltip on top
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
 
                     <div
                         class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
@@ -66,6 +30,24 @@
                             <input wire:model.live.prevent='searchUsers' type="text" id="table-search-users"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
+                        </div>
+
+                        <div class="flex flex-row gap-2">
+                            <div x-data="{ tooltip: 'Export to Excel' }">
+                                <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
+                                    class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                                    <span class="mr-2">Export</span>
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                                    </svg>
+                                </button>
+
+                            </div>
+                            <button type="button" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'filter-jobseekers-modal')"
+                                class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
                         </div>
 
                     </div>
@@ -200,4 +182,201 @@
         </div>
 
     </div>
+
+
+
+    <x-modal name="filter-jobseekers-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Filter Job Seekers') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col w-full">
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Gender</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountGender' id="gender-all" type="radio" value=""
+                                name="gender" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="gender-all" class="ms-2 text-sm font-medium text-gray-900">None</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountGender' id="gender-male" type="radio" value="1"
+                                name="gender"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="gender-male" class="ms-2 text-sm font-medium text-gray-900">Male</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountGender' id="gender-female" type="radio" value="2"
+                                name="gender"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="gender-female" class="ms-2 text-sm font-medium text-gray-900">Female</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Age</h1>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <input wire:model='mountAge' id="checkbox-18s" type="checkbox" value="18-19"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <label for="checkbox-18s" class="ms-2 text-sm font-medium text-gray-900">18-19</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountAge' id="checkbox-20s" type="checkbox" value="20-29"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <label for="checkbox-20s" class="ms-2 text-sm font-medium text-gray-900">20-29</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountAge' id="checkbox-30s" type="checkbox" value="30-39"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <label for="checkbox-30s" class="ms-2 text-sm font-medium text-gray-900">30-39</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountAge' id="checkbox-40s" type="checkbox" value="40-49"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <label for="checkbox-40s" class="ms-2 text-sm font-medium text-gray-900">40-49</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountAge' id="checkbox-50s" type="checkbox" value="50-59"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <label for="checkbox-50s" class="ms-2 text-sm font-medium text-gray-900">50-59</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountAge' id="checkbox-60s" type="checkbox" value="60-69"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <label for="checkbox-60s" class="ms-2 text-sm font-medium text-gray-900">60-69</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Employment Status</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountEmpStatus' id="emp-none" type="radio" value=""
+                                name="empStatus" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="emp-none" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountEmpStatus' id="emp-emp" type="radio" value="1"
+                                name="empStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="emp-emp" class="ms-2 text-sm font-medium text-gray-900">Employed</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountEmpStatus' id="emp-unemp" type="radio" value="2"
+                                name="empStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="emp-unemp" class="ms-2 text-sm font-medium text-gray-900">Unemployed</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Applications</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountJobseekerfilter' id="job-all" type="radio" value=""
+                                name="JobseekerFilter" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="job-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountJobseekerfilter' id="job-with" type="radio"
+                                value="with_applications" name="JobseekerFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="job-with" class="ms-2 text-sm font-medium text-gray-900">With
+                                Applications</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountJobseekerfilter' id="job-without" type="radio"
+                                value="without_applications" name="JobseekerFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="job-without" class="ms-2 text-sm font-medium text-gray-900">Without
+                                Applications</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Civil Status</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-all" type="radio" value=""
+                                name="civilStatus" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-single" type="radio" value="1"
+                                name="civilStatus" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-single" class="ms-2 text-sm font-medium text-gray-900">Single</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-married" type="radio" value="2"
+                                name="civilStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-married" class="ms-2 text-sm font-medium text-gray-900">Married</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-widowed" type="radio" value="3"
+                                name="civilStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-widowed" class="ms-2 text-sm font-medium text-gray-900">Widowed</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Educational Attainment</h1>
+
+                    <select wire:model="mountEducationAttainment" class="block mt-1 w-full rounded-md">
+                        <option value="" selected>None</option>
+                        <option value="Elementary Graduate">Elementary Graduate</option>
+                        <option value="High School Level">High School Level</option>
+                        <option value="High School Graduate">High School Graduate</option>
+                        <option value="College Level">College Level</option>
+                        <option value="College Graduate">College Graduate</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="mt-6 flex justify-between">
+                <x-secondary-button x-on:click="$dispatch('close-modal', 'filter-jobseekers-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <div>
+                    <x-danger-button wire:click.prevent="resetFilter">
+                        {{ __('Reset') }}
+                    </x-danger-button>
+                    <x-primary-button wire:loading.attr="disabled" wire:click.prevent="mountFilter" class="ms-3"
+                        type="button">
+                        {{ __('Confirm') }}
+                        <div wire:loading.delay.long wire:target="mountFilter" role="status">
+                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    fill="currentFill" />
+                            </svg>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </x-primary-button>
+                </div>
+
+            </div>
+        </div>
+    </x-modal>
+
 </div>

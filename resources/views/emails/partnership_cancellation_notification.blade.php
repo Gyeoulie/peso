@@ -15,6 +15,10 @@ Below are the remarks from PESO {{ $PESO }} regarding the cancellation of your p
 </p>
 </div>
 
+**Important Notice:**
+
+As a result of this cancellation, all active job postings associated with PESO {{ $PESO }} in the current municipality will also be marked as cancelled. Additionally, any job applications submitted for these postings will be cancelled.
+
 We understand that this news may be disappointing. If you have any questions or require further clarification regarding this decision, please feel free to contact us.
 
 We appreciate your interest in collaborating with PESO and thank you for your understanding.

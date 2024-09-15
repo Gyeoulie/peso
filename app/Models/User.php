@@ -21,6 +21,8 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
 
     protected $attributeModifiers = [
         'password' => FiveHashRedactor::class,
+        'remember_token' => FiveHashRedactor::class,
+
     ];
 
     /**

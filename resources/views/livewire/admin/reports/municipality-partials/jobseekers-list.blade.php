@@ -51,7 +51,7 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-jobseekers-modal')"
-                    class="py-1.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                    class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -103,8 +103,8 @@
                         @foreach ($jobseekers as $data)
                             <tr wire:key='applicants-{{ $data->job_id }}' class="bg-white border-b hover:bg-gray-50">
                                 <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                    <img class="w-10 h-10 rounded-full object-cover" src="{{ asset('storage/' . $data->pimg) }}"
-                                        alt="img">
+                                    <img class="w-10 h-10 rounded-full object-cover"
+                                        src="{{ asset('storage/' . $data->pimg) }}" alt="img">
                                     <div class="ps-3 text-wrap">
                                         <div class="text-base font-semibold">
                                             <div class="text-base font-semibold uppercase">
@@ -203,7 +203,7 @@
             <div class="flex flex-row gap-2">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData('employers')"
-                        class="flex items-center py-1.5 px-4 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <span class="mr-2">Export</span>
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -515,6 +515,50 @@
 
                     </div>
                 </div>
+
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Civil Status</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-all" type="radio" value=""
+                                name="civilStatus" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-single" type="radio" value="1"
+                                name="civilStatus" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-single" class="ms-2 text-sm font-medium text-gray-900">Single</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-married" type="radio" value="2"
+                                name="civilStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-married" class="ms-2 text-sm font-medium text-gray-900">Married</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-widowed" type="radio" value="3"
+                                name="civilStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-widowed" class="ms-2 text-sm font-medium text-gray-900">Widowed</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Educational Attainment</h1>
+
+                    <select wire:model="mountEducationAttainment" class="block mt-1 w-full rounded-md">
+                        <option value="" selected>None</option>
+                        <option value="Elementary Graduate">Elementary Graduate</option>
+                        <option value="High School Level">High School Level</option>
+                        <option value="High School Graduate">High School Graduate</option>
+                        <option value="College Level">College Level</option>
+                        <option value="College Graduate">College Graduate</option>
+                    </select>
+                </div>
+
 
             </div>
             <div class="mt-6 flex justify-between">

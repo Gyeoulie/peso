@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -42,6 +43,27 @@ class Work_Exp extends Model implements Auditable
     public function job_positions()
     {
         return $this->belongsTo(Job_Positions::class, 'position_id');
+    }
+
+    public static function getTotalExperience($employeeId)
+    {
+        // Retrieve all work experiences for the given employee
+        $workExperiences = self::where('employee_id', $employeeId)->get();
+
+        $totalMonths = 0;
+
+        foreach ($workExperiences as $experience) {
+            // Ensure work_Start and work_End are valid
+            if ($experience->work_Start) {
+                $startDate = Carbon::parse($experience->work_Start);
+                $endDate = $experience->work_End ? Carbon::parse($experience->work_End) : Carbon::now();
+                $months = $startDate->diffInMonths($endDate);
+                $totalMonths += $months;
+            }
+        }
+
+        // Return the total experience in whole months, cast to integer
+        return (int) $totalMonths;
     }
 
     public static function fieldMappings()

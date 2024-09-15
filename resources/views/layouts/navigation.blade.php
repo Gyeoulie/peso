@@ -85,7 +85,7 @@
             </div>
 
             @if (Auth::check() && auth()->user()->usertype > 3)
-                @if (auth()->user()->usertype != 5)
+                @if (auth()->user()->usertype != 5 && Route::currentRouteName() != 'search.profiles')
                     <div class="hidden sm:flex mr-1 ml-auto  w-40 lg:w-96">
 
 
@@ -211,7 +211,7 @@
 
                     </x-responsive-nav-link>
                 @endif
-                @if (auth()->user()->usertype != 5)
+                @if (auth()->user()->usertype != 5 && Route::currentRouteName() != 'search.profiles')
                     <div class="flex px-4 ">
 
 

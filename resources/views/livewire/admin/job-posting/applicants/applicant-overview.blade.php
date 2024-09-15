@@ -300,6 +300,19 @@
                                     <li class="mb-2 font-bold">Email:</li>
                                     <p class="ms-4">{{ $applicant->employee->user->email }}</p>
                                 </div>
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">Education:</li>
+                                    <p class="ms-4 uppercase">
+                                        {{ $attainment }}
+                                    </p>
+                                </div>
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">Work Experience:</li>
+                                    <p class="ms-4 uppercase">
+                                        {{ $totalExperience }} Months
+                                    </p>
+                                </div>
+
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Address:</li>
@@ -319,7 +332,7 @@
                                 <x-input-label for="fname"> </i> Job Preferences
                                 </x-input-label>
                                 {{-- BADGE CONTAINER --}}
-                                <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
+                                <div id= "job-preference" class="flex-inline p-1 mt-2">
                                     @foreach ($applicant->employee->job_preference as $jobpref)
                                         {{-- BADGE --}}
                                         <span
@@ -331,7 +344,7 @@
                             </div>
 
                             <div>
-                                <x-input-label for="fname"> </i> Industry Preference
+                                <x-input-label for="industry-preference"> </i> Industry Preference
                                 </x-input-label>
                                 {{-- BADGE CONTAINER --}}
                                 <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
@@ -340,6 +353,21 @@
                                         <span
                                             class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 px-2.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                             {{ $industrypref->job_industry->industry_Title }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div>
+                                <x-input-label for="skills"> </i> Skills
+                                </x-input-label>
+                                {{-- BADGE CONTAINER --}}
+                                <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
+                                    @foreach ($applicant->employee->skills as $skills)
+                                        {{-- BADGE --}}
+                                        <span
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 px-2.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            {{ $skills->skill_Type }}
                                         </span>
                                     @endforeach
                                 </div>
@@ -353,8 +381,14 @@
 
                         <div class="flex flex-col  mt-2">
                             <h1 class="mb-2 font-bold">PESO Remarks -
-                                {{ $applicant->peso_accounts->peso_accounts_Fname }}
-                                {{ $applicant->peso_accounts->peso_accounts_Lname }}</h1>
+                                @if ($applicant->peso_accounts)
+                                    {{ $applicant->peso_accounts->peso_accounts_Fname }}
+                                    {{ $applicant->peso_accounts->peso_accounts_Lname }}
+                                @else
+                                    System
+                                @endif
+                            </h1>
+
                             <textarea id="message" rows="6"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
                                 placeholder="Company remarks..." maxlength="600" readonly>{{ $applicant->peso_Remarks }}</textarea>

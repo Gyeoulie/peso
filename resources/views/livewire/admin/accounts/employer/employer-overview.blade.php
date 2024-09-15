@@ -258,7 +258,6 @@
 
                             <span class="mb-1 font-bold">Company Industry:</span>
 
-
                             {{-- BADGE CONTAINER --}}
                             <div id= "otherSkillRow" class="flex-inline p-1">
                                 {{-- BADGE --}}
@@ -290,16 +289,23 @@
                             </div>
 
                         </div>
+
+
+
                         <div class="flex flex-col w-full">
-                            <span class="mb-1 font-bold">Company Job Posting Tags:</span>
+                            <span class="mb-1 font-bold">Company Charts:</span>
                             <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                            <div class="flex flex-col h-[400px] lg:h-full items-end">
+                            <div class="flex flex-row h-[400px] lg:h-full items-end">
+                                <livewire:livewire-column-chart key="{{ $countsAndChart->reactiveKey() }}"
+                                    :column-chart-model="$countsAndChart" />
                                 <livewire:livewire-column-chart key="{{ $topTags->reactiveKey() }}"
                                     :column-chart-model="$topTags" />
+
                             </div>
 
 
                         </div>
+
 
 
 
