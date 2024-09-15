@@ -19,16 +19,16 @@ class JobPostApplicants extends Component
 
     public $search;
 
-    public function mount($id)
-    {
+// public function mount($id)
+// {
 
-        try {
-            $this->id = decrypt($id);
-        } catch (DecryptException $e) {
+//     try {
+//         $this->id = decrypt($id);
+//     } catch (DecryptException $e) {
 
-            return redirect()->route('error.404')->with('error', 'Invalid or tampered ID');
-        }
-    }
+//         return redirect()->route('error.404')->with('error', 'Invalid or tampered ID');
+//     }
+// }
 
     public $eduLevels = [
         '0' => 'NONE',
