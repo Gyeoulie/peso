@@ -260,7 +260,7 @@
                                                     @if ($filter == 'ACTIVE' || $filter == 'CLOSED' || $filter == 'COMPLETED')
                                                         <div x-data="{ tooltip: 'View Applicants' }">
                                                             <a wire:navigate
-                                                                href="{{ route('admin.jobpost.applicants', ['id' => encrypt($data->job_id)]) }}"
+                                                                href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
                                                                 x-tooltip="tooltip" type="button"
                                                                 class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                 <svg class="w-5 h-5 " aria-hidden="true"
