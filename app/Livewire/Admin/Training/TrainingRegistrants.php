@@ -7,8 +7,12 @@ use App\Models\Industry_preference;
 use App\Models\Job_Preference;
 use App\Models\Programs;
 use App\Models\Program_Reg;
+use Carbon\Carbon;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -86,16 +90,18 @@ class TrainingRegistrants extends Component
 
     public function qrCodeScanned($decodedText)
     {
-        // Example: Find a record by the QR code content
-        // You can replace this with your own logic
-        $ticketData = json_decode($decodedText, true);
-
         try {
+            // Attempt to decrypt the QR code content
+            $decryptedText = Crypt::decrypt($decodedText);
+
+            // Decode the decrypted JSON data
+            $ticketData = json_decode($decryptedText, true);
+
             // Fetch the ticket based on the provided data
             $ticket = Program_Reg::where('program_reg_id', $ticketData['program_reg_id'])
                 ->where('program_id', $ticketData['program_id'])
                 ->where('employee_id', $ticketData['employee_id'])
-                ->where('created_at', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ticketData['created_at']))
+                ->where('created_at', Carbon::createFromFormat('Y-m-d H:i:s', $ticketData['created_at']))
                 ->first();
 
             // Check if the ticket is found
@@ -106,9 +112,15 @@ class TrainingRegistrants extends Component
                 toastr()->info('Ticket is not valid.');
                 $this->qrStop();
             }
-        } catch (\Exception $e) {
-            // Handle database query exceptions
+        } catch (DecryptException $e) {
+            // Handle decryption error (e.g., payload tampered or invalid)
+            Log::error('Decryption error in QR code scan: ' . $e->getMessage(), ['exception' => $e]);
 
+            toastr()->error('An error occurred while processing the ticket.');
+            $this->qrStop();
+        } catch (\Exception $e) {
+            // Handle any other exceptions
+            Log::error('General error in QR code scan: ' . $e->getMessage(), ['exception' => $e]);
             toastr()->error('An error occurred while processing the ticket.');
             $this->qrStop();
         }
