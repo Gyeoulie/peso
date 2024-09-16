@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -28,28 +29,38 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Define the custom validation rule
+        Validator::extend('different_from_current', function ($attribute, $value, $parameters, $validator) use ($request) {
+            $user = \App\Models\User::where('email', $request->input('email'))->first();
+            if ($user) {
+                return !Hash::check($value, $user->password);
+            }
+            return true;
+        }, 'The new password must not be the same as the current password.');
+
+        // Validate the request with the custom rule
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
             'password' => [
                 'required',
                 'confirmed',
+                'min:8', // Minimum length (adjust as needed)
                 'regex:/[a-z]/', // At least one lowercase letter
                 'regex:/[A-Z]/', // At least one uppercase letter
                 'regex:/[0-9]/', // At least one number
                 'regex:/[@$!%*?&]/', // At least one special character
-                'min:8', // Minimum length (adjust as needed)
+                'different_from_current', // Custom rule
             ],
         ], [
             'password.required' => 'The password is required.',
             'password.confirmed' => 'The password confirmation does not match.',
+            'password.min' => 'The password must be at least :min characters long.',
             'password.regex' => 'The password must include at least one lowercase letter, one uppercase letter, one number, and one special character.',
-            'password.min' => 'The password must be at least 8 characters long.',
+            'password.different_from_current' => 'The new password must not be the same as the current password.',
         ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
+        // Attempt to reset the user's password
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
@@ -62,9 +73,7 @@ class NewPasswordController extends Controller
             }
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
+        // Redirect based on the result of the password reset
         return $status == Password::PASSWORD_RESET
         ? redirect()->route('login')->with('status', __($status))
         : back()->withInput($request->only('email'))

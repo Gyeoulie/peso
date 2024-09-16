@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -28,18 +29,51 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $validatedData = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Validate that the new email is different from the current email
+        $request->validate([
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($user->id),
+                function ($attribute, $value, $fail) use ($user) {
+                    if ($value === $user->email) {
+                        $fail('The new email address must be different from the current email address.');
+                    }
+                },
+            ],
+        ], [
+            'email.different' => 'The new email address must be different from the current email address.',
+        ]);
+
+        // Check if any changes were made
+        $changes = false;
+        foreach ($validatedData as $key => $value) {
+            if ($user->{$key} !== $value) {
+                $changes = true;
+                break;
+            }
         }
 
-        $request->user()->save();
-        $request->user()->SendEmailVerificationNotification();
+        if ($changes) {
+            // Update the user's profile
+            $user->fill($validatedData);
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+            if ($user->isDirty('email')) {
+                $user->email_verified_at = null;
+            }
+
+            $user->save();
+            $user->sendEmailVerificationNotification();
+
+            return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        }
+
+        // If no changes, redirect with a different message
+        return Redirect::route('profile.edit')->with('status', 'no-changes');
     }
-
     /**
      * Delete the user's account.
      */

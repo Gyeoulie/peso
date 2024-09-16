@@ -74,9 +74,9 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'google2fa'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 //------------------------------ SIGN UP ------------------------------
