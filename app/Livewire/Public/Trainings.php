@@ -8,6 +8,7 @@ use App\Models\Job_Preference;
 use App\Models\Programs;
 use App\Models\Program_Reg;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
@@ -41,7 +42,7 @@ class Trainings extends Component
 
         if ($user && $user->employee) {
             $this->filter = 'Recommended';
-        } else if ($user && ($user->usertype >= 8 && $user->usertype < 11 )) {
+        } else if ($user && ($user->usertype >= 8 && $user->usertype < 11)) {
             $this->filter = 'My Municipality';
         } else {
             $this->filter = 'All';
@@ -54,13 +55,16 @@ class Trainings extends Component
         $data = Program_Reg::findOrFail($id);
 
         if ($data) {
-
-            $this->ticket = json_encode([
+            // Prepare the ticket data
+            $ticketData = [
                 'program_reg_id' => $data->program_reg_id,
                 'program_id' => $data->program_id,
                 'employee_id' => $data->employee_id,
                 'created_at' => $data->created_at->format('Y-m-d H:i:s'), // Explicitly format the timestamp
-            ]);
+            ];
+
+            // Encrypt the ticket data
+            $this->ticket = Crypt::encrypt(json_encode($ticketData));
 
             $this->dispatch('open-modal', 'ticket-modal');
 

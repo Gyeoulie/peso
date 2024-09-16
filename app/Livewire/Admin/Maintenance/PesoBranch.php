@@ -397,7 +397,7 @@ class PesoBranch extends Component
             if ($pesoBranch) {
                 $pesoBranchAdmins = PESO_Accounts::where('peso_id', $this->selectedBranch)
                     ->whereHas('user', function ($query) {
-                        $query->where('userstatus', 1);
+                        $query->whereIn('userstatus', [8, 9]);
                     })
                     ->where(function ($query) {
                         $query->where('peso_accounts_Fname', 'like', '%' . $this->searchName . '%')
