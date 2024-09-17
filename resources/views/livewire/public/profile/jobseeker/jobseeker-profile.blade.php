@@ -19,7 +19,8 @@
 
 
                     <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                        <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
+                        <a href="mailto:{{ $jobseeker->user->email }}"
+                            class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
                     </div>
                 </div>
                 <hr class="my-6 border-t border-gray-300">
