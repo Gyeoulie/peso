@@ -190,8 +190,7 @@
                             @else
                                 <img id="uploadedImage"
                                     class="flex w-full-h-full uploaded-image object-cover shrink-0 grow-0"
-                                    src="{{ asset('storage/' . $programInfo->program_pubmat) }}"
-                                    alt="pubmat" />
+                                    src="{{ asset('storage/' . $programInfo->program_pubmat) }}" alt="pubmat" />
                             @endif
 
                         </div>
@@ -296,7 +295,7 @@
             <hr>
             <div class="flex flex-col justify-center items-center my-12">
 
-            <h1 class="text-2xl font-bold">Are you sure you want to update this training?</h1>
+                <h1 class="text-2xl font-bold">Are you sure you want to update this training?</h1>
 
             </div>
             <div class="mt-6 flex justify-end">
@@ -331,7 +330,7 @@
 </div>
 
 {{-- @scipt --}}
-<script>
+<script data-navigate-once>
     $('#descText').summernote({
         placeholder: 'Write training description here...',
         tabsize: 2,

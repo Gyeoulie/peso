@@ -45,6 +45,7 @@
 
 
     @livewireStyles
+    @livewireScripts
     @vite(['resources/css/app.css'])
 
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
@@ -115,7 +116,6 @@
             }
         });
     </script>
-    @livewireScripts
 
 
 </body>
