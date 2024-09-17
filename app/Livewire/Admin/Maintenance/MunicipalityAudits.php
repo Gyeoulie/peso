@@ -20,6 +20,8 @@ use OwenIt\Auditing\Models\Audit;
 class MunicipalityAudits extends Component
 {
 
+    use WithPagination, WithoutUrlPagination;
+
     public $filter = '';
 
     public function updateFilter($filter)
@@ -27,8 +29,6 @@ class MunicipalityAudits extends Component
         $this->filter = $filter;
         $this->resetPage();
     }
-
-    use WithPagination, WithoutUrlPagination;
     public function render()
     {
         $user = Auth::user();
