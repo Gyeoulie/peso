@@ -57,7 +57,7 @@ class JobseekerManagement extends Component
         $employee = Employee::whereHas('barangay', function ($query) use ($id) {
             $query->where('municipality_id', $id);
         })
-            ->whereHas('job_applicants')
+            // ->whereHas('job_applicants')
             ->withCount('job_applicants as job_applications')
             ->withCount('program_reg')
             ->where(function ($query) {
@@ -213,17 +213,7 @@ class JobseekerManagement extends Component
 
         $user = Auth::user();
 
-        // $jobseekers = Employee::whereHas('barangay', function ($query) use ($user) {
-        //     $query->where('municipality_id', $user->peso_accounts->peso->municipality_id);
-        // })->where(function ($query) {
-        //     $query->where('fname', 'like', '%' . $this->searchUsers . '%')
-        //         ->orWhere('mname', 'like', '%' . $this->searchUsers . '%')
-        //         ->orWhere('lname', 'like', '%' . $this->searchUsers . '%');
-        // });
-
-        // if ($this->userFilter != 'ALL') {
-        //     $jobseekers = $jobseekers->where('empstatus', $this->userFilter);
-        // }
+ 
 
         $jobseeker = $this->getJobseekers($user->peso_accounts->peso->municipality_id)->paginate($this->paginate);
 

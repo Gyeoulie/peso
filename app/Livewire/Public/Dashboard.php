@@ -353,7 +353,7 @@ class Dashboard extends Component
         if ($user && $user->employee) {
             // Fetch PESO ID based on employee's municipality
             $peso = PESO::where('municipality_id', $user->employee->barangay->municipality_id)->first();
-            $pesoId = $peso ? $peso->id : null;
+            $pesoId = $peso ? $peso->peso_id : null;
         } elseif ($user && $user->peso_accounts) {
             // Fetch PESO ID based on user's PESO account
             $pesoId = $user->peso_accounts->peso_id;
