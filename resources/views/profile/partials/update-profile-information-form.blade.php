@@ -1,11 +1,11 @@
-<section>
+<section x-data="">
     <header>
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Profile Information') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Update your account's email address.") }}
         </p>
     </header>
 
@@ -13,7 +13,8 @@
         @csrf
     </form>
 
-    <form x-ref="emailChangeForm" method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form x-ref="emailChangeForm" x-on:submit.prevent="$dispatch('open-modal', 'confirm-email-change-modal')"
+        method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
@@ -50,8 +51,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button type="button" x-data=""
-                x-on:click.prevent="$dispatch('open-modal', 'confirm-email-change-modal')">{{ __('Save') }}</x-primary-button>
+            <x-primary-button>{{ __('Save') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
@@ -62,43 +62,44 @@
             @endif
         </div>
     </form>
-</section>
 
-<x-modal name="confirm-email-change-modal" focusable>
-    <div class="w-full max-w-4xl px-6 py-6 items-center">
-        <!-- Header Section -->
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Confirm Email Change') }}
-        </h2>
-        <hr>
 
-        <!-- Content Section -->
-        <div class="flex flex-col my-4">
-            <div class="flex flex-col mt-4 mb-4 w-full justify-center items-center px-4">
-                <span class="text-xl font-semibold text-red-600">
-                    {{ __('Warning: This action cannot be undone.') }}
-                </span>
-                <p class="mt-4 text-gray-600 text-center">
-                    {{ __('Changing your email address will require you to verify your account again.') }}
-                    <br>
-                    {{ __('Please ensure that the new email is correct before proceeding.') }}
-                </p>
+    <x-modal name="confirm-email-change-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <!-- Header Section -->
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Confirm Email Change') }}
+            </h2>
+            <hr>
+
+            <!-- Content Section -->
+            <div class="flex flex-col my-4">
+                <div class="flex flex-col mt-4 mb-4 w-full justify-center items-center px-4">
+                    <span class="text-xl font-semibold text-red-600">
+                        {{ __('Warning: This action cannot be undone.') }}
+                    </span>
+                    <p class="mt-4 text-gray-600 text-center">
+                        {{ __('Changing your email address will require you to verify your account again.') }}
+                        <br>
+                        {{ __('Please ensure that the new email is correct before proceeding.') }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Buttons Section -->
+            <div class="mt-6 flex justify-between">
+                <!-- Cancel Button -->
+                <x-secondary-button x-on:click="$dispatch('close-modal', 'confirm-email-change-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <!-- Confirm Button -->
+                <x-danger-button class="ms-3" x-on:click="document.querySelector('[x-ref=emailChangeForm]').submit()">
+                    {{ __('Confirm Email Change') }}
+                    <!-- Loading Spinner -->
+
+                </x-danger-button>
             </div>
         </div>
-
-        <!-- Buttons Section -->
-        <div class="mt-6 flex justify-between">
-            <!-- Cancel Button -->
-            <x-secondary-button x-on:click="$dispatch('close-modal', 'confirm-email-change-modal')">
-                {{ __('Cancel') }}
-            </x-secondary-button>
-
-            <!-- Confirm Button -->
-            <x-danger-button class="ms-3" x-on:click="document.querySelector('[x-ref=emailChangeForm]').submit()">
-                {{ __('Confirm Email Change') }}
-                <!-- Loading Spinner -->
-
-            </x-danger-button>
-        </div>
-    </div>
-</x-modal>
+    </x-modal>
+</section>
