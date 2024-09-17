@@ -229,10 +229,10 @@
                     <div x-data="{
                         dropdowns: {
                             roleManagement: ['admin-users-peso', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview', 'admin-users-employer-overview'].includes(@js(request()->route()->getName())),
-                            trainings: ['admin-training', 'admin-create-training', 'admin-view-training'].includes(@js(request()->route()->getName())),
+                            trainings: ['admin-training', 'admin-create-training', 'admin-view-training', 'admin-registrants-training'].includes(@js(request()->route()->getName())),
                             reports: ['admin-reports-barangay', 'admin-reports-municipality', 'super-municipality', 'super-province'].includes(@js(request()->route()->getName())),
                             dataManagement: ['admin-certificate', 'admin-eligibility', 'admin-location', 'admin-industry'].includes(@js(request()->route()->getName())),
-                            maintenance: ['admin-audits', 'admin-peso', 'admin-backups'].includes(@js(request()->route()->getName())),
+                            maintenance: ['admin-audits', 'admin-peso', 'admin-backups', 'admin-municipality-audits'].includes(@js(request()->route()->getName())),
                         },
                         activeItem: 'ml-6 block p-2 w-full border-l-4 border-indigo-400 text-start text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out',
                         inactiveItem: 'ml-6 block p-2 w-full border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out',
@@ -389,18 +389,19 @@
                                 @endif
                             </div>
                         </div>
-                        @if (Auth::check() && Auth::user()->usertype == 11)
-                            <div>
-                                <div x-on:click="dropdowns.maintenance = !dropdowns.maintenance"
-                                    class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
-                                    Maintenance
-                                    <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 1 4 4 4-4" />
-                                    </svg>
-                                </div>
-                                <div x-show="dropdowns.maintenance" x-cloak>
+
+                        <div>
+                            <div x-on:click="dropdowns.maintenance = !dropdowns.maintenance"
+                                class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                                Maintenance
+                                <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m1 1 4 4 4-4" />
+                                </svg>
+                            </div>
+                            <div x-show="dropdowns.maintenance" x-cloak>
+                                @if (Auth::check() && Auth::user()->usertype == 11)
                                     <a :class="currentRoute === 'admin-peso' ? activeItem : inactiveItem"
                                         wire:navigate href="{{ route('admin-peso') }}">
                                         PESO Branch
@@ -413,9 +414,16 @@
                                         wire:navigate href="{{ route('admin-backups') }}">
                                         Backups
                                     </a>
-                                </div>
+                                @endif
+                                @if (Auth::check() && Auth::user()->usertype != 11)
+                                    <a :class="currentRoute === 'admin-municipality-audits' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-municipality-audits') }}">
+                                        Audit Logs
+                                    </a>
+                                @endif
                             </div>
-                        @endif
+                        </div>
+
                     </div>
                 @endif
 

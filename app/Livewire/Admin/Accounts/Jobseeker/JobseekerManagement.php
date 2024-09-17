@@ -57,7 +57,7 @@ class JobseekerManagement extends Component
         $employee = Employee::whereHas('barangay', function ($query) use ($id) {
             $query->where('municipality_id', $id);
         })
-            // ->whereHas('job_applicants')
+        // ->whereHas('job_applicants')
             ->withCount('job_applicants as job_applications')
             ->withCount('program_reg')
             ->where(function ($query) {
@@ -212,8 +212,6 @@ class JobseekerManagement extends Component
     {
 
         $user = Auth::user();
-
- 
 
         $jobseeker = $this->getJobseekers($user->peso_accounts->peso->municipality_id)->paginate($this->paginate);
 

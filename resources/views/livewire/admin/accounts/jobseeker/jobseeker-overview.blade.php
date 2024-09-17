@@ -188,52 +188,144 @@
 
 
                 <div class="bg-white shadow rounded-lg p-6 mt-4">
-                    <h1 class="text-2xl font-bold ">Preference</h1>
+                    <h1 class="text-2xl font-bold ">Overview</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-col w-full mt-1">
-                        <span class="mb-1 font-bold">Industry Preference:</span>
-                        {{-- BADGE CONTAINER --}}
-                        <div id= "otherSkillRow" class="flex-inline p-1">
-                            {{-- BADGE --}}
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex flex-col w-full gap-4">
+                            @if ($jobseeker->industry_preference->count() >= 1)
 
-                            @foreach ($jobseeker->industry_preference as $industryPref)
-                                <span wire:key='skills-{{ $industryPref->industry_preference_id }}'
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                    {{ $industryPref->job_industry->industry_Title }}
-                                </span>
-                            @endforeach
+                                <div class="flex flex-col w-full">
+                                    <span class="mb-1 font-bold">Industry Preference:</span>
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "industryRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseeker->industry_preference as $industryPref)
+                                            <span wire:key='skills-{{ $industryPref->industry_preference_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $industryPref->job_industry->industry_Title }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if ($jobseeker->job_preference->count() >= 1)
+
+                                <div class="flex flex-col w-full">
+                                    <span class="mb-1 font-bold">Job Preference:</span>
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "jobPrefRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseeker->job_preference as $jobPref)
+                                            <span wire:key='skills-{{ $jobPref->job_preference_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $jobPref->job_positions->position_Title }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if ($jobseeker->skills->count() >= 1)
+
+                                <div class="flex flex-col w-full">
+                                    <span class="mb-1 font-bold">Skills:</span>
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "skillsRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseeker->skills as $empSkills)
+                                            <span wire:key='skills-{{ $empSkills->skills_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $empSkills->skill_Type }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                        </div>
+
+                        <div class="flex flex-col w-full gap-4">
+                            @if ($jobseeker->disability->count() >= 1)
+
+                                <div class="flex flex-col md:w-1/2">
+
+                                    <span class="mb-1 font-bold">Disability:</span>
+                                   
+                                    <div id= "disabilityRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseeker->disability as $empDisability)
+                                            <span  wire:key='disability-{{ $empDisability->disability_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $empDisability->disability_Type }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+
+
+
+                                </div>
+                            @endif
+
+                            @if ($jobseeker->language->count() >= 1)
+                                <div class="flex flex-col md:flex-row w-full gap-4 md:gap-10">
+                                    <div class="flex flex-col w-full">
+                                        <span class="mb-1 font-bold">Language:</span>
+
+                                        <div class="flex flex-col gap-2 mt-2 ml-2">
+                                            @foreach ($jobseeker->language as $empLanguage)
+                                                <div x-data="{
+                                                    skills: [],
+                                                    percentage: 0,
+                                                    init() {
+                                                        this.skills = [];
+                                                        this.percentage = 0;
+                                                
+                                                        if ({{ $empLanguage->language_Read }} == 1) {
+                                                            this.skills.push('Read');
+                                                            this.percentage += 25;
+                                                        }
+                                                        if ({{ $empLanguage->language_Write }} == 1) {
+                                                            this.skills.push('Write');
+                                                            this.percentage += 25;
+                                                        }
+                                                        if ({{ $empLanguage->language_Speak }} == 1) {
+                                                            this.skills.push('Speak');
+                                                            this.percentage += 25;
+                                                        }
+                                                        if ({{ $empLanguage->language_Understand }} == 1) {
+                                                            this.skills.push('Understand');
+                                                            this.percentage += 25;
+                                                        }
+                                                
+                                                    }
+                                                }" x-init="init">
+                                                    <span class="text-base font-medium text-blue-700">
+                                                        {{ $empLanguage->language_Type }}
+                                                    </span>
+
+                                                    <div class="w-full bg-gray-200 rounded-full">
+                                                        <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                                                            :style="{ width: percentage + '%' }">
+                                                            <span x-text="skills.join(' / ')"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
                         </div>
                     </div>
 
-                    <div class="flex flex-col w-full mt-1">
-                        <span class="mb-1 font-bold">Job Preference:</span>
-                        {{-- BADGE CONTAINER --}}
-                        <div id= "otherSkillRow" class="flex-inline p-1">
-                            {{-- BADGE --}}
 
-                            @foreach ($jobseeker->job_preference as $jobPref)
-                                <span wire:key='skills-{{ $jobPref->job_preference_id }}'
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                    {{ $jobPref->job_positions->position_Title }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full mt-1">
-                        <span class="mb-1 font-bold">Skills:</span>
-                        {{-- BADGE CONTAINER --}}
-                        <div id= "otherSkillRow" class="flex-inline p-1">
-                            {{-- BADGE --}}
-
-                            @foreach ($jobseeker->skills as $empSkills)
-                                <span wire:key='skills-{{ $empSkills->skills_id }}'
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                    {{ $empSkills->skill_Type }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
                 </div>
 
                 {{-- APPLICATION HISTORY CONTAINER --}}

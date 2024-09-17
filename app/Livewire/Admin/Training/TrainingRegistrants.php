@@ -37,7 +37,7 @@ class TrainingRegistrants extends Component
 
     public function updatedsearch()
     {
-        $this->resetPage('');
+        $this->resetPage();
     }
 
     public function mount()
@@ -67,12 +67,12 @@ class TrainingRegistrants extends Component
     {
         $this->filter = $filter;
         $this->reset('sortDate');
-        $this->resetPage('');
+        $this->resetPage();
     }
     public function updateSort($sort)
     {
         $this->sortDate = $sort;
-        $this->resetPage('');
+        $this->resetPage();
     }
 
     public function scanQr()
@@ -266,9 +266,12 @@ class TrainingRegistrants extends Component
             ->findOrFail($this->id);
         $jobseekerInfo = null;
         $isMatch = false;
+        $slotsRemaining = 0;
 
         // Paginate the results
         $programRegistrants = $this->getRegistrants($programInfo->program_id)->paginate(10);
+
+      
 
         if ($this->selectedJobseeker) {
             $jobseekerInfo = Program_Reg::findOrFail($this->selectedJobseeker);

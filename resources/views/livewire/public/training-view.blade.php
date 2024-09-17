@@ -280,7 +280,7 @@
                                             </div>
 
                                             <div class="text-md font-medium  break-all">
-                                                {{ $ProgramInfo->program_Slots }}
+                                                {{ $ProgramInfo->program_Slots - $ProgramInfo->program_reg_count }}
                                             </div>
 
                                         </div>

@@ -71,7 +71,7 @@ class Programs extends Model implements Auditable
     public function attendedJobseekers()
     {
         return $this->hasMany(Program_Reg::class, 'program_id')
-            ->where('program_reg_Status', 'ATTENDED');
+            ->where('program_reg_Status', 'COMPLETED');
     }
 
     public static function fieldMappings()
