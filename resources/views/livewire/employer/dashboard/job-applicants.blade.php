@@ -544,8 +544,7 @@
                                                                 $data->applicant_Status != 'HIRED' &&
                                                                 $data->applicant_Status != 'ACCEPTED' &&
                                                                 $data->applicant_Status != 'REJECTED' &&
-                                                                $data->applicant_Status != 'CANCELLED' &&
-                                                                $filter == 'REJECTED')
+                                                                $data->applicant_Status != 'CANCELLED')
                                                             <div x-data="{ tooltip: 'Hire' }">
                                                                 <button
                                                                     wire:click.prevent="openModal('hire', {{ $data->applicant_id }})"
