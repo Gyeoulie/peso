@@ -12,7 +12,7 @@
                 inactiveClasses: 'bg-gray-100 hover:text-gray-700 hover:bg-gray-50',
                 changeFilter(value) {
                     this.filter = value;
-                    this.$wire.set('filter', value); // Update Livewire filter property
+                    this.$wire.call('updateFilter', value); // Update Livewire filter property
                 },
                 init() {
                     // Ensure Livewire and Alpine.js sync on initialization
