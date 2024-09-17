@@ -22,6 +22,7 @@ use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Admin\LocationManagement\Location;
 use App\Livewire\Admin\Maintenance\Audits;
 use App\Livewire\Admin\Maintenance\Backup;
+use App\Livewire\Admin\Maintenance\MunicipalityAudits;
 use App\Livewire\Admin\Maintenance\PesoBranch;
 use App\Livewire\Admin\Partnership\PartnershipDetails;
 use App\Livewire\Admin\Partnership\PartnershipList;
@@ -158,6 +159,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/job/overview/{id}', JobPostOverview::class)->name('admin.jobpost');
         Route::get('/job/applicants/{id}', JobPostApplicants::class)->name('admin.jobpost.applicants');
         Route::get('/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
+
+        Route::get('/municipality/audits', MunicipalityAudits::class)->name('admin-municipality-audits');
+
     });
 
 // EVERYTHING UNDER HERE IS SUPER ADMIN

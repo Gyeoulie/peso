@@ -59,12 +59,13 @@
 
                         @if ($programInfo->program_Slots != null)
                             <div class="flex flex-row justify-between">
-                                <li class="mb-2 font-bold">Slots Remaining:</li>
-                                <p class="ms-4 break-all">{{ $programInfo->program_Slots }}</p>
+                                <li class="mb-2 font-bold">Program Slots:</li>
+                                <p class="ms-4 break-all">
+                                    {{ $programInfo->program_reg_count }}/{{ $programInfo->program_Slots }} </p>
                             </div>
                         @endif
                         <div class="flex flex-row justify-between">
-                            <li class="mb-2 font-bold">Registratin Deadline:</li>
+                            <li class="mb-2 font-bold">Registration Deadline:</li>
                             <p class="ms-4 break-all">{{ $programInfo->program_Deadline->format('F j, Y') }}</p>
                         </div>
 
@@ -146,7 +147,8 @@
                 x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                 x-transition:enter-end="opacity-100 scale-100">
                 <div class="flex flex-row justify-between">
-                    <h1 class="text-lg sm:text-2xl font-bold mb">Registrant List</h1>
+                    <h1 class="text-lg sm:text-2xl font-bold mb">Registrant List:
+                        {{ $programInfo->program_reg_count }}</h1>
                     {{-- <h1 class="text-lg sm:text-2xl font-bold mb">Registered: {{ $programInfo->program_reg_count }}</h1> --}}
                     <x-primary-button wire:click.prevent='scanQr'>QR Code</x-primary-button>
 

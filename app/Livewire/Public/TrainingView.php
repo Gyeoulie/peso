@@ -17,7 +17,7 @@ class TrainingView extends Component
 
     public function mount()
     {
-        $ProgramInfo = Programs::withCount('attendedJobseekers')->find($this->id);
+        $ProgramInfo = Programs::withCount('program_reg')->find($this->id);
 
         if (!$ProgramInfo) {
             return $this->redirectRoute('dashboard');
@@ -30,6 +30,8 @@ class TrainingView extends Component
     public function register()
     {
 
+        $program = Programs::withCount('program_reg')->find($this->id);
+
         $existingRegistration = Program_Reg::where('employee_id', Auth::user()->employee->employee_id)
             ->where('program_id', $this->id)
             ->first();
@@ -41,6 +43,12 @@ class TrainingView extends Component
 
         }
 
+        if ($program->program_reg_count >= $program->program_Slots) {
+            // Close modal and show a warning if program slots are full
+            $this->dispatch('close-modal', 'register-modal');
+            return toastr()->error('The program is fully booked.');
+        }
+
         // If not registered, create a new registration
         $register = Program_Reg::create([
             'employee_id' => Auth::user()->employee->employee_id,
@@ -50,6 +58,14 @@ class TrainingView extends Component
 
         if ($register) {
             toastr()->success('You have successfully registered.');
+
+            $currentRegistrations = $program->program_reg_count + 1;
+
+            // If the number of registrations has reached the slots, update the program status to "CLOSED"
+            if ($currentRegistrations >= $program->program_Slots) {
+                $program->update(['program_Status' => 'CLOSED']);
+            }
+
             $this->dispatch('close-modal', 'register-modal');
 
         }
@@ -98,7 +114,7 @@ class TrainingView extends Component
             $isRegistered = false; // or handle the case when the user is not authenticated
         }
 
-        $ProgramInfo = Programs::withCount('attendedJobseekers')->find($this->id);
+        $ProgramInfo = Programs::withCount('program_reg')->find($this->id);
 
         return view('livewire.public.training-view', compact('ProgramInfo', 'isRegistered'));
     }
