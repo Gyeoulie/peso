@@ -85,6 +85,30 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        if ($user->usertype == 4) {
+            // Check if there is a job application with status other than ACCEPTED, REJECTED, or CANCELLED
+            $hasPendingApplications = $user->employee->job_applicants()
+                ->whereNotIn('applicant_Status', ['ACCEPTED', 'REJECTED', 'CANCELLED'])
+                ->exists();
+
+            // If there are pending applications, show error and stop execution
+            if ($hasPendingApplications) {
+                toastr()->error('You cannot deactivate your account while you have pending job applications.');
+                return back();
+            }
+        } else if ($user->usertype == 5 || $user->usertype == 6) {
+            // Check if there is a job application with status other than ACCEPTED, REJECTED, or CANCELLED
+            $hasPendingApplications = $user->company->job_posting()
+                ->whereNotIn('job_Status', ['COMPLETED', 'REJECTED', 'CANCELLED'])
+                ->exists();
+
+            // If there are pending applications, show error and stop execution
+            if ($hasPendingApplications) {
+                toastr()->error('You cannot deactivate your account while you have active job posting.');
+                return back();
+            }
+        }
+
         // Set user status, description, and disabled_at timestamp
         $user->userstatus = 2; // Assuming userstatus is a field on the User model
         $user->description = 'Self Disable'; // Set the description

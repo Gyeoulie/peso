@@ -312,7 +312,26 @@
                                         {{ $totalExperience }} Months
                                     </p>
                                 </div>
-
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">OFW Record:</li>
+                                    <p class="ms-4 uppercase">
+                                        {{ $applicant->employee->ofw == 1 ? 'Yes' : 'No' }}
+                                    </p>
+                                </div>
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">4Ps Member:</li>
+                                    <p class="ms-4 uppercase">
+                                        {{ $applicant->employee->fourp == 1 ? 'Yes' : 'No' }}
+                                    </p>
+                                </div>
+                                @if ($applicant->employee->fourp == 1 && $applicant->employee->fourpID)
+                                    <div class="flex flex-row">
+                                        <li class="mb-2 font-bold">4Ps Member ID:</li>
+                                        <p class="ms-4 uppercase">
+                                            {{ $applicant->employee->fourpID }}
+                                        </p>
+                                    </div>
+                                @endif
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Address:</li>

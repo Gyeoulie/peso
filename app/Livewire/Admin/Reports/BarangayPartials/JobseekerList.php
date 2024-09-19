@@ -26,10 +26,10 @@ class JobseekerList extends Component
     public $searchJobseekers;
 
     // MOUNT
-    public $mountGender, $mountAge = [], $mountEmpStatus, $mountCivilStatus, $mountEducationAttainment;
+    public $mountGender, $mountAge = [], $mountEmpStatus, $mountCivilStatus, $mountEducationAttainment, $mountOFWFilter, $mountFourPFilter;
 
     // REAL FILTER VALUES
-    public $Gender, $Age = [], $EmpStatus, $civilStatus, $educationAttainment;
+    public $Gender, $Age = [], $EmpStatus, $civilStatus, $educationAttainment, $OFWFilter, $fourPFilter;
 
     public $mountSelectedMonths = [];
 
@@ -54,7 +54,8 @@ class JobseekerList extends Component
 
     public function resetFilter()
     {
-        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountCivilStatus', 'mountEducationAttainment', 'Gender', 'Age', 'EmpStatus', 'civilStatus', 'educationAttainment');
+        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountCivilStatus', 'mountEducationAttainment', 'mountOFWFilter', 'mountFourPFilter',
+            'Gender', 'Age', 'EmpStatus', 'civilStatus', 'educationAttainment', 'OFWFilter', 'fourPFilter');
         $this->resetPage();
     }
 
@@ -80,6 +81,8 @@ class JobseekerList extends Component
         $this->EmpStatus = $this->mountEmpStatus;
         $this->civilStatus = $this->mountCivilStatus;
         $this->educationAttainment = $this->mountEducationAttainment;
+        $this->OFWFilter = $this->mountOFWFilter;
+        $this->fourPFilter = $this->mountFourPFilter;
 
         $this->dispatch('close-modal', 'filter-jobseekers-modal');
         $this->resetPage();
@@ -108,6 +111,12 @@ class JobseekerList extends Component
         }
         if ($this->EmpStatus) {
             $employee = $employee->where('empstatus', $this->EmpStatus);
+        }
+        if ($this->OFWFilter) {
+            $employee->where('ofw', $this->OFWFilter);
+        }
+        if ($this->fourPFilter) {
+            $employee->where('fourp', $this->fourPFilter);
         }
         if ($this->Age) {
             $employee = $employee->where(function ($query) {

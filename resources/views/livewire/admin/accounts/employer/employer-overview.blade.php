@@ -541,19 +541,34 @@
                         </div>
                     </div>
 
+
                     <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                        <!-- Employment Status Dropdown -->
                         <div class="flex flex-col w-full">
-                            <x-input-label for="emptype" :value="__('Employment Type')" />
-                            <x-text-input wire:model="empType" class="block mt-1 w-full" type="text" />
+                            <x-input-label for="empType" :value="__('Employment Type')" />
+                            <select wire:model.live="empType" class="block mt-1 w-full rounded">
+                                <option value="" disabled>Select Employment Status</option>
+                                <option value="1">Public</option>
+                                <option value="2">Private</option>
+                            </select>
                             <x-input-error :messages="$errors->get('empType')" class="mt-2" />
                         </div>
 
+                        <!-- Employment Description Dropdown -->
                         <div class="flex flex-col w-full">
-                            <x-input-label for="empdesc" :value="__('Employment Description')" />
-                            <x-text-input wire:model="empDesc" class="block mt-1 w-full" type="text" />
+                            <x-input-label for="empDesc" :value="__('Description')" />
+                            <select wire:model="empDesc" class="block mt-1 w-full rounded">
+                                <option value="" disabled>Select Description</option>
+
+                                <!-- Dynamically populate the options based on empStatus -->
+                                @foreach ($empDescriptions as $desc)
+                                    <option value="{{ $desc['value'] }}">{{ $desc['text'] }}</option>
+                                @endforeach
+                            </select>
                             <x-input-error :messages="$errors->get('empDesc')" class="mt-2" />
                         </div>
                     </div>
+
                     <div class="flex w-full justify-end mt-4">
                         <x-blue-button x-data=""
                             x-on:click.prevent="$dispatch('open-modal', 'confirm-modal')">Save Profile</x-blue-button>
@@ -755,12 +770,14 @@
     </x-modal>
 
     <x-modal name="deactivate-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ deactivateBox: @entangle('deactivateBox') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to deactivate this account?') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
+
+                <!-- Informational Message -->
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="remarks" :value="__('Remarks')" />
@@ -770,14 +787,37 @@
                     <x-input-error :messages="$errors->get('deactRemarks')" class="mt-2" />
                 </div>
 
+                <p class="text-sm sm:text-md text-gray-600 mt-2">
+                    {{ __('Please note that deactivating this account will cancel all active and pending transactions associated with it. Make sure to review any ongoing processes before proceeding.') }}
+                </p>
+
+                <div class="inline-flex justify-center items-center mt-2 w-full">
+                    <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="deactivateBox">
+                        <input wire:model="deactivateBox" type="checkbox" id="deactivateBox"
+                            class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                        <span
+                            class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                fill="currentColor" stroke="currentColor" stroke-width="1">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                    </label>
+                    <label class="mt-px font-light text-gray-700 cursor-pointer select-none" for="deactivateBox">
+                        Confirm the transaction
+                    </label>
+                </div>
+
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 flex justify-between">
                 <x-secondary-button wire:click.prevent="closeModal('deactivate')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="statusUser(2)" class="ms-3"
-                    type="button">
+                <x-danger-button x-show="deactivateBox" wire:loading.attr="disabled"
+                    wire:click.prevent="statusUser(2)" class="ms-3" type="button">
                     {{ __('Deactivate') }}
                     <div wire:loading.delay.long wire:target="statusUser(2)" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
@@ -795,6 +835,7 @@
             </div>
         </div>
     </x-modal>
+
 
 
     <x-modal name="confirm-modal" focusable>
@@ -874,7 +915,7 @@
 
 
 
-                <x-danger-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled" wire:target='resetPassword'
+                <x-danger-button x-show="agreeBox" wire:loading.attr="disabled" wire:target='resetPassword'
                     wire:click.prevent="resetPassword" class="ms-3" type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="resetPassword" role="status">

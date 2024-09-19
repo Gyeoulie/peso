@@ -45,6 +45,46 @@
                                 </button>
 
                             </div>
+                            <x-dropdown align="left" width="36">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
+                                        <div>
+                                            @if (empty($sortName))
+                                                Sort By Name
+                                            @elseif($sortName === 'ASC')
+                                                Ascending
+                                            @elseif($sortName === 'DESC')
+                                                Descending
+                                            @endif
+                                        </div>
+
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
+
+                                    <x-dropdown-link wire:click.prevent="updateSort('ASC')" class="cursor-pointer">
+                                        Ascending
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateSort('DESC')" class="cursor-pointer">
+                                        Descending
+                                    </x-dropdown-link>
+
+                                </x-slot>
+                            </x-dropdown>
                             <button type="button" x-data=""
                                 x-on:click.prevent="$dispatch('open-modal', 'filter-jobseekers-modal')"
                                 class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
@@ -105,9 +145,9 @@
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
                                                         <div class="text-base font-semibold uppercase">
+                                                            {{ $data->lname }},
                                                             {{ $data->fname }}
                                                             {{ $data->mname ?? '' }}
-                                                            {{ $data->lname }}
                                                             @if (!empty($data->suffix))
                                                                 , {{ $data->suffix }}
                                                             @endif
@@ -334,6 +374,57 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By OFW Record</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-all" type="radio" value=""
+                                name="ofwFilter" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-yes" type="radio" value="1"
+                                name="ofwFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-yes" class="ms-2 text-sm font-medium text-gray-900">OFW</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-no" type="radio" value="2"
+                                name="ofwFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-no" class="ms-2 text-sm font-medium text-gray-900">Not OFW</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By 4Ps Record</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-all" type="radio" value=""
+                                name="4psFilter" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-yes" type="radio" value="1"
+                                name="4psFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-yes" class="ms-2 text-sm font-medium text-gray-900">4Ps Member</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-no" type="radio" value="2"
+                                name="4psFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">Not 4Ps
+                                Member</label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Educational Attainment</h1>
 

@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -34,6 +35,13 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+        Log::error('Exception occurred:', [
+            'exception' => $exception,
+            'message' => $exception->getMessage(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+        ]);
+
         if ($exception instanceof ThrottleRequestsException) {
             // Redirect back with error message
             return redirect()->back()->with('error', __('You have requested too many verification emails. Please try again in a few minutes.'));

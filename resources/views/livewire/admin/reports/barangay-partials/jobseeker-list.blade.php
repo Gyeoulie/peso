@@ -284,6 +284,56 @@
                     </div>
                 </div>
                 <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By OFW Record</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-all" type="radio" value=""
+                                name="ofwFilter" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-yes" type="radio" value="1"
+                                name="ofwFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-yes" class="ms-2 text-sm font-medium text-gray-900">OFW</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-no" type="radio" value="2"
+                                name="ofwFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-no" class="ms-2 text-sm font-medium text-gray-900">Not OFW</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By 4Ps Record</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-all" type="radio" value=""
+                                name="4psFilter" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-yes" type="radio" value="1"
+                                name="4psFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-yes" class="ms-2 text-sm font-medium text-gray-900">4Ps Member</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-no" type="radio" value="2"
+                                name="4psFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">Not 4Ps Member</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Educational Attainment</h1>
 
                     <select wire:model="mountEducationAttainment" class="block mt-1 w-full rounded-md">

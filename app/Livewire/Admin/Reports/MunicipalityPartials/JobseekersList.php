@@ -24,8 +24,8 @@ class JobseekersList extends Component
     public $searchJobseekers, $searchCompany;
     public $startYear, $currentYear;
 
-    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $civilStatus, $educationAttainment, $selectedMonths = [], $selectedYear;
-    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountCivilStatus, $mountEducationAttainment, $mountSelectedMonths = [], $mountSelectedYear;
+    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $civilStatus, $educationAttainment, $selectedMonths = [], $selectedYear, $OFWFilter, $fourPFilter;
+    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountCivilStatus, $mountEducationAttainment, $mountSelectedMonths = [], $mountSelectedYear, $mountOFWFilter, $mountFourPFilter;
 
     public $companyMun, $munYear, $munMonths = [];
     public $mountCompanyMun, $mountMunYear, $mountMunMonths = [];
@@ -147,8 +147,8 @@ class JobseekersList extends Component
 
     public function resetFilter()
     {
-        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountJobseekerfilter', 'mountCivilStatus', 'mountEducationAttainment', 'mountSelectedMonths', 'mountSelectedYear',
-            'Gender', 'Age', 'EmpStatus', 'jobseekerfilter', 'civilStatus', 'educationAttainment', 'selectedMonths', 'selectedYear');
+        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountJobseekerfilter', 'mountCivilStatus', 'mountEducationAttainment', 'mountSelectedMonths', 'mountSelectedYear', 'mountOFWFilter', 'mountFourPFilter',
+            'Gender', 'Age', 'EmpStatus', 'jobseekerfilter', 'civilStatus', 'educationAttainment', 'selectedMonths', 'selectedYear', 'OFWFilter', 'fourPFilter');
         $this->resetPage('jobseeker');
 
     }
@@ -161,6 +161,8 @@ class JobseekersList extends Component
         $this->jobseekerfilter = $this->mountJobseekerfilter;
         $this->civilStatus = $this->mountCivilStatus;
         $this->educationAttainment = $this->mountEducationAttainment;
+        $this->OFWFilter = $this->mountOFWFilter;
+        $this->fourPFilter = $this->mountFourPFilter;
 
         $this->selectedMonths = $this->mountSelectedMonths;
         $this->selectedYear = $this->mountSelectedYear;
@@ -227,6 +229,12 @@ class JobseekersList extends Component
         // Filter by employment status
         if ($this->EmpStatus) {
             $employee->where('empstatus', $this->EmpStatus);
+        }
+        if ($this->OFWFilter) {
+            $employee->where('ofw', $this->OFWFilter);
+        }
+        if ($this->fourPFilter) {
+            $employee->where('fourp', $this->fourPFilter);
         }
 
         // Filter by age

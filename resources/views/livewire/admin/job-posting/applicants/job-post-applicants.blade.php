@@ -20,7 +20,7 @@
 
                     <h1 class="text-xl font-bold">{{ $jobpost->company->business_Name }}
                     </h1>
-                    <p class="text-gray-700">#IDNUMBER</p>
+                    <p class="text-gray-700">#{{ $jobpost->company->company_id }}</p>
 
                     <div class="flex flex-row mt-6 justify-between w-full">
                         <p class="text-md text-gray-800">{{ $jobpost->company->company_Email }}</p>
@@ -34,8 +34,12 @@
 
                 <div class="flex flex-col">
                     {{-- JOB POSTING INFORMATION --}}
-                    <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">Job Posting
-                        Details</span>
+                    <div class="flex flex-row justify-between">
+                        <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">Job Posting
+                            Details</span>
+                        <span
+                            class="text-gray-700 uppercase font-bold tracking-wider mb-2">#{{ $jobpost->job_id }}</span>
+                    </div>
 
                     <ul>
                         <div class="flex flex-row justify-between">
