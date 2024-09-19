@@ -79,7 +79,7 @@
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('6')"
                                 :class="openTab === '6' ? activeClasses : inactiveClasses"
-                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">Announcements</button>
+                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Announcements</button>
                         </li>
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('7')"

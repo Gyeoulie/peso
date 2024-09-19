@@ -43,7 +43,7 @@ class EditDetails extends Component
     public $pimg;
 
     public $fname, $mname, $lname, $suffix, $birthdate, $gender = 0, $civilstatus = 0, $religion = 0,
-    $pnumber, $tinnum, $height, $address;
+    $pnumber, $tinnum, $height, $address, $empStatus = "", $empDesc = "";
     public $barangayID, $mun, $prov, $bar;
     public $selectDisability = "", $otherDisability = "";
     public $jobpreference, $industrypreference;
@@ -67,6 +67,8 @@ class EditDetails extends Component
     public $originalDisabilities = [], $disabilitiesToAdd = [], $disabilitiesToRemove = [], $displayDisabilities = [], $disabilitiesToRestore = [];
 
     public $originalSkills = [], $skillsToAdd = [], $skillsToRemove = [], $displaySkills = [], $skillsToRestore = [];
+
+    public $empDescriptions = [];
 
     // RESUME
     public $newResume;
@@ -99,6 +101,34 @@ class EditDetails extends Component
             'resume_type' => $fileToView,
         ]);
 
+    }
+
+    public function updatedEmpStatus()
+    {
+        // Reset empDesc when empStatus changes
+        $this->empDesc = '';
+
+        // Update empDescriptions based on empStatus
+        if ($this->empStatus == '1') { // Employed
+            $this->empDescriptions = [
+                ['value' => 1, 'text' => 'Wage employed'],
+                ['value' => 2, 'text' => 'Self-employed'],
+                ['value' => 3, 'text' => 'Others'],
+            ];
+        } elseif ($this->empStatus == '2') { // Unemployed
+            $this->empDescriptions = [
+                ['value' => 4, 'text' => 'New entrant/fresh graduate'],
+                ['value' => 5, 'text' => 'Finished contract'],
+                ['value' => 6, 'text' => 'Resigned'],
+                ['value' => 7, 'text' => 'Retired'],
+                ['value' => 8, 'text' => 'Terminated/Laid off due to calamity'],
+                ['value' => 9, 'text' => 'Terminated/Laid off (local)'],
+                ['value' => 10, 'text' => 'Terminated/Laid off (abroad)'],
+                ['value' => 3, 'text' => 'Others'],
+            ];
+        } else {
+            $this->empDescriptions = [];
+        }
     }
 
     public function deleteData($type, $id)
@@ -533,6 +563,8 @@ class EditDetails extends Component
             'bar' => ['required'],
             'mun' => ['required'],
             'prov' => ['required'],
+            'empStatus' => ['required'],
+            'empDesc' => ['required'],
         ];
 
         $messages = [
@@ -550,6 +582,9 @@ class EditDetails extends Component
             'bar.required' => 'Barangay is required.',
             'mun.required' => 'Municipality is required.',
             'prov.required' => 'Province is required.',
+            'empStatus.required' => 'Employment Status is required.',
+            'empDesc.required' => 'Employment Status Description is required.',
+
         ];
 
         $this->validate($rules, $messages);
@@ -566,7 +601,7 @@ class EditDetails extends Component
                 ->whereHas('job_posting.peso', function ($query) use ($currentMunicipalityID) {
                     $query->where('municipality_id', $currentMunicipalityID);
                 })
-                ->whereNotIn('applicant_Status', ['COMPLETED', 'REJECTED', 'CANCELLED'])
+                ->whereNotIn('applicant_Status', ['ACCEPTED', 'REJECTED', 'CANCELLED'])
                 ->exists();
 
             // dd($hasActiveApplications);
@@ -609,7 +644,10 @@ class EditDetails extends Component
             $jobseekerData->pnumber = $this->pnumber;
             $jobseekerData->address = $this->address;
             $jobseekerData->barangay_id = $this->barangayID;
+            $jobseekerData->empstatus = $this->empStatus;
+            $jobseekerData->empstatusdesc = $this->empDesc;
             $jobseekerData->tinnum = $this->tinnum;
+            
 
             // Check if any attributes have changed
             if ($jobseekerData->isDirty()) {
@@ -881,6 +919,13 @@ class EditDetails extends Component
         $this->tinnum = $employeeDetails->tinnum;
         $this->height = $employeeDetails->height;
         $this->address = $employeeDetails->address;
+        $this->empStatus = $employeeDetails->empstatus;
+        $this->updatedEmpStatus();
+
+        $this->empDesc = $employeeDetails->empstatusdesc;
+
+        // dd($employeeDetails->empstatusdesc);
+
         $this->barangayID = $employeeDetails->barangay_id;
 
         $barangayDetails = Barangay::find($employeeDetails->barangay_id);

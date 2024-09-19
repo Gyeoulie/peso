@@ -1,6 +1,6 @@
 <div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Personal Information</h1>
-    <div class="flexflex-col sm:flex-row gap-4 w-full mt-5">
+    <div class="flex flex-col sm:flex-row gap-4 w-full mt-5">
         <div class="flex flex-col w-full">
             <x-input-label for="presentAddress" :value="__('Present Address*')" />
             <x-text-input wire:model='address' class="block mt-1 w-full" type="text" />
@@ -173,6 +173,59 @@
             <x-text-input wire:model='otherDisability' class="block mt-1 w-full" type="text" />
             <x-input-error :messages="$errors->get('')" class="mt-2" />
         </div>
+    </div>
+
+
+    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+        <div class="flex flex-col w-1/3">
+            <x-input-label for="OFW" :value="__('Are you an OFW?*')" />
+            <div class="flex flex-row gap-4 mt-2">
+                <div class="flex items-center">
+                    <input wire:model='ofw' id="ofw-yes" type="radio" value="1" name="ofwStatus" checked
+                        class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    <label for="ofw-yes" class="ms-2 text-sm font-medium text-gray-900">Yes</label>
+                </div>
+                <div class="flex items-center">
+                    <input wire:model='ofw' id="ofw-no" type="radio" value="2" name="ofwStatus" checked
+                        class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    <label for="ofw-no" class="ms-2 text-sm font-medium text-gray-900">No</label>
+                </div>
+
+            </div>
+            <x-input-error :messages="$errors->get('ofw')" class="mt-2" />
+
+        </div>
+        <div class="flex w-full flex-wrap gap-6 w-1/3" x-data="{ household: null }">
+
+            <div class="flex flex-col">
+                <x-input-label for="4ps" :value="__('Are you a 4Ps beneficiary*')" />
+                <div class="flex flex-row w-full gap-4 mt-2">
+                    <div class="flex items-center">
+                        <input wire:model='fourP' x-model="household" id="4ps-yes" type="radio" value="1"
+                            name="4ps"
+                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                        <label for="4ps-yes" class="ms-2 text-sm font-medium text-gray-900">Yes</label>
+                    </div>
+                    <div wire:model='fourP' class="flex items-center">
+                        <input x-model="household" id="4ps-no" type="radio" value="2" name="4ps"
+                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                        <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">No</label>
+                    </div>
+
+                </div>
+                <x-input-error :messages="$errors->get('fourP')" class="mt-2" />
+
+            </div>
+            <div class="flex flex-col w-full sm:w-1/2" x-show="household == 1">
+                <x-input-label for="fourPID" :value="__('If yes, Household ID No.*')" />
+                <x-text-input wire:model='fourPID' class="block mt-1 w-full" type="text" />
+                <x-input-error :messages="$errors->get('fourPID')" class="mt-2" />
+
+            </div>
+
+
+        </div>
+
     </div>
 
     <div class="flex flex-row justify-between space-x-4 mt-4 ">

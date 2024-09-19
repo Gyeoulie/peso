@@ -81,6 +81,8 @@ Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'google2fa'])
 });
 
 //------------------------------ SIGN UP ------------------------------
+
+
 Route::middleware(['verified'])->group(function () {
     Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile')->middleware(['usertype:2']);
     Route::get('/employer/details', EmployerInformation::class)->name('fill_employer')->middleware(['usertype:3']);

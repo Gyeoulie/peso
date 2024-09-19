@@ -76,6 +76,9 @@ class JobseekerInformation extends Component
                 'tinnum' => $allData['tin'],
                 'empstatus' => $allData['empStatus'],
                 'empstatusdesc' => $allData['empDescription'],
+                'ofw' => $allData['ofw'],
+                'fourp' => $allData['fourP'],
+                'fourpID' => $allData['fourPID'],
                 'pimg' => $imgfinalPath,
             ]);
 
