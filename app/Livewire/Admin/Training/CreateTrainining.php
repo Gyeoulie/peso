@@ -58,9 +58,12 @@ class CreateTrainining extends Component
         $jobIndustryId = $programInfo->industry_id;
         $jobTagIds = $programInfo->program_tags->pluck('position_id');
 
-        return Employee::whereHas('barangay.municipality', function ($query) use ($programMunicipalityId) {
-            $query->where('municipality_id', $programMunicipalityId);
+        return Employee::whereHas('user', function ($query) {
+            $query->where('userstatus', 1); // Ensure userstatus == 1
         })
+            ->whereHas('barangay.municipality', function ($query) use ($programMunicipalityId) {
+                $query->where('municipality_id', $programMunicipalityId);
+            })
             ->whereHas('job_preference', function ($query) use ($jobTagIds) {
                 $query->whereIn('position_id', $jobTagIds);
             })

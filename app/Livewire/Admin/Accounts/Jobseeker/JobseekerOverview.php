@@ -17,6 +17,7 @@ use App\Models\Work_Exp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -38,7 +39,7 @@ class JobseekerOverview extends Component
     // SETTING FIELD
     public $fname, $lname, $mname, $suffix, $birthdate, $gender, $civilstatus, $religion;
 
-    public $agreeBox = false;
+    public $agreeBox = false, $deactivateBox = false;
     public $deactRemarks, $reactRemarks;
 
     public function updatedsearchApplications()
@@ -127,6 +128,23 @@ class JobseekerOverview extends Component
                 $user->disabled_at = now();
                 $user->save();
 
+                $jobseeker->job_applicants()
+                    ->whereNotIn('applicant_Status', ['ACCEPTED', 'CANCELLED', 'REJECTED'])
+                    ->update([
+                        'applicant_Status' => 'CANCELLED',
+                        'peso_Status' => 'CANCELLED',
+                        'company_Remarks' => 'Account Deactivated',
+                        'peso_Remarks' => 'Account Deactivated',
+                    ]);
+
+                $jobseeker->program_reg()
+                    ->whereHas('programs', function ($query) {
+                        $query->where('program_Status', 'ACTIVE');
+                    })
+                    ->update([
+                        'program_reg_Status' => 'CANCELLED',
+                    ]);
+
                 // Send notification email for deactivation
                 Mail::to($user->email)->queue(new AdminDeactivationNotification('deactivation'));
 
@@ -139,8 +157,7 @@ class JobseekerOverview extends Component
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction if something goes wrong
 
-            // Log the error and show a toastr message
-            // \Log::error('Error updating user status: ' . $e->getMessage());
+            Log::error('Error updating reactivation/deactivation: ' . $e->getMessage());
             toastr()->error('There was an error processing the request. Please try again.');
         }
     }
@@ -148,6 +165,7 @@ class JobseekerOverview extends Component
     public function closeModal($modal)
     {
         $this->reset('deactRemarks', 'reactRemarks');
+        $this->deactivateBox = false;
         $this->dispatch('close-modal', $modal . '-modal');
     }
 

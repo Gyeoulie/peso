@@ -171,9 +171,12 @@ class JobPostOverview extends Component
         $jobTagIds = $jobpost->job_tags->pluck('position_id')->toArray();
 
         // Build the query to get matched employees
-        return Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
-            $query->where('municipality_id', $jobMunicipalityId);
+        return Employee::whereHas('user', function ($query) {
+            $query->where('userstatus', 1); // Ensure userstatus == 1
         })
+            ->whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
+                $query->where('municipality_id', $jobMunicipalityId);
+            })
             ->whereHas('education', function ($query) use ($jobEducationLevel) {
                 $query->where('edu_Level', '>=', $jobEducationLevel);
             })

@@ -21,13 +21,20 @@ class JobseekerManagement extends Component
     public $paginate = 10;
     public $searchUsers;
 
-    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $civilStatus, $educationAttainment;
-    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountCivilStatus, $mountEducationAttainment;
+    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $civilStatus, $educationAttainment, $OFWFilter, $fourPFilter;
+    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountCivilStatus, $mountEducationAttainment, $mountOFWFilter, $mountFourPFilter;
 
     public $userFilter = 'ALL';
+
+    public $sortName = 'ASC';
     public function updatedsearchUsers()
     {
         $this->resetPage(); // Reset pagination for eligibility search
+    }
+
+    public function updateSort($value)
+    {
+        $this->sortName = $value;
     }
 
     public function mountFilter()
@@ -38,6 +45,8 @@ class JobseekerManagement extends Component
         $this->jobseekerfilter = $this->mountJobseekerfilter;
         $this->civilStatus = $this->mountCivilStatus;
         $this->educationAttainment = $this->mountEducationAttainment;
+        $this->OFWFilter = $this->mountOFWFilter;
+        $this->fourPFilter = $this->mountFourPFilter;
 
         $this->resetPage();
 
@@ -46,8 +55,8 @@ class JobseekerManagement extends Component
 
     public function resetFilter()
     {
-        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountJobseekerfilter', 'mountCivilStatus', 'mountEducationAttainment',
-            'Gender', 'Age', 'EmpStatus', 'jobseekerfilter', 'civilStatus', 'educationAttainment');
+        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountJobseekerfilter', 'mountCivilStatus', 'mountEducationAttainment', 'mountOFWFilter', 'mountFourPFilter',
+            'Gender', 'Age', 'EmpStatus', 'jobseekerfilter', 'civilStatus', 'educationAttainment', 'OFWFilter', 'fourPFilter');
         $this->resetPage();
 
     }
@@ -66,6 +75,7 @@ class JobseekerManagement extends Component
                     ->orWhere('lname', 'like', '%' . $this->searchUsers . '%');
             });
 
+        $employee->orderBy('lname', $this->sortName);
         // Filter by gender
         if ($this->Gender) {
             $employee->where('gender', $this->Gender);
@@ -74,6 +84,12 @@ class JobseekerManagement extends Component
         // Filter by employment status
         if ($this->EmpStatus) {
             $employee->where('empstatus', $this->EmpStatus);
+        }
+        if ($this->OFWFilter) {
+            $employee->where('ofw', $this->OFWFilter);
+        }
+        if ($this->fourPFilter) {
+            $employee->where('fourp', $this->fourPFilter);
         }
 
         // Filter by age

@@ -22,7 +22,7 @@ class AuditFormatter
         if ($userType === 4) { // Employee
             $employee = Employee::where('user_id', $userId)->first();
             return $employee ? "{$employee->fname} {$employee->lname}" : 'Unknown User';
-        } elseif ($userType === 5 || $userType = 6) { // Company
+        } elseif ($userType == 5 || $userType == 6) { // Company
             $company = Company::where('user_id', $userId)->first();
             return $company ? $company->business_Name : 'Unknown User';
         } elseif ($userType === 8 || $userType === 9 || $userType === 10) { // PESO

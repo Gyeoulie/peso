@@ -1,4 +1,4 @@
-<x-mail::message>
+j<x-mail::message>
 # Hello, {{ $employeeName }}
 
 We are pleased to inform you that your account has been created successfully.
