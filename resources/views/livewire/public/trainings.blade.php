@@ -56,7 +56,7 @@
             {{-- FILTER BUTTON --}}
 
             <div class="flex flex-row gap-2">
-                @if (auth()->user()->usertype != 5)
+                @if (Auth::check() && auth()->user()->usertype != 5)
                     <x-dropdown align="left" width="36">
                         <x-slot name="trigger">
                             <button
@@ -89,7 +89,7 @@
                                 </x-dropdown-link>
                             @endif
 
-                            @if (auth()->user()->usertype == 4 || auth()->user()->usertype >= 8)
+                            @if (auth()->user()->usertype == 4 || (auth()->user()->usertype >= 8 && auth()->user()->usertype < 11))
                                 <x-dropdown-link wire:click.prevent="updateFilter('My Municipality')"
                                     class="cursor-pointer">
                                     My Municipality
@@ -211,26 +211,32 @@
             @else
                 @foreach ($programList as $data)
                     <a href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                        class="block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
-                        <div>
-                            <div class="relative">
-                                <img class="w-full" src="{{ asset('storage/' . $data->program_pubmat) }}"
-                                    alt="prog-{{ $data->program_id }}">
-                                <div
-                                    class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 transition duration-500 ease-in-out">
-                                    {{ $data->program_Type }}
+                        class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
+                        <div class="flex flex-col h-full">
+                            <div>
+                                <div class="relative">
+                                    <div class="w-full h-64 overflow-hidden">
+                                        <img class="w-full h-full object-cover"
+                                            src="{{ asset('storage/' . $data->program_pubmat) }}"
+                                            alt="prog-{{ $data->program_id }}">
+                                    </div>
+                                    <div
+                                        class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 transition duration-500 ease-in-out">
+                                        {{ $data->program_Type }}
+                                    </div>
+                                </div>
+                                <div class="px-6 py-4 mb-auto ">
+                                    <span
+                                        class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
+                                        {{ $data->program_Title }}
+                                    </span>
+                                    <p class="text-gray-500 text-sm flex justify-center text-justify">
+                                        {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 175, '...') !!}
+                                    </p>
                                 </div>
                             </div>
-                            <div class="px-6 py-4 mb-auto">
-                                <span
-                                    class="font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
-                                    {{ $data->program_Title }}
-                                </span>
-                                <p class="text-gray-500 text-sm">
-                                    {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 150, '...') !!}
-                                </p>
-                            </div>
-                            <div class="px-6 py-3 flex flex-row items-center justify-between bg-gray-100">
+                            <!-- Bottom section for PESO Municipality and Date -->
+                            <div class="mt-auto px-6 py-3 flex flex-row items-center justify-between bg-white">
                                 <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
                                     <svg height="13px" width="13px" version="1.1"
                                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -247,18 +253,14 @@
                                     <span class="ml-1">{{ $data->created_at->format('F j, Y g:i A') }}</span>
                                 </span>
                                 <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
-                                    {{-- <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
-                                        </path>
-                                    </svg> --}}
                                     <svg class="h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                     </svg>
 
-                                    <span class="ml-1">PESO {{ $data->peso->municipality->municipality_Name }}</span>
+                                    <span class="ml-1">PESO
+                                        {{ $data->peso->municipality->municipality_Name }}</span>
                                 </span>
                             </div>
                         </div>
@@ -267,10 +269,14 @@
             @endif
 
 
-
+            <div>
+                {{ $programList->links() }}
+            </div>
         </div>
+
+
     </div>
-    @if (auth()->user()->usertype == 4)
+    @if (Auth::check() && auth()->user()->usertype == 4)
         <div class="grid grid-cols-4 gap-10" x-show="openTab === 2"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
             x-transition:enter-end="opacity-100 scale-100" x-cloak>
@@ -356,9 +362,9 @@
                                                         <div>
                                                             @if (empty($sortDate))
                                                                 Sort By Date
-                                                            @elseif($sortDateHistory === 'ASC')
-                                                                Newest
                                                             @elseif($sortDateHistory === 'DESC')
+                                                                Newest
+                                                            @elseif($sortDateHistory === 'ASC')
                                                                 Oldest
                                                             @endif
                                                         </div>
@@ -381,11 +387,11 @@
                                                         max-h-[300px] bg-white
                                                     </x-slot>
 
-                                                    <x-dropdown-link wire:click.prevent="updateSortHistory('ASC', 2)"
+                                                    <x-dropdown-link wire:click.prevent="updateSortHistory('DESC', 2)"
                                                         class="cursor-pointer">
                                                         Newest
                                                     </x-dropdown-link>
-                                                    <x-dropdown-link wire:click.prevent="updateSortHistory('DESC', 2)"
+                                                    <x-dropdown-link wire:click.prevent="updateSortHistory('ASC', 2)"
                                                         class="cursor-pointer">
                                                         Oldest
                                                     </x-dropdown-link>
@@ -403,11 +409,14 @@
                                                     <th scope="col" class="px-6 py-3 md:w-96">
                                                         Even Title
                                                     </th>
-                                                    <th scope="col" class="px-6 py-3 md:w-96">
+                                                    <th scope="col" class="px-6 py-3 ">
                                                         Registered Date
                                                     </th>
                                                     <th scope="col" class="px-6 py-3 w-md">
-                                                        Status
+                                                        Registration Status
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 w-md">
+                                                        Program Status
                                                     </th>
                                                     <th scope="col" class="px-6 py-3 w-md">
                                                         Action
@@ -480,27 +489,55 @@
                                                                 </div>
                                                             </td>
 
+                                                            <td class="px-6 py-4">
+                                                                <div class="flex items-center">
+                                                                    @if ($data->programs->program_Status === 'ACTIVE')
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                        </div>
+                                                                        ACTIVE
+                                                                    @elseif ($data->programs->program_Status === 'CLOSED')
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2">
+                                                                        </div>
+                                                                        CLOSED
+                                                                    @elseif ($data->programs->program_Status === 'COMPLETED')
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
+                                                                        </div>
+                                                                        COMPLETED
+                                                                    @elseif($data->programs->program_Status === 'CANCELLED')
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                                        </div>
+                                                                        CANCELLED
+                                                                    @endif
+                                                                </div>
+                                                            </td>
+
 
 
                                                             <td class="px-6 py-4">
                                                                 <div class="flex flex-row  gap-5">
-                                                                    <div x-data="{ tooltip: 'View Training' }">
-                                                                        <a wire:navigate
-                                                                            href="{{ route('training.show', ['id' => $data->programs->program_id]) }}"
-                                                                            x-tooltip="tooltip" type="button"
-                                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                            <svg class="h-5 w-5"
-                                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                                viewBox="0 0 24 24"
-                                                                                fill="currentColor">
-                                                                                <path
-                                                                                    d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                                                <path fill-rule="evenodd"
-                                                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                                                    clip-rule="evenodd" />
-                                                                            </svg>
-                                                                        </a>
-                                                                    </div>
+                                                                    @if ($data->programs->program_Status === 'ACTIVE')
+                                                                        <div x-data="{ tooltip: 'View Training' }">
+                                                                            <a wire:navigate
+                                                                                href="{{ route('training.show', ['id' => $data->programs->program_id]) }}"
+                                                                                x-tooltip="tooltip" type="button"
+                                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                                <svg class="h-5 w-5"
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    viewBox="0 0 24 24"
+                                                                                    fill="currentColor">
+                                                                                    <path
+                                                                                        d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                                    <path fill-rule="evenodd"
+                                                                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                                        clip-rule="evenodd" />
+                                                                                </svg>
+                                                                            </a>
+                                                                        </div>
+                                                                    @endif
 
 
                                                                     <div x-data="{ tooltip: 'View Ticket' }">
@@ -588,5 +625,27 @@
             </div>
         </div>
     </x-modal>
+    <div id="sticky-banner" tabindex="-1"
+        class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-8 border-b border-gray-200 bg-blue-500">
+        <div class="flex items-center mx-auto">
+            <p class="flex items-center text-xl  text-white font-bold">
+
+                </span>
+                <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Some
+                    postings may be for testing purposes only and not reflect actual opportunities.</span>
+            </p>
+        </div>
+        <div class="flex items-center">
+            <button data-dismiss-target="#sticky-banner" type="button"
+                class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-black hover:bg-gray-100 hover:text-gray-900 rounded-lg text-sm p-1.5">
+                <svg class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+                <span class="sr-only">Close banner</span>
+            </button>
+        </div>
+    </div>
 
 </div>

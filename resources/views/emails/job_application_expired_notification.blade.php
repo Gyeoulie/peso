@@ -17,5 +17,5 @@ We encourage you to keep an eye on future job opportunities that may align with 
 Thank you for considering opportunities with us.
 
 Best regards,<br>
-{{ config('app.name') }} Team
+{{ config('app.name') }}
 </x-mail::message>

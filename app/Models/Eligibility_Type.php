@@ -23,6 +23,7 @@ class Eligibility_Type extends Model implements Auditable
     protected $fillable = [
         'eligibility_Name',
         'eligibility_Code',
+        'eligibility_Status',
     ];
 
     /**
@@ -47,6 +48,7 @@ class Eligibility_Type extends Model implements Auditable
             'eligibility_type_id' => 'Eligibility Type ID',
             'eligibility_Name' => 'Eligibility Name',
             'eligibility_Code' => 'Eligibility Code',
+            'eligibility_Status' => 'Eligibility Status',
         ];
     }
 

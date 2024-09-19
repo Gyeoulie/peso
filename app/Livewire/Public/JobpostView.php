@@ -20,6 +20,7 @@ class JobpostView extends Component
 
     public $id;
     public $eduLevels = [
+        '0' => 'NONE',
         '1' => 'GRADE I',
         '2' => 'GRADE II',
         '3' => 'GRADE III',
@@ -51,88 +52,56 @@ class JobpostView extends Component
     public $option;
     public $resume;
 
+    public function mount()
+    {
+        $JobPost = Job_Posting::find($this->id);
+        if ($JobPost) {
+            if (Auth::check() && Auth::user()->usertype <= 5 && $JobPost->job_Status == 'PENDING') {
+                return redirect()->route('dashboard');
+            }
+        } else {
+            return redirect()->route('dashboard');
+
+        }
+
+    }
+
+    public function applyValidate()
+    {
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            // Open the login modal if the user is not logged in
+            $this->dispatch('open-modal', 'login-modal');
+            return; // Exit the method
+        }
+
+        // Get the job posting and user
+        $jobpost = Job_Posting::find($this->id); // Use find() for a single record
+        $user = Auth::user();
+        $userMunicipalityId = $user->employee->barangay->municipality_id;
+
+        if (!$jobpost) {
+            // Handle the case where the job posting is not found
+            toastr()->error('Job posting not found.');
+            return;
+        }
+
+        $jobpostMunicipalityId = $jobpost->peso->municipality_id;
+
+        if ($userMunicipalityId == $jobpostMunicipalityId) {
+            // Open the apply modal if the user's municipality matches the job posting's municipality
+            $this->dispatch('open-modal', 'apply-modal');
+        } else {
+            // Show an error if the user's municipality does not match
+            toastr()->error('This job posting is only available to ' . $jobpost->peso->municipality->municipality_Name . ' residents.');
+        }
+    }
+
     public function updateOption($option)
     {
         $this->option = $option;
 
     }
-
-    // public function apply()
-    // {
-    //     $user = auth()->user();
-
-    //     $this->validate([
-    //         'option' => ['required'],
-    //     ]);
-
-    //     if ($this->option == 2) {
-    //         if (empty($user->employee->resume)) {
-    //             $this->validate([
-    //                 'resume' => ['required', 'file', 'mimes:pdf', 'max:5120'], // 'max' is in kilobytes (5MB = 5120KB)
-    //             ], [
-    //                 'resume.required' => 'The resume file is required.',
-    //                 'resume.file' => 'The resume must be a file.',
-    //                 'resume.mimes' => 'The resume must be a PDF file.',
-    //                 'resume.max' => 'The resume may not be greater than 5MB in size.',
-    //             ]);
-    //             // $fileName = $file->store('requirements', 'public');
-    //             $resumePath = $this->resume->store('resumes', 'public');
-
-    //             try {
-    //                 $user->employee->update([
-    //                     'resume' => $resumePath,
-    //                 ]);
-
-    //                 try {
-    //                     Job_Applicants::create([
-    //                         'employee_id' => $user->employee->employee_id,
-    //                         'job_id' => $this->id,
-    //                         'applicant_Resume' => $this->option, // Validate role selection
-    //                         'applicant_Status' => $this->emailPost,
-    //                         'peso_Status' => "PENDING",
-    //                     ]);
-
-    //                 } catch (\Exception $e) {
-    //                     toastr()->error('There was an error in the application!');
-    //                 }
-
-    //             } catch (\Exception $e) {
-    //                 toastr()->error('There was an error uploading your resume!');
-    //             }
-
-    //             return;
-    //         } else {
-
-    //             try {
-    //                 Job_Applicants::create([
-    //                     'employee_id' => $user->employee->employee_id,
-    //                     'job_id' => $this->id,
-    //                     'applicant_Resume' => $this->option, // Validate role selection
-    //                     'applicant_Status' => $this->emailPost,
-    //                     'peso_Status' => "PENDING",
-    //                 ]);
-
-    //             } catch (\Exception $e) {
-    //                 toastr()->error('There was an error in the application!');
-    //             }
-    //         }
-
-    //     } else if ($this->option) {
-
-    //         try {
-    //             Job_Applicants::create([
-    //                 'employee_id' => $user->employee->employee_id,
-    //                 'job_id' => $this->id,
-    //                 'applicant_Resume' => $this->option, // Validate role selection
-    //                 'applicant_Status' => $this->emailPost,
-    //                 'peso_Status' => "PENDING",
-    //             ]);
-
-    //         } catch (\Exception $e) {
-    //             toastr()->error('There was an error in the application!');
-    //         }
-    //     }
-    // }
 
     public function apply()
     {
@@ -150,7 +119,7 @@ class JobpostView extends Component
 
         try {
             // If the user selected option 2 and doesn't have a resume already
-            if ($this->option == 2 && empty($user->employee->resume)) {
+            if ($this->option == 1 && empty($user->employee->resume)) {
                 // Validate the resume upload
                 $this->validate([
                     'resume' => ['required', 'file', 'mimes:pdf', 'max:5120'], // 'max' is in kilobytes (5MB = 5120KB)
@@ -217,15 +186,14 @@ class JobpostView extends Component
             return redirect()->route('dashboard');
         }
 
-        if (Auth::user()->usertype <= 4 && $JobPost->job_Status == 'PENDING') {
-            return redirect()->route('dashboard');
-        }
+        if (Auth::check()) {
 
-        if (Auth::user()->usertype === 4) {
-            $isApplied = Job_Applicants::where('job_id', $this->id)
-                ->where('employee_id', Auth::user()->employee->employee_id)
-                ->exists();
+            if (Auth::user()->usertype === 4) {
+                $isApplied = Job_Applicants::where('job_id', $this->id)
+                    ->where('employee_id', Auth::user()->employee->employee_id)
+                    ->exists();
 
+            }
         }
 
         return view('livewire.public.jobpost-view', compact('JobPost', 'isApplied'));

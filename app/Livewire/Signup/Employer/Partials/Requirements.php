@@ -12,13 +12,12 @@ class Requirements extends Component
     use WithFileUploads;
     public $req = [];
 
-    public $stepNumber = 3;
+    public $stepNumber = 4;
 
     public function mount()
     {
         // Fetch all requirements
-        $requirements = ModelsRequirements::all();
-
+        $requirements = ModelsRequirements::where('requirement_Status', 1)->get();
         // Initialize the $req array with requirement IDs
         foreach ($requirements as $requirement) {
             $this->req[$requirement->requirement_id] = null;
@@ -30,11 +29,23 @@ class Requirements extends Component
         $validationRules = [];
         $reqData = [];
 
-        foreach ($this->req as $requirementId => $file) {
-            $validationRules['req.' . $requirementId] = 'mimes:pdf';
-        }
+        // foreach ($this->req as $requirementId => $file) {
+        //     $validationRules['req.' . $requirementId] = 'mimes:pdf';
+        // }
 
-        $this->validate($validationRules);
+        // $this->validate($validationRules);
+        $rules = [
+            'req.*' => 'required|file|mimes:pdf|max:5120', // Max size 5MB, PDF only
+        ];
+
+        $messages = [
+            'req.*.mimes' => 'Uploaded file must be a PDF.',
+            'req.*.max' => 'Uploaded file must be under 5MB.',
+            'req.*.required' => 'File is required.',
+
+        ];
+
+        $this->validate($rules, $messages);
 
         foreach ($this->req as $requirementId => $file) {
             if ($file) {
@@ -58,10 +69,16 @@ class Requirements extends Component
 
     }
 
+    public function prev()
+    {
+        $this->dispatch('prevStep');
+
+    }
+
     public function render()
     {
 
-        $requirements = ModelsRequirements::where('requirement_Status', 1);
+        $requirements = ModelsRequirements::where('requirement_Status', 1)->get();
 
         return view('livewire.signup.employer.partials.requirements', compact('requirements'));
     }

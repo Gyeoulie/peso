@@ -2,10 +2,17 @@
 
 namespace App\Livewire\Jobseeker;
 
+use App\Mail\ApplicationAccepted;
+use App\Mail\ApplicationCompleted;
 use App\Models\Employee;
 use App\Models\Job_Applicants;
+use App\Models\Job_Posting;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -18,6 +25,7 @@ class ApplicationHistory extends Component
 
     use WithPagination, WithoutUrlPagination;
     public $eduLevels = [
+        '0' => 'NONE',
         '1' => 'GRADE I',
         '2' => 'GRADE II',
         '3' => 'GRADE III',
@@ -51,7 +59,6 @@ class ApplicationHistory extends Component
 
     public function handleResponse($status, $id)
     {
-
         $user = Auth::user();
 
         // Fetch the applicant record based on job_id and employee_id
@@ -59,27 +66,58 @@ class ApplicationHistory extends Component
 
         // Check if an applicant record was found
         if ($applicant) {
-            $applicant->update([
-                'applicant_Status' => $status,
-            ]);
+            DB::beginTransaction();
 
-            if ($status == 'ACCEPTED') {
-                // Check and update employee status if necessary
-                if ($user->employee->empstatus == 2) { // Assuming empstatus is stored as an integer
-                    $employee = Employee::find($applicant->employee->employee_id);
-                    $employee->update([
-                        'empstatus' => 1,
-                    ]);
+            try {
+                // Update the applicant's status
+                $applicant->update([
+                    'applicant_Status' => $status,
+                ]);
+
+                if ($status == 'ACCEPTED') {
+                    // Check and update employee status if necessary
+                    if ($user->employee->empstatus == 2) { // Assuming empstatus is stored as an integer
+                        $employee = Employee::find($applicant->employee->employee_id);
+                        $employee->update([
+                            'empstatus' => 1,
+                        ]);
+                    }
+                    Mail::to($applicant->employee->user->email)
+                        ->queue(new ApplicationCompleted($applicant));
+                    Mail::to($applicant->job_posting->company->user->email)
+                        ->queue(new ApplicationAccepted($applicant));
+
+                    // Check remaining slots in the job posting
+                    $jobPosting = Job_Posting::find($applicant->job_id);
+
+                    if ($jobPosting && $jobPosting->slotsLeft() <= 0) {
+                        // Dispatch the command to handle the job posting closure and notifications
+                        // Artisan::call('jobposting:process', ['jobId' => $applicant->job_id]);
+                        artisan::call('app:complete-job-postings', ['jobId' => $applicant->job_id]);
+                    }
+
+                    // Commit the transaction
+                    DB::commit();
+
+                    // Show success toastr notification
+                    $this->dispatch('close-modal', 'accept-modal');
+                    toastr()->success('Congratulations, job has been accepted!');
+
+                } elseif ($status == 'CANCELLED') {
+                    // Commit the transaction
+                    DB::commit();
+
+                    // Show error toastr notification
+                    $this->dispatch('close-modal', 'reject-modal');
+                    toastr()->error('Job has been rejected!');
                 }
+            } catch (\Exception $e) {
+                // Rollback the transaction if an error occurs
+                DB::rollBack();
 
-                // Show success toastr notification
-                $this->dispatch('close-modal', 'accept-modal');
-                toastr()->success('Congratulations, job has been accepted!');
-
-            } else if ($status == 'CANCELLED') {
-                // Show error toastr notification
-                $this->dispatch('close-modal', 'reject-modal');
-                toastr()->error('Job has been rejected!');
+                toastr()->error($e->getMessage());
+                // Optionally, log the exception
+                Log::error('Error handling response: ' . $e->getMessage());
             }
         } else {
             // Show error toastr notification if applicant record not found
@@ -207,18 +245,16 @@ class ApplicationHistory extends Component
 
         if ($this->filter == 'Pending') {
             $applications = $applications->whereIn('applicant_Status', ['PENDING', 'INTERESTED']);
-
         } else if ($this->filter == 'Interview') {
-            $applications = $applications->where('applicant_Status', '=', 'INTERVIEW');
+            $applications = $applications->where('applicant_Status', 'INTERVIEW');
         } else if ($this->filter == 'Others') {
             $applications = $applications->whereNotIn('applicant_Status', ['INTERVIEW', 'PENDING', 'INTERESTED']);
-
         }
 
         if ($this->sort == 'Newest') {
-            $applications = $applications->orderBy('created_at', 'ASC');
-        } else if ($this->sort == 'Oldest') {
             $applications = $applications->orderBy('created_at', 'DESC');
+        } else if ($this->sort == 'Oldest') {
+            $applications = $applications->orderBy('created_at', 'ASC');
 
         }
 

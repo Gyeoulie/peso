@@ -7,7 +7,12 @@ use App\Models\Industry_preference;
 use App\Models\Job_Preference;
 use App\Models\Programs;
 use App\Models\Program_Reg;
+use Carbon\Carbon;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -30,6 +35,27 @@ class TrainingRegistrants extends Component
 
     protected $listeners = ['qrCodeScanned' => 'qrCodeScanned'];
 
+    public function updatedsearch()
+    {
+        $this->resetPage();
+    }
+
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $programInfo = Programs::findOrFail($this->id);
+
+        if ($programInfo) {
+            if ($user->peso_accounts->peso_id != $programInfo->peso_id) {
+                return $this->redirectRoute('dashboard');
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+        }
+
+    }
+
     public function getJobseeker($id)
     {
         $this->selectedJobseeker = $id;
@@ -41,11 +67,12 @@ class TrainingRegistrants extends Component
     {
         $this->filter = $filter;
         $this->reset('sortDate');
+        $this->resetPage();
     }
     public function updateSort($sort)
     {
         $this->sortDate = $sort;
-
+        $this->resetPage();
     }
 
     public function scanQr()
@@ -63,31 +90,37 @@ class TrainingRegistrants extends Component
 
     public function qrCodeScanned($decodedText)
     {
-        // Example: Find a record by the QR code content
-        // You can replace this with your own logic
-        $ticketData = json_decode($decodedText, true);
-
-        // dd($ticketData);
-
         try {
+            // Attempt to decrypt the QR code content
+            $decryptedText = Crypt::decrypt($decodedText);
+
+            // Decode the decrypted JSON data
+            $ticketData = json_decode($decryptedText, true);
+
             // Fetch the ticket based on the provided data
             $ticket = Program_Reg::where('program_reg_id', $ticketData['program_reg_id'])
                 ->where('program_id', $ticketData['program_id'])
                 ->where('employee_id', $ticketData['employee_id'])
-                ->where('created_at', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ticketData['created_at']))
+                ->where('created_at', Carbon::createFromFormat('Y-m-d H:i:s', $ticketData['created_at']))
                 ->first();
 
             // Check if the ticket is found
-            if ($ticket) {
-                $this->getJobseeker($ticket->employee_id);
+            if ($ticket && $ticket->program_id == $this->id) {
+                $this->getJobseeker($ticket->program_reg_id);
                 $this->dispatch('close-modal', 'qr-scanner-modal');
             } else {
-                toastr()->info('Ticket is not valid');
+                toastr()->info('Ticket is not valid.');
                 $this->qrStop();
             }
-        } catch (\Exception $e) {
-            // Handle database query exceptions
+        } catch (DecryptException $e) {
+            // Handle decryption error (e.g., payload tampered or invalid)
+            Log::error('Decryption error in QR code scan: ' . $e->getMessage(), ['exception' => $e]);
 
+            toastr()->error('An error occurred while processing the ticket.');
+            $this->qrStop();
+        } catch (\Exception $e) {
+            // Handle any other exceptions
+            Log::error('General error in QR code scan: ' . $e->getMessage(), ['exception' => $e]);
             toastr()->error('An error occurred while processing the ticket.');
             $this->qrStop();
         }
@@ -233,9 +266,12 @@ class TrainingRegistrants extends Component
             ->findOrFail($this->id);
         $jobseekerInfo = null;
         $isMatch = false;
+        $slotsRemaining = 0;
 
         // Paginate the results
         $programRegistrants = $this->getRegistrants($programInfo->program_id)->paginate(10);
+
+      
 
         if ($this->selectedJobseeker) {
             $jobseekerInfo = Program_Reg::findOrFail($this->selectedJobseeker);

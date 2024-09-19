@@ -61,7 +61,7 @@ class JobPostList extends Component
 
         if ($this->filter != 'ALL') {
             if ($this->filter == 'OTHERS') {
-                $applicantsQuery = $applicantsQuery->whereNotIn('job_status', ['PENDING', 'ACTIVE']);
+                $applicantsQuery = $applicantsQuery->whereNotIn('job_status', ['PENDING', 'ACTIVE', 'CLOSED', 'COMPLETED']);
             } else {
                 $applicantsQuery = $applicantsQuery->where('job_status', $this->filter);
             }

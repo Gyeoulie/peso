@@ -106,7 +106,7 @@ class EligibilityModal extends Component
     public function render()
     {
 
-        $eligibility = Eligibility_Type::where('eligibility_Name', 'like', '%' . $this->search . '%')
+        $eligibility = Eligibility_Type::where('eligibility_Status', 1)->where('eligibility_Name', 'like', '%' . $this->search . '%')
             ->get();
 
         return view('livewire.modals.eligibility-modal', compact('eligibility'));

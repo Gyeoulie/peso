@@ -24,6 +24,16 @@ class JobseekerProfile extends Component
         ];
     }
 
+    public function mount()
+    {
+        $employeeInfo = Employee::find($this->id);
+
+        if (!$employeeInfo || $employeeInfo->user->usertype != 4 || $employeeInfo->user->userstatus != 1) {
+            return $this->redirectRoute('dashboard');
+        }
+
+    }
+
     public function editModal()
     {
         $this->resetValidation();
@@ -61,7 +71,6 @@ class JobseekerProfile extends Component
     #[On('reload-table')]
     public function render()
     {
-        
 
         $highestEduTitle = 'None';
         $isOwner = false;
@@ -100,6 +109,7 @@ class JobseekerProfile extends Component
 
         if ($jobseeker) {
             $eduLevels = [
+                '0' => 'NONE',
                 '1' => 'GRADE I',
                 '2' => 'GRADE II',
                 '3' => 'GRADE III',
@@ -127,7 +137,13 @@ class JobseekerProfile extends Component
                 '25' => 'MASTERAL/POST GRADUATE LEVEL',
                 '26' => 'MASTERAL/POST GRADUATE',
             ];
-            $highestEduTitle = $eduLevels[$jobseeker->education->first()->edu_Level];
+            if ($jobseeker->education->isNotEmpty()) {
+                // Retrieve the highest education level
+                $highestEduLevel = $jobseeker->education->sortByDesc('edu_Level')->first()->edu_Level;
+
+                // Get the corresponding education title
+                $highestEduTitle = $eduLevels[$highestEduLevel] ?? 'Unknown';
+            }
         }
 
         return view('livewire.public.profile.jobseeker.jobseeker-profile', compact('jobseeker', 'highestEduTitle', 'isOwner'));

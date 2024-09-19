@@ -4,12 +4,23 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ asset('assets/img/PESO-Logo.png') }}">
 
-    <title>PESO</title>
+
+    <title>{{ config('app.name', 'PESO') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <!-- Fonts -->
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-6.5.2-web/css/all.min.css') }}">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+
+
 
     <!-- Styles -->
     <style>
@@ -828,12 +839,54 @@
             }
         }
     </style>
+    <style>
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Apply the animation to the text */
+        .animated-text {
+            animation: pulse 2s infinite;
+        }
+    </style>
+    <style>
+        .purple_border {
+            box-shadow: 4px 4px 1px rgba(37, 99, 235, 0.7);
+        }
+
+        .black_border {
+            box-shadow: 4px 4px 1px rgb(0, 0, 0);
+        }
+    </style>
+
+
+    @livewireStyles
+    @livewireScripts
+    @vite(['resources/css/app.css'])
+
 </head>
 
 <body class="antialiased">
+    @include('layouts.navigation-home')
+
+
+
     <div
         class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
-        @if (Route::has('login'))
+        {{-- @if (Route::has('login'))
             <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                 @auth
                     <a href="{{ url('/dashboard') }}"
@@ -849,21 +902,99 @@
                     @endif
                 @endauth
             </div>
-        @endif
+        @endif --}}
 
-        <div class="max-w-7xl mx-auto p-6 lg:p-8">
+        {{-- <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <div class="flex justify-center">
                 <x-application-logo style="width: 150px; height: 150px;" class="fill-current text-gray-500" />
             </div>
+        </div> --}}
+
+        <div class="flex flex-wrap">
+            <div class="w-full sm:w-8/12 mb-10">
+                <div class="container mx-auto h-full sm:p-10">
+                    <nav class="flex mt-2 sm:mt-0 px-4 justify-between items-center">
+                        <div class="flex flex-row gap-4 items-center ">
+                            <div>
+                                <img src="{{ asset('assets/img/PESO-Logo.png') }}" alt="" class="w-12">
+                            </div>
+                            <div class="text-4xl font-bold">
+
+                                PESO Careers<span class="text-blue-500">.</span>
+                            </div>
+                        </div>
+                    </nav>
+                    <header class="container px-4 lg:flex mt-10 items-center h-full lg:mt-0">
+                        <div class="w-full">
+                            <h1 class="text-4xl lg:text-6xl font-bold">Find your perfect job <span
+                                    class="text-blue-500 animated-text">match</span> with PESO.</h1>
+                            <div class="w-20 h-2 bg-blue-700 my-4"></div>
+                            <p class="text-xl mb-10 text-justify">Explore job opportunities that fit your skills and
+                                interests with
+                                ease. PESO helps you connect with roles that are right for you, making the job search
+                                process straightforward and effective. Whether you’re looking for new challenges or a
+                                position that suits your abilities, PESO is here to support you in finding the right
+                                job.</p>
+                            <button
+                                class="bg-blue-500 text-white text-2xl font-medium px-4 py-2 rounded shadow transition-transform transform hover:scale-110">Learn
+                                More</button>
+                            <div
+                                class="relative mx-12 sm:mx-auto my-16 max-w-4xl  hover:scale-105 transition-transform">
+                                <button
+                                    class="absolute py-1 px-3 -left-8 -top-2 -rotate-[10deg] border border-black black_border bg-blue-500 text-white font-bold">
+                                    NOTICE!
+                                </button>
+
+                                <div class="purple_border p-8 border border-black text-justify">
+                                    <p class="text-lg"> Please be aware that this content is intended solely for
+                                        educational purposes and is part of a
+                                        capstone project. The information and features presented here
+                                        should be viewed as part of a learning exercise and not for any commercial or
+                                        professional use.
+                                    </p>
+                                </div>
+                            </div>
 
 
+                        </div>
+                    </header>
 
-
-
-
+                </div>
+            </div>
+            <img src="{{ asset('assets/img/homepage.jpg') }}" alt="Guy"
+                class="hidden sm:flex w-full h-48 object-cover sm:h-screen sm:w-4/12">
+            <img src="{{ asset('assets/img/mobile-home.jpg') }}" alt="Guy"
+                class="sm:hidden flex w-full h-48 object-cover sm:shadow-none sm:rounded-none shadow-xl rounded-md mb-5 sm:h-screen sm:w-4/12">
         </div>
     </div>
     </div>
+
+    <footer class="bg-white rounded-lg shadowm-4 mt-auto">
+        <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8 ">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <a href="#" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+                    <img src="{{ asset('assets/img/PESO-Logo.png') }}" class="h-8" alt="Flowbite Logo" />
+                    <span class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap ">Public Employment
+                        Service Office</span>
+                </a>
+                <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 ">
+                    <li>
+                        <a href="#" class="hover:underline me-4 md:me-6">About</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
+                    </li>
+                    <li>
+                        <a href="https://forms.gle/cjeY6uiV3TtUHwpi8" class="hover:underline">Report a Bug</a>
+                    </li>
+                </ul>
+            </div>
+            <hr class="my-6 border-gray-200 sm:mx-auto  lg:my-8" />
+            <span class="block text-sm text-gray-500 sm:text-center ">© 2023 <a href="#"
+                    class="hover:underline">PESO™</a>. All Rights
+                Reserved.</span>
+        </div>
+    </footer>
 </body>
 
 </html>

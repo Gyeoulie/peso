@@ -3,9 +3,15 @@
 namespace App\Livewire\Admin\Accounts\Employer;
 
 use App\Helpers\AuditFormatter;
+use App\Mail\AdminDeactivationNotification;
 use App\Mail\AdminResetPasswordNotification;
+use App\Mail\PartnershipCancellationNotification;
 use App\Models\Company;
 use App\Models\Job_Posting;
+use App\Models\Partnerships;
+use App\Models\Requirements;
+use Asantibanez\LivewireCharts\Models\ColumnChartModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -26,12 +32,102 @@ class EmployerOverview extends Component
 
     public $businessName, $tradeName, $TIN, $locType = '', $workforce = '', $empType = '', $empDesc = '';
 
+    public $deactRemarks, $reactRemarks, $partRemarks;
+
     public $agreeBox = false;
 
-    public function getJobs($id)
+    public function updatedsearchJobs()
+    {
+        $this->resetPage(); // Reset pagination for eligibility search
+    }
+
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $partnership = Partnerships::where('company_id', $this->id)
+            ->where('peso_id', $user->peso_accounts->peso_id)
+            ->first();
+
+        if ($partnership->partnership_Status != 'APPROVED') {
+            return $this->redirectRoute('dashboard');
+        }
+    }
+
+    public function viewFile($reqPassedId)
+    {
+
+        $url = route('view.requirement');
+        // Dispatch an event to trigger JavaScript for opening a new tab
+        $this->dispatch('viewFile', [
+            'url' => $url,
+            'req_passed_id' => $reqPassedId,
+
+        ]);
+
+    }
+
+    public function updatePartnership()
+    {
+        // Validate the remarks based on status
+        $rules = ['partRemarks' => 'required|string'];
+        $messages = ['partRemarks.required' => 'Partnership remarks are required.',
+            'partRemarks.string' => 'Partnership remarks must be a valid string.'];
+
+        // Validate input
+        $this->validate($rules, $messages);
+
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Start a transaction
+        DB::beginTransaction();
+
+        try {
+            // Find the partnership record
+            $partnership = Partnerships::where('company_id', $this->id)
+                ->where('peso_id', $user->peso_accounts->peso_id)
+                ->first();
+
+            if (!$partnership) {
+                // If no partnership record found, throw an exception
+                throw new \Exception('Partnership record not found.');
+            }
+
+            // Update the partnership status and remarks
+            $partnership->partnership_Status = 'CANCELLED'; // Update the status
+            $partnership->partnership_remarks = $this->partRemarks;
+            $partnership->responded_at = now(); // Update the remarks
+            // Update the remarks
+            $partnership->save();
+
+            // Commit the transaction
+            DB::commit();
+            Mail::to($partnership->company->user->email)->queue(new PartnershipCancellationNotification($partnership));
+            // Artisan::call('partnership:cancel', [
+            //     'companyId' => $this->id,
+            //     'pesoId' => $user->peso_accounts->peso_id,
+            // ]);
+
+            toastr()->success('Partnership status has been updated successfully.');
+
+            // Optionally, redirect or perform other actions
+            $this->closeModal('partnership');
+            return redirect()->route('dashboard'); // Adjust the route as necessary
+
+        } catch (\Exception $e) {
+            // Rollback the transaction on general failure
+            DB::rollBack();
+            toastr()->error('Failed to update partnership status. Please try again.'); // Display general error
+            $this->closeModal('partnership');
+
+        }
+    }
+    public function getJobs($peso_id, $id)
     {
         return Job_Posting::withCount(['job_applicants as applicants_count'])
             ->where('company_id', $id)
+            ->where('peso_id', $peso_id)
             ->where(function ($query) {
                 $query->where('job_Title', 'like', '%' . $this->searchJobs . '%')
                     ->orWhereHas('job_tags.job_positions', function ($query) {
@@ -60,7 +156,7 @@ class EmployerOverview extends Component
         $rules = [
             'businessName' => 'required|string|max:255',
             'tradeName' => 'required|string|max:255',
-            'TIN' => 'required|digits:11', // Assuming TIN is exactly 9 digits
+            'TIN' => 'required|digits:9', // Assuming TIN is exactly 9 digits
             'locType' => 'required', // Example valid types
             'workforce' => 'required', // Nullable, but if present must be an integer and at least 1
             'empType' => 'required', // Example valid types
@@ -77,7 +173,7 @@ class EmployerOverview extends Component
             'tradeName.max' => 'The trade name cannot exceed 255 characters.',
 
             'TIN.required' => 'The TIN field is required.',
-            'TIN.digits' => 'The TIN must be exactly 11 digits.',
+            'TIN.digits' => 'The TIN must be exactly 9 digits.',
 
             'locType.required' => 'The location type field is required.',
 
@@ -141,6 +237,164 @@ class EmployerOverview extends Component
         return $password;
 
     }
+    public function statusUser($type)
+    {
+        if ($type == 1) {
+            $rules = ['reactRemarks' => 'required|string'];
+            $messages = ['reactRemarks.required' => 'Reactivation remarks are required.',
+                'reactRemarks.string' => 'Reactivation remarks must be a valid string.'];
+
+            $this->validate($rules, $messages);
+        } elseif ($type == 2) {
+            $rules = ['deactRemarks' => 'required|string'];
+            $messages = ['deactRemarks.required' => 'Deactivation remarks are required.',
+                'deactRemarks.string' => 'Deactivation remarks must be a valid string.'];
+
+            $this->validate($rules, $messages);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // Fetch the company and user
+            $company = Company::findOrFail($this->id);
+            $user = $company->user;
+
+            // Check the type and update user status
+            if ($type == 1) {
+                $user->userstatus = 1; // Reactivating
+                $user->description = $this->reactRemarks; // Set the description
+                $user->disabled_at = null;
+                $user->save();
+                Mail::to($user->email)->queue(new AdminDeactivationNotification('reactivation'));
+
+                toastr()->success('Account is successfully reactivated.');
+                $this->closeModal('reactivate');
+
+            } elseif ($type == 2) {
+                $user->userstatus = 2; // Deactivating
+                $user->description = $this->deactRemarks; // Set the description
+                $user->disabled_at = now();
+                $user->save();
+                Mail::to($user->email)->queue(new AdminDeactivationNotification('deactivation'));
+
+                toastr()->success('Account is successfully deactivated.');
+                $this->closeModal('deactivate');
+            }
+
+            DB::commit(); // Commit the transaction if everything is successful
+
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction if something goes wrong
+
+            // Log the error and show a toastr message
+            toastr()->error('There was an error processing the request. Please try again.');
+        }
+    }
+
+    public function closeModal($modal)
+    {
+        $this->reset('deactRemarks', 'reactRemarks', 'partRemarks');
+        $this->dispatch('close-modal', $modal . '-modal');
+    }
+
+    public function getTopJobTagsByCompany($companyId)
+    {
+        // Fetch job postings by company with job tags and job positions
+        $jobPostings = Job_Posting::where('company_id', $companyId)
+            ->with('job_tags.job_positions') // Eager load job_tags and job_positions
+            ->get();
+
+        // Flatten and count the job positions' titles from the job tags within the job postings
+        $tagCounts = $jobPostings->flatMap(function ($jobpost) {
+            return $jobpost->job_tags->map(function ($jobTags) {
+                return $jobTags->job_positions->position_Title ?? 'Unknown';
+            });
+        })->countBy();
+
+        // Get the top 5 job tags by count
+        $topJobTags = $tagCounts->sortDesc()->take(5);
+
+        // dd($topJobTags);
+        // Prepare data for the column chart
+        $columnChartModel = new ColumnChartModel();
+
+        // Add each top tag to the chart
+        foreach ($topJobTags as $tagName => $totalCount) {
+            $columnChartModel->addColumn($tagName, $totalCount, '#' . substr(md5(rand()), 0, 6)); // Generate random color for each column
+        }
+
+        // Optionally customize chart properties
+        $columnChartModel
+            ->setTitle("Company Job Tags")
+
+            ->setAnimated(true)
+            ->setYAxisVisible(false)
+            ->setDataLabelsEnabled(true)
+            ->setLegendVisibility(true)
+            ->setJsonConfig([
+                'chart' => [
+                    'height' => '300px',
+                    'width' => '100%',
+                ],
+                'yaxis.tickAmount' => 1,
+                'yaxis.labels.formatter' => '(val) => Math.floor(val)',
+                'xaxis.labels.show' => false,
+            ]);
+
+        return $columnChartModel;
+    }
+
+    public function getHiredAndRejectedChart($pesoId)
+    {
+        // Retrieve job postings by company, filtered by peso_id and status
+        $jobPostings = Job_Posting::where('company_id', $this->id)
+            ->where('peso_id', $pesoId) // Filter by peso_id
+            ->where('job_Status', 'COMPLETED') // Filter by completed job postings
+            ->with('job_applicants') // Eager load job applicants
+            ->get();
+
+        // Initialize counts
+        $hiredCount = 0;
+        $rejectedCount = 0;
+
+        // Count applicants based on status
+        foreach ($jobPostings as $jobPosting) {
+            foreach ($jobPosting->job_applicants as $applicant) {
+                if ($applicant->applicant_Status === 'ACCEPTED') {
+                    $hiredCount++;
+                } elseif (in_array($applicant->applicant_Status, ['REJECTED', 'CANCELLED'])) {
+                    $rejectedCount++;
+                }
+            }
+        }
+
+        // Generate the column chart model
+        $columnChartModel = new ColumnChartModel();
+
+        $columnChartModel->addColumn('HIRED', $hiredCount, '#008000');
+        $columnChartModel->addColumn('REJECTED', $rejectedCount, '#FF0000');
+
+        $columnChartModel
+            ->setTitle("Job Applicants Hired")
+            ->setAnimated(true)
+            ->setYAxisVisible(false)
+            ->setDataLabelsEnabled(true)
+            ->setLegendVisibility(true)
+            ->setJsonConfig([
+                'chart' => [
+                    'height' => '300px',
+                    'width' => '100%',
+                ],
+                'yaxis.tickAmount' => 1,
+                'yaxis.labels.formatter' => '(val) => Math.floor(val)',
+                'xaxis.labels.show' => false,
+            ]);
+
+        // Add columns to the chart
+
+        return $columnChartModel;
+    }
 
     public function resetPassword()
     {
@@ -185,11 +439,32 @@ class EmployerOverview extends Component
     public function render()
     {
         $joblist = null;
+        $requirements = null;
+        $partnership = null;
+        $topTags = null;
+        $totalHired = 0;
+
         $employer = Company::findOrFail($this->id);
 
+        $user = Auth::user();
+
         if ($employer) {
-            $joblist = $this->getJobs($employer->company_id);
+            $joblist = $this->getJobs($user->peso_accounts->peso_id, $employer->company_id);
             $this->mountFields($employer);
+            $requirements = Requirements::with([
+                'requirementPassed' => function ($query) use ($employer) {
+                    $query->where('company_id', $employer->company_id); // Use `where` for filtering
+                },
+            ])
+                ->where('requirement_Status', 1)
+                ->get();
+            $topTags = $this->getTopJobTagsByCompany($employer->company_id);
+            $partnership = Partnerships::where('company_id', $this->id)
+                ->where('peso_id', $user->peso_accounts->peso_id)
+                ->first();
+
+            $totalHired = $employer->getTotalHiredApplicants($user->peso_accounts->peso_id);
+            $countsAndChart = $this->getHiredAndRejectedChart($user->peso_accounts->peso_id);
 
         }
 
@@ -201,6 +476,6 @@ class EmployerOverview extends Component
             return AuditFormatter::format($audit);
         });
 
-        return view('livewire.admin.accounts.employer.employer-overview', compact('employer', 'joblist', 'audits', 'formattedAudits'));
+        return view('livewire.admin.accounts.employer.employer-overview', compact('employer', 'joblist', 'requirements', 'topTags', 'partnership', 'totalHired', 'countsAndChart', 'audits', 'formattedAudits'));
     }
 }

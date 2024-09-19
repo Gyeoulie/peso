@@ -17,12 +17,12 @@ class AnnouncementNotification extends Mailable implements ShouldQueue
      * Create a new message instance.
      */
     public $announcementData;
-    public $residentName;
+    public $employee;
 
-    public function __construct($residentName, $announcementData)
+    public function __construct($employee, $announcementData)
     {
         $this->announcementData = $announcementData;
-        $this->residentName = $residentName;
+        $this->employee = $employee;
 
     }
 
@@ -44,7 +44,7 @@ class AnnouncementNotification extends Mailable implements ShouldQueue
         return new Content(
             markdown: 'emails.announcement_notification',
             with: [
-                'residentName' => $this->residentName->fname . ' ' . $this->residentName->lname,
+                'residentName' => $this->employee->fname . ' ' . $this->employee->lname,
                 'announcementTitle' => $this->announcementData->announcement_Title,
                 'announcementUrl' => route('announcement.show', ['id' => $this->announcementData->announcement_id]),
                 'PESO' => $this->announcementData->peso->municipality->municipality_Name,

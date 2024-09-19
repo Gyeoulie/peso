@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Accounts\Peso;
 
 use App\Mail\AdminCreationNotification;
 use App\Models\PESO;
+use App\Models\PESO_Accounts;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +34,11 @@ class PesoManagement extends Component
     public $agreeBox = false;
 
     public $search, $filter;
+
+    public function updatedSearch()
+    {
+        $this->resetPage(); // Reset pagination for eligibility search
+    }
 
     public function rules()
     {
@@ -144,7 +150,7 @@ class PesoManagement extends Component
             ]);
 
             // Create PESO entry
-            PESO::create([
+            PESO_Accounts::create([
                 'user_id' => $user->id,
                 'peso_id' => $pesoID,
                 'peso_accounts_Fname' => $this->fname,
@@ -174,6 +180,7 @@ class PesoManagement extends Component
 
             // Handle the exception (log it, rethrow it, show an error message, etc.)
             toastr()->error('Failed to create the account. Please try again.');
+            dd($e->getMessage());
         }
         $this->dispatch('close-modal', 'confirm-modal');
 

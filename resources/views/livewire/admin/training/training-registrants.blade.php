@@ -54,25 +54,26 @@
                     <ul>
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Program Host:</li>
-                            <p class="ms-4">{{ $programInfo->program_Host }}</p>
+                            <p class="ms-4 break-all">{{ $programInfo->program_Host }}</p>
                         </div>
 
-                        @if ($programInfo->program_Slots !== null)
+                        @if ($programInfo->program_Slots != null)
                             <div class="flex flex-row justify-between">
-                                <li class="mb-2 font-bold">Slots Remaining:</li>
-                                <p class="ms-4">{{ $programInfo->program_Slots }}</p>
+                                <li class="mb-2 font-bold">Program Slots:</li>
+                                <p class="ms-4 break-all">
+                                    {{ $programInfo->program_reg_count }}/{{ $programInfo->program_Slots }} </p>
                             </div>
                         @endif
                         <div class="flex flex-row justify-between">
-                            <li class="mb-2 font-bold">Registratin Deadline:</li>
-                            <p class="ms-4">{{ $programInfo->program_Deadline->format('F j, Y') }}</p>
+                            <li class="mb-2 font-bold">Registration Deadline:</li>
+                            <p class="ms-4 break-all">{{ $programInfo->program_Deadline->format('F j, Y') }}</p>
                         </div>
 
                         @if ($programInfo->program_Datetime)
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Program Date:</li>
-                                <span>
-                                    <p class="ms-4">{{ $programInfo->program_Datetime > format('F j, Y') }}</p>
+                                <span class="break-all">
+                                    <p class="ms-4 ">{{ $programInfo->program_Datetime->format('F j, Y') }}</p>
                                     <p class="ms-4">{{ $programInfo->program_Datetime->format('g:i A') }}</p>
                                 </span>
 
@@ -80,17 +81,17 @@
                         @endif
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Industry Tag</li>
-                            <p class="ms-4">{{ $programInfo->job_industry->industry_Title }}</p>
+                            <p class="ms-4 break-all">{{ $programInfo->job_industry->industry_Title }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Program Status:</li>
-                            <p class="ms-4">{{ $programInfo->program_Status }}</p>
+                            <p class="ms-4 break-all">{{ $programInfo->program_Status }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Location:</li>
-                            <p class="ms-4">{{ $programInfo->program_Location }}</p>
+                            <p class="ms-4 break-all">{{ $programInfo->program_Location }}</p>
                         </div>
 
                     </ul>
@@ -146,7 +147,8 @@
                 x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                 x-transition:enter-end="opacity-100 scale-100">
                 <div class="flex flex-row justify-between">
-                    <h1 class="text-lg sm:text-2xl font-bold mb">Registrant List</h1>
+                    <h1 class="text-lg sm:text-2xl font-bold mb">Registrant List:
+                        {{ $programInfo->program_reg_count }}</h1>
                     {{-- <h1 class="text-lg sm:text-2xl font-bold mb">Registered: {{ $programInfo->program_reg_count }}</h1> --}}
                     <x-primary-button wire:click.prevent='scanQr'>QR Code</x-primary-button>
 
@@ -180,7 +182,7 @@
 
                             <div x-data="{ tooltip: 'Export to Excel' }">
                                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
-                                    class="flex items-center py-1.5 px-4 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                                    class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                                     <span class="mr-2">Export</span>
                                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -195,7 +197,7 @@
                             <x-dropdown align="left" width="[150px]">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
                                         <div>
                                             {{ $filter }}
                                         </div>
@@ -241,7 +243,7 @@
                             <x-dropdown align="left" width="[150px]">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
                                         <div>
                                             {{ $sortDate === 'ASC' ? 'Oldest' : ($sortDate == 'DESC' ? 'Newest' : 'Sort by Date') }}
 
@@ -356,9 +358,9 @@
                                                     @elseif ($data->program_reg_Status == 'COMPLETED')
                                                         <span
                                                             class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
-                                                    @elseif ($data->program_reg_Status == 'REJECTED')
+                                                    @elseif ($data->program_reg_Status == 'CANCELLED')
                                                         <span
-                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                                     @endif
 
                                                 </div>
@@ -422,10 +424,16 @@
                                 </img>
                             </div>
                             <div class="flex flex-col ml-4  justify-center">
-                                <h1 class="text-2xl sm:text-4xl  font-bold">
-                                    {{ $jobseekerInfo->employee->fname }} {{ $jobseekerInfo->employee->mname }}
-                                    {{ $jobseekerInfo->employee->lname }}
-                                </h1>
+                                <div x-data="{ tooltip: 'View Profile' }">
+                                    <a x-tooltip="tooltip"
+                                        href="{{ route('jobseeker.profile', ['id' => $jobseekerInfo->employee->employee_id]) }}">
+                                        <h1 class="text-2xl sm:text-4xl font-bold hover:text-blue-500">
+                                            {{ $jobseekerInfo->employee->fname }}
+                                            {{ $jobseekerInfo->employee->mname }}
+                                            {{ $jobseekerInfo->employee->lname }}
+                                        </h1>
+                                    </a>
+                                </div>
                                 <h1 class="text-lg text-gray-600">
                                     {{ $jobseekerInfo->employee->barangay->municipality->municipality_Name }},
                                     {{ $jobseekerInfo->employee->barangay->municipality->province->province_Name }}
@@ -453,7 +461,7 @@
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Date Registered:</li>
-                                    <p class="ms-4">
+                                    <p class="ms-4 break-all">
                                         {{ $jobseekerInfo->created_at->format('F j, Y') }}
                                     </p>
                                 </div>
@@ -540,30 +548,9 @@
 
 
                             </ul>
-
-                            @if ($jobseekerInfo->program_reg_Status == 'REGISTERED')
-                                <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                                    <div x-data="{ tooltip: 'View Resume' }">
-                                        <x-danger-button
-                                            wire:click.prevent="confirmReg('REJECTED', {{ $jobseekerInfo->program_reg_id }})"
-                                            x-tooltip="tooltip" type="button">Reject</x-danger-button>
-
-
-                                    </div>
-
-                                    <div x-data="{ tooltip: 'View Recommendation Letter' }">
-
-                                        <x-green-button
-                                            wire:click.prevent="confirmReg('COMPLETED', {{ $jobseekerInfo->program_reg_id }})"
-                                            x-tooltip="tooltip" type="button">Confirm</x-green-button>
-                                    </div>
-
-                                </div>
-                            @endif
-
-                            <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                            <div class="mt-2 flex flex-wrap gap-4 justify-center">
                                 <div x-data="{ tooltip: 'View Profile' }">
-                                    <a a wire:navigate
+                                    <a wire:navigate
                                         href="{{ route('jobseeker.profile', ['id' => $jobseekerInfo->employee->employee_id]) }}"
                                         x-tooltip="tooltip" type="button"
                                         class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
@@ -579,6 +566,23 @@
 
 
                             </div>
+
+                            @if ($jobseekerInfo->program_reg_Status == 'REGISTERED' && in_array($programInfo->program_Status, ['ACTIVE', 'CLOSED']))
+                                <div class="mt-6 flex flex-wrap gap-4 justify-center">
+
+                                    <x-danger-button
+                                        wire:click.prevent="confirmReg('CANCELLED', {{ $jobseekerInfo->program_reg_id }})"
+                                        type="button">Reject</x-danger-button>
+
+                                    <x-green-button
+                                        wire:click.prevent="confirmReg('COMPLETED', {{ $jobseekerInfo->program_reg_id }})"
+                                        type="button">Confirm</x-green-button>
+
+
+                                </div>
+                            @endif
+
+
 
                         </div>
                     </div>

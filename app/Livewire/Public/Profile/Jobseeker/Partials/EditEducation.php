@@ -12,6 +12,53 @@ class EditEducation extends Component
     public $eduSchool, $eduCourse, $eduLevel = "", $eduStart, $eduEnd, $eduID, $eduOngoing;
     public $userID;
 
+    public $deleteEducation;
+
+    public function deleteData($id)
+    {
+        $this->reset('deleteEducation');
+        $this->deleteEducation = $id;
+        $this->dispatch('open-modal', 'delete-education-modal');
+    }
+
+    public function deleteRecord()
+    {
+        // Fetch the education record to delete
+        $education = Education::findOrFail($this->deleteEducation);
+
+        // Check if the user has only one education record
+        $educationCount = Education::where('employee_id', $education->employee_id)->count();
+
+        if ($educationCount <= 1) {
+            $this->dispatch('close-modal', 'delete-education-modal');
+            toastr()->error('You must have at least one education record.');
+            return; // Exit the method to prevent deletion
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // Perform the deletion
+            $education->delete();
+
+            // Commit the transaction if everything is successful
+            DB::commit();
+
+            // Optionally, close any modals or provide a success message
+            $this->dispatch('close-modal', 'delete-education-modal');
+            toastr()->success('Education record has been successfully deleted!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            toastr()->error('There was an error while deleting the education record. Please try again later.');
+        }
+
+        // Optionally, reset variables or state after the operation
+        $this->reset('deleteEducation');
+        $this->dispatch('close-modal', 'delete-education-modal');
+    }
+
     public function save()
     {
 

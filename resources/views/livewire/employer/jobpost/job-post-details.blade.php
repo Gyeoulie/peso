@@ -505,26 +505,26 @@
                                                                 <div
                                                                     class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
                                                                 </div>
-                                                                Pending
+                                                                PENDING
                                                             @elseif($data->applicant_Status === 'INTERESTED')
                                                                 <div
                                                                     class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2">
                                                                 </div>
-                                                                Interested
+                                                                INTERESTED
                                                             @elseif($data->applicant_Status === 'INTERVIEW')
                                                                 <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
                                                                 </div>
-                                                                Interview
+                                                                INTERVIEW
                                                             @elseif($data->applicant_Status === 'HIRED')
                                                                 <div
                                                                     class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
                                                                 </div>
-                                                                Hired
+                                                                HIRED
                                                             @elseif($data->applicant_Status === 'ACCEPTED')
                                                                 <div
                                                                     class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2">
                                                                 </div>
-                                                                Accepted
+                                                                ACCEPTED
                                                             @elseif($data->applicant_Status === 'REJECTED' || $data->applicant_Status === 'CANCELLED')
                                                                 <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
                                                                 </div>

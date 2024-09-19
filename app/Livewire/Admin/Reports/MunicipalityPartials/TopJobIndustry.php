@@ -5,30 +5,69 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 use App\Models\Job_Posting;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class TopJobIndustry extends Component
 {
     public $municipalityID;
-    public function getTopJobIndustriesDonut($municipalityId)
+
+    public $provinceID;
+
+    #[On('updateProv')]
+    public function updateProv($id)
     {
-        // Fetch the top job industries directly from Job_Posting with a join to Job_Industry
-        $topIndustries = Job_Posting::select('job_industry.industry_Title', DB::raw('COUNT(job_posting.industry_id) as total_count'))
+        $this->provinceID = $id;
+    }
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
+
+    public function getTopJobIndustriesDonut($municipalityId = null, $provinceId = null)
+    {
+        // Fetch the top job industries with a join to Job_Industry
+        $query = Job_Posting::select('job_industry.industry_Title', DB::raw('COUNT(job_posting.industry_id) as total_count'))
             ->join('job_industry', 'job_posting.industry_id', '=', 'job_industry.industry_id') // Join Job_Industry
             ->join('peso', 'job_posting.peso_id', '=', 'peso.peso_id') // Join Peso
             ->where('job_posting.job_Status', 'ACTIVE')
-            ->where('peso.municipality_id', $municipalityId) // Use Peso to filter by municipality_id
             ->groupBy('job_industry.industry_Title')
             ->orderByDesc('total_count')
-            ->limit(5)
-            ->get();
+            ->limit(5);
 
-        // Calculate the total count of all active job postings for the given municipality
-        $totalCount = Job_Posting::where('job_Status', 'ACTIVE')
-            ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
-                $query->where('municipality_id', $municipalityId);
-            })
-            ->count();
+        if ($municipalityId) {
+            // Filter by municipality if provided
+            $query->where('peso.municipality_id', $municipalityId);
+        } elseif ($provinceId) {
+            // Filter by all municipalities within the province if provided
+            $query->whereHas('peso.municipality', function ($query) use ($provinceId) {
+                $query->whereHas('province', function ($query) use ($provinceId) {
+                    $query->where('province_id', $provinceId);
+                });
+            });
+        }
+
+        $topIndustries = $query->get();
+
+        // Calculate the total count of all active job postings for the given municipality or province
+        $totalQuery = Job_Posting::where('job_Status', 'ACTIVE')
+            ->join('peso', 'job_posting.peso_id', '=', 'peso.peso_id'); // Join Peso
+
+        if ($municipalityId) {
+            // Filter by municipality if provided
+            $totalQuery->where('peso.municipality_id', $municipalityId);
+        } elseif ($provinceId) {
+            // Filter by all municipalities within the province if provided
+            $totalQuery->whereHas('peso.municipality', function ($query) use ($provinceId) {
+                $query->whereHas('province', function ($query) use ($provinceId) {
+                    $query->where('province_id', $provinceId);
+                });
+            });
+        }
+
+        $totalCount = $totalQuery->count();
 
         // Calculate the total count of the top industries
         $topIndustryCount = $topIndustries->sum('total_count');
@@ -38,7 +77,6 @@ class TopJobIndustry extends Component
 
         // Prepare data for the donut chart
         $donutChartModel = LivewireCharts::pieChartModel()
-        // ->setTitle('Top Job Industries for Active Postings in Municipality ID ' . $municipalityId)
             ->setAnimated(true)
             ->asDonut()
             ->setDataLabelsEnabled(true)
@@ -74,9 +112,20 @@ class TopJobIndustry extends Component
 
         return $donutChartModel;
     }
+
     public function render()
     {
-        $topJobIndustries = $this->getTopJobIndustriesDonut($this->municipalityID);
+
+        $topJobIndustries = null;
+
+
+        if ($this->municipalityID) {
+            $topJobIndustries = $this->getTopJobIndustriesDonut($this->municipalityID);
+
+        } elseif ($this->provinceID) {
+            $topJobIndustries = $this->getTopJobIndustriesDonut(null, $this->provinceID);
+
+        }
 
         return view('livewire.admin.reports.municipality-partials.top-job-industry', compact('topJobIndustries'));
     }

@@ -54,10 +54,11 @@ class Dashboard extends Component
             ->setJsonConfig([
                 'chart' => [
                     'width' => '100%',
+
                 ],
                 'yaxis.tickAmount' => 1,
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
-                // 'xaxis.labels.show' => false,
+                'xaxis.labels.show' => false,
             ]);
         // dd($columnChartModel);
         return $columnChartModel;
@@ -107,7 +108,7 @@ class Dashboard extends Component
             ->setJsonConfig([
                 'chart' => [
                     'width' => '100%', // Set to 100% or specify a pixel value like 400, 500, etc.
-                    'height' => '400px', // Specify the height for the chart
+                    'height' => '300px', // Specify the height for the chart
                 ],
                 'plotOptions' => [
                     'pie' => [
@@ -194,7 +195,7 @@ class Dashboard extends Component
             COUNT(*) AS total_active_applicants,
             SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) AS recent_active_applicants
         ', [Carbon::now()->subHours(24)])
-            ->whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED', 'CANCELLED'])
+            ->whereNotIn('applicant_Status', ['REJECTED', 'ACCEPTED', 'CANCELLED'])
             ->whereHas('job_posting.peso.municipality', function ($query) use ($pesoMunicipalityId) {
                 $query->where('municipality_id', $pesoMunicipalityId);
             })

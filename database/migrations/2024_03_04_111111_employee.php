@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('pnumber', 255);
             $table->string('address', 255);
             $table->unsignedBigInteger('barangay_id')->unsigned()->comment('Foreign Key');
-            $table->string('tinnum', 15);
+            $table->string('tinnum', 15)->nullable();
             $table->tinyInteger('empstatus');
             $table->string('empstatusdesc', 2);
             $table->string('pimg', 255);

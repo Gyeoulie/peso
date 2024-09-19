@@ -22,6 +22,7 @@ class Certificate_Type extends Model implements Auditable
     protected $fillable = [
         'cert_Name',
         'cert_Code',
+        'cert_Status',
     ];
 
     /**
@@ -45,6 +46,7 @@ class Certificate_Type extends Model implements Auditable
             'cert_type_id' => 'Certificate Type ID',
             'cert_Name' => 'Certificate Name',
             'cert_Code' => 'Certificate Code',
+            'cert_Status' => 'Certificate Status',
         ];
     }
 

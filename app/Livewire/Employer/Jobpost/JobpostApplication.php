@@ -13,6 +13,7 @@ use App\Models\PESO;
 use App\Models\Requirements;
 use App\Models\Requirements_Passed;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -67,7 +68,7 @@ class JobpostApplication extends Component
                 'wAddPost' => ['required', 'string'],
                 'barPost' => ['required'],
                 'pesoPost' => ['required'],
-                'durationPost' => ['required', 'date'],
+                'durationPost' => ['required', 'date', 'after_or_equal:' . Carbon::now()->addWeek()->format('Y-m-d'), 'before_or_equal:' . Carbon::now()->addMonth()->format('Y-m-d')],
                 'slotsPost' => ['required', 'string'],
                 'descPost' => ['required', 'string'],
                 'qualPost' => ['required', 'string'],
@@ -87,11 +88,13 @@ class JobpostApplication extends Component
                 'maxWagePost.gte' => 'Maximum wage must be greater than or equal to minimum wage.',
                 'eduPost.required' => 'Please select required education level.',
                 'jtypePost.required' => 'Please select job type.',
-                'wAddPost.required' => 'Work address is required.',
+                'wAddPost.required' => 'Work address is required.', 
                 'barPost.required' => 'Please select barangay.',
                 'pesoPost.required' => 'PESO municipality is required.',
                 'durationPost.required' => 'Job duration is required.',
                 'durationPost.date' => 'Job duration must be a valid date.',
+                'durationPost.after_or_equal' => 'The job posting must start at least 1 week in the future.',
+                'durationPost.before_or_equal' => 'The job posting duration must not exceed 1 month from today.',
                 'slotsPost.required' => 'Number of slots is required.',
                 'descPost.required' => 'Job description is required.',
                 'qualPost.required' => 'Qualifications are required.',
@@ -164,7 +167,7 @@ class JobpostApplication extends Component
                 'barangay_id' => $this->barHidden,
                 'job_Duration' => $this->durationPost,
                 'job_Status' => 'PENDING',
-                'peso_municipality_id' => $this->pesoPost,
+                'peso_id' => $this->pesoPost,
             ]);
 
             // Check if job posting was created successfully
@@ -187,14 +190,15 @@ class JobpostApplication extends Component
                 $this->redirectRoute('jobpost.show', ['id' => $jobposting->job_id], navigate: true);
             }
         } catch (\Exception $e) {
-            // Roll back the transaction if an error occurs
-            DB::rollBack();
 
-            // Handle the error (e.g., log it and display an error message to the user)
+            DB::rollBack();
+            dd($e->getMessage());
             toastr()->error('Application Failed. Please check your input.');
         } catch (\Exception $e) {
             // Roll back the transaction in case of general exceptions
             DB::rollBack();
+            dd($e->getMessage());
+
             // Handle other errors (e.g., log the error, display a generic error message)
             toastr()->error('An unexpected error occurred. Please try again.');
         }
@@ -272,7 +276,12 @@ class JobpostApplication extends Component
     public function render()
     {
 
-        $pesoBranches = PESO::get();
+        $user = Auth::user();
+
+        $pesoBranches = PESO::whereHas('partnerships', function ($query) use ($user) {
+            $query->where('partnership_Status', 'APPROVED')
+                ->where('company_id', $user->company->company_id);
+        })->get();
 
         return view('livewire.employer.jobpost.jobpost-application', [
             'pesoBranches' => $pesoBranches,

@@ -195,6 +195,9 @@
                                     Status
                                 </th>
                                 <th scope="col" class="px-6 py-3">
+                                    PESO Status
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Date Applied
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -266,6 +269,25 @@
                                                 @elseif($applicants->applicant_Status == 'REJECTED' || $applicants->applicant_Status == 'CANCELLED')
                                                     <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
                                                     <p class="uppercase">{{ $applicants->applicant_Status }}</p>
+                                                @endif
+                                            </div>
+                                        </td>
+
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center font-semibold">
+                                                @if ($applicants->peso_Status == 'PENDING')
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                    PENDING
+                                                @elseif($applicants->peso_Status == 'RECOMMENDED')
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2">
+                                                    </div>
+                                                    RECOMMENDED
+                                                @elseif($applicants->peso_Status == 'REJECT')
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                    NOT RECOMMENDED
+                                                @elseif($applicants->peso_Status == 'CANCELLED')
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                    CANCELLED
                                                 @endif
                                             </div>
                                         </td>

@@ -33,7 +33,27 @@ class RegisteredUserController extends Controller
         $request->validate([
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'in:2,3'], // Validate role selection
+            'role' => ['required', 'in:2,3'],
+            'terms' => ['required'],
+            'privacy' => ['required'],
+
+        ], [
+            'email.required' => 'Email is required.',
+            'email.string' => 'Email must be a valid string.',
+            'email.lowercase' => 'Email must be in lowercase.',
+            'email.email' => 'Please provide a valid email address.',
+            'email.max' => 'Email may not be greater than 255 characters.',
+            'email.unique' => 'This email is already registered.',
+
+            'password.required' => 'Password is required.',
+            'password.confirmed' => 'Password confirmation does not match.',
+
+            'role.required' => 'Role selection is required.',
+            'role.in' => 'The selected role is invalid. Choose between the allowed roles.',
+
+            'terms.required' => 'You must agree to the terms and conditions.',
+            'privacy.required' => 'You must agree to the privacy policy.',
+
         ]);
 
         $user = User::create([

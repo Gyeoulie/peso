@@ -65,7 +65,8 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                         <span class="flex flex-row">
                             {{-- Previous Page Link --}}
                             @if (!$paginator->onFirstPage())
-                                <button type="button" wire:click="gotoPage(1)"
+                                <button type="button"
+                                wire:click="gotoPage(1, '{{ $paginator->getPageName() }}')" 
                                     class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring ring-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:active:bg-gray-700 dark:focus:border-blue-800"
                                     aria-label="{{ __('Go to first page') }}">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -168,7 +169,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                                     </span>
                                 @endif
                                 @if ($paginator->hasMorePages())
-                                    <button type="button" wire:click="gotoPage({{ $paginator->lastPage() }})"
+                                    <button type="button" wire:click="gotoPage({{ $paginator->lastPage() }}, '{{ $paginator->getPageName() }}')"
                                         class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:active:bg-gray-700 dark:focus:border-blue-800"
                                         aria-label="{{ __('Go to last page') }}">
                                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

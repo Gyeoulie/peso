@@ -11,20 +11,49 @@ use Livewire\Component;
 class EditCertificates extends Component
 {
     public $certName, $certTypeID, $certFrom, $certEarned, $certRate, $certID;
-    // $workPosition, $workPositionTitle, $workStatus = "", $workAdd, $workStart, $workEnd, $workID;
+
     public $userID;
     public $search;
 
-    // public function rules()
-    // {
-    //     return [
-    //         'certName' => ['required', 'string'],
-    //         'certFrom' => ['required', 'string'],
-    //         'certEarned' => ['required'],
-    //         'certRate' => ['required'],
-    //     ];
-    // }
+    public $deleteCert;
 
+    public function deleteData($id)
+    {
+        $this->reset('deleteCert');
+        $this->deleteCert = $id;
+        $this->dispatch('open-modal', 'delete-cert-modal');
+    }
+
+    public function deleteRecord()
+    {
+        // Fetch the education record to delete
+        $cert = Certificate::findOrFail($this->deleteCert);
+
+        // Check if the user has only one education record
+
+        DB::beginTransaction();
+
+        try {
+            // Perform the deletion
+            $cert->delete();
+
+            // Commit the transaction if everything is successful
+            DB::commit();
+
+            // Optionally, close any modals or provide a success message
+            $this->dispatch('close-modal', 'delete-cert-modal');
+            toastr()->success('Certificate record has been successfully deleted!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            toastr()->error('There was an error while deleting the certificate record. Please try again later.');
+        }
+
+        // Optionally, reset variables or state after the operation
+        $this->reset('deleteCert');
+        $this->dispatch('close-modal', 'delete-cert-modal');
+    }
     public function save()
     {
         $rules = [
@@ -161,7 +190,7 @@ class EditCertificates extends Component
             ->orderBy('cert_Date_Issued', 'desc')
             ->get();
 
-        $certTypes = Certificate_Type::where('cert_Name', 'like', '%' . $this->search . '%')
+        $certTypes = Certificate_Type::where('cert_Status', 1)->where('cert_Name', 'like', '%' . $this->search . '%')
             ->get();
 
         return view('livewire.public.profile.jobseeker.partials.edit-certificates', compact('certs', 'certTypes'));

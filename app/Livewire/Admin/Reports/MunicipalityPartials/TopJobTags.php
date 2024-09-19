@@ -4,19 +4,44 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 
 use App\Models\Job_Posting;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class TopJobTags extends Component
 {
 
     public $municipalityID;
-    public function getTopJobTags($municipalityId)
+
+    public $provinceID;
+
+    #[On('updateProv')]
+    public function updateProv($id)
+    {
+        $this->provinceID = $id;
+    }
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
+
+    public function getTopJobTags($municipalityId = null, $provinceId = null)
     {
         // Fetch job postings with job tags and job positions
         $jobPostings = Job_Posting::with(['job_tags.job_positions'])
             ->where('job_Status', 'ACTIVE')
-            ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
-                $query->where('municipality_id', $municipalityId);
+            ->when($municipalityId, function ($query) use ($municipalityId) {
+                $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                    $subQuery->where('municipality_id', $municipalityId);
+                });
+            })
+            ->when(!$municipalityId && $provinceId, function ($query) use ($provinceId) {
+                $query->whereHas('peso.municipality', function ($subQuery) use ($provinceId) {
+                    $subQuery->whereHas('province', function ($subQuery) use ($provinceId) {
+                        $subQuery->where('province_id', $provinceId);
+                    });
+                });
             })
             ->get();
 
@@ -32,7 +57,7 @@ class TopJobTags extends Component
 
         // Prepare data for the column chart
         $columnChartModel = new ColumnChartModel();
-        // $columnChartModel->setTitle('Top Job Tags for Active Postings in Municipality ID ' . $municipalityId);
+        // $columnChartModel->setTitle('Top Job Tags for Active Postings');
 
         foreach ($topJobTags as $tagName => $totalCount) {
             $columnChartModel->addColumn($tagName, $totalCount, '#' . substr(md5(rand()), 0, 6)); // Generate random color for each column
@@ -56,10 +81,19 @@ class TopJobTags extends Component
 
         return $columnChartModel;
     }
+
     public function render()
     {
 
-        $topJobCharts = $this->getTopJobTags($this->municipalityID);
+        $topJobCharts = null;
+
+        if ($this->municipalityID) {
+            $topJobCharts = $this->getTopJobTags($this->municipalityID);
+
+        } elseif ($this->provinceID) {
+            $topJobCharts = $this->getTopJobTags(null, $this->provinceID);
+
+        }
 
         return view('livewire.admin.reports.municipality-partials.top-job-tags', compact('topJobCharts'));
     }

@@ -235,62 +235,62 @@
                                     class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 ">Previous</a>
                             </li>
                             <li>
-                                <a href="#"
-                                    class="flex  <div class="flex flex-row">
-                                        <div class="flex flex-col">
-                                            <img src="https://randomuser.me/api/portraits/men/94.jpg"
-                                                class="w-30 h-30 bg-gray-300 rounded-lg shrink-0">
-                                            </img>
-                                        </div>
-                                        <div class="flex flex-col ml-4 w-full">
-                                            <h1 class="text-3xl font-bold underline">IT Professor</h1>
-                                            <h1 class="text-l text-gray-600">National University Baliwag</h1>
-                                            <div class="flex flex-row">
-                                                <span
-                                                    class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
-                                                    <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                        viewBox="0 0 20 20">
-                                                        <path
-                                                            d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                                    </svg>
-                                                    3 days ago
-                                                </span>
-                                            </div>
-    
-                                        </div>
-                                        <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
-                                            <span
-                                                class="bg-yellow-300 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded ">Pending</span>
-                                        </div>
+                                <a href="#" class="flex  <div class="flex flex-row">
+                                    <div class="flex flex-col">
+                                        <img src="https://randomuser.me/api/portraits/men/94.jpg"
+                                            class="w-30 h-30 bg-gray-300 rounded-lg shrink-0">
+                                        </img>
                                     </div>
-    items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">1</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">2</a>
-                            </li>
-                            <li>
-                                <a href="#" aria-current="page"
-                                    class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">4</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">5</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 ">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
+                                    <div class="flex flex-col ml-4 w-full">
+                                        <h1 class="text-3xl font-bold underline">IT Professor</h1>
+                                        <h1 class="text-l text-gray-600">National University Baliwag</h1>
+                                        <div class="flex flex-row">
+                                            <span
+                                                class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
+                                                <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
+                                                </svg>
+                                                3 days ago
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                    <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
+                                        <span
+                                            class="bg-yellow-300 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded ">Pending</span>
+                                    </div>
                 </div>
+                items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300
+                hover:bg-gray-100 hover:text-gray-700 ">1</a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">2</a>
+                </li>
+                <li>
+                    <a href="#" aria-current="page"
+                        class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">4</a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">5</a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 ">Next</a>
+                </li>
+                </ul>
+                </nav>
             </div>
         </div>
+    </div>
     </div>
 
 

@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\PositionIndustry;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -24,6 +25,130 @@ class PositionIndustry extends Component
     public $positionPost, $pcodePost, $positionID;
 
     public $industryPost, $icodePost, $industryID;
+
+    public $archiveJob, $archiveIndustry;
+    public $restoreJob, $restoreIndustry;
+
+    public $filterJob = 'All', $filterIndustry = 'All';
+
+    public function updatedsearchIndustry()
+    {
+        $this->resetPage('industry'); // Reset pagination for eligibility search
+    }
+
+    // Listen for updates to the searchLicense variable
+    public function updatedsearchPosition()
+    {
+        $this->resetPage('position'); // Reset pagination for license search
+    }
+
+    public function updateFilter($type, $value)
+    {
+        if ($type == 1) {
+            $this->filterJob = $value;
+            $this->resetPage('position');
+        } elseif ($type == 2) {
+            $this->filterIndustry = $value;
+            $this->resetPage('industry');
+
+        }
+    }
+
+    public function archiveConfirmation($type, $id)
+    {
+        $this->reset('archiveJob', 'archiveIndustry');
+        if ($type == 1) {
+            $this->archiveJob = $id;
+            $this->dispatch('open-modal', 'delete-jobposition-modal');
+
+        } elseif ($type == 2) {
+            $this->archiveIndustry = $id;
+            $this->dispatch('open-modal', 'delete-industry-modal');
+
+        } else {
+            toastr()->error('There was an error. Please try again later.');
+        }
+    }
+
+    public function confirmArchive($type)
+    {
+        DB::beginTransaction();
+
+        try {
+            if ($type == 1) {
+                $position = Job_Positions::findOrFail($this->archiveJob);
+                $position->position_Status = 2;
+                $position->save();
+
+                $this->dispatch('close-modal', 'delete-jobposition-modal');
+                toastr()->success('Job Position was successfully archived!');
+            } elseif ($type == 2) {
+                $industry = Job_Industry::findOrFail($this->archiveIndustry);
+                $industry->industry_Status = 2;
+                $industry->save();
+
+                $this->dispatch('close-modal', 'delete-industry-modal');
+                toastr()->success('Job Industry was successfully archived!');
+            } else {
+                toastr()->error('Invalid archive type. Please try again.');
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error. Please try again later.');
+            // Log the exception if necessary
+            Log::error('Error archiving: ' . $e->getMessage());
+        }
+    }
+
+    public function restoreConfirmation($type, $id)
+    {
+        $this->reset('restoreJob', 'restoreIndustry');
+        if ($type == 1) {
+            $this->restoreJob = $id;
+            $this->dispatch('open-modal', 'restore-jobposition-modal');
+
+        } elseif ($type == 2) {
+            $this->restoreIndustry = $id;
+            $this->dispatch('open-modal', 'restore-industry-modal');
+
+        } else {
+            toastr()->error('There was an error. Please try again later.');
+        }
+    }
+
+    public function confirmRestore($type)
+    {
+        DB::beginTransaction();
+
+        try {
+            if ($type == 1) {
+                $position = Job_Positions::findOrFail($this->restoreJob);
+                $position->position_Status = 1;
+                $position->save();
+
+                $this->dispatch('close-modal', 'restore-jobposition-modal');
+                toastr()->success('Job Position was successfully restored!');
+            } elseif ($type == 2) {
+                $industry = Job_Industry::findOrFail($this->restoreIndustry);
+                $industry->industry_Status = 1;
+                $industry->save();
+
+                $this->dispatch('close-modal', 'restore-industry-modal');
+                toastr()->success('Job Industry was successfully restored!');
+            } else {
+                toastr()->error('Invalid archive type. Please try again.');
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error. Please try again later.');
+            // Log the exception if necessary
+            Log::error('Error archiving: ' . $e->getMessage());
+        }
+    }
 
     public function savePosition()
     {
@@ -99,7 +224,6 @@ class PositionIndustry extends Component
         $this->close('jobposition');
 
     }
-
     public function editPosition($id)
     {
         $jobposition = Job_Positions::findOrFail($id);
@@ -205,7 +329,8 @@ class PositionIndustry extends Component
 
     public function open($modal)
     {
-        $this->reset('positionPost', 'pcodePost', 'positionID');
+        $this->reset('positionPost', 'pcodePost', 'positionID', 'industryPost', 'icodePost', 'industryID');
+
         $this->resetValidation();
         $this->dispatch('open-modal', $modal . '-modal');
 
@@ -214,19 +339,39 @@ class PositionIndustry extends Component
     public function close($modal)
     {
         $this->dispatch('close-modal', $modal . '-modal');
-        $this->reset('searchIndustry', 'searchPosition', 'positionPost', 'pcodePost', 'positionID');
+        $this->reset('searchIndustry', 'searchPosition', 'positionPost', 'pcodePost', 'positionID', 'industryPost', 'icodePost', 'industryID');
         $this->resetValidation();
     }
 
     public function render()
     {
-        $industry = Job_Industry::where('industry_Title', 'like', '%' . $this->searchIndustry . '%')
-            ->orderBy('industry_Title', 'asc')
-            ->paginate($this->rows);
 
-        $jobpositions = Job_Positions::where('position_Title', 'like', '%' . $this->searchPosition . '%')
-            ->orderBy('position_Title', 'asc')
-            ->paginate($this->rows);
+        $jobpositionsQuery = Job_Positions::where(function ($query) {
+            $query->where('position_Title', 'like', '%' . $this->searchPosition . '%')
+                ->orWhere('position_Code', 'like', '%' . $this->searchPosition . '%');
+        })
+            ->orderBy('position_Title', 'asc');
+
+        $industryQuery = Job_Industry::where(function ($query) {
+            $query->where('industry_Title', 'like', '%' . $this->searchIndustry . '%')
+                ->orWhere('industry_Code', 'like', '%' . $this->searchIndustry . '%');
+        })
+            ->orderBy('industry_Title', 'asc');
+
+        if ($this->filterJob == 'All') {
+            $jobpositionsQuery->where('position_Status', 1);
+        } else if ($this->filterJob == 'Archived') {
+            $jobpositionsQuery->where('position_Status', 2);
+        }
+
+        if ($this->filterIndustry == 'All') {
+            $industryQuery->where('industry_Status', 1);
+        } else if ($this->filterIndustry == 'Archived') {
+            $industryQuery->where('industry_Status', 2);
+        }
+
+        $industry = $industryQuery->paginate($this->rows, ['*'], 'industry');
+        $jobpositions = $jobpositionsQuery->paginate($this->rows, ['*'], 'position');
 
         return view('livewire.admin.position-industry.position-industry', compact('industry', 'jobpositions'));
     }

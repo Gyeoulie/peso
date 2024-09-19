@@ -1,4 +1,40 @@
 <div>
+    <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+        <!-- Primary Navigation Menu -->
+        <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <!-- Logo -->
+                    <div class="shrink-0 flex items-center">
+                        <a href="{{ route('welcome') }}">
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        </a>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+
+                        @if (auth()->user()->usertype == 3)
+                            <x-nav-link wire:navigate :href="route('fill_employer')" :active="request()->routeIs('fill_employer')">
+                                {{ __('Complete Details') }}
+                            </x-nav-link>
+                        @endif
+                    </div>
+                </div>
+                <div class="flex flex-row items-center justify-center">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-nav-link>
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </nav>
+
 
     <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
 
@@ -32,8 +68,11 @@
                         Contact Details</li>
                     <li :class="currentStep === 3 ? activeTab : inactiveTab"
                         class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
-                        Requirements</li>
+                        Partnerships</li>
                     <li :class="currentStep === 4 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                        Requirements</li>
+                    <li :class="currentStep === 5 ? activeTab : inactiveTab"
                         class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Certification And Authorization</li>
                 </ul>
@@ -61,12 +100,20 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
+                        <livewire:signup.employer.partials.partnerships />
+
+                    </div>
+
+                    <div x-show="currentStep === 4" class="section comapnyContact-section h-full w-full"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
                         <livewire:signup.employer.partials.requirements />
 
                     </div>
 
                     {{-- employment status --}}
-                    <div x-show="currentStep === 4" class="section employmentStatus-section h-full w-full"
+                    <div x-show="currentStep === 5" class="section employmentStatus-section h-full w-full"
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>

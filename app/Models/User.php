@@ -5,21 +5,24 @@ namespace App\Models;
 //
 
 use App\Redactors\FiveHashRedactor;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Redactors\LeftRedactor;
 
-class User extends Authenticatable implements Auditable
+class User extends Authenticatable implements Auditable, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
     protected $attributeModifiers = [
         'password' => FiveHashRedactor::class,
+        'remember_token' => FiveHashRedactor::class,
+
     ];
 
     /**
@@ -31,6 +34,11 @@ class User extends Authenticatable implements Auditable
         'email',
         'password',
         'usertype',
+        'userstatus',
+        'description',
+        'disabled_at',
+        'google2fa_secret',
+        'google2fa_enabled_at',
     ];
 
     /**
@@ -50,9 +58,18 @@ class User extends Authenticatable implements Auditable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'disabled_at' => 'datetime',
+        'google2fa_enabled_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
 
+    protected function google2faSecret(): Attribute
+    {
+        return new Attribute(
+            get: fn($value) => $value ? decrypt($value) : null,
+            set: fn($value) => $value ? encrypt($value) : null,
+        );
+    }
     public function company()
     {
         return $this->hasOne(Company::class, 'user_id');
@@ -73,6 +90,9 @@ class User extends Authenticatable implements Auditable
             'email' => 'Email Address',
             'password' => 'Password',
             'usertype' => 'User Type',
+            'userstatus' => 'Account Status',
+            'description' => 'Status Remarks',
+            'disabled_at' => 'Deactivated At',
             'email_verified_at' => 'Email Verified At',
             'remember_token' => 'Remember Token',
             'deleted_at' => 'Deleted At',

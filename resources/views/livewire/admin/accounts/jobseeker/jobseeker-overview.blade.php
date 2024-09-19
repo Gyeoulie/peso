@@ -18,9 +18,19 @@
 
                 {{-- DEACTIVATE BUTTON --}}
                 <div class="flex flex-col ml-auto mr-0">
-                    <button type="button"
-                        class="text-red-900 font-bold bg-red-300 hover:bg-red-500 focus:ring-4 focus:ring-red-100 font-medium rounded-lg text-md px-5 py-2.5 me-2 mb-2 focus:outline-none">Deactivate
-                        Account</button>
+                    @if ($jobseeker->user->userstatus == 1)
+                        <button type="button" x-data=""
+                            x-on:click.prevent="$dispatch('open-modal', 'deactivate-modal')"
+                            class="bg-red-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-red-600 hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
+                            Deactivate Account
+                        </button>
+                    @elseif($jobseeker->user->userstatus == 2)
+                        <button type="button" x-data=""
+                            x-on:click.prevent="$dispatch('open-modal', 'reactivate-modal')"
+                            class="bg-green-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-green-600 hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
+                            Reactivate Account
+                        </button>
+                    @endif
                 </div>
 
             </div>
@@ -56,24 +66,37 @@
                     <ul>
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold text-left">Email:</li>
-                            <p class="ms-4">{{ $jobseeker->user->email }}</p>
+                            <p class="ms-4 break-all">{{ $jobseeker->user->email }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold text-left">Status:</li>
-                            <p class="ms-4 text-left">
-                                {{ $jobseeker->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
+                            <p class="ms-4 text-left break-all">
+                                {{ $jobseeker->empstatus == 1 ? 'Employed' : 'Unemployed' }}
                             </p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Contact:</li>
-                            <p class="ms-4">{{ $jobseeker->pnumber }}</p>
+                            <p class="ms-4 break-all">{{ $jobseeker->pnumber }}</p>
+                        </div>
+
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold">Education:</li>
+                            <p class="ms-4 break-all">{{ $attainment }}</p>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold">Birthday:</li>
+                            <p class="ms-4 break-all">{{ $jobseeker->birthdate->format('F j, Y') }}</p>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold">Work Experience:</li>
+                            <p class="ms-4 break-all">{{ $totalExperience }} Months</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Address:</li>
-                            <p class="ms-4 uppercase text-left"> {{ $jobseeker->address }},
+                            <p class="ms-4 uppercase text-left break-all"> {{ $jobseeker->address }},
                                 {{ $jobseeker->barangay->barangay_Name }},
                                 {{ $jobseeker->barangay->municipality->municipality_Name }},
                                 {{ $jobseeker->barangay->municipality->province->province_Name }}</p>
@@ -86,8 +109,16 @@
                     <div class="mt-6 flex flex-wrap gap-4 justify-center">
                         {{-- <a href="#" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View
                         </a> --}}
-                        <a href="#" class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
-                            Resume</a>
+                        @if ($jobseeker->resume)
+                            <button wire:click.prevent="viewFile({{ $jobseeker->employee_id }}, 1)"
+                                class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
+                                Resume</button>
+                        @else
+                            <button wire:click.prevent="viewFile({{ $jobseeker->employee_id }}, 2)"
+                                class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">View
+                                Resume</button>
+                        @endif
+
                     </div>
 
                 </div>
@@ -157,52 +188,144 @@
 
 
                 <div class="bg-white shadow rounded-lg p-6 mt-4">
-                    <h1 class="text-2xl font-bold ">Preference</h1>
+                    <h1 class="text-2xl font-bold ">Overview</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-col w-full mt-1">
-                        <span class="mb-1 font-bold">Industry Preference:</span>
-                        {{-- BADGE CONTAINER --}}
-                        <div id= "otherSkillRow" class="flex-inline p-1">
-                            {{-- BADGE --}}
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex flex-col w-full gap-4">
+                            @if ($jobseeker->industry_preference->count() >= 1)
 
-                            @foreach ($jobseeker->industry_preference as $industryPref)
-                                <span wire:key='skills-{{ $industryPref->industry_preference_id }}'
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                    {{ $industryPref->job_industry->industry_Title }}
-                                </span>
-                            @endforeach
+                                <div class="flex flex-col w-full">
+                                    <span class="mb-1 font-bold">Industry Preference:</span>
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "industryRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseeker->industry_preference as $industryPref)
+                                            <span wire:key='skills-{{ $industryPref->industry_preference_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $industryPref->job_industry->industry_Title }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if ($jobseeker->job_preference->count() >= 1)
+
+                                <div class="flex flex-col w-full">
+                                    <span class="mb-1 font-bold">Job Preference:</span>
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "jobPrefRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseeker->job_preference as $jobPref)
+                                            <span wire:key='skills-{{ $jobPref->job_preference_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $jobPref->job_positions->position_Title }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if ($jobseeker->skills->count() >= 1)
+
+                                <div class="flex flex-col w-full">
+                                    <span class="mb-1 font-bold">Skills:</span>
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "skillsRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseeker->skills as $empSkills)
+                                            <span wire:key='skills-{{ $empSkills->skills_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $empSkills->skill_Type }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                        </div>
+
+                        <div class="flex flex-col w-full gap-4">
+                            @if ($jobseeker->disability->count() >= 1)
+
+                                <div class="flex flex-col md:w-1/2">
+
+                                    <span class="mb-1 font-bold">Disability:</span>
+                                   
+                                    <div id= "disabilityRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+
+                                        @foreach ($jobseeker->disability as $empDisability)
+                                            <span  wire:key='disability-{{ $empDisability->disability_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $empDisability->disability_Type }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+
+
+
+                                </div>
+                            @endif
+
+                            @if ($jobseeker->language->count() >= 1)
+                                <div class="flex flex-col md:flex-row w-full gap-4 md:gap-10">
+                                    <div class="flex flex-col w-full">
+                                        <span class="mb-1 font-bold">Language:</span>
+
+                                        <div class="flex flex-col gap-2 mt-2 ml-2">
+                                            @foreach ($jobseeker->language as $empLanguage)
+                                                <div x-data="{
+                                                    skills: [],
+                                                    percentage: 0,
+                                                    init() {
+                                                        this.skills = [];
+                                                        this.percentage = 0;
+                                                
+                                                        if ({{ $empLanguage->language_Read }} == 1) {
+                                                            this.skills.push('Read');
+                                                            this.percentage += 25;
+                                                        }
+                                                        if ({{ $empLanguage->language_Write }} == 1) {
+                                                            this.skills.push('Write');
+                                                            this.percentage += 25;
+                                                        }
+                                                        if ({{ $empLanguage->language_Speak }} == 1) {
+                                                            this.skills.push('Speak');
+                                                            this.percentage += 25;
+                                                        }
+                                                        if ({{ $empLanguage->language_Understand }} == 1) {
+                                                            this.skills.push('Understand');
+                                                            this.percentage += 25;
+                                                        }
+                                                
+                                                    }
+                                                }" x-init="init">
+                                                    <span class="text-base font-medium text-blue-700">
+                                                        {{ $empLanguage->language_Type }}
+                                                    </span>
+
+                                                    <div class="w-full bg-gray-200 rounded-full">
+                                                        <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                                                            :style="{ width: percentage + '%' }">
+                                                            <span x-text="skills.join(' / ')"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
                         </div>
                     </div>
 
-                    <div class="flex flex-col w-full mt-1">
-                        <span class="mb-1 font-bold">Job Preference:</span>
-                        {{-- BADGE CONTAINER --}}
-                        <div id= "otherSkillRow" class="flex-inline p-1">
-                            {{-- BADGE --}}
 
-                            @foreach ($jobseeker->job_preference as $jobPref)
-                                <span wire:key='skills-{{ $jobPref->job_preference_id }}'
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                    {{ $jobPref->job_positions->position_Title }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="flex flex-col w-full mt-1">
-                        <span class="mb-1 font-bold">Skills:</span>
-                        {{-- BADGE CONTAINER --}}
-                        <div id= "otherSkillRow" class="flex-inline p-1">
-                            {{-- BADGE --}}
-
-                            @foreach ($jobseeker->skills as $empSkills)
-                                <span wire:key='skills-{{ $empSkills->skills_id }}'
-                                    class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                    {{ $empSkills->skill_Type }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
                 </div>
 
                 {{-- APPLICATION HISTORY CONTAINER --}}
@@ -362,10 +485,13 @@
                                                             @elseif ($data->peso_Status == 'RECOMMENDED')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
-                                                            @elseif ($data->peso_Status == 'NOT')
+                                                            @elseif ($data->peso_Status == 'REJECT')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">NOT
                                                                     RECOMMENDED</span>
+                                                            @elseif ($data->peso_Status == 'CANCELLED')
+                                                                <span
+                                                                    class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                                             @endif
 
                                                         </td>
@@ -375,24 +501,26 @@
                                                             </div>
                                                         </td>
                                                         <td class="px-6 py-4 text-center">
-                                                            <div class="flex flex-row  gap-5">
-                                                                <div x-data="{ tooltip: 'Application Overview' }">
-                                                                    <a wire:navigate
-                                                                        href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
-                                                                        x-tooltip="tooltip" type="button"
-                                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                        <svg class="h-5 w-5"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            viewBox="0 0 24 24" fill="currentColor">
-                                                                            <path
-                                                                                d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                                            <path fill-rule="evenodd"
-                                                                                d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                                                clip-rule="evenodd" />
-                                                                        </svg>
-                                                                    </a>
-                                                                </div>
-
+                                                            @if ($data->job_posting->peso_id == Auth::user()->peso_accounts->peso_id)
+                                                                <div class="flex flex-row  gap-5">
+                                                                    <div x-data="{ tooltip: 'Application Overview' }">
+                                                                        <a wire:navigate
+                                                                            href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
+                                                                            x-tooltip="tooltip" type="button"
+                                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                            <svg class="h-5 w-5"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                viewBox="0 0 24 24"
+                                                                                fill="currentColor">
+                                                                                <path
+                                                                                    d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                                <path fill-rule="evenodd"
+                                                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                                    clip-rule="evenodd" />
+                                                                            </svg>
+                                                                        </a>
+                                                                    </div>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -508,23 +636,26 @@
                                                         @endif
                                                     </td>
                                                     <td class="px-6 py-4 text-center">
-                                                        <div class="flex flex-row  gap-5">
-                                                            <div x-data="{ tooltip: 'Application Overview' }">
-                                                                <a wire:navigate
-                                                                    href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
-                                                                    x-tooltip="tooltip" type="button"
-                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                    <svg class="h-5 w-5"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        viewBox="0 0 24 24" fill="currentColor">
-                                                                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                                        <path fill-rule="evenodd"
-                                                                            d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                                            clip-rule="evenodd" />
-                                                                    </svg>
-                                                                </a>
+                                                        @if ($data->programs->peso_id == Auth::user()->peso_accounts->peso_id)
+                                                            <div class="flex flex-row  gap-5">
+                                                                <div x-data="{ tooltip: 'Application Overview' }">
+                                                                    <a wire:navigate
+                                                                        href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
+                                                                        x-tooltip="tooltip" type="button"
+                                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                        <svg class="h-5 w-5"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            viewBox="0 0 24 24" fill="currentColor">
+                                                                            <path
+                                                                                d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                            <path fill-rule="evenodd"
+                                                                                d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                                clip-rule="evenodd" />
+                                                                        </svg>
+                                                                    </a>
+                                                                </div>
                                                             </div>
-
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -973,8 +1104,8 @@
                     </div>
 
                     <x-blue-button x-data=""
-                    x-on:click.prevent="$dispatch('open-modal', 'reset-password-modal')">Reset
-                    Password</x-blue-button>
+                        x-on:click.prevent="$dispatch('open-modal', 'reset-password-modal')">Reset
+                        Password</x-blue-button>
                 </div>
 
             </div>
@@ -1011,8 +1142,8 @@
                                             <div class="flex flex-col items-center justify-center mt-24 mb-24">
                                                 <div class="p-6 bg-gray-100 rounded-full">
                                                     <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        fill="none" viewBox="0 0 24 24">
+                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round"
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
@@ -1065,13 +1196,12 @@
             </div>
 
 
-            
+
 
 
 
         </div>
     </div>
-
 
 
     <x-modal name="confirm-modal" focusable>
@@ -1096,6 +1226,92 @@
                     wire:click.prevent="saveDetails" class="ms-3" type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="saveDetails" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
+
+
+
+    <x-modal name="reactivate-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to reactivate this account?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label for="remarks" :value="__('Remarks')" />
+                    <textarea wire:model='reactRemarks' rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('reactRemarks')" class="mt-2" />
+                </div>
+
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('reactivate')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-green-button wire:loading.attr="disabled" wire:click.prevent="statusUser(1)" class="ms-3"
+                    type="button">
+                    {{ __('Activate') }}
+                    <div wire:loading.delay.long wire:target="statusUser(1)" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-green-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <x-modal name="deactivate-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to deactivate this account?') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col mt-2">
+
+                <div class="flex flex-col mt-2 w-full">
+                    <x-input-label for="remarks" :value="__('Remarks')" />
+                    <textarea wire:model='deactRemarks' rows="6"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                        placeholder="Write your thoughts here..."></textarea>
+                    <x-input-error :messages="$errors->get('deactRemarks')" class="mt-2" />
+                </div>
+
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click.prevent="closeModal('deactivate')" type="button">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="statusUser(2)" class="ms-3"
+                    type="button">
+                    {{ __('Deactivate') }}
+                    <div wire:loading.delay.long wire:target="statusUser(2)" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -1152,8 +1368,8 @@
 
 
 
-                <x-danger-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled" wire:target='resetPassword'
-                    wire:click.prevent="resetPassword" class="ms-3" type="button">
+                <x-danger-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled"
+                    wire:target='resetPassword' wire:click.prevent="resetPassword" class="ms-3" type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="resetPassword" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
@@ -1172,3 +1388,63 @@
         </div>
     </x-modal>
 </div>
+
+
+
+
+@script
+    <script>
+        Livewire.on('viewFile', event => {
+            // Check if the event is an array and has at least one element
+            if (Array.isArray(event) && event.length > 0) {
+                // Access the first element and then its properties
+                const data = event[0]; // Assuming the data object is the first element
+
+                // Log the entire data object for verification
+                console.log('Data:', data);
+
+                // Extract URL and handle dynamic keys
+                const url = data.url;
+
+                // Ensure URL is present
+                if (url) {
+                    // Create and configure the form element
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.target = '_blank';
+
+                    // Add CSRF token as a hidden input
+                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    // Add all data inputs dynamically
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (key !== 'url') {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            input.value = value;
+                            form.appendChild(input);
+                        }
+                    });
+
+                    // Append form to the body and submit
+                    document.body.appendChild(form);
+                    form.submit();
+
+                    // Clean up by removing the form element
+                    document.body.removeChild(form);
+                } else {
+                    console.error('URL not found in event data');
+                }
+            } else {
+                console.error('Event is not in the expected format');
+            }
+        });
+    </script>
+@endscript

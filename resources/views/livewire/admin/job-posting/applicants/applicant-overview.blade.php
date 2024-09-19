@@ -1,4 +1,4 @@
-<div wire:poll class="sm:mx-10">
+<div class="sm:mx-10">
     <div class="container py-8">
 
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
@@ -226,10 +226,13 @@
                                     @elseif ($applicant->peso_Status == 'RECOMMENDED')
                                         <span
                                             class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
-                                    @elseif ($applicant->peso_Status == 'NOT')
+                                    @elseif ($applicant->peso_Status == 'REJECT')
                                         <span
                                             class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">NOT
                                             RECOMMENDED</span>
+                                    @elseif ($applicant->peso_Status == 'CANCELLED')
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                     @endif
                                 </div>
                             </div>
@@ -297,6 +300,19 @@
                                     <li class="mb-2 font-bold">Email:</li>
                                     <p class="ms-4">{{ $applicant->employee->user->email }}</p>
                                 </div>
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">Education:</li>
+                                    <p class="ms-4 uppercase">
+                                        {{ $attainment }}
+                                    </p>
+                                </div>
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">Work Experience:</li>
+                                    <p class="ms-4 uppercase">
+                                        {{ $totalExperience }} Months
+                                    </p>
+                                </div>
+
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Address:</li>
@@ -313,11 +329,10 @@
 
                         <div class="flex flex-col w-full gap-5">
                             <div>
-                                <x-input-label for="fname"> </i> Job Position
-                                    Tags
+                                <x-input-label for="fname"> </i> Job Preferences
                                 </x-input-label>
                                 {{-- BADGE CONTAINER --}}
-                                <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
+                                <div id= "job-preference" class="flex-inline p-1 mt-2">
                                     @foreach ($applicant->employee->job_preference as $jobpref)
                                         {{-- BADGE --}}
                                         <span
@@ -329,7 +344,7 @@
                             </div>
 
                             <div>
-                                <x-input-label for="fname"> </i> Industry Preference
+                                <x-input-label for="industry-preference"> </i> Industry Preference
                                 </x-input-label>
                                 {{-- BADGE CONTAINER --}}
                                 <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
@@ -342,10 +357,43 @@
                                     @endforeach
                                 </div>
                             </div>
+
+                            <div>
+                                <x-input-label for="skills"> </i> Skills
+                                </x-input-label>
+                                {{-- BADGE CONTAINER --}}
+                                <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
+                                    @foreach ($applicant->employee->skills as $skills)
+                                        {{-- BADGE --}}
+                                        <span
+                                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 px-2.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            {{ $skills->skill_Type }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
 
 
                     </div>
+                    @if ($applicant->peso_Status != 'PENDING' && $applicant->peso_Remarks)
+                        <hr class="my-6 border-t border-gray-300">
+
+                        <div class="flex flex-col  mt-2">
+                            <h1 class="mb-2 font-bold">PESO Remarks -
+                                @if ($applicant->peso_accounts)
+                                    {{ $applicant->peso_accounts->peso_accounts_Fname }}
+                                    {{ $applicant->peso_accounts->peso_accounts_Lname }}
+                                @else
+                                    System
+                                @endif
+                            </h1>
+
+                            <textarea id="message" rows="6"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
+                                placeholder="Company remarks..." maxlength="600" readonly>{{ $applicant->peso_Remarks }}</textarea>
+                        </div>
+                    @endif
 
                     {{-- BUTTONS --}}
                     <div class="flex flex-row mt-4 justify-center w-full">

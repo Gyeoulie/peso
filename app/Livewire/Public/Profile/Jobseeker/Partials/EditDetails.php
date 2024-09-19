@@ -8,6 +8,7 @@ use App\Models\Eligibility;
 use App\Models\Eligibility_Type;
 use App\Models\Employee;
 use App\Models\Industry_preference;
+use App\Models\Job_Applicants;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Job_Preference;
@@ -19,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -69,6 +71,8 @@ class EditDetails extends Component
     // RESUME
     public $newResume;
 
+    public $deleteEli, $deleteLic, $deleteLang;
+
     //RULES
     public function rules()
     {
@@ -97,6 +101,60 @@ class EditDetails extends Component
 
     }
 
+    public function deleteData($type, $id)
+    {
+        $this->reset('deleteEli', 'deleteLic', 'deleteLang');
+
+        if ($type == 1) {
+            $this->deleteEli = $id;
+            $this->dispatch('open-modal', 'delete-eligibility-modal');
+
+        } elseif ($type == 2) {
+            $this->deleteLic = $id;
+            $this->dispatch('open-modal', 'delete-license-modal');
+
+        } elseif ($type == 3) {
+            $this->deleteLang = $id;
+            $this->dispatch('open-modal', 'delete-language-modal');
+
+        }
+
+    }
+
+    public function deleteRecord($type)
+    {
+        DB::beginTransaction();
+        try {
+            if ($type == 1) {
+                $eligibility = Eligibility::findOrFail($this->deleteEli);
+
+                $eligibility->delete();
+
+                $this->dispatch('close-modal', 'delete-eligibility-modal');
+                toastr()->success('Eligibilty record has been successfully deleted!');
+
+            } elseif ($type == 2) {
+                $license = License::findOrFail($this->deleteLic);
+                $license->delete();
+                $this->dispatch('close-modal', 'delete-license-modal');
+                toastr()->success('License record has been successfully deleted!');
+
+            } elseif ($type == 3) {
+                $language = Language::findOrFail($this->deleteLang);
+                $language->delete();
+                $this->dispatch('close-modal', 'delete-language-modal');
+                toastr()->success('Language record has been successfully deleted!');
+
+            }
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error('There was an error while deleting the record. Please try again later.');
+        }
+
+        $this->reset('deleteEli', 'deleteLic', 'deleteLang');
+    }
     public function saveResume()
     {
         $this->validate([
@@ -384,54 +442,6 @@ class EditDetails extends Component
         $this->closeModal('skills');
     }
 
-    // public function removeSkills($identifier)
-    // {
-    //     if (is_numeric($identifier)) {
-    //         // Handle removal by skills_id
-    //         $skill = Skills::withTrashed()
-    //             ->where('skills_id', $identifier)
-    //             ->where('employee_id', $this->empID)
-    //             ->first(['skills_id', 'skill_Type']); // Retrieve the first matching record
-
-    //         if ($skill) {
-    //             // Add to removal list if it exists in the original list
-    //             if (in_array(strtoupper($skill->skill_Type), array_column($this->originalSkills, 'skill_Type'))) {
-    //                 $this->skillsToRemove[] = $identifier;
-    //             }
-
-    //             // Update display list
-    //             $this->displaySkills = array_filter($this->displaySkills, function ($dis) use ($identifier) {
-    //                 return $dis['skills_id'] !== (int) $identifier;
-    //             });
-
-    //             // Remove from skillsToAdd if present
-    //             $this->skillsToAdd = array_filter($this->skillsToAdd, function ($dis) use ($skill) {
-    //                 return $dis['skill_Type'] !== $skill->skill_Type;
-    //             });
-
-    //             // Ensure that skillsToRestore does not include the removed skill
-    //             $this->skillsToRestore = array_filter($this->skillsToRestore, function ($disID) use ($skill) {
-    //                 return $disID !== $skill->skills_id;
-    //             });
-    //         }
-    //     } else {
-    //         // Handle removal by skill_Type
-    //         $skillType = strtoupper($identifier);
-
-    //         // Remove from skillsToAdd if present
-    //         $this->skillsToAdd = array_filter($this->skillsToAdd, function ($dis) use ($skillType) {
-    //             return $dis['skill_Type'] !== $skillType;
-    //         });
-
-    //         // Remove from displaySkills
-    //         $this->displaySkills = array_filter($this->displaySkills, function ($dis) use ($skillType) {
-    //             return $dis['skill_Type'] !== $skillType;
-    //         });
-    //     }
-
-    //     $this->closeModal('skills');
-    // }
-
     //SET VARIABLES
     public function setVar($id, $name)
     {
@@ -545,6 +555,28 @@ class EditDetails extends Component
         $this->validate($rules, $messages);
 
         $jobseekerData = Employee::findOrFail($this->empID);
+        $currentBarangayID = $jobseekerData->barangay_id;
+        $currentMunicipalityID = $jobseekerData->barangay->municipality_id;
+
+        if ($currentBarangayID != $this->barangayID) {
+            // dd('hello');
+            $newBarangayMunicipalityID = Barangay::findOrFail($this->barangayID)->municipality_id;
+            // dd($newBarangayMunicipalityID);
+            $hasActiveApplications = Job_Applicants::where('employee_id', $this->empID)
+                ->whereHas('job_posting.peso', function ($query) use ($currentMunicipalityID) {
+                    $query->where('municipality_id', $currentMunicipalityID);
+                })
+                ->whereNotIn('applicant_Status', ['COMPLETED', 'REJECTED', 'CANCELLED'])
+                ->exists();
+
+            // dd($hasActiveApplications);
+
+            if ($hasActiveApplications && $newBarangayMunicipalityID != $currentMunicipalityID) {
+                toastr()->warning('You have active job applications in your current municipality. Please complete  those applications before changing to a barangay in a different municipality.');
+                return; // Stop further execution
+            }
+        }
+
         $imgPath = null;
 
         if ($this->pimg) {
@@ -778,7 +810,11 @@ class EditDetails extends Component
             'licTypeID' => [
                 'required',
                 Rule::unique('license', 'license_type_id') // Specify the correct column name
-                    ->where('employee_id', $this->empID) // Ensure uniqueness for this employee
+                    ->where(function ($query) {
+                        // Ensure uniqueness for this employee and exclude trashed records
+                        $query->where('employee_id', $this->empID)
+                            ->whereNull('deleted_at'); // Exclude trashed records
+                    })
                     ->ignore($this->licID, 'license_id'), // Ignore the current record when updating
             ],
         ];
@@ -803,7 +839,7 @@ class EditDetails extends Component
                 $license = License::findOrFail($this->licID);
                 $license->update([
                     'license_type_id' => $this->licTypeID,
-                    'license_validity' => $this->licValidity, // Ensure column name matches
+                    'license_Validity' => $this->licValidity, // Ensure column name matches
                 ]);
 
                 toastr()->success('License Record has been Updated!');
@@ -812,7 +848,7 @@ class EditDetails extends Component
                 License::create([
                     'employee_id' => $this->empID,
                     'license_type_id' => $this->licTypeID,
-                    'license_validity' => $this->licValidity, // Ensure column name matches
+                    'license_Validity' => $this->licValidity, // Ensure column name matches
                 ]);
 
                 toastr()->success('License Record has been Added!');
@@ -828,6 +864,32 @@ class EditDetails extends Component
         $this->closeModal('license');
     }
 
+    public function mountData()
+    {
+
+        $employeeDetails = Employee::findOrFail($this->empID);
+
+        $this->fname = $employeeDetails->fname;
+        $this->mname = $employeeDetails->mname;
+        $this->lname = $employeeDetails->lname;
+        $this->suffix = $employeeDetails->suffix;
+        $this->birthdate = Carbon::parse($employeeDetails->birthdate)->format('Y-m-d');
+        $this->gender = $employeeDetails->gender;
+        $this->civilstatus = $employeeDetails->civilstatus;
+        $this->religion = $employeeDetails->religion;
+        $this->pnumber = $employeeDetails->pnumber;
+        $this->tinnum = $employeeDetails->tinnum;
+        $this->height = $employeeDetails->height;
+        $this->address = $employeeDetails->address;
+        $this->barangayID = $employeeDetails->barangay_id;
+
+        $barangayDetails = Barangay::find($employeeDetails->barangay_id);
+        $this->bar = $barangayDetails->barangay_Name;
+        $this->mun = $barangayDetails->municipality->municipality_Name;
+        $this->prov = $barangayDetails->municipality->province->province_Name;
+
+    }
+
     //ELIGIBILITY
     public function saveEligibility()
     {
@@ -840,9 +902,12 @@ class EditDetails extends Component
             ],
             'eliTypeID' => [
                 'required',
-
                 Rule::unique('eligibility', 'eligibility_Type') // Specify the correct column name
-                    ->where('employee_id', $this->empID) // Ensure uniqueness for this employee
+                    ->where(function ($query) {
+                        // Ensure uniqueness for this employee and exclude trashed records
+                        $query->where('employee_id', $this->empID)
+                            ->whereNull('deleted_at'); // Exclude trashed records
+                    })
                     ->ignore($this->eliID, 'eligibility_id'), // Ignore the current record when updating
             ],
         ];
@@ -902,6 +967,7 @@ class EditDetails extends Component
             $this->bar = $barangay->barangay_Name;
             $this->mun = $barangay->municipality->municipality_Name;
             $this->prov = $barangay->municipality->province->province_Name;
+
         }
     }
 
@@ -922,6 +988,8 @@ class EditDetails extends Component
                 'employee_id' => $this->empID,
                 'position_id' => $id,
             ]);
+            toastr()->warning('Job preference added.');
+
             $this->dispatch('close-modal', 'job-position-modal');
         } else {
             toastr()->error('Could not fetch data');
@@ -947,6 +1015,8 @@ class EditDetails extends Component
                 'employee_id' => $this->empID,
                 'industry_id' => $id,
             ]);
+            toastr()->warning('Job industry added.');
+
             $this->dispatch('close-modal', 'industry-modal');
         } else {
             toastr()->error('Could not fetch data');
@@ -977,6 +1047,30 @@ class EditDetails extends Component
             DB::rollBack(); // Rollback transaction on other errors
 
             toastr()->error('There was an error, please try again later');
+        }
+    }
+    public function removePosition($positionId)
+    {
+        DB::beginTransaction();
+
+        try {
+            // Perform the delete operation
+            Job_Preference::where('job_preference_id', $positionId)
+                ->where('employee_id', $this->empID)
+                ->delete();
+
+            // Commit the transaction if the operation is successful
+            DB::commit();
+
+            toastr()->success('Job Preference record has been deleted.');
+        } catch (\Exception $e) {
+            // Rollback the transaction if an error occurs
+            DB::rollBack();
+
+            toastr()->error('There was an error deleting the job preference record. Please try again later.');
+
+            // Optionally log the exception for debugging
+            Log::error('Error removing job preference: ' . $e->getMessage());
         }
     }
 
@@ -1030,6 +1124,8 @@ class EditDetails extends Component
         // Initialize display arrays
         $this->displayDisabilities = $this->originalDisabilities;
         $this->displaySkills = $this->originalSkills;
+
+        $this->mountData();
     }
 
     public function render()
@@ -1053,25 +1149,6 @@ class EditDetails extends Component
                 })->orderBy('license_Validity', 'desc');
             },
         ])->find($this->empID);
-
-        $this->fname = $employeeDetails->fname;
-        $this->mname = $employeeDetails->mname;
-        $this->lname = $employeeDetails->lname;
-        $this->suffix = $employeeDetails->suffix;
-        $this->birthdate = Carbon::parse($employeeDetails->birthdate)->format('Y-m-d');
-        $this->gender = $employeeDetails->gender;
-        $this->civilstatus = $employeeDetails->civilstatus;
-        $this->religion = $employeeDetails->religion;
-        $this->pnumber = $employeeDetails->pnumber;
-        $this->tinnum = $employeeDetails->tinnum;
-        $this->height = $employeeDetails->height;
-        $this->address = $employeeDetails->address;
-        $this->barangayID = $employeeDetails->barangay_id;
-
-        $barangayDetails = Barangay::find($employeeDetails->barangay_id);
-        $this->bar = $barangayDetails->barangay_Name;
-        $this->mun = $barangayDetails->municipality->municipality_Name;
-        $this->prov = $barangayDetails->municipality->province->province_Name;
 
         return view(
             'livewire.public.profile.jobseeker.partials.edit-details',

@@ -67,30 +67,53 @@ class Company extends Model implements Auditable
         return $this->hasMany(Requirements_Passed::class, 'company_id');
     }
 
+    public function partnerships()
+    {
+        return $this->hasMany(Partnerships::class, 'company_id');
+    }
+
+    /**
+     * Get the total count of hired applicants for the company.
+     *
+     * @return int
+     */
+    public function getTotalHiredApplicants($peso_id)
+    {
+        // Retrieve all job posting IDs associated with the company, filtered by industry
+        $jobPostingIds = $this->job_posting()
+            ->where('peso_id', $peso_id) // Filter by industry peso_id
+            ->pluck('job_id');
+
+        // Count the total number of applicants with status 'ACCEPTED'
+        return Job_Applicants::whereIn('job_id', $jobPostingIds)
+            ->where('applicant_Status', 'ACCEPTED')
+            ->count();
+    }
+
     public static function fieldMappings()
-{
-    return [
-        'company_id' => 'Company ID',
-        'user_id' => 'User ID',
-        'business_Name' => 'Business Name',
-        'trade_Name' => 'Trade Name',
-        'company_TIN' => 'Company TIN',
-        'company_Type' => 'Company Type',
-        'employer_Type' => 'Employer Type',
-        'employer_Type_Desc' => 'Employer Type Description',
-        'company_Total_workforce' => 'Total Workforce',
-        'company_Address' => 'Company Address',
-        'barangay_id' => 'Barangay ID',
-        'contact_Person' => 'Contact Person',
-        'contact_Person_position' => 'Contact Person Position',
-        'company_Pnum' => 'Company Phone Number',
-        'company_Tnum' => 'Company Telephone Number',
-        'company_Fnum' => 'Company Fax Number',
-        'company_Email' => 'Company Email',
-        'company_Status' => 'Company Status',
-        'company_img' => 'Company Image',
-        'company_Desc' => 'Company Description',
-    ];
-}
+    {
+        return [
+            'company_id' => 'Company ID',
+            'user_id' => 'User ID',
+            'business_Name' => 'Business Name',
+            'trade_Name' => 'Trade Name',
+            'company_TIN' => 'Company TIN',
+            'company_Type' => 'Company Type',
+            'employer_Type' => 'Employer Type',
+            'employer_Type_Desc' => 'Employer Type Description',
+            'company_Total_workforce' => 'Total Workforce',
+            'company_Address' => 'Company Address',
+            'barangay_id' => 'Barangay ID',
+            'contact_Person' => 'Contact Person',
+            'contact_Person_position' => 'Contact Person Position',
+            'company_Pnum' => 'Company Phone Number',
+            'company_Tnum' => 'Company Telephone Number',
+            'company_Fnum' => 'Company Fax Number',
+            'company_Email' => 'Company Email',
+            'company_Status' => 'Company Status',
+            'company_img' => 'Company Image',
+            'company_Desc' => 'Company Description',
+        ];
+    }
 
 }

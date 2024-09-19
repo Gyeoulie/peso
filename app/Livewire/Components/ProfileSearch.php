@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Components;
 
-use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 
 class ProfileSearch extends Component

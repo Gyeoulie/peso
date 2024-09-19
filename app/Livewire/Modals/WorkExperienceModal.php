@@ -15,6 +15,7 @@ class WorkExperienceModal extends Component
 
     #[Modelable]
     public $workExperienceData = [];
+    
 
     public function save()
     {
@@ -115,7 +116,7 @@ class WorkExperienceModal extends Component
     public function render()
     {
 
-        $job_positions = Job_Positions::where('position_Title', 'like', '%' . $this->search . '%')->get();
+        $job_positions = Job_Positions::where('position_Status', 1)->where('position_Title', 'like', '%' . $this->search . '%')->get();
 
         return view('livewire.modals.work-experience-modal', compact('job_positions'));
     }

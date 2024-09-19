@@ -6,6 +6,8 @@ use App\Models\Barangay;
 use App\Models\Company;
 use App\Models\Company_Industry_Line;
 use App\Models\Job_Industry;
+use App\Models\Partnerships;
+use App\Models\PESO;
 use App\Models\Requirements;
 use App\Models\Requirements_Passed;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +27,10 @@ class EditDetails extends Component
 
     public $empID;
 
+    public $search, $searchMun;
+
+    public $selMun, $selProv, $selID, $agreeBox = false, $reapplyID;
+
     public $req = [];
 
     // COMPANY INFORMATION
@@ -39,12 +45,28 @@ class EditDetails extends Component
 
     public $industrypreference;
 
+    public $partnershipRemarks;
+
     public function rules()
     {
         return [
             // BASIC INFORMATION
             'companyImage' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ];
+    }
+
+    public function selectBranch($id)
+    {
+
+        $pesoBranch = PESO::findOrFail($id);
+
+        if ($pesoBranch) {
+            $this->selID = $pesoBranch->peso_id;
+            $this->selMun = $pesoBranch->municipality->municipality_Name;
+            $this->selProv = $pesoBranch->municipality->province->province_Name;
+        } else {
+            toastr()->error('There was en error selecting the municipality.');
+        }
     }
 
     public function viewFile($id)
@@ -54,6 +76,110 @@ class EditDetails extends Component
             'url' => route('view.requirement'),
             'req_passed_id' => $id,
         ]);
+
+    }
+
+    public function reapplyClick($id)
+    {
+        $this->agreeBox = false;
+        $this->reapplyID = $id;
+
+        $this->dispatch('open-modal', 'partnership-reapply-modal');
+
+    }
+
+    public function reapplyPartnership()
+    {
+        $rules = [
+            'agreeBox' => 'required|boolean',
+        ];
+
+        $messages = [
+            'agreeBox.required' => 'Please check the agreement box before proceeding.',
+        ];
+
+        $this->validate($rules, $messages);
+
+        $partnership = Partnerships::findOrFail($this->reapplyID);
+
+        if ($partnership) {
+            DB::beginTransaction();
+            try {
+                $partnership->partnership_Status = 'PENDING';
+                $partnership->responded_at = null;
+                $partnership->save();
+
+                DB::commit(); // Commit the transaction
+                toastr()->success('Partnership reapplied successfully.');
+
+            } catch (\Exception $e) {
+                DB::rollBack(); // Rollback the transaction in case of error
+                toastr()->error('There was an error with partnership. Please try again later.');
+            }
+
+        } else {
+            toastr()->error('There was an reapplying the partnership. Please try again later.');
+
+        }
+        $this->closeModal('partnership-reapply');
+
+    }
+
+    public function applyPartnership()
+    {
+        // Define validation rules and custom messages
+        $rules = [
+            'selID' => 'required|integer',
+            'agreeBox' => 'required|boolean',
+        ];
+
+        $messages = [
+            'selID.required' => 'Municipality is required.',
+            'agreeBox.required' => 'Please check the agreement box before proceeding.',
+        ];
+
+        // Validate the input data
+        $this->validate($rules, $messages);
+
+        // Check if a partnership with the same peso_id and company_id already exists
+        $existingPartnership = Partnerships::where('peso_id', $this->selID)
+            ->where('company_id', $this->empID)
+            ->first();
+
+        if ($existingPartnership) {
+            // If a partnership already exists, show an error message
+            toastr()->error('A partnership record with this municipality and company already exists.');
+            return;
+        }
+
+        // Proceed with creating the new partnership
+        DB::beginTransaction();
+
+        try {
+            // Create a new partnership record
+            Partnerships::create([
+                'peso_id' => $this->selID,
+                'company_id' => $this->empID,
+                // Add any additional fields if necessary
+            ]);
+
+            DB::commit(); // Commit the transaction
+            toastr()->success('Partnership created successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction in case of error
+            toastr()->error('There was an error creating the partnership. Please try again later.');
+        }
+
+        // Optionally, reset the form fields or close the modal
+
+        $this->closeModal('partnership-apply');
+    }
+
+    public function closeModal($modal)
+    {
+        $this->reset('selID', 'agreeBox', 'reapplyID');
+        $this->dispatch('close-modal', $modal . '-modal');
 
     }
 
@@ -208,6 +334,7 @@ class EditDetails extends Component
                 'company_id' => $this->empID,
                 'industry_id' => $id,
             ]);
+            toastr()->warning('Company industry added.');
             $this->dispatch('close-modal', 'industry-modal');
         } else {
             toastr()->error('Could not fetch data');
@@ -429,21 +556,23 @@ class EditDetails extends Component
         $this->empID = $user->company->company_id;
     }
 
+    public function viewPartnership($id)
+    {
+        $this->reset('partnershipRemarks');
+
+        $partnershipInfo = Partnerships::findOrFail($id);
+
+        if ($partnershipInfo) {
+            $this->partnershipRemarks = $partnershipInfo->partnership_Remarks;
+            $this->dispatch('open-modal', 'partnership-info-modal');
+        } else {
+            toastr()->error('There was an error fetching the information. Please try again later.');
+        }
+
+    }
+
     public function render()
     {
-
-        // $requirements = ModelsRequirements::leftJoin('requirements_passed', function ($join) {
-        //     $join->on('requirements.requirement_id', '=', 'requirements_passed.requirement_id')
-        //         ->where('requirements_passed.company_id', $this->empID);
-        // })
-        //     ->where('requirements.requirement_Status', 1)
-        //     ->select(
-        //         'requirements.*', // Select all columns from the requirements table
-        //         'requirements_passed.created_at as passed_at', // Alias for created_at from requirements_passed
-        //         'requirements_passed.req_passed_id as requirement_passed_id', // Alias for req_passed_id from requirements_passed
-        //         'requirements_passed.updated_at as req_updated_at' // Alias for updated_at from requirements_passed
-        //     )
-        //     ->get();
 
         // Fetch Requirements with related RequirementPassed data
         $requirements = Requirements::with([
@@ -454,9 +583,30 @@ class EditDetails extends Component
             ->where('requirement_Status', 1)
             ->get();
 
+        $partnerships = Partnerships::where('company_id', $this->empID)
+            ->where(function ($query) {
+                if (!empty($this->search)) {
+                    $query->whereHas('peso.municipality', function ($query) {
+                        $query->where('municipality_Name', 'like', '%' . $this->search . '%');
+                    });
+                }
+            })
+            ->paginate(10);
+
+        // dd($partnerships);
+
+        // Fetch Peso records with the specified municipality name and not in partnerships with the given company_id
+        $pesoNotInPartnerships = PESO::whereDoesntHave('partnerships', function ($query) {
+            $query->where('company_id', $this->empID);
+        })
+            ->whereHas('municipality', function ($query) {
+                $query->where('municipality_Name', 'like', '%' . $this->searchMun . '%');
+            })
+            ->get();
+
         $employerDetails = Company::with(['company_industry_line'])
             ->findOrFail($this->empID);
 
-        return view('livewire.public.profile.employer.partials.edit-details', compact('employerDetails', 'requirements', ));
+        return view('livewire.public.profile.employer.partials.edit-details', compact('employerDetails', 'requirements', 'partnerships', 'pesoNotInPartnerships'));
     }
 }

@@ -16,7 +16,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->tinyInteger('usertype')->default(1);;
+            $table->tinyInteger('usertype')->default(1);
+            $table->tinyInteger('userstatus')->default(1)->comment('User status: 1 - active, 2 - inactive');
+            $table->text('description')->nullable();
+            $table->datetime('disabled_at')->nullable();
+            $table->text('google2fa_secret')->nullable();
+            $table->datetime('google2fa_enabled_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

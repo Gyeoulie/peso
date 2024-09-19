@@ -13,10 +13,21 @@ class PesoProfile extends Component
 
     public $id;
 
+    public function mount()
+    {
+        $PESO = PESO::find($this->id);
+
+        if (!$PESO) {
+            return $this->redirectRoute('dashboard');
+        }
+
+    }
+
     public function render()
     {
 
-        $pesoInfo = PESO::findOrFail($this->id);
+        $pesoInfo = PESO::find($this->id);
+
         $pesoAnnouncements = Announcements::where('peso_id', $this->id)
             ->where('announcement_Status', 'ACTIVE')->get();
 

@@ -9,6 +9,7 @@ use App\Models\Job_Posting;
 use App\Models\Requirements;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -22,6 +23,7 @@ class JobPostOverview extends Component
     public $remarks;
 
     public $eduLevels = [
+        '0' => 'NONE',
         '1' => 'GRADE I',
         '2' => 'GRADE II',
         '3' => 'GRADE III',
@@ -51,6 +53,24 @@ class JobPostOverview extends Component
     ];
 
     public $selectedReqPassedId;
+
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $jobpost = Job_Posting::findOrFail($this->id);
+
+        if ($jobpost) {
+            if ($user->peso_accounts->peso_id != $jobpost->peso_id) {
+                return $this->redirectRoute('dashboard');
+
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+
+        }
+
+    }
 
     public function viewFile($reqPassedId)
     {
@@ -93,19 +113,23 @@ class JobPostOverview extends Component
             ]);
 
             // If the status is ACTIVE, get the matching employees
-            if ($status === 'ACTIVE') {
+            if ($status == 'ACTIVE') {
                 $matchingEmployees = $this->getMatched($jobPosting);
             }
 
             // Commit the transaction
             DB::commit();
-            Mail::to($jobPosting->company->user->email)->queue(new JobPostApplicationNotification($jobPosting));
+
+            // Send email notification to the company
+            Mail::to($jobPosting->company->user->email)
+                ->queue(new JobPostApplicationNotification($jobPosting));
 
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error
             DB::rollBack();
 
             // Log the error for debugging
+            Log::error('Job update failed', ['error' => $e->getMessage()]);
 
             // Show an error message
             toastr()->error('An error occurred while updating the job posting.');
@@ -113,9 +137,10 @@ class JobPostOverview extends Component
         }
 
         // Send emails if the status is ACTIVE and the transaction was committed
-        if ($status === 'ACTIVE' && !empty($matchingEmployees)) {
+        if ($status == 'ACTIVE' && !empty($matchingEmployees)) {
             foreach ($matchingEmployees as $employee) {
-                Mail::to($employee->user->email)->queue(new JobPostingNotification($employee, $jobPosting));
+                Mail::to($employee->user->email)
+                    ->queue(new JobPostingNotification($employee, $jobPosting));
             }
         }
 
@@ -139,43 +164,60 @@ class JobPostOverview extends Component
 
     public function getMatched($jobpost)
     {
-
+        // Get job posting details
         $jobMunicipalityId = $jobpost->peso->municipality_id;
         $jobEducationLevel = $jobpost->job_Edu;
         $jobIndustryId = $jobpost->industry_id;
-        $jobTagIds = $jobpost->job_tags->pluck('position_id');
+        $jobTagIds = $jobpost->job_tags->pluck('position_id')->toArray();
 
+        // Build the query to get matched employees
         return Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
             $query->where('municipality_id', $jobMunicipalityId);
         })
             ->whereHas('education', function ($query) use ($jobEducationLevel) {
                 $query->where('edu_Level', '>=', $jobEducationLevel);
             })
-            ->whereHas('job_preference', function ($query) use ($jobTagIds) {
-                $query->whereIn('position_id', $jobTagIds);
+            ->where(function ($query) use ($jobTagIds, $jobIndustryId) {
+                $query->whereHas('job_preference', function ($query) use ($jobTagIds) {
+                    $query->whereIn('position_id', $jobTagIds);
+                })
+                    ->orWhere(function ($query) use ($jobIndustryId) {
+                        if ($jobIndustryId) {
+                            $query->whereHas('industry_preference', function ($query) use ($jobIndustryId) {
+                                $query->where('industry_id', $jobIndustryId);
+                            });
+                        }
+                    });
             })
             ->withCount(['job_preference as num_matched_tags' => function ($query) use ($jobTagIds) {
                 $query->whereIn('position_id', $jobTagIds);
             }])
             ->withCount(['industry_preference as num_matched_industry' => function ($query) use ($jobIndustryId) {
-                $query->where('industry_id', $jobIndustryId);
+                if ($jobIndustryId) {
+                    $query->where('industry_id', $jobIndustryId);
+                }
             }])
             ->orderByRaw('
-            CASE
-                WHEN num_matched_industry > 0 AND num_matched_tags > 0 THEN 1
-                WHEN num_matched_industry > 0 AND num_matched_tags = 0 THEN 2
-                WHEN num_matched_industry = 0 AND num_matched_tags > 0 THEN 3
-                ELSE 4
-            END
-        ')
+                CASE
+                    WHEN num_matched_industry > 0 AND num_matched_tags > 0 THEN 1
+                    WHEN num_matched_industry > 0 AND num_matched_tags = 0 THEN 2
+                    WHEN num_matched_industry = 0 AND num_matched_tags > 0 THEN 3
+                    ELSE 4
+                END
+            ')
             ->orderByDesc('num_matched_tags')
             ->get();
     }
 
     public function render()
     {
+        $user = Auth::user();
+
         $jobpost = Job_Posting::with(['job_tags'])->findOrFail($this->id);
 
+        if ($user->peso_accounts->peso_id != $jobpost->peso_id) {
+            return redirect()->back();
+        }
         $matchingEmployees = $this->getMatched($jobpost);
 
         $requirements = Requirements::with([
@@ -186,17 +228,6 @@ class JobPostOverview extends Component
             ->where('requirement_Status', 1)
             ->get();
 
-        // Find applicants that match the job posting criteria
-        // $matchingEmployees = Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
-        //     $query->where('municipality_id', $jobMunicipalityId);
-        // })
-        //     ->whereHas('education', function ($query) use ($jobEducationLevel) {
-        //         $query->where('edu_level', '<=', $jobEducationLevel);
-        //     })
-        //     ->whereHas('job_preference', function ($query) use ($jobTagIds) {
-        //         $query->whereIn('position_id', $jobTagIds);
-        //     })
-        //     ->get();
         return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees', 'requirements'));
     }
 }

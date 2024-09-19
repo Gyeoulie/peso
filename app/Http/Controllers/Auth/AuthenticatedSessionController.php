@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use PragmaRX\Google2FA\Google2FA;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -25,17 +26,45 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember'); // Check if 'remember' checkbox is checked
 
-        $request->authenticate();
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+            $user = $request->user();
+            $request->session()->put('user_type', $user->usertype);
 
-        $request->session()->regenerate();
+            return $this->redirectBasedOnRole($user->usertype);
+        }
 
-        // Get the authenticated user
-        $user = $request->user();
-        $request->session()->put('user_type', $user->usertype);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+    public function verify2FA(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|numeric|digits:6', // Validate OTP input
+        ]);
 
-        return $this->redirectBasedOnRole($user->usertype);
+        $user = Auth::user(); // Get the currently authenticated user
+        $google2fa = new Google2FA();
 
+        // Verify the OTP
+        $isValid = $google2fa->verifyKey($user->google2fa_secret, $request->input('otp'));
+
+        if ($isValid) {
+            $request->session()->put('google2fa', true);
+            // OTP is valid, log the user in
+            Auth::login($user);
+
+            // Redirect to intended page or home
+            return redirect()->intended('dashboard');
+        } else {
+            // OTP is invalid
+            return redirect()->back()->withInput()->withErrors(['otp' => 'The OTP you entered is invalid.']);
+
+        }
     }
 
     /**
@@ -58,7 +87,18 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    // public function destroy(Request $request): RedirectResponse
+    // {
+    //     Auth::guard('web')->logout();
+
+    //     $request->session()->invalidate();
+
+    //     $request->session()->regenerateToken();
+
+    //     return redirect('/');
+    // }
+
+    public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
 
@@ -66,6 +106,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return response()->view('welcome', [], 200, [
+            'Content-Type' => 'text/html',
+        ])->header('Content-Type', 'text/html')
+            ->header('Cache-Control', 'no-store')
+            ->header('Pragma', 'no-cache')
+            ->setContent('<script>
+                localStorage.setItem("user-logged-out", "true");
+                window.location.href = "/";
+            </script>');
     }
+
 }
+
+// Set a flag in local storage and redirect to the welcome page

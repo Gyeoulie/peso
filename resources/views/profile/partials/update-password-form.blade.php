@@ -1,4 +1,4 @@
-<section>
+<section x-data="">
     <header>
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Update Password') }}
@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+    <form x-ref="passwordForm" x-on:submit.prevent="$dispatch('open-modal', 'confirm-email-change-modal')" method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('put')
 
@@ -45,4 +45,41 @@
             @endif
         </div>
     </form>
+
+    <x-modal name="confirm-password-change-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <!-- Header Section -->
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Confirm Password Change') }}
+            </h2>
+            <hr>
+    
+            <!-- Content Section -->
+            <div class="flex flex-col my-4">
+                <div class="flex flex-col mt-4 mb-4 w-full justify-center items-center px-4">
+                    <span class="text-xl font-semibold text-red-600">
+                        {{ __('Warning: This action cannot be undone.') }}
+                    </span>
+                    <p class="mt-4 text-gray-600 text-center">
+                        {{ __('Changing your password will log you out of all devices.') }}
+                        <br>
+                        {{ __('Please ensure that your new password is secure and memorable.') }}
+                    </p>
+                </div>
+            </div>
+    
+            <!-- Buttons Section -->
+            <div class="mt-6 flex justify-between">
+                <!-- Cancel Button -->
+                <x-secondary-button x-on:click="$dispatch('close-modal', 'confirm-password-change-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+    
+                <!-- Confirm Button -->
+                <x-danger-button x-on:click="document.querySelector('[x-ref=passwordForm]').submit()">
+                    {{ __('Confirm Password Change') }}
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
 </section>

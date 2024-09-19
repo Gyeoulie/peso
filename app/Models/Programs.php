@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Redactors\LimiterRedactor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +13,12 @@ class Programs extends Model implements Auditable
     use HasFactory;
     use SoftDeletes;
     use \OwenIt\Auditing\Auditable;
+
+    protected $attributeModifiers = [
+        'program_Description' => LimiterRedactor::class,
+        'program_Qualification' => LimiterRedactor::class,
+        'program_Remarks' => LimiterRedactor::class,
+    ];
 
     protected $table = 'programs';
     protected $primaryKey = 'program_id';
@@ -64,7 +71,7 @@ class Programs extends Model implements Auditable
     public function attendedJobseekers()
     {
         return $this->hasMany(Program_Reg::class, 'program_id')
-            ->where('program_reg_Status', 'ATTENDED');
+            ->where('program_reg_Status', 'COMPLETED');
     }
 
     public static function fieldMappings()

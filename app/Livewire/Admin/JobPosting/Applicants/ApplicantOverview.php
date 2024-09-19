@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Admin\JobPosting\Applicants;
 
+use App\Mail\NewApplicantNotification;
+use App\Mail\RecommendationNotification;
 use App\Models\Barangay;
 use App\Models\Education;
 use App\Models\Employee;
@@ -9,8 +11,12 @@ use App\Models\Industry_preference;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
+use App\Models\Work_Exp;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -24,6 +30,7 @@ class ApplicantOverview extends Component
 
     public $id;
     public $eduLevels = [
+        '0' => 'NONE',
         '1' => 'GRADE I',
         '2' => 'GRADE II',
         '3' => 'GRADE III',
@@ -137,7 +144,9 @@ class ApplicantOverview extends Component
 
     public function updateApplicant($action, $modal)
     {
-        // Check if action is valid
+        $pesoAdmin = Auth::user();
+
+        // Validate the action
         if (!in_array($action, ['RECOMMENDED', 'REJECT'])) {
             toastr()->error('Invalid action specified!');
             return;
@@ -151,49 +160,62 @@ class ApplicantOverview extends Component
             return;
         }
 
+        $validationRules = [];
+        $validationMessages = [];
+
+        if ($action === 'RECOMMENDED') {
+            $validationRules = [
+                'recommendationRemarks' => ['required', 'string', 'min:10'],
+                'recLetter' => [
+                    'required',
+                    'file',
+                    'mimes:pdf',
+                    'max:5120', // 5MB
+                ],
+            ];
+            $validationMessages = [
+                'recLetter.required' => 'The recommendation letter is required.',
+                'recLetter.file' => 'The recommendation letter must be a file.',
+                'recLetter.mimes' => 'The recommendation letter must be a PDF file.',
+                'recLetter.max' => 'The recommendation letter may not be greater than 5MB in size.',
+            ];
+        } elseif ($action === 'REJECT') {
+            $validationRules = [
+                'rejectRemarks' => ['required', 'string', 'min:10'],
+            ];
+        }
+
+        // Validate the input based on the action
+        $this->validate($validationRules, $validationMessages);
+
         // Start a database transaction
         DB::beginTransaction();
 
         try {
+            // Determine the validation rules and messages based on the action
+
+            // If action is 'RECOMMENDED', check if the file upload is successful
             if ($action === 'RECOMMENDED') {
-                // Validate recommendation letter
-                $this->validate([
-                    'recommendationRemarks' => ['required', 'string', 'min:10'],
-                    'recLetter' => [
-                        'required',
-                        'file',
-                        'mimes:pdf',
-                        'max:5120', // 'max' is in kilobytes (5MB = 5120KB)
-                    ],
-                ], [
-                    'recLetter.required' => 'The recommendation letter is required.',
-                    'recLetter.file' => 'The recommendation letter must be a file.',
-                    'recLetter.mimes' => 'The recommendation letter must be a PDF file.',
-                    'recLetter.max' => 'The recommendation letter may not be greater than 5MB in size.',
-                ]);
+                // Attempt to store the recommendation letter
+                $filePath = $this->recLetter->store('peso/recommendation', 'public');
 
-                // Store recommendation letter
-                $recLetterPath = $this->recLetter->store('peso/recommendation', 'public');
+                if (!$filePath) {
+                    // If the file upload fails, show an error and rollback
+                    DB::rollBack();
+                    toastr()->error('Failed to upload the recommendation letter.');
+                    return;
+                }
 
-                // Update job applicant with recommended status and recommendation letter path
-                $applicant->peso_Status = $action;
-                $applicant->peso_Remarks = $this->recommendationRemarks;
-                $applicant->peso_Letter = $recLetterPath;
-                $applicant->applicant_Notif = 1;
-            } elseif ($action === 'REJECT') {
-                $this->validate([
-                    'rejectRemarks' => ['required', 'string', 'min:10'],
-                ]);
-
-                // Update job applicant with rejected status
-                $applicant->peso_Status = $action;
-                $applicant->peso_Remarks = $this->rejectRemarks;
-                $applicant->applicant_Notif = 1;
-            } else {
-                toastr()->error('Invalid action specified!');
-                DB::rollBack();
-                return;
+                // Store the file path in the applicant record
+                $applicant->peso_Letter = $filePath;
             }
+
+            // Update the job applicant based on the action
+            $applicant->peso_Status = $action;
+            $applicant->peso_Remarks = $action === 'RECOMMENDED' ? $this->recommendationRemarks : $this->rejectRemarks;
+            $applicant->applicant_Notif = 1;
+            $applicant->responded_at = now();
+            $applicant->peso_accounts_id = $pesoAdmin->peso_accounts->peso_accounts_id;
 
             // Save the changes
             $applicant->save();
@@ -201,11 +223,16 @@ class ApplicantOverview extends Component
             // Commit the transaction
             DB::commit();
 
+            // Send notification mail after transaction success
+            Mail::to($applicant->employee->user->email)->queue(new RecommendationNotification($applicant));
+            Mail::to($applicant->job_posting->company->user->email)->queue(new NewApplicantNotification($applicant));
+
             toastr()->success('Applicant updated successfully!');
         } catch (\Exception $e) {
             // Roll back the transaction on error
             DB::rollBack();
-            toastr()->error('There was an error in updating the applicant!');
+            toastr()->error('There was an error updating the applicant!');
+            Log::error('Error updating applicant: ' . $e->getMessage());
         }
 
         // Close the modal after updating
@@ -219,45 +246,88 @@ class ApplicantOverview extends Component
         $this->dispatch('close-modal', $modal . '-modal');
     }
 
-    public function render()
+    private function checkIfJobSeekerMatches($applicant)
     {
-        $applicant = Job_Applicants::findOrFail($this->id);
-
-// Get the highest education level of the employee
+        // Get the highest education level of the employee
         $highestEducationLevel = Education::where('employee_id', $applicant->employee->employee_id)
             ->max('edu_level');
 
-// Get the employee's municipality ID via their barangay
+        // Get the employee's municipality ID via their barangay
         $employeeMunicipalityId = Barangay::where('barangay_id', $applicant->employee->barangay_id)
             ->value('municipality_id');
 
-// Get the employee's job preferences (array of position_id)
+        // Get the employee's job preferences (array of position_id)
         $employeeJobPreferences = Job_Preference::where('employee_id', $applicant->employee->employee_id)
-            ->pluck('position_id');
+            ->pluck('position_id')
+            ->toArray();
 
+        // Get the employee's industry preferences (array of industry_id)
         $employeeIndustryPreference = Industry_Preference::where('employee_id', $applicant->employee->employee_id)
-            ->pluck('industry_id');
+            ->pluck('industry_id')
+            ->toArray();
 
-// Query to check if the specific job posting matches the employee
-        $isMatch = Job_Posting::where('job_id', $applicant->job_id)
-            ->where('job_Status', 'ACTIVE')
+        // Query to check if the specific job posting matches the employee
+        return Job_Posting::where('job_id', $applicant->job_id)
+        // ->where('job_Status', 'ACTIVE')
             ->whereHas('peso.municipality', function ($query) use ($employeeMunicipalityId) {
                 $query->where('municipality_id', $employeeMunicipalityId);
             })
-            ->where('job_edu', '<=', $highestEducationLevel)
-            ->where(function ($query) use ($employeeJobPreferences) {
-                $query->whereHas('job_tags', function ($query) use ($employeeJobPreferences) {
-                    $query->whereIn('position_id', $employeeJobPreferences);
-                });
-            })
-            ->orWhere(function ($query) use ($employeeIndustryPreference) {
-                $query->whereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
-                    $query->whereIn('industry_id', $employeeIndustryPreference);
-                });
+            ->where('job_Edu', '<=', $highestEducationLevel)
+            ->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
+                $query->where(function ($subQuery) use ($employeeJobPreferences) {
+                    $subQuery->whereHas('job_tags', function ($query) use ($employeeJobPreferences) {
+                        $query->whereIn('position_id', $employeeJobPreferences);
+                    });
+                })
+                    ->orWhere(function ($subQuery) use ($employeeIndustryPreference) {
+                        $subQuery->whereIn('industry_id', $employeeIndustryPreference);
+                    });
             })
             ->exists();
+    }
 
-        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant', 'isMatch'));
+    public function render()
+    {
+        $user = Auth::user();
+
+        $applicant = Job_Applicants::findOrFail($this->id);
+
+        if ($user->peso_accounts->peso_id != $applicant->job_posting->peso_id) {
+            return redirect()->route('admin-joblist');
+        }
+
+        $maxEduLevel = $applicant->employee->education->max('edu_Level');
+
+        // Get the corresponding education level label
+        $educationLabel = $this->eduLevels[$maxEduLevel] ?? 'NONE';
+
+        // Determine the education attainment category
+        $attainment = '';
+
+        if ($maxEduLevel >= 9 && $maxEduLevel <= 9) {
+            $attainment = 'Elementary Graduate';
+        } elseif ($maxEduLevel >= 10 && $maxEduLevel <= 15) {
+            $attainment = 'High School Level';
+        } elseif ($maxEduLevel == 16) {
+            $attainment = 'High School Graduate';
+        } elseif ($maxEduLevel >= 19 && $maxEduLevel <= 23) {
+            $attainment = 'College Level';
+        } elseif ($maxEduLevel == 24) {
+            $attainment = 'College Graduate';
+        } elseif ($maxEduLevel == 25) {
+            $attainment = 'Master Level';
+        } elseif ($maxEduLevel == 26) {
+            $attainment = 'Master Graduate';
+        } else {
+            $attainment = 'Other';
+        }
+        
+
+        $totalExperience = Work_Exp::getTotalExperience($applicant->employee_id);
+
+        $isMatch = $this->checkIfJobSeekerMatches($applicant);
+
+        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant', 'isMatch', 'attainment', 'totalExperience'));
     }
 
 }

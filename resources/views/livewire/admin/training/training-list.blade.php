@@ -6,41 +6,52 @@
         </div>
 
         <div class="col-span-4 sm:col-span-12">
-            <div class="bg-white shadow rounded-lg p-6  overflow-visible" x-data="{
-                openTab: 1,
+            <div class="bg-white shadow rounded-lg p-6 overflow-visible" x-data="{
+                openTab: @entangle('filter').defer || '', // Default value to 'ALL'
                 activeClasses: 'text-gray-900 bg-gray-400 active',
-                inactiveClasses: 'bg-gray-100 hover:text-gray-700 hover:bg-gray-50'
-            }">
+                inactiveClasses: 'bg-gray-100 hover:text-gray-700 hover:bg-gray-50',
+                changeFilter(value) {
+                    this.openTab = value;
+                    this.$wire.call('updateFilter', value); // Update Livewire filter property
+                },
+                init() {
+                    this.$watch('openTab', value => {
+                        this.changeFilter(value); // Ensure Livewire is updated when openTab changes
+                    });
+                }
+            }" x-init="init()">
 
-
-                <div class="relative p-1 overvlow-visible">
+                <div class="relative p-1 overflow-visible">
+                    <!-- Mobile Dropdown -->
                     <div class="sm:hidden">
-                        <label for="tabs" class="sr-only">Select your country</label>
+                        <label for="tabs" class="sr-only">Select Filter</label>
                         <select id="tabs"
-                            class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option wire:click.prevent='updateFilter("ALL")'>All</option>
-                            <option wire:click.prevent='updateFilter("ACTIVE")'>Active</option>
-                            <option wire:click.prevent='updateFilter("OTHERS")'>Others </option>
+                            class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            x-model="openTab" @change="changeFilter($event.target.value)">
+                            <option value="">All</option>
+                            <option value="ACTIVE">Active</option>
+                            <option value="OTHERS">Others</option>
                         </select>
                     </div>
+
+                    <!-- Desktop Tabs -->
                     <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
                         <li class="w-full focus-within:z-10">
-                            <button wire:click.prevent='updateFilter("")' @click="openTab = 1"
-                                :class="openTab === 1 ? activeClasses : inactiveClasses"
+                            <button @click="changeFilter('')"
+                                :class="openTab === '' ? activeClasses : inactiveClasses"
                                 class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-s-lg"
-                                aria-current="page">All </button>
+                                aria-current="page">All</button>
                         </li>
-                        <li wire:click.prevent='updateFilter("ACTIVE")' class="w-full focus-within:z-10">
-                            <button @click="openTab = 2" :class="openTab === 2 ? activeClasses : inactiveClasses"
-                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Active
-                            </button>
+                        <li class="w-full focus-within:z-10">
+                            <button @click="changeFilter('ACTIVE')"
+                                :class="openTab === 'ACTIVE' ? activeClasses : inactiveClasses"
+                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Active</button>
                         </li>
-                        <li wire:click.prevent='updateFilter("OTHERS")' class="w-full focus-within:z-10">
-                            <button @click="openTab = 3" :class="openTab === 3 ? activeClasses : inactiveClasses"
-                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">Others
-                            </button>
+                        <li class="w-full focus-within:z-10">
+                            <button @click="changeFilter('OTHERS')"
+                                :class="openTab === 'OTHERS' ? activeClasses : inactiveClasses"
+                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">Others</button>
                         </li>
-
                     </ul>
 
 
@@ -60,14 +71,14 @@
 
                             {{-- SEARCH --}}
                             <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-wfull sm:w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
                         <div class="flex flex-row gap-2">
                             <div x-data="{ tooltip: 'Export to Excel' }">
                                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
-                                    class="flex items-center py-1.5 px-4 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                                    class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                                     <span class="mr-2">Export</span>
                                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -81,7 +92,7 @@
                             <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
                                         <div>
                                             {{ $sortType ?: 'Sort By Type' }}
                                         </div>
@@ -103,6 +114,9 @@
                                         max-h-[300px] bg-white
                                     </x-slot>
 
+                                    <x-dropdown-link wire:click.prevent="updateSort('', 1)" class="cursor-pointer">
+                                        All
+                                    </x-dropdown-link>
                                     <x-dropdown-link wire:click.prevent="updateSort('PESO Hosted', 1)"
                                         class="cursor-pointer">
                                         PESO Hosted
@@ -118,13 +132,13 @@
                             <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
                                         <div>
                                             @if (empty($sortDate))
                                                 Sort By Date
-                                            @elseif($sortDate === 'DESC')
-                                                Newest
                                             @elseif($sortDate === 'ASC')
+                                                Newest
+                                            @elseif($sortDate === 'DESC')
                                                 Oldest
                                             @endif
                                         </div>
@@ -146,10 +160,10 @@
                                         max-h-[300px] bg-white
                                     </x-slot>
 
-                                    <x-dropdown-link wire:click.prevent="updateSort('DESC', 2)" class="cursor-pointer">
+                                    <x-dropdown-link wire:click.prevent="updateSort('ASC', 2)" class="cursor-pointer">
                                         Newest
                                     </x-dropdown-link>
-                                    <x-dropdown-link wire:click.prevent="updateSort('ASC', 2)" class="cursor-pointer">
+                                    <x-dropdown-link wire:click.prevent="updateSort('DESC', 2)" class="cursor-pointer">
                                         Oldest
                                     </x-dropdown-link>
 
@@ -215,8 +229,9 @@
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                                 <img class="w-10 h-10 rounded-full"
-                                                    src="{{ asset('storage/' . $data->program_pubmat) }}"
-                                                    alt="pubmat">
+                                                    src="{{ file_exists(public_path('storage/' . $data->program_pubmat)) ? asset('storage/' . $data->program_pubmat) : asset('assets/img/PESO-Logo.png') }}"
+                                                    alt="pubmat-{{ $data->program_id }}">
+
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">{{ $data->program_Title }}
                                                     </div>
@@ -256,11 +271,14 @@
                                                     @if ($data->program_Status === 'ACTIVE')
                                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                                                         ACTIVE
+                                                    @elseif ($data->program_Status === 'CLOSED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
+                                                        CLOSED
                                                     @elseif ($data->program_Status === 'COMPLETED')
                                                         <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
                                                         COMPLETED
-                                                    @elseif($data->program_Status === 'CANCELED')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                    @elseif($data->program_Status === 'CANCELLED')
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
                                                         CANCELLED
                                                     @endif
                                                 </div>

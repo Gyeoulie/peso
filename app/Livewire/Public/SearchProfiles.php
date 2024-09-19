@@ -53,6 +53,7 @@ class SearchProfiles extends Component
                 ) as relevance_score")
             )
             ->where('users.usertype', '=', '4')
+            ->where('users.userstatus', '=', '1')
             ->where(function ($query) use ($search) {
                 $query->where('employee.fname', 'like', '%' . $search . '%')
                     ->orWhere('employee.mname', 'like', '%' . $search . '%')
@@ -81,6 +82,7 @@ class SearchProfiles extends Component
                 ) as relevance_score")
             )
             ->where('users.usertype', '=', '5')
+            ->where('users.userstatus', '=', '1')
             ->where(function ($query) use ($search) {
                 $query->where('company.business_Name', 'like', '%' . $search . '%')
                     ->orWhere('company.trade_Name', 'like', '%' . $search . '%');
@@ -139,7 +141,7 @@ class SearchProfiles extends Component
                 'company.business_Name as name',
                 'company.trade_Name as trade_name',
                 'company.company_Type as company_Type',
-                'company.employer_Type as employer_Type',
+            'company.employer_Type as employer_Type',
                 'barangay.barangay_Name as barangay_name',
                 'municipality.municipality_Name as municipality_name',
                 DB::raw("(
@@ -147,7 +149,7 @@ class SearchProfiles extends Component
                     (company.trade_Name LIKE '%$search%')
                 ) as relevance_score")
             )
-            ->where('users.usertype', '=', '5')
+            ->where('users.usertype', '=', '6')
             ->where(function ($query) use ($search) {
                 $query->where('company.business_Name', 'like', '%' . $search . '%')
                     ->orWhere('company.trade_Name', 'like', '%' . $search . '%');

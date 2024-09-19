@@ -8,17 +8,33 @@ use App\Models\Job_Preference;
 use App\Models\Programs;
 use App\Models\Program_Reg;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class Trainings extends Component
 {
+
+    use WithPagination;
+    use WithoutUrlPagination;
     public $ticket = [];
 
     public $search, $searchHistory, $sortType, $sortDate, $filter;
 
     public $sortTypeHistory, $sortDateHistory;
+
+    public function updatedsearch()
+    {
+        $this->resetPage('events');
+    }
+
+    public function updatedsearchHistory()
+    {
+        $this->resetPage('trainings');
+    }
 
     public function mount()
     {
@@ -26,7 +42,7 @@ class Trainings extends Component
 
         if ($user && $user->employee) {
             $this->filter = 'Recommended';
-        } else if ($user && $user->usertype >= 8) {
+        } else if ($user && ($user->usertype >= 8 && $user->usertype < 11)) {
             $this->filter = 'My Municipality';
         } else {
             $this->filter = 'All';
@@ -39,13 +55,16 @@ class Trainings extends Component
         $data = Program_Reg::findOrFail($id);
 
         if ($data) {
-
-            $this->ticket = json_encode([
+            // Prepare the ticket data
+            $ticketData = [
                 'program_reg_id' => $data->program_reg_id,
                 'program_id' => $data->program_id,
                 'employee_id' => $data->employee_id,
                 'created_at' => $data->created_at->format('Y-m-d H:i:s'), // Explicitly format the timestamp
-            ]);
+            ];
+
+            // Encrypt the ticket data
+            $this->ticket = Crypt::encrypt(json_encode($ticketData));
 
             $this->dispatch('open-modal', 'ticket-modal');
 
@@ -56,6 +75,8 @@ class Trainings extends Component
     public function updateFilter($value)
     {
         $this->filter = $value;
+        $this->resetPage('events');
+
     }
     public function updateSort($value, $type)
     {
@@ -66,6 +87,7 @@ class Trainings extends Component
             $this->sortDate = $value;
         }
         $this->reset('search');
+        $this->resetPage('events');
 
     }
     public function updateSortHistory($value, $type)
@@ -77,6 +99,7 @@ class Trainings extends Component
             $this->sortDateHistory = $value;
         }
         $this->reset('searchHistory');
+        $this->resetPage('trainings');
 
     }
 
@@ -182,7 +205,7 @@ class Trainings extends Component
     {
         if ($user->usertype == 4) {
             return $user->employee->barangay->municipality->municipality_id ?? null;
-        } elseif ($user->usertype >= 8) {
+        } elseif ($user->usertype >= 8 && $user->usertype < 11) {
             return $user->peso_accounts->peso->municipality->municipality_id ?? null;
         }
 
@@ -228,39 +251,42 @@ class Trainings extends Component
             $query->orderBy('created_at', $this->sortDate);
         }
 
-        $programList = $query->paginate(10);
+        $programList = $query->paginate(15, ['*'], 'events');
 
-        if ($user->employee) {
-            // Start the query for Program_Reg
-            $query = Program_Reg::where('employee_id', $user->employee->employee_id)
-                ->where(function ($query) {
-                    $query->whereHas('programs', function ($query) {
-                        // Search by program title or host
-                        $query->where('program_Title', 'like', '%' . $this->searchHistory . '%')
-                            ->orWhere('program_Host', 'like', '%' . $this->searchHistory . '%');
-                    })
-                        ->orWhereHas('programs.program_tags.job_positions', function ($query) {
-                            // Search by job position title
-                            $query->where('position_Title', 'like', '%' . $this->searchHistory . '%');
+        if (Auth::check()) {
+
+            if ($user->employee) {
+                // Start the query for Program_Reg
+                $query = Program_Reg::where('employee_id', $user->employee->employee_id)
+                    ->where(function ($query) {
+                        $query->whereHas('programs', function ($query) {
+                            // Search by program title or host
+                            $query->where('program_Title', 'like', '%' . $this->searchHistory . '%')
+                                ->orWhere('program_Host', 'like', '%' . $this->searchHistory . '%');
                         })
-                        ->orWhereHas('programs.job_industry', function ($query) {
-                            // Search by industry title
-                            $query->where('industry_Title', 'like', '%' . $this->searchHistory . '%');
-                        });
-                });
+                            ->orWhereHas('programs.program_tags.job_positions', function ($query) {
+                                // Search by job position title
+                                $query->where('position_Title', 'like', '%' . $this->searchHistory . '%');
+                            })
+                            ->orWhereHas('programs.job_industry', function ($query) {
+                                // Search by industry title
+                                $query->where('industry_Title', 'like', '%' . $this->searchHistory . '%');
+                            });
+                    });
 
-            // Apply sorting conditions
-            if ($this->sortTypeHistory) {
-                $query->whereHas('programs', function ($query) {
-                    $query->where('program_Type', $this->sortTypeHistory);
-                });
-            }
-            if ($this->sortDateHistory) {
-                $query->orderBy('created_at', $this->sortDateHistory);
-            }
+                // Apply sorting conditions
+                if ($this->sortTypeHistory) {
+                    $query->whereHas('programs', function ($query) {
+                        $query->where('program_Type', $this->sortTypeHistory);
+                    });
+                }
+                if ($this->sortDateHistory) {
+                    $query->orderBy('created_at', $this->sortDateHistory);
+                }
 
-            // Paginate the results
-            $programHistory = $query->paginate(10);
+                // Paginate the results
+                $programHistory = $query->paginate(10, ['*'], 'trainings');
+            }
         }
 
         return view('livewire.public.trainings', compact('programList', 'programHistory'));

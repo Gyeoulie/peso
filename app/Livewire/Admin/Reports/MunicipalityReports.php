@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\Reports;
 
-use App\Helpers\AuditFormatter;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
@@ -14,17 +13,14 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
-use OwenIt\Auditing\Models\Audit;
 
 #[Layout('layouts.admin')]
 class MunicipalityReports extends Component
 {
 
     use WithPagination, WithoutUrlPagination;
-    public $selectedAnalytics;
+    public $selectedAnalytics, $analyticsValue;
     public $currentYear = 2024;
-    public $modelFilter;
-    public $perPage = 10;
     public $selectedYear; // Default to all months if empty
 
     public $selectedMonths = []; // Default to all months if empty
@@ -32,11 +28,22 @@ class MunicipalityReports extends Component
     public function updateAnalytics($id)
     {
         $this->selectedAnalytics = $id;
+
+        if ($id == 1) {
+            $this->analyticsValue = 'Jobseekers';
+
+        } elseif ($id == 2) {
+            $this->analyticsValue = 'Trends';
+
+        } elseif ($id == 3) {
+            $this->analyticsValue = 'Top';
+        }
     }
 
     public function mount()
     {
         $this->selectedAnalytics = 1;
+        $this->analyticsValue = 'Jobseekers';
     }
 
     public function getTotalJobSlots($municipalityId)
@@ -111,9 +118,9 @@ class MunicipalityReports extends Component
 
         // Fetch the job postings with relevant data
         $query = Job_Posting::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
-          ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
-            $query->where('municipality_id', $municipalityId);
-        });
+            ->whereHas('peso.municipality', function ($query) use ($municipalityId) {
+                $query->where('municipality_id', $municipalityId);
+            });
 
         // Apply year filter if selectedYear is set
         if ($this->selectedYear) {
@@ -199,30 +206,8 @@ class MunicipalityReports extends Component
         $activeApplicants = $this->getActiveApplicantCount($pesoMunicipalityId);
         $recentApplicants = $this->getRecentActiveApplicantCount($pesoMunicipalityId);
 
-        $audits = Audit::when($this->modelFilter, function ($query) {
-            $query->where('auditable_type', $this->modelFilter);
-        })
-            ->latest()
-            ->paginate($this->perPage);
-
-        // Format each audit entry
-        $municipalityId = 1;
-        $audits = Audit::whereHas('user.employee.barangay.municipality', function ($query) use ($municipalityId) {
-            $query->where('municipality_id', $municipalityId);
-        })
-            ->latest()
-            ->paginate(5); // Adjust the number of items per page as needed
-        // Adjust the number of items per page as needed
-
-        // Format each audit entry
-        $formattedAudits = $audits->map(function ($audit) {
-            return AuditFormatter::format($audit);
-        });
-
-        // dd($formattedAudits);
-
         return view('livewire.admin.reports.municipality-reports',
             compact('activeJobPosting', 'recentJobPosting',
-                'totalJobSlots', 'remainingSlots', 'activeApplicants', 'recentApplicants', 'formattedAudits', 'audits', 'pesoMunicipalityId'));
+                'totalJobSlots', 'remainingSlots', 'activeApplicants', 'recentApplicants', 'pesoMunicipalityId'));
     }
 }

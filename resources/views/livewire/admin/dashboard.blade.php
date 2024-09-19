@@ -35,7 +35,7 @@
 
                     <h1 class="font-thin font-mono text-sm"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-green-300"></i> {{ $recentJobPostings }}</span>New Job
+                            {{ $recentJobPostings }}</span>New Job
                         Postings
                     </h1>
                 </div>
@@ -64,7 +64,7 @@
 
                     <h1 class="font-thin font-mono text-sm"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-green-300"></i> {{ $recentJobSeekers }}</span>New Job
+                            {{ $recentJobSeekers }}</span>New Job
                         Seekers
                     </h1>
                 </div>
@@ -93,8 +93,7 @@
                 <div class="flex flex-row justify-content">
 
                     <h1 class="font-thin font-mono text-sm"><span
-                            class="bg-yellow-100 text-yellow-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-yellow-300"></i>
+                            class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
                             {{ $totalUnemployed }}</span>Unemployed
                     </h1>
                 </div>
@@ -124,7 +123,7 @@
 
                     <h1 class="font-thin font-mono text-sm"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
-                            <i class="fa-solid fa-chart-line text-green-300"></i>
+
                             {{ $recentActiveApplicants }}</span>New Applications
                     </h1>
                 </div>
@@ -162,7 +161,8 @@
                                     <th scope="row"
                                         class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                         <img class="w-10 h-10 rounded-full object-cover"
-                                            src="{{ asset('storage/' . $data->company->company_img) }}" alt="img">
+                                            src="{{ asset('storage/' . $data->company->company_img) }}"
+                                            alt="company-{{ $data->job_id }}">
                                         <div class="ps-3 text-wrap">
                                             <div class="text-base font-semibold">
                                                 <div class="text-base font-semibold uppercase">
@@ -247,7 +247,8 @@
                                     <th scope="row"
                                         class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                         <img class="w-10 h-10 rounded-full object-cover"
-                                            src="{{ asset('storage/' . $data->employee->pimg) }}" alt="img">
+                                            src="{{ asset('storage/' . $data->employee->pimg) }}"
+                                            alt="applicant-{{ $data->job_id }}">
                                         <div class="ps-3 text-wrap">
                                             <div class="text-base font-semibold">
                                                 <div class="text-base font-semibold uppercase">
@@ -310,7 +311,7 @@
 
 
         <div class="col-span-4 lg:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6 h-full w-full">
+            <div class="bg-white shadow rounded-lg p-6 h-full w-full items-center">
                 <h1 class="text-2xl font-bold">Top Job Industries</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                 <div class="flex h-full items-end">

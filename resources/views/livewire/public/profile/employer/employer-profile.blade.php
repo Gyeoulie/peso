@@ -4,14 +4,14 @@
         <div class="flex flex-col md:w-1/4 h-full md:sticky top-5">
             <div class="bg-white shadow-xl rounded-lg p-6">
                 <div class="flex flex-col items-center">
-                    <img src="{{ $employer->company_img ? asset('storage/' . $employer->company_img) : asset('https://randomuser.me/api/portraits/men/94.jpg') }}"
+                    <img src="{{ $employer->company_img ? asset('storage/' . $employer->company_img) : asset('https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/') }}"
                         alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
                     </img>
-                    <h1 class="text-xl font-bold">{{ $employer->business_Name }}</h1>
+                    <h1 class="text-xl font-bold break-all">{{ $employer->business_Name }}</h1>
 
 
 
-                    <p class="text-gray-700">{{ $employer->trade_Name }}</p>
+                    <p class="text-gray-700 break-all">{{ $employer->trade_Name }}</p>
 
                 </div>
                 <hr class="my-6 border-t border-gray-300">
@@ -35,7 +35,7 @@
                                         Company Type
 
                                     </div>
-                                    <div class="text-md font-medium uppercase">
+                                    <div class="text-md font-medium uppercase break-all">
 
                                         {{ $employer->company_Type == 1 ? 'Main' : ($employer->company_Type == 2 ? 'Branch' : '') }}
 

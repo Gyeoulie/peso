@@ -23,6 +23,7 @@ class JobApplicants extends Component
 {
     use WithPagination, WithoutUrlPagination;
     public $eduLevels = [
+        '0' => 'NONE',
         '1' => 'GRADE I',
         '2' => 'GRADE II',
         '3' => 'GRADE III',
@@ -99,52 +100,48 @@ class JobApplicants extends Component
         $this->validate([
             'remarks' => ['required', 'string'],
         ]);
-
+    
         DB::beginTransaction(); // Start the transaction
-
+    
         try {
             // Prepare update data
             $updateData = [
                 'applicant_Status' => $status,
                 'company_Remarks' => $this->remarks,
             ];
-
+    
             // Conditionally add 'applicant_Notif' to the update data
             if ($status != 'INTERESTED') {
                 $updateData['applicant_Notif'] = 1;
             }
-
+    
             // Find the applicant record
             $applicant = Job_Applicants::findOrFail($this->applicantId);
-
-            // Check if any data needs to be updated
-            if ($applicant->isDirty()) {
-                $applicant->update($updateData);
-
-                // Send notification email if status is 'INTERVIEW', 'HIRED', or 'REJECTED'
-
+    
+            // Update the applicant record
+            $applicant->update($updateData);
+    
+            // Send notification email if status is 'INTERVIEW', 'HIRED', or 'REJECTED'
+            if (in_array($status, ['INTERVIEW', 'HIRED', 'REJECTED'])) {
                 Mail::to($applicant->employee->user->email)->queue(new ApplicationNotification($applicant->employee, $applicant));
-
-            } else {
-                // If no data has changed, handle this scenario
-                toastr()->info('No changes detected for the applicant.');
             }
-
+    
             DB::commit(); // Commit the transaction
-
+    
             toastr()->success('Applicant has been updated!');
         } catch (ModelNotFoundException $e) {
             DB::rollBack(); // Rollback the transaction if the model is not found
-
+    
             toastr()->error('Applicant not found.');
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on general exceptions
-
-            toastr()->error('There was an error updating the applicant');
+    
+            toastr()->error('There was an error updating the applicant.');
         }
-
+    
         $this->closeModal($modal);
     }
+    
 
     public function getApplicant($id)
     {

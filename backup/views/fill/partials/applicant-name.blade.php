@@ -23,12 +23,12 @@
 
 <div class="flex flex-row mt-4 w-full">
     <div class="flex flex-col w-full">
-        <x-input-label for="fname" :value="__('First Name')" />
+        <x-input-label for="fname" :value="__('First Name*')" />
         <x-text-input id="fname" class="block mt-1 w-full" type="text" name="fnamePost" />
 
     </div>
     <div class="flex flex-col ml-4 w-full">
-        <x-input-label for="lname" :value="__('Last Name')" />
+        <x-input-label for="lname" :value="__('Last Name*')" />
         <x-text-input id="lname" class="block mt-1 w-full" type="text" name="lnamePost"/>
     </div>
 </div>
@@ -59,11 +59,11 @@
 </div>
 <div class="flex flex-row mt-4">
     <div class="flex flex-col w-full">
-        <x-input-label for="birthdate" :value="__('Birthdate')" />
+        <x-input-label for="birthdate" :value="__('Birthdate*')" />
         <x-text-input id="birthdate" class="block mt-1 w-full" type="date" name="bdayPost"/>        
     </div>
     <div class="flex flex-col ml-4 w-full">
-        <x-input-label for="gender" :value="__('Gender')" />
+        <x-input-label for="gender" :value="__('Gender*')" />
         <select id="gender" name="genderPost" class="block mt-1 w-full">
             <option value="" disabled selected>Select Gender</option>
             <option value="1">Male</option>

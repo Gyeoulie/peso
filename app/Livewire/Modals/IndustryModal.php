@@ -12,6 +12,11 @@ class IndustryModal extends Component
     use WithPagination, WithoutUrlPagination;
     public $search;
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
     public function industrySelect($id)
     {
         $this->dispatch('industrySelect', $id);
@@ -20,7 +25,7 @@ class IndustryModal extends Component
     }
     public function render()
     {
-        $industry = Job_Industry::where('industry_Title', 'like', '%' . $this->search . '%')
+        $industry = Job_Industry::where('industry_Status', 1)->where('industry_Title', 'like', '%' . $this->search . '%')
             ->paginate(8);
 
         return view('livewire.modals.industry-modal', compact('industry'));

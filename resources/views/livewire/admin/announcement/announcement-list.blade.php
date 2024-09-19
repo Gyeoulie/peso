@@ -51,7 +51,7 @@
                             <x-dropdown align="left" width="24">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
                                         <div>
                                             {{ $filter }}
                                         </div>
@@ -93,7 +93,7 @@
                             <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
                                         <div>
                                             @if (empty($sortDate))
                                                 Sort By Date
@@ -139,7 +139,7 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                    <th scope="col" class="px-6 py-3 ">
                                         Announcement Title
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -182,8 +182,9 @@
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                                 <img class="w-10 h-10 rounded-full"
-                                                    src="{{ asset('storage/' . $data->announcement_pubmat) }}"
-                                                    alt="pubmat">
+                                                    src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}"
+                                                    alt="pubmat-{{ $data->announcement_id }}">
+
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
                                                         {{ $data->announcement_Title }}
@@ -199,7 +200,7 @@
                                                     {{ $data->created_at->format('F j Y') }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 font-semibold">
                                                 {{ $data->announcement_Status }}
                                             </td>
 

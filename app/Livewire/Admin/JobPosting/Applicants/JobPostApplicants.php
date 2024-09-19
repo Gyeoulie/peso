@@ -4,6 +4,8 @@ namespace App\Livewire\Admin\JobPosting\Applicants;
 
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -17,7 +19,19 @@ class JobPostApplicants extends Component
 
     public $search;
 
+// public function mount($id)
+// {
+
+//     try {
+//         $this->id = decrypt($id);
+//     } catch (DecryptException $e) {
+
+//         return redirect()->route('error.404')->with('error', 'Invalid or tampered ID');
+//     }
+// }
+
     public $eduLevels = [
+        '0' => 'NONE',
         '1' => 'GRADE I',
         '2' => 'GRADE II',
         '3' => 'GRADE III',
@@ -45,6 +59,10 @@ class JobPostApplicants extends Component
         '25' => 'MASTERAL/POST GRADUATE LEVEL',
         '26' => 'MASTERAL/POST GRADUATE',
     ];
+    public function updatedsearch()
+    {
+        $this->resetPage();
+    }
 
     public function exportData()
     {
@@ -96,14 +114,22 @@ class JobPostApplicants extends Component
 
     public function render()
     {
-        // Fetch job posting details
+        $user = Auth::user();
+
         $jobpost = Job_Posting::with(['company'])
             ->withCount('hiredApplicants')
-            ->where('job_id', $this->id)
-            ->first();
+            ->findOrFail($this->id);
+
+        if ($user->peso_accounts->peso_id != $jobpost->peso_id) {
+            return redirect()->back();
+        }
 
         if ($jobpost) {
             $jobpost->slotsLeft = $jobpost->job_Slots - $jobpost->hired_applicants_count;
+        } else {
+            toastr()->error('Job posting cant be found.');
+            return redirect()->route('admin-joblist');
+
         }
 
         // Fetch job applicants

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Redactors\LimiterRedactor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,10 @@ class Announcements extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasFactory, SoftDeletes;
+
+    protected $attributeModifiers = [
+        'announcement_Content' => LimiterRedactor::class,
+    ];
 
     protected $table = 'announcements';
     /**
@@ -25,7 +30,7 @@ class Announcements extends Model implements Auditable
         'announcement_Content',
         'announcement_pubmat',
         'announcement_Status',
-        'peso_id'
+        'peso_id',
     ];
 
     /**
@@ -39,12 +44,10 @@ class Announcements extends Model implements Auditable
         'deleted_at' => 'datetime',
     ];
 
-
     public function peso()
     {
         return $this->belongsTo(PESO::class, 'peso_id');
     }
-
 
     public static function fieldMappings()
     {

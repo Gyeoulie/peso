@@ -27,7 +27,7 @@
                             </div>
 
                             {{-- SEARCH --}}
-                            <input wire:model.live.prevent='searhEmployers' type="text"
+                            <input wire:model.live.prevent='searchEmployers' type="text"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-64 md:w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
@@ -49,7 +49,7 @@
                                         Employment Type
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Joined Date
+                                        Partnered
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Action
@@ -58,7 +58,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($employer->isEmpty())
+                                @if ($partnersData->isEmpty())
                                     <tr>
                                         <td colspan="5">
                                             <div class="flex flex-col items-center justify-center mt-24 mb-24">
@@ -80,25 +80,26 @@
                                         </td>
                                     </tr>
                                 @else
-                                    @foreach ($employer as $data)
-                                        <tr wire:key='company-{{ $data->company_id }}'
+                                    @foreach ($partnersData as $data)
+                                        <tr wire:key='company-{{ $data->company->company_id }}'
                                             class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                                 <img class="w-10 h-10 rounded-full"
-                                                    src="{{ asset('storage/' . $data->company_img) }}" alt="img">
+                                                    src="{{ asset('storage/' . $data->company->company_img) }}"
+                                                    alt="img">
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-bold">
                                                         <div class="text-base font-bold uppercase">
-                                                            {{ $data->business_Name }}
+                                                            {{ $data->company->business_Name }}
 
                                                         </div>
 
                                                     </div>
                                                     <div class="font-normal text-gray-500 text-sm uppercase">
-                                                        {{ $data->company_Address }},
-                                                        {{ $data->barangay->barangay_Name }},
-                                                        {{ $data->barangay->municipality->municipality_Name }}
+                                                        {{ $data->company->company_Address }},
+                                                        {{ $data->company->barangay->barangay_Name }},
+                                                        {{ $data->company->barangay->municipality->municipality_Name }}
                                                     </div>
                                                 </div>
 
@@ -106,7 +107,7 @@
                                             <td class="px-6 py-4">
 
                                                 <div class="font-normal text-gray-500 text-sm font-semibold">
-                                                    {{ $data->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
+                                                    {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
 
                                                 </div>
 
@@ -114,13 +115,13 @@
                                             <td class="px-6 py-4">
 
                                                 <div class="font-normal text-gray-500 text-sm">
-                                                    {{ $data->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
+                                                    {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
 
                                                 </div>
 
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{ $data->created_at->format('F j, Y') }}
+                                                {{ $data->responded_at->format('F j, Y') }}
                                             </td>
 
 
@@ -128,7 +129,7 @@
                                                 <div class="flex flex-row  gap-5">
                                                     <div x-data="{ tooltip: 'Employer Overview' }">
                                                         <a wire:navigate
-                                                            href="{{ route('admin-users-employer-overview', ['id' => $data->company_id]) }}"
+                                                            href="{{ route('admin-users-employer-overview', ['id' => $data->company->company_id]) }}"
                                                             x-tooltip="tooltip" type="button"
                                                             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +156,7 @@
 
                 {{-- PAGINATION --}}
                 <div class="mt-4">
-                    {{ $employer->links('vendor.livewire.tailwind') }}
+                    {{ $partnersData->links('vendor.livewire.tailwind') }}
                 </div>
             </div>
 
