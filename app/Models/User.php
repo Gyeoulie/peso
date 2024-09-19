@@ -22,6 +22,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     protected $attributeModifiers = [
         'password' => FiveHashRedactor::class,
         'remember_token' => FiveHashRedactor::class,
+        'google2fa_secret' => FiveHashRedactor::class,
 
     ];
 
@@ -94,6 +95,8 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
             'description' => 'Status Remarks',
             'disabled_at' => 'Deactivated At',
             'email_verified_at' => 'Email Verified At',
+            'google2fa_secret' => 'Google 2FA',
+            'google2fa_enabled_at' => 'Google Enabled At',
             'remember_token' => 'Remember Token',
             'deleted_at' => 'Deleted At',
             'created_at' => 'Created At',

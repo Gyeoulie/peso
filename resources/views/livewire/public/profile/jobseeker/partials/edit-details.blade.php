@@ -295,6 +295,36 @@
 
 
 
+                    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                        <!-- Employment Status Dropdown -->
+                        <div class="flex flex-col w-full">
+                            <x-input-label for="empStatus" :value="__('Employment Status')" />
+                            <select wire:model.live="empStatus" class="block mt-1 w-full rounded">
+                                <option value="" disabled>Select Employment Status</option>
+                                <option value="1">Employed</option>
+                                <option value="2">Unemployed</option>
+                            </select>
+                            <x-input-error :messages="$errors->get('empStatus')" class="mt-2" />
+                        </div>
+
+                        <!-- Employment Description Dropdown -->
+                        <div class="flex flex-col w-full">
+                            <x-input-label for="empDesc" :value="__('Description')" />
+                            <select wire:model="empDesc" class="block mt-1 w-full rounded">
+                                <option value="" disabled>Select Description</option>
+
+                                <!-- Dynamically populate the options based on empStatus -->
+                                @foreach ($empDescriptions as $desc)
+                                    <option value="{{ $desc['value'] }}">{{ $desc['text'] }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('empDesc')" class="mt-2" />
+                        </div>
+                    </div>
+
+
+
+
                     {{-- DISABILITY --}}
                     <div class="flex flex-row my-4 w-full gap-4">
                         <div class="flex flex-col w-full">

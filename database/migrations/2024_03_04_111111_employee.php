@@ -29,6 +29,9 @@ return new class extends Migration
             $table->string('tinnum', 15)->nullable();
             $table->tinyInteger('empstatus');
             $table->string('empstatusdesc', 2);
+            $table->tinyInteger('ofw')->nullable();
+            $table->tinyInteger('fourp')->nullable();
+            $table->string('fourpID', 20)->nullable();
             $table->string('pimg', 255);
             $table->string('resume', 255)->nullable();
             $table->text('empDesc')->nullable();
