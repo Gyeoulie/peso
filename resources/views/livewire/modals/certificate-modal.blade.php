@@ -42,7 +42,8 @@
                             <!-- Dropdown links -->
                             {{-- LOOP HERE --}}
                             @foreach ($certTypes as $data)
-                                <x-dropdown-link wire:click.prevent='selectCertificate({{ $data->cert_type_id }})'
+                                <x-dropdown-link wire:loading.attr="disabled"
+                                    wire:click.prevent='selectCertificate({{ $data->cert_type_id }})'
                                     class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">
                                     {{ $data->cert_Name }}
                                 </x-dropdown-link>

@@ -70,7 +70,8 @@
                                     class="bg-white border-b hover:bg-gray-50">
                                     <td class="px-6 py-4 text-center">
 
-                                        <button wire:click.prevent='industrySelect({{ $data->industry_id }})'
+                                        <button wire:loading.attr="disabled"
+                                            wire:click.prevent='industrySelect({{ $data->industry_id }})'
                                             class="text-blue-500 hover:underline">Select</button>
 
                                     </td>
@@ -90,7 +91,7 @@
 
 
         {{-- PAGINATION --}}
-        <div>
+        <div class="mt-4">
             {{ $industry->links('vendor.livewire.tailwind') }}
         </div>
 

@@ -317,7 +317,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col mt-4">
+                {{-- <div class="flex flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Employment Type</h1>
                     <div class="flex flex-col sm:flex-row gap-4" x-data="employmentHandler()"
                         @change-status.window="updateEmpDesc">
@@ -345,7 +345,7 @@
 
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
 
             </div>

@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="mt-8 flex justify-end">
-            <x-secondary-button wire:click.prevent='close'>
+            <x-secondary-button wire:loading.attr="disabled" wire:click.prevent='close'>
                 {{ __('Cancel') }}
             </x-secondary-button>
 

@@ -82,7 +82,7 @@
             <select wire:model='empType' class="block mt-1 w-full rounded" x-model="empType"
                 x-on:change="updateEmpDesc">
                 <option value="" disabled selected>Select Employment Type</option>
-                <option value="1">Public</option>
+                {{-- <option value="1">Public</option> --}}
                 <option value="2">Private</option>
             </select>
             <x-input-error :messages="$errors->get('empType')" class="mt-2" />
@@ -212,10 +212,10 @@
                                 text: 'Private Employment Agency',
                                 value: 6
                             },
-                            {
-                                text: 'Overseas Recruitment Agency',
-                                value: 7
-                            },
+                            // {
+                            //     text: 'Overseas Recruitment Agency',
+                            //     value: 7
+                            // },
                             {
                                 text: 'D.O. 174, s. 2017',
                                 value: 8
