@@ -49,7 +49,8 @@
                             <div class="max-h-[120px] bg-white overflow-y-auto">
                                 <!-- Dropdown links -->
                                 @foreach ($job_positions as $data)
-                                    <x-dropdown-link wire:click.prevent='selectWorkPosition({{ $data->position_id }})'
+                                    <x-dropdown-link wire:loading.attr="disabled"
+                                        wire:click.prevent='selectWorkPosition({{ $data->position_id }})'
                                         class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->position_Title }}</x-dropdown-link>
                                 @endforeach
                             </div>
@@ -87,11 +88,11 @@
             </div>
         </div>
         <div class="mt-6 flex justify-end">
-            <x-secondary-button wire:click.prevent='close' type="button">
+            <x-secondary-button wire:loading.attr="disabled" wire:click.prevent='close' type="button">
                 {{ __('Cancel') }}
             </x-secondary-button>
 
-            <x-primary-button wire:click.prevent='save' class="ms-3" type="button">
+            <x-primary-button wire:loading.attr="disabled" wire:click.prevent='save' class="ms-3" type="button">
                 {{ __('Save') }}
             </x-primary-button>
         </div>

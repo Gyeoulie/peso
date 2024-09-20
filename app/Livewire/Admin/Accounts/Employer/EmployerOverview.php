@@ -79,7 +79,7 @@ class EmployerOverview extends Component
             $this->empDescriptions = [
                 ['value' => 5, 'text' => 'Direct Hire'],
                 ['value' => 6, 'text' => 'Private Employment Agency'],
-                ['value' => 7, 'text' => 'Overseas Recruitment Agency'],
+                // ['value' => 7, 'text' => 'Overseas Recruitment Agency'],
                 ['value' => 8, 'text' => 'D.O. 174, s. 2017'],
             ];
         } else {

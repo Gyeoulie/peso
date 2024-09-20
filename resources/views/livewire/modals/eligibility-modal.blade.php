@@ -38,7 +38,7 @@
                             <!-- Dropdown links -->
 
                             @foreach ($eligibility as $data)
-                                <x-dropdown-link
+                                <x-dropdown-link wire:loading.attr="disabled"
                                     wire:click.prevent='selectEligibility({{ $data->eligibility_type_id }})'
                                     class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->eligibility_Name }}</x-dropdown-link>
                             @endforeach

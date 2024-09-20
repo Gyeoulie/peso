@@ -54,7 +54,7 @@
                 {{ __('Cancel') }}
             </x-secondary-button>
 
-            <x-primary-button wire:click.prevent='save' class="ms-3" type="button">
+            <x-primary-button wire:loading.attr="disabled" wire:click.prevent='save' class="ms-3" type="button">
                 {{ __('Save') }}
             </x-primary-button>
         </div>

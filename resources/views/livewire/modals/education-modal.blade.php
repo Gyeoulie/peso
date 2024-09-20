@@ -80,11 +80,12 @@
 
         </div>
         <div class="mt-6 flex justify-end">
-            <x-secondary-button wire:click.prevent='close' type="button">
+            <x-secondary-button wire:loading.attr="disabled" wire:click.prevent='close' type="button">
                 {{ __('Cancel') }}
             </x-secondary-button>
 
-            <x-primary-button wire:click.prevent='addEducation' class="ms-3" type="button">
+            <x-primary-button wire:loading.attr="disabled" wire:click.prevent='addEducation' class="ms-3"
+                type="button">
                 {{ __('Add Education Record') }}
             </x-primary-button>
         </div>

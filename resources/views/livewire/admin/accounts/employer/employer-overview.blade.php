@@ -548,7 +548,7 @@
                             <x-input-label for="empType" :value="__('Employment Type')" />
                             <select wire:model.live="empType" class="block mt-1 w-full rounded">
                                 <option value="" disabled>Select Employment Status</option>
-                                <option value="1">Public</option>
+                                {{-- <option value="1">Public</option> --}}
                                 <option value="2">Private</option>
                             </select>
                             <x-input-error :messages="$errors->get('empType')" class="mt-2" />

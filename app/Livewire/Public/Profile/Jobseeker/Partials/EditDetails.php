@@ -647,7 +647,6 @@ class EditDetails extends Component
             $jobseekerData->empstatus = $this->empStatus;
             $jobseekerData->empstatusdesc = $this->empDesc;
             $jobseekerData->tinnum = $this->tinnum;
-            
 
             // Check if any attributes have changed
             if ($jobseekerData->isDirty()) {
