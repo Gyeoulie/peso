@@ -28,6 +28,14 @@ class JobPostList extends Component
         $this->sortDate = $sort;
     }
 
+    public function editJobPOst($id)
+    {
+        session()->put('jobpostData', $this->id);
+
+        $this->redirectRoute('jobpost.edit');
+
+    }
+
     public function render()
     {
         $user = Auth::user();
