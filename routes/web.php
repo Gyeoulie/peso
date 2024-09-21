@@ -70,8 +70,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
-Route::get('/jobpost/edit', JobPostEdit::class)->name('jobpost.edit');
-Route::get('/employer/details', EmployerInformation::class)->name('fill_employer');
 
 Route::get('/', function () {
     return view('welcome');
@@ -87,7 +85,7 @@ Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.s
 
 Route::middleware(['verified'])->group(function () {
     Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile')->middleware(['usertype:2']);
-    // Route::get('/employer/details', EmployerInformation::class)->name('fill_employer')->middleware(['usertype:3']);
+    Route::get('/employer/details', EmployerInformation::class)->name('fill_employer')->middleware(['usertype:3']);
 });
 
 //------------------------------ PUBLIC ------------------------------
@@ -119,6 +117,7 @@ Route::middleware(['auth', 'verified', 'usertype:4', 'check.user.status', 'googl
 Route::middleware(['auth', 'verified', 'usertype:6', 'check.user.status', 'google2fa'])->group(function () {
     Route::get('/apply', JobpostApplication::class)->name('jobpost.apply');
     Route::get('/jobpost/details/{id}', JobPostDetails::class)->name('jobpost.details');
+    Route::get('/jobpost/edit', JobPostEdit::class)->name('jobpost.edit');
 
     Route::get('/employer/jobpost', JobPostList::class)->name('employer.dashboard');
     Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
