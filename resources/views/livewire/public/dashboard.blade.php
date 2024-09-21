@@ -66,7 +66,7 @@
 
                             <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">
                                 <h5
-                                    class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug uppercase">
+                                    class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
                                     {{ $data->program_Title }}
                                 </h5>
                                 <hr class="mb-2">
