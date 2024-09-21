@@ -162,6 +162,7 @@ class PartnershipDetails extends Component
             },
         ])
             ->where('requirement_Status', 1)
+            ->where('requirement_Type', $this->empType)
             ->get();
 
         return view('livewire.admin.partnership.partnership-details', compact('partnersData', 'requirements'));

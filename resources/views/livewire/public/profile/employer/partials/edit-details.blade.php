@@ -1,4 +1,4 @@
-<div wire:init="mountData">
+<div>
     <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5 items-center">
         <div class="col-span-4 sm:col-span-3">
 
@@ -48,18 +48,16 @@
                             class="inline-block p-4">Contact Person</button>
                     </li>
                     <li class="me-2">
-                        <button x-on:click="$wire.mountData()" @click="openTab = 3"
-                            :class="openTab === 3 ? activeTab : inactiveTab" class="inline-block p-4">Company
+                        <button @click="openTab = 3" :class="openTab === 3 ? activeTab : inactiveTab"
+                            class="inline-block p-4">Company
                             Industry</button>
                     </li>
                     <li class="me-2">
-                        <button x-on:click="$wire.mountData()" @click="openTab = 4"
-                            :class="openTab === 4 ? activeTab : inactiveTab"
+                        <button @click="openTab = 4" :class="openTab === 4 ? activeTab : inactiveTab"
                             class="inline-block p-4">Requirements</button>
                     </li>
                     <li class="me-2">
-                        <button x-on:click="$wire.mountData()" @click="openTab = 5"
-                            :class="openTab === 5 ? activeTab : inactiveTab"
+                        <button @click="openTab = 5" :class="openTab === 5 ? activeTab : inactiveTab"
                             class="inline-block p-4">Partnerships</button>
                     </li>
                 </ul>
@@ -801,7 +799,8 @@
 
 
     <x-modal name="partnership-reapply-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 mx-auto bg-white rounded-lg shadow-lg border border-gray-200" x-data="{ agreeBox: @entangle('agreeBox') }">
+        <div class="w-full max-w-4xl px-6 py-6 mx-auto bg-white rounded-lg shadow-lg border border-gray-200"
+            x-data="{ agreeBox: @entangle('agreeBox') }">
             <h2 class="text-xl font-semibold text-gray-900">
                 {{ __('Reapply for Partnership') }}
             </h2>

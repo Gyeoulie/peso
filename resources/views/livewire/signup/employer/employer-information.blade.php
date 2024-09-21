@@ -108,8 +108,9 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        <livewire:signup.employer.partials.requirements />
-
+                        @if ($formData)
+                            <livewire:signup.employer.partials.requirements :reqType="$formData[1]['empType']" />
+                        @endif
                     </div>
 
                     {{-- employment status --}}
@@ -117,7 +118,9 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
+
                         <livewire:signup.employer.partials.confirmation />
+
                     </div>
 
 

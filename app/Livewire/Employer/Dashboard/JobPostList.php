@@ -28,6 +28,14 @@ class JobPostList extends Component
         $this->sortDate = $sort;
     }
 
+    public function editJobPost($id)
+    {
+        session()->put('jobpostData', $id);
+
+        $this->redirectRoute('jobpost.edit');
+
+    }
+
     public function render()
     {
         $user = Auth::user();
@@ -84,52 +92,3 @@ class JobPostList extends Component
         return view('livewire.employer.dashboard.job-post-list', compact('applicants', 'allCount', 'pendingCount', 'activeCount', 'closedCount', 'completedCount', 'othersCount'));
     }
 }
-
-// $applicantsQuery = Job_Posting::leftJoin('company', 'company.company_id', '=', 'job_posting.company_id')
-// ->leftJoin('job_applicants', 'job_applicants.job_id', '=', 'job_posting.job_id')
-// ->where('job_posting.company_id', $user->company->company_id)
-// ->where(function ($query) {
-//     $query->where('job_posting.job_Title', 'like', '%' . $this->search . '%');
-// });
-
-// $applicants = [
-// 'total' => $applicantsQuery->count(),
-// 'list' => $applicantsQuery->paginate(5),
-// 'pending' => $applicantsQuery->where('job_applicants.applicant_Status', 'pending')->count(),
-// 'interested' => $applicantsQuery->where('job_applicants.applicant_Status', 'interested')->count(),
-// 'hired' => $applicantsQuery->where('job_applicants.applicant_Status', 'hired')->count(),
-// ];
-
-//     public function render()
-//     {
-//         $user = Auth::user();
-
-//         $applicantsQuery = Job_Posting::with('job_applicants')
-//             ->where('company_id', $user->company->company_id)
-//             ->where(function ($query) {
-//                 $query->where('job_Title', 'like', '%' . $this->search . '%');
-//             });
-
-//         $applicants = $applicantsQuery->paginate(5);
-
-//         if($applicants->isEmpty()){
-//             return view('livewire.employer.dashboard.job-post-list', compact('applicants'));
-//         }
-
-//         // Iterate through each job posting and calculate counts
-//         foreach ($applicants as $jobPosting) {
-//             $pendingCount = $jobPosting->job_applicants->where('applicant_Status', 'pending')->count();
-//             $approvedCount = $jobPosting->job_applicants->where('applicant_Status', 'approved')->count();
-//             $hiredCount = $jobPosting->job_applicants->where('applicant_Status', 'hired')->count();
-
-//             // Assign counts to each job posting
-//             $jobPosting->pending_count = $pendingCount;
-//             $jobPosting->approved_count = $approvedCount;
-//             $jobPosting->hired_count = $hiredCount;
-//         }
-
-//         $total = $applicants->total();
-
-//         return view('livewire.employer.dashboard.job-post-list', compact('applicants', 'pendingCount', 'approvedCount', 'hiredCount'));
-//     }
-// }

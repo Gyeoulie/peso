@@ -70,9 +70,9 @@
                             </div>
 
                             <div class="flex flex-col ml-4 w-full">
-                                <span class="text-3xl text-black font-black">{{ $education->edu_School }}</span>
-                                <div class="text-xl text-black font-semibold">{{ $education->edu_Course }}</div>
-                                <span class="text-md text-gray-700 font-medium">
+                                <span class="text-3xl text-black font-black uppercase">{{ $education->edu_School }}</span>
+                                <div class="text-xl text-black font-semibold uppercase">{{ $education->edu_Course }}</div>
+                                <span class="text-md text-gray-700 font-medium uppercase">
                                     {{ $education->edu_Started->format('F Y') }} -
                                     {{ $education->edu_Ongoing == 1 ? 'Present' : $education->edu_Ended->format('F Y') }}
                                 </span>

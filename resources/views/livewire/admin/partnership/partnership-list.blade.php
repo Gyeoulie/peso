@@ -97,6 +97,9 @@
                                             Company Type
                                         </th>
                                         <th scope="col" class="px-6 py-3">
+                                            Employer Type
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
                                             Partnership Status
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -159,6 +162,14 @@
 
                                                     <div class="font-normal text-gray-500 text-sm font-semibold">
                                                         {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
+
+                                                    </div>
+
+                                                </td>
+                                                <td class="px-6 py-4">
+
+                                                    <div class="font-normal text-gray-500 text-sm font-semibold">
+                                                        {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
 
                                                     </div>
 

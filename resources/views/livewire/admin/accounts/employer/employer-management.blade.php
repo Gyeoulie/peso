@@ -246,11 +246,10 @@
                             <label for="companyType-all" class="ms-2 text-sm font-medium text-gray-900">None</label>
                         </div>
                         <div class="flex items-center">
-                            <input wire:model='mountCompanyType' id="companyType-main" type="radio"
-                                value="1" name="companyType"
+                            <input wire:model='mountCompanyType' id="companyType-main" type="radio" value="1"
+                                name="companyType"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="companyType-main"
-                                class="ms-2 text-sm font-medium text-gray-900">Main</label>
+                            <label for="companyType-main" class="ms-2 text-sm font-medium text-gray-900">Main</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountCompanyType' id="companyType-branch" type="radio"
@@ -317,7 +316,7 @@
                     </div>
                 </div>
 
-                {{-- <div class="flex flex-col mt-4">
+                <div class="flex flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Employment Type</h1>
                     <div class="flex flex-col sm:flex-row gap-4" x-data="employmentHandler()"
                         @change-status.window="updateEmpDesc">
@@ -345,7 +344,7 @@
 
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
 
             </div>

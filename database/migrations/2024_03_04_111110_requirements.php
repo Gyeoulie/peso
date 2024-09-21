@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('requirement_id');
             $table->string('requirement_Title', 255);
             $table->string('requirement_Status', 20);
+            $table->tinyInteger('requirement_Type')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

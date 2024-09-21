@@ -93,7 +93,7 @@
                     </div>
 
 
-                    <div class="flex flex-col ml sm:w-1/4">
+                    <div class="flex flex-col sm:w-1/2">
                         <x-input-label for="eduPost">Educational Attainment
                         </x-input-label>
                         <select wire:model='eduPost' class="block mt-1 w-full rounded">
@@ -129,7 +129,7 @@
                         <x-input-error :messages="$errors->get('eduPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col ml sm:w-1/4">
+                    <div class="flex flex-col sm:w-1/2">
                         <x-input-label for="jtypePost">Job Type
                         </x-input-label>
                         <select wire:model='jtypePost' class="block mt-1 w-full rounded">
@@ -189,7 +189,7 @@
 
                 <div class="flex flex-row my-4 w-full gap-4">
 
-                    <div class="flex flex-col ml w-1/2">
+                    <div class="flex flex-col w-1/2">
                         <x-input-label for="pesoPost">PESO Branch
                         </x-input-label>
                         <select wire:model='pesoPost' class="block mt-1 w-full rounded">
@@ -389,7 +389,7 @@
                     </div>
                     <div class="flex flex-col justify-center items-center w-full mt-12 ">
                         <div class="flex flex-row justify-center items-center w-full">
-                            <input wire:model='agreePost' id="link-checkbox" type="checkbox" value=""
+                            <input wire:model='agreePost' id="link-checkbox" type="checkbox" value="1"
                                 class="sm:mr-2 font-medium rounded-lg text-sm px-3 py-3 justify-center">
                             <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 ">I
                                 agree with the <p class="text-blue-600 hover:underline">terms and

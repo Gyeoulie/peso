@@ -517,6 +517,7 @@ class EmployerOverview extends Component
                 },
             ])
                 ->where('requirement_Status', 1)
+                ->where('requirement_Type', $this->empType)
                 ->get();
             $topTags = $this->getTopJobTagsByCompany($employer->company_id);
             $partnership = Partnerships::where('company_id', $this->id)

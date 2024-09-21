@@ -227,7 +227,7 @@
                                 </div>
                                 <div class="px-6 py-4 mb-auto ">
                                     <span
-                                        class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
+                                        class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2 uppercase">
                                         {{ $data->program_Title }}
                                     </span>
                                     <p class="text-gray-500 text-sm flex justify-center text-justify">
@@ -631,8 +631,8 @@
             <p class="flex items-center text-xl  text-white font-bold">
 
                 </span>
-                <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Some
-                    postings may be for testing purposes only and not reflect actual opportunities.</span>
+                <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Postings are
+                    for testing purposes only and do not reflect actual opportunities.</span>
             </p>
         </div>
         <div class="flex items-center">

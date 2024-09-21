@@ -18,7 +18,7 @@
                         <div class="flex flex-col w-full h-full sm:ml-5 py-5 sm:mt-5">
 
                             <div class="flex flex-row">
-                                <h1 class=" text-4xl text-blue-500 sm:text-6xl font-bold">{{ $JobPost->job_Title }}
+                                <h1 class=" text-4xl text-blue-500 sm:text-6xl font-bold uppercase">{{ $JobPost->job_Title }}
                                 </h1>
                             </div>
 

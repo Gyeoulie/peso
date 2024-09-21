@@ -18,6 +18,8 @@ class Requirements extends Model implements Auditable
     protected $fillable = [
         'requirement_Title',
         'requirement_Status',
+        'requirement_Type',
+
     ];
 
     protected $casts = [
@@ -41,6 +43,7 @@ class Requirements extends Model implements Auditable
             'requirement_id' => 'Requirement ID',
             'requirement_Title' => 'Requirement Title',
             'requirement_Status' => 'Requirement Status',
+            'requirement_Type' => 'Requirement Type',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',

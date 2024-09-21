@@ -321,7 +321,7 @@
                     <div class="flex flex-col w-full h-full p-5 space-y-2">
 
                         <div class="flex flex-col">
-                            <h1 class="text-3xl text-blue-500 sm:text-6xl font-bold">{{ $ProgramInfo->program_Title }}
+                            <h1 class="text-3xl text-blue-500 sm:text-6xl font-bold uppercase">{{ $ProgramInfo->program_Title }}
                             </h1>
                         </div>
 
