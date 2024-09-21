@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->comment('Foreign Key');
             $table->string('business_Name', 255);
             $table->string('trade_Name', 255);
-            $table->string('company_TIN', 15);
+            $table->string('company_TIN', 15)->nullable();
             $table->tinyInteger('company_Type');
             $table->tinyInteger('employer_Type');
             $table->tinyInteger('employer_Type_Desc');

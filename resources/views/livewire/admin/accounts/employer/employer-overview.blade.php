@@ -545,10 +545,10 @@
                     <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
                         <!-- Employment Status Dropdown -->
                         <div class="flex flex-col w-full">
-                            <x-input-label for="empType" :value="__('Employment Type')" />
+                            <x-input-label for="empType" :value="__('Employer Type')" />
                             <select wire:model.live="empType" class="block mt-1 w-full rounded">
-                                <option value="" disabled>Select Employment Status</option>
-                                {{-- <option value="1">Public</option> --}}
+                                <option value="" disabled>Select Employer Status</option>
+                                <option value="1">Public</option>
                                 <option value="2">Private</option>
                             </select>
                             <x-input-error :messages="$errors->get('empType')" class="mt-2" />
