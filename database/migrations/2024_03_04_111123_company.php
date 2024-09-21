@@ -20,9 +20,9 @@ return new class extends Migration
             $table->tinyInteger('company_Type');
             $table->tinyInteger('employer_Type');
             $table->tinyInteger('employer_Type_Desc');
-            $table->integer('company_Total_workforce');
+            $table->tinyInteger('company_Total_workforce');
             $table->string('company_Address', 255);
-            $table->unsignedBigInteger('barangay_id')->comment('Foreign Key');;
+            $table->unsignedBigInteger('barangay_id')->comment('Foreign Key');
             $table->string('contact_Person', 255);
             $table->string('contact_Person_position', 255);
             $table->string('company_Pnum', 15);
