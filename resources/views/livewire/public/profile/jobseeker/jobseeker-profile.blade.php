@@ -294,6 +294,23 @@
                                     </div>
                                 </div>
                             @endif
+                            @if ($jobseeker->industry_preference->count() >= 1)
+                                <h2 class="text-xl font-medium mt-4">Industry Preference</h2>
+                                <div class="flex flex-col w-full">
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                        {{-- BADGE --}}
+                                        @foreach ($jobseeker->industry_preference as $preferences)
+                                            <span wire:key='jobPref-{{ $preferences->industry_preference_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $preferences->job_industry->industry_Title }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+
 
 
                             @if ($jobseeker->skills->count() >= 1)

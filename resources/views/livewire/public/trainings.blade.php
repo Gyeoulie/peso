@@ -227,7 +227,7 @@
                                 </div>
                                 <div class="px-6 py-4 mb-auto ">
                                     <span
-                                        class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2 uppercase">
+                                        class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
                                         {{ $data->program_Title }}
                                     </span>
                                     <p class="text-gray-500 text-sm flex justify-center text-justify">
