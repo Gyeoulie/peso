@@ -66,13 +66,13 @@
 
                             <div class="flex flex-col ml-4 w-full">
                                 <span
-                                    class="text-3xl text-black font-black">{{ $userCerts->certificateType->cert_Name }}</span>
-                                <span class="text-xl text-black font-semibold">
+                                    class="text-3xl text-black font-black uppercase">{{ $userCerts->certificateType->cert_Name }}</span>
+                                <span class="text-xl text-black font-semibold uppercase">
                                     {{ $userCerts->cert_From }}
                                 </span>
-                                <span class="text-md text-gray-700 font-medium"> {{ $userCerts->cert_Rating }}
+                                <span class="text-md text-gray-700 font-medium uppercase"> {{ $userCerts->cert_Rating }}
                                 </span>
-                                <span class="text-md text-gray-700 font-medium">
+                                <span class="text-md text-gray-700 font-medium uppercase">
                                     {{ $userCerts->cert_Date_Issued->format('F Y') }}
                                 </span>
                             </div>

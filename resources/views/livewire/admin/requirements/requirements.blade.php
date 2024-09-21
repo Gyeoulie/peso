@@ -47,7 +47,7 @@
                                 <x-slot name="trigger">
                                     <button
                                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
-                                        <div>{{ $filter == 1 ? 'Active' : ($filter == 2 ? 'Disabled' : 'All') }}</div>
+                                        <div>{{ $filter == 1 ? 'Public' : ($filter == 2 ? 'Private' : 'All') }}</div>
 
                                         <div class="ms-1">
                                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -71,10 +71,10 @@
                                     <hr>
                                     <!-- Authentication -->
                                     <x-dropdown-link href="#" wire:click="updateFilter('1')"
-                                        class="block px-4 py-2 hover:bg-gray-100">Active</x-dropdown-link>
+                                        class="block px-4 py-2 hover:bg-gray-100">Public</x-dropdown-link>
 
                                     <x-dropdown-link href="#" wire:click="updateFilter('2')"
-                                        class="block px-4 py-2 hover:bg-gray-100">Disabled</x-dropdown-link>
+                                        class="block px-4 py-2 hover:bg-gray-100">Private</x-dropdown-link>
 
                                     </form>
                                 </x-slot>
@@ -95,13 +95,13 @@
                                         Requirement Type
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                        Type
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Date Created
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Date Updated
                                     </th>
                                     <th scope="col" class="px-6 py-3">
 
@@ -143,6 +143,15 @@
 
                                             </th>
                                             <td class="px-6 py-4">
+                                                <span class="font-semibold">
+                                                    @if ($data->requirement_Type == 1)
+                                                        PUBLIC
+                                                    @else
+                                                        PRIVATE
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4">
                                                 <div class="flex items-center uppercase">
                                                     @if ($data->requirement_Status == 1)
                                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
@@ -159,14 +168,6 @@
                                                 </div>
                                                 <div class="text-base font-medium uppercase text-sm">
                                                     {{ $data->created_at->format('F d Y') }}
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="text-base font-light uppercase text-sm">
-                                                    {{ $data->updated_at->format('h:i A') }}
-                                                </div>
-                                                <div class="text-base font-medium uppercase text-sm">
-                                                    {{ $data->updated_at->format('F d Y') }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
@@ -237,24 +238,26 @@
                         </div>
 
                         <div class="flex flex-col mt-2 w-full">
-                            <x-input-label for="trainingComplete" :value="__('Requirement Status')" />
+                            <x-input-label for="trainingComplete" :value="__('Requirement Type')" />
                             <div class="flex flex-row w-full gap-2 mt-1">
                                 <div class="flex flex-row items-center h-10  px-4 border border-gray-400 rounded">
-                                    <input wire:model='statusPost' id="bordered-radio-1" type="radio"
-                                        value="1" name="bordered-radio"
+                                    <input wire:model='reqType' id="bordered-radio-1" type="radio" value="1"
+                                        name="bordered-radio"
                                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                     <label for="bordered-radio-1"
-                                        class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Active</label>
+                                        class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Public
+                                        Employers</label>
                                 </div>
                                 <div class="flex items-center h-10 px-4 border border-gray-400 rounded">
-                                    <input wire:model='statusPost' id="bordered-radio-2" type="radio"
-                                        value="2" name="bordered-radio"
+                                    <input wire:model='reqType' id="bordered-radio-2" type="radio" value="2"
+                                        name="bordered-radio"
                                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                     <label for="bordered-radio-2"
-                                        class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Disabled</label>
+                                        class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Private
+                                        Employers</label>
                                 </div>
                             </div>
-                            <x-input-error :messages="$errors->get('statusPost')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('reqType')" class="mt-2" />
                         </div>
 
                     </div>

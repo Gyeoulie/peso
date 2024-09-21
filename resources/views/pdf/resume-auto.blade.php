@@ -111,16 +111,16 @@
                                     <!-- school --------------------------------------------------------------------------->
                                     <section class="mt-2 border-b-2 print:bg-gray-800 ">
                                         <header class="space-y-1">
-                                            <h3 class="text-xl font-semibold text-gray-700 leading-snugish">
+                                            <h3 class="text-xl font-semibold text-gray-700 leading-snugish uppercase">
                                                 {{ $data->edu_School }}
 
                                             </h3>
-                                            <p class="font-medium text-gray-600 text-md">
+                                            <p class="font-medium text-gray-600 text-md uppercase">
                                                 {{ $eduLevels[$data->edu_Level] }} |
                                                 {{ $data->edu_Course }}
 
                                             </p>
-                                            <p class="leading-normal text-gray-500 text-md">
+                                            <p class="leading-normal text-gray-500 text-md uppercase">
                                                 {{ $data->edu_Started->format('F Y') }} &ndash;
                                                 {{ $data->edu_Ongoing == 1 ? 'Present' : $data->edu_Ended->format('F Y') }}
 
@@ -149,14 +149,14 @@
                                 @foreach ($employee->work_exp as $data)
                                     <section class="mb-4 border-b-2 border-gray-300 print:bg-gray-800">
                                         <header class="space-y-1">
-                                            <h3 class="font-semibold text-gray-800 text-xl leading-snugish">
+                                            <h3 class="font-semibold text-gray-800 text-xl leading-snugish uppercase">
                                                 {{ $data->work_Name }}
 
                                             </h3>
-                                            <p class="font-medium text-gray-600 text-md">
+                                            <p class="font-medium text-gray-600 text-md uppercase">
                                                 {{ $data->job_positions->position_Title }}
                                             </p>
-                                            <p class="text-md leading-normal text-gray-500">
+                                            <p class="text-md leading-normal text-gray-500 uppercase">
                                                 {{ $data->work_Start->format('F Y') }} -
                                                 {{ $data->work_End->format('F Y') }}
                                             </p>
@@ -181,14 +181,14 @@
                                 @foreach ($employee->training as $data)
                                     <section class="mb-4 border-b-2 border-gray-300 print:bg-gray-800">
                                         <header class="space-y-1">
-                                            <h3 class="font-semibold text-gray-800 text-xl leading-snugish">
+                                            <h3 class="font-semibold text-gray-800 text-xl leading-snugish uppercase">
                                                 {{ $data->training_Name }}
 
                                             </h3>
-                                            <p class="font-medium text-gray-600 text-md">
+                                            <p class="font-medium text-gray-600 text-md uppercase">
                                                 {{ $data->training_From }}
                                             </p>
-                                            <p class="text-md leading-normal text-gray-500">
+                                            <p class="text-md leading-normal text-gray-500 uppercase">
                                                 {{ $data->training_Start->format('F Y') }} -
                                                 {{ $data->training_End->format('F Y') }}
                                             </p>
@@ -213,13 +213,13 @@
                                 @foreach ($employee->certificate as $data)
                                     <section class="mb-4 border-b-2 border-gray-300 print:bg-gray-800">
                                         <header class="space-y-1">
-                                            <h3 class="font-semibold text-gray-800 text-xl leading-snugish">
+                                            <h3 class="font-semibold text-gray-800 text-xl leading-snugish uppercase">
                                                 {{ $data->certificateType->cert_Name }}
                                             </h3>
-                                            <p class="font-medium text-gray-600 text-md">
+                                            <p class="font-medium text-gray-600 text-md uppercase">
                                                 {{ $data->cert_From }}
                                             </p>
-                                            <p class="text-md leading-normal text-gray-500">
+                                            <p class="text-md leading-normal text-gray-500 uppercase">
                                                 {{ $data->cert_Date_Issued->format('F Y') }}
                                                 | {{ $data->cert_Rating }} Rating
                                             </p>
@@ -241,7 +241,7 @@
                                 </h2>
                                 <section class="mb-0">
                                     <section class="mt-1 last:pb-1 print:bg-black">
-                                        <ul class="flex flex-wrap -mb-1 font-bold leading-relaxed text-md -mr-1.6">
+                                        <ul class="flex flex-wrap -mb-1 font-bold leading-relaxed text-md -mr-1.6 uppercase">
                                             @foreach ($employee->skills as $data)
                                                 <li
                                                     class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">

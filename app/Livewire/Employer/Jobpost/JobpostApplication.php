@@ -132,7 +132,8 @@ class JobpostApplication extends Component
             $oneYearAgo = $currentDate->copy()->subYear();
 
             // Fetch all active requirements
-            $activeRequirements = Requirements::where('requirement_Status', 1)->get();
+            $activeRequirements = Requirements::where('requirement_Status', 1)
+            ->where('requirement_Type', $user->company->employer_Type)->get();
 
             foreach ($activeRequirements as $requirement) {
                 $requirementPassed = Requirements_Passed::where('requirement_id', $requirement->requirement_id)

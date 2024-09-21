@@ -465,11 +465,11 @@
 
                                         <div class="flex flex-col ml-4 w-full">
                                             <span
-                                                class="text-xl md:text-2xl text-black font-black">{{ $educBackground->edu_School }}</span>
-                                            <div class="text-lg md:text-xl text-black font-semibold">
+                                                class="text-xl md:text-2xl text-black font-black uppercase">{{ $educBackground->edu_School }}</span>
+                                            <div class="text-lg md:text-xl text-black font-semibold uppercase">
                                                 <span>{{ $educBackground->edu_Course }}
                                             </div>
-                                            <span class="text-sm md:text-md text-gray-700 font-medium">
+                                            <span class="text-sm md:text-md text-gray-700 font-medium uppercase">
                                                 {{ $educBackground->edu_Started->format('F Y') }} -
                                                 {{ $educBackground->edu_Ongoing == 1 ? 'Present' : $educBackground->edu_Ended->format('F Y') }}</span>
                                         </div>
@@ -559,18 +559,18 @@
 
                                         <div class="flex flex-col ml-4 w-full">
                                             <span
-                                                class="text-xl md:text-2xl text-black font-black">{{ $work_experience->work_Name }}</span>
-                                            <div class="text-lg md:text-xl text-black font-semibold">
+                                                class="text-xl md:text-2xl text-black font-black uppercase">{{ $work_experience->work_Name }}</span>
+                                            <div class="text-lg md:text-xl text-black font-semibold uppercase">
                                                 <span>{{ $work_experience->job_positions->position_Title }}</span>
                                                 -
                                                 <span>{{ $work_experience->work_Status }}</span>
                                             </div>
-                                            <span class="text-sm md:text-md text-gray-700 font-medium">
+                                            <span class="text-sm md:text-md text-gray-700 font-medium uppercase">
                                                 {{ $work_experience->work_Start->format('F Y') }} -
                                                 {{ $work_experience->work_End->format('F Y') }}
                                             </span>
                                             <span
-                                                class="text-xs md:text-sm text-gray-700 font-medium">{{ $work_experience->work_Address }}</span>
+                                                class="text-xs md:text-sm text-gray-700 font-medium uppercase">{{ $work_experience->work_Address }}</span>
                                         </div>
 
                                     </div>
@@ -664,15 +664,15 @@
 
                                         <div class="flex flex-col ml-4 w-full">
                                             <span
-                                                class="text-xl md:text-2xl text-black font-black">{{ $empTraining->training_Name }}</span>
-                                            <div class="text-lg md:text-xl text-black font-semibold">
+                                                class="text-xl md:text-2xl text-black font-black uppercase">{{ $empTraining->training_Name }}</span>
+                                            <div class="text-lg md:text-xl text-black font-semibold uppercase">
                                                 <span>{{ $empTraining->training_Cert }}</span>
                                                 -
                                                 <span>{{ $empTraining->training_Status == 1 ? 'Completed' : 'Not Completed' }}</span>
                                             </div>
                                             <span
-                                                class="text-sm md:text-md text-gray-700 font-medium">{{ $empTraining->training_From }}</span>
-                                            <span class="text-sm md:text-md text-gray-700 font-medium">
+                                                class="text-sm md:text-md text-gray-700 font-medium uppercase">{{ $empTraining->training_From }}</span>
+                                            <span class="text-sm md:text-md text-gray-700 font-medium uppercase">
                                                 {{ $empTraining->training_Start->format('F Y') }} -
                                                 {{ $empTraining->training_End->format('F Y') }}</span>
                                         </div>
@@ -758,13 +758,13 @@
 
                                         <div class="flex flex-col ml-4 w-full">
                                             <span
-                                                class="text-xl md:text-2xl text-black font-black">{{ $certification->certificateType->cert_Name }}</span>
-                                            <span class="text-lg md:text-xl text-black font-semibold">
+                                                class="text-xl md:text-2xl text-black font-black uppercase">{{ $certification->certificateType->cert_Name }}</span>
+                                            <span class="text-lg md:text-xl text-black font-semibold uppercase">
                                                 {{ $certification->cert_From }}
                                             </span>
                                             <span
-                                                class="text-md md:text-lg text-gray-700 font-medium">{{ $certification->cert_Rating }}</span>
-                                            <span class="text-md text-gray-700 font-medium">
+                                                class="text-md md:text-lg text-gray-700 font-medium uppercase">{{ $certification->cert_Rating }}</span>
+                                            <span class="text-md text-gray-700 font-medium uppercase">
                                                 {{ $certification->cert_Date_Issued->format('F Y') }}
                                             </span>
                                         </div>

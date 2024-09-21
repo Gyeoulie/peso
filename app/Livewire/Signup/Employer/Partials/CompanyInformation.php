@@ -101,7 +101,7 @@ class CompanyInformation extends Component
     public function next()
     {
         $rules = [
-            'tin' => 'required|digits:9|unique:company,company_TIN',
+            'tin' => 'required_if:empType,2|digits:9|unique:company,company_TIN',
             'business' => 'required|string|min:5|unique:company,business_Name',
             'trade' => 'required|string|min:5|unique:company,trade_Name',
             'locType' => 'required',
@@ -115,7 +115,7 @@ class CompanyInformation extends Component
         ];
 
         $messages = [
-            'tin.required' => 'The TIN is required.',
+            'tin.required_if' => 'The TIN is required for private employers.',
             'tin.digits' => 'TIN must have 9 characters.',
             'tin.unique' => 'The TIN has already been taken.',
 

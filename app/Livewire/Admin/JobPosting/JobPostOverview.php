@@ -229,6 +229,8 @@ class JobPostOverview extends Component
             },
         ])
             ->where('requirement_Status', 1)
+            ->where('requirement_Type', $jobpost->company->employer_Type)
+
             ->get();
 
         return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees', 'requirements'));

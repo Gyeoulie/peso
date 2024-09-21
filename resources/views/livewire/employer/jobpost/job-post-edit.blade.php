@@ -48,9 +48,7 @@
                     <div class="flex flex-col w-full">
                         <x-input-label for="jobIndustryPost">Job Industry
                         </x-input-label>
-                        <x-text-input wire:model='jobIndustryPost' class="block mt-1 w-full" type="text" readonly
-                            x-data="" x-on:click.prevent="$dispatch('open-modal', 'industry-modal')"
-                            x-on:focus="$dispatch('open-modal', 'industry-modal')" />
+                        <x-text-input wire:model='jobIndustryPost' class="block mt-1 w-full" type="text" disabled />
                         <x-input-error :messages="$errors->get('jobIndustryPost')" class="mt-2" />
                     </div>
 
@@ -58,7 +56,7 @@
 
                 <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
-                    <div class="flex flex-row gap-4 w-full">
+                    <div class="flex flex-row gap-4 w-1/2">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="minWagePost">Minimum Wage
@@ -77,10 +75,10 @@
                     </div>
 
 
-                    <div class="flex flex-col ml sm:w-1/4">
+                    <div class="flex flex-col ml sm:w-1/2">
                         <x-input-label for="eduPost">Educational Attainment
                         </x-input-label>
-                        <select wire:model='eduPost' class="block mt-1 w-full rounded">
+                        <select wire:model='eduPost' class="block mt-1 w-full rounded" disabled>
                             <option value="" disabled selected>Select Type</option>
                             <option value="0">NONE</option>
                             <option value="1">GRADE I</option>
@@ -113,10 +111,10 @@
                         <x-input-error :messages="$errors->get('eduPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col ml sm:w-1/4">
+                    <div class="flex flex-col ml sm:w-1/2">
                         <x-input-label for="jtypePost">Job Type
                         </x-input-label>
-                        <select wire:model='jtypePost' class="block mt-1 w-full rounded">
+                        <select wire:model='jtypePost' class="block mt-1 w-full rounded" disabled>
                             <option value="" disabled selected>Select Type</option>
                             <option value="1">Full-Time</option>
                             <option value="2">Contractual/Part-Time</option>
@@ -132,7 +130,7 @@
                         <div class="flex flex-col w-full">
                             <x-input-label for="wAddPost">Work Address
                             </x-input-label>
-                            <x-text-input wire:model='wAddPost' class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model='wAddPost' class="block mt-1 w-full" type="text" disabled />
                             <x-input-error :messages="$errors->get('wAddPost')" class="mt-2" />
                         </div>
 
@@ -142,21 +140,19 @@
                         <div class="flex flex-col w-full">
                             <x-input-label for="barPost">Barangay
                             </x-input-label>
-                            <x-text-input wire:model='barPost' class="block mt-1 w-full" type="text" readonly
-                                x-data="" x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')"
-                                x-on:focus="$dispatch('open-modal', 'barangay-modal')" />
+                            <x-text-input wire:model='barPost' class="block mt-1 w-full" type="text" disabled />
                             <x-input-error :messages="$errors->get('barPost')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="mun">Province
                             </x-input-label>
-                            <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
+                            <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" disabled />
                             <x-input-error :messages="$errors->get('mun')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="prov">Municipallity
                             </x-input-label>
-                            <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
+                            <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" disabled />
                             <x-input-error :messages="$errors->get('prov')" class="mt-2" />
                         </div>
                     </div>
@@ -176,8 +172,8 @@
                     <div class="flex flex-col ml w-1/2">
                         <x-input-label for="pesoPost">PESO Branch
                         </x-input-label>
-                        <select wire:model='pesoPost' class="block mt-1 w-full rounded">
-                            <option value="" disabled selected>Select Branch</option>
+                        <select wire:model='pesoPost' class="block mt-1 w-full rounded" disabled>
+                            <option value="{{ $pesoPost }}" disabled selected>{{ $pesoTitle }}</option>
 
 
                         </select>
@@ -191,14 +187,14 @@
                     <div class="flex flex-col w-1/2">
                         <x-input-label for="durationPost">Job Posting Duration
                         </x-input-label>
-                        <x-text-input wire:model='durationPost' class="block mt-1 w-full" type="date" />
+                        <x-text-input wire:model='durationPost' class="block mt-1 w-full" type="date" disabled />
                         <x-input-error :messages="$errors->get('durationPost')" class="mt-2" />
                     </div>
 
                     <div class="flex flex-col w-1/3 mb-5">
                         <x-input-label for="slotsPost">Job Slots
                         </x-input-label>
-                        <x-text-input wire:model='slotsPost' class="block mt-1 w-full" type="text" />
+                        <x-text-input wire:model='slotsPost' class="block mt-1 w-full" type="text" disabled />
                         <x-input-error :messages="$errors->get('slotsPost')" class="mt-2" />
                     </div>
 
@@ -229,17 +225,15 @@
 
                         </div>
 
+
                         <div
-                            class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($jobTags)) h-[40px] @endif ">
-
-
-                            @foreach ($jobTags as $jobData)
+                            class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($displayTags)) h-[40px] @endif">
+                            @foreach ($displayTags as $tag)
                                 <span
                                     class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                    {{ $jobData['position_Title'] }}
-                                    <button wire:click.prevent='removeTag( {{ $jobData['position_id'] }})'
-                                        type="button"
-                                        class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                    {{ $tag['position_Title'] }}
+                                    <button wire:click.prevent="removeTag({{ $tag['position_id'] }})" type="button"
+                                        class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
                                         <span class="sr-only">Remove badge</span>
                                         <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -252,7 +246,8 @@
                                 </span>
                             @endforeach
                         </div>
-                        <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
+
+                        <x-input-error :messages="$errors->get('displayTags')" class="mt-2" />
 
                     </div>
                 </div>
@@ -270,7 +265,7 @@
                         <x-input-label for="descPost">Job Description
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='descPost' id="descText"></textarea>
+                            <textarea wire:model='descPost' id="descText">{!! $descPost !!}</textarea>
                         </div>
 
                         {{-- <textarea wire:model='descPost' rows="8"
@@ -288,7 +283,7 @@
                         <x-input-label for="qualPost">Job Qualification
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='qualPost' id="qualText"></textarea>
+                            <textarea wire:model='qualPost' id="qualText">{!! $qualPost !!}</textarea>
                         </div>
                         {{-- <textarea wire:model='qualPost' rows="8"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
@@ -305,7 +300,7 @@
                     <x-input-label for="remPost">Remarks
                     </x-input-label>
                     <div wire:ignore>
-                        <textarea wire:model='remPost' id="remText"></textarea>
+                        <textarea wire:model='remPost' id="remText">{!! $remPost !!}</textarea>
                     </div>
                     {{-- <textarea wire:model='remPost' rows="4"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
@@ -318,7 +313,7 @@
                 </div>
 
                 <div class="flex flex-row justify-end mt-4 mb-4 ">
-                    <x-blue-button wire:click.prevent='nextSection(2)' type="button">Next</x-blue-button>
+                    <x-green-button wire:click.prevent='validateInput' type="button">Save</x-green-button>
                 </div>
 
 
@@ -327,11 +322,46 @@
 
 
     </div>
+    <x-modal name="confirm-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Job Posting Confirmation') }}
+            </h2>
+            <hr>
+            <div class="flex flex-col justify-center items-center my-12">
+
+                <h1 class="text-2xl font-bold">Are you sure you want to update this job posting?</h1>
+
+            </div>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close-modal', 'confirm-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-green-button wire:loading.attr="disabled" wire:click.prevent="saveJobPost" class="ms-3"
+                    type="button">
+                    {{ __('Confirm') }}
+                    <div wire:loading.delay.long wire:target="updateApplicant('REJECT', 'reject')" role="status">
+                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </x-green-button>
+            </div>
+        </div>
+    </x-modal>
+
 
 
     <livewire:modals.job-position-modal />
-    <livewire:modals.industry-modal />
-    <livewire:modals.barangay-modal />
+
 
 
     {{-- @scipt --}}

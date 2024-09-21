@@ -3,6 +3,7 @@
 namespace App\Livewire\Signup\Employer\Partials;
 
 use App\Models\Requirements as ModelsRequirements;
+use Livewire\Attributes\Reactive;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -10,14 +11,19 @@ class Requirements extends Component
 {
 
     use WithFileUploads;
+
     public $req = [];
+
+    #[Reactive]
+    public $reqType;
 
     public $stepNumber = 4;
 
     public function mount()
     {
         // Fetch all requirements
-        $requirements = ModelsRequirements::where('requirement_Status', 1)->get();
+        $requirements = ModelsRequirements::where('requirement_Status', 1)
+            ->where('requirement_Type', $this->reqType)->get();
         // Initialize the $req array with requirement IDs
         foreach ($requirements as $requirement) {
             $this->req[$requirement->requirement_id] = null;
@@ -78,7 +84,8 @@ class Requirements extends Component
     public function render()
     {
 
-        $requirements = ModelsRequirements::where('requirement_Status', 1)->get();
+        $requirements = ModelsRequirements::where('requirement_Status', 1)
+            ->where('requirement_Type', $this->reqType)->get();
 
         return view('livewire.signup.employer.partials.requirements', compact('requirements'));
     }

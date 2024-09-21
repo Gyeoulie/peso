@@ -65,7 +65,8 @@
 
 
                             <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">
-                                <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
+                                <h5
+                                    class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug uppercase">
                                     {{ $data->program_Title }}
                                 </h5>
                                 <hr class="mb-2">
@@ -267,7 +268,7 @@
                                                             <div class="flex flex-col sm:flex-row  text-left">
                                                                 <div class="flex flex-col sm:w-3/4">
                                                                     <h1
-                                                                        class="text-blue-500 text-2xl sm:text-5xl font-semibold">
+                                                                        class="text-blue-500 text-2xl sm:text-5xl font-semibold uppercase">
                                                                         {{ $data->job_Title }}
                                                                     </h1>
                                                                 </div>
@@ -524,8 +525,8 @@
             <p class="flex items-center text-xl  text-white font-bold">
 
                 </span>
-                <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Some
-                    postings may be for testing purposes only and not reflect actual opportunities.</span>
+                <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Postings are
+                    for testing purposes only and do not reflect actual opportunities.</span>
             </p>
         </div>
         <div class="flex items-center">
