@@ -75,7 +75,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
+// Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
+Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
+
     Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -83,13 +85,14 @@ Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.s
 
 //------------------------------ SIGN UP ------------------------------
 
-Route::middleware(['verified'])->group(function () {
-    Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile')->middleware(['usertype:2']);
-    Route::get('/employer/details', EmployerInformation::class)->name('fill_employer')->middleware(['usertype:3']);
-});
+// Route::middleware(['verified'])->group(function () {
+Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile')->middleware(['usertype:2']);
+Route::get('/employer/details', EmployerInformation::class)->name('fill_employer')->middleware(['usertype:3']);
+// });
 
 //------------------------------ PUBLIC ------------------------------
-Route::middleware(['verifiedOrPublic', 'incomplete.user', 'check.user.status', 'google2fa'])->group(function () {
+// Route::middleware(['verifiedOrPublic', 'incomplete.user', 'check.user.status', 'google2fa'])->group(function () {
+Route::middleware(['incomplete.user', 'check.user.status', 'google2fa'])->group(function () {
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/trainings', Trainings::class)->name('trainings');
@@ -99,7 +102,9 @@ Route::middleware(['verifiedOrPublic', 'incomplete.user', 'check.user.status', '
     Route::get('/training/{id}', TrainingView::class)->name('training.show');
 });
 //------------------------------ PUBLIC - PROFILE ------------------------------
-Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status'])->group(function () {
+// Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status'])->group(function () {
+Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'check.user.status'])->group(function () {
+
     Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
     Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
     Route::get('/profile/pid={id}', PesoProfile::class)->name('peso.profile');
@@ -108,13 +113,16 @@ Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.s
 });
 
 //------------------------------ JOBSEEKER ------------------------------
-Route::middleware(['auth', 'verified', 'usertype:4', 'check.user.status', 'google2fa'])->group(function () {
+// Route::middleware(['auth', 'verified', 'usertype:4', 'check.user.status', 'google2fa'])->group(function () {
+Route::middleware(['auth', 'usertype:4', 'check.user.status', 'google2fa'])->group(function () {
 
     Route::get('/applications/history', ApplicationHistory::class)->name('jobseeker.application');
     Route::get('/profile/edit', EditDetails::class)->name('edit.details');
 });
 
-Route::middleware(['auth', 'verified', 'usertype:6', 'check.user.status', 'google2fa'])->group(function () {
+// Route::middleware(['auth', 'verified', 'usertype:6', 'check.user.status', 'google2fa'])->group(function () {
+Route::middleware(['auth', 'usertype:6', 'check.user.status', 'google2fa'])->group(function () {
+
     Route::get('/apply', JobpostApplication::class)->name('jobpost.apply');
     Route::get('/jobpost/details/{id}', JobPostDetails::class)->name('jobpost.details');
     Route::get('/jobpost/edit', JobPostEdit::class)->name('jobpost.edit');
@@ -129,7 +137,9 @@ Route::middleware(['auth', 'verified', 'usertype:5,6', 'google2fa'])->group(func
 //------------------------------ ADMIN  NAVIGATION ------------------------------\
 Route::prefix('admin')->group(function () {
 
-    Route::middleware(['auth', 'verified', 'usertype:8,9,10', 'check.user.status', 'google2fa'])->group(function () {
+    // Route::middleware(['auth', 'verified', 'usertype:8,9,10', 'check.user.status', 'google2fa'])->group(function () {
+    Route::middleware(['auth', 'usertype:8,9,10', 'check.user.status', 'google2fa'])->group(function () {
+
         Route::get('/', AdminDashboard::class)->name('admin');
 
         Route::get('/jobs', JobPosting::class)->name('admin-joblist');
@@ -168,7 +178,8 @@ Route::prefix('admin')->group(function () {
     });
 
 // EVERYTHING UNDER HERE IS SUPER ADMIN
-    Route::middleware(['auth', 'verified', 'usertype:11', 'check.user.status'])->group(function () {
+    // Route::middleware(['auth', 'verified', 'usertype:11', 'check.user.status'])->group(function () {
+    Route::middleware(['auth', 'usertype:11', 'check.user.status'])->group(function () {
 
         Route::get('super/', SuperDashboard::class)->name('super-dashboard');
         Route::get('super/municipality', ReportsMunicipalityReports::class)->name('super-municipality');
@@ -194,7 +205,9 @@ Route::prefix('admin')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'google2fa'])->group(function () {
+// Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'google2fa'])->group(function () {
+Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'google2fa'])->group(function () {
+
     Route::post('/resume/view', [PDFView::class, 'viewResume'])->name('view.resume');
     Route::post('/recommendation/view', [PDFView::class, 'viewRecommendation'])->name('view.recommendation');
     Route::post('/requirement/view', [PDFView::class, 'viewRequirement'])->name('view.requirement');

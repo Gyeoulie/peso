@@ -411,8 +411,14 @@ class JobseekerOverview extends Component
     }
     public function render()
     {
+        $isResident = false;
 
+        $user = Auth::user();
         $jobseeker = Employee::findOrFail($this->id);
+
+        if ($jobseeker->barangay->municipality_id == $user->peso_accounts->peso->municipality_id) {
+            $isResident = true;
+        }
 
         $joblist = $this->recommendedJobs($jobseeker->employee_id);
 
@@ -466,6 +472,7 @@ class JobseekerOverview extends Component
                 'attainment',
                 'totalExperience',
                 'audits',
-                'formattedAudits'));
+                'formattedAudits',
+                'isResident'));
     }
 }

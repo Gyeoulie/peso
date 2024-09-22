@@ -17,6 +17,7 @@
                 </div>
 
                 {{-- DEACTIVATE BUTTON --}}
+                @if( $isResident == true)
                 <div class="flex flex-col ml-auto mr-0">
                     @if ($jobseeker->user->userstatus == 1)
                         <button type="button" x-data=""
@@ -32,6 +33,7 @@
                         </button>
                     @endif
                 </div>
+                @endif
 
             </div>
 
@@ -163,7 +165,7 @@
                         Overview
                     </button>
                 </li>
-
+                @if( $isResident == true)
                 <li>
                     <button @click="selectedTab = 2" :class="selectedTab === 2 ? activeTab : inactiveTab"
                         class="inline-flex items-center px-4 py-3 rounded-lg w-full">
@@ -194,6 +196,7 @@
                         Audits
                     </button>
                 </li>
+                @endif
             </ul>
 
             {{-- 2ND TAB --}}
@@ -788,6 +791,7 @@
                                                         <td class="px-6 py-4 text-center">
                                                             <div class="flex flex-row  gap-5">
 
+                                                                @if(Auth::user()->peso_accounts->peso_id == $data->peso_id)
                                                                 <div x-data="{ tooltip: 'View Job Posting' }">
                                                                     <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
                                                                         x-tooltip="tooltip" type="button"
@@ -803,6 +807,7 @@
                                                                         </svg>
                                                                     </a>
                                                                 </div>
+                                                                @endif
 
                                                         </td>
                                                     </tr>
