@@ -5,7 +5,6 @@ namespace App\Models;
 //
 
 use App\Redactors\FiveHashRedactor;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable implements Auditable, MustVerifyEmail
+class User extends Authenticatable implements Auditable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
