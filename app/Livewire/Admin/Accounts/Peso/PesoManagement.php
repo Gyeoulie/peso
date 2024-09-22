@@ -16,13 +16,16 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Features\SupportPagination\WithoutUrlPagination;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 #[Layout('layouts.admin')]
 class PesoManagement extends Component
 {
 
     use WithFileUploads;
+    use WithPagination, WithoutUrlPagination;
 
     public $fname, $mname, $lname, $email, $phone, $role = '';
 

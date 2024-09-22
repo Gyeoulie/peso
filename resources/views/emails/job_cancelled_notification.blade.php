@@ -3,7 +3,7 @@
 
 Dear {{ $applicantName }},
 
-This is to inform you that your application for the job posting titled **"{{ $jobTitle }}"**, which was listed by **{{ $companyName }}**, has been officially canceled. The reason for this cancellation is the deactivation of the company's account on our platform.
+This is to inform you that your application for the job posting titled **"{{ $jobTitle }}"**, which was listed by **{{ $companyName }}**, has been officially cancelled. The reason for this cancellation is the deactivation of the company's account on our platform.
 
 ## Important Information:
 - **Job Post Title:** {{ $jobTitle }}

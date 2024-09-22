@@ -43,8 +43,8 @@
 
                     <ul>
                         <div class="flex flex-row justify-between">
-                            <li class="mb-2 font-bold">Slots Remaining:</li>
-                            <p class="ms-4 text-right">{{ $jobpost->slotsLeft }}</p>
+                            <li class="mb-2 font-bold">Total Slots:</li>
+                            <p class="ms-4 text-right">{{ $jobpost->job_Slots }}</p>
                         </div>
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Job Position:</li>
@@ -326,7 +326,7 @@
 
                 {{-- PAGINATION --}}
 
-                <div>
+                <div class="mt-2">
                     {{ $jobApplicants->links('vendor.livewire.tailwind') }}
                 </div>
             </div>
