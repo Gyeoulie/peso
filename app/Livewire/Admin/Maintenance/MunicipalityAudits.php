@@ -7,6 +7,7 @@ use App\Models\Announcements;
 use App\Models\Employee;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
+use App\Models\PESO_Accounts;
 use App\Models\Programs;
 use App\Models\Program_Reg;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +38,16 @@ class MunicipalityAudits extends Component
         // Get all User IDs associated with Employees in the specified municipality
         $employeeUserIds = Employee::whereHas('barangay', function ($query) use ($municipalityId) {
             $query->where('municipality_id', $municipalityId);
-        })->pluck('user_id');
+        })
+            ->pluck('user_id');
+
+        $pesoUserIds = PESO_Accounts::whereHas('peso', function ($query) use ($municipalityId) {
+            $query->where('municipality_id', $municipalityId);
+        })
+            ->pluck('user_id');
+
+        // Merge both collections and remove duplicates if necessary
+        $userIds = $employeeUserIds->merge($pesoUserIds)->unique();
 
         $auditsQuery = Audit::query();
 
@@ -97,8 +107,8 @@ class MunicipalityAudits extends Component
             $auditsQuery->whereIn('user_id', $employeeUserIds);
         } else {
             // Default case: Include all audits related to employees and other criteria
-            $auditsQuery->where(function ($query) use ($employeeUserIds, $municipalityId) {
-                $query->whereIn('user_id', $employeeUserIds)
+            $auditsQuery->where(function ($query) use ($userIds, $municipalityId) {
+                $query->whereIn('user_id', $userIds)
                     ->orWhere(function ($query) use ($municipalityId) {
                         $query->whereIn('auditable_type', [
                             Job_Posting::class,

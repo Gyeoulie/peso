@@ -12,6 +12,7 @@ use App\Models\Job_Posting;
 use App\Models\Partnerships;
 use App\Models\Requirements;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -38,7 +39,7 @@ class EmployerOverview extends Component
 
     public $empDescriptions = [];
 
-    public $agreeBox = false, $deactivateBox = false;
+    public $agreeBox = false, $deactivateBox = false, $cancelPartnership = false;
 
     public function updatedsearchJobs()
     {
@@ -126,6 +127,7 @@ class EmployerOverview extends Component
                 // If no partnership record found, throw an exception
                 throw new \Exception('Partnership record not found.');
             }
+            // dd($partnership->company->user->email);
 
             // Update the partnership status and remarks
             $partnership->partnership_Status = 'CANCELLED'; // Update the status
@@ -135,22 +137,27 @@ class EmployerOverview extends Component
             $partnership->save();
 
             // Commit the transaction
-            DB::commit();
             Mail::to($partnership->company->user->email)->queue(new PartnershipCancellationNotification($partnership));
-            // Artisan::call('partnership:cancel', [
-            //     'companyId' => $this->id,
-            //     'pesoId' => $user->peso_accounts->peso_id,
-            // ]);
+            Artisan::call('partnership:cancel', [
+                'companyId' => $this->id,
+                'pesoId' => $user->peso_accounts->peso_id,
+            ]);
 
             toastr()->success('Partnership status has been updated successfully.');
 
             // Optionally, redirect or perform other actions
             $this->closeModal('partnership');
+            DB::commit();
+
             return redirect()->route('dashboard'); // Adjust the route as necessary
 
         } catch (\Exception $e) {
             // Rollback the transaction on general failure
             DB::rollBack();
+
+            Log::error('Error cancelling partnership: ' . $e->getMessage());
+            dd($e->getMessage());
+
             toastr()->error('Failed to update partnership status. Please try again.'); // Display general error
             $this->closeModal('partnership');
 
@@ -356,6 +363,7 @@ class EmployerOverview extends Component
     {
         $this->reset('deactRemarks', 'reactRemarks', 'partRemarks');
         $this->deactivateBox = false;
+        $this->cancelPartnership = false;
         $this->dispatch('close-modal', $modal . '-modal');
     }
 

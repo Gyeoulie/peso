@@ -37,10 +37,12 @@ class AuthenticatedSessionController extends Controller
             return $this->redirectBasedOnRole($user->usertype);
         }
 
+        // Return back with errors and old input (email)
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
+        ])->withInput($request->only('email')); // Keeps the email field populated
     }
+
     public function verify2FA(Request $request)
     {
         $request->validate([

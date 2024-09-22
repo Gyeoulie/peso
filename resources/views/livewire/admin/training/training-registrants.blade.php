@@ -115,10 +115,10 @@
                         <x-input-label for="fname"> </i> Job Position
                             Tags
                         </x-input-label>
-                        <hr class="h-px my-4  bg-gray-200 border-0 dark:bg-gray-700">
+                        <hr class="h-px my-1  bg-gray-200 border-0 dark:bg-gray-700">
 
                         {{-- JOB TAG CONTAINER --}}
-                        <div id= "otherSkillRow" class="flex-inline p-1 mt-2">
+                        <div id= "otherSkillRow" class="flex-inline p-1">
 
                             @foreach ($programInfo->program_tags as $jobtags)
                                 <span

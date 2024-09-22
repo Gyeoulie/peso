@@ -686,7 +686,7 @@
     </div>
 
     <x-modal name="partnership-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ cancelPartnership: @entangle('cancelPartnership') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to cancel the partnership with this company?') }}
             </h2>
@@ -702,12 +702,33 @@
                 </div>
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <p class="text-sm sm:text-md text-gray-600 mt-2 text-justify">
+                {{ __('Please note that cancel partnership with this company will cancel all active and pending transactions associated with it. Make sure to review any ongoing processes before proceeding.') }}
+            </p>
+            <div class="inline-flex justify-center items-center mt-2 w-full">
+                <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="cancelPartnership">
+                    <input wire:model="cancelPartnership" type="checkbox" id="cancelPartnership"
+                        class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                    <span
+                        class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                            fill="currentColor" stroke="currentColor" stroke-width="1">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </label>
+                <label class="mt-px font-light text-gray-700 cursor-pointer select-none" for="cancelPartnership">
+                    Confirm the transaction
+                </label>
+            </div>
+            <div class="mt-6 flex justify-between">
                 <x-secondary-button wire:click.prevent="closeModal('partnership')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="updatePartnership()" class="ms-3"
+                <x-danger-button x-show="cancelPartnership" wire:loading.attr="disabled" wire:click.prevent="updatePartnership()" class="ms-3"
                     type="button">
                     {{ __('Remove Partnership') }}
                     <div wire:loading.delay.long wire:target="updatePartnership()" role="status">
