@@ -18,18 +18,6 @@ class EditWorkExperience extends Component
 
     public $deleteWork;
 
-    public function rules()
-    {
-        return [
-            'workName' => ['required', 'string'],
-            'workAdd' => ['required', 'string'],
-            'workPosition' => ['required'],
-            'workStart' => ['required'],
-            // 'work_End' => ['required'],
-            'workStatus' => ['required'],
-        ];
-    }
-
     public function deleteData($id)
     {
         $this->reset('deleteWork');

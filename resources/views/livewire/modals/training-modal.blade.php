@@ -7,13 +7,13 @@
         <div class="flex flex-col mt-2">
 
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="trainingName" :value="__('Training Name')" />
+                <x-input-label for="trainingName" :value="__('Training Name*')" />
                 <x-text-input wire:model="trainName" class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('trainName')" class="mt-2" />
             </div>
             <div class="flex flex-row mt-2 w-full">
                 <div class="flex flex-col w-full">
-                    <x-input-label for="trainingStart" :value="__('Started')" />
+                    <x-input-label for="trainingStart" :value="__('Started*')" />
                     <x-text-input wire:model="trainStart" class="block mt-1 w-full" type="date" />
                     <x-input-error :messages="$errors->get('trainStart')" class="mt-2" />
                 </div>
@@ -24,18 +24,18 @@
                 </div>
             </div>
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="trainingInsti" :value="__('Training Institution')" />
+                <x-input-label for="trainingInsti" :value="__('Training Institution*')" />
                 <x-text-input wire:model="trainInstitution" class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('trainInstitution')" class="mt-2" />
             </div>
 
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="trainingCert" :value="__('Certificate Recieved')" />
+                <x-input-label for="trainingCert" :value="__('Certificate Recieved*')" />
                 <x-text-input wire:model="trainCert" class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('trainCert')" class="mt-2" />
             </div>
             <div class="mt-2">
-                <x-input-label for="trainingComplete" :value="__('Completed')" />
+                <x-input-label for="trainingComplete" :value="__('Completed*')" />
                 <div class="flex items-center">
                     <label for="completeCheckBoxYes" class="mr-2">
                         <input wire:model="trainStat" type="radio" name="completeCheckBox" value="1">

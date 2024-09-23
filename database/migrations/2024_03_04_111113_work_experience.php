@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('work_Address');
             $table->unsignedBigInteger('position_id')->comment('Foreign Key');
             $table->date('work_Start');
-            $table->date('work_End');
+            $table->date('work_End')->nullable();
             $table->string('work_Status', 255);
             $table->timestamps();
             $table->softDeletes();

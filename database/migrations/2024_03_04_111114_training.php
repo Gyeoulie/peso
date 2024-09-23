@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('training_From', 255);
             $table->string('training_Cert', 255);
             $table->date('training_Start');
-            $table->date('training_End');
+            $table->date('training_End')->nullable();
             $table->tinyInteger('training_Status');
             $table->timestamps();
             $table->softDeletes();

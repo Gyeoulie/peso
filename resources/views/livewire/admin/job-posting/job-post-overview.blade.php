@@ -483,7 +483,7 @@
     </div>
 
     <x-modal name="approve-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b" x-data="{ approveJob: @entangle('approveJob') }">
+        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ approveJob: @entangle('approveJob') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to approve?') }}
             </h2>
@@ -521,7 +521,8 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button wire:click.prevent="updateJob({{ $jobpost->job_id }}, 'ACTIVE', 'approve-modal')"
+                <x-primary-button x-show='approveJob'
+                    wire:click.prevent="updateJob({{ $jobpost->job_id }}, 'ACTIVE', 'approve-modal')"
                     wire:loading.attr="disabled" class="ms-3" type="button">
 
 
@@ -550,7 +551,7 @@
 
     {{-- REJECT MODAL --}}
     <x-modal name="reject-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b" x-data="{ rejectJob: @entangle('rejectJob') }">
+        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ rejectJob: @entangle('rejectJob') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to reject?') }}
             </h2>
@@ -588,7 +589,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button wire:loading.attr="disabled"
+                <x-danger-button x-show="rejectJob" wire:loading.attr="disabled"
                     wire:click.prevent="updateJob({{ $jobpost->job_id }}, 'REJECTED', 'reject-modal')" class="ms-3"
                     type="button">
                     {{ __('Reject Application') }}

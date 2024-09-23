@@ -1,5 +1,6 @@
 <div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Job and Industry Preference</h1>
+    <span class="text-sm text-gray-600">Fields with * are required.</span>
     <div class="flex flex-col mt-5 w-full">
         <div class="flex-inline mt-2 ">
 

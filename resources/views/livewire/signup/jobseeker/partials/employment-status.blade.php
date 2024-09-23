@@ -3,6 +3,7 @@
         <!-- Livewire Component -->
         <div x-data="employmentStatusHandler()" @change-status.window="updateEmpDesc" class="flex flex-col w-full h-full">
             <h1 class="text-2xl font-bold">Employment Status</h1>
+            <span class="text-sm text-gray-600">Fields with * are required.</span>
             <div class="flex flex-col sm:flex-row gap-4 mt-5">
                 <div class="flex flex-col w-full">
                     <x-input-label for="empStatus" :value="__('Employment Status*')" />

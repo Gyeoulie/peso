@@ -1,6 +1,6 @@
 <div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Eligibility/License</h1>
-
+    <span class="text-sm text-gray-600">Fields with * are required.</span>
     <div class="flex flex-col gap-4 mt-5 w-full h-full">
         @if ($eligibilityData)
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg  mx-auto">
@@ -11,7 +11,7 @@
                                 Eligibility
                             </th>
                             <th scope="col" class="border px-6 py-3 ">
-                                Date Taken
+                                Validity Date
                             </th>
                             <th scope="col" class="border px-6 py-3 ">
                                 Edit
@@ -69,7 +69,7 @@
                                 License
                             </th>
                             <th scope="col" class="border px-6 py-3 ">
-                                Date Taken
+                                Validity Date
                             </th>
                             <th scope="col" class="border px-6 py-3 ">
                                 Edit

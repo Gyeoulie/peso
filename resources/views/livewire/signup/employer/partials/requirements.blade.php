@@ -1,11 +1,12 @@
 <div class="flex flex-col w-full h-full gap-4">
     <h1 class="text-2xl font-bold">Contact Information</h1>
+    <span class="text-sm text-gray-600">Fields with * are required.</span>
     @foreach ($requirements->chunk(2) as $chunk)
         <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 w-full mt-4">
             @foreach ($chunk as $requirement)
                 <div wire:key='jobRequirement-{{ $requirement->requirement_id }}' class="flex flex-col w-1/2 ">
                     <label class="block text-sm font-medium text-gray-900"
-                        for="file_input">{{ $requirement->requirement_Title }}</label>
+                        for="file_input">{{ $requirement->requirement_Title }}*</label>
                     <div class="flex flex-row w-full h-full justify-center items-center gap-2">
 
                         <input wire:model='req.{{ $requirement->requirement_id }}' wire:loading.attr="disabled"

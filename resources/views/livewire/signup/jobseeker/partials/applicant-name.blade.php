@@ -1,5 +1,6 @@
 <div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Applicant Name</h1>
+    <span class="text-sm text-gray-600">Fields with * are required.</span>
     <div class="flex flex-col items-center mt-5">
         <div class="flex flex-col items-center">
             <x-input-label for="image" :value="__('Upload Profile Image*')" />

@@ -1,5 +1,6 @@
 <div class="flex flex-col w-full h-full gap-4">
     <h1 class="text-2xl font-bold">Company Information</h1>
+    <span class="text-sm text-gray-600">Fields with * are required.</span>
     <div class="flex flex-col mt-5 sm:flex-row-reverse">
         <div class="flex flex-col items-center  w-full">
             <div class="flex flex-col items-center">

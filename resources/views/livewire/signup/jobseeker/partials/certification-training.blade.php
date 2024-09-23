@@ -1,5 +1,6 @@
 <div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Certification and Training</h1>
+    <span class="text-sm text-gray-600">Fields with * are required.</span>
     <div class="flex flex-col gap-4 mt-5 w-full h-full">
 
 
@@ -113,7 +114,8 @@
                                     {{ date('F j, Y', strtotime($data['trainStart'])) }}
                                 </td>
                                 <td class="border px-6 py-4">
-                                    {{ date('F j, Y', strtotime($data['trainEnd'])) }}
+                                    {{ $data['trainEnd'] ? date('F j, Y', strtotime($data['trainEnd'])) : 'Present' }}
+
                                 </td>
                                 <td class="border px-6 py-4">
                                     {{ $data['trainInstitution'] }}

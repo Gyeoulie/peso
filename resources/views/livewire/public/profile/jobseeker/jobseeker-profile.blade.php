@@ -584,7 +584,11 @@
                                             </div>
                                             <span class="text-sm md:text-md text-gray-700 font-medium uppercase">
                                                 {{ $work_experience->work_Start->format('F Y') }} -
-                                                {{ $work_experience->work_End->format('F Y') }}
+                                                @if ($work_experience->work_End)
+                                                    {{ $work_experience->work_End->format('F Y') }}
+                                                @else
+                                                    Present
+                                                @endif
                                             </span>
                                             <span
                                                 class="text-xs md:text-sm text-gray-700 font-medium uppercase">{{ $work_experience->work_Address }}</span>
@@ -691,7 +695,13 @@
                                                 class="text-sm md:text-md text-gray-700 font-medium uppercase">{{ $empTraining->training_From }}</span>
                                             <span class="text-sm md:text-md text-gray-700 font-medium uppercase">
                                                 {{ $empTraining->training_Start->format('F Y') }} -
-                                                {{ $empTraining->training_End->format('F Y') }}</span>
+
+                                                @if ($empTraining->training_End)
+                                                    {{ $empTraining->training_End->format('F Y') }}
+                                                @else
+                                                    Present
+                                                @endif
+                                            </span>
                                         </div>
 
                                     </div>

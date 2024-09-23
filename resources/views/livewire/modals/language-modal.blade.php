@@ -7,7 +7,7 @@
         <div class="flex flex-col mt-2" x-data="{ otherLanguage: false }">
 
             <div class="flex flex-col  mt-2 w-full">
-                <x-input-label for="langSelect" :value="__('Add Language')" />
+                <x-input-label for="langSelect" :value="__('Add Language*')" />
                 <select wire:model='selectedLanguage' name="langSelect" class="block mt-1 w-full rounded"
                     x-on:change="otherLanguage = $event.target.value === 'other'">
                     <option value="" disabled selected>Select Language</option>
@@ -19,7 +19,7 @@
                 <x-input-error :messages="$errors->get('selectedLanguage')" class="mt-2" />
             </div>
             <div x-show="otherLanguage" x-cloak class="mt-2">
-                <x-input-label for="langOther" :value="__('Other Language')" />
+                <x-input-label for="langOther" :value="__('Other Language*')" />
                 <x-text-input wire:model='otherLanguage' class="block mt-1 w-full" type="text" name="langOther" />
                 <x-input-error :messages="$errors->get('otherLanguage')" class="mt-2" />
             </div>
