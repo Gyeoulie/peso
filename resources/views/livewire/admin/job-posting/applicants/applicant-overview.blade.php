@@ -215,8 +215,8 @@
                             </img>
 
                             <div class="flex flex-col ml-4 w-full">
-                                <h1 class="text-xl sm:text-3xl font-bold">{{ $applicant->employee->fname }}
-                                    {{ $applicant->employee->mname }}. {{ $applicant->employee->lname }}</h1>
+                                <h1 class="text-xl sm:text-3xl font-bold uppercase">{{ $applicant->employee->fname }}
+                                    {{ $applicant->employee->mname }} {{ $applicant->employee->lname }}</h1>
                                 <p class="text-sm sm:text-lg text-gray-700">Employee ID:
                                     {{ $applicant->employee->employee_id }}</p>
                                 <div>

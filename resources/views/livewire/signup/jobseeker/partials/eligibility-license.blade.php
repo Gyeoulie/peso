@@ -11,7 +11,7 @@
                                 Eligibility
                             </th>
                             <th scope="col" class="border px-6 py-3 ">
-                                Date Taken
+                                Validity Date
                             </th>
                             <th scope="col" class="border px-6 py-3 ">
                                 Edit
@@ -69,7 +69,7 @@
                                 License
                             </th>
                             <th scope="col" class="border px-6 py-3 ">
-                                Date Taken
+                                Validity Date
                             </th>
                             <th scope="col" class="border px-6 py-3 ">
                                 Edit
