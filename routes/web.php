@@ -71,6 +71,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
 
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');

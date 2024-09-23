@@ -70,13 +70,20 @@
                             </div>
 
                             <div class="flex flex-col ml-4 w-full">
-                                <span class="text-3xl text-black font-black uppercase">{{ $trainings->training_Name }}</span>
+                                <span
+                                    class="text-3xl text-black font-black uppercase">{{ $trainings->training_Name }}</span>
                                 <span class="text-xl text-black font-semibold uppercase">{{ $trainings->training_Cert }}
                                 </span>
-                                <span class="text-md text-gray-700 font-medium uppercase">{{ $trainings->training_From }}</span>
+                                <span
+                                    class="text-md text-gray-700 font-medium uppercase">{{ $trainings->training_From }}</span>
                                 <span class="text-md text-gray-700 font-medium uppercase">
                                     {{ $trainings->training_Start->format('F Y') }} -
-                                    {{ $trainings->training_End->format('F Y') }}</span>
+                                    @if ($trainings->training_End)
+                                        {{ $trainings->training_End->format('F Y') }}
+                                    @else
+                                        Present
+                                    @endif
+                                </span>
                             </div>
 
                             <div class="flex flex-row h-full items-center justify-center gap-2">

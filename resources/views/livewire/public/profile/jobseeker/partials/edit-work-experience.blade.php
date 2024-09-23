@@ -69,7 +69,8 @@
                             </div>
 
                             <div class="flex flex-col ml-4 w-full">
-                                <span class="text-3xl text-black font-black uppercase">{{ $experience->work_Name }}</span>
+                                <span
+                                    class="text-3xl text-black font-black uppercase">{{ $experience->work_Name }}</span>
                                 <div class="text-xl text-black font-semibold uppercase">
                                     <span>{{ $experience->job_positions->position_Title }}</span>
                                     -
@@ -77,7 +78,13 @@
                                 </div>
                                 <span class="text-md text-gray-700 font-medium uppercase">
                                     {{ $experience->work_Start->format('F Y') }} -
-                                    {{ $experience->work_End->format('F Y') }}</span>
+
+                                    @if ($experience->work_End)
+                                        {{ $experience->work_End->format('F Y') }}
+                                    @else
+                                        Present
+                                    @endif
+                                </span>
                                 <span class="text-md text-gray-700 font-medium">{{ $experience->work_Address }}</span>
                             </div>
 

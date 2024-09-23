@@ -7,13 +7,13 @@
         <div class="flex flex-col mt-2">
 
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="eduSchool" :value="__('School')" />
+                <x-input-label for="eduSchool" :value="__('School*')" />
                 <x-text-input wire:model='eduSchool' class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('eduSchool')" class="mt-2" />
             </div>
             <div class="flex flex-col sm:flex-row gap-4 mt-2 w-full">
                 <div class="flex flex-col w-full">
-                    <x-input-label for="eduLevel" :value="__('Level')" />
+                    <x-input-label for="eduLevel" :value="__('Level*')" />
                     <select wire:model='eduLevel' class="block mt-1 w-full rounded"
                         x-on:change="$wire.eduLevel <= 18 ? $wire.eduCourse = '' : ''">
                         <option value="" disabled>Select Level</option>
@@ -56,7 +56,7 @@
             </div>
             <div class="flex flex-col sm:flex-row  mt-2 w-full gap-4" x-data="{ eduOngoing: @entangle('eduOngoing'), eduEnd: @entangle('eduEnd') }">
                 <div class="flex flex-col w-full">
-                    <x-input-label for="eduStart" :value="__('Started')" />
+                    <x-input-label for="eduStart" :value="__('Started*')" />
                     <x-text-input wire:model='eduStart' class="block mt-1 w-full" type="date" />
                     <x-input-error :messages="$errors->get('eduStart')" class="mt-2" />
                 </div>

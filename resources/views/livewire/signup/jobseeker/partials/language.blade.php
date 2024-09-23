@@ -1,5 +1,6 @@
 <div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Language/Dialects</h1>
+    <span class="text-sm text-gray-600">Fields with * are required.</span>
     <div class="flex flex-col gap-4 mt-5 w-full h-full">
         @if ($languages)
             <div class="relative h-xl overflow-y-auto shadow-md sm:rounded-lg w-3/4 mx-auto">

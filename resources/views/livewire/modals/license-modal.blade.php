@@ -6,7 +6,7 @@
         <hr>
         <div class="flex flex-col mt-2">
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="licenseType" :value="__('License')" />
+                <x-input-label for="licenseType" :value="__('License*')" />
 
                 <x-dropdown align="left" width="full">
                     <x-slot name="trigger">
@@ -51,7 +51,7 @@
 
             </div>
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="licenseDate" :value="__('Date Validity')" />
+                <x-input-label for="licenseDate" :value="__('Date Validity*')" />
                 <x-text-input wire:model='licenseDate' class="block mt-1 w-full" type="date" />
                 <x-input-error :messages="$errors->get('licenseDate')" class="mt-2" />
             </div>

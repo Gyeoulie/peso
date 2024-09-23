@@ -66,6 +66,7 @@ class WorkExperienceModal extends Component
             'workEnd' => $this->workEnd,
 
         ];
+        dd($workExperienceData);
 
         if ($this->editIndex !== null) {
             $this->workExperienceData[$this->editIndex] = $workExperienceData;

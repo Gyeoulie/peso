@@ -53,10 +53,14 @@ class Work_Exp extends Model implements Auditable
         $totalMonths = 0;
 
         foreach ($workExperiences as $experience) {
-            // Ensure work_Start and work_End are valid
+            // Ensure work_Start is valid
             if ($experience->work_Start) {
                 $startDate = Carbon::parse($experience->work_Start);
+
+                // If work_End is null, use the current date (now)
                 $endDate = $experience->work_End ? Carbon::parse($experience->work_End) : Carbon::now();
+
+                // Calculate months difference
                 $months = $startDate->diffInMonths($endDate);
                 $totalMonths += $months;
             }

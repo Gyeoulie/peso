@@ -1,5 +1,6 @@
 <div class="flex flex-col w-full h-full gap-4">
     <h1 class="text-2xl font-bold">Contact Information</h1>
+    <span class="text-sm text-gray-600">Fields with * are required.</span>
     <div class="flex flex-col sm:w-2/3 gap-4 w-full mt-5">
         <div class="flex flex-col w-full">
             <x-input-label for="presentAddress" :value="__('Contact Person*')" />

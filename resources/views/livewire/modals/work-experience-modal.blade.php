@@ -6,19 +6,19 @@
         <hr>
         <div class="flex flex-col mt-2">
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="workEmp" :value="__('Employer')" />
+                <x-input-label for="workEmp" :value="__('Employer*')" />
                 <x-text-input wire:model="workEmp" class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('workEmp')" class="mt-2" />
             </div>
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="workAddress" :value="__('Address')" />
+                <x-input-label for="workAddress" :value="__('Address*')" />
                 <x-text-input wire:model="workAdd" class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('workAdd')" class="mt-2" />
             </div>
             <div class="flex flex-col sm:flex-row mt-2 w-full">
 
                 <div class="flex flex-col w-full">
-                    <x-input-label for="workPos" :value="__('Job Position')" />
+                    <x-input-label for="workPos" :value="__('Job Position*')" />
                     <x-dropdown align="left" width="full">
                         <x-slot name="trigger">
                             <button
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="flex flex-col w-full ml-4">
-                    <x-input-label for="workStatus" :value="__('Status')" />
+                    <x-input-label for="workStatus" :value="__('Status*')" />
                     <select wire:model="workStatus" class="block mt-1 w-full  rounded-lg ">
                         <option value="" disabled selected>Select Work Status</option>
                         <option value="Permanent">Permanent</option>
@@ -75,7 +75,7 @@
 
             <div class="flex flex-row mt-2 w-full">
                 <div class="flex flex-col w-full">
-                    <x-input-label for="workStart" :value="__('Started')" />
+                    <x-input-label for="workStart" :value="__('Started*')" />
                     <x-text-input wire:model="workStart" class="block mt-1 w-full" type="date" />
                     <x-input-error :messages="$errors->get('workStart')" class="mt-2" />
                 </div>

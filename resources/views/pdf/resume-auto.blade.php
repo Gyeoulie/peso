@@ -158,7 +158,11 @@
                                             </p>
                                             <p class="text-md leading-normal text-gray-500 uppercase">
                                                 {{ $data->work_Start->format('F Y') }} -
-                                                {{ $data->work_End->format('F Y') }}
+                                                @if ($data->work_End)
+                                                    {{ $data->work_End->format('F Y') }}
+                                                @else
+                                                    Present
+                                                @endif
                                             </p>
                                         </header>
 
@@ -190,7 +194,11 @@
                                             </p>
                                             <p class="text-md leading-normal text-gray-500 uppercase">
                                                 {{ $data->training_Start->format('F Y') }} -
-                                                {{ $data->training_End->format('F Y') }}
+                                                @if ($data->training_End)
+                                                    {{ $data->training_End->format('F Y') }}
+                                                @else
+                                                    Present
+                                                @endif
                                             </p>
                                         </header>
 
@@ -241,7 +249,8 @@
                                 </h2>
                                 <section class="mb-0">
                                     <section class="mt-1 last:pb-1 print:bg-black">
-                                        <ul class="flex flex-wrap -mb-1 font-bold leading-relaxed text-md -mr-1.6 uppercase">
+                                        <ul
+                                            class="flex flex-wrap -mb-1 font-bold leading-relaxed text-md -mr-1.6 uppercase">
                                             @foreach ($employee->skills as $data)
                                                 <li
                                                     class="p-1.5 mb-1 leading-relaxed text-white bg-gray-800 mr-1.6 print:bg-black print:border-inset">

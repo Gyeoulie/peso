@@ -8,7 +8,7 @@
 
 
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="level" :value="__('Certification')" />
+                <x-input-label for="level" :value="__('Certification*')" />
 
                 {{-- DROP DOWN --}}
                 <x-dropdown align="left" width="full">
@@ -58,19 +58,19 @@
             </div>
 
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="certIssued" :value="__('Issued By')" />
+                <x-input-label for="certIssued" :value="__('Issued By*')" />
                 <x-text-input wire:model="certFrom" class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('certFrom')" class="mt-2" />
             </div>
 
             <div class="flex flex-row mt-2 w-full">
                 <div class="flex flex-col w-full">
-                    <x-input-label for="certDate" :value="__('Earned At')" />
+                    <x-input-label for="certDate" :value="__('Earned At*')" />
                     <x-text-input wire:model="certEarned" class="block mt-1 w-full" type="date" />
                     <x-input-error :messages="$errors->get('certEarned')" class="mt-2" />
                 </div>
                 <div class="flex flex-col ml-4 w-full">
-                    <x-input-label for="certRating" :value="__('Rating')" />
+                    <x-input-label for="certRating" :value="__('Rating*')" />
                     <x-text-input wire:model="certRate" class="block mt-1 w-full" type="number" />
                     <x-input-error :messages="$errors->get('certRate')" class="mt-2" />
                 </div>
