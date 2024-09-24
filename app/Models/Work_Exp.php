@@ -47,10 +47,13 @@ class Work_Exp extends Model implements Auditable
 
     public static function getTotalExperience($employeeId)
     {
-        // Retrieve all work experiences for the given employee
-        $workExperiences = self::where('employee_id', $employeeId)->get();
+        // Retrieve all work experiences for the given employee, sorted by work_Start
+        $workExperiences = self::where('employee_id', $employeeId)
+            ->orderBy('work_Start')
+            ->get();
 
         $totalMonths = 0;
+        $mergedPeriods = [];
 
         foreach ($workExperiences as $experience) {
             // Ensure work_Start is valid
@@ -60,10 +63,30 @@ class Work_Exp extends Model implements Auditable
                 // If work_End is null, use the current date (now)
                 $endDate = $experience->work_End ? Carbon::parse($experience->work_End) : Carbon::now();
 
-                // Calculate months difference
-                $months = $startDate->diffInMonths($endDate);
-                $totalMonths += $months;
+                // Try to merge overlapping periods
+                if (empty($mergedPeriods)) {
+                    // First period, just add it
+                    $mergedPeriods[] = ['start' => $startDate, 'end' => $endDate];
+                } else {
+                    // Check the last merged period
+                    $lastPeriod = &$mergedPeriods[count($mergedPeriods) - 1];
+
+                    // If the current period overlaps with the last one, merge them
+                    if ($startDate->lte($lastPeriod['end'])) {
+                        // Extend the end date of the last period if needed
+                        $lastPeriod['end'] = $endDate->gt($lastPeriod['end']) ? $endDate : $lastPeriod['end'];
+                    } else {
+                        // No overlap, add the new period
+                        $mergedPeriods[] = ['start' => $startDate, 'end' => $endDate];
+                    }
+                }
             }
+        }
+
+        // Calculate total months from merged periods
+        foreach ($mergedPeriods as $period) {
+            $months = $period['start']->diffInMonths($period['end']);
+            $totalMonths += max(0, $months); // Ensure the months are positive or zero
         }
 
         // Return the total experience in whole months, cast to integer

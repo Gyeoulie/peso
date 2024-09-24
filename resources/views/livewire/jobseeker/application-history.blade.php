@@ -127,7 +127,7 @@
                         selectedJob: @entangle('selectedJob'),
                     }">
                         @foreach ($applications as $data)
-                        <div class="relative flex-shrink-0 w-[90%] sm:w-full">
+                            <div class="relative flex-shrink-0 w-[90%] sm:w-full">
                                 <a class="cursor-pointer" wire:key='application-{{ $data->applicant_id }}'
                                     wire:click.prevent="updateSelection({{ $data->applicant_id }})">
                                     <div
@@ -330,7 +330,7 @@
                             <div class="flex flex-row">
                                 <li class="mb-2 font-bold">Resume:</li>
                                 @if ($applicationInfo->applicant_Resume === 1)
-                                    <p class="ms-4">AUTO-GENERATED</p>
+                                    <p class="ms-4">Auto-Generated Resume</p>
                                 @elseif($applicationInfo->applicant_Resume === 2)
                                     <p class="ms-4">Uploaded Resume</p>
                                 @endif
@@ -344,7 +344,7 @@
 
                             <div class="flex flex-row">
                                 <li class="mb-2 font-bold">Address:</li>
-                                <p class="ms-4">
+                                <p class="ms-4 uppercase">
                                     {{ $applicationInfo->job_posting->job_Address }},
                                     {{ $applicationInfo->job_posting->barangay->barangay_Name }},
                                     {{ $applicationInfo->job_posting->barangay->municipality->municipality_Name }},

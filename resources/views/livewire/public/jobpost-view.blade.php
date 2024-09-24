@@ -18,7 +18,8 @@
                         <div class="flex flex-col w-full h-full sm:ml-5 py-5 sm:mt-5">
 
                             <div class="flex flex-row">
-                                <h1 class=" text-4xl text-blue-500 sm:text-6xl font-bold uppercase">{{ $JobPost->job_Title }}
+                                <h1 class=" text-4xl text-blue-500 sm:text-6xl font-bold uppercase">
+                                    {{ $JobPost->job_Title }}
                                 </h1>
                             </div>
 
@@ -112,80 +113,29 @@
                             </div>
                         </div>
 
-                        <div class="Job-Remarks">
+                        @if ($JobPost->job_Remarks)
+                            <div class="Job-Remarks">
 
-                            <h1 class="text-xl text-blue-900 font-bold">Job Remarks</h1>
+                                <h1 class="text-xl text-blue-900 font-bold">Job Remarks</h1>
 
 
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
 
-                            <div class="p-2 no-tailwindcss-base">
-                                {!! $JobPost->job_Remarks !!}
+                                <div class="p-2 no-tailwindcss-base">
+                                    {!! $JobPost->job_Remarks !!}
 
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                     </div>
                 </div>
-
-
-
-
-                {{-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="flex flex-col w-full h-full p-5">
-    
-    
-                            <div class="About-Company">
-    
-                                <h1 class="text-xl text-blue-900 font-bold">About National University Baliwag</h1>
-    
-    
-                                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
-    
-                                <div class="mt-2">
-                                    National University (NU) Baliwag is a distinguished institution of higher education
-                                    situated
-                                    in Baliwag, Bulacan, Philippines. Committed to academic excellence, innovation, and
-                                    social
-                                    responsibility, NU Baliwag aims to empower minds and transform lives through quality
-                                    education and holistic development.
-    
-                                </div>
-                            </div>
-    
-                        </div>
-                    </div> --}}
             </div>
 
 
             <div class="col-span-4 sm:col-span-4">
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4">
                     <div class="flex flex-col w-full">
-
-                        {{-- @if (auth()->user()->usertype >= 5) --}}
-
-                        {{-- @if ($JobPost->job_Status == 'PENDING')
-                                <div class="bg-yellow-100 shadow rounded-lg p-6">
-                                    <div class="flex flex-row items-center justify-between">
-                                        <p class="text-yellow-700 font-bold text-xl">Application is Pending</p>
-                                    </div>
-                                </div>
-                            @elseif($JobPost->job_Status == 'REJECTED')
-                                <div class="bg-red-100 shadow rounded-lg p-6">
-                                    <div class="flex flex-row items-center justify-between">
-                                        <p class="text-red-700 font-bold text-xl">Application is Rejected</p>
-                                    </div>
-                                </div>
-
-
-                                <div class="flex flex-col w-full mt-4">
-                                    <x-input-label for="fname"> </i> PESO Remarks
-                                    </x-input-label>
-                                    <textarea id="message" rows="4" readonly
-                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="PESO Remarks">{{ $JobPost->peso_Remarks }}</textarea>
-                                </div>
-                            @endif --}}
 
                         @if (auth()->check() &&
                                 (auth()->user()->usertype >= 8 && auth()->user()->usertype < 11) &&
@@ -202,7 +152,7 @@
                             </div>
                         @endif
                         <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-4">
-                        {{-- @endif --}}
+
 
                         @if (!auth()->check() || auth()->user()->usertype <= 4)
                             @if ($isApplied == false)

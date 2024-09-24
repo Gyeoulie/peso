@@ -14,6 +14,7 @@ use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use App\Models\Program_Reg;
 use App\Models\Work_Exp;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -278,7 +279,7 @@ class JobseekerOverview extends Component
         $this->lname = $jobseeker->lname;
         $this->mname = $jobseeker->mname;
         $this->suffix = $jobseeker->suffix;
-        $this->birthdate = $jobseeker->birthdate;
+        $this->birthdate = Carbon::parse($jobseeker->birthdate)->format('Y-m-d');
         $this->gender = $jobseeker->gender;
         $this->civilstatus = $jobseeker->civilstatus;
         $this->religion = $jobseeker->religion;

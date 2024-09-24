@@ -65,8 +65,7 @@
 
 
                             <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">
-                                <h5
-                                    class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
+                                <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
                                     {{ $data->program_Title }}
                                 </h5>
                                 <hr class="mb-2">
@@ -118,7 +117,7 @@
                                 </svg>
                             </div>
                             {{-- SEARCH --}}
-                            <input wire:model.live.prevent='search' type="text" id="table-search-users"
+                            <input wire:model.live='search' type="search" id="table-search-users"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job posting">
                         </div>
@@ -520,16 +519,16 @@
     </div>
 
     <div id="sticky-banner" tabindex="-1"
-        class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-8 border-b border-gray-200 bg-blue-500">
+        class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-4 sm:p-8 border-b border-gray-200 bg-blue-500">
         <div class="flex items-center mx-auto">
-            <p class="flex items-center text-xl  text-white font-bold">
+            <p class="flex items-center text-sm sm:text-xl text-justify text-white font-bold">
 
                 </span>
                 <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Postings are
                     for testing purposes only and do not reflect actual opportunities.</span>
             </p>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center ml-4">
             <button data-dismiss-target="#sticky-banner" type="button"
                 class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-black hover:bg-gray-100 hover:text-gray-900 rounded-lg text-sm p-1.5">
                 <svg class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"

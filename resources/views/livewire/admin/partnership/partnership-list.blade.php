@@ -78,7 +78,7 @@
                                 </div>
 
                                 {{-- SEARCH --}}
-                                <input wire:model.live.prevent='search' type="text"
+                                <input wire:model.live='search' type="search"
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-64 md:w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search">
                             </div>

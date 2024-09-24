@@ -37,7 +37,7 @@
                             </div>
 
                             {{-- ELIGIBILITY SEARCH --}}
-                            <input wire:model.live.prevent='searchEligiblity' type="text" id="table-search-users"
+                            <input wire:model.live='searchEligiblity' type="search" id="table-search-users"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search eligibility">
                         </div>
@@ -234,7 +234,7 @@
                             </div>
 
                             {{-- ELIGIBILITY SEARCH --}}
-                            <input type="text" wire:model.live.prevent='searchLicense' id="table-search-users"
+                            <input type="search" wire:model.live='searchLicense' id="table-search-users"
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search license">
                         </div>
