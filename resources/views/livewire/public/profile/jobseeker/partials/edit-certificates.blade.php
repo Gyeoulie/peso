@@ -152,7 +152,7 @@
                         <x-slot name="content">
                             <!-- Search input -->
                             <div class="p-2">
-                                <input wire:model.live.prevent='search' wire:model="search" type="text"
+                                <input wire:model.live='search' wire:model="search" type="search"
                                     placeholder="Search..."
                                     class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
                                     @click.stop>

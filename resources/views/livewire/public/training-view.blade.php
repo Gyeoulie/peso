@@ -19,67 +19,6 @@
 
                     <div class="flex flex-col w-full">
 
-                        {{-- @if (auth()->user()->usertype >= 5)
-
-                            @if ($JobPost->job_Status == 'PENDING')
-                                <div class="bg-yellow-100 shadow rounded-lg p-6">
-                                    <div class="flex flex-row items-center justify-between">
-                                        <p class="text-yellow-700 font-bold text-xl">Application is Pending</p>
-                                    </div>
-                                </div>
-                            @elseif($JobPost->job_Status == 'REJECTED')
-                                <div class="bg-red-100 shadow rounded-lg p-6">
-                                    <div class="flex flex-row items-center justify-between">
-                                        <p class="text-red-700 font-bold text-xl">Application is Rejected</p>
-                                    </div>
-                                </div>
-
-
-                                <div class="flex flex-col w-full mt-4">
-                                    <x-input-label for="fname"> </i> PESO Remarks
-                                    </x-input-label>
-                                    <textarea id="message" rows="4" readonly
-                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="PESO Remarks">{{ $JobPost->peso_Remarks }}</textarea>
-                                </div>
-                            @endif
-
-                            @if (auth()->user()->usertype >= 8 && auth()->user()->peso->municipality_id == $JobPost->peso_municipality_id)
-                                <div class="flex flex-row items-center justify-center mt-2">
-                                    <a wire:navigate
-                                        href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
-                                        <x-primary-button class="w-[350px] h-[40px] justify-center">
-
-                                            View Job Applicants
-
-                                        </x-primary-button>
-                                    </a>
-                                </div>
-                            @endif
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-4">
-                        @endif
-
-                        @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
-                            @if ($isApplied == false)
-                                <div class="flex flex-row w-ful::withTrashed()l items-center justify-center mt-2">
-                                    <h1>Applicantion ends: <span
-                                            class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
-                                    </h1>
-                                </div>
-                                <div class="flex flex-row items-center justify-center mt-2">
-                                    <x-primary-button class="w-[350px] h-[40px] justify-center" x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'apply-modal')">
-                                        Apply
-                                    </x-primary-button>
-                                </div>
-                            @else
-                                <div class="flex flex-row w-full items-center justify-center mt-2">
-                                    <h1 class="text-xl font-semibold text-blue-500">You have already applied for this
-                                        job position.
-                                    </h1>
-                                </div>
-                            @endif --}}
-
                         @php
                             $currentDate = now(); // Get the current date and time
                             $deadline = $ProgramInfo->program_Deadline; // Deadline from your data
@@ -349,49 +288,25 @@
                             </div>
                         </div>
 
-                        <div class="Job-Remarks">
+                        @if ($ProgramInfo->program_Remarks)
+                            <div class="Job-Remarks">
 
-                            <h1 class="text-xl text-blue-900 font-bold">Remarks</h1>
+                                <h1 class="text-xl text-blue-900 font-bold">Remarks</h1>
 
 
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
 
-                            <div class="p-2 no-tailwindcss-base">
-                                {!! $ProgramInfo->program_Remarks !!}
+                                <div class="p-2 no-tailwindcss-base">
+                                    {!! $ProgramInfo->program_Remarks !!}
 
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                     </div>
                 </div>
 
 
-
-
-                {{-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="flex flex-col w-full h-full p-5">
-    
-    
-                            <div class="About-Company">
-    
-                                <h1 class="text-xl text-blue-900 font-bold">About National University Baliwag</h1>
-    
-    
-                                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
-    
-                                <div class="mt-2">
-                                    National University (NU) Baliwag is a distinguished institution of higher education
-                                    situated
-                                    in Baliwag, Bulacan, Philippines. Committed to academic excellence, innovation, and
-                                    social
-                                    responsibility, NU Baliwag aims to empower minds and transform lives through quality
-                                    education and holistic development.
-    
-                                </div>
-                            </div>
-    
-                        </div>
-                    </div> --}}
             </div>
         </div>
 

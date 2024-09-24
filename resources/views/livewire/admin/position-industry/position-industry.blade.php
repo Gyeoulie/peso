@@ -44,7 +44,7 @@
                                 </svg>
                             </div>
                             {{-- SEARCH --}}
-                            <input type="text" wire:model.live.prevent='searchPosition'
+                            <input type="search" wire:model.live='searchPosition'
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-40 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job position">
                         </div>
@@ -243,7 +243,7 @@
                                 </svg>
                             </div>
                             {{-- SEARCH --}}
-                            <input type="text" wire:model.live.prevent='searchIndustry'
+                            <input type="search" wire:model.live='searchIndustry'
                                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for industry">
                         </div>

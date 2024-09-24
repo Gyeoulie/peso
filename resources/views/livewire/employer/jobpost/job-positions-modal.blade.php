@@ -21,7 +21,7 @@
                         </div>
 
                         {{-- LICENSE SEARCH --}}
-                        <input type="text"
+                        <input wire:modal.live='search' type="search"
                             class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search municipality">
                     </div>
@@ -71,7 +71,8 @@
                                     class="bg-white border-b hover:bg-gray-50">
                                     <td class="px-6 py-4 text-center">
 
-                                        <button wire:click.prevent='tagSelect({{ $data->position_id }})'
+                                        <button wire:loading.attr='disabled'
+                                            wire:click.prevent='tagSelect({{ $data->position_id }})'
                                             class="text-blue-500 hover:underline">Select</button>
 
                                     </td>
@@ -90,7 +91,7 @@
             </div>
 
             {{-- PAGINATION --}}
-            <div>
+            <div class="mt-4">
                 {{ $jobposition->links('vendor.livewire.tailwind') }}
             </div>
 

@@ -12,6 +12,13 @@ class IndustryModal extends Component
     use WithPagination, WithoutUrlPagination;
     public $search;
 
+    
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+    
     public function industrySelect($id)
     {
         $this->dispatch('industrySelect', $id);

@@ -521,7 +521,7 @@
                                     </svg>
                                 </div>
                                 {{-- SEARCH --}}
-                                <input type="text" wire:model.live.prevent='search'
+                                <input type="search" wire:model.live='search'
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for job position">
                             </div>
@@ -739,7 +739,7 @@
                     <x-slot name="content">
                         <!-- Search input -->
                         <div class="p-2">
-                            <input wire:model.debounce.300ms='searchMun' type="text" placeholder="Search..."
+                            <input wire:model.live='searchMun' type="search" placeholder="Search..."
                                 class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
                                 @click.stop>
                         </div>

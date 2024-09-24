@@ -140,6 +140,7 @@ class Location extends Component
                 $validationData[$type]['model']::create($dataToCreate);
 
                 toastr()->success($validationData[$type]['successMessage']);
+                $this->resetExcept('defaultFilter');
             } catch (\Exception $e) {
                 dd($e->getMessage());
                 toastr()->error('There was an Error');
@@ -287,6 +288,7 @@ class Location extends Component
 
                     DB::commit();
                     $this->close('bar-edit');
+                    $this->resetExcept('defaultFilter');
 
                 } catch (\Exception $e) {
                     DB::rollBack();
@@ -338,6 +340,7 @@ class Location extends Component
 
                 DB::commit();
                 $this->close('mun-edit');
+                $this->resetExcept('defaultFilter');
             } catch (\Exception $e) {
                 DB::rollBack();
                 $this->close('mun-edit');
@@ -378,6 +381,8 @@ class Location extends Component
 
                 DB::commit();
                 $this->close('prov-edit');
+                $this->resetExcept('defaultFilter');
+
             } catch (\Exception $e) {
                 DB::rollBack();
                 $this->close('prov-edit');

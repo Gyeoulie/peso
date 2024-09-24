@@ -28,7 +28,7 @@
                     <x-slot name="content">
                         <!-- Search input -->
                         <div class="p-2">
-                            <input wire:model.live.prevent='search' type="text" placeholder="Search..."
+                            <input wire:model.live='search' type="searcdh" placeholder="Search..."
                                 class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
                                 @click.stop>
                         </div>

@@ -185,7 +185,7 @@
 
                         </div>
                         <div class="flex flex-col w-full">
-                            <livewire:modals.barangay-modal />
+                            <livewire:modals.barangay-signup-modal />
                             <x-input-label for="city" :value="__('Barangay')" />
                             <x-text-input wire:model='bar' class="block mt-1 w-full" type="text" readonly
                                 x-data="" x-on:click.prevent="dispatch('open-modal', 'barangay-modal')"
@@ -478,7 +478,7 @@
                                     </svg>
                                 </div>
                                 {{-- SEARCH --}}
-                                <input wire:model.live='searchLang' type="text"
+                                <input wire:model.live='searchLang' type="search"
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for language">
                             </div>
