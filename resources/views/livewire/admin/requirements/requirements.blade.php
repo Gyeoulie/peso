@@ -19,8 +19,8 @@
 
                 <div class="relative overflow-x-auto">
 
-                    <div
-                        class="flex p-1 items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -36,13 +36,11 @@
                             </div>
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
                         {{-- ADD BUTTON --}}
-                        <div class="mr-3">
-
-
+                        <div class="flex flex-wrap mr-3 gap-2">
                             <x-dropdown align="right" width="48">
                                 <x-slot name="trigger">
                                     <button

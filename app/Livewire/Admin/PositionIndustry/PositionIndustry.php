@@ -370,8 +370,8 @@ class PositionIndustry extends Component
             $industryQuery->where('industry_Status', 2);
         }
 
-        $industry = $industryQuery->paginate($this->rows, ['*'], 'industry');
-        $jobpositions = $jobpositionsQuery->paginate($this->rows, ['*'], 'position');
+        $industry = $industryQuery->orderBy('industry_Title', 'asc')->paginate($this->rows, ['*'], 'industry');
+        $jobpositions = $jobpositionsQuery->orderBy('position_Title', 'asc')->paginate($this->rows, ['*'], 'position');
 
         return view('livewire.admin.position-industry.position-industry', compact('industry', 'jobpositions'));
     }

@@ -17,22 +17,22 @@
                 </div>
 
                 {{-- DEACTIVATE BUTTON --}}
-                @if( $isResident == true)
-                <div class="flex flex-col ml-auto mr-0">
-                    @if ($jobseeker->user->userstatus == 1)
-                        <button type="button" x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', 'deactivate-modal')"
-                            class="bg-red-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-red-600 hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
-                            Deactivate Account
-                        </button>
-                    @elseif($jobseeker->user->userstatus == 2)
-                        <button type="button" x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', 'reactivate-modal')"
-                            class="bg-green-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-green-600 hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
-                            Reactivate Account
-                        </button>
-                    @endif
-                </div>
+                @if ($isResident == true)
+                    <div class="flex flex-col ml-auto mr-0">
+                        @if ($jobseeker->user->userstatus == 1)
+                            <button type="button" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'deactivate-modal')"
+                                class="bg-red-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-red-600 hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
+                                Deactivate Account
+                            </button>
+                        @elseif($jobseeker->user->userstatus == 2)
+                            <button type="button" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'reactivate-modal')"
+                                class="bg-green-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-green-600 hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
+                                Reactivate Account
+                            </button>
+                        @endif
+                    </div>
                 @endif
 
             </div>
@@ -165,37 +165,37 @@
                         Overview
                     </button>
                 </li>
-                @if( $isResident == true)
-                <li>
-                    <button @click="selectedTab = 2" :class="selectedTab === 2 ? activeTab : inactiveTab"
-                        class="inline-flex items-center px-4 py-3 rounded-lg w-full">
-                        <svg :class="selectedTab === 2 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z"
-                                clip-rule="evenodd" />
-                        </svg>
+                @if ($isResident == true)
+                    <li>
+                        <button @click="selectedTab = 2" :class="selectedTab === 2 ? activeTab : inactiveTab"
+                            class="inline-flex items-center px-4 py-3 rounded-lg w-full">
+                            <svg :class="selectedTab === 2 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z"
+                                    clip-rule="evenodd" />
+                            </svg>
 
-                        Security
-                    </button>
-                </li>
-                <li>
-                    <button @click="selectedTab = 3" :class="selectedTab === 3 ? activeTab : inactiveTab"
-                        class="inline-flex items-center px-4 py-3 rounded-lg w-full" aria-current="page">
+                            Security
+                        </button>
+                    </li>
+                    <li>
+                        <button @click="selectedTab = 3" :class="selectedTab === 3 ? activeTab : inactiveTab"
+                            class="inline-flex items-center px-4 py-3 rounded-lg w-full" aria-current="page">
 
-                        <svg :class="selectedTab === 3 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M15.988 3.012A2.25 2.25 0 0 1 18 5.25v6.5A2.25 2.25 0 0 1 15.75 14H13.5V7A2.5 2.5 0 0 0 11 4.5H8.128a2.252 2.252 0 0 1 1.884-1.488A2.25 2.25 0 0 1 12.25 1h1.5a2.25 2.25 0 0 1 2.238 2.012ZM11.5 3.25a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 .75.75v.25h-3v-.25Z"
-                                clip-rule="evenodd" />
-                            <path fill-rule="evenodd"
-                                d="M2 7a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7Zm2 3.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Zm0 3.5a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z"
-                                clip-rule="evenodd" />
-                        </svg>
+                            <svg :class="selectedTab === 3 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M15.988 3.012A2.25 2.25 0 0 1 18 5.25v6.5A2.25 2.25 0 0 1 15.75 14H13.5V7A2.5 2.5 0 0 0 11 4.5H8.128a2.252 2.252 0 0 1 1.884-1.488A2.25 2.25 0 0 1 12.25 1h1.5a2.25 2.25 0 0 1 2.238 2.012ZM11.5 3.25a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 .75.75v.25h-3v-.25Z"
+                                    clip-rule="evenodd" />
+                                <path fill-rule="evenodd"
+                                    d="M2 7a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7Zm2 3.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Zm0 3.5a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z"
+                                    clip-rule="evenodd" />
+                            </svg>
 
-                        Audits
-                    </button>
-                </li>
+                            Audits
+                        </button>
+                    </li>
                 @endif
             </ul>
 
@@ -381,8 +381,7 @@
                             x-transition:enter-start="opacity-0 scale-90"
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
-                                <div
-                                    class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
+                                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
@@ -400,7 +399,7 @@
                                         {{-- SEARCH --}}
                                         <input wire:model.live='searchApplications' type="search"
                                             id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                          class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Applications">
                                     </div>
                                 </div>
@@ -557,9 +556,7 @@
                             x-transition:enter-start="opacity-0 scale-90"
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative overflow-x-auto p-1 mt-4">
-                                <div
-                                    class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
-
+                                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div
@@ -574,9 +571,8 @@
                                         </div>
 
                                         {{-- SEARCH --}}
-                                        <input wire:model.live='searchEvents' type="search"
-                                            id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        <input wire:model.live='searchEvents' type="search" id="table-search-users"
+                                          class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Events">
                                     </div>
                                 </div>
@@ -690,8 +686,7 @@
                             x-transition:enter-start="opacity-0 scale-90"
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
-                                <div
-                                    class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
+                                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
@@ -707,9 +702,8 @@
                                         </div>
 
                                         {{-- SEARCH --}}
-                                        <input wire:model.live='searchJobs' type="search"
-                                            id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        <input wire:model.live='searchJobs' type="search" id="table-search-users"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Jobs">
                                     </div>
                                 </div>
@@ -791,22 +785,23 @@
                                                         <td class="px-6 py-4 text-center">
                                                             <div class="flex flex-row  gap-5">
 
-                                                                @if(Auth::user()->peso_accounts->peso_id == $data->peso_id)
-                                                                <div x-data="{ tooltip: 'View Job Posting' }">
-                                                                    <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
-                                                                        x-tooltip="tooltip" type="button"
-                                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                        <svg class="h-5 w-5"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            viewBox="0 0 24 24" fill="currentColor">
-                                                                            <path
-                                                                                d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                                            <path fill-rule="evenodd"
-                                                                                d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                                                clip-rule="evenodd" />
-                                                                        </svg>
-                                                                    </a>
-                                                                </div>
+                                                                @if (Auth::user()->peso_accounts->peso_id == $data->peso_id)
+                                                                    <div x-data="{ tooltip: 'View Job Posting' }">
+                                                                        <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
+                                                                            x-tooltip="tooltip" type="button"
+                                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                            <svg class="h-5 w-5"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                viewBox="0 0 24 24"
+                                                                                fill="currentColor">
+                                                                                <path
+                                                                                    d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                                <path fill-rule="evenodd"
+                                                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                                    clip-rule="evenodd" />
+                                                                            </svg>
+                                                                        </a>
+                                                                    </div>
                                                                 @endif
 
                                                         </td>
@@ -1413,8 +1408,8 @@
 
 
 
-                <x-danger-button x-show="agreeBox" wire:loading.attr="disabled"
-                    wire:target='resetPassword' wire:click.prevent="resetPassword" class="ms-3" type="button">
+                <x-danger-button x-show="agreeBox" wire:loading.attr="disabled" wire:target='resetPassword'
+                    wire:click.prevent="resetPassword" class="ms-3" type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="resetPassword" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"

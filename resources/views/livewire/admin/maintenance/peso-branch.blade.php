@@ -18,8 +18,7 @@
 
                 <div class="relative overflow-x-auto">
 
-                    <div
-                        class="flex p-1 items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -35,11 +34,11 @@
                             </div>
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
                         {{-- ADD BUTTON --}}
-                        <div class="mr-3">
+                        <div class="flex flex-wrap mr-3 gap-2">
 
 
                             {{-- <x-dropdown align="right" width="48">
@@ -689,7 +688,8 @@
                         </div>
 
                         <div class="inline-flex justify-center items-center mt-4 w-full">
-                            <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="existingBox">
+                            <label class="relative flex items-center p-3 rounded-full cursor-pointer"
+                                for="existingBox">
                                 <input wire:model="existingBox" type="checkbox" id="existingBox"
                                     class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
                                 <span
@@ -702,14 +702,16 @@
                                     </svg>
                                 </span>
                             </label>
-                            <label class="mt-px font-light text-gray-700 cursor-pointer select-none" for="existingBox">
+                            <label class="mt-px font-light text-gray-700 cursor-pointer select-none"
+                                for="existingBox">
                                 Confirm the transaction
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="mt-6 flex justify-between">
-                    <x-secondary-button x-on:click="existingBox = false; $dispatch('close-modal', 'create-manger-modal')">
+                    <x-secondary-button
+                        x-on:click="existingBox = false; $dispatch('close-modal', 'create-manger-modal')">
                         {{ __('Cancel') }}
                     </x-secondary-button>
 

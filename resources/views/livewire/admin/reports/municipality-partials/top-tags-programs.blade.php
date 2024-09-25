@@ -6,7 +6,7 @@
 
             <button type="button" x-data=""
                 x-on:click.prevent="$dispatch('open-modal', 'filter-trainings-tags-modal')"
-                class="py-1.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
 
         </div>
         <hr class="h-px my-2 bg-gray-200 border-0">

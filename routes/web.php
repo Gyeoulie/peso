@@ -71,7 +71,6 @@ use Illuminate\Support\Facades\Route;
  */
 Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
 
-
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -126,7 +125,7 @@ Route::middleware(['auth', 'usertype:6', 'check.user.status', 'google2fa'])->gro
 
     Route::get('/apply', JobpostApplication::class)->name('jobpost.apply');
     Route::get('/jobpost/details/{id}', JobPostDetails::class)->name('jobpost.details');
-    Route::get('/jobpost/edit', JobPostEdit::class)->name('jobpost.edit');
+    Route::get('/edit/jobpost', JobPostEdit::class)->name('jobpost.edit');
 
     Route::get('/employer/jobpost', JobPostList::class)->name('employer.dashboard');
     Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');

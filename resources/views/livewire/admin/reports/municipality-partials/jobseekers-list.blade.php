@@ -18,7 +18,7 @@
     </div>
     <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+        <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative">
@@ -32,14 +32,14 @@
 
                 {{-- SEARCH --}}
                 <input wire:model.live='searchJobseekers' type="search"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search">
             </div>
 
-            <div class="flex flex-row gap-2">
+            <div class="flex flex-wrap mr-3 gap-2">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData('jobseekers')"
-                        class="flex items-center py-1.5 px-4 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <span class="mr-2">Export</span>
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -182,7 +182,7 @@
 
     <div x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+        <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative">
@@ -196,11 +196,11 @@
 
                 {{-- SEARCH --}}
                 <input wire:model.live='searchCompany' type="search"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search">
             </div>
 
-            <div class="flex flex-row gap-2">
+            <div class="flex flex-wrap mr-3 gap-2">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData('employers')"
                         class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
@@ -215,7 +215,7 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-employers-modal')"
-                    class="py-1.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                    class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -455,7 +455,7 @@
                     </div>
                 </div> --}}
 
-           
+
 
                 <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Civil Status</h1>
@@ -532,7 +532,8 @@
                             <input wire:model='mountFourPFilter' id="4ps-no" type="radio" value="2"
                                 name="4psFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">Not 4Ps Member</label>
+                            <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">Not 4Ps
+                                Member</label>
                         </div>
                     </div>
                 </div>
@@ -608,7 +609,7 @@
                         <option value="College Graduate">College Graduate</option>
                     </select>
                 </div>
-                
+
 
 
 

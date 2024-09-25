@@ -63,8 +63,8 @@
 
 
                     <div class="relative p-1 sm:mt-2">
-                        <div
-                            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                        <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+
 
                             <label for="table-search" class="sr-only">Search</label>
                             <div class="relative">
@@ -79,7 +79,7 @@
 
                                 {{-- SEARCH --}}
                                 <input wire:model.live='search' type="search"
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-64 md:w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search">
                             </div>
 

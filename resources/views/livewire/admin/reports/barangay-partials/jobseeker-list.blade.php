@@ -1,5 +1,6 @@
 <div>
-    <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+
 
         <label for="table-search" class="sr-only">Search</label>
         <div class="relative">
@@ -13,11 +14,11 @@
 
             {{-- SEARCH --}}
             <input wire:model.live='searchJobseekers' type="search"
-                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search">
         </div>
 
-        <div class="flex flex-row gap-2">
+        <div class="flex flex-wrap gap-2">
             <div x-data="{ tooltip: 'Export to Excel' }">
                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
                     class="flex items-center py-1.5 px-4 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
@@ -328,11 +329,12 @@
                             <input wire:model='mountFourPFilter' id="4ps-no" type="radio" value="2"
                                 name="4psFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">Not 4Ps Member</label>
+                            <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">Not 4Ps
+                                Member</label>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Educational Attainment</h1>
 

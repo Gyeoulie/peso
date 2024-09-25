@@ -8,7 +8,7 @@
 
         <div class="col-span-4 sm:col-span-12 mt-5">
 
-            <div class="flex flex-row">
+            <div class="flex flex-col sm:flex-row justify-between gap-2">
 
                 <div class="flex flex-col">
                     <h1 class="text-xl font-medium">Employer ID: {{ $employer->company_id }}</h1>
@@ -17,7 +17,7 @@
                 </div>
 
                 {{-- DEACTIVATE BUTTON --}}
-                <div class="flex flex-row gap-2 ml-auto mr-0">
+                <div class="flex flex-row gap-4 justify-center">
                     <button type="button" x-data=""
                         x-on:click.prevent="$dispatch('open-modal', 'partnership-modal')"
                         class="bg-blue-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-blue-600 hover:scale-105 focus:ring-4 focus:ring-blue-300 focus:outline-none">
@@ -334,8 +334,7 @@
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
                                 <div
-                                    class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
-
+                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div
@@ -350,9 +349,8 @@
                                         </div>
 
                                         {{-- SEARCH --}}
-                                        <input wire:model.live='searchJobs' type="search"
-                                            id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-40 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        <input wire:model.live='searchJobs' type="search" id="table-search-users"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Jobs">
                                     </div>
                                 </div>
@@ -728,8 +726,8 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button x-show="cancelPartnership" wire:loading.attr="disabled" wire:click.prevent="updatePartnership()" class="ms-3"
-                    type="button">
+                <x-danger-button x-show="cancelPartnership" wire:loading.attr="disabled"
+                    wire:click.prevent="updatePartnership()" class="ms-3" type="button">
                     {{ __('Remove Partnership') }}
                     <div wire:loading.delay.long wire:target="updatePartnership()" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"

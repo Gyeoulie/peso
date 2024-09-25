@@ -156,9 +156,9 @@
                 <hr class="h-px my-4  bg-gray-200 border-0 dark:bg-gray-700">
 
                 <div class="relative ">
-                    <div class="flex flex-col sm:flex-row justify-between gap-2 w-full">
-                        <div
-                            class="flex items-center flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1 p-1">
+                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+
+                        <div>
 
                             <label for="table-search" class="sr-only">Search</label>
                             <div class="relative">
@@ -173,12 +173,12 @@
 
                                 {{-- SEARCH --}}
                                 <input wire:model.live='search' type="search" id="table-search-users"
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for Applicants">
                             </div>
                         </div>
 
-                        <div class="flex flex-row gap-2">
+                        <div class="flex flex-wrap mr-3 gap-2">
 
                             <div x-data="{ tooltip: 'Export to Excel' }">
                                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'

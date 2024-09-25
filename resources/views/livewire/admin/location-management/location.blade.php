@@ -15,8 +15,8 @@
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="relative overflow-x-auto">
 
-                    <div
-                        class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 p-1">
+                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -32,12 +32,12 @@
                             </div>
                             {{-- SEARCH --}}
                             <input wire:model.live="search" type="search"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
                         {{-- ADD BUTTON --}}
-                        <div class="mr-3">
+                        <div class="flex flex-wrap mr-3 gap-2">
 
                             <div class="flex flex-row items-center">
                                 <h1 class="text-md font-semibold mr-2">Filter by:</h1>
@@ -280,7 +280,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        @elseif ($defaultFilter === 'Provinces')
+                    @elseif ($defaultFilter === 'Provinces')
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
