@@ -502,9 +502,9 @@ class Dashboard extends Component
         $user = Auth::user();
         $formattedNotifications = $user && $user->company ? $this->companyNotifications($user->company->company_id) : [];
 
-        $jobposition = Job_Positions::where('position_Status', 1)->where('position_Title', 'like', '%' . $this->searchIndustry . '%')
+        $jobposition = Job_Positions::where('position_Status', 1)->where('position_Title', 'like', '%' . $this->searchTags . '%')
             ->paginate(8, ['*'], 'job_position');
-        $industry = Job_Industry::where('industry_Status', 1)->where('industry_Title', 'like', '%' . $this->searchTags . '%')
+        $industry = Job_Industry::where('industry_Status', 1)->where('industry_Title', 'like', '%' . $this->searchIndustry . '%')
             ->paginate(8, ['*'], 'job_industry');
 
         $announcements = $this->setAnnouncements($user);

@@ -583,7 +583,7 @@
 
                                 </th>
                                 <th scope="col" class="px-6 py-3 uppercase">
-                                    Job Position
+                                    Job Industry
                                 </th>
                                 <th scope="col" class="px-6 py-3 uppercase">
                                     Code
