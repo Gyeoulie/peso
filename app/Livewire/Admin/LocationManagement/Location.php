@@ -434,6 +434,7 @@ class Location extends Component
                 ->orWhereHas('municipality.province', function ($query) {
                     $query->where('province_Name', 'like', '%' . $this->search . '%');
                 })
+                ->orderBy('barangay_Name', 'asc')
                 ->paginate(10);
         } else if ($this->defaultFilter === 'Municipalities') {
             $locationData = Municipality::with('province')
@@ -441,10 +442,10 @@ class Location extends Component
                 ->orWhereHas('province', function ($query) {
                     $query->where('province_Name', 'like', '%' . $this->search . '%');
                 })
-                ->paginate(10);
+                ->orderBy('municipality_Name', 'asc')->paginate(10);
         } else if ($this->defaultFilter === 'Provinces') {
             $locationData = Province::where('province_Name', 'like', '%' . $this->search . '%')
-                ->paginate(10);
+            ->orderBy('province_Name', 'asc') ->paginate(10);
         }
 
         // MODALS FETCH
@@ -458,7 +459,7 @@ class Location extends Component
             ->paginate(10);
 
         $provinces = Province::where('province_Name', 'like', '%' . $this->searchProv . '%')
-            ->paginate(10);
+        ->orderBy('province_Name', 'asc')->paginate(10);
 
         return view('livewire.admin.location-management.location', compact('locationData', 'municipalities', 'provinces'));
     }

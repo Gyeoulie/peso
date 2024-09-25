@@ -4,8 +4,8 @@
 
             <ol class="flex items-center  w-full text-sm font-medium text-center text-gray-500  sm:text-base">
                 <li class="flex w-full justify-center items-center text-blue-600   ">
-                    <span class="flex items-center text-2xl justify-center">
-                        <svg class="w-4.5 h-4.5 sm:w-7 sm:h-7 me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    <span class="flex items-center text-lg sm:text-2xl justify-center">
+                        <svg class="w-6 h-6 sm:w-7 sm:h-7 me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                             fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M7.5 5.25a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0 1 12 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 0 1 7.5 5.455V5.25Zm7.5 0v.09a49.488 49.488 0 0 0-6 0v-.09a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5Zm-3 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
@@ -36,7 +36,7 @@
 
 
 
-                <div class="flex flex-row mt-2 w-full gap-4">
+                <div class="flex flex-col sm:flex-row mt-2 w-full gap-4">
 
                     <div class="flex flex-col w-full">
                         <x-input-label for="jobTitlePost">Job Title
@@ -56,7 +56,7 @@
 
                 <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
-                    <div class="flex flex-row gap-4 w-1/2">
+                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-1/2">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="minWagePost">Minimum Wage
@@ -136,7 +136,7 @@
 
                     </div>
 
-                    <div class="flex flex-row gap-4 w-full sm:w-2/3">
+                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-2/3">
                         <div class="flex flex-col w-full">
                             <x-input-label for="barPost">Barangay
                             </x-input-label>
@@ -169,7 +169,7 @@
 
                 <div class="flex flex-row my-4 w-full gap-4">
 
-                    <div class="flex flex-col ml w-1/2">
+                    <div class="flex flex-col ml w-full sm:w-1/2">
                         <x-input-label for="pesoPost">PESO Branch
                         </x-input-label>
                         <select wire:model='pesoPost' class="block mt-1 w-full rounded" disabled>
@@ -182,16 +182,16 @@
 
                 </div>
 
-                <div class="flex flex-row mt-4 w-full gap-4">
+                <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
-                    <div class="flex flex-col w-1/2">
+                    <div class="flex flex-col w-full sm:w-1/2">
                         <x-input-label for="durationPost">Job Posting Duration
                         </x-input-label>
                         <x-text-input wire:model='durationPost' class="block mt-1 w-full" type="date" disabled />
                         <x-input-error :messages="$errors->get('durationPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col w-1/3 mb-5">
+                    <div class="flex flex-col w-full sm:w-1/3 mb-5">
                         <x-input-label for="slotsPost">Job Slots
                         </x-input-label>
                         <x-text-input wire:model='slotsPost' class="block mt-1 w-full" type="text" disabled />
@@ -261,7 +261,7 @@
 
                 <div class="flex flex-col sm:flex-row w-full space-y-5 sm:sm:space-y-0 sm:space-x-5 mt-4">
 
-                    <div class="flex flex-col w-1/2 ">
+                    <div class="flex flex-col w-full sm:w-1/2 ">
                         <x-input-label for="descPost">Job Description
                         </x-input-label>
                         <div wire:ignore>
@@ -279,7 +279,7 @@
                     </div>
 
 
-                    <div class="flex flex-col w-1/2 ">
+                    <div class="flex flex-col w-full sm:w-1/2 ">
                         <x-input-label for="qualPost">Job Qualification
                         </x-input-label>
                         <div wire:ignore>

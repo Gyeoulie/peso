@@ -2,7 +2,9 @@
     <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
         <div class="col-span-4 sm:col-span-5">
 
-            <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+            <div
+                class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -15,10 +17,10 @@
 
                     {{-- SEARCH --}}
                     <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for applications">
                 </div>
-                <div class="flex flex-row gap-3 mr-3">
+                <div class="flex flex-wrap gap-2 mr-3">
 
                     <x-dropdown align="left" width="36">
                         <x-slot name="trigger">

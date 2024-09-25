@@ -157,7 +157,7 @@ class Requirements extends Component
             $query->where('requirement_Type', '=', $this->filter);
         }
 
-        $requirements = $query->paginate($this->rows);
+        $requirements = $query->orderBy('requirement_Title', 'asc')->paginate($this->rows);
         return view('livewire.admin.requirements.requirements', compact('requirements'));
     }
 }

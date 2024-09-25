@@ -17,9 +17,7 @@
                 </div>
 
                 <div class="relative overflow-x-auto">
-
-                    <div
-                        class="flex p-1 items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -35,11 +33,11 @@
                             </div>
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
                         {{-- ADD BUTTON --}}
-                        <div class="mr-3">
+                        <div class="flex flex-wrap mr-3 gap-2">
 
 
                             <x-dropdown align="right" width="48">
@@ -88,120 +86,123 @@
                     </div>
 
                     {{-- REQUIREMENT TABLE --}}
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 w-1/4">
-                                    Name
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Role
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Status
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
-                                    Created
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($adminAccounts->isEmpty())
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <td colspan="5">
-                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
-                                            <div class="p-6 bg-gray-100 rounded-full">
-                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                                                </svg>
+                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Role
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Status
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center">
+                                        Created
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
 
-                                            </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                No Records Found!
-                                            </p>
-                                        </div>
-
-                                    </td>
+                                    </th>
                                 </tr>
-                            @else
-                                @foreach ($adminAccounts as $data)
-                                    <tr wire:key='requirement-{{ $data->requirement_id }}'
-                                        class="bg-white border-b hover:bg-gray-50">
-                                        <th scope="row" class="text-gray-900 whitespace-nowrap">
-
-                                            <div class="ps-3 text-wrap">
-                                                <div class="text-base font-semibold">
-                                                    <div class="text-base font-semibold uppercase">
-                                                        {{ $data->peso_accounts->peso_accounts_Fname }}
-                                                        {{ $data->peso_accounts->peso_accounts_Mname ?? '' }}
-                                                        {{ $data->peso_accounts->peso_accounts_Lname }}
-                                                    </div>
-
-                                                </div>
-                                                <div class="font-normal text-gray-500 text-sm uppercase">
-                                                    {{ $data->peso_accounts->peso_accounts_Pnumber }}
+                            </thead>
+                            <tbody>
+                                @if ($adminAccounts->isEmpty())
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                <div class="p-6 bg-gray-100 rounded-full">
+                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-width="2"
+                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                    </svg>
 
                                                 </div>
-                                            </div>
-
-
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center uppercase">
-                                                @if ($data->usertype == 8)
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
-                                                    PESO Consultant
-                                                @elseif ($data->usertype == 9)
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2"></div>
-                                                    PESO Officer
-                                                @elseif ($data->usertype == 10)
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
-                                                    PESO Manager
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            Status
-                                        </td>
-                                        <td class="px-6 py-4 text-center">
-                                            <div class="text-base font-light uppercase text-sm">
-                                                {{ $data->updated_at->format('h:i A') }}
-                                            </div>
-                                            <div class="text-base font-medium uppercase text-sm">
-                                                {{ $data->updated_at->format('F d Y') }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-
-                                            <div class="flex flex-row items-center justify-center gap-6">
-                                                <div x-data="{ tooltip: 'PESO Account Overview' }">
-                                                    <a wire:navigate
-                                                        href="{{ route('admin-users-peso-overview', ['id' => $data->peso_accounts->peso_accounts_id]) }}"
-                                                        x-tooltip="tooltip" type="button"
-                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="currentColor">
-                                                            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                            <path fill-rule="evenodd"
-                                                                d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                                clip-rule="evenodd" />
-                                                        </svg>
-                                                    </a>
-                                                </div>
+                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                    No Records Found!
+                                                </p>
                                             </div>
 
                                         </td>
                                     </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                                @else
+                                    @foreach ($adminAccounts as $data)
+                                        <tr wire:key='requirement-{{ $data->requirement_id }}'
+                                            class="bg-white border-b hover:bg-gray-50">
+                                            <th scope="row" class="text-gray-900 whitespace-nowrap">
+
+                                                <div class="ps-3 text-wrap">
+                                                    <div class="text-base font-semibold">
+                                                        <div class="text-base font-semibold uppercase">
+                                                            {{ $data->peso_accounts->peso_accounts_Fname }}
+                                                            {{ $data->peso_accounts->peso_accounts_Mname ?? '' }}
+                                                            {{ $data->peso_accounts->peso_accounts_Lname }}
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                                        {{ $data->peso_accounts->peso_accounts_Pnumber }}
+
+                                                    </div>
+                                                </div>
+
+
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center uppercase">
+                                                    @if ($data->usertype == 8)
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
+                                                        PESO Consultant
+                                                    @elseif ($data->usertype == 9)
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2"></div>
+                                                        PESO Officer
+                                                    @elseif ($data->usertype == 10)
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
+                                                        PESO Manager
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                Status
+                                            </td>
+                                            <td class="px-6 py-4 text-center">
+                                                <div class="text-base font-light uppercase text-sm">
+                                                    {{ $data->updated_at->format('h:i A') }}
+                                                </div>
+                                                <div class="text-base font-medium uppercase text-sm">
+                                                    {{ $data->updated_at->format('F d Y') }}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+
+                                                <div class="flex flex-row items-center justify-center gap-6">
+                                                    <div x-data="{ tooltip: 'PESO Account Overview' }">
+                                                        <a wire:navigate
+                                                            href="{{ route('admin-users-peso-overview', ['id' => $data->peso_accounts->peso_accounts_id]) }}"
+                                                            x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 24 24" fill="currentColor">
+                                                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                <path fill-rule="evenodd"
+                                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                    clip-rule="evenodd" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 {{-- PAGINATION --}}
@@ -316,7 +317,7 @@
                                 <textarea id="descModal" maxlength="400" rows="4"
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
                                     placeholder="Write your description here..." name="descPost" wire:model='pesoDesc'></textarea>
-                                    <x-input-error :messages="$errors->get('pesoDesc')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('pesoDesc')" class="mt-2" />
 
                             </div>
 

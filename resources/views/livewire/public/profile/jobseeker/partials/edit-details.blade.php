@@ -463,7 +463,7 @@
                     <div class="relative mt-4">
 
                         <div
-                            class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 ">
+                            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
                             <label for="table-search" class="sr-only">Search</label>
 
@@ -479,12 +479,12 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <input wire:model.live='searchLang' type="search"
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for language">
                             </div>
 
                             {{-- ADD BUTTON --}}
-                            <div class="inline-flex">
+                            <div class="flex flex-wrap mr-3 gap-2">
                                 <x-primary-button wire:click.prevent="openModal('language')" type="button"
                                     class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900">
                                     Add Language</x-primary-button>
@@ -642,8 +642,7 @@
                     <div class="relative mt-4">
 
                         <div
-                            class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 ">
-
+                            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
                             <label for="table-search" class="sr-only">Search</label>
 
 
@@ -658,12 +657,12 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <input wire:model.live='search' type="text"
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for eligibility">
                             </div>
 
                             {{-- ADD BUTTON --}}
-                            <div class="inline-flex">
+                            <div class="flex flex-wrap mr-3 gap-2">
                                 <x-primary-button wire:click.prevent="openModal('eligibility')" type="button"
                                     class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900"
                                     x-data="">
@@ -786,7 +785,7 @@
                     <div class="relative mt-4">
 
                         <div
-                            class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 ">
+                            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
                             <label for="table-search" class="sr-only">Search</label>
 
@@ -802,12 +801,12 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <input type="text" wire:model.live.prevent='search'
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for job position">
                             </div>
 
                             {{-- ADD BUTTON --}}
-                            <div class="inline-flex">
+                            <div class="flex flex-wrap mr-3 gap-2">
                                 <x-primary-button wire:click.prevent="openModal('license')" type="button"
                                     class="bg-blue-400 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900"
                                     x-data="">
@@ -928,15 +927,18 @@
                     <div class="flex flex-row my-4 w-full gap-4 mt-4">
                         <div class="flex flex-col w-full">
 
-                            <div class="flex flex-col sm:flex-row w-full sm:justify-between">
+                            <div class="flex flex-col sm:flex-row w-full sm:justify-between gap-2">
 
-                                <x-input-label for="fname"> </i>Job Preference
-                                </x-input-label>
+                                <span class="text-xl font-bold">Job Preference</span>
 
-                                <x-primary-button type="button" x-data=""
-                                    x-on:click.prevent="$dispatch('open-modal', 'job-position-modal')">
-                                    Add Job Preference
-                                </x-primary-button>
+                                <div class="flex flex-wrap mr-3 gap-2">
+
+
+                                    <x-primary-button type="button" x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'job-position-modal')">
+                                        Add Job Preference
+                                    </x-primary-button>
+                                </div>
 
                             </div>
 
@@ -972,13 +974,15 @@
 
                             <div class="flex flex-col sm:flex-row w-full sm:justify-between">
 
-                                <x-input-label for="fname"> </i>Industry Preference
-                                </x-input-label>
 
-                                <x-primary-button type="button" x-data=""
-                                    x-on:click.prevent="$dispatch('open-modal', 'industry-modal')">
-                                    Add Industry Preference
-                                </x-primary-button>
+                                <span class="text-xl font-bold">Industry Preference</span>
+
+                                <div class="flex flex-wrap mr-3 gap-2">
+                                    <x-primary-button type="button" x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'industry-modal')">
+                                        Add Industry Preference
+                                    </x-primary-button>
+                                </div>
 
                             </div>
                             <div

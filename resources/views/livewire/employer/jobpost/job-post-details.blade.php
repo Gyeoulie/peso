@@ -304,7 +304,8 @@
                         <div class="relative">
 
                             <div
-                                class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 md:mx-1">
+                                class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+
                                 <div>
 
                                     <label for="table-search" class="sr-only">Search</label>
@@ -323,7 +324,7 @@
                                         {{-- SEARCH --}}
                                         <input wire:model.live='applicantSearch' type="search"
                                             id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search applicants">
                                     </div>
                                 </div>

@@ -227,7 +227,7 @@ class Certificates extends Component
             $query->where('cert_Status', 2);
         }
 
-        $certificate_type = $query->paginate($this->rows);
+        $certificate_type = $query->orderBy('cert_Name', 'asc')->paginate($this->rows);
 
         return view('livewire.admin.certificates.certificates', compact('certificate_type'));
     }

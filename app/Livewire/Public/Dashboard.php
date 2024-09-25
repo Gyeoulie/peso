@@ -6,6 +6,8 @@ use App\Models\Announcements;
 use App\Models\Barangay;
 use App\Models\Education;
 use App\Models\Industry_preference;
+use App\Models\Job_Industry;
+use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use App\Models\PESO;
@@ -52,14 +54,46 @@ class Dashboard extends Component
         '26' => 'MASTERAL/POST GRADUATE',
     ];
 
-    public $search;
+    public $search, $searchIndustry, $searchTags;
     public $filter = 'All';
     public $sort = 'Newest';
     public $pagination = 5;
 
+    public $filterJobTags = [], $filterIndustry = [], $mountJobTagsFilter = [], $mountIndustryFilter = [];
+    public function mountJobTags()
+    {
+        $this->filterJobTags = $this->mountJobTagsFilter;
+        $this->dispatch('close-modal', 'job-tag-filter-modal');
+
+    }
+    public function mountIndustry()
+    {
+        $this->filterIndustry = $this->mountIndustryFilter;
+        $this->dispatch('close-modal', 'industry-filter-modal');
+
+    }
+
+    public function resetJobTags()
+    {
+        $this->reset('filterJobTags', 'mountJobTagsFilter');
+
+    }
+    public function resetIndustry()
+    {
+        $this->reset('filterIndustry', 'mountIndustryFilter');
+
+    }
     public function updatedSearch()
     {
         $this->resetPage();
+    }
+    public function updatedSearchIndustry()
+    {
+        $this->resetPage('job_industry');
+    }
+    public function updatedSearchTags()
+    {
+        $this->resetPage('job_position');
     }
     public function mount()
     {
@@ -189,6 +223,19 @@ class Dashboard extends Component
             });
         }
 
+        // Apply the job_tags and industry filters
+        if (!empty($this->filterJobTags)) {
+            $query->whereHas('job_tags', function ($query) {
+                $query->whereIn('position_id', $this->filterJobTags);
+            });
+        }
+
+        if (!empty($this->filterIndustry)) {
+            $query->whereHas('job_industry', function ($query) {
+                $query->whereIn('industry_id', $this->filterIndustry);
+            });
+        }
+
         if ($this->search) {
             $query->where(function ($query) {
                 $query->whereHas('company', function ($query) {
@@ -227,7 +274,7 @@ class Dashboard extends Component
                 //     break;
         }
 
-        return $query->paginate($this->pagination);
+        return $query->paginate($this->pagination, ['*'], 'jobs');
     }
 
     public function companyNotifications($empID)
@@ -452,10 +499,14 @@ class Dashboard extends Component
 
         $user = Auth::user();
         $formattedNotifications = $user && $user->company ? $this->companyNotifications($user->company->company_id) : [];
-        // dd($formattedNotifications);
+
+        $jobposition = Job_Positions::where('position_Status', 1)->where('position_Title', 'like', '%' . $this->searchIndustry . '%')
+            ->paginate(8, ['*'], 'job_position');
+        $industry = Job_Industry::where('industry_Status', 1)->where('industry_Title', 'like', '%' . $this->searchTags . '%')
+            ->paginate(8, ['*'], 'job_industry');
 
         $announcements = $this->setAnnouncements($user);
 
-        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements'));
+        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements', 'jobposition', 'industry'));
     }
 }

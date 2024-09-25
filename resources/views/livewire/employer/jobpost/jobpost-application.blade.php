@@ -52,7 +52,7 @@
                 <h1 class="text-5xl font-bold mt-4 mb-4">Fill in the Details</h1>
 
 
-                <div class="flex flex-row mt-4 w-full gap-4">
+                <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
                     <div class="flex flex-col w-full">
                         <x-input-label for="jobTitlePost">Job Title
@@ -74,7 +74,7 @@
 
                 <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
-                    <div class="flex flex-row gap-4 w-full">
+                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-1/2">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="minWagePost">Minimum Wage
@@ -154,7 +154,7 @@
 
                     </div>
 
-                    <div class="flex flex-row gap-4 w-full sm:w-2/3">
+                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-2/3">
                         <div class="flex flex-col w-full">
                             <x-input-label for="barPost">Barangay
                             </x-input-label>
@@ -189,7 +189,7 @@
 
                 <div class="flex flex-row my-4 w-full gap-4">
 
-                    <div class="flex flex-col w-1/2">
+                    <div class="flex flex-col w-full sm:w-1/2">
                         <x-input-label for="pesoPost">PESO Branch
                         </x-input-label>
                         <select wire:model='pesoPost' class="block mt-1 w-full rounded">
@@ -205,16 +205,16 @@
 
                 </div>
 
-                <div class="flex flex-row mt-4 w-full gap-4">
+                <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
-                    <div class="flex flex-col w-1/2">
+                    <div class="flex flex-col w-full sm:w-1/2">
                         <x-input-label for="durationPost">Job Posting Duration
                         </x-input-label>
                         <x-text-input wire:model='durationPost' class="block mt-1 w-full" type="date" />
                         <x-input-error :messages="$errors->get('durationPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col w-1/3 mb-5">
+                    <div class="flex flex-col w-full sm:w-1/3 mb-5">
                         <x-input-label for="slotsPost">Job Slots
                         </x-input-label>
                         <x-text-input wire:model='slotsPost' class="block mt-1 w-full" type="text" />
@@ -285,7 +285,7 @@
 
                 <div class="flex flex-col sm:flex-row w-full space-y-5 sm:sm:space-y-0 sm:space-x-5 mt-4">
 
-                    <div class="flex flex-col w-1/2 ">
+                    <div class="flex flex-col w-full sm:w-1/2 ">
                         <x-input-label for="descPost">Job Description
                         </x-input-label>
                         <div wire:ignore>
@@ -303,7 +303,7 @@
                     </div>
 
 
-                    <div class="flex flex-col w-1/2 ">
+                    <div class="flex flex-col w-full sm:w-1/2 ">
                         <x-input-label for="qualPost">Job Qualification
                         </x-input-label>
                         <div wire:ignore>

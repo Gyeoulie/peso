@@ -371,10 +371,10 @@ class EligibilityLicense extends Component
         }
 
         // Paginate eligibility query
-        $eligibility = $eligibilityQuery->paginate($this->rows, ['*'], 'eligibility');
+        $eligibility = $eligibilityQuery ->orderBy('eligibility_Name', 'asc')->paginate($this->rows, ['*'], 'eligibility');
 
 // Paginate license query
-        $license = $licenseQuery->paginate($this->rows, ['*'], 'license');
+        $license = $licenseQuery ->orderBy('license_Name', 'asc')->paginate($this->rows, ['*'], 'license');
 
         return view('livewire.admin.eligibility-license.eligibility-license', compact('eligibility', 'license'));
     }

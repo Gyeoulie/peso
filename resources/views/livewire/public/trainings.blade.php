@@ -34,7 +34,8 @@
     <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
         <div
-            class="flex flex-col sm:flex-row p-1 sm:items-center sm:justify-between flex-column flex-wrap sm:flex-row gap-2 space-y-4 sm:space-y-0 pb-4">
+            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+
 
             <label for="table-search" class="sr-only">Search</label>
 
@@ -55,7 +56,7 @@
 
             {{-- FILTER BUTTON --}}
 
-            <div class="flex flex-row gap-2">
+            <div class="flex flex-wrap gap-2">
                 @if (Auth::check() && auth()->user()->usertype != 5)
                     <x-dropdown align="left" width="36">
                         <x-slot name="trigger">
@@ -287,7 +288,8 @@
                         <div class="bg-white overflow-hidden sm:rounded-lg p-2 overflow-visible">
                             <div class="relative">
                                 <div
-                                    class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-2 md:space-y-0 pb-4 bg-white md:px-4 md:pt-4 overflow-visible ">
+                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+
                                     <div class="flex flex-col sm:flex-row w-full justify-between gap-4 mb-4">
                                         {{-- SEARCH BOX --}}
                                         <div class="flex">
@@ -304,7 +306,7 @@
                                                     </svg>
                                                 </div>
                                                 <input wire:model.live.prevent='searchHistory' type="text"
-                                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                                     placeholder="Search for trainings">
                                             </div>
                                         </div>

@@ -9,7 +9,8 @@
     <div wire:poll class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
         <div class="col-span-4 sm:col-span-5">
 
-            <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+            <div
+                class="flex flex-col sm:flex-row p-1 sm:items-center sm:jstify-between flex-column flex-wrap sm:flex-row gap-2 space-y-4 sm:space-y-0 pb-4">
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -22,10 +23,10 @@
 
                     {{-- SEARCH --}}
                     <input wire:model.live='postSearch' type="search" id="table-search-users"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for job posting">
                 </div>
-                <div>
+                <div class="flex flex-wrap gap-2 mr-3">
 
                     <x-dropdown align="right" width="36">
                         <x-slot name="trigger">
@@ -255,7 +256,8 @@
 
 
                         <div
-                            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 md:mx-1">
+                            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+
                             <div>
 
                                 <label for="table-search" class="sr-only">Search</label>
@@ -273,48 +275,51 @@
                                     {{-- SEARCH --}}
                                     <input wire:model.live.prevent='applicantSearch' type="text"
                                         id="table-search-users"
-                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Search applicants">
                                 </div>
                             </div>
 
                             {{-- DROP DOWN BUTTON --}}
+                            <div class="flex flex-wrap mr-2 gap-2">
+                                <x-dropdown align="right" width="48">
+                                    <x-slot name="trigger">
+                                        <button
+                                            class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                            <div>
+                                                {{ $sortDate === 'ASC' ? 'Oldest' : ($sortDate == 'DESC' ? 'Newest' : 'Sort by Date') }}
+                                            </div>
 
-                            <x-dropdown align="right" width="48">
-                                <x-slot name="trigger">
-                                    <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
-                                        <div>
-                                            {{ $sortDate === 'ASC' ? 'Oldest' : ($sortDate == 'DESC' ? 'Newest' : 'Sort by Date') }}
-                                        </div>
-
-                                        <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                    </button>
-                                </x-slot>
-
-
-                                <x-slot name="content">
-                                    <x-slot name="contentClasses">
-                                        max-h-[300px] bg-white
+                                            <div class="ms-1">
+                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </button>
                                     </x-slot>
 
-                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('DESC')">
-                                        Newest
-                                    </x-dropdown-link>
 
-                                    <!-- Authentication -->
-                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('ASC')">
-                                        Oldest
-                                    </x-dropdown-link>
-                                </x-slot>
-                            </x-dropdown>
+                                    <x-slot name="content">
+                                        <x-slot name="contentClasses">
+                                            max-h-[300px] bg-white
+                                        </x-slot>
+
+                                        <x-dropdown-link class="cursor-pointer"
+                                            wire:click.prevent="updateSort('DESC')">
+                                            Newest
+                                        </x-dropdown-link>
+
+                                        <!-- Authentication -->
+                                        <x-dropdown-link class="cursor-pointer"
+                                            wire:click.prevent="updateSort('ASC')">
+                                            Oldest
+                                        </x-dropdown-link>
+                                    </x-slot>
+                                </x-dropdown>
+                            </div>
 
 
                         </div>
