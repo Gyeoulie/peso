@@ -76,22 +76,24 @@ class Dashboard extends Component
     public function resetJobTags()
     {
         $this->reset('filterJobTags', 'mountJobTagsFilter');
+        $this->resetPage('job_position');
 
     }
     public function resetIndustry()
     {
         $this->reset('filterIndustry', 'mountIndustryFilter');
+        $this->resetPage('job_industry');
 
     }
     public function updatedSearch()
     {
-        $this->resetPage();
+        $this->resetPage('jobs');
     }
-    public function updatedSearchIndustry()
+    public function updatedsearchIndustry()
     {
         $this->resetPage('job_industry');
     }
-    public function updatedSearchTags()
+    public function updatedsearchTags()
     {
         $this->resetPage('job_position');
     }
