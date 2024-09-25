@@ -77,9 +77,9 @@ class ApplicantName extends Component
         $imgPath = $this->pimage->store('temp/user_data', 'public');
 
         $this->dispatch('handleStepData', $this->stepNumber, [
-            'fname' => $this->fname,
-            'mname' => $this->mname,
-            'lname' => $this->lname,
+            'fname' => ucwords(strtolower($this->fname)),
+            'mname' => ucwords(strtolower($this->mname)),
+            'lname' => ucwords(strtolower($this->lname)),
             'suffix' => $this->suffix,
             'bday' => $this->bday,
             'gender' => $this->gender,
