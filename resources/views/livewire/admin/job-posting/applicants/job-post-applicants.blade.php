@@ -236,7 +236,7 @@
                                 @foreach ($jobApplicants as $applicants)
                                     <tr class="bg-white border-b hover:bg-gray-50">
                                         <td class="px-6 py-4">
-                                            <div class="text-base text-black font-semibold">
+                                            <div class="text-base text-black font-semibold uppercase">
                                                 {{ $applicants->employee->fname }}
                                                 {{ $applicants->employee->mname }}
                                                 {{ $applicants->employee->lname }}
