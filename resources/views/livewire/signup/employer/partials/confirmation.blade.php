@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
-        <x-secondary-button wire:click.prevent='prev' type="button">
+        <x-secondary-button wire:loading.attr='disabled' wire:click.prevent='prev' type="button">
             Previous
         </x-secondary-button>
         <x-green-button wire:click.prevent='save' x-show="agreeBox">

@@ -55,7 +55,7 @@
 
             <div class="flex flex-col items-center  text-center">
                 <h1 class="sm:hidden  text-2xl font-bold mb-2"><span class="text-blue-500">Step
-                        {{ $this->currentStep }}</span> / 3</h1>
+                        {{ $this->currentStep }}</span> / 5</h1>
             </div>
 
             <div class="flex flex-row h-full w-full">
