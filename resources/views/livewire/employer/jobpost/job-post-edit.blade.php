@@ -232,7 +232,8 @@
                                 <span
                                     class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
                                     {{ $tag['position_Title'] }}
-                                    <button wire:click.prevent="removeTag({{ $tag['position_id'] }})" type="button"
+                                    <button wire:loading.attr="disabled"
+                                        wire:click.prevent="removeTag({{ $tag['position_id'] }})" type="button"
                                         class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
                                         <span class="sr-only">Remove badge</span>
                                         <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +314,8 @@
                 </div>
 
                 <div class="flex flex-row justify-end mt-4 mb-4 ">
-                    <x-green-button wire:click.prevent='validateInput' type="button">Save</x-green-button>
+                    <x-green-button wire:loading.attr="disabled" wire:click.prevent='validateInput'
+                        type="button">Save</x-green-button>
                 </div>
 
 
