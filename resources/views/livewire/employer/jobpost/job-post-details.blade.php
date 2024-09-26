@@ -234,7 +234,7 @@
 
                     <div class="flex flex-row mt-4 w-full gap-4">
                         <div class="flex flex-col w-full">
-                            <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job
+                            <x-input-label for="fname"></i> Job
                                 Qualification
                             </x-input-label>
                             <div
@@ -248,7 +248,7 @@
 
                     <div class="flex flex-row mt-4 w-full gap-4">
                         <div class="flex flex-col w-full">
-                            <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job
+                            <x-input-label for="fname"></i> Job
                                 Company Remarks
                             </x-input-label>
                             <div

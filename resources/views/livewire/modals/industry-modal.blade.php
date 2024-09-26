@@ -6,7 +6,8 @@
         <hr>
 
         <div class="relative mt-4">
-            <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+            <div
+                class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
 
 
                 <label for="table-search" class="sr-only">Search</label>
@@ -37,7 +38,7 @@
 
                             </th>
                             <th scope="col" class="px-6 py-3 uppercase">
-                                Job Position
+                                Job Industry
                             </th>
                             <th scope="col" class="px-6 py-3 uppercase">
                                 Code
