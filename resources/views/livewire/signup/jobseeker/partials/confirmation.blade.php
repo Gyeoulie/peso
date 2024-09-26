@@ -38,7 +38,7 @@
         <x-secondary-button wire:click.prevent='prev' type="button">
             Previous
         </x-secondary-button>
-        <x-green-button wire:click.prevent='save' x-show="agreeBox">
+        <x-green-button wire:loading.attr='disabled' wire:click.prevent='save' x-show="agreeBox">
             Submit
             <div wire:loading.delay.long role="status">
                 <svg aria-hidden="true" class="w-5 h-5 text-gray-200 animate-spin fill-blue-600 ml-4"
