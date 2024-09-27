@@ -51,7 +51,15 @@ class EditDetails extends Component
     {
         return [
             // BASIC INFORMATION
-            'companyImage' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'companyImage' => 'nullable|image|mimes:jpeg,png,jpg',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'companyImage.image' => 'The file must be an image.',
+            'companyImage.mimes' => 'The image must be of type: jpeg, png, jpg.',
+            // 'pimg.max' => 'The image size must not exceed 5 MB.',
         ];
     }
 
@@ -383,12 +391,12 @@ class EditDetails extends Component
     {
         // Define validation rules and messages
         $rules = [
-            'req.*' => 'nullable|file|mimes:pdf|max:5120', // Max size 5MB, PDF only
+            'req.*' => 'nullable|file|mimes:pdf|max:15360', // Max size 5MB, PDF only
         ];
 
         $messages = [
             'req.*.mimes' => 'Uploaded file must be a PDF.',
-            'req.*.max' => 'Uploaded file must be under 5MB.',
+            'req.*.max' => 'Uploaded file must be under 15MB.',
         ];
 
         $this->validate($rules, $messages);

@@ -88,10 +88,10 @@
 
                         <x-input-error :messages="$errors->get('companyImage')" class="mt-2" />
                         <div class="mt-4 w-160 flex justify-center">
-                            <label for="imageUpload" wire:loading.attr="disabled"
+                            <label for="imageUpload" wire:loading.attr="disabled" wire:target="companyImage"
                                 class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 Upload Image
-                                <div wire:loading.delay.long wire:target="pimg" role="status">
+                                <div wire:loading.delay.long wire:target="companyImage" role="status">
                                     <svg aria-hidden="true"
                                         class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
                                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

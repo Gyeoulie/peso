@@ -68,13 +68,13 @@ class Partnerships extends Component
         ]);
 
         // dd($this->partnershipData);
-        $this->dispatch('nextStep');
+        $this->dispatch('nextStep', $this->stepNumber);
 
     }
 
     public function prev()
     {
-        $this->dispatch('prevStep');
+        $this->dispatch('prevStep', $this->stepNumber - 1);
 
     }
 
