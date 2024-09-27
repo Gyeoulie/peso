@@ -85,12 +85,12 @@ class ApplicantName extends Component
             'gender' => $this->gender,
             'pimage' => $imgPath,
         ]);
-        $this->dispatch('nextStep');
+        $this->dispatch('nextStep', $this->stepNumber);
     }
 
     public function prev()
     {
-        $this->dispatch('prevStep');
+        $this->dispatch('prevStep', $this->stepNumber - 1);
     }
 
     public function render()

@@ -8,6 +8,8 @@ class Confirmation extends Component
 {
     public $agreeBox = false;
 
+    public $stepNumber = 5;
+
     public function save()
     {
         $this->dispatch('saveUser');
@@ -15,7 +17,7 @@ class Confirmation extends Component
 
     public function prev()
     {
-        $this->dispatch('prevStep');
+        $this->dispatch('prevStep', $this->stepNumber - 1);
         $this->agreeBox = false;
     }
     public function render()

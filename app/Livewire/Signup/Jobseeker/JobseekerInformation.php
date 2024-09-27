@@ -234,15 +234,15 @@ class JobseekerInformation extends Component
     }
 
     #[On('nextStep')]
-    public function nextStep()
+    public function nextStep($id)
     {
-        $this->currentStep++;
+        $this->currentStep = $id;
     }
 
     #[On('prevStep')]
-    public function prevStep()
+    public function prevStep($id)
     {
-        $this->currentStep--;
+        $this->currentStep = $id;
     }
 
     public function render()

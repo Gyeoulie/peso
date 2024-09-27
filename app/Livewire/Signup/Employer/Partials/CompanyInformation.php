@@ -171,7 +171,7 @@ class CompanyInformation extends Component
             'industryData' => $this->industryData,
 
         ]);
-        $this->dispatch('nextStep');
+        $this->dispatch('nextStep', $this->stepNumber);
 
     }
 
