@@ -80,7 +80,7 @@ class EditDetails extends Component
     {
         return [
             // BASIC INFORMATION
-            'pimg' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'pimg' => 'nullable|image|mimes:jpeg,png,jpg',
         ];
     }
 
@@ -89,7 +89,7 @@ class EditDetails extends Component
         return [
             'pimg.image' => 'The file must be an image.',
             'pimg.mimes' => 'The image must be of type: jpeg, png, jpg.',
-            'pimg.max' => 'The image size must not exceed 5 MB.',
+            // 'pimg.max' => 'The image size must not exceed 5 MB.',
         ];
     }
 
@@ -188,12 +188,12 @@ class EditDetails extends Component
     public function saveResume()
     {
         $this->validate([
-            'newResume' => ['required', 'file', 'mimes:pdf', 'max:5120'], // 'max' is in kilobytes (5MB = 5120KB)
+            'newResume' => ['required', 'file', 'mimes:pdf', 'max:15360'], // 'max' is in kilobytes (5MB = 5120KB)
         ], [
             'newResume.required' => 'The resume file is required.',
             'newResume.file' => 'The resume must be a file.',
             'newResume.mimes' => 'The resume must be a PDF file.',
-            'newResume.max' => 'The resume may not be greater than 5MB in size.',
+            'newResume.max' => 'The resume may not be greater than 15MB in size.',
         ]);
 
         // Start a transaction

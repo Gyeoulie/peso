@@ -108,14 +108,14 @@ class ApplicantOverview extends Component
                     'required',
                     'file',
                     'mimes:pdf',
-                    'max:5120', // 5MB
+                    'max:15360', // 5MB
                 ],
             ];
             $validationMessages = [
                 'recLetter.required' => 'The recommendation letter is required.',
                 'recLetter.file' => 'The recommendation letter must be a file.',
                 'recLetter.mimes' => 'The recommendation letter must be a PDF file.',
-                'recLetter.max' => 'The recommendation letter may not be greater than 5MB in size.',
+                'recLetter.max' => 'The recommendation letter may not be greater than 15MB in size.',
             ];
         } elseif ($action === 'REJECT') {
             $validationRules = [

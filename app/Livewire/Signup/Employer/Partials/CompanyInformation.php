@@ -28,7 +28,7 @@ class CompanyInformation extends Component
     public function rules()
     {
         return [
-            'cimg' => 'required|image|mimes:jpeg,png,jpg|max:15360',
+            'cimg' => 'required|image|mimes:jpeg,png,jpg',
         ];
     }
     public function messages()
@@ -37,7 +37,7 @@ class CompanyInformation extends Component
             'cimg.required' => 'The image is required.',
             'cimg.image' => 'The uploaded file must be an image.',
             'cimg.mimes' => 'The image must be a file of type: jpeg, png, jpg.',
-            'cimg.max' => 'The image may not be greater than 15MB.',
+            // 'cimg.max' => 'The image may not be greater than 15MB.',
         ];
     }
 
@@ -111,7 +111,7 @@ class CompanyInformation extends Component
             'address' => 'required|string|min:5',
             'barangayID' => 'required',
             'industryData' => 'required|array|min:1',
-            'cimg' => 'required|image|mimes:jpeg,png,jpg|max:15360',
+            'cimg' => 'required|image|mimes:jpeg,png,jpg',
         ];
 
         $messages = [
@@ -150,7 +150,7 @@ class CompanyInformation extends Component
             'cimg.required' => 'The image is required.',
             'cimg.image' => 'The uploaded file must be an image.',
             'cimg.mimes' => 'The image must be a file of type: jpeg, png, jpg.',
-            'cimg.max' => 'The image may not be greater than 15MB.',
+            // 'cimg.max' => 'The image may not be greater than 15MB.',
         ];
 
         $this->validate($rules, $messages);
