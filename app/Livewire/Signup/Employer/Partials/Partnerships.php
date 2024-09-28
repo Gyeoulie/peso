@@ -4,13 +4,11 @@ namespace App\Livewire\Signup\Employer\Partials;
 
 use App\Models\PESO;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Session;
 use Livewire\Component;
 
 class Partnerships extends Component
 {
 
-    #[Session]
     public $partnershipData = [];
 
     public $stepNumber = 3;

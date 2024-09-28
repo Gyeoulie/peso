@@ -3,13 +3,11 @@
 namespace App\Livewire\Signup\Jobseeker\Partials;
 
 use Livewire\Attributes\On;
-use Livewire\Attributes\Session;
 use Livewire\Component;
 
 class WorkExperience extends Component
 {
 
-    #[Session]
     public $workExperienceData = [];
 
     public $stepNumber = 9;

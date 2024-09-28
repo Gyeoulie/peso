@@ -2,16 +2,13 @@
 
 namespace App\Livewire\Signup\Jobseeker\Partials;
 
-use Livewire\Attributes\Session;
 use Livewire\Component;
 
 class OtherSkills extends Component
 {
 
-    #[Session] 
     public $inputSkills;
-
-    #[Session] 
+    
     public $checkBoxData = [], $inputData = [];
     public $skills = [
         'AUTO MECHANIC',
