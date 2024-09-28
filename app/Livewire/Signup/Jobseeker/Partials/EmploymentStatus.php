@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Signup\Jobseeker\Partials;
 
+use Livewire\Attributes\Session;
 use Livewire\Component;
 
 class EmploymentStatus extends Component
 {
 
+    #[Session] 
     public $empStatus = "", $empDescription = "";
 
     public $stepNumber = 3;

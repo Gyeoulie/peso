@@ -4,15 +4,19 @@ namespace App\Livewire\Signup\Jobseeker\Partials;
 
 use App\Models\Barangay;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Session;
 use Livewire\Component;
 
 class PersonalInformation extends Component
 {
 
+    #[Session] 
     public $address, $barangayID, $civilstatus = "", $religion = "", $phone, $tin, $height, $ofw, $fourP, $fourPID;
+    #[Session] 
     public $disabilityBox = [];
     public $otherDisability;
 
+    #[Session] 
     public $mun, $prov, $bar;
 
     public $stepNumber = 2;

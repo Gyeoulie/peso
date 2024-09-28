@@ -5,6 +5,7 @@ namespace App\Livewire\Signup\Employer\Partials;
 use App\Models\Barangay;
 use App\Models\Job_Industry;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Session;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -14,6 +15,7 @@ class CompanyInformation extends Component
 
     use WithFileUploads;
 
+    #[Session]
     public $tin, $business, $trade, $locType = "", $workForce = "", $empType = "", $empDesc = "", $address, $barangayID;
 
     #[Validate]

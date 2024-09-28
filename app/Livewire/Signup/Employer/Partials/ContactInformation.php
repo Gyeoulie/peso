@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Signup\Employer\Partials;
 
+use Livewire\Attributes\Session;
 use Livewire\Component;
 
 class ContactInformation extends Component
 {
 
+    #[Session]
     public $name, $phone, $tel, $fax, $email, $position;
 
     public $stepNumber = 2;
@@ -34,11 +36,9 @@ class ContactInformation extends Component
             // 'tel.regex' => 'The telephone number must be a valid number.',
             'tel.numeric' => 'The telephone number must be exactly 7 digits long.',
 
-
             // 'fax.required' => 'The fax number is required.',
             // 'fax.regex' => 'The fax number must be a valid number.',
             'fax.numeric' => 'The fax number must be exactly 7 digits long.',
-
 
             'email.required' => 'The email address is required.',
             'email.email' => 'The email address must be a valid email address.',

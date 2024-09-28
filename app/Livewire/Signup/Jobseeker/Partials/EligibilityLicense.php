@@ -3,11 +3,13 @@
 namespace App\Livewire\Signup\Jobseeker\Partials;
 
 use Livewire\Attributes\On;
+use Livewire\Attributes\Session;
 use Livewire\Component;
 
 class EligibilityLicense extends Component
 {
 
+    #[Session] 
     public $eligibilityData = [], $licenseData = [];
 
     public $stepNumber = 8;

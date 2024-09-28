@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Signup\Jobseeker\Partials;
 
+use Livewire\Attributes\Session;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CertificationTraining extends Component
 {
 
+    
+    #[Session] 
     public $certificateData = [], $trainingData = [];
 
     public $stepNumber = 7;
