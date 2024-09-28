@@ -71,7 +71,7 @@ class Requirements extends Component
 
         ]);
 
-        $this->dispatch('nextStep', $this->stepNumber);
+        $this->dispatch('nextStep', $this->stepNumber + 1);
 
     }
 

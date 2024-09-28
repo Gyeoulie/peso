@@ -58,7 +58,7 @@ class ContactInformation extends Component
             'position' => $this->position,
         ]);
 
-        $this->dispatch('nextStep', $this->stepNumber);
+        $this->dispatch('nextStep', $this->stepNumber + 1);
 
     }
 

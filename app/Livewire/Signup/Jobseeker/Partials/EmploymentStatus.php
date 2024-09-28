@@ -25,7 +25,7 @@ class EmploymentStatus extends Component
             'empDescription' => $this->empDescription,
         ]);
 
-        $this->dispatch('nextStep', $this->stepNumber);
+        $this->dispatch('nextStep', $this->stepNumber + 1);
     }
 
     public function prev()

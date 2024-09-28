@@ -87,7 +87,7 @@ class OtherSkills extends Component
             'otherSkills' => $otherSkills,
         ]);
 
-        $this->dispatch('nextStep', $this->stepNumber);
+        $this->dispatch('nextStep', $this->stepNumber + 1);
     }
 
     public function prev()

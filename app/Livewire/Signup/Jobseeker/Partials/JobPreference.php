@@ -115,7 +115,7 @@ class JobPreference extends Component
             'industrypreference' => $this->industrypreference,
         ]);
 
-        $this->dispatch('nextStep', $this->stepNumber);
+        $this->dispatch('nextStep', $this->stepNumber + 1);
     }
 
     public function prev()

@@ -29,7 +29,7 @@ class WorkExperience extends Component
             'workExperienceData' => $this->workExperienceData,
         ]);
 
-        $this->dispatch('nextStep', $this->stepNumber);
+        $this->dispatch('nextStep', $this->stepNumber + 1);
     }
 
     public function prev()

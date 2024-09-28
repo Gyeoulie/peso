@@ -29,7 +29,7 @@ class Language extends Component
         $this->dispatch('handleStepData', $this->stepNumber, [
             'languages' => $this->languages,
         ]);
-        $this->dispatch('nextStep', $this->stepNumber);
+        $this->dispatch('nextStep', $this->stepNumber + 1);
     }
 
     public function prev()
