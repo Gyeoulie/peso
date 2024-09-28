@@ -139,7 +139,7 @@ class JobseekerInformation extends Component
                         'edu_Level' => $educationData['eduLevel'],
                         'edu_Course' => $educationData['eduCourse'],
                         'edu_Started' => date('Y-m-d', strtotime($educationData['eduStart'])),
-                        'edu_Ended' => date('Y-m-d', strtotime($educationData['eduEnd'])),
+                        'edu_Ended' => is_null($educationData['eduEnd']) ? null : date('Y-m-d', strtotime($educationData['eduEnd'])),
                         'edu_Ongoing' => $ongoing,
                     ]);
                 }
