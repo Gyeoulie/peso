@@ -287,10 +287,9 @@
                     <div class="max-w-7xl mx-auto overflow-visible">
                         <div class="bg-white overflow-hidden sm:rounded-lg p-2 overflow-visible">
                             <div class="relative">
-                                <div
-                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+                                <div class=" p-6 overflow-visible">
 
-                                    <div class="flex flex-col sm:flex-row w-full justify-between gap-4 mb-4">
+                                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
                                         {{-- SEARCH BOX --}}
                                         <div class="flex">
                                             <label for="table-search" class="sr-only">Search</label>
