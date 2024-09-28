@@ -16,10 +16,10 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
             <div class="flex justify-between flex-1 sm:hidden">
                 <span>
                     @if ($paginator->onFirstPage())
-                        <span
+                        {{-- <span
                             class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
                             {!! __('pagination.previous') !!}
-                        </span>
+                        </span> --}}
                     @else
                         <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')"
                             x-on:click="{{ $scrollIntoViewJsSnippet }}" wire:loading.attr="disabled"
@@ -39,10 +39,10 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                             {!! __('pagination.next') !!}
                         </button>
                     @else
-                        <span
+                        {{-- <span
                             class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md dark:text-gray-600 dark:bg-gray-800 dark:border-gray-600">
                             {!! __('pagination.next') !!}
-                        </span>
+                        </span> --}}
                     @endif
                 </span>
             </div>
