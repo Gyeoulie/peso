@@ -3,11 +3,13 @@
 namespace App\Livewire\Signup\Jobseeker\Partials;
 
 use Livewire\Attributes\On;
+use Livewire\Attributes\Session;
 use Livewire\Component;
 
 class Language extends Component
 {
 
+    #[Session] 
     public $languages = [];
     public $languageError = '';
 
