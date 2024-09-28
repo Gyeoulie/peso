@@ -473,7 +473,7 @@
                                             </span>
                                         </div>
                                         <span
-                                            class="text-green-500 font-semibold ml-4">{{ $jobTag->job_posting_count }}
+                                            class="text-green-500 font-semibold ml-4">{{ $jobTag->active_job_posting_count }}
                                             Active Jobs</span>
                                     </li>
                                 @endforeach
@@ -493,7 +493,7 @@
                                             </span>
                                         </div>
                                         <span
-                                            class="text-green-500 font-semibold ml-4">{{ $jobTag->job_posting_count }}
+                                            class="text-green-500 font-semibold ml-4">{{ $jobTag->active_job_posting_count }}
                                             Active Jobs</span>
                                     </li>
                                 @endforeach

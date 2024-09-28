@@ -509,27 +509,36 @@ class Dashboard extends Component
     {
         // Determine the municipality ID based on user status
         if ($user && $user->employee) {
-            // Fetch PESO ID based on employee's municipality
+            // Fetch municipality ID based on employee's municipality
             $municipalityId = $user->employee->barangay->municipality_id;
         } elseif ($user && $user->peso_accounts) {
-            // Fetch PESO ID based on user's PESO account
+            // Fetch municipality ID based on user's PESO account
             $municipalityId = $user->peso_accounts->peso->municipality_id;
         } else {
-            // If no user or not logged in, set municipality ID to null and fetch all
+            // If no user or not logged in, set municipality ID to null
             $municipalityId = null;
         }
 
         // Fetch top job tags based on active job postings and municipality
         $jobTags = Job_Tags::whereHas('job_posting', function ($query) use ($municipalityId) {
-            $query->where('job_Status', 'ACTIVE')
+            $query->where('job_Status', 'ACTIVE') // Ensure job postings are ACTIVE
                 ->when($municipalityId, function ($query) use ($municipalityId) {
                     $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
-                        $subQuery->where('municipality_id', $municipalityId);
+                        $subQuery->where('municipality_id', $municipalityId); // Filter by municipality if available
                     });
                 });
         })
-            ->withCount('job_posting') // Count of job postings associated with each tag
-            ->orderBy('job_posting_count', 'desc') // Order by count of job postings
+        // Count only active job postings associated with each tag
+            ->withCount(['job_posting as active_job_posting_count' => function ($query) use ($municipalityId) {
+                $query->where('job_Status', 'ACTIVE') // Count only active postings
+                    ->when($municipalityId, function ($query) use ($municipalityId) {
+                        $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                            $subQuery->where('municipality_id', $municipalityId); // Filter by municipality if available
+                        });
+                    });
+            }])
+
+            ->orderBy('active_job_posting_count', 'desc') // Order by count of active job postings
             ->take(5) // Limit to top 5 tags
             ->get();
 
@@ -540,27 +549,36 @@ class Dashboard extends Component
     {
         // Determine the municipality ID based on user status
         if ($user && $user->employee) {
-            // Fetch PESO ID based on employee's municipality
+            // Fetch municipality ID based on employee's municipality
             $municipalityId = $user->employee->barangay->municipality_id;
         } elseif ($user && $user->peso_accounts) {
-            // Fetch PESO ID based on user's PESO account
+            // Fetch municipality ID based on user's PESO account
             $municipalityId = $user->peso_accounts->peso->municipality_id;
         } else {
-            // If no user or not logged in, set municipality ID to null and fetch all
+            // If no user or not logged in, set municipality ID to null
             $municipalityId = null;
         }
 
         // Fetch top job industries based on active job postings and municipality
         $jobIndustries = Job_Industry::whereHas('job_posting', function ($query) use ($municipalityId) {
-            $query->where('job_Status', 'ACTIVE')
+            $query->where('job_Status', 'ACTIVE') // Ensure job postings are ACTIVE
                 ->when($municipalityId, function ($query) use ($municipalityId) {
                     $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
-                        $subQuery->where('municipality_id', $municipalityId);
+                        $subQuery->where('municipality_id', $municipalityId); // Filter by municipality if available
                     });
                 });
         })
-            ->withCount('job_posting') // Count of job postings associated with each industry
-            ->orderBy('job_posting_count', 'desc') // Order by count of job postings
+        // Count only active job postings associated with each industry
+            ->withCount(['job_posting as active_job_posting_count' => function ($query) use ($municipalityId) {
+                $query->where('job_Status', 'ACTIVE') // Count only active postings
+                    ->when($municipalityId, function ($query) use ($municipalityId) {
+                        $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                            $subQuery->where('municipality_id', $municipalityId); // Filter by municipality if available
+                        });
+                    });
+            }])
+
+            ->orderBy('active_job_posting_count', 'desc') // Order by count of active job postings
             ->take(5) // Limit to top 5 industries
             ->get();
 
