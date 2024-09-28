@@ -287,11 +287,10 @@
                                     <th scope="col" class="px-6 py-3">
                                         Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Registered Date
                                     </th>
-
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -302,9 +301,9 @@
                             <tbody>
                                 @if ($programRegistrants->isEmpty())
                                     <tr>
-                                        <td colspan="6">
+                                        <td colspan="4">
                                             <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                                <div class="flex  bg-gray-100 rounded-full p-1">
+                                                <div class="flex bg-gray-100 rounded-full p-1">
                                                     <svg class="w-16 h-16 text-black" aria-hidden="true"
                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke="currentColor">
@@ -313,13 +312,10 @@
                                                             d="M21 21l-3.5-3.5m0 0a7 7 0 1 1-9-10.5 7 7 0 0 1 9 10.5z" />
                                                     </svg>
                                                 </div>
-
                                                 <div class="text-center text-black text-xl font-semibold mt-2">
                                                     No Registrants Found
                                                 </div>
                                             </div>
-
-
                                         </td>
                                     </tr>
                                 @else
@@ -332,26 +328,42 @@
                                                     src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                     alt="user-{{ $data->employee->employee_id }}">
                                                 <div class="ps-3 text-wrap">
-                                                    <div class="text-base font-semibold">{{ $data->employee->fname }}
-                                                        {{ $data->employee->lname }}
+                                                    <div class="hidden sm:flex flex-col text-gray-500 text-sm ">
+                                                        {{ $data->employee->barangay->barangay_Name }},
+                                                        {{ $data->employee->barangay->municipality->municipality_Name }}</span>
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                                    <div class="text-base font-semibold">{{ $data->employee->fname }}
+                                                        {{ $data->employee->lname }}</div>
+                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
                                                         {{ $data->employee->barangay->barangay_Name }},
                                                         {{ $data->employee->barangay->municipality->municipality_Name }}
                                                     </div>
-                                                </div>
+                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                        <span>{{ $data->created_at->format('g:i A') }}</span>
+                                                        <span>{{ $data->created_at->format('F j, Y') }}</span>
+                                                    </div>
+                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                        @if ($data->program_reg_Status == 'REGISTERED')
+                                                            <span
+                                                                class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
+                                                        @elseif ($data->program_reg_Status == 'COMPLETED')
+                                                            <span
+                                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
+                                                        @elseif ($data->program_reg_Status == 'CANCELLED')
+                                                            <span
+                                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-xs font-medium text-red-800 ring-1 ring-inset ring-red-600/20">CANCELLED</span>
+                                                        @endif
+                                                    </div>
 
                                             </th>
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-col  text-base  uppercase">
-                                                    <span> {{ $data->created_at->format('g:i A') }}</span>
-                                                    <span> {{ $data->created_at->format('F j, Y') }}</span>
+                                            <td class="hidden sm:table-cell px-6 py-4">
+                                                <div class="flex flex-col text-base uppercase">
+                                                    <span>{{ $data->created_at->format('g:i A') }}</span>
+                                                    <span>{{ $data->created_at->format('F j, Y') }}</span>
                                                 </div>
                                             </td>
-
-                                            <td class="px-6 py-4">
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 <div class="text-base text-sm">
-
                                                     @if ($data->program_reg_Status == 'REGISTERED')
                                                         <span
                                                             class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
@@ -362,10 +374,9 @@
                                                         <span
                                                             class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                                     @endif
-
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 ">
+                                            <td class="px-6 py-4">
                                                 <div x-data="{ tooltip: 'View Information' }">
                                                     <button
                                                         wire:click.prevent="getJobseeker({{ $data->program_reg_id }})"
@@ -380,13 +391,13 @@
                                                         </svg>
                                                     </button>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 

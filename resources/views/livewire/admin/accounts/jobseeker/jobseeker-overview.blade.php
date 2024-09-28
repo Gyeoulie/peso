@@ -381,7 +381,8 @@
                             x-transition:enter-start="opacity-0 scale-90"
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
-                                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                                <div
+                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
@@ -399,7 +400,7 @@
                                         {{-- SEARCH --}}
                                         <input wire:model.live='searchApplications' type="search"
                                             id="table-search-users"
-                                          class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Applications">
                                     </div>
                                 </div>
@@ -409,24 +410,18 @@
                                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                             <tr>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Job Position
+                                                <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">Job Position</th>
+                                                <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">Company</th>
+                                                <th scope="col"
+                                                    class="px-4 py-2 sm:px-6 sm:py-3 hidden sm:table-cell">Application
+                                                    Status</th>
+                                                <th scope="col"
+                                                    class="px-4 py-2 sm:px-6 sm:py-3 hidden sm:table-cell">PESO
+                                                    Recommendation</th>
+                                                <th scope="col"
+                                                    class="px-4 py-2 sm:px-6 sm:py-3 hidden sm:table-cell">Applied Date
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Company
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Application Status
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    PESO Recommendation
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Applied Date
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Action
-                                                </th>
+                                                <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -444,35 +439,33 @@
                                                                         stroke-width="2"
                                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                 </svg>
-
                                                             </div>
-                                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                                No Records Found!
-                                                            </p>
+                                                            <p class="text-xl font-bold text-black text-center mt-2">No
+                                                                Records Found!</p>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                             @else
                                                 @foreach ($application_history as $data)
                                                     <tr class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
-                                                            class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
+                                                            class="flex items-center px-4 py-2 sm:px-6 sm:py-4 text-gray-900 whitespace-nowrap">
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
-                                                                    {{ $data->job_posting->job_Title }}
-                                                                </div>
-
+                                                                    {{ $data->job_posting->job_Title }}</div>
+                                                                <div class="sm:hidden text-sm text-gray-500">Status:
+                                                                    {{ $data->applicant_Status }}</div>
+                                                                <!-- Mobile info -->
                                                             </div>
-
                                                         </th>
-                                                        <td class="px-6 py-4">
+                                                        <td class="px-4 py-2 sm:px-6 sm:py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->job_posting->company->business_Name }}</div>
+                                                            <div class="sm:hidden text-sm text-gray-500">Applied:
+                                                                {{ $data->created_at->format('F m, Y') }}</div>
+                                                            <!-- Mobile info -->
                                                         </td>
-
-                                                        <td class="px-6 py-4">
+                                                        <td class="px-4 py-2 sm:px-6 sm:py-4 hidden sm:table-cell">
                                                             @if ($data->applicant_Status == 'PENDING')
                                                                 <span
                                                                     class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -494,7 +487,7 @@
                                                             @endif
 
                                                         </td>
-                                                        <td class="px-6 py-4">
+                                                        <td class="px-4 py-2 sm:px-6 sm:py-4 hidden sm:table-cell">
                                                             @if ($data->peso_Status == 'PENDING')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -511,14 +504,13 @@
                                                             @endif
 
                                                         </td>
-                                                        <td class="px-6 py-4">
+                                                        <td class="px-4 py-2 sm:px-6 sm:py-4 hidden sm:table-cell">
                                                             <div class="text-base">
-                                                                {{ $data->created_at->format('F m, Y') }}
-                                                            </div>
+                                                                {{ $data->created_at->format('F m, Y') }}</div>
                                                         </td>
-                                                        <td class="px-6 py-4 text-center">
-                                                            @if ($data->job_posting->peso_id == Auth::user()->peso_accounts->peso_id)
-                                                                <div class="flex flex-row  gap-5">
+                                                        <td class="px-4 py-2 sm:px-6 sm:py-4 text-center">
+                                                            <div class="flex flex-row gap-5">
+                                                                @if ($data->job_posting->peso_id == Auth::user()->peso_accounts->peso_id)
                                                                     <div x-data="{ tooltip: 'Application Overview' }">
                                                                         <a wire:navigate
                                                                             href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
@@ -536,13 +528,15 @@
                                                                             </svg>
                                                                         </a>
                                                                     </div>
-                                                            @endif
+                                                                @endif
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
 
@@ -556,7 +550,8 @@
                             x-transition:enter-start="opacity-0 scale-90"
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative overflow-x-auto p-1 mt-4">
-                                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                                <div
+                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div
@@ -572,7 +567,7 @@
 
                                         {{-- SEARCH --}}
                                         <input wire:model.live='searchEvents' type="search" id="table-search-users"
-                                          class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Events">
                                     </div>
                                 </div>
@@ -584,10 +579,10 @@
                                             <th scope="col" class="px-6 py-3">
                                                 Training Name
                                             </th>
-                                            <th scope="col" class="px-6 py-3">
+                                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                                 Registered Date
                                             </th>
-                                            <th scope="col" class="px-6 py-3">
+                                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                                 Status
                                             </th>
                                             <th scope="col" class="px-6 py-3">
@@ -608,13 +603,11 @@
                                                                     stroke-width="2"
                                                                     d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                             </svg>
-
                                                         </div>
                                                         <p class="text-xl font-bold text-black text-center mt-2">
                                                             No Records Found!
                                                         </p>
                                                     </div>
-
                                                 </td>
                                             </tr>
                                         @else
@@ -622,21 +615,28 @@
                                                 <tr class="bg-white border-b hover:bg-gray-50">
                                                     <th scope="row"
                                                         class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
                                                         <div class="ps-3 text-wrap">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->programs->program_Title }}
                                                             </div>
-
+                                                            <div class="block sm:hidden text-gray-500 text-sm">
+                                                                {{ $data->created_at->format('F m, Y') }} -
+                                                                @if ($data->program_reg_Status == 'REGISTERED')
+                                                                    <span class="text-yellow-800">REGISTERED</span>
+                                                                @elseif ($data->program_reg_Status == 'COMPLETED')
+                                                                    <span class="text-green-800">COMPLETED</span>
+                                                                @elseif ($data->program_reg_Status == 'REJECTED')
+                                                                    <span class="text-red-800">REJECTED</span>
+                                                                @endif
+                                                            </div>
                                                         </div>
-
                                                     </th>
-                                                    <td class="px-6 py-4">
+                                                    <td class="hidden sm:table-cell px-6 py-4">
                                                         <div class="text-base font-semibold">
                                                             {{ $data->created_at->format('F m, Y') }}</div>
                                                     </td>
 
-                                                    <td class="px-6 py-4">
+                                                    <td class="hidden sm:table-cell px-6 py-4">
                                                         @if ($data->program_reg_Status == 'REGISTERED')
                                                             <span
                                                                 class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
@@ -650,7 +650,7 @@
                                                     </td>
                                                     <td class="px-6 py-4 text-center">
                                                         @if ($data->programs->peso_id == Auth::user()->peso_accounts->peso_id)
-                                                            <div class="flex flex-row  gap-5">
+                                                            <div class="flex flex-row gap-5">
                                                                 <div x-data="{ tooltip: 'Application Overview' }">
                                                                     <a wire:navigate
                                                                         href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
@@ -675,6 +675,7 @@
                                         @endif
                                     </tbody>
                                 </table>
+
                             </div>
                             <div class="mt-4">
                                 {{ $programHistory->links('vendor.livewire.tailwind') }}
@@ -686,7 +687,8 @@
                             x-transition:enter-start="opacity-0 scale-90"
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
-                                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                                <div
+                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
 
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
@@ -713,21 +715,13 @@
                                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                             <tr>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Job Position
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Company
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Slots Available
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Application Deadline
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Action
-                                                </th>
+                                                <th scope="col" class="px-6 py-3">Job Position</th>
+                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">Company</th>
+                                                <th scope="col" class="hidden md:table-cell px-6 py-3">Slots
+                                                    Available</th>
+                                                <th scope="col" class="hidden md:table-cell px-6 py-3">Application
+                                                    Deadline</th>
+                                                <th scope="col" class="px-6 py-3">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -745,13 +739,10 @@
                                                                         stroke-width="2"
                                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                 </svg>
-
                                                             </div>
-                                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                                No Matched Jobs!
-                                                            </p>
+                                                            <p class="text-xl font-bold text-black text-center mt-2">No
+                                                                Matched Jobs!</p>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                             @else
@@ -760,31 +751,36 @@
                                                         class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
                                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
                                                             <div class="ps-3 text-wrap">
-                                                                <div class="text-base font-semibold">
-                                                                    {{ $data->job_Title }}
+                                                                <div class="font-normal text-gray-500 sm:hidden">
+                                                                    {{ $data->company->business_Name }}
                                                                 </div>
+                                                                <div class="text-base font-semibold">
+                                                                    {{ $data->job_Title }}</div>
 
+                                                                <div class="font-normal text-gray-500 sm:hidden">
+                                                                    Slots: {{ $data->available_slots }}
+                                                                </div>
+                                                                <div class="font-normal text-gray-500 sm:hidden">
+                                                                    Deadline:
+                                                                    {{ $data->job_Duration->format('F m, Y') }}
+                                                                </div>
                                                             </div>
-
                                                         </th>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden sm:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->company->business_Name }}</div>
                                                         </td>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden md:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->available_slots }}</div>
                                                         </td>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden md:table-cell px-6 py-4">
                                                             <div class="text-base">
-                                                                {{ $data->job_Duration->format('F m, Y') }}
-                                                            </div>
+                                                                {{ $data->job_Duration->format('F m, Y') }}</div>
                                                         </td>
                                                         <td class="px-6 py-4 text-center">
-                                                            <div class="flex flex-row  gap-5">
-
+                                                            <div class="flex flex-row gap-5">
                                                                 @if (Auth::user()->peso_accounts->peso_id == $data->peso_id)
                                                                     <div x-data="{ tooltip: 'View Job Posting' }">
                                                                         <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
@@ -803,13 +799,14 @@
                                                                         </a>
                                                                     </div>
                                                                 @endif
-
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
 
@@ -830,7 +827,7 @@
                                                 <th scope="col" class="px-6 py-3">
                                                     License
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">
+                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                                     Validity
                                                 </th>
                                             </tr>
@@ -839,8 +836,7 @@
                                             @if ($jobseeker->license->isEmpty())
                                                 <tr>
                                                     <td colspan="2">
-                                                        <div
-                                                            class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
                                                             <div class="p-6 bg-gray-100 rounded-full">
                                                                 <svg class="w-24 h-24 text-black" aria-hidden="true"
                                                                     xmlns="http://www.w3.org/2000/svg" width="24"
@@ -850,13 +846,11 @@
                                                                         stroke-width="2"
                                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                 </svg>
-
                                                             </div>
                                                             <p class="text-xl font-bold text-black text-center mt-2">
                                                                 No Records Found!
                                                             </p>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                             @else
@@ -864,24 +858,26 @@
                                                     <tr class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
                                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
                                                                     {{ $data->license_type->license_Name }}
                                                                 </div>
-
+                                                                <div class="sm:hidden text-sm text-gray-600">
+                                                                    Valid until: {{ $data->license_Validity->format('F m, Y') }}
+                                                                </div>
                                                             </div>
-
                                                         </th>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden sm:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
-                                                                {{ $data->license_Validity->format('F m, Y') }}</div>
+                                                                {{ $data->license_Validity->format('F m, Y') }}
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
                                     </table>
+                                    
                                 </div>
                             </div>
 
@@ -898,9 +894,9 @@
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                             <tr>
                                                 <th scope="col" class="px-6 py-3">
-                                                    Eligiblity
+                                                    Eligibility
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">
+                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                                     Validity
                                                 </th>
                                             </tr>
@@ -909,8 +905,7 @@
                                             @if ($jobseeker->eligibility->isEmpty())
                                                 <tr>
                                                     <td colspan="2">
-                                                        <div
-                                                            class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
                                                             <div class="p-6 bg-gray-100 rounded-full">
                                                                 <svg class="w-24 h-24 text-black" aria-hidden="true"
                                                                     xmlns="http://www.w3.org/2000/svg" width="24"
@@ -920,13 +915,11 @@
                                                                         stroke-width="2"
                                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                 </svg>
-
                                                             </div>
                                                             <p class="text-xl font-bold text-black text-center mt-2">
                                                                 No Records Found!
                                                             </p>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                             @else
@@ -934,24 +927,26 @@
                                                     <tr class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
                                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
                                                                     {{ $data->eligibility_type->eligibility_Name }}
                                                                 </div>
-
+                                                                <div class="sm:hidden text-sm text-gray-600">
+                                                                    Valid until: {{ $data->eligibility_Date->format('F m, Y') }}
+                                                                </div>
                                                             </div>
-
                                                         </th>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden sm:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
-                                                                {{ $data->eligibility_Date->format('F m, Y') }}</div>
+                                                                {{ $data->eligibility_Date->format('F m, Y') }}
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
                                     </table>
+                                    
                                 </div>
                             </div>
 

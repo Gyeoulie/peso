@@ -135,45 +135,43 @@
 
 
         <div class="col-span-4 lg:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6  h-full w-full ">
+            <div class="bg-white shadow rounded-lg p-6 h-full w-full">
                 <h1 class="text-2xl font-bold">Recent Job Posting</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                <div class="overflow-auto">
+                <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
                         <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                             <tr>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-2 md:px-6 py-3">
                                     <span class="text-black font-bold text-md">Business Name</span>
-
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-2 md:px-6 py-3  hidden sm:table-cell">
                                     <span class="text-black font-bold text-md">Job Title</span>
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-2 md:px-6 py-3  hidden sm:table-cell">
                                     <span class="text-black font-bold text-md">Date</span>
                                 </th>
-
+                                <th scope="col" class="px-2 md:px-6 py-3">
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @if ($recentJobPost->isEmpty())
                                 <tr>
-                                    <td colspan="3">
+                                    <td colspan="4">
                                         <div class="flex flex-col items-center justify-center mt-10">
                                             <div class="p-6 bg-gray-100 rounded-full">
-                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    fill="none" viewBox="0 0 24 24">
+                                                <svg class="w-16 h-16 md:w-24 md:h-24 text-black" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
-
                                             </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2 mb-20">
+                                            <p class="text-lg md:text-xl font-bold text-black text-center mt-2 mb-20">
                                                 No Recent Job Posting Found!
                                             </p>
                                         </div>
-
                                     </td>
                                 </tr>
                             @else
@@ -181,51 +179,66 @@
                                     <tr wire:key='jobpost-{{ $data->job_id }}'
                                         class="bg-white border-b hover:bg-gray-50">
                                         <th scope="row"
-                                            class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                            <img class="w-10 h-10 rounded-full object-cover"
+                                            class="flex items-center px-2 md:px-6 py-4 text-gray-900 whitespace-nowrap">
+                                            <img class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover"
                                                 src="{{ asset('storage/' . $data->company->company_img) }}"
                                                 alt="company-{{ $data->job_id }}">
                                             <div class="ps-3 text-wrap">
-                                                <div class="text-base font-semibold">
-                                                    <div class="text-base font-semibold uppercase">
-                                                        {{ $data->company->business_Name }}
-
-                                                    </div>
-
+                                                <div class="text-sm md:text-base font-semibold uppercase">
+                                                    {{ $data->company->business_Name }}
                                                 </div>
-                                                <div class="font-normal text-gray-500 text-sm uppercase">
+                                                <div class="font-normal text-gray-500 text-xs md:text-sm uppercase">
                                                     {{ $data->job_Address }}, {{ $data->barangay->barangay_Name }},
                                                     {{ $data->barangay->municipality->municipality_Name }}
                                                 </div>
+                                                <!-- Show Job Title on mobile view -->
+                                                <div
+                                                    class="font-normal text-gray-500 text-xs md:text-sm uppercase sm:hidden">
+                                                    Job: <span
+                                                        class="text-blue-500 font-bold text-sm md:text-md">{{ $data->job_Title }}</span>
+                                                </div>
+                                                <!-- Show Date on mobile view -->
+                                                <div class="text-gray-500 text-xs sm:hidden">
+                                                    Posted: {{ $data->created_at->format('F j, Y') }}
+                                                </div>
                                             </div>
-
                                         </th>
-                                        <td class="px-6 py-4">
-
-                                            <div class="font-normal text-gray-500 text-sm uppercase">
-                                                <span class="text-blue-500 font-bold text-md">
-                                                    {{ $data->job_Title }}</span>
-
-
+                                        <!-- Hide Job Title on mobile view -->
+                                        <td class="px-2 md:px-6 py-4 hidden sm:table-cell">
+                                            <div class="font-normal text-gray-500 text-xs md:text-sm uppercase">
+                                                <span
+                                                    class="text-blue-500 font-bold text-sm md:text-md">{{ $data->job_Title }}</span>
                                             </div>
-
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <!-- Hide Date on mobile view -->
+                                        <td class="px-2 md:px-6 py-4 hidden sm:table-cell">
                                             {{ $data->created_at->format('F j, Y') }}
                                         </td>
-
-
-
+                                        <td class="px-2 md:px-6 py-4">
+                                            <div x-data="{ tooltip: 'Job Overview' }">
+                                                <a wire:navigate {{-- href="{{ route('admin.jobpost.overview', ['id' => $data->job_id]) }}" --}} x-tooltip="tooltip"
+                                                    type="button"
+                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                        <path fill-rule="evenodd"
+                                                            d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
-                            @endif
 
+                            @endif
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </div>
+
 
 
         <div class="col-span-4 lg:col-span-6">
@@ -249,18 +262,14 @@
                             <tr>
                                 <th scope="col" class="px-6 py-3">
                                     <span class="text-black font-bold text-md">Applicant Name</span>
-
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                     <span class="text-black font-bold text-md">Job Title</span>
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                     <span class="text-black font-bold text-md">Date</span>
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-
-                                </th>
-
+                                <th scope="col" class="px-6 py-3"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -276,13 +285,11 @@
                                                         stroke-width="2"
                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
-
                                             </div>
                                             <p class="text-xl font-bold text-black text-center mt-2 mb-20">
                                                 No Recent Applicants Found!
                                             </p>
                                         </div>
-
                                     </td>
                                 </tr>
                             @else
@@ -295,37 +302,37 @@
                                                 src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                 alt="applicant-{{ $data->job_id }}">
                                             <div class="ps-3 text-wrap">
-                                                <div class="text-base font-semibold">
-                                                    <div class="text-base font-semibold uppercase">
-                                                        {{ $data->employee->fname }} {{ $data->employee->mname }}
-                                                        {{ $data->employee->lname }}
-
-                                                    </div>
-
+                                                <div class="text-base font-semibold uppercase">
+                                                    {{ $data->employee->fname }} {{ $data->employee->mname }}
+                                                    {{ $data->employee->lname }}
                                                 </div>
                                                 <div class="font-normal text-gray-500 text-sm uppercase">
                                                     {{ $data->employee->address }},
                                                     {{ $data->employee->barangay->barangay_Name }},
                                                     {{ $data->employee->barangay->municipality->municipality_Name }}
                                                 </div>
+                                                <!-- Show Job Title on mobile view -->
+                                                <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                    Job: <span
+                                                        class="text-blue-500 font-bold text-md">{{ $data->job_posting->job_Title }}</span>
+                                                </div>
+                                                <!-- Show Date on mobile view -->
+                                                <div class="text-gray-500 text-xs sm:hidden">
+                                                    Applied: {{ $data->created_at->format('F j, Y') }}
+                                                </div>
                                             </div>
-
                                         </th>
-                                        <td class="px-6 py-4">
-
+                                        <!-- Hide Job Title and Date on mobile view -->
+                                        <td class="px-6 py-4 hidden sm:table-cell">
                                             <div class="font-normal text-gray-500 text-sm uppercase">
-                                                <span class="text-blue-500 font-bold text-md">
-                                                    {{ $data->job_posting->job_Title }}</span>
-
-
+                                                <span
+                                                    class="text-blue-500 font-bold text-md">{{ $data->job_posting->job_Title }}</span>
                                             </div>
-
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-6 py-4 hidden sm:table-cell">
                                             {{ $data->created_at->format('F j, Y') }}
                                         </td>
-
-                                        <td>
+                                        <td class="px-6 py-4">
                                             <div x-data="{ tooltip: 'Applicant Overview' }">
                                                 <a wire:navigate
                                                     href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
@@ -341,18 +348,15 @@
                                                 </a>
                                             </div>
                                         </td>
-
-
                                     </tr>
                                 @endforeach
                             @endif
-
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </div>
+
 
 
 

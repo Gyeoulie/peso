@@ -363,13 +363,13 @@
                                                 <th scope="col" class="px-6 py-3">
                                                     Job Position
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">
+                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                                     Number of Applicants
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">
+                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                                     Status
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">
+                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                                     Application Deadline
                                                 </th>
                                                 <th scope="col" class="px-6 py-3">
@@ -392,13 +392,10 @@
                                                                         stroke-width="2"
                                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                 </svg>
-
                                                             </div>
-                                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                                No Records Found!
-                                                            </p>
+                                                            <p class="text-xl font-bold text-black text-center mt-2">No
+                                                                Records Found!</p>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                             @else
@@ -406,46 +403,61 @@
                                                     <tr class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
                                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
-                                                                    {{ $data->job_Title }}
+                                                                    {{ $data->job_Title }}</div>
+                                                                <div class="flex flex-col sm:hidden">
+
+                                                                    <span class="text-gray-500 ">Applicants:
+                                                                        <span class="text-black font-semibold">
+                                                                            {{ $data->applicants_count }}</span></span>
+
+                                                                    <span class="text-gray-500">Deadline:
+                                                                        <span class="text-black font-semibold">
+                                                                            {{ $data->job_Duration->format('F m, Y') }}</span></span>
+
+                                                                    <div>
+                                                                        @if ($data->job_Status == 'PENDING')
+                                                                            <span
+                                                                                class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                                        @elseif ($data->job_Status == 'ACTIVE')
+                                                                            <span
+                                                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
+                                                                        @elseif ($data->job_Status == 'CLOSED')
+                                                                            <span
+                                                                                class="inline-flex items-center rounded-md bg-cyan-200 px-2 py-1 text-sm font-medium text-cyan-800 ring-1 ring-inset ring-cyan-600/20">CLOSED</span>
+                                                                        @elseif ($data->job_Status == 'COMPLETED')
+                                                                            <span
+                                                                                class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">COMPLETED</span>
+                                                                        @elseif ($data->job_Status == 'REJECTED' || $data->job_Status == 'CANCELLED')
+                                                                            <span
+                                                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->job_Status }}</span>
+                                                                        @endif
+
+                                                                    </div>
                                                                 </div>
-
                                                             </div>
-
                                                         </th>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden sm:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->applicants_count }}</div>
                                                         </td>
-
-                                                        <td class="px-6 py-4">
-                                                            @if ($data->job_Status == 'PENDING')
-                                                                <span
-                                                                    class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                                                            @elseif ($data->job_Status == 'ACTIVE')
-                                                                <span
-                                                                    class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
-                                                            @elseif ($data->job_Status == 'CLOSED')
-                                                                <span
-                                                                    class="inline-flex items-center rounded-md bg-cyan-200 px-2 py-1 text-sm font-medium text-cyan-800 ring-1 ring-inset ring-cyan-600/20">CLOSED</span>
-                                                            @elseif ($data->job_Status == 'COMPLETED')
-                                                                <span
-                                                                    class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">COMPLETED</span>
-                                                            @elseif ($data->job_Status == 'REJECTED' || $data->job_Status == 'CANCELLED')
-                                                                <span
-                                                                    class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->job_Status }}</span>
-                                                            @endif
-
+                                                        <td class="hidden sm:table-cell px-6 py-4">
+                                                            <span
+                                                                class="inline-flex items-center rounded-md 
+                                                                @if ($data->job_Status == 'PENDING') bg-yellow-200 text-yellow-800 ring-yellow-600/20
+                                                                @elseif ($data->job_Status == 'ACTIVE') bg-green-200 text-green-800 ring-green-600/20
+                                                                @elseif ($data->job_Status == 'CLOSED') bg-cyan-200 text-cyan-800 ring-cyan-600/20
+                                                                @elseif ($data->job_Status == 'COMPLETED') bg-blue-200 text-blue-800 ring-blue-600/20
+                                                                @else bg-red-200 text-red-800 ring-red-600/20 @endif 
+                                                                px-2 py-1 text-sm font-medium ring-1 ring-inset">{{ $data->job_Status }}</span>
                                                         </td>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden sm:table-cell px-6 py-4">
                                                             <div class="text-base">
-                                                                {{ $data->job_Duration->format('F m, Y') }}
-                                                            </div>
+                                                                {{ $data->job_Duration->format('F m, Y') }}</div>
                                                         </td>
                                                         <td class="px-6 py-4 text-center">
-                                                            <div class="flex flex-row  gap-5">
+                                                            <div class="flex flex-row gap-5">
                                                                 <div x-data="{ tooltip: 'Job Posting Overview' }">
                                                                     <a wire:navigate
                                                                         href="{{ route('admin.jobpost', ['id' => $data->job_id]) }}"
@@ -462,13 +474,14 @@
                                                                         </svg>
                                                                     </a>
                                                                 </div>
-
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
 

@@ -456,63 +456,113 @@
                 </div>
             @else
                 <div class="col-span-4 sm:col-span-3">
-                    <div class="text-gray-900 text-center w-full">
-                        <h1 class="font-bold text-2xl">ANNOUNCEMENTS</h1>
-                        <div class = "flex flex-col items-center justify-center mt-4">
-                            @if ($announcements->isEmpty())
-                                <div class="flex flex-col items-center justify-center mt-12 mb-12">
-                                    <div
-                                        class="p-6 bg-white rounded-full my-12 transition-transform transform hover:scale-110">
-                                        <svg class="w-36 h-36 text-black" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46" />
-                                        </svg>
+                    <div class="flex flex-col gap-4">
+
+                        <div class="bg-white shadow-md shadow-md rounded-md p-4">
+                            <h1 class="font-bold text-2xl text-center mb-4">TOP JOB TAGS</h1>
+                            <ul>
+                                @foreach ($topJobTags as $index => $jobTag)
+                                    <li class="flex items-center justify-between py-2 border-b border-gray-300">
+                                        <div class="flex items-center">
+                                            <span class="text-lg font-semibold mr-4">{{ $index + 1 }}</span>
+                                            <span
+                                                wire:click.prevent="mountTopJobTags('{{ $jobTag->job_positions->position_Title }}')"
+                                                class="text-gray-800 hover:text-blue-500 cursor-pointer font-semibold  break-all"
+                                                style="max-width: 200px;">
+                                                {{ $jobTag->job_positions->position_Title }}
+                                            </span>
+                                        </div>
+                                        <span
+                                            class="text-green-500 font-semibold ml-4">{{ $jobTag->job_posting_count }}
+                                            Active Jobs</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                            <h1 class="font-bold text-2xl text-center mt-4 mb-4">TOP JOB INDUSTRY</h1>
+                            <ul>
+                                @foreach ($topJobIndustries as $index => $jobTag)
+                                    <li class="flex items-center justify-between py-2 border-b border-gray-300">
+                                        <div class="flex items-center">
+                                            <span class="text-lg font-semibold mr-4">{{ $index + 1 }}</span>
+                                            <span
+                                                wire:click.prevent="mountTopJobTags('{{ $jobTag->industry_Title }}')"
+                                                class="text-gray-800 hover:text-blue-500 cursor-pointer font-semibold break-all"
+                                                style="max-width: 200px;">
+                                                {{ $jobTag->industry_Title }}
+                                            </span>
+                                        </div>
+                                        <span
+                                            class="text-green-500 font-semibold ml-4">{{ $jobTag->job_posting_count }}
+                                            Active Jobs</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
 
 
+
+
+                        <div class="text-gray-900 text-center w-full">
+                            <h1 class="font-bold text-2xl">ANNOUNCEMENTS</h1>
+                            <div class = "flex flex-col items-center justify-center mt-4">
+                                @if ($announcements->isEmpty())
+                                    <div class="flex flex-col items-center justify-center mt-12 mb-12">
+                                        <div
+                                            class="p-6 bg-white rounded-full my-12 transition-transform transform hover:scale-110">
+                                            <svg class="w-36 h-36 text-black" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46" />
+                                            </svg>
+
+
+                                        </div>
+                                        <p class="text-xl font-bold text-black text-center mt-2">
+                                            No New Announcements!
+                                        </p>
                                     </div>
-                                    <p class="text-xl font-bold text-black text-center mt-2">
-                                        No New Announcements!
-                                    </p>
-                                </div>
-                            @else
-                                <div
-                                    class="mt-2 flex flex-row sm:flex-col  gap-4 overflow-x-auto sm:overflow-visible no-scrollbar">
-                                    @foreach ($announcements as $data)
-                                        <a wire:navigate
-                                            href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
-                                            class="flex-shrink-0 w-full sm:w-full">
-                                            <div
-                                                class="relative flex flex-col w-full max-w-sm h-96 overflow-hidden rounded-lg bg-white text-gray-700 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
-                                                <div class="relative w-full h-56 overflow-hidden rounded-t-lg">
-                                                    <img src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}"
-                                                        alt="announcement-{{ $data->announcement_id }}"
-                                                        class="object-cover w-full h-full rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-110" />
+                                @else
+                                    <div
+                                        class="mt-2 flex flex-row sm:flex-col  gap-4 overflow-x-auto sm:overflow-visible no-scrollbar">
+                                        @foreach ($announcements as $data)
+                                            <a wire:navigate
+                                                href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
+                                                class="flex-shrink-0 w-full sm:w-full">
+                                                <div
+                                                    class="relative flex flex-col w-full max-w-sm h-96 overflow-hidden rounded-lg bg-white text-gray-700 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                                                    <div class="relative w-full h-56 overflow-hidden rounded-t-lg">
+                                                        <img src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}"
+                                                            alt="announcement-{{ $data->announcement_id }}"
+                                                            class="object-cover w-full h-full rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-110" />
 
 
-                                                </div>
-                                                <div class="flex flex-col p-4  flex-grow">
-                                                    <h4
-                                                        class="text-lg font-semibold text-blue-gray-900 transition-colors duration-300 ease-in-out hover:text-blue-700 mb-2">
-                                                        {{ Str::limit(strip_tags($data->announcement_Title), 80, '...') }}
-                                                    </h4>
-                                                    <div
-                                                        class="flex items-end justify-between text-xs font-normal text-gray-600 mt-auto">
-                                                        <p class="truncate">PESO
-                                                            {{ $data->peso->municipality->municipality_Name }}</p>
-                                                        <p class="truncate">{{ $data->created_at->format('F j, Y') }}
-                                                        </p>
+                                                    </div>
+                                                    <div class="flex flex-col p-4  flex-grow">
+                                                        <h4
+                                                            class="text-lg font-semibold text-blue-gray-900 transition-colors duration-300 ease-in-out hover:text-blue-700 mb-2">
+                                                            {{ Str::limit(strip_tags($data->announcement_Title), 80, '...') }}
+                                                        </h4>
+                                                        <div
+                                                            class="flex items-end justify-between text-xs font-normal text-gray-600 mt-auto">
+                                                            <p class="truncate">PESO
+                                                                {{ $data->peso->municipality->municipality_Name }}</p>
+                                                            <p class="truncate">
+                                                                {{ $data->created_at->format('F j, Y') }}
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                    @endforeach
-                                </div>
-                            @endif
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
+
 
             @endif
 

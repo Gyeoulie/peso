@@ -38,6 +38,7 @@ class Employee extends Model implements Auditable
         'pimg',
         'resume',
         'empDesc',
+        'empprofile',
     ];
 
     protected $casts = [
@@ -143,6 +144,7 @@ class Employee extends Model implements Auditable
             'pimg' => 'Profile Image',
             'resume' => 'Resume',
             'empDesc' => 'Employee Description',
+            'empprofile' => 'Employee Profile Status',
         ];
     }
 

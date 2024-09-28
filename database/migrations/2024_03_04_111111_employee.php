@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('pimg', 255);
             $table->string('resume', 255)->nullable();
             $table->text('empDesc')->nullable();
+            $table->tinyInteger('empprofile')->default(1)->nullable();
             $table->timestamps();
             $table->softDeletes(); // This will add created_at and updated_at columns
 

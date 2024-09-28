@@ -126,23 +126,23 @@
                                     <th scope="col" class="px-6 py-3 w-1/4">
                                         Company
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Job Offering
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Employment Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Slots Available
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         @if ($filter == 'ACTIVE')
                                             Total Applicants
                                         @else
                                             Status
                                         @endif
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Date Posted
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -163,51 +163,92 @@
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
-
                                                 </div>
                                                 <p class="text-xl font-bold text-black text-center mt-2">
                                                     No Records Found!
                                                 </p>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @else
                                     @foreach ($jobpost as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
-                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full"
+                                                class="flex flex-col sm:flex-row sm:items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                <img class="w-10 h-10 rounded-full mb-2 sm:mb-0"
                                                     src="{{ asset('storage/' . $data->company->company_img) }}"
-                                                    alt="Jese image">
-                                                <div class="ps-3 text-wrap">
+                                                    alt="Company image">
+                                                <div class="sm:ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
                                                         {{ $data->company->business_Name }}
                                                     </div>
                                                     <div class="font-normal text-gray-500 text-sm uppercase">
-                                                        {{ $data->company->company_Address }}
+                                                        {{ $data->company->company_Address }},
                                                         {{ $data->company->barangay->barangay_Name }},
                                                         {{ $data->company->barangay->municipality->municipality_Name }},
                                                         {{ $data->company->barangay->municipality->province->province_Name }}
                                                     </div>
                                                 </div>
+                                                <div class="block sm:hidden mt-2 text-sm text-gray-500">
+                                                    {{ $data->job_Title }}
+
+                                                </div>
+                                                <div class="block sm:hidden text-sm text-gray-500">
+                                                    {{ $data->slotsLeft }} slots
+
+                                                </div>
+                                                <div class="block sm:hidden text-sm text-gray-500">
+                                                    @if ($filter == 'ACTIVE')
+                                                        {{ $data->job_applicants_count }} Applicants
+                                                    @else
+                                                        @if ($data->job_Status == 'ACTIVE')
+                                                            <div class="flex items-center">
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2">
+                                                                </div>
+                                                                ACTIVE
+                                                            </div>
+                                                        @elseif ($data->job_Status == 'PENDING')
+                                                            <div class="flex items-center">
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-yellow-500 mr-2">
+                                                                </div>
+                                                                {{ $data->job_Status }}
+                                                            </div>
+                                                        @elseif ($data->job_Status == 'CLOSED')
+                                                            <div class="flex items-center">
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 mr-2">
+                                                                </div>
+                                                                {{ $data->job_Status }}
+                                                            </div>
+                                                        @elseif ($data->job_Status == 'COMPLETED')
+                                                            <div class="flex items-center">
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-2">
+                                                                </div>
+                                                                {{ $data->job_Status }}
+                                                            </div>
+                                                        @else
+                                                            <div class="flex items-center">
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2">
+                                                                </div>
+                                                                {{ $data->job_Status }}
+                                                            </div>
+                                                        @endif
+                                                    @endif
+                                                </div>
 
                                             </th>
-                                            <td class="px-6 py-4">
-                                                <div class="text-base font-semibold">{{ $data->job_Title }}</div>
+                                            <td class="hidden sm:table-cell px-6 py-4">
+                                                {{ $data->job_Title }}
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 {{ $data->job_Title == 1 ? 'PART TIME' : 'FULL TIME' }}
                                             </td>
-                                            <td class="px-6 py-4">
-                                                {{-- {{ $data->job_Slots }} --}}
-
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 {{ $data->slotsLeft }}
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 <div class="flex items-center">
-
-
                                                     @if ($filter == 'ACTIVE')
                                                         {{ $data->job_applicants_count }}
                                                     @else
@@ -235,16 +276,16 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 <div class="text-base font-semibold">
-                                                    {{ $data->created_at->format(' g:i A') }}
+                                                    {{ $data->created_at->format('g:i A') }}
                                                 </div>
                                                 <div class="text-base font-semibold">
                                                     {{ $data->created_at->format('F j, Y') }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="flex flex-row  gap-5">
+                                                <div class="flex flex-row gap-5">
                                                     <div x-data="{ tooltip: 'View Job Post Information' }">
                                                         <a wire:navigate
                                                             href="{{ route('admin.jobpost', ['id' => $data->job_id]) }}"
@@ -272,21 +313,19 @@
                                                                     viewBox="0 0 24 24">
                                                                     <path stroke="currentColor" stroke-linecap="round"
                                                                         stroke-linejoin="round" stroke-width="2"
-                                                                        d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                                        d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.5l3.299.75-.75-3.3A8.948 8.948 0 0 0 21 12M9 10h.01M15 10h.01M9 15h6" />
                                                                 </svg>
                                                             </a>
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </td>
-
-
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 

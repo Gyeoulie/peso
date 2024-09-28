@@ -390,7 +390,7 @@
 
 
                         @foreach ($requirements as $requirement)
-                            <div class="flex flex-row w-full gap-2 md:gap-4">
+                            <div class="flex flex-col sm:flex-row w-full gap-2 md:gap-4">
 
                                 @if ($requirement->requirementPassed)
                                     <div class="flex flex-col w-full">
@@ -541,18 +541,17 @@
                             <table class="w-full text-sm text-left rtl:text-right">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">
                                             PESO Municipality
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="hidden sm:table-cell px-4 py-2 sm:px-6 sm:py-3">
                                             Status
                                         </th>
-
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="hidden sm:table-cell px-4 py-2 sm:px-6 sm:py-3">
                                             Partnership Date
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
-
+                                        <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">
+                                            Actions
                                         </th>
                                     </tr>
                                 </thead>
@@ -569,55 +568,66 @@
                                                                 stroke-width="2"
                                                                 d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                         </svg>
-
                                                     </div>
                                                     <p class="text-xl font-bold text-black text-center mt-2">
                                                         No Records Found!
                                                     </p>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     @else
                                         @foreach ($partnerships as $data)
                                             <tr class="bg-white border-b hover:bg-gray-50">
-                                                <td class="px-6 py-4">
+                                                <td class="px-4 py-2 sm:px-6 sm:py-4">
                                                     <div class="text-black font-bold text-lg uppercase">
                                                         {{ $data->peso->municipality->municipality_Name }}
                                                     </div>
-                                                </td>
-
-                                                <td class="px-6 py-4">
-                                                    <div class="text-black font-bold">
-                                                        @if ($data->partnership_Status == 'PENDING')
-                                                            <span
-                                                                class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                                                        @elseif ($data->partnership_Status == 'APPROVED')
-                                                            <span
-                                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
-                                                        @elseif ($data->partnership_Status == 'REJECTED' || $data->partnership_Status == 'CANCELLED')
-                                                            <span
-                                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->partnership_Status }}</span>
-                                                        @endif
-
+                                                    <div class="sm:hidden text-gray-500">
+                                                        <span class="block text-sm">Status: 
+                                                            @if ($data->partnership_Status == 'PENDING')
+                                                                <span class="font-semibold text-yellow-800">PENDING</span>
+                                                            @elseif ($data->partnership_Status == 'APPROVED')
+                                                                <span class="font-semibold text-green-800">ACTIVE</span>
+                                                            @elseif ($data->partnership_Status == 'REJECTED' || $data->partnership_Status == 'CANCELLED')
+                                                                <span class="font-semibold text-red-800">{{ $data->partnership_Status }}</span>
+                                                            @endif
+                                                        </span>
+                                                        <span class="block text-sm">Partnership Date: 
+                                                            @if ($data->responded_at)
+                                                                {{ $data->responded_at->format('F j, Y') }}
+                                                            @else
+                                                                <span class="font-semibold">PENDING</span>
+                                                            @endif
+                                                        </span>
                                                     </div>
                                                 </td>
-                                                <td class="px-6 py-4">
+                            
+                                                <td class="hidden sm:table-cell px-4 py-2 sm:px-6 sm:py-4">
+                                                    <div class="text-black font-bold">
+                                                        @if ($data->partnership_Status == 'PENDING')
+                                                            <span class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                        @elseif ($data->partnership_Status == 'APPROVED')
+                                                            <span class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
+                                                        @elseif ($data->partnership_Status == 'REJECTED' || $data->partnership_Status == 'CANCELLED')
+                                                            <span class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->partnership_Status }}</span>
+                                                        @endif
+                                                    </div>
+                                                </td>
+                            
+                                                <td class="hidden sm:table-cell px-4 py-2 sm:px-6 sm:py-4">
                                                     <div class="text-gray-500 text-md">
                                                         @if ($data->responded_at)
                                                             {{ $data->responded_at->format('F j, Y') }}
                                                         @else
                                                             <div class="flex items-center font-semibold">
-                                                                <div
-                                                                    class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
-                                                                </div>
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
                                                                 PENDING
                                                             </div>
                                                         @endif
                                                     </div>
                                                 </td>
-
-                                                <td class="px-6 py-4">
+                            
+                                                <td class="px-4 py-2 sm:px-6 sm:py-4">
                                                     <div class="flex flex-row items-center justify-center gap-6">
                                                         @if ($data->partnership_Status != 'PENDING')
                                                             <div x-data="{ tooltip: 'View Partnership Information' }">
@@ -661,10 +671,9 @@
                                             </tr>
                                         @endforeach
                                     @endif
-
-
                                 </tbody>
                             </table>
+                            
                         </div>
                     </div>
 
