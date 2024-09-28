@@ -2,14 +2,12 @@
 
 namespace App\Livewire\Signup\Jobseeker\Partials;
 
-use Livewire\Attributes\Session;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Education extends Component
 {
     // #[Reactive]
-    #[Session] 
     public $educationData = [];
 
     public $stepNumber = 6;

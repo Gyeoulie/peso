@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Signup\Jobseeker\Partials;
 
-use Livewire\Attributes\Session;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -13,10 +12,7 @@ class ApplicantName extends Component
 
     public $stepNumber = 1;
 
-    #[Session] 
     public $fname, $mname, $lname, $suffix = "", $bday, $gender = "";
-
-
 
     #[Validate]
     public $pimage;

@@ -5,13 +5,11 @@ namespace App\Livewire\Signup\Jobseeker\Partials;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Session;
 use Livewire\Component;
 
 class JobPreference extends Component
 {
 
-    #[Session] 
     public $jobpreference = [], $industrypreference = [];
 
     public $stepNumber = 4;
