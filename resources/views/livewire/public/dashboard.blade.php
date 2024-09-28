@@ -466,10 +466,10 @@
                                         <div class="flex items-center">
                                             <span class="text-lg font-semibold mr-4">{{ $index + 1 }}</span>
                                             <span
-                                                wire:click.prevent="mountTopJobTags('{{ $jobTag->job_positions->position_Title }}')"
+                                                wire:click.prevent="mountTopJobTags('{{ $jobTag->position_Title }}')"
                                                 class="text-gray-800 hover:text-blue-500 cursor-pointer font-semibold  break-all"
                                                 style="max-width: 200px;">
-                                                {{ $jobTag->job_positions->position_Title }}
+                                                {{ $jobTag->position_Title }}
                                             </span>
                                         </div>
                                         <span
