@@ -16,6 +16,7 @@ use App\Models\Training;
 use App\Models\Work_Exp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -193,7 +194,7 @@ class JobseekerInformation extends Component
                         'work_Address' => $workExperienceData['workAdd'],
                         'position_id' => $workExperienceData['workPositionId'],
                         'work_Start' => date('Y-m-d', strtotime($workExperienceData['workStart'])),
-                        'work_End' => date('Y-m-d', strtotime($workExperienceData['workEnd'])),
+                        'work_End' => is_null($workExperienceData['workEnd']) ? null : date('Y-m-d', strtotime($workExperienceData['workEnd'])),
                         'work_Status' => $workExperienceData['workStatus'],
                     ]);
                 }
@@ -219,7 +220,8 @@ class JobseekerInformation extends Component
         } catch (\Exception $e) {
             DB::rollback();
             $success = false;
-            dd($e->getMessage());
+            // dd($e->getMessage());
+            Log::error('Error registering employee: ' . $e->getMessage());
             toastr()->error('Error in updating user details, please try again later');
 
         }
