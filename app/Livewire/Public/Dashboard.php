@@ -10,7 +10,6 @@ use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
-use App\Models\Job_Tags;
 use App\Models\PESO;
 use App\Models\Programs;
 use Illuminate\Support\Facades\Auth;
@@ -504,7 +503,6 @@ class Dashboard extends Component
         $programQuery = $this->buildProgramQuery();
         return $programQuery->orderBy('created_at', 'desc')->take(4)->get();
     }
-
     public function getTopJobTags($user = null)
     {
         // Determine the municipality ID based on user status
@@ -519,30 +517,34 @@ class Dashboard extends Component
             $municipalityId = null;
         }
 
-        // Fetch top job tags based on active job postings and municipality
-        $jobTags = Job_Tags::whereHas('job_posting', function ($query) use ($municipalityId) {
-            $query->where('job_Status', 'ACTIVE') // Ensure job postings are ACTIVE
+        // Fetch top job positions based on active job postings
+        $jobPositions = Job_Positions::whereHas('job_tags.job_posting', function ($query) use ($municipalityId) {
+            // Ensure job postings are ACTIVE
+            $query->where('job_Status', 'ACTIVE')
                 ->when($municipalityId, function ($query) use ($municipalityId) {
+                    // Filter by municipality if available
                     $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
-                        $subQuery->where('municipality_id', $municipalityId); // Filter by municipality if available
+                        $subQuery->where('municipality_id', $municipalityId);
                     });
                 });
         })
-        // Count only active job postings associated with each tag
-            ->withCount(['job_posting as active_job_posting_count' => function ($query) use ($municipalityId) {
-                $query->where('job_Status', 'ACTIVE') // Count only active postings
-                    ->when($municipalityId, function ($query) use ($municipalityId) {
-                        $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
-                            $subQuery->where('municipality_id', $municipalityId); // Filter by municipality if available
+        // Count active job postings associated with each position
+            ->withCount(['job_tags as active_job_posting_count' => function ($query) use ($municipalityId) {
+                $query->whereHas('job_posting', function ($subQuery) use ($municipalityId) {
+                    $subQuery->where('job_Status', 'ACTIVE') // Count only active postings
+                        ->when($municipalityId, function ($subQuery) use ($municipalityId) {
+                            // Filter by municipality if available
+                            $subQuery->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                                $subQuery->where('municipality_id', $municipalityId);
+                            });
                         });
-                    });
+                });
             }])
-
             ->orderBy('active_job_posting_count', 'desc') // Order by count of active job postings
-            ->take(5) // Limit to top 5 tags
+            ->take(5) // Limit to top 5 positions
             ->get();
 
-        return $jobTags;
+        return $jobPositions;
     }
 
     public function getTopJobIndustries($user = null)
