@@ -33,7 +33,7 @@
                             <button
                                 class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
                                 <div>
-                                   {{$jobFilter}}
+                                    {{ $jobFilter }}
                                 </div>
 
                                 <div class="ms-1">
@@ -332,15 +332,15 @@
                                         <th scope="col" class="px-6 py-3 ">
                                             Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                             PESO Status
                                         </th>
                                         @if ($filter === 'ALL')
-                                            <th scope="col" class="px-6 py-3">
+                                            <th scope="col"class="px-6 py-3 hidden sm:table-cell">
                                                 Status
                                             </th>
                                         @endif
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                             Documents
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -378,23 +378,48 @@
                                                     class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                                     <img class="w-10 h-10 rounded-full object-cover"
                                                         src="{{ asset('storage/' . $data->employee->pimg) }}"
-                                                        alt="Jese image">
+                                                        alt="Profile Image">
                                                     <div class="ps-3 text-wrap">
                                                         <div class="text-base font-semibold">
                                                             <a wire:navigate
                                                                 href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
-                                                                class="hover:text-blue-500">{{ $data->employee->fname }}
+                                                                class="hover:text-blue-500">
+                                                                {{ $data->employee->fname }}
                                                                 {{ $data->employee->mname }}
                                                                 {{ $data->employee->lname }}
                                                             </a>
                                                         </div>
                                                         <div class="text-gray-500 font-medium text-xs">Applied date:
-                                                            {{ $data->created_at->format('F j, Y') }}
-                                                        </div>
+                                                            {{ $data->created_at->format('F j, Y') }}</div>
+                                                            <div class="text-gray-500 text-xs sm:hidden">
+                                                                Status: 
+                                                                @if ($data->peso_Status === 'PENDING')
+                                                                    <span class="text-yellow-500">{{ $data->peso_Status }}</span>
+                                                                @elseif($data->peso_Status === 'RECOMMENDED')
+                                                                    <span class="text-green-500">{{ $data->peso_Status }}</span>
+                                                                @elseif($data->peso_Status === 'REJECT')
+                                                                    <span class="text-red-500">{{ $data->peso_Status }}</span>
+                                                                @endif
+                                                                ( 
+                                                                @if ($data->applicant_Status === 'PENDING')
+                                                                    <span class="text-yellow-500">{{ $data->applicant_Status }}</span>
+                                                                @elseif($data->applicant_Status === 'INTERESTED')
+                                                                    <span class="text-purple-500">{{ $data->applicant_Status }}</span>
+                                                                @elseif($data->applicant_Status === 'INTERVIEW')
+                                                                    <span class="text-blue-500">{{ $data->applicant_Status }}</span>
+                                                                @elseif($data->applicant_Status === 'HIRED')
+                                                                    <span class="text-green-500">{{ $data->applicant_Status }}</span>
+                                                                @elseif($data->applicant_Status === 'ACCEPTED')
+                                                                    <span class="text-emerald-500">{{ $data->applicant_Status }}</span>
+                                                                @elseif($data->applicant_Status === 'REJECTED' || $data->applicant_Status === 'CANCELLED')
+                                                                    <span class="text-red-500">{{ $data->applicant_Status }}</span>
+                                                                @endif
+                                                                )
+                                                            </div>
                                                     </div>
-
                                                 </th>
-                                                <td class="px-6 py-4">
+
+                                                <td class="px-6 py-4 font-semibold hidden sm:table-cell">
                                                     <div class="flex items-center">
                                                         @if ($data->peso_Status === 'PENDING')
                                                             <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
@@ -411,8 +436,9 @@
                                                         @endif
                                                     </div>
                                                 </td>
+
                                                 @if ($filter === 'ALL')
-                                                    <td class="px-6 py-4">
+                                                    <td class="px-6 py-4 hidden sm:table-cell">
                                                         <div class="flex items-center">
                                                             @if ($data->applicant_Status === 'PENDING')
                                                                 <div
@@ -446,13 +472,12 @@
                                                         </div>
                                                     </td>
                                                 @endif
-                                                <td class="px-6 py-4">
+
+                                                <td class="px-6 py-4 hidden sm:table-cell">
                                                     <div class="flex flex-row gap-4 items-center">
-
-
                                                         <div x-data="{ tooltip: 'View Resume' }">
                                                             <button
-                                                                wire:click.prevent="viewFile({{ $data->employee_id }},{{ $data->applicant_Resume }} )"
+                                                                wire:click.prevent="viewFile({{ $data->employee_id }}, {{ $data->applicant_Resume }})"
                                                                 x-tooltip="tooltip" type="button"
                                                                 class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
                                                                 <svg class="w-5 h-5"
@@ -464,19 +489,13 @@
                                                                         d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
                                                                 </svg>
                                                             </button>
-                                                            </form>
                                                         </div>
-
-
-
-
                                                         @if ($data->peso_Status === 'RECOMMENDED')
                                                             <div x-data="{ tooltip: 'View Recommendation Letter' }">
                                                                 <button
-                                                                    wire:click.prevent="viewFile({{ $data->applicant_id }}, 3 )"
+                                                                    wire:click.prevent="viewFile({{ $data->applicant_id }}, 3)"
                                                                     x-tooltip="tooltip" type="button"
                                                                     class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-
                                                                     <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         fill="none" viewBox="0 0 24 24"
@@ -485,17 +504,48 @@
                                                                             stroke-linejoin="round"
                                                                             d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                                                                     </svg>
-
                                                                 </button>
-                                                                </form>
                                                             </div>
                                                         @endif
-
-
                                                     </div>
                                                 </td>
+                                              
                                                 <td class="px-6 py-4">
-                                                    <div class="flex flex-row gap-4 items-center">
+                                                    <div class="sm:hidden flex flex-row gap-1 sm:gap-4 items-center justify-center mb-2">
+                                                        <div x-data="{ tooltip: 'View Resume' }">
+                                                            <button
+                                                                wire:click.prevent="viewFile({{ $data->employee_id }}, {{ $data->applicant_Resume }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        @if ($data->peso_Status === 'RECOMMENDED')
+                                                            <div x-data="{ tooltip: 'View Recommendation Letter' }">
+                                                                <button
+                                                                    wire:click.prevent="viewFile({{ $data->applicant_id }}, 3)"
+                                                                    x-tooltip="tooltip" type="button"
+                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg class="w-5 h-5"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 24 24"
+                                                                        stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="flex flex-row gap-1 sm:gap-4 items-center">
                                                         @if (
                                                             $filter != 'ACCEPTED' &&
                                                                 $filter != 'HIRED' &&

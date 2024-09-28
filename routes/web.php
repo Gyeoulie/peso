@@ -105,7 +105,7 @@ Route::middleware(['incomplete.user', 'check.user.status', 'google2fa'])->group(
 // Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status'])->group(function () {
 Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'check.user.status'])->group(function () {
 
-    Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile');
+    Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile')->middleware('profile.privacy');;
     Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
     Route::get('/profile/pid={id}', PesoProfile::class)->name('peso.profile');
     Route::get('/search/profile', SearchProfiles::class)->name('search.profiles');

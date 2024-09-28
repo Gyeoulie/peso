@@ -88,27 +88,26 @@
                         {{-- TABLE --}}
                         <div class="overflow-x-auto ">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-300 hidden sm:table-header-group">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 ">
+                                        <th scope="col" class="px-6 py-3">
                                             Business Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                             Company Type
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                             Employer Type
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                             Partnership Status
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                             Joined Date
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Action
                                         </th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -124,80 +123,89 @@
                                                                 stroke-width="2"
                                                                 d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                         </svg>
-
                                                     </div>
                                                     <p class="text-xl font-bold text-black text-center mt-2">
                                                         No Pending Partnerships Found!
                                                     </p>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     @else
                                         @foreach ($partnersData as $data)
                                             <tr wire:key='company-{{ $data->company->company_id }}'
                                                 class="bg-white border-b hover:bg-gray-50">
+                                                <!-- Business Name and Address for Mobile -->
                                                 <th scope="row"
-                                                    class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                    <img class="w-10 h-10 rounded-full"
+                                                    class="flex flex-col sm:flex-row sm:items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                    <img class="w-10 h-10 rounded-full mb-2 sm:mb-0"
                                                         src="{{ asset('storage/' . $data->company->company_img) }}"
                                                         alt="img">
                                                     <div class="ps-3 text-wrap">
-                                                        <div class="text-base font-bold">
-                                                            <div class="text-base font-bold uppercase">
-                                                                {{ $data->company->business_Name }}
-
-                                                            </div>
-
-                                                        </div>
+                                                        <div class="text-base font-bold uppercase">
+                                                            {{ $data->company->business_Name }}</div>
                                                         <div class="font-normal text-gray-500 text-sm uppercase">
                                                             {{ $data->company->company_Address }},
                                                             {{ $data->company->barangay->barangay_Name }},
                                                             {{ $data->company->barangay->municipality->municipality_Name }}
                                                         </div>
+                                                        <div class="block sm:hidden mt-2 text-sm text-gray-500">
+                                                            <div class="text-gray-700 font-semibold">Company Type:</div>
+                                                            <div>
+                                                                {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="block sm:hidden mt-2 text-sm text-gray-500">
+                                                            <div class="text-gray-700 font-semibold">Employer Type:
+                                                            </div>
+                                                            <div>
+                                                                {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="block sm:hidden mt-2 text-sm text-gray-500">
+                                                            <div class="text-gray-700 font-semibold">Joined Date:</div>
+                                                            <div>{{ $data->company->created_at->format('F j, Y') }}
+                                                            </div>
+                                                        </div>
+
                                                     </div>
-
                                                 </th>
-                                                <td class="px-6 py-4">
 
+                                                <!-- Company Type for larger screens -->
+                                                <td class="px-6 py-4 hidden sm:table-cell">
                                                     <div class="font-normal text-gray-500 text-sm font-semibold">
                                                         {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
-
                                                     </div>
-
                                                 </td>
-                                                <td class="px-6 py-4">
 
+                                                <!-- Employer Type for larger screens -->
+                                                <td class="px-6 py-4 hidden sm:table-cell">
                                                     <div class="font-normal text-gray-500 text-sm font-semibold">
                                                         {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
-
                                                     </div>
-
                                                 </td>
-                                                <td class="px-6 py-4">
 
-                                                    <div class="font-normal text-gray-500 text-sm">
-                                                        @if ($data->partnership_Status == 'PENDING')
-                                                            <span
-                                                                class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
-                                                        @elseif ($data->partnership_Status == 'APPROVED')
-                                                            <span
-                                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
-                                                        @elseif ($data->partnership_Status == 'REJECTED' || $data->partnership_Status == 'CANCELLED')
-                                                            <span
-                                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->partnership_Status }}</span>
-                                                        @endif
-
-                                                    </div>
-
+                                                <!-- Partnership Status -->
+                                                <td class="px-6 py-4 hidden sm:table-cell">
+                                                    @if ($data->partnership_Status == 'PENDING')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                    @elseif ($data->partnership_Status == 'APPROVED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
+                                                    @elseif ($data->partnership_Status == 'REJECTED' || $data->partnership_Status == 'CANCELLED')
+                                                        <span
+                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->partnership_Status }}</span>
+                                                    @endif
                                                 </td>
-                                                <td class="px-6 py-4">
+
+                                                <!-- Joined Date for larger screens -->
+                                                <td class="px-6 py-4 hidden sm:table-cell">
                                                     {{ $data->company->created_at->format('F j, Y') }}
                                                 </td>
 
-
+                                                <!-- Action buttons -->
                                                 <td class="px-6 py-4">
-                                                    <div class="flex flex-row  gap-5">
+                                                    <div class="flex flex-row gap-5">
                                                         <div x-data="{ tooltip: 'View Details' }">
                                                             <a wire:navigate
                                                                 href="{{ route('admin-partnership-details', ['id' => $data->partnership_id]) }}"
@@ -213,16 +221,21 @@
                                                                 </svg>
                                                             </a>
                                                         </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
+                                            <!-- Mobile-specific row (for company details) -->
+                                            <tr class="block sm:hidden">
+                                                <td colspan="6" class="px-6 py-3">
 
                                                 </td>
-
-
                                             </tr>
                                         @endforeach
                                     @endif
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
 

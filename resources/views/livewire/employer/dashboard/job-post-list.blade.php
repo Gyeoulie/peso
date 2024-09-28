@@ -163,7 +163,7 @@
 
                     <div class="overflow-x-auto mt-2">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 lg:table-fixed">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 md:w-96">
                                         Job Title
@@ -171,13 +171,13 @@
                                     <th scope="col" class="px-6 py-3 md:w-64">
                                         Candidates
                                     </th>
-                                    <th scope="col" class="px-6 py-3 ">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         PESO Branch
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Date
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -188,7 +188,7 @@
                             <tbody>
                                 @if ($applicants->isEmpty())
                                     <tr>
-                                        <td colspan="5">
+                                        <td colspan="6">
                                             <div class="flex flex-col items-center justify-center mt-24 mb-24">
                                                 <div class="p-6 bg-gray-100 rounded-full">
                                                     <svg class="w-24 h-24 text-black" aria-hidden="true"
@@ -198,34 +198,41 @@
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
-
                                                 </div>
                                                 <p class="text-xl font-bold text-black text-center mt-2">
                                                     No Job Posting Found
                                                 </p>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @else
                                     @foreach ($applicants as $data)
-                                        <tr wire:key='jobPost-{{ $data->job_id }}' class="bg-white border-b ">
-                                            <th scope="row" class="flex items-center px-6 py-4 text-gray-900 ">
+                                        <tr wire:key='jobPost-{{ $data->job_id }}' class="bg-white border-b">
+                                            <th scope="row" class="flex items-center px-6 py-4 text-gray-900">
                                                 <div class="ps-3">
-                                                    <div class="text-base font-semibold">{{ $data->job_Title }}
-                                                    </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                                    <div class="text-base font-semibold">{{ $data->job_Title }}</div>
+                                                    <div
+                                                        class="font-normal text-gray-500 text-xs sm:text-sm uppercase">
                                                         {{ $data->job_Address }},
                                                         {{ $data->barangay->barangay_Name }},
                                                         {{ $data->barangay->municipality->municipality_Name }},
                                                         {{ $data->barangay->municipality->province->province_Name }}
+                                                    </div>
+                                                    <!-- Additional info for mobile view -->
+                                                    <div class="sm:hidden mt-2">
+                                                        <span class="block text-xs text-gray-600">PESO Branch:
+                                                            {{ $data->peso->municipality->municipality_Name }}</span>
+                                                        <span class="block text-xs text-gray-600">Status:
+                                                            {{ $data->job_Status }}</span>
+                                                        <span class="block text-xs text-gray-600">Date:
+                                                            {{ $data->created_at->format('F j, Y') }}</span>
                                                     </div>
                                                 </div>
                                             </th>
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-wrap gap-2">
                                                     <span
-                                                        class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">{{ $data->pending_count }}
+                                                        class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">{{ $data->pending_count }}
                                                         PENDING</span>
                                                     <span
                                                         class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-xs font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">{{ $data->interested_count }}
@@ -244,15 +251,12 @@
                                                         REJECTED</span>
                                                 </div>
                                             </td>
-
-                                            <td class="px-6 py-4">
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 <div class="font-normal text-gray-500 text-sm">
                                                     {{ $data->peso->municipality->municipality_Name }}
-
                                                 </div>
-
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 <div class="flex items-center">
                                                     @if ($data->job_Status == 'ACTIVE')
                                                         <div
@@ -264,7 +268,7 @@
                                                         </div> PENDING
                                                     @elseif ($data->job_Status == 'CLOSED')
                                                         <div
-                                                            class="h-1.5 w-1.5 rounded-full bg-cyan-500 me-21uppercase">
+                                                            class="h-1.5 w-1.5 rounded-full bg-cyan-500 me-1 uppercase">
                                                         </div> CLOSED
                                                     @elseif ($data->job_Status == 'COMPLETED')
                                                         <div
@@ -273,17 +277,14 @@
                                                     @else
                                                         <div
                                                             class="h-1.5 w-1.5 rounded-full bg-red-500 me-1 uppercase">
-                                                        </div>
-                                                        {{ $data->job_Status }}
+                                                        </div> {{ $data->job_Status }}
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 <div class="font-normal text-gray-500 text-sm">
                                                     {{ $data->created_at->format('F j, Y') }}
-
                                                 </div>
-
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-row  gap-2">
@@ -341,13 +342,12 @@
 
                                                 </div>
                                             </td>
-
-
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
+
                     </div>
 
                 </div>

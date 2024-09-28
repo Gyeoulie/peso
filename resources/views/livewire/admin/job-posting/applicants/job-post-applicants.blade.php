@@ -192,24 +192,12 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Name
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Address
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Status
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        PESO Status
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Date Applied
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
+                                    <th scope="col" class="px-6 py-3">Name</th>
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">Address</th>
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">Status</th>
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">PESO Status</th>
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">Date Applied</th>
+                                    <th scope="col" class="px-6 py-3"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -217,7 +205,7 @@
                                     <tr>
                                         <td colspan="6">
                                             <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                                <div class="flex  bg-gray-100 rounded-full p-1">
+                                                <div class="flex bg-gray-100 rounded-full p-1">
                                                     <svg class="w-16 h-16 text-black" aria-hidden="true"
                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke="currentColor">
@@ -226,13 +214,10 @@
                                                             d="M21 21l-3.5-3.5m0 0a7 7 0 1 1-9-10.5 7 7 0 0 1 9 10.5z" />
                                                     </svg>
                                                 </div>
-
                                                 <div class="text-center text-black text-xl font-semibold mt-2">
                                                     No Applicants Found
                                                 </div>
                                             </div>
-
-
                                         </td>
                                     </tr>
                                 @else
@@ -244,73 +229,94 @@
                                                     {{ $applicants->employee->mname }}
                                                     {{ $applicants->employee->lname }}
                                                 </div>
+                                                <!-- Show status and PESO status on mobile -->
+                                                <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                    Status:
+                                                    <span class="font-bold">
+                                                        @if ($applicants->applicant_Status == 'PENDING')
+                                                            PENDING
+                                                        @elseif($applicants->applicant_Status == 'INTERVIEW')
+                                                            INTERVIEW
+                                                        @elseif($applicants->applicant_Status == 'HIRED')
+                                                            HIRED
+                                                        @elseif($applicants->applicant_Status == 'REJECTED')
+                                                            REJECTED
+                                                        @endif
+                                                    </span>
+                                                </div>
+                                                <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                    PESO:
+                                                    <span class="font-bold">
+                                                        @if ($applicants->peso_Status == 'PENDING')
+                                                            PENDING
+                                                        @elseif($applicants->peso_Status == 'RECOMMENDED')
+                                                            RECOMMENDED
+                                                        @elseif($applicants->peso_Status == 'REJECT')
+                                                            REJECTED
+                                                        @endif
+                                                    </span>
+                                                </div>
+                                                <!-- Show date on mobile -->
+                                                <div class="text-gray-500 text-xs sm:hidden">
+                                                    Applied: {{ $applicants->created_at->format('F j, Y') }}
+                                                </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <!-- Address (Hidden on mobile) -->
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 <div class="text-base font-semibold uppercase">
                                                     {{ $applicants->employee->address }},
                                                     {{ $applicants->employee->barangay->barangay_Name }},
-                                                    {{ $applicants->employee->barangay->municipality->municipality_Name }},
-                                                    {{ $applicants->employee->barangay->municipality->province->province_Name }}
-
+                                                    {{ $applicants->employee->barangay->municipality->municipality_Name }}
                                                 </div>
                                             </td>
-
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center font-semibold">
+                                            <!-- Status (Hidden on mobile) -->
+                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                                <div class="font-semibold">
                                                     @if ($applicants->applicant_Status == 'PENDING')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
-                                                        PENDING
-                                                    @elseif($applicants->applicant_Status == 'INTERESTED')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2"></div>
-                                                        INTERESTED
+                                                        <div
+                                                            class="h-2.5 w-2.5 rounded-full bg-yellow-500 inline-block">
+                                                        </div> PENDING
                                                     @elseif($applicants->applicant_Status == 'INTERVIEW')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
-                                                        INTERVIEW
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-blue-500 inline-block">
+                                                        </div> INTERVIEW
                                                     @elseif($applicants->applicant_Status == 'HIRED')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                                        HIRED
-                                                    @elseif($applicants->applicant_Status == 'ACCEPTED')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2">
-                                                        </div>
-                                                        ACCEPTED
-                                                    @elseif($applicants->applicant_Status == 'REJECTED' || $applicants->applicant_Status == 'CANCELLED')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                        <p class="uppercase">{{ $applicants->applicant_Status }}</p>
+                                                        <div
+                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 inline-block">
+                                                        </div> HIRED
                                                     @endif
                                                 </div>
                                             </td>
-
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center font-semibold">
+                                            <!-- PESO Status (Hidden on mobile) -->
+                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                                <div class="font-semibold">
                                                     @if ($applicants->peso_Status == 'PENDING')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
-                                                        PENDING
+                                                        <div
+                                                            class="h-2.5 w-2.5 rounded-full bg-yellow-500 inline-block">
+                                                        </div> PENDING
                                                     @elseif($applicants->peso_Status == 'RECOMMENDED')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2">
-                                                        </div>
-                                                        RECOMMENDED
+                                                        <div
+                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 inline-block">
+                                                        </div> RECOMMENDED
                                                     @elseif($applicants->peso_Status == 'REJECT')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                        NOT RECOMMENDED
-                                                    @elseif($applicants->peso_Status == 'CANCELLED')
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                        CANCELLED
+                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 inline-block">
+                                                        </div> REJECTED
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
-                                                <div class="text-base text-sm">
-                                                    {{ $applicants->created_at->format('F j, Y') }}
+                                            <!-- Date Applied (Hidden on mobile) -->
+                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                                <div class="text-sm">{{ $applicants->created_at->format('F j, Y') }}
                                                 </div>
                                             </td>
+                                            <!-- Actions -->
                                             <td class="px-6 py-4 text-center">
                                                 <div x-data="{ tooltip: 'Applicant Overview' }">
                                                     <a wire:navigate
                                                         href="{{ route('admin.jobpost.applicants.overview', ['id' => $applicants->applicant_id]) }}"
                                                         x-tooltip="tooltip" type="button"
-                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 inline-flex items-center">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="currentColor">
+                                                            fill="currentColor" viewBox="0 0 24 24">
                                                             <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                             <path fill-rule="evenodd"
                                                                 d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
@@ -318,13 +324,13 @@
                                                         </svg>
                                                     </a>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 

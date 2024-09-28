@@ -87,23 +87,23 @@
 
                     {{-- REQUIREMENT TABLE --}}
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                    <th scope="col" class="px-6 py-3">
                                         Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                         Role
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                         Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3 text-center">
+                                    <th scope="col" class="px-6 py-3 text-center hidden sm:table-cell">
                                         Created
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-
+                                        <!-- Action Column -->
                                     </th>
                                 </tr>
                             </thead>
@@ -120,13 +120,11 @@
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
-
                                                 </div>
                                                 <p class="text-xl font-bold text-black text-center mt-2">
                                                     No Records Found!
                                                 </p>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @else
@@ -134,7 +132,6 @@
                                         <tr wire:key='requirement-{{ $data->requirement_id }}'
                                             class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row" class="text-gray-900 whitespace-nowrap">
-
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
                                                         <div class="text-base font-semibold uppercase">
@@ -142,17 +139,21 @@
                                                             {{ $data->peso_accounts->peso_accounts_Mname ?? '' }}
                                                             {{ $data->peso_accounts->peso_accounts_Lname }}
                                                         </div>
-
                                                     </div>
                                                     <div class="font-normal text-gray-500 text-sm uppercase">
                                                         {{ $data->peso_accounts->peso_accounts_Pnumber }}
-
+                                                    </div>
+                                                    <div class="font-normal text-gray-500 text-sm">
+                                                        <!-- Extra Info for Mobile -->
+                                                        <span class="sm:hidden">
+                                                            {{ $data->usertype == 8 ? 'PESO Consultant' : ($data->usertype == 9 ? 'PESO Officer' : 'PESO Manager') }}
+                                                            | Status: <!-- Replace with actual status if available -->
+                                                            {{ $data->status ?? 'N/A' }}
+                                                        </span>
                                                     </div>
                                                 </div>
-
-
                                             </th>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 <div class="flex items-center uppercase">
                                                     @if ($data->usertype == 8)
                                                         <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
@@ -166,10 +167,10 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 Status
                                             </td>
-                                            <td class="px-6 py-4 text-center">
+                                            <td class="px-6 py-4 text-center hidden sm:table-cell">
                                                 <div class="text-base font-light uppercase text-sm">
                                                     {{ $data->updated_at->format('h:i A') }}
                                                 </div>
@@ -178,7 +179,6 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-
                                                 <div class="flex flex-row items-center justify-center gap-6">
                                                     <div x-data="{ tooltip: 'PESO Account Overview' }">
                                                         <a wire:navigate
@@ -195,13 +195,13 @@
                                                         </a>
                                                     </div>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 

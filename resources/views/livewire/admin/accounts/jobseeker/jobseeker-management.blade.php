@@ -97,19 +97,10 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 ">
-                                        Name
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Employment Status
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Joined Date
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
-
+                                    <th scope="col" class="px-6 py-3">Name</th>
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">Employment Status</th>
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">Joined Date</th>
+                                    <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -125,69 +116,69 @@
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
-
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
-                                                    No Records Found!
-                                                </p>
+                                                <p class="text-xl font-bold text-black text-center mt-2">No Records
+                                                    Found!</p>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @else
                                     @foreach ($jobseeker as $data)
                                         <tr wire:key='emp-{{ $data->employee_id }}'
                                             class="bg-white border-b hover:bg-gray-50">
-                                            <th scope="row"
-                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full"
-                                                    src="{{ asset('storage/' . $data->pimg) }}" alt="Jese image">
-                                                <div class="ps-3 text-wrap">
-                                                    <div class="text-base font-semibold">
+                                            <!-- Combined for mobile view -->
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center">
+                                                    <img class="w-10 h-10 rounded-full"
+                                                        src="{{ asset('storage/' . $data->pimg) }}" alt="Image">
+                                                    <div class="ps-3">
+                                                        <!-- Name and Address -->
                                                         <div class="text-base font-semibold uppercase">
-                                                            {{ $data->lname }},
-                                                            {{ $data->fname }}
-                                                            {{ $data->mname ?? '' }}
-                                                            @if (!empty($data->suffix))
-                                                                , {{ $data->suffix }}
-                                                            @endif
+                                                            {{ $data->lname }}, {{ $data->fname }}
+                                                            {{ $data->mname ?? '' }}{{ !empty($data->suffix) ? ', ' . $data->suffix : '' }}
                                                         </div>
+                                                        <div class="font-normal text-gray-500 text-sm uppercase">
+                                                            {{ $data->address }}, {{ $data->barangay->barangay_Name }},
+                                                            {{ $data->barangay->municipality->municipality_Name }}</div>
 
-                                                    </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase">
-                                                        {{ $data->address }}, {{ $data->barangay->barangay_Name }},
-                                                        {{ $data->barangay->municipality->municipality_Name }}
+                                                        <!-- Employment status and joined date for small screens -->
+                                                        <div class="font-normal text-gray-500 sm:hidden">
+                                                            <div class="flex items-center">
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full {{ $data->empstatus == 1 ? 'bg-green-500' : 'bg-red-500' }} mr-2">
+                                                                </div>
+                                                                {{ $data->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
+                                                            </div>
+                                                            <span class="block">Joined:
+                                                                {{ $data->created_at->format('F j, Y') }}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-
-                                            </th>
-                                            <td class="px-6 py-4">
-
-                                                @if ($data->empstatus == 1)
-                                                    <div class="flex flex-row items-center">
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                                        EMPLOYED
-                                                    </div>
-                                                @else
-                                                    <div class="flex flex-row items-center">
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                        UNEMPLOYED
-                                                    </div>
-                                                @endif
-
                                             </td>
-                                            <td class="px-6 py-4">
+
+                                            <!-- Employment Status (visible on larger screens) -->
+                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="h-2.5 w-2.5 rounded-full {{ $data->empstatus == 1 ? 'bg-green-500' : 'bg-red-500' }} mr-2">
+                                                    </div>
+                                                    {{ $data->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
+                                                </div>
+                                            </td>
+
+                                            <!-- Joined Date (visible on larger screens) -->
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 {{ $data->created_at->format('F j, Y') }}
                                             </td>
 
-
+                                            <!-- Action buttons (visible on larger screens) -->
                                             <td class="px-6 py-4">
-                                                <div class="flex flex-row  gap-5">
+                                                <div class="flex flex-row gap-5">
                                                     <div x-data="{ tooltip: 'Jobseeker Overview' }">
                                                         <a wire:navigate
                                                             href="{{ route('admin-users-jobseeker-overview', ['id' => $data->employee_id]) }}"
-                                                            x-tooltip="tooltip" type="button"
-                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            x-tooltip="tooltip"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 inline-flex items-center">
                                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                                 viewBox="0 0 24 24" fill="currentColor">
                                                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
@@ -197,16 +188,14 @@
                                                             </svg>
                                                         </a>
                                                     </div>
-
-
+                                                </div>
                                             </td>
-
-
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 

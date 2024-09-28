@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -122,6 +123,16 @@ class SearchProfiles extends Component
                 ) as relevance_score")
             )
             ->where('users.usertype', '=', '4')
+            ->where('users.userstatus', '=', '1')
+            ->when(true, function ($query) {
+                if (Auth::user()->usertype == 4) {
+                    // Add a condition if userstatus is 1
+                    $query->where('employee.empprofile', 3);
+                } else if (Auth::user()->usertype == 6) {
+                    // Else, if userstatus is not 1, apply another condition
+                    $query->whereIn('users.empprofile', [2, 3]);
+                }
+            })
             ->where(function ($query) use ($search) {
                 $query->where('employee.fname', 'like', '%' . $search . '%')
                     ->orWhere('employee.mname', 'like', '%' . $search . '%')
@@ -141,7 +152,7 @@ class SearchProfiles extends Component
                 'company.business_Name as name',
                 'company.trade_Name as trade_name',
                 'company.company_Type as company_Type',
-            'company.employer_Type as employer_Type',
+                'company.employer_Type as employer_Type',
                 'barangay.barangay_Name as barangay_name',
                 'municipality.municipality_Name as municipality_name',
                 DB::raw("(
@@ -150,6 +161,7 @@ class SearchProfiles extends Component
                 ) as relevance_score")
             )
             ->where('users.usertype', '=', '6')
+            ->where('users.userstatus', '=', '1')
             ->where(function ($query) use ($search) {
                 $query->where('company.business_Name', 'like', '%' . $search . '%')
                     ->orWhere('company.trade_Name', 'like', '%' . $search . '%');

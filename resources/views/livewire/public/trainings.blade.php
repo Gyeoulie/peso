@@ -287,29 +287,29 @@
                     <div class="max-w-7xl mx-auto overflow-visible">
                         <div class="bg-white overflow-hidden sm:rounded-lg p-2 overflow-visible">
                             <div class="relative">
-                                <div
-                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+                                <div class=" p-6 overflow-visible">
 
-                                    <div class="flex flex-col sm:flex-row w-full justify-between gap-4 mb-4">
+                                    <div
+                                        class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
                                         {{-- SEARCH BOX --}}
-                                        <div class="flex">
-                                            <label for="table-search" class="sr-only">Search</label>
-                                            <div class="relative">
-                                                <div
-                                                    class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                    <svg class="w-4 h-4 text-gray-500 " aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 20 20">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-linejoin="round" stroke-width="2"
-                                                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                                    </svg>
-                                                </div>
-                                                <input wire:model.live.prevent='searchHistory' type="text"
-                                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                                    placeholder="Search for trainings">
+
+                                        <label for="table-search" class="sr-only">Search</label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                <svg class="w-4 h-4 text-gray-500 " aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 20 20">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                                </svg>
                                             </div>
+                                            <input wire:model.live.prevent='searchHistory' type="text"
+                                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                                placeholder="Search for trainings">
                                         </div>
+
                                         {{-- SORT --}}
                                         <div class="flex flex-row gap-2">
                                             <x-dropdown align="left" width="36">
@@ -406,121 +406,139 @@
                                     <div class="overflow-x-auto">
                                         <table
                                             class="w-full text-sm text-left rtl:text-right text-gray-500 lg:table-fixed">
-                                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                                 <tr>
-                                                    <th scope="col" class="px-6 py-3 md:w-96">
-                                                        Even Title
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3 ">
-                                                        Registered Date
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3 w-md">
-                                                        Registration Status
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3 w-md">
-                                                        Program Status
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3 w-md">
-                                                        Action
-                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 md:w-96">Event Title</th>
+                                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                                        Registered Date</th>
+                                                    <th scope="col" class="px-6 py-3 hidden md:table-cell">
+                                                        Registration Status</th>
+                                                    <th scope="col" class="px-6 py-3 hidden md:table-cell">Program
+                                                        Status</th>
+                                                    <th scope="col" class="px-6 py-3 w-md">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @if ($programHistory->isEmpty())
                                                     <tr>
-                                                        <td colspan="4">
+                                                        <td colspan="5">
                                                             <div
                                                                 class="flex flex-col items-center justify-center mt-24 mb-24">
                                                                 <div class="p-6 bg-gray-100 rounded-full">
                                                                     <svg class="w-24 h-24 text-black"
-                                                                        aria-hidden="true"
                                                                         xmlns="http://www.w3.org/2000/svg"
-                                                                        width="24" height="24" fill="none"
-                                                                        viewBox="0 0 24 24">
+                                                                        fill="none" viewBox="0 0 24 24">
                                                                         <path stroke="currentColor"
                                                                             stroke-linecap="round" stroke-width="2"
                                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                     </svg>
-
                                                                 </div>
                                                                 <p
                                                                     class="text-xl font-bold text-black text-center mt-2">
-                                                                    No Trainings Found
-                                                                </p>
+                                                                    No Trainings Found</p>
                                                             </div>
-
                                                         </td>
                                                     </tr>
                                                 @else
                                                     @foreach ($programHistory as $data)
                                                         <tr wire:key='progReg-{{ $data->progra_reg_id }}'
-                                                            class="bg-white border-b ">
+                                                            class="bg-white border-b">
                                                             <th scope="row"
-                                                                class="flex items-center px-6 py-4 text-gray-900 ">
+                                                                class="flex flex-col sm:flex-row items-start px-6 py-4 text-gray-900">
                                                                 <div class="ps-3">
                                                                     <div class="text-base font-semibold">
-                                                                        {{ $data->programs->program_Title }}
-                                                                    </div>
+                                                                        {{ $data->programs->program_Title }}</div>
                                                                     <div class="font-normal text-gray-500 text-sm">
-                                                                        {{ $data->programs->program_Location }}
+                                                                        {{ $data->programs->program_Location }}</div>
+                                                                    <div class="sm:hidden mt-2 text-gray-500 text-sm">
+                                                                        {{ $data->created_at->format('F j, Y') }}</div>
+                                                                    <!-- Mobile view -->
+                                                                    <div class="sm:hidden mt-2 text-gray-500 text-sm">
+                                                                        Program Status:
+                                                                        <div class="flex items-center">
+                                                                            @if ($data->programs->program_Status === 'ACTIVE')
+                                                                                <div
+                                                                                    class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                                </div> ACTIVE
+                                                                            @elseif ($data->programs->program_Status === 'CLOSED')
+                                                                                <div
+                                                                                    class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2">
+                                                                                </div> CLOSED
+                                                                            @elseif ($data->programs->program_Status === 'COMPLETED')
+                                                                                <div
+                                                                                    class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
+                                                                                </div> COMPLETED
+                                                                            @elseif($data->programs->program_Status === 'CANCELLED')
+                                                                                <div
+                                                                                    class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                                                </div> CANCELLED
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sm:hidden mt-2 text-gray-500 text-sm">
+                                                                        Registration Status:
+                                                                        <div class="flex items-center">
+                                                                            @if ($data->program_reg_Status == 'REGISTERED')
+                                                                                <div
+                                                                                    class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                                </div> REGISTERED
+                                                                            @elseif ($data->program_reg_Status == 'COMPLETED')
+                                                                                <div
+                                                                                    class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                                                </div> COMPLETED
+                                                                            @else
+                                                                                <div
+                                                                                    class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                                                </div> {{ $data->program_reg_Status }}
+                                                                            @endif
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </th>
-
-                                                            <td class="px-6 py-4">
+                                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                                 <div class="font-normal text-gray-500 text-sm">
-                                                                    {{ $data->created_at->format('F j, Y') }}
-                                                                </div>
+                                                                    {{ $data->created_at->format('F j, Y') }}</div>
                                                             </td>
-                                                            <td class="px-6 py-4">
+                                                            <td class="px-6 py-4 hidden md:table-cell">
                                                                 <div class="flex items-center">
                                                                     @if ($data->program_reg_Status == 'REGISTERED')
                                                                         <div
-                                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 me-2 uppercase">
+                                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
                                                                         </div> REGISTERED
                                                                     @elseif ($data->program_reg_Status == 'COMPLETED')
                                                                         <div
-                                                                            class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2 uppercase">
+                                                                            class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
                                                                         </div> COMPLETED
                                                                     @else
                                                                         <div
-                                                                            class="h-2.5 w-2.5 rounded-full bg-red-500 me-2 uppercase">
-                                                                        </div>
-                                                                        {{ $data->program_reg_Status }}
+                                                                            class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                                        </div> {{ $data->program_reg_Status }}
                                                                     @endif
                                                                 </div>
                                                             </td>
-
-                                                            <td class="px-6 py-4">
+                                                            <td class="px-6 py-4 hidden md:table-cell">
                                                                 <div class="flex items-center">
                                                                     @if ($data->programs->program_Status === 'ACTIVE')
                                                                         <div
                                                                             class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
-                                                                        </div>
-                                                                        ACTIVE
+                                                                        </div> ACTIVE
                                                                     @elseif ($data->programs->program_Status === 'CLOSED')
                                                                         <div
                                                                             class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2">
-                                                                        </div>
-                                                                        CLOSED
+                                                                        </div> CLOSED
                                                                     @elseif ($data->programs->program_Status === 'COMPLETED')
                                                                         <div
                                                                             class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
-                                                                        </div>
-                                                                        COMPLETED
+                                                                        </div> COMPLETED
                                                                     @elseif($data->programs->program_Status === 'CANCELLED')
                                                                         <div
                                                                             class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
-                                                                        </div>
-                                                                        CANCELLED
+                                                                        </div> CANCELLED
                                                                     @endif
                                                                 </div>
                                                             </td>
-
-
-
                                                             <td class="px-6 py-4">
-                                                                <div class="flex flex-row  gap-5">
+                                                                <div class="flex flex-row gap-5">
                                                                     @if ($data->programs->program_Status === 'ACTIVE')
                                                                         <div x-data="{ tooltip: 'View Training' }">
                                                                             <a wire:navigate
@@ -540,8 +558,6 @@
                                                                             </a>
                                                                         </div>
                                                                     @endif
-
-
                                                                     <div x-data="{ tooltip: 'View Ticket' }">
                                                                         <button
                                                                             wire:click.prevent='viewTicket({{ $data->program_reg_id }})'
@@ -556,21 +572,16 @@
                                                                                     stroke-linejoin="round"
                                                                                     d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
                                                                             </svg>
-
-
                                                                         </button>
                                                                     </div>
-
-
                                                                 </div>
                                                             </td>
-
-
                                                         </tr>
                                                     @endforeach
                                                 @endif
                                             </tbody>
                                         </table>
+
                                     </div>
                                     {{-- navbar --}}
                                     <div class="mt-2 p-4">

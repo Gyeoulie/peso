@@ -99,22 +99,21 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 ">
+                                    <th scope="col" class="px-6 py-3">
                                         Business Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Company Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Employment Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                         Partnered
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Action
                                     </th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,13 +129,11 @@
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
-
                                                 </div>
                                                 <p class="text-xl font-bold text-black text-center mt-2">
                                                     No Records Found!
                                                 </p>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @else
@@ -152,41 +149,43 @@
                                                     <div class="text-base font-bold">
                                                         <div class="text-base font-bold uppercase">
                                                             {{ $data->company->business_Name }}
-
                                                         </div>
-
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                                    <div
+                                                        class="font-normal text-gray-500 text-sm uppercase hidden sm:block">
                                                         {{ $data->company->company_Address }},
                                                         {{ $data->company->barangay->barangay_Name }},
                                                         {{ $data->company->barangay->municipality->municipality_Name }}
                                                     </div>
+                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                        {{ $data->company->company_Address }},
+                                                        {{ $data->company->barangay->barangay_Name }},
+                                                        {{ $data->company->barangay->municipality->municipality_Name }}
+                                                    </div>
+                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                        {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
+                                                    </div>
+                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                        {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
+
+                                                    </div>
                                                 </div>
-
                                             </th>
-                                            <td class="px-6 py-4">
-
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 <div class="font-normal text-gray-500 text-sm font-semibold">
                                                     {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
-
                                                 </div>
-
                                             </td>
-                                            <td class="px-6 py-4">
-
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 <div class="font-normal text-gray-500 text-sm">
                                                     {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
-
                                                 </div>
-
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="hidden sm:table-cell px-6 py-4">
                                                 {{ $data->responded_at->format('F j, Y') }}
                                             </td>
-
-
                                             <td class="px-6 py-4">
-                                                <div class="flex flex-row  gap-5">
+                                                <div class="flex flex-row gap-5">
                                                     <div x-data="{ tooltip: 'Employer Overview' }">
                                                         <a wire:navigate
                                                             href="{{ route('admin-users-employer-overview', ['id' => $data->company->company_id]) }}"
@@ -201,16 +200,14 @@
                                                             </svg>
                                                         </a>
                                                     </div>
-
-
+                                                </div>
                                             </td>
-
-
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 

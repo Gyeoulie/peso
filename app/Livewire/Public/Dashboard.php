@@ -10,6 +10,7 @@ use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
+use App\Models\Job_Tags;
 use App\Models\PESO;
 use App\Models\Programs;
 use Illuminate\Support\Facades\Auth;
@@ -57,19 +58,28 @@ class Dashboard extends Component
     public $search, $searchIndustry, $searchTags;
     public $filter = 'All';
     public $sort = 'Newest';
-    public $pagination = 5;
+    public $pagination = 6;
 
     public $filterJobTags = [], $filterIndustry = [], $mountJobTagsFilter = [], $mountIndustryFilter = [];
+
+    public function mountTopJobTags($value)
+    {
+
+        $this->resetPage('jobs');
+        $this->search = $value;
+    }
     public function mountJobTags()
     {
         $this->filterJobTags = $this->mountJobTagsFilter;
         $this->dispatch('close-modal', 'job-tag-filter-modal');
+        $this->resetPage('jobs');
 
     }
     public function mountIndustry()
     {
         $this->filterIndustry = $this->mountIndustryFilter;
         $this->dispatch('close-modal', 'industry-filter-modal');
+        $this->resetPage('jobs');
 
     }
 
@@ -77,12 +87,14 @@ class Dashboard extends Component
     {
         $this->reset('filterJobTags', 'mountJobTagsFilter');
         $this->resetPage('job_position');
+        $this->resetPage('jobs');
 
     }
     public function resetIndustry()
     {
         $this->reset('filterIndustry', 'mountIndustryFilter');
         $this->resetPage('job_industry');
+        $this->resetPage('jobs');
 
     }
     public function updatedSearch()
@@ -493,6 +505,68 @@ class Dashboard extends Component
         return $programQuery->orderBy('created_at', 'desc')->take(4)->get();
     }
 
+    public function getTopJobTags($user = null)
+    {
+        // Determine the municipality ID based on user status
+        if ($user && $user->employee) {
+            // Fetch PESO ID based on employee's municipality
+            $municipalityId = $user->employee->barangay->municipality_id;
+        } elseif ($user && $user->peso_accounts) {
+            // Fetch PESO ID based on user's PESO account
+            $municipalityId = $user->peso_accounts->peso->municipality_id;
+        } else {
+            // If no user or not logged in, set municipality ID to null and fetch all
+            $municipalityId = null;
+        }
+
+        // Fetch top job tags based on active job postings and municipality
+        $jobTags = Job_Tags::whereHas('job_posting', function ($query) use ($municipalityId) {
+            $query->where('job_Status', 'ACTIVE')
+                ->when($municipalityId, function ($query) use ($municipalityId) {
+                    $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                        $subQuery->where('municipality_id', $municipalityId);
+                    });
+                });
+        })
+            ->withCount('job_posting') // Count of job postings associated with each tag
+            ->orderBy('job_posting_count', 'desc') // Order by count of job postings
+            ->take(5) // Limit to top 5 tags
+            ->get();
+
+        return $jobTags;
+    }
+
+    public function getTopJobIndustries($user = null)
+    {
+        // Determine the municipality ID based on user status
+        if ($user && $user->employee) {
+            // Fetch PESO ID based on employee's municipality
+            $municipalityId = $user->employee->barangay->municipality_id;
+        } elseif ($user && $user->peso_accounts) {
+            // Fetch PESO ID based on user's PESO account
+            $municipalityId = $user->peso_accounts->peso->municipality_id;
+        } else {
+            // If no user or not logged in, set municipality ID to null and fetch all
+            $municipalityId = null;
+        }
+
+        // Fetch top job industries based on active job postings and municipality
+        $jobIndustries = Job_Industry::whereHas('job_posting', function ($query) use ($municipalityId) {
+            $query->where('job_Status', 'ACTIVE')
+                ->when($municipalityId, function ($query) use ($municipalityId) {
+                    $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                        $subQuery->where('municipality_id', $municipalityId);
+                    });
+                });
+        })
+            ->withCount('job_posting') // Count of job postings associated with each industry
+            ->orderBy('job_posting_count', 'desc') // Order by count of job postings
+            ->take(5) // Limit to top 5 industries
+            ->get();
+
+        return $jobIndustries;
+    }
+
     public function render()
     {
         $joblist = $this->getPaginatedJobs();
@@ -508,7 +582,9 @@ class Dashboard extends Component
             ->paginate(8, ['*'], 'job_industry');
 
         $announcements = $this->setAnnouncements($user);
+        $topJobTags = $this->getTopJobTags($user);
+        $topJobIndustries = $this->getTopJobIndustries($user);
 
-        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements', 'jobposition', 'industry'));
+        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements', 'jobposition', 'industry', 'topJobTags', 'topJobIndustries'));
     }
 }

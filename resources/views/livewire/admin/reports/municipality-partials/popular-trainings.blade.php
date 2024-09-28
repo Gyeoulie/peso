@@ -25,22 +25,19 @@
     </div>
 
     <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
             <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                 <tr>
                     <th scope="col" class="px-6 py-3 w-full">
                         <span class="text-black font-bold text-md">Training Title</span>
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         <span class="text-black font-bold text-md">Type</span>
                     </th>
-                    <th scope="col" class="px-6 py-3 text-center">
-                        <span class="text-black font-bold text-md ">Registered</span>
+                    <th scope="col" class="hidden sm:table-cell px-6 py-3 text-center">
+                        <span class="text-black font-bold text-md">Registered</span>
                     </th>
-                    <th scope="col" class="px-6 py-3">
-
-                    </th>
-
+                    <th scope="col" class="px-6 py-3"></th>
                 </tr>
             </thead>
             <tbody>
@@ -55,13 +52,11 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                     </svg>
-
                                 </div>
                                 <p class="text-xl font-bold text-black text-center mt-2">
                                     Not enough data!
                                 </p>
                             </div>
-
                         </td>
                     </tr>
                 @else
@@ -72,32 +67,34 @@
                                     src="{{ asset('storage/' . $data->program_pubmat) }}" alt="img">
                                 <div class="ps-3 text-wrap">
                                     <div class="text-base font-semibold">
-                                        <div class="text-base font-semibold">{{ $data->program_Title }}
-                                        </div>
+                                        <div class="text-base font-semibold">{{ $data->program_Title }}</div>
                                         <div class="font-normal text-gray-500 text-sm uppercase">
                                             {{ $data->program_Host }}
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="text-sm text-gray-500 sm:hidden">
+                                        {{ $data->program_Type }}
+                                    </div>
+                                    <div class="text-sm text-gray-500 sm:hidden">
+                                        Registrants: <span
+                                            class="text-black font-bold">{{ $data->registration_count }}</span>
+                                    </div>
 
+                                </div>
                             </th>
 
-                            <td class="px-6 py-4">
+                            <td class="hidden sm:table-cell px-6 py-4">
                                 {{ $data->program_Type }}
                             </td>
 
-                            <td class="px-6 py-4">
-
+                            <td class="hidden sm:table-cell px-6 py-4">
                                 <div class="font-normal text-gray-500 text-sm text-center uppercase">
-                                    <span class="text-blue-500 font-bold text-md ">
+                                    <span class="text-blue-500 font-bold text-md">
                                         {{ $data->registration_count }}</span>
-
                                 </div>
-
                             </td>
 
-
-                            <td>
+                            <td class="px-6 py-4">
                                 <div x-data="{ tooltip: 'Program Overview' }">
                                     <a wire:navigate
                                         href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
@@ -113,12 +110,9 @@
                                     </a>
                                 </div>
                             </td>
-
-
                         </tr>
                     @endforeach
                 @endif
-
             </tbody>
         </table>
     </div>

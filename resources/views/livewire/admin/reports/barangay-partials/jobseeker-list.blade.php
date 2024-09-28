@@ -44,21 +44,17 @@
                 <tr>
                     <th scope="col" class="px-6 py-3 w-full">
                         <span class="text-black font-bold text-md">Applicant Name</span>
-
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         <span class="text-black font-bold text-md">Employment Status</span>
                     </th>
-                    <th scope="col" class="px-6 py-3 text-center">
-                        <span class="text-black font-bold text-md ">Active Applications</span>
+                    <th scope="col" class="hidden sm:table-cell px-6 py-3 text-center">
+                        <span class="text-black font-bold text-md">Active Applications</span>
                     </th>
-                    <th scope="col" class="px-6 py-3 text-center">
-                        <span class="text-black font-bold text-md ">Registered Trainings</span>
+                    <th scope="col" class="hidden sm:table-cell px-6 py-3 text-center">
+                        <span class="text-black font-bold text-md">Registered Trainings</span>
                     </th>
-                    <th scope="col" class="px-6 py-3">
-
-                    </th>
-
+                    <th scope="col" class="px-6 py-3"></th>
                 </tr>
             </thead>
             <tbody>
@@ -73,13 +69,9 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                     </svg>
-
                                 </div>
-                                <p class="text-xl font-bold text-black text-center mt-2">
-                                    No Records Found!
-                                </p>
+                                <p class="text-xl font-bold text-black text-center mt-2">No Records Found!</p>
                             </div>
-
                         </td>
                     </tr>
                 @else
@@ -89,19 +81,33 @@
                                 <img class="w-10 h-10 rounded-full object-cover"
                                     src="{{ asset('storage/' . $data->pimg) }}" alt="img">
                                 <div class="ps-3 text-wrap">
-                                    <div class="text-base font-semibold">
-                                        <div class="text-base font-semibold uppercase">
-                                            {{ $data->fname }} {{ $data->mname }}
-                                            {{ $data->lname }}
+                                    <div class="text-base font-semibold uppercase">
+                                        {{ $data->fname }} {{ $data->mname }} {{ $data->lname }}
+                                    </div>
 
-                                        </div>
 
+                                    <div class="text-sm text-gray-500 sm:hidden">
+                                        <span>Active Apps: <span
+                                                class="text-black font-bold">{{ $data->active_applications_count }}</span></span>
+                                    </div>
+                                    <div class="text-sm text-gray-500 sm:hidden">
+                                        <span>Trainings: <span
+                                                class="text-black font-bold">{{ $data->program_reg_count }}</span></span>
+                                    </div>
+                                    <div class="text-sm text-gray-500 sm:hidden">
+                                        <span>@if ($data->empstatus == '2')
+                                                <span
+                                                    class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
+                                            @elseif ($data->empstatus == '1')
+                                                <span
+                                                    class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20">EMPLOYED</span>
+                                            @endif
+                                        </span>
                                     </div>
                                 </div>
-
                             </th>
 
-                            <td class="px-6 py-4">
+                            <td class="hidden sm:table-cell px-6 py-4">
                                 @if ($data->empstatus == '2')
                                     <span
                                         class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
@@ -111,26 +117,18 @@
                                 @endif
                             </td>
 
-                            <td class="px-6 py-4">
-
-                                <div class="font-normal text-gray-500 text-sm text-center uppercase">
-                                    <span class="text-blue-500 font-bold text-md ">
-                                        {{ $data->active_applications_count }}</span>
-
+                            <td class="hidden sm:table-cell px-6 py-4 text-center">
+                                <div class="font-normal text-gray-500 text-sm uppercase">
+                                    <span
+                                        class="text-blue-500 font-bold text-md">{{ $data->active_applications_count }}</span>
                                 </div>
-
-                            </td>
-                            <td class="px-6 py-4">
-
-                                <div class="font-normal text-gray-500 text-sm text-center uppercase">
-                                    <span class="text-blue-500 font-bold text-md ">
-                                        {{ $data->program_reg_count }}</span>
-
-
-                                </div>
-
                             </td>
 
+                            <td class="hidden sm:table-cell px-6 py-4 text-center">
+                                <div class="font-normal text-gray-500 text-sm uppercase">
+                                    <span class="text-blue-500 font-bold text-md">{{ $data->program_reg_count }}</span>
+                                </div>
+                            </td>
 
                             <td>
                                 <div x-data="{ tooltip: 'Jobseeker Overview' }">
@@ -148,14 +146,12 @@
                                     </a>
                                 </div>
                             </td>
-
-
                         </tr>
                     @endforeach
                 @endif
-
             </tbody>
         </table>
+
 
         <div class="mt-4">
             {{ $barangayJobSeekers->links('vendor.pagination.tailwind') }}
