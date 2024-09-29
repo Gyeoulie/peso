@@ -18,11 +18,21 @@
                     </p>
 
 
-
-                    <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                        <a href="mailto:{{ $jobseeker->user->email }}"
-                            class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
-                    </div>
+                    @if ($isOwner)
+                        <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                            <div x-data="{ tooltip: 'View Resume' }">
+                                <button wire:click.prevent="viewFile({{ $jobseeker->employee_id }}, 2)"
+                                    x-tooltip="tooltip" type="button"
+                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    @endif
                 </div>
                 <hr class="my-6 border-t border-gray-300">
                 <div class="flex flex-col w-full px-5 mt-5">
@@ -896,3 +906,65 @@
 </x-modal>
 
 </div>
+
+
+@script
+    <script>
+        Livewire.on('viewFile', event => {
+            // Check if the event is an array and has at least one element
+            if (Array.isArray(event) && event.length > 0) {
+                // Access the first element and then its properties
+                const data = event[0]; // Assuming the data object is the first element
+
+                // Log the entire data object for verification
+                console.log('Data:', data);
+
+                // Extract URL and handle dynamic keys
+                const url = data.url;
+                const formData = {
+                    ...data
+                }; // Spread the data object to use for form inputs
+
+                // Check if URL is present
+                if (url) {
+                    // Create and configure the form element
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    form.target = '_blank';
+
+                    // Add CSRF token as a hidden input
+                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    // Add all data inputs dynamically
+                    for (const [key, value] of Object.entries(formData)) {
+                        // Skip the URL and CSRF token from being added as form inputs
+                        if (key !== 'url') {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            input.value = value;
+                            form.appendChild(input);
+                        }
+                    }
+
+                    // Append form to the body and submit
+                    document.body.appendChild(form);
+                    form.submit();
+
+                    // Clean up by removing the form element
+                    document.body.removeChild(form);
+                } else {
+                    console.error('URL not found in event data');
+                }
+            } else {
+                console.error('Event is not in the expected format');
+            }
+        });
+    </script>
+@endscript

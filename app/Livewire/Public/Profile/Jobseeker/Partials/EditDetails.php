@@ -543,6 +543,7 @@ class EditDetails extends Component
             $this->eliTypeID = $eliData->eligibility_Type;
         }
     }
+    
 
     //SAVE PROFILE
     public function saveProfile()
