@@ -62,7 +62,7 @@ class WorkExperienceModal extends Component
             'workStatus' => $this->workStatus,
             'workAdd' => $this->workAdd,
             'workStart' => $this->workStart,
-            'workEnd' => $this->workEnd,
+            'workEnd' => $this->workEnd === null ? null : $this->workEnd,
 
         ];
 

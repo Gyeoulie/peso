@@ -391,31 +391,38 @@
                                                         </div>
                                                         <div class="text-gray-500 font-medium text-xs">Applied date:
                                                             {{ $data->created_at->format('F j, Y') }}</div>
-                                                            <div class="text-gray-500 text-xs sm:hidden">
-                                                                Status: 
-                                                                @if ($data->peso_Status === 'PENDING')
-                                                                    <span class="text-yellow-500">{{ $data->peso_Status }}</span>
-                                                                @elseif($data->peso_Status === 'RECOMMENDED')
-                                                                    <span class="text-green-500">{{ $data->peso_Status }}</span>
-                                                                @elseif($data->peso_Status === 'REJECT')
-                                                                    <span class="text-red-500">{{ $data->peso_Status }}</span>
-                                                                @endif
-                                                                ( 
-                                                                @if ($data->applicant_Status === 'PENDING')
-                                                                    <span class="text-yellow-500">{{ $data->applicant_Status }}</span>
-                                                                @elseif($data->applicant_Status === 'INTERESTED')
-                                                                    <span class="text-purple-500">{{ $data->applicant_Status }}</span>
-                                                                @elseif($data->applicant_Status === 'INTERVIEW')
-                                                                    <span class="text-blue-500">{{ $data->applicant_Status }}</span>
-                                                                @elseif($data->applicant_Status === 'HIRED')
-                                                                    <span class="text-green-500">{{ $data->applicant_Status }}</span>
-                                                                @elseif($data->applicant_Status === 'ACCEPTED')
-                                                                    <span class="text-emerald-500">{{ $data->applicant_Status }}</span>
-                                                                @elseif($data->applicant_Status === 'REJECTED' || $data->applicant_Status === 'CANCELLED')
-                                                                    <span class="text-red-500">{{ $data->applicant_Status }}</span>
-                                                                @endif
-                                                                )
-                                                            </div>
+                                                        <div class="text-gray-500 text-xs sm:hidden">
+                                                            Status:
+                                                            @if ($data->peso_Status === 'PENDING')
+                                                                <span
+                                                                    class="text-yellow-500">{{ $data->peso_Status }}</span>
+                                                            @elseif($data->peso_Status === 'RECOMMENDED')
+                                                                <span
+                                                                    class="text-green-500">{{ $data->peso_Status }}</span>
+                                                            @elseif($data->peso_Status === 'REJECT')
+                                                                <span
+                                                                    class="text-red-500">{{ $data->peso_Status }}</span>
+                                                            @endif
+                                                            (@if ($data->applicant_Status === 'PENDING')
+                                                                <span
+                                                                    class="text-yellow-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'INTERESTED')
+                                                                <span
+                                                                    class="text-purple-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'INTERVIEW')
+                                                                <span
+                                                                    class="text-blue-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'HIRED')
+                                                                <span
+                                                                    class="text-green-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'ACCEPTED')
+                                                                <span
+                                                                    class="text-emerald-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'REJECTED' || $data->applicant_Status === 'CANCELLED')
+                                                                <span
+                                                                    class="text-red-500">{{ $data->applicant_Status }}</span>
+                                                            @endif)
+                                                        </div>
                                                     </div>
                                                 </th>
 
@@ -509,49 +516,16 @@
                                                         @endif
                                                     </div>
                                                 </td>
-                                              
+
                                                 <td class="px-6 py-4">
-                                                    <div class="sm:hidden flex flex-row gap-1 sm:gap-4 items-center justify-center mb-2">
-                                                        <div x-data="{ tooltip: 'View Resume' }">
-                                                            <button
-                                                                wire:click.prevent="viewFile({{ $data->employee_id }}, {{ $data->applicant_Resume }})"
-                                                                x-tooltip="tooltip" type="button"
-                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                        @if ($data->peso_Status === 'RECOMMENDED')
-                                                            <div x-data="{ tooltip: 'View Recommendation Letter' }">
-                                                                <button
-                                                                    wire:click.prevent="viewFile({{ $data->applicant_id }}, 3)"
-                                                                    x-tooltip="tooltip" type="button"
-                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                    <svg class="w-5 h-5"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        fill="none" viewBox="0 0 24 24"
-                                                                        stroke-width="1.5" stroke="currentColor">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-                                                                    </svg>
-                                                                </button>
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                    <div class="flex flex-row gap-1 sm:gap-4 items-center">
+                                                    <div class="flex flex-row gap-4 items-center">
                                                         @if (
                                                             $filter != 'ACCEPTED' &&
                                                                 $filter != 'HIRED' &&
                                                                 $data->applicant_Status != 'INTERESTED' &&
                                                                 $data->applicant_Status != 'INTERVIEW' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
+                                                                $data->applicant_Status != 'HIRED' &&
                                                                 $data->applicant_Status != 'ACCEPTED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'Interested' }">
@@ -595,7 +569,7 @@
                                                             </div>
                                                         @endif
                                                         @if (
-                                                            $filter != 'ACCEPTED' &&
+                                                            $filter == 'INTERVIEW' &&
                                                                 $data->applicant_Status != 'HIRED' &&
                                                                 $data->applicant_Status != 'ACCEPTED' &&
                                                                 $data->applicant_Status != 'REJECTED' &&
@@ -622,6 +596,7 @@
                                                                 $filter != 'HIRED' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
                                                                 $data->applicant_Status != 'ACCEPTED' &&
+                                                                $data->applicant_Status != 'HIRED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'Reject' }">
                                                                 <button

@@ -20,7 +20,7 @@
 
                     @if ($isOwner)
                         <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                            <div x-data="{ tooltip: 'View Resume' }">
+                            <div x-data="{ tooltip: 'View Auto-Generated Resume' }">
                                 <button wire:click.prevent="viewFile({{ $jobseeker->employee_id }}, 2)"
                                     x-tooltip="tooltip" type="button"
                                     class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
@@ -86,7 +86,7 @@
                             </div>
                         </li>
 
-                        <li class="mb-4">
+                        {{-- <li class="mb-4">
                             <div class="flex flex-row gap-4 w-full">
                                 <div class="flex flex-col">
                                     <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -108,9 +108,9 @@
 
                                 </div>
                             </div>
-                        </li>
+                        </li> --}}
 
-                        <li class="mb-4">
+                        {{-- <li class="mb-4">
                             <div class="flex flex-row gap-4 w-full">
                                 <div class="flex flex-col">
                                     <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -133,7 +133,7 @@
 
                                 </div>
                             </div>
-                        </li>
+                        </li> --}}
 
 
 
