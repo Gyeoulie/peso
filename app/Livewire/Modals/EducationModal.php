@@ -72,7 +72,9 @@ class EducationModal extends Component
             'eduLevel' => $this->eduLevel,
             'eduCourse' => $this->eduCourse,
             'eduStart' => $this->eduStart,
-            'eduEnd' => $this->eduEnd,
+            // 'eduEnd' => $this->eduEnd,
+            'eduEnd' => $this->eduEnd === null ? null : $this->eduEnd,
+
             'eduOngoing' => $this->eduOngoing,
         ];
 
