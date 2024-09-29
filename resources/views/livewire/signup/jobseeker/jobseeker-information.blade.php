@@ -56,7 +56,7 @@
 
             <div class="flex flex-col items-center  text-center">
                 <h1 class="sm:hidden  text-2xl font-bold mb-2"><span class="text-blue-500">Step
-                        {{ $this->currentStep }}</span> / 11</h1>
+                        {{ $this->currentStep }}</span> / 12</h1>
             </div>
 
             <div class="flex flex-row h-full w-full">
@@ -93,6 +93,9 @@
                         class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Other Skills</li>
                     <li :class="currentStep === 11 ? activeTab : inactiveTab"
+                        class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
+                        Profile Privacy</li>
+                    <li :class="currentStep === 12 ? activeTab : inactiveTab"
                         class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Certification And Authorization</li>
                 </ul>
@@ -188,9 +191,15 @@
                         @livewire('signup.jobseeker.partials.other-skills')
                     </div>
 
-
-
                     <div x-show="currentStep === 11" class="confirmation-section h-full w-full"
+                        x-transition:enter="transition ease-out duration-300 transform"
+                        x-transition:enter-start="opacity-0 translate-x-full"
+                        x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
+                        @livewire('signup.jobseeker.partials.profile-privacy')
+
+                    </div>
+
+                    <div x-show="currentStep === 12" class="confirmation-section h-full w-full"
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>

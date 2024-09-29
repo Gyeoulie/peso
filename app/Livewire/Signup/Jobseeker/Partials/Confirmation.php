@@ -8,7 +8,7 @@ class Confirmation extends Component
 {
 
     public $agreeBox = false;
-    public $stepNumber = 11;
+    public $stepNumber = 12;
 
     public function save()
     {

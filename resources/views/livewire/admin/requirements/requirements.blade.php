@@ -89,16 +89,16 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                    <th scope="col" class="px-6 py-3 sm:w-1/4">
                                         Requirement Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                         Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                         Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                         Date Created
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -137,10 +137,38 @@
                                                 <div class="ps-3 uppercase">
                                                     <div class="text-base font-semibold">{{ $data->requirement_Title }}
                                                     </div>
+
+                                                    <div class="block sm:hidden">
+                                                        <div class="text-gray-500 font-semibold text-sm uppercase">
+                                                            @if ($data->requirement_Type == 1)
+                                                                PUBLIC
+                                                            @else
+                                                                PRIVATE
+                                                            @endif
+                                                        </div>
+                                                        <div class=" text-gray-500 font-medium text-sm uppercase">
+                                                            <div class="flex items-center uppercase">
+                                                                @if ($data->requirement_Status == 1)
+                                                                    <div
+                                                                        class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                    </div>
+                                                                    ACTIVE
+                                                                @else
+                                                                    <div
+                                                                        class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                                    </div>
+                                                                    DISABLED
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-gray-500 font-semibold text-sm">
+                                                            Created: {{ $data->created_at->format('F d Y') }}
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                             </th>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 <span class="font-semibold">
                                                     @if ($data->requirement_Type == 1)
                                                         PUBLIC
@@ -149,7 +177,7 @@
                                                     @endif
                                                 </span>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 <div class="flex items-center uppercase">
                                                     @if ($data->requirement_Status == 1)
                                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
@@ -160,7 +188,7 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 <div class="text-base font-light uppercase text-sm">
                                                     {{ $data->created_at->format('h:i A') }}
                                                 </div>

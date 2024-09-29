@@ -92,13 +92,13 @@
                         <table class="w-full text-sm text-left rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/3">
+                                    <th scope="col" class="px-6 py-3 sm:w-1/3">
                                         Job Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-full">
+                                    <th scope="col" class="px-6 py-3 sm:w-full hidden sm:table-cell">
                                         Position Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-1/3">
+                                    <th scope="col" class="px-6 py-3 sm:w-1/3">
 
                                     </th>
                                 </tr>
@@ -129,12 +129,20 @@
                                     @foreach ($jobpositions as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="text-gray-500 font-medium text-lg uppercase">
+                                                <div class="hidden sm:block text-gray-500 font-medium text-lg uppercase">
                                                     {{ $data->position_Code }}
+                                                </div>
+                                                <div class="block sm:hidden">
+                                                    <div class="text-black font-bold text-md uppercase">
+                                                        {{ $data->position_Title }}
+                                                    </div>
+                                                    <div class=" text-gray-500 font-medium text-md uppercase">
+                                                        {{ $data->position_Code }}
+                                                    </div>
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 <div class="text-black font-bold text-lg uppercase">
                                                     {{ $data->position_Title }}
                                                 </div>
@@ -292,13 +300,13 @@
                         <table class="w-full text-sm text-left rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/3">
+                                    <th scope="col" class="px-6 py-3 sm:w-1/3">
                                         Industry Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-full">
+                                    <th scope="col" class="px-6 py-3 sm:w-full hidden sm:table-cell">
                                         Industry Title
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-1/3">
+                                    <th scope="col" class="px-6 py-3 sm:w-1/3">
 
                                     </th>
                                 </tr>
@@ -329,12 +337,20 @@
                                     @foreach ($industry as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="text-gray-500 font-medium text-lg uppercase">
+                                                <div class="hidden sm:block text-gray-500 font-medium text-lg uppercase">
                                                     {{ $data->industry_Code }}
+                                                </div>
+                                                <div class="block sm:hidden">
+                                                    <div class="text-black font-bold text-md uppercase">
+                                                        {{ $data->industry_Title }}
+                                                    </div>
+                                                    <div class=" text-gray-500 font-medium text-md uppercase">
+                                                        {{ $data->industry_Code }}
+                                                    </div>
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 <div class="text-black font-bold text-lg uppercase">
                                                     {{ $data->industry_Title }}
                                                 </div>

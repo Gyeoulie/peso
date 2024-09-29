@@ -34,6 +34,17 @@ class JobseekerProfile extends Component
 
     }
 
+    public function viewFile($id, $fileToView)
+    {
+
+        $this->dispatch('viewFile', [
+            'url' => route('view.resume'),
+            'emp_id' => $id,
+            'resume_type' => $fileToView,
+        ]);
+
+    }
+
     public function editModal()
     {
         $this->resetValidation();

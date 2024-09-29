@@ -96,10 +96,10 @@
                                         <th scope="col" class="px-6 py-3">
                                             Barangay
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                             Municipality
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                             Province
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -137,13 +137,19 @@
                                                 <td class="px-6 py-4">
                                                     <div class="text-black uppercase font-semibold">
                                                         {{ $data->barangay_Name }}
+                                                        <div class="block sm:hidden">
+                                                            <div class="text-black uppercase font-semibold">
+                                                                {{ $data->municipality->municipality_Name }},
+                                                                {{ $data->municipality->province->province_Name }}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
-                                                <td class="px-6 py-4">
+                                                <td class="px-6 py-4 hidden sm:table-cell">
                                                     <div class="text-black uppercase font-semibold">
                                                         {{ $data->municipality->municipality_Name }}</div>
                                                 </td>
-                                                <td class="px-6 py-4">
+                                                <td class="px-6 py-4 hidden sm:table-cell">
                                                     <div class="text-black uppercase font-semibold">
                                                         {{ $data->municipality->province->province_Name }}
                                                     </div>
@@ -196,7 +202,7 @@
                                         <th scope="col" class="px-6 py-3">
                                             Municipality
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                             Province
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -232,9 +238,12 @@
                                                 <td class="px-6 py-4">
                                                     <div class="text-black uppercase font-semibold">
                                                         {{ $data->municipality_Name }}
+                                                        <div class="text-black uppercase font-semibold">
+                                                            {{ $data->province->province_Name }}
+                                                        </div>
                                                     </div>
                                                 </td>
-                                                <td class="px-6 py-4">
+                                                <td class="px-6 py-4 hidden sm:table-cell">
                                                     <div class="text-black uppercase font-semibold">
                                                         {{ $data->province->province_Name }}
                                                     </div>

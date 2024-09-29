@@ -43,7 +43,8 @@ class EditDetails extends Component
     public $pimg;
 
     public $fname, $mname, $lname, $suffix, $birthdate, $gender = 0, $civilstatus = 0, $religion = 0,
-    $pnumber, $tinnum, $height, $address, $empStatus = "", $empDesc = "";
+    $pnumber, $tinnum, $height, $address, $empStatus = "", $empDesc = "", $ofw, $fourp, $fourpID, $privacy;
+
     public $barangayID, $mun, $prov, $bar;
     public $selectDisability = "", $otherDisability = "";
     public $jobpreference, $industrypreference;
@@ -180,7 +181,8 @@ class EditDetails extends Component
 
         } catch (\Exception $e) {
             DB::rollBack();
-            toastr()->error('There was an error while deleting the record. Please try again later.');
+            Log::error('Error deleting language: ' . $e->getMessage());
+            toastr()->error('There was an error, please try again later.');
         }
 
         $this->reset('deleteEli', 'deleteLic', 'deleteLang');
@@ -228,7 +230,7 @@ class EditDetails extends Component
             if (isset($resumePath)) {
                 Storage::disk('public')->delete($resumePath);
             }
-
+            Log::error('Error updating resume: ' . $e->getMessage());
             toastr()->error('There was an error in uploading the resume!');
         }
 
@@ -541,6 +543,7 @@ class EditDetails extends Component
             $this->eliTypeID = $eliData->eligibility_Type;
         }
     }
+    
 
     //SAVE PROFILE
     public function saveProfile()
@@ -647,6 +650,13 @@ class EditDetails extends Component
             $jobseekerData->empstatus = $this->empStatus;
             $jobseekerData->empstatusdesc = $this->empDesc;
             $jobseekerData->tinnum = $this->tinnum;
+            $jobseekerData->ofw = $this->ofw;
+            $jobseekerData->fourp = $this->fourp;
+
+            if ($this->fourp == 1) {
+                $jobseekerData->fourpID = null;
+
+            }
 
             // Check if any attributes have changed
             if ($jobseekerData->isDirty()) {
@@ -740,6 +750,47 @@ class EditDetails extends Component
 
     }
 
+    // SAVE PRIVACY
+    public function savePrivacy()
+    {
+        $rules = [
+            'privacy' => ['required'],
+        ];
+
+        $messages = [
+            'privacy.required' => 'The privacy option is required.',
+        ];
+
+        $this->validate($rules, $messages);
+
+        $jobseekerData = Employee::findOrFail($this->empID);
+
+        DB::beginTransaction();
+
+        try {
+
+            $jobseekerData->empprofile = $this->privacy;
+
+            // Check if any attributes have changed
+            if ($jobseekerData->isDirty()) {
+                $jobseekerData->save();
+
+                DB::commit();
+
+                toastr()->success('Profile privacy has been updated!');
+            }
+
+            toastr()->info('No changes detected!');
+
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error updating privacy: ' . $e->getMessage());
+
+            toastr()->error('There was an error updating the profile.');
+        }
+    }
+
     // LANGUAGE
     public function saveLanguage()
     {
@@ -828,6 +879,7 @@ class EditDetails extends Component
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Error updating language: ' . $e->getMessage());
             toastr()->error('There was an error updating the language record.');
         }
 
@@ -894,8 +946,9 @@ class EditDetails extends Component
             DB::commit(); // Commit transaction
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback transaction
+            Log::error('Error updating license: ' . $e->getMessage());
+            toastr()->error('There was an error, please try again later.');
 
-            toastr()->error('There was an Error: ' . $e->getMessage());
         }
 
         $this->closeModal('license');
@@ -922,6 +975,12 @@ class EditDetails extends Component
         $this->updatedEmpStatus();
 
         $this->empDesc = $employeeDetails->empstatusdesc;
+
+        $this->ofw = $employeeDetails->ofw;
+        $this->fourp = $employeeDetails->fourp;
+        $this->fourpID = $employeeDetails->fourpID;
+
+        $this->privacy = $employeeDetails->empprofile;
 
         // dd($employeeDetails->empstatusdesc);
 
@@ -994,7 +1053,7 @@ class EditDetails extends Component
             DB::commit(); // Commit transaction
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback transaction
-
+            Log::error('Error updating eligibility: ' . $e->getMessage());
             toastr()->error('There was an error, please try again later.');
         }
 
@@ -1085,12 +1144,12 @@ class EditDetails extends Component
             toastr()->success('Job Preference record has been deleted.');
         } catch (ModelNotFoundException $e) {
             DB::rollBack(); // Rollback transaction on not found
-
+            Log::error('Error updating jobpreference: ' . $e->getMessage());
             toastr()->error('Job Preference record not found.');
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback transaction on other errors
-
-            toastr()->error('There was an error, please try again later');
+            Log::error('Error updating jobpreference: ' . $e->getMessage());
+            toastr()->error('There was an error, please try again later.');
         }
     }
     public function removePosition($positionId)
@@ -1110,8 +1169,8 @@ class EditDetails extends Component
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
-
-            toastr()->error('There was an error deleting the job preference record. Please try again later.');
+            toastr()->error('There was an error, please try again later.');
+        
 
             // Optionally log the exception for debugging
             Log::error('Error removing job preference: ' . $e->getMessage());
@@ -1136,7 +1195,7 @@ class EditDetails extends Component
             toastr()->success('Industry Preference record has been deleted.');
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on general exceptions
-
+            Log::error('Error updating removing industry: ' . $e->getMessage());
             toastr()->error('There was an error, please try again later');
         }
     }

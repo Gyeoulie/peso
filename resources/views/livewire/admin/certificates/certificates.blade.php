@@ -91,10 +91,10 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                    <th scope="col" class="px-6 py-3 w-full sm:w-1/4">
                                         Certificate Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                         Certificate Title
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -129,12 +129,21 @@
                                         <tr wire:key="{{ $data->cert_type_id }}"
                                             class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="text-gray-500 font-medium text-md uppercase">
+                                                <div
+                                                    class="hidden sm:block text-gray-500 font-medium text-md uppercase">
                                                     {{ $data->cert_Code }}
+                                                </div>
+                                                <div class="block sm:hidden">
+                                                    <div class="text-black font-bold text-md uppercase">
+                                                        {{ $data->cert_Name }}
+                                                    </div>
+                                                    <div class=" text-gray-500 font-medium text-md uppercase">
+                                                        {{ $data->cert_Code }}
+                                                    </div>
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 <div class="text-black font-bold text-md uppercase">
                                                     {{ $data->cert_Name }}
                                                 </div>
