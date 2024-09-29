@@ -80,6 +80,7 @@ class JobseekerInformation extends Component
                 'ofw' => $allData['ofw'],
                 'fourp' => $allData['fourP'],
                 'fourpID' => $allData['fourPID'],
+                'empprofile' => $allData['privacySetting'],
                 'pimg' => $imgfinalPath,
             ]);
 

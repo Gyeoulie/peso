@@ -314,7 +314,10 @@ class Backup extends Component
                 return [
                     'name' => basename($file),
                     'path' => $file,
-                    'date' => \Carbon\Carbon::createFromTimestamp($googleDisk->lastModified($file))->toDateTimeString(),
+              'date' => \Carbon\Carbon::createFromTimestamp($googleDisk->lastModified($file))
+                        ->setTimezone('Asia/Manila')
+                        ->toDateTimeString(),
+
                     'size' => $this->formatSizeUnits($googleDisk->size($file)), // Add file size
                 ];
             })->sortByDesc('date'); // Optionally sort by date, newest first
@@ -337,7 +340,10 @@ class Backup extends Component
                 return [
                     'name' => basename($file),
                     'path' => $file,
-                    'date' => \Carbon\Carbon::createFromTimestamp($googleDisk->lastModified($file))->toDateTimeString(),
+                    'date' => \Carbon\Carbon::createFromTimestamp($googleDisk->lastModified($file))
+                        ->setTimezone('Asia/Manila')
+                        ->toDateTimeString(),
+
                     'size' => $this->formatSizeUnits($googleDisk->size($file)), // Add file size
                 ];
             })->sortByDesc('date'); // Optionally sort by date, newest first
