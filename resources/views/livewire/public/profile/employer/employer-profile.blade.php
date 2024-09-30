@@ -7,11 +7,11 @@
                     <img src="{{ $employer->company_img ? asset('storage/' . $employer->company_img) : asset('https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/') }}"
                         alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
                     </img>
-                    <h1 class="text-xl font-bold break-all uppercase">{{ $employer->business_Name }}</h1>
+                    <h1 class="text-xl text-center font-bold uppercase">{{ $employer->business_Name }}</h1>
 
 
 
-                    <p class="text-gray-700 break-all uppercase">{{ $employer->trade_Name }}</p>
+                    <p class="text-gray-700 text-sm break-all uppercase">{{ $employer->trade_Name }}</p>
 
                 </div>
                 <hr class="my-6 border-t border-gray-300">

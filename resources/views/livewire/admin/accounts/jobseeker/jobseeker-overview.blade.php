@@ -50,7 +50,7 @@
 
                     </img>
 
-                    <h1 class="text-xl font-bold uppercase"> {{ $jobseeker->fname }}
+                    <h1 class="text-xl font-bold uppercase text-center"> {{ $jobseeker->fname }}
                         {{ $jobseeker->mname ?? '' }}
                         {{ $jobseeker->lname }}@if (!empty($jobseeker->suffix))
                             , {{ $jobseeker->suffix }}

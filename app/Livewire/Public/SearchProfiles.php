@@ -130,7 +130,7 @@ class SearchProfiles extends Component
                     $query->where('employee.empprofile', 3);
                 } else if (Auth::user()->usertype == 6) {
                     // Else, if userstatus is not 1, apply another condition
-                    $query->whereIn('users.empprofile', [2, 3]);
+                    $query->whereIn('employee.empprofile', [2, 3]);
                 }
             })
             ->where(function ($query) use ($search) {
