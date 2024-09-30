@@ -961,7 +961,7 @@
 
                 </div>
             </div>
-            <img src="{{ asset('assets/img/homepage.jpg') }}" alt="Guy"
+            <img src="{{ asset('assets/img/home_image.jpg') }}" alt="Guy"
                 class="hidden sm:flex w-full h-48 object-cover sm:h-screen sm:w-4/12">
             <img src="{{ asset('assets/img/mobile-home.jpg') }}" alt="Guy"
                 class="sm:hidden flex w-full h-48 object-cover sm:shadow-none sm:rounded-none shadow-xl rounded-md mb-5 sm:h-screen sm:w-4/12">
