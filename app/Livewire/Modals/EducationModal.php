@@ -20,7 +20,7 @@ class EducationModal extends Component
 
         $rules = [
             'eduSchool' => 'required|string|max:255',
-            'eduLevel' => 'required|numeric|max:255',
+            'eduLevel' => 'required|numeric',
             'eduCourse' => [
                 function ($attribute, $value, $fail) {
                     if ($this->eduLevel >= 19 && empty($value)) {
@@ -52,7 +52,6 @@ class EducationModal extends Component
             'eduSchool.max' => 'The school name must not exceed 255 characters.',
             'eduLevel.required' => 'The education level is required.',
             'eduLevel.numeric' => 'The education level must be a number.',
-            'eduLevel.max' => 'The education level must not exceed 255 characters.',
             'eduCourse.required' => 'The course name is required.',
             'eduCourse.string' => 'The course name must be a string.',
             'eduCourse.max' => 'The course name must not exceed 255 characters.',

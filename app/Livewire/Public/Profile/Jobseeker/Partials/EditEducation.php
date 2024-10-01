@@ -64,7 +64,7 @@ class EditEducation extends Component
 
         $rules = [
             'eduSchool' => 'required|string|max:255',
-            'eduLevel' => 'required|string|max:255',
+            'eduLevel' => 'required',
             'eduCourse' => [
                 function ($attribute, $value, $fail) {
                     if ($this->eduLevel >= 19 && empty($value)) {
@@ -95,8 +95,6 @@ class EditEducation extends Component
             'eduSchool.string' => 'The school name must be a string.',
             'eduSchool.max' => 'The school name must not exceed 255 characters.',
             'eduLevel.required' => 'The education level is required.',
-            'eduLevel.string' => 'The education level must be a string.',
-            'eduLevel.max' => 'The education level must not exceed 255 characters.',
             'eduCourse.required' => 'The course name is required.',
             'eduCourse.string' => 'The course name must be a string.',
             'eduCourse.max' => 'The course name must not exceed 255 characters.',
