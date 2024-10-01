@@ -56,7 +56,7 @@
                             , {{ $jobseeker->suffix }}
                         @endif
                     </h1>
-                    <p class="text-gray-700">#{{ $jobseeker->employee_id }}</p>
+                    <p class="text-gray-700">#{{ $jobseeker->user_id }}</p>
                 </div>
 
                 <hr class="my-6 border-t border-gray-300">

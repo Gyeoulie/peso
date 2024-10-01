@@ -57,7 +57,7 @@
 
                     <h1 class="text-xl font-bold uppercase text-center"> {{ $employer->business_Name }}
                     </h1>
-                    <p class="text-gray-700">#{{ $employer->company_id }}</p>
+                    <p class="text-gray-700">#{{ $employer->user_id }}</p>
                 </div>
 
                 <hr class="my-6 border-t border-gray-300">
