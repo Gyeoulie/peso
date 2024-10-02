@@ -1,77 +1,85 @@
-<div class="mx-12 py-12">
-    <div class="w-full  sm:px-6 lg:px-8 space-y-6">
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <div class="w-full">
-                <div>
+<div class="container mx-auto py-8">
+    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
-                    <header>
-                        <h2 class="text-lg font-medium text-gray-900">
-                            {{ __('Cross Municipality Job Application') }}
-                        </h2>
-
-                        <p class="mt-1 text-sm text-gray-600">
-                            {{ __('Enable the Cross Municipality Job Application feature to allow job applicants to apply for job postings across different PESO offices. By enabling this option, applicants will have the flexibility to submit applications for job opportunities posted in municipalities other than their own.') }}
-                        </p>
-                    </header>
-
-                    <div class="mt-6">
-
-                        <div x-data="{ isChecked: @entangle('crossJob') }">
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input wire:click.prevent='validateAction(1)' wire:model='crossJob' x-model="isChecked"
-                                    type="checkbox" class="sr-only peer">
-                                <div
-                                    class="relative w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                                </div>
-                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                    <span x-text="isChecked ? 'Enabled' : 'Disabled'"></span>
-                                </span>
-                            </label>
-                        </div>
-
-
-                    </div>
-
-                </div>
-            </div>
-
+        <div class="col-span-4 sm:col-span-12">
+            <h1 class="text-2xl font-bold">Maintenance / Experimental Features</h1>
         </div>
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <div class="w-full">
-                <div>
+        <div class="col-span-4 sm:col-span-12">
+            <div class="p-4 sm:p-8 bg-white shadow-xl rounded-lg">
+                <div class="w-full">
+                    <div>
 
-                    <header>
-                        <h2 class="text-lg font-medium text-gray-900">
-                            {{ __('Cross Municipality Program/Training Registration') }}
-                        </h2>
+                        <header>
+                            <h2 class="text-lg font-medium text-gray-900">
+                                {{ __('Cross Municipality Job Application') }}
+                            </h2>
 
-                        <p class="mt-1 text-sm text-gray-600">
-                            {{ __('Enable the Cross Municipality Program/Training Registration feature to allow participants to register for programs and training opportunities across different PESO offices. By enabling this option, participants will have the flexibility to enroll in programs offered in municipalities other than their own.') }}
-                        </p>
+                            <p class="mt-1 text-sm text-gray-600">
+                                {{ __('Enable the Cross Municipality Job Application feature to allow job applicants to apply for job postings across different PESO offices. By enabling this option, applicants will have the flexibility to submit applications for job opportunities posted in municipalities other than their own.') }}
+                            </p>
+                        </header>
+                        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+                        <div class="mt-3">
 
-                    </header>
+                            <div x-data="{ isChecked: @entangle('crossJob') }">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input wire:click.prevent='validateAction(1)' wire:model='crossJob'
+                                        x-model="isChecked" type="checkbox" class="sr-only peer">
+                                    <div
+                                        class="relative w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                    </div>
+                                    <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                        <span x-text="isChecked ? 'Enabled' : 'Disabled'"></span>
+                                    </span>
+                                </label>
+                            </div>
 
-                    <div class="mt-6">
 
-                        <div x-data="{ isChecked: @entangle('crossProgram') }">
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input wire:click.prevent='validateAction(2)' wire:model='crossProgram'
-                                    x-model="isChecked" type="checkbox" class="sr-only peer">
-                                <div
-                                    class="relative w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                                </div>
-                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                    <span x-text="isChecked ? 'Enabled' : 'Disabled'"></span>
-                                </span>
-                            </label>
                         </div>
 
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-span-4 sm:col-span-12">
+            <div class="p-4 sm:p-8 bg-white shadow-xl rounded-lg">
+                <div class="w-full">
+                    <div>
+
+                        <header>
+                            <h2 class="text-lg font-medium text-gray-900">
+                                {{ __('Cross Municipality Program/Training Registration') }}
+                            </h2>
+
+                            <p class="mt-1 text-sm text-gray-600">
+                                {{ __('Enable the Cross Municipality Program/Training Registration feature to allow participants to register for programs and training opportunities across different PESO offices. By enabling this option, participants will have the flexibility to enroll in programs offered in municipalities other than their own.') }}
+                            </p>
+
+                        </header>
+                        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+                        <div class="mt-3">
+
+                            <div x-data="{ isChecked: @entangle('crossProgram') }">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input wire:click.prevent='validateAction(2)' wire:model='crossProgram'
+                                        x-model="isChecked" type="checkbox" class="sr-only peer">
+                                    <div
+                                        class="relative w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                    </div>
+                                    <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                        <span x-text="isChecked ? 'Enabled' : 'Disabled'"></span>
+                                    </span>
+                                </label>
+                            </div>
+
+
+                        </div>
 
                     </div>
-
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 

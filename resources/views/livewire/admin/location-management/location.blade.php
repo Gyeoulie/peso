@@ -64,15 +64,15 @@
                                             max-h-[300px] bg-white
                                         </x-slot>
 
-                                        <x-dropdown-link href="#" wire:click="locationFilter('Barangay')"
-                                            class="block px-4 py-2 hover:bg-gray-100">Barangay</x-dropdown-link>
+                                        <x-dropdown-link wire:click.prevent="locationFilter('Barangay')"
+                                            class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Barangay</x-dropdown-link>
 
                                         <!-- Authentication -->
-                                        <x-dropdown-link href="#" wire:click="locationFilter('Municipalities')"
-                                            class="block px-4 py-2 hover:bg-gray-100">Municipalities</x-dropdown-link>
+                                        <x-dropdown-link wire:click.prevent="locationFilter('Municipalities')"
+                                            class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Municipalities</x-dropdown-link>
 
-                                        <x-dropdown-link href="#" wire:click="locationFilter('Provinces')"
-                                            class="block px-4 py-2 hover:bg-gray-100">Provinces</x-dropdown-link>
+                                        <x-dropdown-link wire:click.prevent="locationFilter('Provinces')"
+                                            class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Provinces</x-dropdown-link>
 
                                         </form>
                                     </x-slot>
@@ -852,9 +852,9 @@
                             <div class="max-h-[150px] bg-white overflow-y-auto no-scrollbar">
                                 <!-- Dropdown links -->
                                 @foreach ($municipalities as $data)
-                                    <x-dropdown-link href="#"
-                                        wire:click="setLocation('municipality','{{ $data->municipality_id }}')"
-                                        class="block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->municipality_Name }}
+                                    <x-dropdown-link
+                                        wire:click.prevent="setLocation('municipality','{{ $data->municipality_id }}')"
+                                        class="block px-4 py-2 hover:bg-gray-100 uppercase cursor-pointer">{{ $data->municipality_Name }}
                                         ,
                                         {{ $data->province->province_Name }}</x-dropdown-link>
                                 @endforeach
@@ -948,9 +948,9 @@
                             <div class="max-h-[150px] bg-white overflow-y-auto no-scrollbar">
                                 <!-- Dropdown links -->
                                 @foreach ($provinces as $data)
-                                    <x-dropdown-link href="#"
-                                        wire:click="setLocation('province','{{ $data->province_id }}')"
-                                        class="block px-4 py-2 hover:bg-gray-100 uppercase">
+                                    <x-dropdown-link 
+                                        wire:click.prevent="setLocation('province','{{ $data->province_id }}')"
+                                        class="block px-4 py-2 hover:bg-gray-100 uppercase cursor-pointer">
                                         {{ $data->province_Name }}</x-dropdown-link>
                                 @endforeach
                             </div>

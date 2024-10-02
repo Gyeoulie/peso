@@ -158,8 +158,12 @@
                                         <td colspan="4">
                                             <div class="flex flex-col items-center justify-center mt-24 mb-24">
                                                 <div class="p-6 bg-gray-100 rounded-full">
-                                                    <svg class="w-24 h-24 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                    <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-width="2"
+                                                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
                                                 </div>
                                                 <p class="text-xl font-bold text-black text-center mt-2">
@@ -170,19 +174,26 @@
                                     </tr>
                                 @else
                                     @foreach ($announcement as $data)
-                                        <tr wire:key='prog-{{ $data->announcement_id }}' class="bg-white border-b hover:bg-gray-50">
-                                            <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full" src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}" alt="pubmat-{{ $data->announcement_id }}">
+                                        <tr wire:key='prog-{{ $data->announcement_id }}'
+                                            class="bg-white border-b hover:bg-gray-50">
+                                            <th scope="row"
+                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                <img class="w-10 h-10 rounded-full object-cover shadow-xl"
+                                                    src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}"
+                                                    alt="pubmat-{{ $data->announcement_id }}">
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
                                                         {{ $data->announcement_Title }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase hidden sm:block">
+                                                    <div
+                                                        class="font-normal text-gray-500 text-sm uppercase hidden sm:block">
                                                         PESO {{ $data->peso->municipality->municipality_Name }}
                                                     </div>
                                                     <!-- Add extra information for mobile screens -->
-                                                    <div class="font-normal text-gray-500 text-sm uppercase block sm:hidden">
-                                                        PESO {{ $data->peso->municipality->municipality_Name }} - {{ $data->announcement_Status }}
+                                                    <div
+                                                        class="font-normal text-gray-500 text-sm uppercase block sm:hidden">
+                                                        PESO {{ $data->peso->municipality->municipality_Name }} -
+                                                        {{ $data->announcement_Status }}
                                                     </div>
                                                 </div>
                                             </th>
@@ -197,33 +208,63 @@
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-row gap-5">
                                                     <div x-data="{ tooltip: 'Edit Announcement' }">
-                                                        <button wire:click.prevent="editAnnouncement({{ $data->announcement_id }})" x-tooltip="tooltip" type="button" class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                        <button
+                                                            wire:click.prevent="editAnnouncement({{ $data->announcement_id }})"
+                                                            x-tooltip="tooltip" type="button"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                             </svg>
                                                         </button>
                                                     </div>
                                                     @if ($data->announcement_Status == 'ACTIVE')
                                                         <div x-data="{ tooltip: 'Archive Announcement' }">
-                                                            <button wire:click.prevent="confirmationModal(1, {{ $data->announcement_id }})" x-tooltip="tooltip" type="button" class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0-3-3m3 3 3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                                                            <button
+                                                                wire:click.prevent="confirmationModal(1, {{ $data->announcement_id }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0-3-3m3 3 3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                                                                 </svg>
                                                             </button>
                                                         </div>
                                                     @endif
                                                     @if ($data->announcement_Status == 'ARCHIVED' && $filter != 'Deleted')
                                                         <div x-data="{ tooltip: 'Restore Announcement' }">
-                                                            <button wire:click.prevent="confirmationModal(3,{{ $data->announcement_id }})" x-tooltip="tooltip" type="button" class="text-yellow-700 border border-yellow-700 hover:bg-yellow-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                                            <button
+                                                                wire:click.prevent="confirmationModal(3,{{ $data->announcement_id }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-yellow-700 border border-yellow-700 hover:bg-yellow-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                                                 </svg>
                                                             </button>
                                                         </div>
                                                         <div x-data="{ tooltip: 'Delete Announcement' }">
-                                                            <button wire:click.prevent="confirmationModal(2,{{ $data->announcement_id }})" x-tooltip="tooltip" type="button" class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3H10.5a2.25 2.25 0 0 0-2.25 2.25V9M9 9h6m-3 11a4.5 4.5 0 0 1-4.5-4.5m9 0A4.5 4.5 0 0 1 12 20.25" />
+                                                            <button
+                                                                wire:click.prevent="confirmationModal(2,{{ $data->announcement_id }})"
+                                                                x-tooltip="tooltip" type="button"
+                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                <svg class="w-5 h-5"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3H10.5a2.25 2.25 0 0 0-2.25 2.25V9M9 9h6m-3 11a4.5 4.5 0 0 1-4.5-4.5m9 0A4.5 4.5 0 0 1 12 20.25" />
                                                                 </svg>
                                                             </button>
                                                         </div>
@@ -235,7 +276,7 @@
                                 @endif
                             </tbody>
                         </table>
-                        
+
                     </div>
                 </div>
 
