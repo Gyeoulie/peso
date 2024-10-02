@@ -62,15 +62,15 @@ class RecommendationTrends extends Component
         $months = !empty($this->selectedMonths) ? $this->selectedMonths : range(1, 12);
 
         // Fetch the job applicants with relevant data
-        $query = Job_Applicants::whereHas('employee', function ($query) use ($pesoMunicipalityId, $provinceId) {
+        $query = Job_Applicants::whereHas('job_posting', function ($query) use ($pesoMunicipalityId, $provinceId) {
             if ($pesoMunicipalityId) {
                 // Filter by municipality if provided
-                $query->whereHas('barangay', function ($query) use ($pesoMunicipalityId) {
+                $query->whereHas('peso', function ($query) use ($pesoMunicipalityId) {
                     $query->where('municipality_id', $pesoMunicipalityId);
                 });
             } elseif ($provinceId) {
                 // Otherwise, filter by all municipalities within the province
-                $query->whereHas('barangay.municipality', function ($query) use ($provinceId) {
+                $query->whereHas('peso.municipality', function ($query) use ($provinceId) {
                     $query->whereHas('province', function ($query) use ($provinceId) {
                         $query->where('province_id', $provinceId);
                     });

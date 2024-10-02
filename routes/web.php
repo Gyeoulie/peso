@@ -22,6 +22,7 @@ use App\Livewire\Admin\JobPosting\JobPostOverview;
 use App\Livewire\Admin\LocationManagement\Location;
 use App\Livewire\Admin\Maintenance\Audits;
 use App\Livewire\Admin\Maintenance\Backup;
+use App\Livewire\Admin\Maintenance\Features;
 use App\Livewire\Admin\Maintenance\MunicipalityAudits;
 use App\Livewire\Admin\Maintenance\PesoBranch;
 use App\Livewire\Admin\Partnership\PartnershipDetails;
@@ -200,6 +201,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/certificate', Certificates::class)->name('admin-certificate');
 
         Route::get('/requirements', Requirements::class)->name('admin-req');
+
+        Route::get('/features', Features::class)->name('admin-features');
+
     });
 });
 

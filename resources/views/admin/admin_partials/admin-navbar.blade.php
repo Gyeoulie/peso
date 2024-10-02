@@ -331,7 +331,7 @@
 
                 </button>
                 <ul id="dropdown-5"
-                    class="py-2 space-y-2 {{ request()->routeIs('admin-audits', 'admin-peso', 'admin-backups', 'admin-municipality-audits') ? 'block' : 'hidden' }}">
+                    class="py-2 space-y-2 {{ request()->routeIs('admin-audits', 'admin-peso', 'admin-backups', 'admin-municipality-audits', 'admin-features') ? 'block' : 'hidden' }}">
                     @if (Auth::check() && Auth::user()->usertype == 11)
                         <li>
                             <a wire:navigate href="{{ route('admin-peso') }}"
@@ -349,6 +349,11 @@
                             <a wire:navigate href="{{ route('admin-backups') }}"
                                 :class="{{ request()->routeIs('admin-backups') }} ? activeNav : inactiveNav"
                                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Backups</a>
+                        </li>
+                        <li>
+                            <a wire:navigate href="{{ route('admin-features') }}"
+                                :class="{{ request()->routeIs('admin-features') }} ? activeNav : inactiveNav"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-300 ">Experimental Features</a>
                         </li>
                     @endif
                     @if (Auth::check() && Auth::user()->usertype != 11)

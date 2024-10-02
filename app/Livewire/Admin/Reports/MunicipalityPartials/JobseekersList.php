@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 
 use App\Models\Company;
 use App\Models\Employee;
+use App\Models\Experimental_Features;
 use App\Models\Job_Applicants;
 use App\Models\Work_Exp;
 use Carbon\Carbon;
@@ -24,8 +25,8 @@ class JobseekersList extends Component
     public $searchJobseekers, $searchCompany;
     public $startYear, $currentYear;
 
-    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $civilStatus, $educationAttainment, $selectedMonths = [], $selectedYear, $OFWFilter, $fourPFilter;
-    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountCivilStatus, $mountEducationAttainment, $mountSelectedMonths = [], $mountSelectedYear, $mountOFWFilter, $mountFourPFilter;
+    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $civilStatus, $educationAttainment, $selectedMonths = [], $selectedYear, $OFWFilter, $fourPFilter, $municipalityFilter;
+    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountCivilStatus, $mountEducationAttainment, $mountSelectedMonths = [], $mountSelectedYear, $mountOFWFilter, $mountFourPFilter, $mountMunicipalityFilter;
 
     public $companyMun, $munYear, $munMonths = [];
     public $mountCompanyMun, $mountMunYear, $mountMunMonths = [];
@@ -147,8 +148,8 @@ class JobseekersList extends Component
 
     public function resetFilter()
     {
-        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountJobseekerfilter', 'mountCivilStatus', 'mountEducationAttainment', 'mountSelectedMonths', 'mountSelectedYear', 'mountOFWFilter', 'mountFourPFilter',
-            'Gender', 'Age', 'EmpStatus', 'jobseekerfilter', 'civilStatus', 'educationAttainment', 'selectedMonths', 'selectedYear', 'OFWFilter', 'fourPFilter');
+        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountJobseekerfilter', 'mountCivilStatus', 'mountEducationAttainment', 'mountSelectedMonths', 'mountSelectedYear', 'mountOFWFilter', 'mountFourPFilter', 'mountMunicipalityFilter',
+            'Gender', 'Age', 'EmpStatus', 'jobseekerfilter', 'civilStatus', 'educationAttainment', 'selectedMonths', 'selectedYear', 'OFWFilter', 'fourPFilter', 'municipalityFilter');
         $this->resetPage('jobseeker');
 
     }
@@ -166,6 +167,8 @@ class JobseekersList extends Component
 
         $this->selectedMonths = $this->mountSelectedMonths;
         $this->selectedYear = $this->mountSelectedYear;
+
+        $this->municipalityFilter = $this->mountMunicipalityFilter;
 
         $this->resetPage('jobseeker');
 
@@ -190,20 +193,23 @@ class JobseekersList extends Component
 
     private function getJobseekers($id)
     {
-        $employee = Employee::whereHas('barangay', function ($query) use ($id) {
-            $query->where('municipality_id', $id);
-        })
-            ->whereHas('job_applicants', function ($query) {
-                // Apply year filter if provided
-                if (!empty($this->selectedYear)) {
-                    $query->whereYear('created_at', $this->selectedYear);
-                }
+        $employee = Employee::whereHas('job_applicants', function ($query) use ($id) {
+            // Apply year filter if provided
+            if (!empty($this->selectedYear)) {
+                $query->whereYear('created_at', $this->selectedYear);
+            }
 
-                // Apply month filter if provided
-                if (!empty($this->selectedMonths) && is_array($this->selectedMonths)) {
-                    $query->whereIn(DB::raw('MONTH(created_at)'), $this->selectedMonths);
-                }
-            })
+            // Apply month filter if provided
+            if (!empty($this->selectedMonths) && is_array($this->selectedMonths)) {
+                $query->whereIn(DB::raw('MONTH(created_at)'), $this->selectedMonths);
+            }
+
+            $query->whereHas('job_posting', function ($query) use ($id) {
+                $query->whereHas('peso', function ($query) use ($id) {
+                    $query->where('municipality_id', $id);
+                });
+            });
+        })
             ->withCount(['job_applicants as job_applications' => function ($query) {
                 // Count job applications with the same filters
                 if (!empty($this->selectedYear)) {
@@ -294,6 +300,23 @@ class JobseekersList extends Component
             });
         }
 
+        if (isset($this->municipalityFilter)) {
+            switch ($this->municipalityFilter) {
+                case 1:
+                    $employee->whereHas('barangay', function ($query) use ($id) {
+                        $query->where('municipality_id', $id);
+                    });
+                    break;
+                case 2:
+                    $employee->whereDoesntHave('barangay', function ($query) use ($id) {
+                        $query->where('municipality_id', $id);
+                    });
+                    break;
+                default:
+                    // No additional filtering needed for 'all'
+                    break;
+            }
+        }
         return $employee;
     }
 
@@ -397,14 +420,24 @@ class JobseekersList extends Component
         return $companiesQuery;
     }
 
+    public function getFeature()
+    {
+        $crossJobFeature = Experimental_Features::find(1);
+
+        // Determine whether cross-municipality applications are enabled
+        $isCrossJobEnabled = $crossJobFeature && $crossJobFeature->feature_Status === 'enabled';
+        $crossJobFeature = Experimental_Features::find(1);
+
+        // Determine whether cross-municipality applications are enabled
+        return $crossJobFeature && $crossJobFeature->feature_Status === 'enabled';
+    }
     public function render()
     {
 
         $jobseekers = $this->getJobseekers($this->municipalityID)->paginate(10, ['*'], 'jobseeker');
         $employers = $this->getEmployers($this->municipalityID)->paginate(10, ['*'], 'company');
+        $crossJob = $this->getFeature();
 
-        // dd($employers);
-
-        return view('livewire.admin.reports.municipality-partials.jobseekers-list', compact('jobseekers', 'employers'));
+        return view('livewire.admin.reports.municipality-partials.jobseekers-list', compact('jobseekers', 'employers', 'crossJob'));
     }
 }

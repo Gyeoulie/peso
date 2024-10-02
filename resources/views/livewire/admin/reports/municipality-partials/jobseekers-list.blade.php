@@ -524,6 +524,33 @@
                         </div>
                     </div>
                 </div>
+                @if ($crossJob == true)
+                    <div class="flex-col mt-4">
+                        <h1 class="text-md font-semibold">Sort By Residency</h1>
+
+                        <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                            <div class="flex items-center">
+                                <input wire:model='mountMunicipalityFilter' id="mun-all" type="radio"
+                                    value="" name="munFilter" checked
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="mun-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='mountMunicipalityFilter' id="mun-in" type="radio"
+                                    value="1" name="munFilter"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="mun-in" class="ms-2 text-sm font-medium text-gray-900">Resident</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='mountMunicipalityFilter' id="mun-out" type="radio"
+                                    value="2" name="munFilter"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="mun-out" class="ms-2 text-sm font-medium text-gray-900">Not
+                                    Resident</label>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <div class="flex flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Date</h1>
                     <div class="flex flex-row w-full gap-4 mt-2">
