@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Reports\BarangayPartials;
 
 use App\Models\Employee;
+use App\Models\Experimental_Features;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -194,6 +195,17 @@ class JobseekerList extends Component
 
     }
 
+    public function getFeature()
+    {
+        $crossJobFeature = Experimental_Features::find(1);
+
+        // Determine whether cross-municipality applications are enabled
+        $isCrossJobEnabled = $crossJobFeature && $crossJobFeature->feature_Status === 'enabled';
+        $crossJobFeature = Experimental_Features::find(1);
+
+        // Determine whether cross-municipality applications are enabled
+        return $crossJobFeature && $crossJobFeature->feature_Status === 'enabled';
+    }
     public function render()
     {
         $barangayJobSeekers = $this->getJobseekers()->paginate(10);

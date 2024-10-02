@@ -232,7 +232,7 @@
                             trainings: ['admin-training', 'admin-create-training', 'admin-view-training', 'admin-registrants-training'].includes(@js(request()->route()->getName())),
                             reports: ['admin-reports-barangay', 'admin-reports-municipality', 'super-municipality', 'super-province'].includes(@js(request()->route()->getName())),
                             dataManagement: ['admin-certificate', 'admin-eligibility', 'admin-location', 'admin-industry'].includes(@js(request()->route()->getName())),
-                            maintenance: ['admin-audits', 'admin-peso', 'admin-backups', 'admin-municipality-audits'].includes(@js(request()->route()->getName())),
+                            maintenance: ['admin-audits', 'admin-peso', 'admin-backups', 'admin-municipality-audits', 'admin-features'].includes(@js(request()->route()->getName())),
                         },
                         activeItem: 'ml-6 block p-2 w-full border-l-4 border-indigo-400 text-start text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out',
                         inactiveItem: 'ml-6 block p-2 w-full border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out',
@@ -413,6 +413,10 @@
                                     <a :class="currentRoute === 'admin-backups' ? activeItem : inactiveItem"
                                         wire:navigate href="{{ route('admin-backups') }}">
                                         Backups
+                                    </a>
+                                    <a :class="currentRoute === 'admin-features' ? activeItem : inactiveItem"
+                                        wire:navigate href="{{ route('admin-features') }}">
+                                        Experimental Features
                                     </a>
                                 @endif
                                 @if (Auth::check() && Auth::user()->usertype != 11)

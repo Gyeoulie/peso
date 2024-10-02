@@ -328,12 +328,13 @@
                                                     src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                     alt="user-{{ $data->employee->employee_id }}">
                                                 <div class="ps-3 text-wrap">
+                                                    <div class="text-base font-semibold">{{ $data->employee->fname }}
+                                                        {{ $data->employee->lname }}</div>
                                                     <div class="hidden sm:flex flex-col text-gray-500 text-sm ">
                                                         {{ $data->employee->barangay->barangay_Name }},
                                                         {{ $data->employee->barangay->municipality->municipality_Name }}</span>
                                                     </div>
-                                                    <div class="text-base font-semibold">{{ $data->employee->fname }}
-                                                        {{ $data->employee->lname }}</div>
+
                                                     <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
                                                         {{ $data->employee->barangay->barangay_Name }},
                                                         {{ $data->employee->barangay->municipality->municipality_Name }}

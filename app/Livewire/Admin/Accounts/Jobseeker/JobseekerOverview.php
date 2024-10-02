@@ -60,19 +60,29 @@ class JobseekerOverview extends Component
     public function mount()
     {
         $user = Auth::user();
-
         $jobseeker = Employee::findOrFail($this->id);
 
-        if ($jobseeker) {
-            if ($jobseeker->barangay->municipality_id != $user->peso_accounts->peso->municipality_id) {
-                return $this->redirectRoute('dashboard');
-            }
-        } else {
+        if (!$jobseeker) {
             return $this->redirectRoute('dashboard');
-
         }
 
+        // Get the current admin's municipality ID
+        $currentAdminMunicipalityId = $user->peso_accounts->peso->municipality_id;
+
+        // Check if the jobseeker's barangay is in the current admin's municipality
+        $isInAdminMunicipality = $jobseeker->barangay->municipality_id == $currentAdminMunicipalityId;
+
+        // Check if the jobseeker has any job applications in the current admin's municipality
+        $hasJobApplication = $jobseeker->job_applicants()->whereHas('job_posting', function ($query) use ($currentAdminMunicipalityId) {
+            $query->where('peso_id', $currentAdminMunicipalityId);
+        })->exists();
+
+        // Redirect to dashboard if neither condition is true
+        if (!$isInAdminMunicipality && !$hasJobApplication) {
+            return $this->redirectRoute('dashboard');
+        }
     }
+
     public function viewFile($id, $fileToView)
     {
 

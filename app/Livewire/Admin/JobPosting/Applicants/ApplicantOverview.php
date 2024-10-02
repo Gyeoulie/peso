@@ -59,6 +59,23 @@ class ApplicantOverview extends Component
 
     public $recommendationRemarks, $rejectRemarks, $recLetter;
 
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $applicant = Job_Applicants::findOrFail($this->id);
+
+        if ($applicant) {
+            if ($user->peso_accounts->peso_id != $applicant->job_posting->peso_id) {
+                return $this->redirectRoute('dashboard');
+
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+
+        }
+    }
+
     public function viewFile($id, $fileToView)
     {
 
@@ -184,6 +201,16 @@ class ApplicantOverview extends Component
         $this->dispatch('close-modal', $modal . '-modal');
     }
 
+    private function checkJobseekerMunicipality($applicant)
+    {
+        if ($applicant->employee->barangay->municipality_id == $applicant->job_posting->peso->municipality_id) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     private function checkIfJobSeekerMatches($applicant)
     {
         // Get the highest education level of the employee
@@ -207,9 +234,9 @@ class ApplicantOverview extends Component
         // Query to check if the specific job posting matches the employee
         return Job_Posting::where('job_id', $applicant->job_id)
         // ->where('job_Status', 'ACTIVE')
-            ->whereHas('peso.municipality', function ($query) use ($employeeMunicipalityId) {
-                $query->where('municipality_id', $employeeMunicipalityId);
-            })
+        // ->whereHas('peso.municipality', function ($query) use ($employeeMunicipalityId) {
+        //     $query->where('municipality_id', $employeeMunicipalityId);
+        // })
             ->where('job_Edu', '<=', $highestEducationLevel)
             ->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
                 $query->where(function ($subQuery) use ($employeeJobPreferences) {
@@ -264,7 +291,9 @@ class ApplicantOverview extends Component
 
         $isMatch = $this->checkIfJobSeekerMatches($applicant);
 
-        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant', 'isMatch', 'attainment', 'totalExperience'));
+        $isResident = $this->checkJobseekerMunicipality($applicant);
+
+        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant', 'isMatch', 'attainment', 'totalExperience', 'isResident'));
     }
 
 }

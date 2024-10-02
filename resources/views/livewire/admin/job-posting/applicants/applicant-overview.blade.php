@@ -16,25 +16,69 @@
                 @if ($isMatch === true)
                     <div class="bg-green-100 shadow rounded-lg p-6">
                         <div class="flex flex-row items-center justify-between">
-                            <p class="text-green-700 font-bold text-xl">This job matches the applicant's preferences</p>
+                            <p class="text-green-700 font-bold text-xl">This job matches the applicant's preferences.</p>
                             <svg class="w-9 h-9 sm:w-9 sm:h-9 text-green-700 me-2.5" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                 <path
                                     d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
                             </svg>
                         </div>
+                        @if ($isResident === false)
+                            <div class="flex flex-row items-center mt-2 gap-1">
+                                <svg class="w-4 h-4 sm:w-6 sm:h-6 text-yellow-700" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+
+                                <p class="text-yellow-700 font-bold text-sm">This applicant is from a different
+                                    municipality.
+                                </p>
+                            </div>
+                        @endif
                     </div>
                 @else
                     <div class="bg-red-100 shadow rounded-lg p-6">
                         <div class="flex flex-row items-center justify-between">
                             <p class="text-red-700 font-bold  text-xl">This job doesn't match the applicant's
-                                preferences
+                                preferences.
                             </p>
                             <svg class="w-9 h-9 sm:w-10 sm:h-10 text-red-700 me-2" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path fill-rule="evenodd"
                                     d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        @if ($isResident === false)
+                            <div class="flex flex-row items-center mt-2 gap-1">
+                                <svg class="w-4 h-4 sm:w-6 sm:h-6 text-yellow-700" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+
+                                <p class="text-yellow-700 font-bold text-sm">This applicant is from a different
+                                    municipality.
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
+                @if ($isResident === false)
+                    <div class="bg-yellow-100 shadow rounded-lg p-6 mt-2">
+                        <div class="flex flex-row items-center justify-between">
+                            <p class="text-yellow-700 font-bold  text-xl">This applicant is from a different
+                                municipality.
+                            </p>
+                            <svg class="w-9 h-9 sm:w-10 sm:h-10 text-yellow-700 me-2" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
                                     clip-rule="evenodd" />
                             </svg>
                         </div>
@@ -57,8 +101,10 @@
                         <p class="text-gray-700">#{{ $applicant->job_posting->company->company_id }}</p>
 
                         <div class="flex flex-row mt-6 justify-between w-full">
-                            <p class="text-md text-gray-800">{{ $applicant->job_posting->company->company_Email }}</p>
-                            <p class="text-sm text-gray-800">{{ $applicant->job_posting->company->company_Pnum }}</p>
+                            <p class="text-md text-gray-800">
+                                {{ $applicant->job_posting->company->company_Email }}</p>
+                            <p class="text-sm text-gray-800">
+                                {{ $applicant->job_posting->company->company_Pnum }}</p>
                         </div>
 
                     </div>
@@ -78,27 +124,32 @@
 
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Industry:</li>
-                                <p class="ms-4 text-right">{{ $applicant->job_posting->job_industry->industry_Title }}
+                                <p class="ms-4 text-right">
+                                    {{ $applicant->job_posting->job_industry->industry_Title }}
                                 </p>
                             </div>
 
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Education Attainment:</li>
-                                <p class="ms-4 text-right">{{ $eduLevels[$applicant->job_posting->job_Edu] }}</p>
+                                <p class="ms-4 text-right">{{ $eduLevels[$applicant->job_posting->job_Edu] }}
+                                </p>
                             </div>
 
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Salary Range:</li>
-                                <p class="ms-4 text-right">₱{{ number_format($applicant->job_posting->job_MinWage) }} -
+                                <p class="ms-4 text-right">
+                                    ₱{{ number_format($applicant->job_posting->job_MinWage) }} -
                                     ₱{{ number_format($applicant->job_posting->job_MaxWage) }}</p>
                             </div>
 
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Address:</li>
-                                <p class="ms-4 uppercase text-right">{{ $applicant->job_posting->job_Address }},
+                                <p class="ms-4 uppercase text-right">
+                                    {{ $applicant->job_posting->job_Address }},
                                     {{ $applicant->job_posting->barangay->barangay_Name }},
                                     {{ $applicant->job_posting->barangay->municipality->municipality_Name }},
-                                    {{ $applicant->job_posting->barangay->municipality->province->province_Name }}</p>
+                                    {{ $applicant->job_posting->barangay->municipality->province->province_Name }}
+                                </p>
                             </div>
 
                         </ul>
@@ -215,7 +266,8 @@
                             </img>
 
                             <div class="flex flex-col ml-4 w-full">
-                                <h1 class="text-xl sm:text-3xl font-bold uppercase">{{ $applicant->employee->fname }}
+                                <h1 class="text-xl sm:text-3xl font-bold uppercase">
+                                    {{ $applicant->employee->fname }}
                                     {{ $applicant->employee->mname }} {{ $applicant->employee->lname }}</h1>
                                 <p class="text-sm sm:text-lg text-gray-700">Employee ID:
                                     {{ $applicant->employee->employee_id }}</p>
@@ -290,7 +342,8 @@
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Gender:</li>
-                                    <p class="ms-4"> {{ $applicant->employee->gender == 1 ? 'Male' : 'Female' }}</p>
+                                    <p class="ms-4">
+                                        {{ $applicant->employee->gender == 1 ? 'Male' : 'Female' }}</p>
                                 </div>
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Contact:</li>
