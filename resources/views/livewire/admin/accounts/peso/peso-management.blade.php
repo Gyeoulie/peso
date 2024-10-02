@@ -390,7 +390,7 @@
                                     <x-input-label for="role" :value="__('PESO Role*')" />
                                     <select wire:model="role" class="block mt-1 w-full rounded-md">
                                         <option value="" disabled selected>Select PESO Role</option>
-                                        <option value="8">PESO Consultant</option>
+                                        {{-- <option value="8">PESO Consultant</option> --}}
                                         <option value="9">PESO Officer</option>
                                         <option value="10">PESO Manager</option>
                                     </select>

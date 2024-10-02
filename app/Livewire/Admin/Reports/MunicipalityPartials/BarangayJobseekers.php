@@ -30,19 +30,36 @@ class BarangayJobseekers extends Component
         $barangayChartModel = new PieChartModel();
 
         // Add each barangay to the pie chart
+        // foreach ($barangays as $barangay) {
+        //     $barangayChartModel->addSlice(
+        //         $barangay->barangay_Name,
+        //         $barangay->employee_count,
+        //         $this->colors[$barangay->barangay_id] ?? '#' . substr(md5(rand()), 0, 6) // Use a default color if not set
+        //     );
+        // }
         foreach ($barangays as $barangay) {
+            // Generate a random color for each barangay
+            $randomColor = '#' . substr(md5(rand()), 0, 6);
+
             $barangayChartModel->addSlice(
                 $barangay->barangay_Name,
                 $barangay->employee_count,
-                $this->colors[$barangay->barangay_id] ?? '#' . substr(md5(rand()), 0, 6) // Use a default color if not set
+                $randomColor // Use the random color for each barangay
             );
         }
 
         // Optionally add a slice for 'Others' if there are remaining residents
+        // if ($totalResidents > 0) {
+        //     $otherCount = 0; // You can define logic for counting 'Others' if needed
+        //     if ($otherCount > 0) {
+        //         $barangayChartModel->addSlice('Others', $otherCount, '#' . substr(md5(rand()), 0, 6));
+        //     }
+        // }
+
         if ($totalResidents > 0) {
             $otherCount = 0; // You can define logic for counting 'Others' if needed
             if ($otherCount > 0) {
-                $barangayChartModel->addSlice('Others', $otherCount, '#' . substr(md5(rand()), 0, 6));
+                $barangayChartModel->addSlice('Others', $otherCount, '#' . substr(md5(rand()), 0, 6)); // Random color for 'Others'
             }
         }
 
@@ -52,13 +69,7 @@ class BarangayJobseekers extends Component
             ->withOnSliceClickEvent('onSliceClick')
             ->withoutLegend()
             ->setDataLabelsEnabled(true)
-            ->setColors([
-                '#' . substr(md5(rand()), 0, 6),
-                '#' . substr(md5(rand()), 0, 6),
-                '#' . substr(md5(rand()), 0, 6),
-                '#' . substr(md5(rand()), 0, 6),
-                '#' . substr(md5(rand()), 0, 6),
-            ])
+
             ->setJsonConfig([
                 'chart' => [
                     'width' => '100%', // Set to 100% or specify a pixel value like 400, 500, etc.
