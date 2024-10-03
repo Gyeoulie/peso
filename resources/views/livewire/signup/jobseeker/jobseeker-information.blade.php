@@ -1,5 +1,5 @@
 <div>
-    {{-- <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+    <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
         <!-- Primary Navigation Menu -->
         <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-    </nav> --}}
+    </nav>
 
 
     <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
