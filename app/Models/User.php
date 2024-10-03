@@ -19,6 +19,16 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\Auth\CustomVerifyEmailQueued);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\Auth\CustomResetPasswordQueued($token));
+    }
+
     protected $attributeModifiers = [
         'password' => FiveHashRedactor::class,
         'remember_token' => FiveHashRedactor::class,
