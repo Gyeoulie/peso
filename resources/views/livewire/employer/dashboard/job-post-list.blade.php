@@ -1,29 +1,50 @@
 <div wire:poll>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="flex flex-col w-full">
-                    <div class="flex flex-row w-full">
-                        <div class="flex flex-row">
-                            <div class="p-6 text-xl font-medium text-gray-900">
-                                Welcome, <span class="text-black font-bold">
-                                    {{ auth()->user()->company->business_Name }}!</span>
+            @if (Auth::check() && !$activePartnership)
+                <div class="bg-yellow-100 shadow rounded-lg p-6">
+                    <div class="flex flex-row items-center justify-between">
+                        <p class="text-yellow-700 font-bold text-xl">
+                            Access to job post applications is restricted. Please ensure your company has an active
+                            partnership to access job posting.
+                        </p>
+                        <div x-data="{ tooltip: 'View company settings to review current partnerships status.' }">
+                            <svg x-tooltip="tooltip" class="w-9 h-9 sm:w-9 sm:h-9 text-yellow-700 me-2.5 hover:scale-110"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+
+                    </div>
+                </div>
+            @else
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="flex flex-col w-full">
+                        <div class="flex flex-row w-full">
+                            <div class="flex flex-row">
+                                <div class="p-6 text-xl font-medium text-gray-900">
+                                    Welcome, <span class="text-black font-bold">
+                                        {{ auth()->user()->company->business_Name }}!</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col ml-auto mr-2 justify-center">
+                                <a wire:navigate href="{{ route('jobpost.apply') }}">
+                                    <x-primary-button type="button" class="w-[150px] mr-2 justify-center">
+
+                                        Post Job
+
+                                    </x-primary-button>
+                                </a>
                             </div>
                         </div>
-                        <div class="flex flex-col ml-auto mr-2 justify-center">
-                            <a wire:navigate href="{{ route('jobpost.apply') }}">
-                                <x-primary-button type="button" class="w-[150px] mr-2 justify-center">
 
-                                    Post Job
 
-                                </x-primary-button>
-                            </a>
-                        </div>
                     </div>
-
-
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 
