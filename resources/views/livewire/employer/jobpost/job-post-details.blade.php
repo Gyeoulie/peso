@@ -272,11 +272,26 @@
             }">
 
 
-                @if (($jobpost->job_Status == 'ACTIVE' || $jobpost->job_Status == 'REJECTED') && $jobpost->peso_Remarks)
+                @if (
+                    ($jobpost->job_Status == 'ACTIVE' || $jobpost->job_Status == 'REJECTED' || $jobpost->job_Status == 'CANCELLED') &&
+                        $jobpost->peso_Remarks)
                     <div class="bg-white shadow rounded-lg p-6 flex flex-col">
 
-                        <h1 class="text-xl sm:text-3xl font-bold">PESO Remarks</h1>
+                        <div class="flex flex-row">
+                            <h1 class="text-2xl font-bold ">PESO Remarks</h1>
+
+
+                        </div>
                         <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+                        <div class="flex sm:flex-row gap-4 sm:justify-between">
+                            @if ($jobpost->peso_accounts)
+                                <h1 class="text-md font-semibold">{{ $jobpost->peso_accounts->peso_accounts_Fname }}
+                                    {{ $jobpost->peso_accounts->peso_accounts_Lname }}</h1>
+                            @endif
+
+                            <h1 class="text-md ">{{ $jobpost->responded_at->format('F j, Y') }}</h1>
+
+                        </div>
 
 
                         <div class="flex flex-col w-full">
@@ -437,13 +452,16 @@
                                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3"> <!-- Adjusted padding -->
+                                            <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">
+                                                <!-- Adjusted padding -->
                                                 Name
                                             </th>
-                                            <th scope="col" class="hidden sm:table-cell px-6 py-3"> <!-- Hidden on mobile -->
+                                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                                <!-- Hidden on mobile -->
                                                 Status
                                             </th>
-                                            <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3"> <!-- Adjusted padding -->
+                                            <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">
+                                                <!-- Adjusted padding -->
                                                 Action
                                             </th>
                                         </tr>
@@ -454,83 +472,129 @@
                                                 <td colspan="3">
                                                     <div class="flex flex-col items-center justify-center mt-10">
                                                         <div class="p-6 bg-gray-100 rounded-full">
-                                                            <svg class="w-24 h-24 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                            <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" fill="none" viewBox="0 0 24 24">
+                                                                <path stroke="currentColor" stroke-linecap="round"
+                                                                    stroke-width="2"
+                                                                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                             </svg>
                                                         </div>
-                                                        <p class="text-xl font-bold text-black text-center mt-2 mb-20">No Applicants Found</p>
+                                                        <p class="text-xl font-bold text-black text-center mt-2 mb-20">
+                                                            No Applicants Found</p>
                                                     </div>
                                                 </td>
                                             </tr>
                                         @else
                                             @foreach ($applicants['list'] as $data)
-                                                <tr wire:key='jobApplicant-{{ $data->applicant_id }}' class="bg-white border-b hover:bg-gray-50">
-                                                    <th scope="row" class="flex items-center px-4 py-2 sm:px-6 sm:py-4 text-gray-900 whitespace-nowrap"> <!-- Adjusted padding -->
-                                                        <img class="w-10 h-10 rounded-full object-cover" src="{{ asset('storage/' . $data->employee->pimg) }}" alt="Profile image">
+                                                <tr wire:key='jobApplicant-{{ $data->applicant_id }}'
+                                                    class="bg-white border-b hover:bg-gray-50">
+                                                    <th scope="row"
+                                                        class="flex items-center px-4 py-2 sm:px-6 sm:py-4 text-gray-900 whitespace-nowrap">
+                                                        <!-- Adjusted padding -->
+                                                        <img class="w-10 h-10 rounded-full object-cover"
+                                                            src="{{ asset('storage/' . $data->employee->pimg) }}"
+                                                            alt="Profile image">
                                                         <div class="ps-3 text-wrap">
                                                             <div class="text-base font-semibold">
-                                                                <a wire:navigate href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}" class="hover:text-blue-500">
-                                                                    {{ $data->employee->fname }} {{ $data->employee->mname }} {{ $data->employee->lname }}
+                                                                <a wire:navigate
+                                                                    href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
+                                                                    class="hover:text-blue-500">
+                                                                    {{ $data->employee->fname }}
+                                                                    {{ $data->employee->mname }}
+                                                                    {{ $data->employee->lname }}
                                                                 </a>
                                                             </div>
-                                                            <div class="text-gray-500 font-medium text-xs">Applied date: {{ $data->created_at->format('F j, Y') }}</div>
+                                                            <div class="text-gray-500 font-medium text-xs">Applied
+                                                                date: {{ $data->created_at->format('F j, Y') }}</div>
                                                             <div class="sm:hidden text-sm">
-                                                                <div class="flex items-center">
+                                                                <div class="flex items-center ">
                                                                     @if ($data->applicant_Status === 'PENDING')
-                                                                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                                        </div>
                                                                         PENDING
                                                                     @elseif($data->applicant_Status === 'INTERESTED')
-                                                                        <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2"></div>
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2">
+                                                                        </div>
                                                                         INTERESTED
                                                                     @elseif($data->applicant_Status === 'INTERVIEW')
-                                                                        <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
+                                                                        </div>
                                                                         INTERVIEW
                                                                     @elseif($data->applicant_Status === 'HIRED')
-                                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                        </div>
                                                                         HIRED
                                                                     @elseif($data->applicant_Status === 'ACCEPTED')
-                                                                        <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2"></div>
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2">
+                                                                        </div>
                                                                         ACCEPTED
                                                                     @elseif($data->applicant_Status === 'REJECTED' || $data->applicant_Status === 'CANCELLED')
-                                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                                        <p class="uppercase">{{ $data->applicant_Status }}</p>
+                                                                        <div
+                                                                            class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                                        </div>
+                                                                        <p class="uppercase">
+                                                                            {{ $data->applicant_Status }}</p>
                                                                     @endif
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </th>
-                                
-                                                    <td class="hidden sm:table-cell px-6 py-4"> <!-- Hidden on mobile -->
+
+                                                    <td class="hidden sm:table-cell px-6 py-4">
+                                                        <!-- Hidden on mobile -->
                                                         <div class="flex items-center">
                                                             @if ($data->applicant_Status === 'PENDING')
-                                                                <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                                </div>
                                                                 PENDING
                                                             @elseif($data->applicant_Status === 'INTERESTED')
-                                                                <div class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2"></div>
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-purple-500 me-2">
+                                                                </div>
                                                                 INTERESTED
                                                             @elseif($data->applicant_Status === 'INTERVIEW')
-                                                                <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2">
+                                                                </div>
                                                                 INTERVIEW
                                                             @elseif($data->applicant_Status === 'HIRED')
-                                                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                </div>
                                                                 HIRED
                                                             @elseif($data->applicant_Status === 'ACCEPTED')
-                                                                <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2"></div>
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-emerald-500 me-2">
+                                                                </div>
                                                                 ACCEPTED
                                                             @elseif($data->applicant_Status === 'REJECTED' || $data->applicant_Status === 'CANCELLED')
-                                                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                                </div>
                                                                 <p class="uppercase">{{ $data->applicant_Status }}</p>
                                                             @endif
                                                         </div>
                                                     </td>
-                                
+
                                                     <td class="px-4 py-2 sm:px-6 sm:py-4"> <!-- Adjusted padding -->
                                                         <div class="flex flex-row gap-4 items-center">
                                                             <div x-data="{ tooltip: 'Applicant Info' }">
-                                                                <button wire:click.prevent="getApplicant({{ $data->applicant_id }})" x-tooltip="tooltip" type="button"
-                                                                        class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                                                                <button
+                                                                    wire:click.prevent="getApplicant({{ $data->applicant_id }})"
+                                                                    x-tooltip="tooltip" type="button"
+                                                                    class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="w-5 h-5" fill="none"
+                                                                        viewBox="0 0 24 24" stroke-width="1.5"
+                                                                        stroke="currentColor">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                                                                     </svg>
                                                                 </button>
                                                             </div>
@@ -541,7 +605,7 @@
                                         @endif
                                     </tbody>
                                 </table>
-                                
+
                             </div>
                         </div>
 

@@ -3,6 +3,7 @@
 namespace App\Livewire\Employer\Dashboard;
 
 use App\Models\Job_Posting;
+use App\Models\Partnerships;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -34,6 +35,14 @@ class JobPostList extends Component
 
         $this->redirectRoute('jobpost.edit');
 
+    }
+
+    public function checkPartnerships($user)
+    {
+
+        return Partnerships::where('company_id', $user->company_id)
+            ->where('partnership_Status', 'APPROVED')
+            ->exists(); // This will return true if a record exists, otherwise false
     }
 
     public function render()
@@ -89,6 +98,12 @@ class JobPostList extends Component
         $othersCount = Job_Posting::where('company_id', $user->company->company_id)
             ->whereIn('job_status', ['REJECTED', 'CANCELLED'])->count();
 
-        return view('livewire.employer.dashboard.job-post-list', compact('applicants', 'allCount', 'pendingCount', 'activeCount', 'closedCount', 'completedCount', 'othersCount'));
+        $activePartnership = true;
+
+        if ($user->usertype >= 6) {
+            $activePartnership = $this->checkPartnerships($user);
+        }
+
+        return view('livewire.employer.dashboard.job-post-list', compact('applicants', 'allCount', 'pendingCount', 'activeCount', 'closedCount', 'completedCount', 'othersCount', 'activePartnership'));
     }
 }

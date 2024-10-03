@@ -10,6 +10,7 @@ use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
+use App\Models\Partnerships;
 use App\Models\PESO;
 use App\Models\Programs;
 use Illuminate\Support\Facades\Auth;
@@ -57,7 +58,7 @@ class Dashboard extends Component
     public $search, $searchIndustry, $searchTags;
     public $filter = 'All';
     public $sort = 'Newest';
-    public $pagination = 6;
+    public $pagination = 8;
 
     public $filterJobTags = [], $filterIndustry = [], $mountJobTagsFilter = [], $mountIndustryFilter = [];
 
@@ -404,7 +405,7 @@ class Dashboard extends Component
             $query->where('peso_id', $pesoId);
 
         }
-        return $query->where('announcement_Status', 'ACTIVE')->latest()->limit(5)->get();
+        return $query->where('announcement_Status', 'ACTIVE')->latest()->limit(3)->get();
     }
 
     public function setAnnouncements($user = null)
@@ -587,6 +588,15 @@ class Dashboard extends Component
         return $jobIndustries;
     }
 
+    public function checkPartnerships($user)
+    {
+
+        return Partnerships::where('company_id', $user->company_id)
+            ->where('partnership_Status', 'APPROVED')
+            ->exists(); // This will return true if a record exists, otherwise false
+
+    }
+
     public function render()
     {
         $joblist = $this->getPaginatedJobs();
@@ -605,6 +615,13 @@ class Dashboard extends Component
         $topJobTags = $this->getTopJobTags($user);
         $topJobIndustries = $this->getTopJobIndustries($user);
 
-        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements', 'jobposition', 'industry', 'topJobTags', 'topJobIndustries'));
+        $activePartnership = true;
+
+        if ($user && $user->usertype >= 6) {
+            $activePartnership = $this->checkPartnerships($user);
+            // dd($activePartnership);
+        }
+
+        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements', 'jobposition', 'industry', 'topJobTags', 'topJobIndustries', 'activePartnership'));
     }
 }

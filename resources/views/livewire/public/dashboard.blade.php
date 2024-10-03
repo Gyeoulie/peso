@@ -1,17 +1,20 @@
 <div class="w-full">
 
-    @if (Auth::check() && Auth::user()->usertype == 5)
+    @if (Auth::check() && (Auth::user()->usertype == 5 || !$activePartnership))
         <div class="bg-yellow-100 shadow rounded-lg p-6 my-6 mx-12">
             <div class="flex flex-row items-center justify-between">
-                <p class="text-yellow-700 font-bold text-xl">You don't have access to job post application. Must have an
-                    active partnership to be able to post.</p>
-                <svg class="w-9 h-9 sm:w-9 sm:h-9 text-yellow-700 me-2.5" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-                        clip-rule="evenodd" />
-                </svg>
-
+                <p class="text-yellow-700 font-bold text-xl">
+                    Access to job post applications is restricted. Please ensure your company has an active
+                    partnership to access job posting.
+                </p>
+                <div x-data="{ tooltip: 'View company settings to review current partnerships status.' }">
+                    <svg x-tooltip="tooltip" class="w-9 h-9 sm:w-9 sm:h-9 text-yellow-700 me-2.5 hover:scale-110"
+                        viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
             </div>
         </div>
     @else
@@ -456,7 +459,7 @@
                 </div>
             @else
                 <div class="col-span-4 sm:col-span-3">
-                    <div class="flex flex-col gap-4">
+                    <div class="flex flex-col w-full gap-4">
 
                         <div class="bg-white shadow-md shadow-md rounded-md p-4">
                             <h1 class="font-bold text-2xl text-center mb-4">TOP JOB TAGS</h1>
@@ -525,7 +528,7 @@
                                     </div>
                                 @else
                                     <div
-                                        class="mt-2 flex flex-row sm:flex-col  gap-4 overflow-x-auto sm:overflow-visible no-scrollbar">
+                                        class="mt-2 flex flex-row sm:flex-col  gap-4 overflow-x-auto sm:overflow-visible no-scrollbar w-full">
                                         @foreach ($announcements as $data)
                                             <a wire:navigate
                                                 href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
@@ -555,6 +558,7 @@
                                                     </div>
                                                 </div>
                                             </a>
+                                            
                                         @endforeach
                                     </div>
                                 @endif
