@@ -591,7 +591,7 @@ class Dashboard extends Component
     public function checkPartnerships($user)
     {
 
-        return Partnerships::where('company_id', $user->company_id)
+        return Partnerships::where('company_id', $user->company->company_id)
             ->where('partnership_Status', 'APPROVED')
             ->exists(); // This will return true if a record exists, otherwise false
 

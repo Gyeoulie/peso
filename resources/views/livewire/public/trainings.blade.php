@@ -1,4 +1,4 @@
-<div wire:poll.10s class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16" x-data="{
+<div wire:poll.5s class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16" x-data="{
     openTab: 1,
     activeTab: 'text-blue-600 border-b-2 border-blue-600  active',
     inactiveTab: 'text-gray-500 hover:text-gray-600 ',

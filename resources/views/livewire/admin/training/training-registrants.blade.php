@@ -1,4 +1,4 @@
-<div class="container mx-auto py-8">
+<div wire:poll class="container mx-auto py-8">
     <style>
         #QrScanner {
             position: relative;

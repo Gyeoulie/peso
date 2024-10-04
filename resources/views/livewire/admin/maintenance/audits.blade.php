@@ -1,4 +1,4 @@
-<div class="container mx-auto py-8">
+<div wire:poll.5s class="container mx-auto py-8">
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
         <div class="col-span-4 sm:col-span-12">
