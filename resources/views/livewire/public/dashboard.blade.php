@@ -95,7 +95,7 @@
         @endif
     @endif
 
-    <div wire:poll.10s class="flex mx-auto sm:mx-12 py-2 ">
+    <div wire:poll.5s class="flex mx-auto sm:mx-12 py-2 ">
         <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0 w-full">
 
             {{-- MAIN BAR FOR JOB POST --}}

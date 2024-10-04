@@ -1,4 +1,4 @@
-<div>
+<div wire:poll>
     <div class="mt-12">
         <div class="max-w-3xl mx-auto px-2 sm:px-6 lg:px-8">
 

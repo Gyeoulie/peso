@@ -1,4 +1,4 @@
-<div class="container mx-auto py-8">
+<div wire:poll class="container mx-auto py-8">
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
 
         <div class="col-span-4 sm:col-span-12">
@@ -241,7 +241,8 @@
                                                         {{ $data->program_Host }}
                                                     </div>
                                                     <div class="sm:hidden text-gray-500 text-sm">
-                                                        Registrants: <span class="text-black font-bold">{{ $data->program_reg_count }}</span>
+                                                        Registrants: <span
+                                                            class="text-black font-bold">{{ $data->program_reg_count }}</span>
                                                     </div>
                                                     <div class="sm:hidden text-gray-500 text-sm">
                                                         Deadline: <span class="text-black font-bold">

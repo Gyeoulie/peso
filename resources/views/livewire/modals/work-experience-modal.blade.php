@@ -1,4 +1,4 @@
-<x-modal name="work-experience-modal" focusable>
+<x-modal wire:poll name="work-experience-modal" focusable>
     <div class="w-full max-w-4xl px-6 py-6 items-center">
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Work Experience') }}
