@@ -34,6 +34,8 @@ class AuthenticatedSessionController extends Controller
             $user = $request->user();
             $request->session()->put('user_type', $user->usertype);
 
+            session()->flash('login_success', true);
+
             return $this->redirectBasedOnRole($user->usertype);
         }
 

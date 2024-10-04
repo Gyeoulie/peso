@@ -102,6 +102,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
     <script>
+        @if (session('login_success'))
+            localStorage.removeItem('user-logged-out');
+        @endif
+
         function handleLogout() {
             if (localStorage.getItem('user-logged-out') === 'true') {
                 localStorage.removeItem('user-logged-out'); // Clean up
