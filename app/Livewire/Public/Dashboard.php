@@ -617,7 +617,7 @@ class Dashboard extends Component
 
         $activePartnership = true;
 
-        if ($user && $user->usertype >= 6) {
+        if ($user && ($user->usertype >= 6 && $user->usertype < 8) && $user->company) {
             $activePartnership = $this->checkPartnerships($user);
             // dd($activePartnership);
         }
