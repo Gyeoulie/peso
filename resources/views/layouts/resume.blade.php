@@ -16,6 +16,10 @@
 
     {{ $slot }}
     <script>
+        @if (session('login_success'))
+            localStorage.removeItem('user-logged-out');
+        @endif
+
         function handleLogout() {
             if (localStorage.getItem('user-logged-out') === 'true') {
                 localStorage.removeItem('user-logged-out'); // Clean up
