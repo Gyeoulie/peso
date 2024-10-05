@@ -496,7 +496,7 @@
 
                     <div class="flex flex-row w-full gap-4 sm:gap-24 justify-center items-center mt-8">
 
-                        <div wire:click.prevent='updateOption(1)' @click="selectedOption = 1"
+                        <div wire:click.prevent='updateOption(1)' x-on:click="selectedOption = 1"
                             :class="selectedOption === 1 ? selected : unselected"
                             class="flex flex-col w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center  gap-2 shadow-lg cursor-pointer">
 
@@ -515,7 +515,7 @@
                         </div>
 
 
-                        <div wire:click.prevent='updateOption(2)' @click="selectedOption = 2"
+                        <div wire:click.prevent='updateOption(2)' x-on:click="selectedOption = 2"
                             :class="selectedOption === 2 ? selected : unselected"
                             class="flex flex-col  w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center gap-2 shadow-lg  cursor-pointer">
 
@@ -591,7 +591,7 @@
 
                 </x-blue-button> --}}
 
-                    <x-primary-button wire:click.prevent='apply' wire:loading.attr="disabled"
+                    <x-green-button wire:click.prevent='apply' wire:loading.attr="disabled"
                         class="ms-3 w-[100px] flex justify-center" type="button" id="certAdd">
                         {{ __('Apply') }}
                         <div wire:loading.delay.long wire:target='apply' role="status">
@@ -606,7 +606,7 @@
                             </svg>
                             <span class="sr-only">Loading...</span>
                         </div>
-                    </x-primary-button>
+                    </x-green-button>
                 </div>
             </div>
         </x-modal>
