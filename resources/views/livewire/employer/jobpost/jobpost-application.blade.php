@@ -55,14 +55,14 @@
                 <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
                     <div class="flex flex-col w-full">
-                        <x-input-label for="jobTitlePost">Job Title
+                        <x-input-label for="jobTitlePost">Job Title*
                         </x-input-label>
                         <x-text-input wire:model='jobTitlePost' class="block mt-1 w-full" type="text" />
                         <x-input-error :messages="$errors->get('jobTitlePost')" class="mt-2" />
                     </div>
 
                     <div class="flex flex-col w-full">
-                        <x-input-label for="jobIndustryPost">Job Industry
+                        <x-input-label for="jobIndustryPost">Job Industry*
                         </x-input-label>
                         <x-text-input wire:model='jobIndustryPost' class="block mt-1 w-full" type="text" readonly
                             x-data="" x-on:click.prevent="$dispatch('open-modal', 'industry-modal')"
@@ -94,7 +94,7 @@
 
 
                     <div class="flex flex-col sm:w-1/2">
-                        <x-input-label for="eduPost">Educational Attainment
+                        <x-input-label for="eduPost">Educational Attainment*
                         </x-input-label>
                         <select wire:model='eduPost' class="block mt-1 w-full rounded">
                             <option value="" disabled selected>Select Type</option>
@@ -130,12 +130,18 @@
                     </div>
 
                     <div class="flex flex-col sm:w-1/2">
-                        <x-input-label for="jtypePost">Job Type
+                        <x-input-label for="jtypePost">Job Type*
                         </x-input-label>
                         <select wire:model='jtypePost' class="block mt-1 w-full rounded">
                             <option value="" disabled selected>Select Type</option>
                             <option value="1">Full-Time</option>
-                            <option value="2">Contractual/Part-Time</option>
+                            <option value="2">Contractual</option>
+                            <option value="3">Part-Time</option>
+                            <option value="4">Project-Based</option>
+                            <option value="5">Intership/OJT</option>
+                            <option value="6">Work From Home</option>
+
+
                         </select>
                         <x-input-error :messages="$errors->get('jtypePost')" class="mt-2" />
                     </div>
@@ -146,7 +152,7 @@
 
                     <div class="flex flex-row gap-4 w-full sm:w-1/3">
                         <div class="flex flex-col w-full">
-                            <x-input-label for="wAddPost">Work Address
+                            <x-input-label for="wAddPost">Work Address*
                             </x-input-label>
                             <x-text-input wire:model='wAddPost' class="block mt-1 w-full" type="text" />
                             <x-input-error :messages="$errors->get('wAddPost')" class="mt-2" />
@@ -156,7 +162,7 @@
 
                     <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-2/3">
                         <div class="flex flex-col w-full">
-                            <x-input-label for="barPost">Barangay
+                            <x-input-label for="barPost">Barangay*
                             </x-input-label>
                             <x-text-input wire:model='barPost' class="block mt-1 w-full" type="text" readonly
                                 x-data="" x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')"
@@ -164,13 +170,13 @@
                             <x-input-error :messages="$errors->get('barPost')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full">
-                            <x-input-label for="mun">Province
+                            <x-input-label for="mun">Province*
                             </x-input-label>
                             <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
                             <x-input-error :messages="$errors->get('mun')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full">
-                            <x-input-label for="prov">Municipallity
+                            <x-input-label for="prov">Municipallity*
                             </x-input-label>
                             <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
                             <x-input-error :messages="$errors->get('prov')" class="mt-2" />
@@ -187,10 +193,10 @@
         <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 mt-3">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
 
-                <div class="flex flex-row my-4 w-full gap-4">
+                <div class="flex flex-col sm:flex-row my-4 w-full gap-4">
 
                     <div class="flex flex-col w-full sm:w-1/2">
-                        <x-input-label for="pesoPost">PESO Branch
+                        <x-input-label for="pesoPost">PESO Branch*
                         </x-input-label>
                         <select wire:model='pesoPost' class="block mt-1 w-full rounded">
                             <option value="" disabled selected>Select Branch</option>
@@ -202,20 +208,42 @@
                         </select>
                         <x-input-error :messages="$errors->get('pesoPost')" class="mt-2" />
                     </div>
+                    <div class="flex flex-col  w-full sm:w-1/2">
+                        <x-input-label for="disability" :value="__('Accept PWDs?*')" />
+                        <div class="flex flex-row gap-4 mt-2">
+                            <div class="flex items-center">
+                                <input wire:model='disabilityPost' id="disability-yes" type="radio" value="1"
+                                    name="disabilityAccept"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="disability-yes" class="ms-2 text-sm font-medium text-gray-900">Yes</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='disabilityPost' id="disability-no" type="radio" value="2"
+                                    name="disabilityAccept"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="disability-no" class="ms-2 text-sm font-medium text-gray-900">No</label>
+                            </div>
+
+                        </div>
+                        <x-input-error :messages="$errors->get('disabilityPost')" class="mt-2" />
+
+                    </div>
+
+
 
                 </div>
 
                 <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
 
                     <div class="flex flex-col w-full sm:w-1/2">
-                        <x-input-label for="durationPost">Job Posting Duration
+                        <x-input-label for="durationPost">Job Posting Duration*
                         </x-input-label>
                         <x-text-input wire:model='durationPost' class="block mt-1 w-full" type="date" />
                         <x-input-error :messages="$errors->get('durationPost')" class="mt-2" />
                     </div>
 
                     <div class="flex flex-col w-full sm:w-1/3 mb-5">
-                        <x-input-label for="slotsPost">Job Slots
+                        <x-input-label for="slotsPost">Job Slots*
                         </x-input-label>
                         <x-text-input wire:model='slotsPost' class="block mt-1 w-full" type="text" />
                         <x-input-error :messages="$errors->get('slotsPost')" class="mt-2" />
@@ -238,7 +266,7 @@
                         <div class="flex flex-row w-full items-center">
 
                             <x-input-label for="fname"> </i> Job Position
-                                Tags
+                                Tags*
                             </x-input-label>
 
                             <x-primary-button class="ml-auto mr-3" type="button" x-data=""
@@ -286,7 +314,7 @@
                 <div class="flex flex-col sm:flex-row w-full space-y-5 sm:sm:space-y-0 sm:space-x-5 mt-4">
 
                     <div class="flex flex-col w-full sm:w-1/2 ">
-                        <x-input-label for="descPost">Job Description
+                        <x-input-label for="descPost">Job Description*
                         </x-input-label>
                         <div wire:ignore>
                             <textarea wire:model='descPost' id="descText"></textarea>
@@ -304,7 +332,7 @@
 
 
                     <div class="flex flex-col w-full sm:w-1/2 ">
-                        <x-input-label for="qualPost">Job Qualification
+                        <x-input-label for="qualPost">Job Qualification*
                         </x-input-label>
                         <div wire:ignore>
                             <textarea wire:model='qualPost' id="qualText"></textarea>

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('job_MaxWage', 10, 2)->nullable();
             $table->tinyInteger('job_Type');
             $table->tinyInteger('job_Edu')->nullable();
+            $table->tinyInteger('job_Disability')->nullable();
             $table->integer('job_Slots')->nullable();
             $table->string('job_Address', 255);
             $table->unsignedBigInteger('barangay_id')->comment('Foreign Key');

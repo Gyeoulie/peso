@@ -64,9 +64,26 @@
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Salary Range:</li>
-                            <p class="ms-4 text-right">₱{{ number_format($jobpost->job_MinWage) }} -
-                                ₱{{ number_format($jobpost->job_MaxWage) }}</p>
+                            <p class="ms-4 text-right">
+                                @if ($jobpost->job_MinWage)
+                                    ₱{{ number_format($jobpost->job_MinWage) }}
+                                    @if ($jobpost->job_MaxWage)
+                                        -
+                                        ₱{{ number_format($jobpost->job_MaxWage) }}
+                                    @endif
+                                @else
+                                    Salary Not Specified
+                                @endif
+                            </p>
                         </div>
+
+
+                        @if ($jobpost->job_Disability === 1)
+                            <div class="flex flex-row justify-between">
+                                <li class="mb-2 font-bold">PWDs:</li>
+                                <p class="ms-4">Accepted</p>
+                            </div>
+                        @endif
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Address:</li>
@@ -240,40 +257,41 @@
                                                         {{ $applicants->employee->barangay->municipality->municipality_Name }}
                                                     </div>
 
-                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden mt-2">
+                                                    <div
+                                                        class="font-normal text-gray-500 text-sm uppercase sm:hidden mt-2">
                                                         Status:
                                                         <span class="font-bold">
-                                                        @if ($applicants->applicant_Status == 'PENDING')
-                                                            <div
-                                                                class="h-2 w-2 rounded-full bg-yellow-500 inline-block">
-                                                            </div> PENDING
-                                                        @elseif($applicants->applicant_Status == 'INTERVIEW')
-                                                            <div
-                                                                class="h-2 w-2 rounded-full bg-blue-500 inline-block">
-                                                            </div> INTERVIEW
-                                                        @elseif($applicants->applicant_Status == 'HIRED')
-                                                            <div
-                                                                class="h-2 w-2 rounded-full bg-green-500 inline-block">
-                                                            </div> HIRED
-                                                        @endif
-                                                    </span>
+                                                            @if ($applicants->applicant_Status == 'PENDING')
+                                                                <div
+                                                                    class="h-2 w-2 rounded-full bg-yellow-500 inline-block">
+                                                                </div> PENDING
+                                                            @elseif($applicants->applicant_Status == 'INTERVIEW')
+                                                                <div
+                                                                    class="h-2 w-2 rounded-full bg-blue-500 inline-block">
+                                                                </div> INTERVIEW
+                                                            @elseif($applicants->applicant_Status == 'HIRED')
+                                                                <div
+                                                                    class="h-2 w-2 rounded-full bg-green-500 inline-block">
+                                                                </div> HIRED
+                                                            @endif
+                                                        </span>
                                                     </div>
                                                     <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
                                                         PESO:
                                                         <span class="font-bold">
-                                                        @if ($applicants->peso_Status == 'PENDING')
-                                                            <div
-                                                                class="h-2 w-2 rounded-full bg-yellow-500 inline-block">
-                                                            </div> PENDING
-                                                        @elseif($applicants->peso_Status == 'RECOMMENDED')
-                                                            <div
-                                                                class="h-2 w-2 rounded-full bg-green-500 inline-block">
-                                                            </div> RECOMMENDED
-                                                        @elseif($applicants->peso_Status == 'REJECT')
-                                                            <div
-                                                                class="h-2 w-2 rounded-full bg-red-500 inline-block">
-                                                            </div> REJECTED
-                                                        @endif
+                                                            @if ($applicants->peso_Status == 'PENDING')
+                                                                <div
+                                                                    class="h-2 w-2 rounded-full bg-yellow-500 inline-block">
+                                                                </div> PENDING
+                                                            @elseif($applicants->peso_Status == 'RECOMMENDED')
+                                                                <div
+                                                                    class="h-2 w-2 rounded-full bg-green-500 inline-block">
+                                                                </div> RECOMMENDED
+                                                            @elseif($applicants->peso_Status == 'REJECT')
+                                                                <div
+                                                                    class="h-2 w-2 rounded-full bg-red-500 inline-block">
+                                                                </div> REJECTED
+                                                            @endif
                                                         </span>
                                                     </div>
                                                     <!-- Show date on mobile -->

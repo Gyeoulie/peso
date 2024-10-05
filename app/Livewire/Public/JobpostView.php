@@ -49,6 +49,15 @@ class JobpostView extends Component
         '25' => 'MASTERAL/POST GRADUATE LEVEL',
         '26' => 'MASTERAL/POST GRADUATE',
     ];
+    public $jobTypes = [
+        '0' => 'None',
+        '1' => 'Full Time',
+        '2' => 'Contractual',
+        '3' => 'Part Time',
+        '4' => 'Project-Based',
+        '5' => 'Internship/OJT',
+        '6' => 'Work From Home',
+    ];
 
     public $option;
     public $resume;

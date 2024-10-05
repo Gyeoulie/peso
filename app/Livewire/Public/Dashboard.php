@@ -4,6 +4,7 @@ namespace App\Livewire\Public;
 
 use App\Models\Announcements;
 use App\Models\Barangay;
+use App\Models\Disability;
 use App\Models\Education;
 use App\Models\Industry_preference;
 use App\Models\Job_Industry;
@@ -55,19 +56,25 @@ class Dashboard extends Component
         '26' => 'MASTERAL/POST GRADUATE',
     ];
 
+    public $jobTypes = [
+        '0' => 'None',
+        '1' => 'Full Time',
+        '2' => 'Contractual',
+        '3' => 'Part Time',
+        '4' => 'Project-Based',
+        '5' => 'Internship/OJT',
+        '6' => 'Work From Home',
+    ];
+
     public $search, $searchIndustry, $searchTags;
     public $filter = 'All';
+
+    public $jobTypeFilter;
     public $sort = 'Newest';
     public $pagination = 8;
 
     public $filterJobTags = [], $filterIndustry = [], $mountJobTagsFilter = [], $mountIndustryFilter = [];
 
-    public function mountTopJobTags($value)
-    {
-
-        $this->resetPage('jobs');
-        $this->search = $value;
-    }
     public function mountJobTags()
     {
         $this->filterJobTags = $this->mountJobTagsFilter;
@@ -127,19 +134,30 @@ class Dashboard extends Component
             }
         }
     }
+    public function mountTopJobTags($value)
+    {
 
+        $this->resetPage('jobs');
+        $this->search = $value;
+    }
     public function updateFilter($value)
     {
         $this->filter = $value;
         $this->sort = 'Newest';
-        $this->resetPage();
+        $this->resetPage('jobs');
     }
 
     public function updateSort($value)
     {
         $this->sort = $value;
-        $this->resetPage();
+        $this->resetPage('jobs');
 
+    }
+
+    public function updateJobType($value)
+    {
+        $this->jobTypeFilter = $value;
+        $this->resetPage('jobs');
     }
 
     private function getHighestEducationLevel()
@@ -170,6 +188,16 @@ class Dashboard extends Component
             ->pluck('industry_id');
     }
 
+    private function checkUserDisability()
+    {
+        $user = Auth::user();
+
+        // Check if there is a disability record for the user
+        $hasDisability = Disability::where('employee_id', $user->employee->employee_id)->exists();
+
+        return $hasDisability ? 1 : 2; // Return 1 if a record exists, otherwise return 2
+    }
+
     private function buildJobQuery()
     {
         $query = Job_Posting::with([
@@ -189,26 +217,34 @@ class Dashboard extends Component
             $userMunicipalityId = $this->getUserMunicipalityId();
             $userJobPreferences = $this->getUserJobPreferences();
             $userIndustryPreference = $this->getUserIndustryPreference();
+            $userHasDisability = $this->checkUserDisability();
 
             // Query for matching job postings
             $query
-                ->whereHas('peso', function ($query) use ($userMunicipalityId) {
+                ->whereHas('peso.municipality', function ($query) use ($userMunicipalityId) {
                     $query->where('municipality_id', $userMunicipalityId);
-                })->where('job_Edu', '<=', $highestEducationLevel)
-
+                })
+                ->where('job_Edu', '<=', $highestEducationLevel)
                 ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
-                    $query->where(function ($query) use ($userJobPreferences) {
-                        $query->whereHas('job_tags', function ($query) use ($userJobPreferences) {
-                            $query->whereIn('position_id', $userJobPreferences);
-                        });
+                    $query->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                        $query->whereHas('job_tags', function ($q) use ($userJobPreferences) {
+                            $q->whereIn('position_id', $userJobPreferences);
+                        })
+                            ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                                $q->whereIn('industry_id', $userIndustryPreference);
+                            });
                     })
                         ->orWhere(function ($query) use ($userIndustryPreference) {
-                            $query->whereHas('job_industry', function ($query) use ($userIndustryPreference) {
-                                $query->whereIn('industry_id', $userIndustryPreference);
+                            $query->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                                $q->whereIn('industry_id', $userIndustryPreference);
+                            });
+                        })
+                        ->orWhere(function ($query) use ($userJobPreferences) {
+                            $query->whereHas('job_tags', function ($q) use ($userJobPreferences) {
+                                $q->whereIn('position_id', $userJobPreferences);
                             });
                         });
                 })
-
                 ->withCount(['job_tags as job_tags_count' => function ($query) use ($userJobPreferences) {
                     $query->whereIn('position_id', $userJobPreferences);
                 }])
@@ -216,13 +252,18 @@ class Dashboard extends Component
                     $query->whereIn('industry_id', $userIndustryPreference);
                 }])
                 ->orderByRaw('
-                    CASE
-                        WHEN industry_count > 0 AND job_tags_count > 0 THEN 1
-                        WHEN industry_count > 0 AND job_tags_count = 0 THEN 2
-                        WHEN industry_count = 0 AND job_tags_count > 0 THEN 3
-                        ELSE 4
-                    END
-                ')
+            CASE
+                -- Prioritize jobs accepting disabilities if the user has a disability
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count > 0 THEN 1
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count = 0 THEN 2
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count = 0 AND job_tags_count > 0 THEN 3
+                -- Rank jobs normally if the user has no disability
+                WHEN industry_count > 0 AND job_tags_count > 0 THEN 4
+                WHEN industry_count > 0 AND job_tags_count = 0 THEN 5
+                WHEN industry_count = 0 AND job_tags_count > 0 THEN 6
+                ELSE 7
+            END
+        ', [$userHasDisability, $userHasDisability, $userHasDisability])
                 ->orderByDesc('job_tags_count')
                 ->distinct();
             // dd($query->get(), $userJobPreferences, $userIndustryPreference, $highestEducationLevel, $userMunicipalityId);
@@ -267,6 +308,10 @@ class Dashboard extends Component
                         $query->where('municipality_name', 'like', '%' . $this->search . '%');
                     });
             });
+
+        }
+        if ($this->jobTypeFilter) {
+            $query->where('job_Type', $this->jobTypeFilter);
         }
 
         return $query;
@@ -283,9 +328,7 @@ class Dashboard extends Component
             case 'Oldest':
                 $query->orderBy('created_at', 'ASC');
                 break;
-                // case 'Random':
-                //     $query->inRandomOrder();
-                //     break;
+          
         }
 
         return $query->paginate($this->pagination, ['*'], 'jobs');

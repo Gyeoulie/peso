@@ -37,6 +37,7 @@ class JobpostApplication extends Component
     public $wAddPost;
     public $barPost, $barHidden;
     public $pesoPost = '';
+    public $disabilityPost;
     public $durationPost;
     public $slotsPost;
     public $jobTags = [];
@@ -61,13 +62,18 @@ class JobpostApplication extends Component
             $rules = [
                 'jobTitlePost' => ['required', 'string'],
                 'jobIndustryPost' => ['required'],
-                'minWagePost' => ['required', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1'],
-                'maxWagePost' => ['required', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1', 'gte:minWagePost'],
+                'minWagePost' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1'],
+                'maxWagePost' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1', 'gte:minWagePost', function ($attribute, $value, $fail) {
+                    if ($value && !$this->minWagePost) {
+                        $fail('Minimum wage is required when maximum wage is provided.');
+                    }
+                }],
                 'eduPost' => ['required'],
                 'jtypePost' => ['required'],
                 'wAddPost' => ['required', 'string'],
                 'barPost' => ['required'],
                 'pesoPost' => ['required'],
+                'disabilityPost' => ['required'],
                 'durationPost' => ['required', 'date', 'after_or_equal:' . Carbon::now()->addWeek()->format('Y-m-d'), 'before_or_equal:' . Carbon::now()->addMonth()->format('Y-m-d')],
                 'slotsPost' => ['required', 'string'],
                 'descPost' => ['required', 'string'],
@@ -79,18 +85,19 @@ class JobpostApplication extends Component
             $messages = [
                 'jobTitlePost.required' => 'The job title is required.',
                 'jobIndustryPost.required' => 'Please select at least one industry.',
-                'minWagePost.required' => 'Minimum wage is required.',
+                // 'minWagePost.required' => 'Minimum wage is required.',
                 'minWagePost.regex' => 'Minimum wage must be a valid number with up to two decimal places.',
                 'minWagePost.min' => 'Minimum wage must be at least 1.',
-                'maxWagePost.required' => 'Maximum wage is required.',
+                // 'maxWagePost.required' => 'Maximum wage is required.',
                 'maxWagePost.regex' => 'Maximum wage must be a valid number with up to two decimal places.',
                 'maxWagePost.min' => 'Maximum wage must be at least 1.',
                 'maxWagePost.gte' => 'Maximum wage must be greater than or equal to minimum wage.',
                 'eduPost.required' => 'Please select required education level.',
                 'jtypePost.required' => 'Please select job type.',
-                'wAddPost.required' => 'Work address is required.', 
+                'wAddPost.required' => 'Work address is required.',
                 'barPost.required' => 'Please select barangay.',
                 'pesoPost.required' => 'PESO municipality is required.',
+                'disabilityPost.required' => 'Please select an option.',
                 'durationPost.required' => 'Job duration is required.',
                 'durationPost.date' => 'Job duration must be a valid date.',
                 'durationPost.after_or_equal' => 'The job posting must start at least 1 week in the future.',
@@ -133,7 +140,7 @@ class JobpostApplication extends Component
 
             // Fetch all active requirements
             $activeRequirements = Requirements::where('requirement_Status', 1)
-            ->where('requirement_Type', $user->company->employer_Type)->get();
+                ->where('requirement_Type', $user->company->employer_Type)->get();
 
             foreach ($activeRequirements as $requirement) {
                 $requirementPassed = Requirements_Passed::where('requirement_id', $requirement->requirement_id)
@@ -159,10 +166,11 @@ class JobpostApplication extends Component
                 'job_Description' => $this->descPost,
                 'job_Qualifications' => $this->qualPost,
                 'job_Remarks' => $this->remPost,
-                'job_MinWage' => $this->minWagePost,
-                'job_MaxWage' => $this->maxWagePost,
+                'job_MinWage' => $this->minWagePost ? $this->minWagePost : null,
+                'job_MaxWage' => $this->maxWagePost ? $this->maxWagePost : null,
                 'job_Type' => $this->jtypePost,
                 'job_Edu' => $this->eduPost,
+                'job_Disability' => $this->disabilityPost,
                 'job_Slots' => $this->slotsPost,
                 'job_Address' => $this->wAddPost,
                 'barangay_id' => $this->barHidden,
@@ -210,7 +218,11 @@ class JobpostApplication extends Component
     {
         // Check if the selected job position already exists in the $jobTags array
         if (collect($this->jobTags)->contains('position_id', $id)) {
-            toastr()->warning('This job position is already selected.');
+            toastr()->warning('This job tags is already selected.');
+            return;
+        }
+        if (count($this->jobTags) >= 15) {
+            toastr()->error('You can only select up to 15 job tags.');
             return;
         }
 

@@ -108,7 +108,7 @@ class Dashboard extends Component
             ->setJsonConfig([
                 'chart' => [
                     'width' => '100%', // Set to 100% or specify a pixel value like 400, 500, etc.
-                    // 'height' => '300px', // Specify the height for the chart
+                    'height' => '450px', // Specify the height for the chart
                 ],
                 'plotOptions' => [
                     'pie' => [

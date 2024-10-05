@@ -121,15 +121,22 @@ class Trainings extends Component
                 $query->where('municipality_id', $userMunicipalityId);
             })
             ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
-                // Ensure that either job tags match or industry matches, or both
-                $query->where(function ($query) use ($userJobPreferences) {
-                    $query->whereHas('program_tags', function ($query) use ($userJobPreferences) {
-                        $query->whereIn('position_id', $userJobPreferences);
-                    });
+                $query->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                    $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
+                        $q->whereIn('position_id', $userJobPreferences);
+                    })
+                        ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                            $q->whereIn('industry_id', $userIndustryPreference);
+                        });
                 })
                     ->orWhere(function ($query) use ($userIndustryPreference) {
-                        $query->whereHas('job_industry', function ($query) use ($userIndustryPreference) {
-                            $query->whereIn('industry_id', $userIndustryPreference);
+                        $query->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                            $q->whereIn('industry_id', $userIndustryPreference);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($userJobPreferences) {
+                        $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
+                            $q->whereIn('position_id', $userJobPreferences);
                         });
                     });
             })
@@ -251,7 +258,7 @@ class Trainings extends Component
             $query->orderBy('created_at', $this->sortDate);
         }
 
-        $programList = $query->paginate(15, ['*'], 'events');
+        $programList = $query->paginate(9, ['*'], 'events');
 
         if (Auth::check()) {
 
