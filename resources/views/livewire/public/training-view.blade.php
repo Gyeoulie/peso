@@ -367,12 +367,12 @@
                     </div>
                 </div>
                 <div class="mt-6 flex justify-between">
-                    <x-secondary-button x-on:click="$dispatch('close-modal', 'register-modal')">
+                    <x-secondary-button x-on:click="agreeBox = false; $dispatch('close-modal', 'register-modal')">
                         {{ __('Cancel') }}
                     </x-secondary-button>
 
-                    <x-green-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled"
-                        wire:click.prevent="register" class="ms-3" type="button">
+                    <x-green-button x-show="agreeBox" wire:loading.attr="disabled" wire:click.prevent="register"
+                        class="ms-3" type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="updateApplicant('REJECT', 'reject')" role="status">
                             <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
@@ -398,7 +398,7 @@
                     {{ __('Action Required') }}
                 </h2>
                 <div class="flex flex-col items-center text-center mb-8">
-                    <h1 class="text-2xl font-extrabold text-gray-800 mb-4">You need to be logged in to apply.</h1>
+                    <h1 class="text-2xl font-extrabold text-gray-800 mb-4">You need to be logged in to register.</h1>
                     <p class="text-gray-600 text-lg">Please log in to register. If you don't have an
                         account, you can register as well.</p>
                 </div>

@@ -102,7 +102,7 @@ class TrainingView extends Component
         // Check if the user is eligible to apply for the job posting
         if ($isCrossProgramEnabled || $userMunicipalityId == $trainingMunicipalityId) {
             // Open the apply modal
-            $this->dispatch('open-modal', 'apply-modal');
+            $this->dispatch('open-modal', 'register-modal');
         } else {
             // Show an error if the user's municipality does not match
             toastr()->error('This event is only available to ' . $training->peso->municipality_Name . ' residents.');
