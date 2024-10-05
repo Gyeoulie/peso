@@ -41,19 +41,19 @@
                                 <div class="flex">
                                     @if ($jobpost->job_Status == 'PENDING')
                                         <span
-                                            class="bg-yellow-100 text-yellow-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">PENDING</span>
+                                            class="bg-yellow-100 text-yellow-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">PENDING</span>
                                     @elseif($jobpost->job_Status == 'ACTIVE')
                                         <span
-                                            class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">ACTIVE</span>
+                                            class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">ACTIVE</span>
                                     @elseif($jobpost->job_Status == 'CLOSED')
                                         <span
-                                            class="bg-cyan-100 text-cyan-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">CLOSED</span>
+                                            class="bg-cyan-100 text-cyan-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">CLOSED</span>
                                     @elseif($jobpost->job_Status == 'COMPLETED')
                                         <span
-                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">COMPLETED</span>
+                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">COMPLETED</span>
                                     @else
                                         <span
-                                            class="bg-red-100 text-red-800 text-sm font-medium px-2.5 py-.5 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-22 rounded-lg ">{{ $jobpost->job_Status }}</span>
+                                            class="bg-red-100 text-red-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">{{ $jobpost->job_Status }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -68,7 +68,26 @@
 
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
 
-                    <h1 class="text-xl sm:text-3xl font-bold">Job Posting Description</h1>
+                    <div class="flex flex-col gap-2 sm:flex-row  sm:justify-between">
+                        <h1 class="text-2xl font-bold">Job Posting Details</h1>
+
+                        @if ($jobpost->job_Disability == 1)
+                            <div
+                                class="flex rounded-full py-1 px-4 font-medium border bg-green-200 border-green-500 text-green-700 font-bold text-sm w-fit">
+                                <svg class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24"
+                                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                    <circle cx="11" cy="5" r="2" />
+                                    <polyline points="11 7 11 15 15 15 19 20" />
+                                    <line x1="11" y1="11" x2="16" y2="11" />
+                                    <path d="M7 11.5a4.97 4.97 0 1 0 6 7.5" />
+                                </svg>
+                                PWDs Accepted
+                            </div>
+                        @endif
+
+                    </div>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
 
@@ -122,7 +141,7 @@
                             <x-input-label for="type"> <i class="fa-solid fa-briefcase"></i> Employment Type
                             </x-input-label>
                             <x-text-input id="type" class="block mt-1 w-full" type="text"
-                                value="{{ $jobpost->job_Type == 1 ? 'Full Time' : 'Part Time' }}" readonly />
+                                value="{{ $jobTypes[$jobpost->job_Type] }}" readonly />
                         </div>
 
                     </div>
@@ -147,8 +166,8 @@
                         </div>
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg class="w-5 h-5"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg
+                                    class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
                                     <path fill-rule="evenodd"
@@ -163,8 +182,9 @@
                         </div>
 
                         <div class="flex flex-col w-2/3">
-                            <x-input-label for="slots" class="flex flex-row items-center gap-1"><svg class="w-5 h-5"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <x-input-label for="slots" class="flex flex-row items-center gap-1"><svg
+                                    class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    fill="currentColor">
                                     <path fill-rule="evenodd"
                                         d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
                                         clip-rule="evenodd" />
@@ -215,7 +235,7 @@
                 {{-- CONTAINER FOR DESCRIPTIONS --}}
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
 
-                    <h1 class="text-xl sm:text-3xl font-bold">Job Posting Details</h1>
+                    <h1 class="text-xl sm:text-3xl font-bold">Job Posting Description</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                     <div class="flex flex-row mt-4 w-full gap-4">
@@ -700,13 +720,21 @@
                                     <li class="mb-2 font-bold">PESO Status:</li>
                                     <p class="ms-4">
 
-                                        @if ($applicantInfo->peso_Status === 'PENDING')
-                                            Pending
-                                        @elseif($applicantInfo->peso_Status === 'RECOMMENDED')
-                                            Recommended
-                                        @elseif($applicantInfo->peso_Status === 'REJECT')
-                                            Not Recommended
+                                        @if ($applicantInfo->peso_Status == 'PENDING')
+                                            <span
+                                                class="inlineflex items-center rounded-md bg-yellow-200 px-1 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                        @elseif ($applicantInfo->peso_Status == 'RECOMMENDED')
+                                            <span
+                                                class="inline-flex items-center rounded-md bg-green-200 px-1 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
+                                        @elseif ($applicantInfo->peso_Status == 'REJECT')
+                                            <span
+                                                class="inline-flex items-center rounded-md bg-red-200 px-1 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">NOT
+                                                RECOMMENDED</span>
+                                        @elseif ($applicantInfo->peso_Status == 'CANCELLED')
+                                            <span
+                                                class="inline-flex items-center rounded-md bg-red-200 px-1 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">CANCELLED</span>
                                         @endif
+
 
                                     </p>
                                 </div>
@@ -766,100 +794,6 @@
 
 
         </div>
-
-        {{-- APPROVE MODAL --}}
-        <x-modal name="approve-modal" focusable>
-            <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
-                <h2 class="text-lg font-medium text-gray-900">
-                    {{ __('Are you sure you want to approve?') }}
-                </h2>
-                <hr>
-                <div class="flex flex-col mt-2">
-                    <div class="flex flex-col mt-2 w-full">
-                        <x-input-label :value="__('Remarks')" />
-                        <textarea wire:model='remarks' id="message" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-                            placeholder="Write your remarks here..."></textarea>
-                        <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
-                    </div>
-
-                </div>
-                <div class="mt-6 flex justify-end">
-                    <x-secondary-button wire:click.prevent="close('approve-modal')" type="button">
-                        {{ __('Cancel') }}
-                    </x-secondary-button>
-
-                    <x-primary-button
-                        wire:click.prevent="updateJob({{ $jobpost->job_id }}, 'ACTIVE', 'approve-modal')"
-                        wire:loading.attr="disabled" class="ms-3" type="button">
-
-
-                        {{ __('Approve Job Posting') }}
-
-                        <div wire:loading.delay.long wire:target='updateJob' role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
-                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                    fill="currentColor" />
-                                <path
-                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                    fill="currentFill" />
-                            </svg>
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </x-primary-button>
-
-                </div>
-            </div>
-        </x-modal>
-
-
-
-
-        {{-- REJECT MODAL --}}
-        <x-modal name="reject-modal" focusable>
-            <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
-                <h2 class="text-lg font-medium text-gray-900">
-                    {{ __('Are you sure you want to reject?') }}
-                </h2>
-                <hr>
-                <div class="flex flex-col mt-2">
-                    <div class="flex flex-col mt-2 w-full">
-                        <x-input-label :value="__('Remarks')" />
-                        <textarea wire:model='remarks' id="message" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-                            placeholder="Write your thoughts here..."></textarea>
-                        <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
-                    </div>
-
-                </div>
-
-                <div class="mt-6 flex justify-end">
-                    <x-secondary-button wire:click.prevent="close('reject-modal')" type="button">
-                        {{ __('Cancel') }}
-                    </x-secondary-button>
-
-                    <x-danger-button wire:loading.attr="disabled"
-                        wire:click.prevent="updateJob({{ $jobpost->job_id }}, 'REJECTED', 'reject-modal')"
-                        class="ms-3" type="button">
-                        {{ __('Reject Application') }}
-                        <div wire:loading.delay.long wire:target='updateJob' role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
-                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                    fill="currentColor" />
-                                <path
-                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                    fill="currentFill" />
-                            </svg>
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </x-danger-button>
-                </div>
-            </div>
-        </x-modal>
     </div>
 
     @script

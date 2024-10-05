@@ -138,9 +138,25 @@
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Salary Range:</li>
                                 <p class="ms-4 text-right">
-                                    ₱{{ number_format($applicant->job_posting->job_MinWage) }} -
-                                    ₱{{ number_format($applicant->job_posting->job_MaxWage) }}</p>
+                                    @if ($applicant->job_posting->job_MinWage)
+                                        ₱{{ number_format($applicant->job_posting->job_MinWage) }}
+                                        @if ($applicant->job_posting->job_MaxWage)
+                                            -
+                                            ₱{{ number_format($applicant->job_posting->job_MaxWage) }}
+                                        @endif
+                                    @else
+                                        Salary Not Specified
+                                    @endif
+
                             </div>
+
+
+                            @if ($applicant->job_posting->job_Disability === 1)
+                                <div class="flex flex-row justify-between">
+                                    <li class="mb-2 font-bold">PWDs:</li>
+                                    <p class="ms-4">Accepted</p>
+                                </div>
+                            @endif
 
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Address:</li>

@@ -21,7 +21,7 @@ class JobPostEdit extends Component
 
     public $jobTitlePost;
     public $jobIndustryPost, $jobIndustryHidden;
-    public $minWagePost, $maxWagePost, $eduPost = '', $jtypePost = '', $wAddPost, $barPost, $barHidden, $pesoPost = '', $pesoTitle, $durationPost, $slotsPost, $descPost, $qualPost, $remPost, $mun, $prov;
+    public $minWagePost, $maxWagePost, $eduPost = '', $jtypePost = '', $wAddPost, $barPost, $barHidden, $pesoPost = '', $pesoTitle, $disabilityPost, $durationPost, $slotsPost, $descPost, $qualPost, $remPost, $mun, $prov;
 
     public function mount()
     {
@@ -55,6 +55,7 @@ class JobPostEdit extends Component
         $this->maxWagePost = $jobPost->job_MaxWage;
         $this->eduPost = $jobPost->job_Edu;
         $this->jtypePost = $jobPost->job_Type;
+        $this->disabilityPost = $jobPost->job_Disability;
 
         $this->pesoPost = $jobPost->peso_id;
         $this->pesoTitle = $jobPost->peso->municipality->municipality_Name;
@@ -78,21 +79,26 @@ class JobPostEdit extends Component
 
         $rules = [
             'jobTitlePost' => ['required', 'string'],
-            'minWagePost' => ['required', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1'],
-            'maxWagePost' => ['required', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1', 'gte:minWagePost'],
+            'minWagePost' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1'],
+            'maxWagePost' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1', 'gte:minWagePost', function ($attribute, $value, $fail) {
+                if ($value && !$this->minWagePost) {
+                    $fail('Minimum wage is required when maximum wage is provided.');
+                }
+            }],
             'descPost' => ['required', 'string'],
             'qualPost' => ['required', 'string'],
             'remPost' => ['nullable', 'string'],
             'displayTags' => ['required', 'array', 'min:1'],
+            'disabilityPost' => ['required'],
         ];
 
         $messages = [
             'jobTitlePost.required' => 'The job title is required.',
             'jobIndustryPost.required' => 'Please select at least one industry.',
-            'minWagePost.required' => 'Minimum wage is required.',
+            // 'minWagePost.required' => 'Minimum wage is required.',
             'minWagePost.regex' => 'Minimum wage must be a valid number with up to two decimal places.',
             'minWagePost.min' => 'Minimum wage must be at least 1.',
-            'maxWagePost.required' => 'Maximum wage is required.',
+            // 'maxWagePost.required' => 'Maximum wage is required.',
             'maxWagePost.regex' => 'Maximum wage must be a valid number with up to two decimal places.',
             'maxWagePost.min' => 'Maximum wage must be at least 1.',
             'maxWagePost.gte' => 'Maximum wage must be greater than or equal to minimum wage.',
@@ -101,6 +107,8 @@ class JobPostEdit extends Component
             'displayTags.required' => 'Please select at least one job tag.',
             'displayTags.array' => 'Job tags must be an array.',
             'displayTags.min' => 'Please select at least one job tag.',
+            'disabilityPost.required' => 'Please select an option.',
+
         ];
 
         $this->validate($rules, $messages);
@@ -117,11 +125,12 @@ class JobPostEdit extends Component
         try {
 
             $jobpostInfo->job_Title = $this->jobTitlePost;
-            $jobpostInfo->job_MinWage = $this->minWagePost;
-            $jobpostInfo->job_MaxWage = $this->maxWagePost;
+            $jobpostInfo->job_MinWage = $this->minWagePost ? $this->minWagePost : null;
+            $jobpostInfo->job_MaxWage = $this->maxWagePost ? $this->maxWagePost : null;
             $jobpostInfo->job_Description = $this->descPost;
             $jobpostInfo->job_Qualifications = $this->qualPost;
             $jobpostInfo->job_Remarks = $this->remPost;
+            $jobpostInfo->job_Disability = $this->disabilityPost;
 
             $tagsChanged = $this->tagsToAdd || $this->tagsToRemove || $this->tagsToRestore;
             if ($jobpostInfo->isDirty() || $tagsChanged) {
@@ -198,6 +207,13 @@ class JobPostEdit extends Component
             'position_id' => $id,
             'position_Title' => strtoupper($jobPosition->position_Title),
         ];
+
+        $totalTags = count($this->displayTags);
+
+        if ($totalTags >= 15) {
+            toastr()->error('You can only have a maximum of 15 tags.');
+            return;
+        }
 
         // Check if the tag is in tagsToRestore
         if (collect($this->tagsToRestore)->contains('position_id', $id)) {

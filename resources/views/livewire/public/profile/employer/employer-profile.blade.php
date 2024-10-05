@@ -237,11 +237,19 @@
                                                 </span>
                                                 <div class="flex flex-row w-full gap-5">
                                                     <span class="text-md text-black font-semibold">
-                                                        {{ $jobPosts->job_Type == 1 ? 'Full Time' : ($jobPosts->job_Type == 2 ? 'Part Time' : '') }}
+                                                        {{ $jobTypes[$jobPosts->job_Type] }}
                                                     </span>
+                                                    -
                                                     <span class="text-md text-black font-semibold">
-                                                        ₱{{ number_format($jobPosts->job_MinWage, 2) }} -
-                                                        ₱{{ number_format($jobPosts->job_MaxWage, 2) }}
+                                                        @if ($jobPosts->job_MinWage)
+                                                            ₱{{ number_format($jobPosts->job_MinWage) }}
+                                                            @if ($jobPosts->job_MaxWage)
+                                                                -
+                                                                ₱{{ number_format($jobPosts->job_MaxWage) }}
+                                                            @endif
+                                                        @else
+                                                            Salary Not Specified
+                                                        @endif
                                                     </span>
                                                 </div>
 

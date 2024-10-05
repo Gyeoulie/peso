@@ -6,6 +6,7 @@ use App\Helpers\AuditFormatter;
 use App\Mail\AdminDeactivationNotification;
 use App\Mail\AdminResetPasswordNotification;
 use App\Models\Barangay;
+use App\Models\Disability;
 use App\Models\Education;
 use App\Models\Employee;
 use App\Models\Industry_preference;
@@ -193,6 +194,7 @@ class JobseekerOverview extends Component
 
         $userIndustryPreference = Industry_Preference::where('employee_id', $id)
             ->pluck('industry_id');
+        $userHasDisability = Disability::where('employee_id', $id)->exists() ? 1 : 2;
 
         return Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'peso.municipality', 'job_industry'])
             ->select([
@@ -212,14 +214,22 @@ class JobseekerOverview extends Component
             })
             ->where('job_Edu', '<=', $highestEducationLevel)
             ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
-                $query->where(function ($query) use ($userJobPreferences) {
-                    $query->whereHas('job_tags', function ($query) use ($userJobPreferences) {
-                        $query->whereIn('position_id', $userJobPreferences);
-                    });
+                $query->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                    $query->whereHas('job_tags', function ($q) use ($userJobPreferences) {
+                        $q->whereIn('position_id', $userJobPreferences);
+                    })
+                        ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                            $q->whereIn('industry_id', $userIndustryPreference);
+                        });
                 })
                     ->orWhere(function ($query) use ($userIndustryPreference) {
-                        $query->whereHas('job_industry', function ($query) use ($userIndustryPreference) {
-                            $query->whereIn('industry_id', $userIndustryPreference);
+                        $query->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                            $q->whereIn('industry_id', $userIndustryPreference);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($userJobPreferences) {
+                        $query->whereHas('job_tags', function ($q) use ($userJobPreferences) {
+                            $q->whereIn('position_id', $userJobPreferences);
                         });
                     });
             })
@@ -243,15 +253,21 @@ class JobseekerOverview extends Component
                 $query->whereIn('industry_id', $userIndustryPreference);
             }])
             ->orderByRaw('
-                CASE
-                    WHEN industry_count > 0 AND job_tags_count > 0 THEN 1
-                    WHEN industry_count > 0 AND job_tags_count = 0 THEN 2
-                    WHEN industry_count = 0 AND job_tags_count > 0 THEN 3
-                    ELSE 4
-                END
-            ')
+            CASE
+                -- Prioritize jobs accepting disabilities if the user has a disability
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count > 0 THEN 1
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count = 0 THEN 2
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count = 0 AND job_tags_count > 0 THEN 3
+                -- Rank jobs normally if the user has no disability
+                WHEN industry_count > 0 AND job_tags_count > 0 THEN 4
+                WHEN industry_count > 0 AND job_tags_count = 0 THEN 5
+                WHEN industry_count = 0 AND job_tags_count > 0 THEN 6
+                ELSE 7
+            END
+        ', [$userHasDisability, $userHasDisability, $userHasDisability])
             ->orderByDesc('job_tags_count')
             ->distinct()
+            ->orderBy('created_at', 'DESC')
             ->paginate(10, ['*'], 'recommended');
     }
 

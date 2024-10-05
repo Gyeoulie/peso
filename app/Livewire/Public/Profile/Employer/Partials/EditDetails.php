@@ -335,6 +335,13 @@ class EditDetails extends Component
             return;
         }
 
+        $industryLineCount = Company_Industry_Line::where('company_id', $this->empID)->count();
+
+        if ($industryLineCount >= 3) {
+            toastr()->warning('You can only select up to 3 industries.');
+            return;
+        }
+
         $industry = Job_Industry::find($id);
 
         if ($industry) {

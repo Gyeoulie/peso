@@ -94,7 +94,7 @@
 
         {{-- PAGINATION --}}
         <div class="mt-4">
-            {{ $industry->links('vendor.livewire.tailwind') }}
+            {{ $industry->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
         </div>
 
 

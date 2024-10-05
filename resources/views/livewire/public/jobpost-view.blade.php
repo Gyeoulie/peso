@@ -273,9 +273,15 @@
                                                 Salary Range
                                             </div>
                                             <div class="text-md font-medium break-all">
-                                                ₱{{ number_format($JobPost->job_MinWage) }} -
-                                                ₱{{ number_format($JobPost->job_MaxWage) }}
-
+                                                @if ($JobPost->job_MinWage)
+                                                    ₱{{ number_format($JobPost->job_MinWage) }}
+                                                    @if ($JobPost->job_MaxWage)
+                                                        -
+                                                        ₱{{ number_format($JobPost->job_MaxWage) }}
+                                                    @endif
+                                                @else
+                                                    Salary Not Specified
+                                                @endif
                                             </div>
 
                                         </div>
@@ -319,12 +325,8 @@
                                                 Job Type
                                             </div>
 
-                                            <div class="text-md font-medium break-all">
-                                                @if ($JobPost->job_Type == 1)
-                                                    Full Time
-                                                @elseif ($JobPost->job_Type == 2)
-                                                    Part Time
-                                                @endif
+                                            <div class="text-md font-medium break-all uppercase">
+                                                {{ $jobTypes[$JobPost->job_Type] }}
                                             </div>
 
                                         </div>
@@ -405,6 +407,32 @@
 
                                         </div>
                                 </li>
+                                @if ($JobPost->job_Disability === 1)
+                                    <li class="mb-4">
+                                        <div class="flex flex-row gap-4 w-full">
+                                            <div class="flex flex-col">
+
+
+                                                <svg class="w-10 h-10 text-blue-500" width="24" height="24"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                                    <circle cx="11" cy="5" r="2" />
+                                                    <polyline points="11 7 11 15 15 15 19 20" />
+                                                    <line x1="11" y1="11" x2="16"
+                                                        y2="11" />
+                                                    <path d="M7 11.5a4.97 4.97 0 1 0 6 7.5" />
+                                                </svg>
+
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-xl font-bold text-black">
+                                                    PWDs Accepted
+                                                </div>
+
+                                            </div>
+                                    </li>
+                                @endif
 
 
                             </ul>

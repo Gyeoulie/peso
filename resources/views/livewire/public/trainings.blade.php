@@ -190,89 +190,101 @@
         </div>
 
 
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-10">
+        <div>
 
-            <!-- CARD 1 -->
-            @if ($programList->isEmpty())
-                <div class="col-span-4 sm:col-span-12">
-                    <div class="flex flex-col items-center justify-center mt-24 mb-24">
-                        <div class="p-6 bg-white rounded-full">
-                            <svg class="w-24 h-24 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                            </svg>
 
+            <div class="grid grid-cols-4 sm:grid-cols-12 gap-10">
+
+                <!-- CARD 1 -->
+
+
+
+                @if ($programList->isEmpty())
+                    <div class="col-span-4 sm:col-span-12">
+                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                            <div class="p-6 bg-white rounded-full">
+                                <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                </svg>
+
+                            </div>
+                            <p class="text-2xl font-bold text-black text-center mt-2">
+                                No Trainings Found
+                            </p>
                         </div>
-                        <p class="text-2xl font-bold text-black text-center mt-2">
-                            No Trainings Found
-                        </p>
                     </div>
-                </div>
-            @else
-                @foreach ($programList as $data)
-                    <a href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                        class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
-                        <div class="flex flex-col h-full">
-                            <div>
-                                <div class="relative">
-                                    <div class="w-full h-64 overflow-hidden">
-                                        <img class="w-full h-full object-cover"
-                                            src="{{ asset('storage/' . $data->program_pubmat) }}"
-                                            alt="prog-{{ $data->program_id }}">
+                @else
+                    @foreach ($programList as $data)
+                        <a href="{{ route('training.show', ['id' => $data->program_id]) }}"
+                            class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
+                            <div class="flex flex-col h-full">
+                                <div>
+                                    <div class="relative">
+                                        <div class="w-full h-64 overflow-hidden">
+                                            <img class="w-full h-full object-cover"
+                                                src="{{ asset('storage/' . $data->program_pubmat) }}"
+                                                alt="prog-{{ $data->program_id }}">
+                                        </div>
+                                        <div
+                                            class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 transition duration-500 ease-in-out">
+                                            {{ $data->program_Type }}
+                                        </div>
                                     </div>
-                                    <div
-                                        class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 transition duration-500 ease-in-out">
-                                        {{ $data->program_Type }}
+                                    <div class="px-6 py-4 mb-auto ">
+                                        <span
+                                            class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
+                                            {{ $data->program_Title }}
+                                        </span>
+                                        <p class="text-gray-500 text-sm flex justify-center text-justify">
+                                            {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 175, '...') !!}
+                                        </p>
                                     </div>
                                 </div>
-                                <div class="px-6 py-4 mb-auto ">
-                                    <span
-                                        class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
-                                        {{ $data->program_Title }}
-                                    </span>
-                                    <p class="text-gray-500 text-sm flex justify-center text-justify">
-                                        {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 175, '...') !!}
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Bottom section for PESO Municipality and Date -->
-                            <div class="mt-auto px-6 py-3 flex flex-row items-center justify-between bg-white">
-                                <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
-                                    <svg height="13px" width="13px" version="1.1"
-                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                        x="0px" y="0px" viewBox="0 0 512 512"
-                                        style="enable-background:new 0 0 512 512;" xml:space="preserve">
-                                        <g>
+                                <!-- Bottom section for PESO Municipality and Date -->
+                                <div class="mt-auto px-6 py-3 flex flex-row items-center justify-between bg-white">
+                                    <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
+                                        <svg height="13px" width="13px" version="1.1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                            viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;"
+                                            xml:space="preserve">
                                             <g>
-                                                <path
-                                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M277.333,256 c0,11.797-9.536,21.333-21.333,21.333h-85.333c-11.797,0-21.333-9.536-21.333-21.333s9.536-21.333,21.333-21.333h64v-128 c0-11.797,9.536-21.333,21.333-21.333s21.333,9.536,21.333,21.333V256z">
-                                                </path>
+                                                <g>
+                                                    <path
+                                                        d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M277.333,256 c0,11.797-9.536,21.333-21.333,21.333h-85.333c-11.797,0-21.333-9.536-21.333-21.333s9.536-21.333,21.333-21.333h64v-128 c0-11.797,9.536-21.333,21.333-21.333s21.333,9.536,21.333,21.333V256z">
+                                                    </path>
+                                                </g>
                                             </g>
-                                        </g>
-                                    </svg>
-                                    <span class="ml-1">{{ $data->created_at->format('F j, Y g:i A') }}</span>
-                                </span>
-                                <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
-                                    <svg class="h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                    </svg>
+                                        </svg>
+                                        <span class="ml-1">{{ $data->program_Deadline->format('F j, Y') }}</span>
+                                    </span>
+                                    <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
+                                        <svg class="h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                        </svg>
 
-                                    <span class="ml-1">PESO
-                                        {{ $data->peso->municipality->municipality_Name }}</span>
-                                </span>
+                                        <span class="ml-1">PESO
+                                            {{ $data->peso->municipality->municipality_Name }}</span>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                @endforeach
-            @endif
+                        </a>
+                    @endforeach
+                @endif
 
 
-            <div>
+
+
+            </div>
+            <div class="mt-10">
                 {{ $programList->links() }}
             </div>
+
         </div>
 
 

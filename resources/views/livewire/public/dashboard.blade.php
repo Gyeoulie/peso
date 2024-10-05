@@ -76,7 +76,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
-                                    <p class="truncate ...">{{ $data->created_at->format('F j, Y g:i A') }}</p>
+                                    <p class="truncate ...">{{ $data->program_Deadline->format('F j, Y') }}</p>
                                 </div>
 
                                 <p class="mb-4 text-sm font-normal text-gray-700 leading-relaxed flex-grow">
@@ -123,14 +123,76 @@
 
                         {{-- FILTER BUTTON --}}
                         <div class="flex flex-wrap mr-3 gap-2">
-                            <button type="button" x-data=""
+                            <!-- In your Blade template -->
+                            <button type="button" x-data="{ filterIndustry: @entangle('filterIndustry') }"
                                 x-on:click.prevent="$dispatch('open-modal', 'industry-filter-modal')"
-                                class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">Industry
-                                Filter</button>
-                            <button type="button" x-data=""
+                                :class="filterIndustry.length > 0 ?
+                                    'bg-blue-500 text-white hover:bg-blue-600' :
+                                    'bg-white text-gray-500 hover:bg-gray-100'"
+                                class="inline-flex items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                Industry Filter
+                            </button>
+                            <button type="button" x-data="{ filterJobTags: @entangle('filterJobTags') }"
                                 x-on:click.prevent="$dispatch('open-modal', 'job-tag-filter-modal')"
-                                class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">Job
-                                Tags Filter</button>
+                                :class="filterJobTags.length > 0 ?
+                                    'bg-blue-500 text-white hover:bg-blue-600' :
+                                    'bg-white text-gray-500 hover:bg-gray-100'"
+                                class="inline-flex items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                Job Tags Filter
+                            </button>
+
+
+
+                            <x-dropdown align="left" width="36">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        <div>
+                                            {{ $jobTypeFilter ? $jobTypes[$jobTypeFilter] : 'Employment Type' }}
+                                        </div>
+
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
+
+                                    <x-dropdown-link wire:click.prevent="updateJobType('')" class="cursor-pointer">
+                                        All
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(1)" class="cursor-pointer">
+                                        Full Time
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(2)" class="cursor-pointer">
+                                        Contractual
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(3)" class="cursor-pointer">
+                                        Part Time
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(4)" class="cursor-pointer">
+                                        Project-Based
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(5)" class="cursor-pointer">
+                                        Internship/OJT
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(6)" class="cursor-pointer">
+                                        Work From Home
+                                    </x-dropdown-link>
+
+
+                                </x-slot>
+                            </x-dropdown>
 
                             @if (Auth::check() && auth()->user()->usertype != 5)
                                 <x-dropdown align="left" width="36">
@@ -279,9 +341,17 @@
                                                                 </div>
                                                                 <div class="hidden sm:flex flex-col sm:w-1/4">
                                                                     <h1
-                                                                        class="text-black text-xs sm:text-xl text-left sm:text-center font-medium">
-                                                                        ₱{{ number_format($data->job_MinWage) }} -
-                                                                        ₱{{ number_format($data->job_MaxWage) }}</h1>
+                                                                        class="text-blue-500 text-xs sm:text-xl text-left sm:text-center font-medium">
+                                                                        @if ($data->job_MinWage)
+                                                                            ₱{{ number_format($data->job_MinWage) }}
+                                                                            @if ($data->job_MaxWage)
+                                                                                -
+                                                                                ₱{{ number_format($data->job_MaxWage) }}
+                                                                            @endif
+                                                                        @else
+                                                                            Salary Not Specified
+                                                                        @endif
+                                                                    </h1>
                                                                 </div>
                                                             </div>
 
@@ -322,7 +392,8 @@
                                                                     <h3
                                                                         class="text-xs sm:text-sm uppercase text-blue-900">
                                                                         <i class="fa-solid fa-briefcase uppercase"></i>
-                                                                        {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
+                                                                        {{ $jobTypes[$data->job_Type] }}
+
                                                                     </h3>
                                                                 </div>
                                                                 <div class="sm:w-1/5 text-left sm:text-center">
@@ -355,7 +426,7 @@
                     </table>
                     {{-- PAGINATION --}}
                     <div>
-                        {{ $joblist->links('vendor.livewire.tailwind') }}
+                        {{ $joblist->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
                     </div>
 
 
@@ -558,7 +629,6 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                            
                                         @endforeach
                                     </div>
                                 @endif
@@ -710,7 +780,7 @@
 
             {{-- PAGINATION --}}
             <div class="mt-4">
-                {{ $industry->links('vendor.livewire.tailwind') }}
+                {{ $industry->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
             </div>
 
 
@@ -858,7 +928,7 @@
 
             {{-- PAGINATION --}}
             <div class="mt-4">
-                {{ $jobposition->links('vendor.livewire.tailwind') }}
+                {{ $jobposition->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
             </div>
 
             <div class="mt-6 flex justify-between">

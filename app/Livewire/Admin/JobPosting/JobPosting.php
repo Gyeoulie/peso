@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Admin\JobPosting;
 
+use App\Models\Job_Industry;
+use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -17,8 +19,56 @@ class JobPosting extends Component
 
     use WithPagination;
     use WithoutUrlPagination;
-    public $search;
+    public $search, $searchIndustry, $searchTags;
     public $filter = "ALL";
+    public $jobTypeFilter;
+
+    public $jobTypes = [
+        '0' => 'None',
+        '1' => 'Full Time',
+        '2' => 'Contractual',
+        '3' => 'Part Time',
+        '4' => 'Project-Based',
+        '5' => 'Internship/OJT',
+        '6' => 'Work From Home',
+    ];
+
+    public $filterJobTags = [], $filterIndustry = [], $mountJobTagsFilter = [], $mountIndustryFilter = [];
+
+    public function mountJobTags()
+    {
+        $this->filterJobTags = $this->mountJobTagsFilter;
+        $this->dispatch('close-modal', 'job-tag-filter-modal');
+        $this->resetPage();
+
+    }
+    public function mountIndustry()
+    {
+        $this->filterIndustry = $this->mountIndustryFilter;
+        $this->dispatch('close-modal', 'industry-filter-modal');
+        $this->resetPage();
+    }
+
+    public function resetJobTags()
+    {
+        $this->reset('filterJobTags', 'mountJobTagsFilter');
+        $this->resetPage('job_position');
+        $this->resetPage();
+
+    }
+    public function resetIndustry()
+    {
+        $this->reset('filterIndustry', 'mountIndustryFilter');
+        $this->resetPage('job_industry');
+        $this->resetPage();
+
+    }
+    public function updateJobType($value)
+    {
+        $this->jobTypeFilter = $value;
+        $this->resetPage();
+    }
+
     public function updatedsearch()
     {
         $this->resetPage();
@@ -49,7 +99,7 @@ class JobPosting extends Component
                 $writer->addRow([
                     'Company' => $data->company->business_Name,
                     'Job Offering' => $data->job_Title,
-                    'Employment Type' => $data->job_Title == 1 ? 'PART TIME' : 'FULL TIME',
+                    'Employment Type' => $this->jobTypes[$data->job_Type],
                     'Date Posted' => $data->created_at->format('F j, Y'),
                     'Deadline' => $data->job_Duration->format('F j, Y'),
                     'Status' => $data->job_Status,
@@ -102,6 +152,22 @@ class JobPosting extends Component
             $jobposts->where('job_Status', $this->filter);
         }
 
+        if (!empty($this->filterJobTags)) {
+            $jobposts->whereHas('job_tags', function ($jobposts) {
+                $jobposts->whereIn('position_id', $this->filterJobTags);
+            });
+        }
+
+        if (!empty($this->filterIndustry)) {
+            $jobposts->whereHas('job_industry', function ($jobposts) {
+                $jobposts->whereIn('industry_id', $this->filterIndustry);
+            });
+        }
+
+        if ($this->jobTypeFilter) {
+            $jobposts->where('job_Type', $this->jobTypeFilter);
+        }
+
         return $jobposts->orderBy('job_posting.created_at', 'DESC');
     }
 
@@ -129,6 +195,11 @@ class JobPosting extends Component
             })
             ->first();
 
+        $jobposition = Job_Positions::where('position_Status', 1)->where('position_Title', 'like', '%' . $this->searchTags . '%')
+            ->paginate(8, ['*'], 'job_position');
+        $industry = Job_Industry::where('industry_Status', 1)->where('industry_Title', 'like', '%' . $this->searchIndustry . '%')
+            ->paginate(8, ['*'], 'job_industry');
+
         return view('livewire.admin.job-posting.job-posting', [
             'jobpost' => $jobpost,
             'allCount' => $statusCounts->allCount,
@@ -137,6 +208,8 @@ class JobPosting extends Component
             'closedCount' => $statusCounts->closedCount,
             'completedCount' => $statusCounts->completedCount,
             'othersCount' => $statusCounts->othersCount,
+            'jobposition' => $jobposition,
+            'industry' => $industry,
         ]);
     }
 }

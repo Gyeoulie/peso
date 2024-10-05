@@ -95,7 +95,7 @@
 
         {{-- PAGINATION --}}
         <div>
-            {{ $barangay->links() }}
+            {{ $barangay->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
         </div>
 
         <div class="mt-6 flex justify-end">

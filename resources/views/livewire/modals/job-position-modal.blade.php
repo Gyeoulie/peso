@@ -94,7 +94,7 @@
 
         {{-- PAGINATION --}}
         <div class="mt-4">
-            {{ $jobposition->links('vendor.livewire.tailwind') }}
+            {{ $jobposition->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
         </div>
 
         <div class="mt-6 flex justify-end">

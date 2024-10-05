@@ -93,7 +93,7 @@
 
         {{-- PAGINATION --}}
         <div>
-            {{ $PESO->links() }}
+            {{ $PESO->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
         </div>
 
         <div class="mt-6 flex justify-end">

@@ -224,10 +224,9 @@
                                         </div>
 
                                         <div class="flex flex-col w-full mt-2 sm:mt-4">
-                                            <div class="flex flex-col md:flex-row">
-                                                <div class="md:w-1/4 text-left">
-
-                                                    <h3 class="text-xs sm:text-sm"> <i
+                                            <div class="flex flex-col w-full md:flex-row">
+                                                <div class="md:w-1/4 text-left md:text-center">
+                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
                                                             class="fa-solid fa-location-dot"></i> SM
                                                         {{ $data->job_posting->company->barangay->municipality->municipality_Name }},
                                                         {{ $data->job_posting->company->barangay->municipality->province->province_Name }}
@@ -235,18 +234,18 @@
 
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
                                                             class="fa-solid fa-graduation-cap"></i>
                                                         {{ $eduLevels[$data->job_posting->job_Edu] }}</h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
                                                             class="fa-solid fa-briefcase"></i>
-                                                        {{ $data->job_posting->job_Type == 1 ? 'Full Time' : 'Part Time' }}
+                                                        {{ $jobTypes[$data->job_posting->job_Type] }}</h3>
                                                     </h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
                                                             class="fa-solid fa-calendar"></i>
                                                         {{ $data->job_posting->created_at->format('F j, Y') }}
                                                     </h3>

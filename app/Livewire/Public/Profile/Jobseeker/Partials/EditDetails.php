@@ -17,7 +17,6 @@ use App\Models\License;
 use App\Models\License_Type;
 use App\Models\Skills;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -543,7 +542,6 @@ class EditDetails extends Component
             $this->eliTypeID = $eliData->eligibility_Type;
         }
     }
-    
 
     //SAVE PROFILE
     public function saveProfile()
@@ -781,7 +779,6 @@ class EditDetails extends Component
             }
 
             toastr()->info('No changes detected!');
-
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -1083,6 +1080,12 @@ class EditDetails extends Component
             toastr()->warning('This job position is already selected.');
             return;
         }
+        $jobPreferenceCount = Job_Preference::where('employee_id', $this->empID)->count();
+        if ($jobPreferenceCount >= 12) {
+            // Prevent deletion if there's only one job preference left
+            toastr()->warning('You can only select up to 12 job preferences.');
+            return;
+        }
 
         $jobposition = Job_Positions::find($id);
 
@@ -1091,7 +1094,7 @@ class EditDetails extends Component
                 'employee_id' => $this->empID,
                 'position_id' => $id,
             ]);
-            toastr()->warning('Job preference added.');
+            toastr()->success('Job preference added.');
 
             $this->dispatch('close-modal', 'job-position-modal');
         } else {
@@ -1111,6 +1114,13 @@ class EditDetails extends Component
             return;
         }
 
+        $industryPreferenceCount = Industry_Preference::where('employee_id', $this->empID)->count();
+
+        if ($industryPreferenceCount >= 3) {
+            toastr()->warning('You can only select up to 3 industries.');
+            return;
+        }
+
         $industry = Job_Industry::find($id);
 
         if ($industry) {
@@ -1118,7 +1128,7 @@ class EditDetails extends Component
                 'employee_id' => $this->empID,
                 'industry_id' => $id,
             ]);
-            toastr()->warning('Job industry added.');
+            toastr()->success('Job industry added.');
 
             $this->dispatch('close-modal', 'industry-modal');
         } else {
@@ -1127,33 +1137,17 @@ class EditDetails extends Component
         }
     }
 
-    public function removeJobPreference($positionId)
-    {
-        DB::beginTransaction(); // Start transaction
-
-        try {
-            // Find the record using Eloquent
-            $jobPreference = Job_Preference::where('job_preference_id', $positionId)
-                ->where('employee_id', $this->empID)
-                ->firstOrFail();
-
-            // Delete the record
-            $jobPreference->delete();
-
-            DB::commit(); // Commit transaction
-            toastr()->success('Job Preference record has been deleted.');
-        } catch (ModelNotFoundException $e) {
-            DB::rollBack(); // Rollback transaction on not found
-            Log::error('Error updating jobpreference: ' . $e->getMessage());
-            toastr()->error('Job Preference record not found.');
-        } catch (\Exception $e) {
-            DB::rollBack(); // Rollback transaction on other errors
-            Log::error('Error updating jobpreference: ' . $e->getMessage());
-            toastr()->error('There was an error, please try again later.');
-        }
-    }
     public function removePosition($positionId)
     {
+        // Check if the employee has more than one job preference
+        $jobPreferenceCount = Job_Preference::where('employee_id', $this->empID)->count();
+
+        if ($jobPreferenceCount <= 1) {
+            // Prevent deletion if there's only one job preference left
+            toastr()->error('You must have at least one job preference.');
+            return;
+        }
+
         DB::beginTransaction();
 
         try {
@@ -1170,7 +1164,6 @@ class EditDetails extends Component
             // Rollback the transaction if an error occurs
             DB::rollBack();
             toastr()->error('There was an error, please try again later.');
-        
 
             // Optionally log the exception for debugging
             Log::error('Error removing job preference: ' . $e->getMessage());
@@ -1179,6 +1172,15 @@ class EditDetails extends Component
 
     public function removeIndustry($industryId)
     {
+        // Check if the employee has more than one industry preference
+        $industryPreferenceCount = Industry_Preference::where('employee_id', $this->empID)->count();
+
+        if ($industryPreferenceCount <= 1) {
+            // Prevent deletion if there's only one industry preference left
+            toastr()->error('You must have at least one industry preference.');
+            return;
+        }
+
         DB::beginTransaction(); // Start the transaction
 
         try {
@@ -1195,8 +1197,8 @@ class EditDetails extends Component
             toastr()->success('Industry Preference record has been deleted.');
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on general exceptions
-            Log::error('Error updating removing industry: ' . $e->getMessage());
-            toastr()->error('There was an error, please try again later');
+            Log::error('Error removing industry preference: ' . $e->getMessage());
+            toastr()->error('There was an error, please try again later.');
         }
     }
 

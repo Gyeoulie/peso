@@ -117,7 +117,12 @@
                         <select wire:model='jtypePost' class="block mt-1 w-full rounded" disabled>
                             <option value="" disabled selected>Select Type</option>
                             <option value="1">Full-Time</option>
-                            <option value="2">Contractual/Part-Time</option>
+                            <option value="2">Contractual</option>
+                            <option value="3">Part-Time</option>
+                            <option value="4">Project-Based</option>
+                            <option value="5">Intership/OJT</option>
+                            <option value="6">Work From Home</option>
+
                         </select>
                         <x-input-error :messages="$errors->get('jtypePost')" class="mt-2" />
                     </div>
@@ -167,9 +172,9 @@
         <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 mt-3">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
 
-                <div class="flex flex-row my-4 w-full gap-4">
+                <div class="flex flex-col sm:flex-row my-4 w-full gap-4">
 
-                    <div class="flex flex-col ml w-full sm:w-1/2">
+                    <div class="flex flex-col w-full sm:w-1/2">
                         <x-input-label for="pesoPost">PESO Branch
                         </x-input-label>
                         <select wire:model='pesoPost' class="block mt-1 w-full rounded" disabled>
@@ -178,6 +183,27 @@
 
                         </select>
                         <x-input-error :messages="$errors->get('pesoPost')" class="mt-2" />
+                    </div>
+
+                    <div class="flex flex-col  w-full sm:w-1/2">
+                        <x-input-label for="disability" :value="__('Accept PWDs?*')" />
+                        <div class="flex flex-row gap-4 mt-2">
+                            <div class="flex items-center">
+                                <input wire:model='disabilityPost' id="disability-yes" type="radio" value="1"
+                                    name="disabilityAccept"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="disability-yes" class="ms-2 text-sm font-medium text-gray-900">Yes</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='disabilityPost' id="disability-no" type="radio" value="2"
+                                    name="disabilityAccept"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="disability-no" class="ms-2 text-sm font-medium text-gray-900">No</label>
+                            </div>
+
+                        </div>
+                        <x-input-error :messages="$errors->get('disabilityPost')" class="mt-2" />
+
                     </div>
 
                 </div>

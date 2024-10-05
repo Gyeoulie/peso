@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -32,7 +31,15 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'required',
+                'confirmed',
+                'min:8', // Minimum length (adjust as needed)
+                'regex:/[a-z]/', // At least one lowercase letter
+                'regex:/[A-Z]/', // At least one uppercase letter
+                'regex:/[0-9]/', // At least one number
+                'regex:/[@$!%*?&]/', // At least one special character
+            ],
             'role' => ['required', 'in:2,3'],
             'terms' => ['required'],
             'privacy' => ['required'],
@@ -45,8 +52,10 @@ class RegisteredUserController extends Controller
             'email.max' => 'Email may not be greater than 255 characters.',
             'email.unique' => 'This email is already registered.',
 
-            'password.required' => 'Password is required.',
-            'password.confirmed' => 'Password confirmation does not match.',
+            'password.required' => 'A password is required.',
+            'password.confirmed' => 'The password confirmation does not match.',
+            'password.min' => 'The password must be at least :min characters long.',
+            'password.regex' => 'The password must include at least one lowercase letter, one uppercase letter, one number, and one special character.',
 
             'role.required' => 'Role selection is required.',
             'role.in' => 'The selected role is invalid. Choose between the allowed roles.',

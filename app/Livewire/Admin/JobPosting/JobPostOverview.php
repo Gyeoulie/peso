@@ -54,6 +54,16 @@ class JobPostOverview extends Component
         '26' => 'MASTERAL/POST GRADUATE',
     ];
 
+    public $jobTypes = [
+        '0' => 'None',
+        '1' => 'Full Time',
+        '2' => 'Contractual',
+        '3' => 'Part Time',
+        '4' => 'Project-Based',
+        '5' => 'Internship/OJT',
+        '6' => 'Work From Home',
+    ];
+
     public $selectedReqPassedId;
 
     public $cancelJob, $rejectJob, $approveJob;
@@ -245,14 +255,13 @@ class JobPostOverview extends Component
                 $query->where('edu_Level', '>=', $jobEducationLevel);
             })
             ->where(function ($query) use ($jobTagIds, $jobIndustryId) {
+                // Broad matching: either job preferences or industry preference, or both
                 $query->whereHas('job_preference', function ($query) use ($jobTagIds) {
                     $query->whereIn('position_id', $jobTagIds);
                 })
-                    ->orWhere(function ($query) use ($jobIndustryId) {
+                    ->orWhereHas('industry_preference', function ($query) use ($jobIndustryId) {
                         if ($jobIndustryId) {
-                            $query->whereHas('industry_preference', function ($query) use ($jobIndustryId) {
-                                $query->where('industry_id', $jobIndustryId);
-                            });
+                            $query->where('industry_id', $jobIndustryId);
                         }
                     });
             })
