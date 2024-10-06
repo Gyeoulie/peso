@@ -101,9 +101,6 @@
                 </ul>
 
                 <div class="w-full px-6 py-6 bg-white shadow-md  sm:rounded-r-lg">
-                    {{-- <form id="registrationForm" method="POST" action="{{ route('postInfo') }}"
-                        enctype="multipart/form-data">
-                        @csrf --}}
 
 
                     {{-- APPLICANT NAME --}}
@@ -111,8 +108,7 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0">
-                        @livewire('signup.jobseeker.partials.applicant-name')
-                        {{-- <li :class="currentStep === 1 ? activeTab : inactiveTab"vewire:signup.jobseeker.partials.applicant-name /> --}}
+                        <livewire:signup.jobseeker.partials.applicant-name />
 
 
                     </div>
@@ -122,7 +118,9 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.personal-information')
+                        <livewire:signup.jobseeker.partials.personal-information />
+
+
 
                     </div>
 
@@ -131,7 +129,8 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.employment-status')
+                        <livewire:signup.jobseeker.partials.employment-status />
+
 
                     </div>
 
@@ -140,7 +139,8 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.job-preference')
+                        <livewire:signup.jobseeker.partials.job-preference />
+
                     </div>
 
                     {{-- LANGUAGE/DIALECTS --}}
@@ -148,7 +148,8 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.language')
+                        <livewire:signup.jobseeker.partials.language />
+
                     </div>
 
                     {{-- EDUCATIONAL BACKGROUND --}}
@@ -156,7 +157,8 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.education')
+                        <livewire:signup.jobseeker.partials.education />
+
                     </div>
 
                     {{-- CERTIFICATION AND TRAININGS --}}
@@ -164,7 +166,8 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.certification-training')
+                        <livewire:signup.jobseeker.partials.certification-training />
+
                     </div>
 
                     {{-- ELIGIBILITY/LICENSE --}}
@@ -172,7 +175,8 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.eligibility-license')
+                        <livewire:signup.jobseeker.partials.eligibility-license />
+
                     </div>
 
                     {{-- WORK EXPERIENCE --}}
@@ -180,7 +184,8 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.work-experience')
+                        <livewire:signup.jobseeker.partials.work-experience />
+
                     </div>
 
                     {{-- OTHER SKILLS --}}
@@ -188,14 +193,16 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.other-skills')
+                        <livewire:signup.jobseeker.partials.other-skills />
+
                     </div>
 
                     <div x-show="currentStep === 11" class="confirmation-section h-full w-full"
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.profile-privacy')
+                        <livewire:signup.jobseeker.partials.profile-privacy />
+
 
                     </div>
 
@@ -203,13 +210,13 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        @livewire('signup.jobseeker.partials.confirmation')
+                        <livewire:signup.jobseeker.partials.confirmation />
+
                     </div>
 
 
 
 
-                    {{-- </form> --}}
                 </div>
 
             </div>
