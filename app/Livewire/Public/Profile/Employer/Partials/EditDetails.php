@@ -18,12 +18,14 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class EditDetails extends Component
 {
 
-    use WithFileUploads;
+    use WithFileUploads, WithPagination, WithoutUrlPagination;
 
     public $empID;
 
@@ -61,6 +63,11 @@ class EditDetails extends Component
             'companyImage.mimes' => 'The image must be of type: jpeg, png, jpg.',
             // 'pimg.max' => 'The image size must not exceed 5 MB.',
         ];
+    }
+
+    public function updatedSearch()
+    {
+        $this->resetPage();
     }
 
     public function selectBranch($id)

@@ -579,7 +579,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($employeeDetails->language->isEmpty())
+                                    @if ($employeeLang->isEmpty())
                                         <tr>
                                             <td colspan="6">
                                                 <div class="flex flex-col items-center justify-center mt-24 mb-24">
@@ -598,7 +598,7 @@
                                             </td>
                                         </tr>
                                     @else
-                                        @foreach ($employeeDetails->language as $data)
+                                        @foreach ($employeeLang as $data)
                                             <tr wire:key='language-{{ $data->language_id }}'
                                                 class="bg-white border-b hover:bg-gray-50">
                                                 <th
@@ -690,6 +690,10 @@
                                 </tbody>
                             </table>
 
+                            <div class="mt-4">
+                                {{$employeeLang->links('vendor.livewire.tailwind', data: ['scrollTo' => false])}}
+                            </div>
+
                         </div>
                     </div>
 
@@ -721,7 +725,7 @@
                                     </svg>
                                 </div>
                                 {{-- SEARCH --}}
-                                <input wire:model.live='search' type="text"
+                                <input wire:model.live='searchEli' type="text"
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for eligibility">
                             </div>
@@ -753,7 +757,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($employeeDetails->eligibility->isEmpty())
+                                    @if ($employeeEli->isEmpty())
                                         <tr>
                                             <td colspan="2">
                                                 <div class="flex flex-col items-center justify-center mt-24 mb-24">
@@ -773,7 +777,7 @@
                                             </td>
                                         </tr>
                                     @else
-                                        @foreach ($employeeDetails->eligibility as $eli)
+                                        @foreach ($employeeEli as $eli)
                                             <tr wire:key="{{ $eli->eligibility_id }}"
                                                 class="bg-white border-b hover:bg-gray-50">
                                                 <th scope="row"
@@ -834,7 +838,9 @@
                                     @endif
                                 </tbody>
                             </table>
-
+                            <div class="mt-4">
+                                {{$employeeEli->links('vendor.livewire.tailwind', data: ['scrollTo' => false])}}
+                            </div>
                         </div>
                     </div>
 
@@ -868,9 +874,9 @@
                                     </svg>
                                 </div>
                                 {{-- SEARCH --}}
-                                <input type="text" wire:model.live.prevent='search'
+                                <input type="text" wire:model.live='searchLic'
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="Search for job position">
+                                    placeholder="Search for license">
                             </div>
 
                             {{-- ADD BUTTON --}}
@@ -900,7 +906,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($employeeDetails->license->isEmpty())
+                                    @if ($employeeLic->isEmpty())
                                         <tr>
                                             <td colspan="2">
                                                 <div class="flex flex-col items-center justify-center mt-24 mb-24">
@@ -920,7 +926,7 @@
                                             </td>
                                         </tr>
                                     @else
-                                        @foreach ($employeeDetails->license as $empLicense)
+                                        @foreach ($employeeLic as $empLicense)
                                             <tr wire:key="{{ $empLicense->license_id }}"
                                                 class="bg-white border-b hover:bg-gray-50">
                                                 <th scope="row"
@@ -981,6 +987,10 @@
                                     @endif
                                 </tbody>
                             </table>
+
+                            <div class="mt-4">
+                                {{$employeeLic->links('vendor.livewire.tailwind', data: ['scrollTo' => false])}}
+                            </div>
                         </div>
                     </div>
 
@@ -1188,39 +1198,51 @@
                         <div class="bg-gray-100 p-4 border border-gray-300 rounded-md shadow-sm">
                             <h2 class="text-lg font-semibold text-gray-800">Profile Privacy Settings</h2>
                             <p class="text-sm text-gray-600 mt-2">
-                                Here, you can manage who can view your profile. You have the option to keep it private, allow only employers to see it, or make it public for anyone to view. Regardless of your choice, PESO administrators will still have access to your profile for administrative purposes.
+                                Here, you can manage who can view your profile. You have the option to keep it private,
+                                allow only employers to see it, or make it public for anyone to view. Regardless of your
+                                choice, PESO administrators will still have access to your profile for administrative
+                                purposes.
                             </p>
                         </div>
-                    
+
                         <!-- Privacy Options -->
                         <div class="flex flex-col w-full gap-4 justify-center">
                             <div class="flex flex-col">
                                 <div class="flex flex-row w-full gap-4 mt-2 justify-center">
-                        
+
                                     <!-- Private Option -->
-                                    <label for="bordered-radio-1" class="flex flex-row items-center h-10 px-4 border border-gray-400 rounded-md bg-white shadow-sm hover:border-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer">
-                                        <input wire:model='privacy' id="bordered-radio-1" type="radio" value="1" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                    <label for="bordered-radio-1"
+                                        class="flex flex-row items-center h-10 px-4 border border-gray-400 rounded-md bg-white shadow-sm hover:border-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer">
+                                        <input wire:model='privacy' id="bordered-radio-1" type="radio"
+                                            value="1" name="bordered-radio"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                         <span class="ml-2 text-sm font-medium text-gray-800">Private</span>
                                     </label>
-                        
+
                                     <!-- Employers Option -->
-                                    <label for="bordered-radio-2" class="flex flex-row items-center h-10 px-4 border border-gray-400 rounded-md bg-white shadow-sm hover:border-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer">
-                                        <input wire:model='privacy' id="bordered-radio-2" type="radio" value="2" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                    <label for="bordered-radio-2"
+                                        class="flex flex-row items-center h-10 px-4 border border-gray-400 rounded-md bg-white shadow-sm hover:border-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer">
+                                        <input wire:model='privacy' id="bordered-radio-2" type="radio"
+                                            value="2" name="bordered-radio"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                         <span class="ml-2 text-sm font-medium text-gray-800">Employers</span>
                                     </label>
-                        
+
                                     <!-- Public Option -->
-                                    <label for="bordered-radio-3" class="flex flex-row items-center h-10 px-4 border border-gray-400 rounded-md bg-white shadow-sm hover:border-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer">
-                                        <input wire:model='privacy' id="bordered-radio-3" type="radio" value="3" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                    <label for="bordered-radio-3"
+                                        class="flex flex-row items-center h-10 px-4 border border-gray-400 rounded-md bg-white shadow-sm hover:border-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer">
+                                        <input wire:model='privacy' id="bordered-radio-3" type="radio"
+                                            value="3" name="bordered-radio"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                         <span class="ml-2 text-sm font-medium text-gray-800">Public</span>
                                     </label>
                                 </div>
-                        
+
                                 <!-- Error Message -->
                                 <x-input-error :messages="$errors->get('privacy')" class="mt-2" />
                             </div>
                         </div>
-                        
+
 
 
                         <x-blue-button wire:target="savePrivacy" wire:loading.attr="disabled"
@@ -1286,7 +1308,7 @@
                         <x-slot name="content">
                             <!-- Search input -->
                             <div class="p-2">
-                                <input wire:model.live.prevent='search' type="text" placeholder="Search..."
+                                <input wire:model.live='searchLi' type="text" placeholder="Search..."
                                     class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
                                     @click.stop>
                             </div>
@@ -1361,7 +1383,7 @@
                         <x-slot name="content">
                             <!-- Search input -->
                             <div class="p-2">
-                                <input wire:model.live='search' type="text" placeholder="Search..."
+                                <input wire:model.live='searchEl' type="text" placeholder="Search..."
                                     class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
                                     @click.stop>
                             </div>
@@ -1699,58 +1721,58 @@
 
 </div>
 @push('scripts')
-    
-@script
-    <script>
-        Livewire.on('viewFile', event => {
-            // Check if the event is an array and has at least one element
-            if (Array.isArray(event) && event.length > 0) {
-                // Access the first element and then its properties
-                const data = event[0]; // Assuming the data object is the first element
 
-                // Extract URL and handle dynamic keys
-                const url = data.url;
+    @script
+        <script>
+            Livewire.on('viewFile', event => {
+                // Check if the event is an array and has at least one element
+                if (Array.isArray(event) && event.length > 0) {
+                    // Access the first element and then its properties
+                    const data = event[0]; // Assuming the data object is the first element
 
-                // Ensure URL is present
-                if (url) {
-                    // Create and configure the form element
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = url;
-                    form.target = '_blank';
+                    // Extract URL and handle dynamic keys
+                    const url = data.url;
 
-                    // Add CSRF token as a hidden input
-                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = '_token';
-                    csrfInput.value = csrfToken;
-                    form.appendChild(csrfInput);
+                    // Ensure URL is present
+                    if (url) {
+                        // Create and configure the form element
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = url;
+                        form.target = '_blank';
 
-                    // Add all data inputs dynamically
-                    Object.entries(data).forEach(([key, value]) => {
-                        if (key !== 'url') {
-                            const input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = key;
-                            input.value = value;
-                            form.appendChild(input);
-                        }
-                    });
+                        // Add CSRF token as a hidden input
+                        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+                        form.appendChild(csrfInput);
 
-                    // Append form to the body and submit
-                    document.body.appendChild(form);
-                    form.submit();
+                        // Add all data inputs dynamically
+                        Object.entries(data).forEach(([key, value]) => {
+                            if (key !== 'url') {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = key;
+                                input.value = value;
+                                form.appendChild(input);
+                            }
+                        });
 
-                    // Clean up by removing the form element
-                    document.body.removeChild(form);
+                        // Append form to the body and submit
+                        document.body.appendChild(form);
+                        form.submit();
+
+                        // Clean up by removing the form element
+                        document.body.removeChild(form);
+                    } else {
+                        console.error('URL not found in event data');
+                    }
                 } else {
-                    console.error('URL not found in event data');
+                    console.error('Event is not in the expected format');
                 }
-            } else {
-                console.error('Event is not in the expected format');
-            }
-        });
-    </script>
-@endscript
+            });
+        </script>
+    @endscript
 @endpush

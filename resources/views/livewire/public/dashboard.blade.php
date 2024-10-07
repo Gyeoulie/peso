@@ -1,9 +1,9 @@
 <div class="w-full">
 
     @if (Auth::check() && (Auth::user()->usertype == 5 || !$activePartnership))
-        <div class="bg-yellow-100 shadow rounded-lg p-6 my-6 mx-12">
+        <div class="p-6 mx-12 my-6 bg-yellow-100 rounded-lg shadow">
             <div class="flex flex-row items-center justify-between">
-                <p class="text-yellow-700 font-bold text-xl">
+                <p class="text-xl font-bold text-yellow-700">
                     Access to job post applications is restricted. Please ensure your company has an active
                     partnership to access job posting.
                 </p>
@@ -18,28 +18,27 @@
             </div>
         </div>
     @else
-        <div class="flex flex-row justify-between mx-auto lg:mx-12 py-2 mt-4">
+        <div class="flex flex-row justify-between py-2 mx-auto mt-4 lg:mx-12">
             <div>
                 @if (Auth::check() && Auth::user()->usertype == 4)
-                    <h1 class="text-lg lg:text-2xl font-semibold">Recommended Trainings</h1>
+                    <h1 class="text-lg font-semibod lg:text-2xl">Recommended Trainings</h1>
                 @else
-                    <h1 class="text-lg lg:text-2xl font-semibold">Available Trainings</h1>
+                    <h1 class="text-lg font-semibold lg:text-2xl">Available Trainings</h1>
                 @endif
             </div>
             <div class="flex items-end">
                 <a wire:navigate href="{{ route('trainings') }}"
-                    class="text-sm lg:text-md
-                font-semibold hover:text-blue-400">View more</a>
+                    class="text-sm font-semibold lg:text-md hover:text-blue-400">View more</a>
             </div>
 
         </div>
-        <hr class="h-1 mx-auto lg:mx-12  bg-gray-200 border-0">
+        <hr class="h-1 mx-auto bg-gray-200 border-0 lg:mx-12">
 
         @if ($programList->isEmpty())
-            <div class="flex w-full justify-center  mx-4">
+            <div class="flex justify-center w-full mx-4">
                 <div class="flex flex-col items-center justify-center mt-4 mb-4">
-                    <div class="p-6 bg-white rounded-full my-2 transition-transform transform hover:scale-110">
-                        <svg class="w-36 h-36 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <div class="p-6 my-2 transition-transform transform bg-white rounded-full hover:scale-110">
+                        <svg class="text-black w-36 h-36" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46" />
@@ -47,25 +46,25 @@
 
 
                     </div>
-                    <p class="text-xl font-bold text-black text-center mt-2">
+                    <p class="mt-2 text-xl font-bold text-center text-black">
                         No New Program!
                     </p>
                 </div>
             </div>
         @else
             <div class="overflow-x-auto no-scrollbar">
-                <div class="flex flex-nowrap gap-6 py-4 mx-4 lg:mx-12">
+                <div class="flex gap-6 py-4 mx-4 flex-nowrap lg:mx-12">
 
                     @foreach ($programList as $data)
                         <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                            class="shrink-0 flex flex-col lg:flex-row w-full lg:max-w-xl lg:max-h-72 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                            <img class="w-full lg:w-60 object-cover h-48 lg:h-full"
+                            class="flex flex-col w-full overflow-hidden transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-lg shrink-0 lg:flex-row lg:max-w-xl lg:max-h-72 hover:shadow-xl">
+                            <img class="object-cover w-full h-48 lg:w-60 lg:h-full"
                                 src="{{ $data->program_pubmat && file_exists(public_path('storage/' . $data->program_pubmat)) ? asset('storage/' . $data->program_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                 alt="prog-{{ $data->program_id }}">
 
 
-                            <div class="flex flex-col justify-between p-4 lg:p-4 flex-1">
-                                <h5 class="text-xl lg:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
+                            <div class="flex flex-col justify-between flex-1 p-4 lg:p-4">
+                                <h5 class="text-xl font-bold leading-snug tracking-tight text-blue-500 lg:text-2xl">
                                     {{ $data->program_Title }}
                                 </h5>
                                 <hr class="mb-2">
@@ -79,7 +78,7 @@
                                     <p class="truncate ...">{{ $data->program_Deadline->format('F j, Y') }}</p>
                                 </div>
 
-                                <p class="mb-4 text-sm font-normal text-gray-700 leading-relaxed flex-grow">
+                                <p class="flex-grow mb-4 text-sm font-normal leading-relaxed text-gray-700">
                                     {!! Str::limit(strip_tags($data->program_Description), 90, '...') !!}
                                 </p>
 
@@ -95,20 +94,20 @@
         @endif
     @endif
 
-    <div wire:poll.5s class="flex mx-auto lg:mx-12 py-2 ">
-        <div class="grid grid-cols-4 lg:grid-cols-12 gap-10 p-3 lg:p-0 w-full">
+    <div wire:poll.5s class="flex py-2 mx-auto lg:mx-12 ">
+        <div class="grid w-full grid-cols-4 gap-10 p-3 lg:grid-cols-12 lg:p-0">
 
             {{-- MAIN BAR FOR JOB POST --}}
             <div class="col-span-4 lg:col-span-9">
-                <div class="bg-white shadow rounded-lg p-6 overflow-visible">
-                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+                <div class="p-6 overflow-visible bg-white rounded-lg shadow">
+                    <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
                         <label for="table-search" class="sr-only">Search</label>
 
                         <div class="relative w-full lg:w-auto">
 
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -117,19 +116,19 @@
                             </div>
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job posting">
                         </div>
 
                         {{-- FILTER BUTTON --}}
-                        <div class="flex flex-wrap mr-3 gap-2">
+                        <div class="flex flex-wrap gap-2 mr-3">
                             <!-- In your Blade template -->
                             <button type="button" x-data="{ filterIndustry: @entangle('filterIndustry') }"
                                 x-on:click.prevent="$dispatch('open-modal', 'industry-filter-modal')"
                                 :class="filterIndustry.length > 0 ?
                                     'bg-blue-500 text-white hover:bg-blue-600' :
                                     'bg-white text-gray-500 hover:bg-gray-100'"
-                                class="inline-flex items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                class="inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
                                 Industry Filter
                             </button>
                             <button type="button" x-data="{ filterJobTags: @entangle('filterJobTags') }"
@@ -137,7 +136,7 @@
                                 :class="filterJobTags.length > 0 ?
                                     'bg-blue-500 text-white hover:bg-blue-600' :
                                     'bg-white text-gray-500 hover:bg-gray-100'"
-                                class="inline-flex items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                class="inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
                                 Job Tags Filter
                             </button>
 
@@ -152,7 +151,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -204,7 +203,7 @@
                                             </div>
 
                                             <div class="ms-1">
-                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd"
                                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -252,7 +251,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -307,7 +306,7 @@
                                                 </svg>
 
                                             </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
+                                            <p class="mt-2 text-xl font-bold text-center text-black">
                                                 No Job Posting Found!
                                             </p>
                                         </div>
@@ -325,23 +324,23 @@
                                                 href="{{ route('jobpost.show', ['id' => $data->job_id]) }}">
                                                 <div class="flex flex-row w-full">
                                                     <div
-                                                        class="flex flex-col justify-center items-center h-full  flex-shrink-0">
+                                                        class="flex flex-col items-center justify-center flex-shrink-0 h-full">
                                                         <img src="{{ file_exists(public_path('storage/' . $data->company->company_img)) ? asset('storage/' . $data->company->company_img) : asset('assets/img/PESO-Logo.png') }}"
                                                             alt="company-{{ $data->job_id }}"
-                                                            class="w-24 h-24 lg:w-48 lg:h-48 bg-gray-300 rounded object-contain">
+                                                            class="object-contain w-24 h-24 bg-gray-300 rounded lg:w-48 lg:h-48">
                                                     </div>
                                                     <div class="flex-col w-full ml-5 space-y-1 lg:space-y-8">
                                                         <div class="flex flex-col">
-                                                            <div class="flex flex-col lg:flex-row  text-left">
+                                                            <div class="flex flex-col text-left lg:flex-row">
                                                                 <div class="flex flex-col lg:w-3/4">
                                                                     <h1
-                                                                        class="text-blue-500 text-2xl lg:text-5xl font-semibold uppercase">
+                                                                        class="text-2xl font-semibold text-blue-500 uppercase lg:text-5xl">
                                                                         {{ $data->job_Title }}
                                                                     </h1>
                                                                 </div>
-                                                                <div class="hidden lg:flex flex-col lg:w-1/4">
+                                                                <div class="flex-col hidden lg:flex lg:w-1/4">
                                                                     <h1
-                                                                        class="text-blue-500 text-xs lg:text-xl text-left lg:text-center font-medium">
+                                                                        class="text-xs font-medium text-left text-blue-500 lg:text-xl lg:text-center">
                                                                         @if ($data->job_MinWage)
                                                                             ₱{{ number_format($data->job_MinWage) }}
                                                                             @if ($data->job_MaxWage)
@@ -358,22 +357,22 @@
                                                         </div>
 
                                                         <div class="flex flex-col">
-                                                            <div class="flex-row lg:w-3/4 text-left">
-                                                                <h2 class="text-lg lg:text-2xl font-semibold">
+                                                            <div class="flex-row text-left lg:w-3/4">
+                                                                <h2 class="text-lg font-semibold lg:text-2xl">
                                                                     {{ $data->company->business_Name }}</h2>
                                                             </div>
                                                             <h1
-                                                                class="lg:hidden text-black text-sm text-left lg:text-center font-medium">
+                                                                class="text-sm font-medium text-left text-black lg:hidden lg:text-center">
                                                                 ₱{{ number_format($data->job_MinWage) }} -
                                                                 ₱{{ number_format($data->job_MaxWage) }}</h1>
                                                         </div>
 
                                                         <div class="flex flex-col w-full">
                                                             <div class="flex flex-col lg:flex-row">
-                                                                <div class="lg:w-1/5 text-left">
+                                                                <div class="text-left lg:w-1/5">
 
                                                                     <h3
-                                                                        class="text-xs lg:text-sm text-blue-900 uppercase">
+                                                                        class="text-xs text-blue-900 uppercase lg:text-sm">
                                                                         <i class="fa-solid fa-location-dot"></i>
                                                                         {{ $data->job_Address }},
                                                                         {{ $data->barangay->barangay_Name }},
@@ -381,31 +380,31 @@
                                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="lg:w-1/5 text-left lg:text-center">
+                                                                <div class="text-left lg:w-1/5 lg:text-center">
                                                                     <h3
-                                                                        class="text-xs lg:text-sm text-blue-900 uppercase">
+                                                                        class="text-xs text-blue-900 uppercase lg:text-sm">
                                                                         <i class="fa-solid fa-graduation-cap"></i>
                                                                         {{ $eduLevels[$data->job_Edu] }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="lg:w-1/5 text-left lg:text-center">
+                                                                <div class="text-left lg:w-1/5 lg:text-center">
                                                                     <h3
-                                                                        class="text-xs lg:text-sm uppercase text-blue-900">
-                                                                        <i class="fa-solid fa-briefcase uppercase"></i>
+                                                                        class="text-xs text-blue-900 uppercase lg:text-sm">
+                                                                        <i class="uppercase fa-solid fa-briefcase"></i>
                                                                         {{ $jobTypes[$data->job_Type] }}
 
                                                                     </h3>
                                                                 </div>
-                                                                <div class="lg:w-1/5 text-left lg:text-center">
+                                                                <div class="text-left lg:w-1/5 lg:text-center">
                                                                     <h3
-                                                                        class="text-xs lg:text-sm uppercase text-blue-900">
+                                                                        class="text-xs text-blue-900 uppercase lg:text-sm">
                                                                         <i class="fa-solid fa-calendar"></i>
                                                                         {{ $data->job_Duration->format('F j, Y') }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="lg:w-1/5 text-left lg:text-center">
+                                                                <div class="text-left lg:w-1/5 lg:text-center">
                                                                     <h3
-                                                                        class="text-xs lg:text-sm uppercase text-blue-900">
+                                                                        class="text-xs text-blue-900 uppercase lg:text-sm">
                                                                         <i class="fa-solid fa-building-ngo"></i>
                                                                         PESO
                                                                         {{ $data->peso->municipality->municipality_Name }}
@@ -416,7 +415,7 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                            <hr class="h-px bg-gray-200 border-0 mt-3">
+                                            <hr class="h-px mt-3 bg-gray-200 border-0">
                                         </td>
 
                                     </tr>
@@ -438,12 +437,12 @@
             {{-- SIDE BAR --}}
             @if (Auth::check() && (auth()->user()->usertype == 5 || auth()->user()->usertype == 6))
                 <div class="col-span-4 lg:col-span-3">
-                    <div class="bg-white shadow rounded-lg p-4">
-                        <div class="p-3 text-gray-900 text-center w-full">
-                            <h1 class="font-bold text-2xl">Notifications</h1>
+                    <div class="p-4 bg-white rounded-lg shadow">
+                        <div class="w-full p-3 text-center text-gray-900">
+                            <h1 class="text-2xl font-bold">Notifications</h1>
                             <div class="overflow-y-auto max-h-[300px] lg:max-h-[900px]"> <!-- Set max height here -->
                                 @if (empty($formattedNotifications))
-                                    <div class="flex flex-col items-center justify-center  mt-12 mb-12">
+                                    <div class="flex flex-col items-center justify-center mt-12 mb-12">
                                         <div class="p-6 bg-gray-100 rounded-full">
                                             <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -453,12 +452,12 @@
                                             </svg>
 
                                         </div>
-                                        <p class="text-xl font-bold text-black text-center mt-2">
+                                        <p class="mt-2 text-xl font-bold text-center text-black">
                                             No Notification Found!
                                         </p>
                                     </div>
                                 @else
-                                    <ul class="space-y-3 mt-5">
+                                    <ul class="mt-5 space-y-3">
                                         @foreach ($formattedNotifications as $notification)
                                             <li>
                                                 <div class="flex items-start space-x-4">
@@ -466,8 +465,8 @@
                                                         @if ($notification['type'] === 'partnership')
                                                             @if ($notification['status'] === 'APPROVED')
                                                                 <div
-                                                                    class="text-green-700 border border-green-700 bg-green-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                    <svg class="h-5 w-5"
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-green-700 bg-green-100 border border-green-700 rounded-lg focus:outline-none">
+                                                                    <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         fill="none" viewBox="0 0 24 24"
                                                                         stroke-width="1.5" stroke="currentColor">
@@ -479,8 +478,8 @@
                                                                 </div>
                                                             @elseif ($notification['status'] === 'CANCELLED' || $notification['status'] === 'REJECTED')
                                                                 <div
-                                                                    class="text-red-700 border border-red-700 bg-red-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                    <svg class="h-5 w-5"
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-red-700 bg-red-100 border border-red-700 rounded-lg focus:outline-none">
+                                                                    <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         fill="none" viewBox="0 0 24 24"
                                                                         stroke-width="1.5" stroke="currentColor">
@@ -495,7 +494,7 @@
                                                         @else
                                                             <div
                                                                 class="text-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 border border-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-700 bg-{{ $notification['type'] === 'applicant' ? 'blue' : 'green' }}-100 focus:outline-none font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5"
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
                                                                     stroke="currentColor">
@@ -509,12 +508,12 @@
                                                     </span>
                                                     <div class="flex flex-col">
                                                         <span class="flex-1">
-                                                            <div class="text-left text-md font-medium">
+                                                            <div class="font-medium text-left text-md">
                                                                 {{ $notification['message'] }}
                                                             </div>
                                                         </span>
                                                         <span
-                                                            class="text-left text-xs text-grey-400">{{ \Carbon\Carbon::parse($notification['responded_at'])->format('F j, Y g:i A') }}
+                                                            class="text-xs text-left text-grey-400">{{ \Carbon\Carbon::parse($notification['responded_at'])->format('F j, Y g:i A') }}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -532,42 +531,42 @@
                 <div class="col-span-4 lg:col-span-3">
                     <div class="flex flex-col w-full gap-4">
 
-                        <div class="bg-white shadow-md shadow-md rounded-md p-4">
-                            <h1 class="font-bold text-2xl text-center mb-4">TOP JOB TAGS</h1>
+                        <div class="p-4 bg-white rounded-md shadow-md">
+                            <h1 class="mb-4 text-2xl font-bold text-center">TOP JOB TAGS</h1>
                             <ul>
                                 @foreach ($topJobTags as $index => $jobTag)
                                     <li class="flex items-center justify-between py-2 border-b border-gray-300">
                                         <div class="flex items-center">
-                                            <span class="text-lg font-semibold mr-4">{{ $index + 1 }}</span>
+                                            <span class="mr-4 text-lg font-semibold">{{ $index + 1 }}</span>
                                             <span
                                                 wire:click.prevent="mountTopJobTags('{{ $jobTag->position_Title }}')"
-                                                class="text-gray-800 hover:text-blue-500 cursor-pointer font-semibold  break-all"
+                                                class="font-semibold text-gray-800 break-all cursor-pointer hover:text-blue-500"
                                                 style="max-width: 200px;">
                                                 {{ $jobTag->position_Title }}
                                             </span>
                                         </div>
                                         <span
-                                            class="text-green-500 font-semibold ml-4">{{ $jobTag->active_job_posting_count }}
+                                            class="ml-4 font-semibold text-green-500">{{ $jobTag->active_job_posting_count }}
                                             Active Jobs</span>
                                     </li>
                                 @endforeach
                             </ul>
 
-                            <h1 class="font-bold text-2xl text-center mt-4 mb-4">TOP JOB INDUSTRY</h1>
+                            <h1 class="mt-4 mb-4 text-2xl font-bold text-center">TOP JOB INDUSTRY</h1>
                             <ul>
                                 @foreach ($topJobIndustries as $index => $jobTag)
                                     <li class="flex items-center justify-between py-2 border-b border-gray-300">
                                         <div class="flex items-center">
-                                            <span class="text-lg font-semibold mr-4">{{ $index + 1 }}</span>
+                                            <span class="mr-4 text-lg font-semibold">{{ $index + 1 }}</span>
                                             <span
                                                 wire:click.prevent="mountTopJobTags('{{ $jobTag->industry_Title }}')"
-                                                class="text-gray-800 hover:text-blue-500 cursor-pointer font-semibold break-all"
+                                                class="font-semibold text-gray-800 break-all cursor-pointer hover:text-blue-500"
                                                 style="max-width: 200px;">
                                                 {{ $jobTag->industry_Title }}
                                             </span>
                                         </div>
                                         <span
-                                            class="text-green-500 font-semibold ml-4">{{ $jobTag->active_job_posting_count }}
+                                            class="ml-4 font-semibold text-green-500">{{ $jobTag->active_job_posting_count }}
                                             Active Jobs</span>
                                     </li>
                                 @endforeach
@@ -577,14 +576,14 @@
 
 
 
-                        <div class="text-gray-900 text-center w-full">
-                            <h1 class="font-bold text-2xl">ANNOUNCEMENTS</h1>
+                        <div class="w-full text-center text-gray-900">
+                            <h1 class="text-2xl font-bold">ANNOUNCEMENTS</h1>
                             <div class = "flex flex-col items-center justify-center mt-4">
                                 @if ($announcements->isEmpty())
                                     <div class="flex flex-col items-center justify-center mt-12 mb-12">
                                         <div
-                                            class="p-6 bg-white rounded-full my-12 transition-transform transform hover:scale-110">
-                                            <svg class="w-36 h-36 text-black" xmlns="http://www.w3.org/2000/svg"
+                                            class="p-6 my-12 transition-transform transform bg-white rounded-full hover:scale-110">
+                                            <svg class="text-black w-36 h-36" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                 stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -593,33 +592,33 @@
 
 
                                         </div>
-                                        <p class="text-xl font-bold text-black text-center mt-2">
+                                        <p class="mt-2 text-xl font-bold text-center text-black">
                                             No New Announcements!
                                         </p>
                                     </div>
                                 @else
                                     <div
-                                        class="mt-2 flex flex-row lg:flex-col  gap-4 overflow-x-auto lg:overflow-visible no-scrollbar w-full">
+                                        class="flex flex-row w-full gap-4 mt-2 overflow-x-auto lg:flex-col lg:overflow-visible no-scrollbar">
                                         @foreach ($announcements as $data)
                                             <a wire:navigate
                                                 href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
                                                 class="flex-shrink-0 w-full lg:w-full">
                                                 <div
-                                                    class="relative flex flex-col w-full max-w-sm h-96 overflow-hidden rounded-lg bg-white text-gray-700 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+                                                    class="relative flex flex-col w-full max-w-sm overflow-hidden text-gray-700 transition-transform transform bg-white rounded-lg shadow-md h-96 hover:scale-105 hover:shadow-lg">
                                                     <div class="relative w-full h-56 overflow-hidden rounded-t-lg">
                                                         <img src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                                             alt="announcement-{{ $data->announcement_id }}"
-                                                            class="object-cover w-full h-full rounded-t-lg transition-transform duration-300 ease-in-out hover:scale-110" />
+                                                            class="object-cover w-full h-full transition-transform duration-300 ease-in-out rounded-t-lg hover:scale-110" />
 
 
                                                     </div>
-                                                    <div class="flex flex-col p-4  flex-grow">
+                                                    <div class="flex flex-col flex-grow p-4">
                                                         <h4
-                                                            class="text-lg font-semibold text-blue-gray-900 transition-colors duration-300 ease-in-out hover:text-blue-700 mb-2">
+                                                            class="mb-2 text-lg font-semibold transition-colors duration-300 ease-in-out text-blue-gray-900 hover:text-blue-700">
                                                             {{ Str::limit(strip_tags($data->announcement_Title), 80, '...') }}
                                                         </h4>
                                                         <div
-                                                            class="flex items-end justify-between text-xs font-normal text-gray-600 mt-auto">
+                                                            class="flex items-end justify-between mt-auto text-xs font-normal text-gray-600">
                                                             <p class="truncate">PESO
                                                                 {{ $data->peso->municipality->municipality_Name }}</p>
                                                             <p class="truncate">
@@ -646,9 +645,9 @@
     </div>
 
     <div id="sticky-banner" tabindex="-1"
-        class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-4 lg:p-8 border-b border-gray-200 bg-blue-500">
+        class="fixed bottom-0 z-50 flex justify-between w-full p-4 bg-blue-500 border-b border-gray-200 start-0 lg:p-8">
         <div class="flex items-center mx-auto">
-            <p class="flex items-center text-sm lg:text-xl text-justify text-white font-bold">
+            <p class="flex items-center text-sm font-bold text-justify text-white lg:text-xl">
 
                 </span>
                 <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Postings are
@@ -669,19 +668,19 @@
     </div>
 
     <x-modal name="industry-filter-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Filter Industry') }}
             </h2>
             <hr>
 
             <div class="relative mt-4">
-                <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+                <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative">
                         <div
-                            class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                            class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                             <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -689,29 +688,25 @@
                             </svg>
                         </div>
 
-                        {{-- LICENSE SEARCH --}}
+
                         <input wire:model.live='searchIndustry' type="search"
-                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search industry">
                     </div>
 
-                    {{-- WEB BUTTON --}}
+
                 </div>
 
-                {{-- LICENSE MODAL --}}
+
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                    <table class="w-full text-sm text-left text-center text-gray-500 rtl:text-right">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
-                                <th scope="col" class="px-6 py-3 w-1/4">
-
+                                <th scope="col" class="w-1/4 px-4 py-2 "> <!-- Hidden on small screens -->
                                 </th>
-                                <th scope="col" class="px-6 py-3 uppercase">
-                                    Job Industry
-                                </th>
-                                <th scope="col" class="px-6 py-3 uppercase">
-                                    Code
-                                </th>
+                                <th scope="col" class="px-4 py-2 uppercase">Job Industry</th>
+                                <th scope="col" class="hidden px-4 py-2 uppercase sm:table-cell">Code</th>
+                                <!-- Hidden on small screens -->
                             </tr>
                         </thead>
                         <tbody>
@@ -727,30 +722,27 @@
                                                         stroke-width="2"
                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
-
                                             </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                No Record Found!
+                                            <p class="mt-2 text-xl font-bold text-center text-black">No Record Found!
                                             </p>
                                         </div>
-
                                     </td>
                                 </tr>
                             @else
                                 @foreach ($industry as $data)
                                     <tr wire:key='industry-{{ $data->industry_id }}'
-                                        class="bg-white border-b hover:bg-gray-50 cursor-pointer"
+                                        class="bg-white border-b cursor-pointer hover:bg-gray-50"
                                         onclick="document.getElementById('industry-{{ $data->industry_id }}').click();">
-                                        <td class="px-6 py-4 text-center">
-
+                                        <td class="px-4 py-2 text-center sm:table-cell">
+                                            <!-- Hidden on small screens -->
                                             <label class="relative flex items-center p-3 rounded-full cursor-pointer"
                                                 for="agreeBox">
                                                 <input wire:model="mountIndustryFilter" type="checkbox"
                                                     id="industry-{{ $data->industry_id }}"
                                                     value="{{ $data->industry_id }}"
-                                                    class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                                                    class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                                                 <span
-                                                    class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                                                    class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
                                                         viewBox="0 0 20 20" fill="currentColor" stroke="currentColor"
                                                         stroke-width="1">
@@ -760,14 +752,16 @@
                                                     </svg>
                                                 </span>
                                             </label>
-
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <div class="font-semibold text-base uppercase">{{ $data->industry_Title }}
+                                        <td class="px-4 py-2">
+                                            <div class="text-base font-semibold uppercase">{{ $data->industry_Title }}
                                             </div>
+                                            <!-- Additional information for mobile view -->
+                                            <div class="text-sm text-gray-500 sm:hidden">Code:
+                                                {{ $data->industry_Code }}</div>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <div class="font-semibold text-base uppercase">{{ $data->industry_Code }}
+                                        <td class="hidden px-4 py-2 sm:table-cell"> <!-- Hidden on small screens -->
+                                            <div class="text-base font-semibold uppercase">{{ $data->industry_Code }}
                                             </div>
                                         </td>
                                     </tr>
@@ -775,6 +769,7 @@
                             @endif
                         </tbody>
                     </table>
+
                 </div>
             </div>
 
@@ -785,7 +780,7 @@
             </div>
 
 
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button type="button" x-data=""
                     x-on:click="$dispatch('close-modal', 'industry-filter-modal')">
                     {{ __('Cancel') }}
@@ -799,7 +794,7 @@
                         type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="mountIndustry" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -820,18 +815,18 @@
     </x-modal>
 
     <x-modal name="job-tag-filter-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Filter Job Tags') }}
             </h2>
             <hr>
 
             <div class="relative mt-4">
-                <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+                <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative">
                         <div
-                            class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                            class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                             <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -840,7 +835,7 @@
                         </div>
 
                         <input type="search" wire:model.live='searchTags'
-                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search Job Position">
                     </div>
 
@@ -848,18 +843,13 @@
                 </div>
                 <div class="overflow-x-auto ">
 
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                    <table class="w-full text-sm text-left text-center text-gray-500 rtl:text-right">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
-                                <th scope="col" class="px-6 py-3 w-1/4">
-
-                                </th>
-                                <th scope="col" class="px-6 py-3 uppercase">
-                                    Job Position
-                                </th>
-                                <th scope="col" class="px-6 py-3 uppercase">
-                                    Code
-                                </th>
+                                <th scope="col" class="w-1/4 px-6 py-3"></th> <!-- Hidden on small screens -->
+                                <th scope="col" class="px-6 py-3 uppercase">Job Position</th>
+                                <th scope="col" class="hidden px-6 py-3 uppercase md:table-cell">Code</th>
+                                <!-- Hidden on smaller than md screens -->
                             </tr>
                         </thead>
                         <tbody>
@@ -875,30 +865,26 @@
                                                         stroke-width="2"
                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
-
                                             </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                No Record Found!
+                                            <p class="mt-2 text-xl font-bold text-center text-black">No Record Found!
                                             </p>
                                         </div>
-
                                     </td>
                                 </tr>
                             @else
                                 @foreach ($jobposition as $data)
-                                    <tr wire:key='position-{{ $data->position_id }}'
-                                        class="bg-white border-b hover:bg-gray-50 cursor-pointer"
+                                    <tr wire:key='jobTags-{{ $data->position_id }}'
+                                        class="bg-white border-b cursor-pointer hover:bg-gray-50"
                                         onclick="document.getElementById('jobTags-{{ $data->position_id }}').click();">
-                                        <!-- Adding onclick event to the row -->
                                         <td class="px-6 py-4 text-center">
                                             <label class="relative flex items-center p-3 rounded-full cursor-pointer"
-                                                for="job-{{ $data->position_id }}">
+                                                for="jobTags-{{ $data->position_id }}">
                                                 <input wire:model="mountJobTagsFilter" type="checkbox"
-                                                    id="job-{{ $data->position_id }}"
+                                                    id="jobTags-{{ $data->position_id }}"
                                                     value="{{ $data->position_id }}"
-                                                    class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                                                    class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                                                 <span
-                                                    class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                                                    class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
                                                         viewBox="0 0 20 20" fill="currentColor" stroke="currentColor"
                                                         stroke-width="1">
@@ -910,20 +896,24 @@
                                             </label>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="font-semibold text-base uppercase">
+                                            <div class="text-base font-semibold uppercase">
                                                 {{ $data->position_Title }}
                                             </div>
+                                            <div class="text-sm text-gray-600 sm:hidden">
+                                                Code: {{ $data->position_Code }}
+                                                <!-- Extra information for mobile screens -->
+                                            </div>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <div class="font-semibold text-base uppercase">{{ $data->position_Code }}
+                                        <td class="hidden px-6 py-4 md:table-cell">
+                                            <div class="text-base font-semibold uppercase">{{ $data->position_Code }}
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
-
                             @endif
                         </tbody>
                     </table>
+
                 </div>
             </div>
 
@@ -932,7 +922,7 @@
                 {{ $jobposition->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
             </div>
 
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button type="button" x-data=""
                     x-on:click="$dispatch('close-modal', 'job-tag-filter-modal')">
                     {{ __('Cancel') }}
@@ -946,7 +936,7 @@
                         type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="mountJobTags" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

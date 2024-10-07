@@ -292,13 +292,9 @@
                         <x-input-label for="descPost">Job Description
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='descPost' id="descText">{!! $descPost !!}</textarea>
+                            <textarea id="descText">{!! $descPost !!}</textarea>
                         </div>
 
-                        {{-- <textarea wire:model='descPost' rows="8"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Write your thoughts here..."></textarea>
-                        <x-input-error :messages="$errors->get('descPost')" class="mt-2" /> --}}
                         @if ($errors->has('descPost'))
                             <x-input-error :messages="$errors->get('descPost')" class="mt-2" />
                         @endif
@@ -310,12 +306,9 @@
                         <x-input-label for="qualPost">Job Qualification
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='qualPost' id="qualText">{!! $qualPost !!}</textarea>
+                            <textareaid="qualText">{!! $qualPost !!}</textareaid=>
                         </div>
-                        {{-- <textarea wire:model='qualPost' rows="8"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Write your thoughts here..."></textarea>
-                        <x-input-error :messages="$errors->get('qualPost')" class="mt-2" /> --}}
+
                         @if ($errors->has('qualPost'))
                             <x-input-error :messages="$errors->get('qualPost')" class="mt-2" />
                         @endif
@@ -327,12 +320,9 @@
                     <x-input-label for="remPost">Remarks
                     </x-input-label>
                     <div wire:ignore>
-                        <textarea wire:model='remPost' id="remText">{!! $remPost !!}</textarea>
+                        <textarea id="remText">{!! $remPost !!}</textarea>
                     </div>
-                    {{-- <textarea wire:model='remPost' rows="4"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Write your thoughts here..."></textarea>
-                    <x-input-error :messages="$errors->get('remPost')" class="mt-2" /> --}}
+
                     @if ($errors->has('remPost'))
                         <x-input-error :messages="$errors->get('remPost')" class="mt-2" />
                     @endif
@@ -390,82 +380,97 @@
 
     <livewire:modals.job-position-modal />
 
-
-
-    {{-- @scipt --}}
-    <script data-navigate-once>
-        $('#descText').summernote({
-            placeholder: 'Write job description here...',
-            tabsize: 2,
-            height: 300,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#descText').summernote('isEmpty')) {
-                        @this.set('descPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('descPost', contents);
-                    }
-                }
-            }
-        });
-        $('#qualText').summernote({
-            placeholder: 'Write job qualifications here...',
-            tabsize: 2,
-            height: 300,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#qualText').summernote('isEmpty')) {
-                        @this.set('qualPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('qualPost', contents);
-                    }
-                }
-            }
-        });
-        $('#remText').summernote({
-            placeholder: 'Write remarks here...',
-            tabsize: 2,
-            height: 120,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#remText').summernote('isEmpty')) {
-                        @this.set('remPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('remPost', contents);
-                    }
-                }
-            }
-        });
-
-        $('.note-statusbar').hide();
-    </script>
-
-
-    {{-- @endscript --}}
-
-
 </div>
+@push('scripts')
+    <script data-navigate-once>
+        document.addEventListener('livewire:load', () => {
+            initializeSummernote();
+        });
+
+        document.addEventListener('livewire:navigated', () => {
+            initializeSummernote();
+        });
+
+        function initializeSummernote() {
+            // Ensure the Summernote editor is initialized only once
+            if ($('#descText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+            if ($('#qualText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+            if ($('#remText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+
+            // Initialize the description editor
+            $('#descText').summernote({
+                placeholder: 'Write job description here...',
+                tabsize: 2,
+                height: 300,
+                disableResizeEditor: true, // Optional to remove resize
+                disableDragAndDrop: true, // Prevent drag-and-drop for images
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onChange: function(contents) {
+                        if ($('#descText').summernote('isEmpty')) {
+                            @this.set('descPost', ''); // Handle "empty" state
+                        } else {
+                            @this.set('descPost', contents); // Update Livewire property
+                        }
+                    }
+                }
+            });
+
+            // Initialize the qualifications editor
+            $('#qualText').summernote({
+                placeholder: 'Write job qualifications here...',
+                tabsize: 2,
+                height: 300,
+                disableResizeEditor: true, // Optional to remove resize
+                disableDragAndDrop: true, // Prevent drag-and-drop for images
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onChange: function(contents) {
+                        if ($('#qualText').summernote('isEmpty')) {
+                            @this.set('qualPost', ''); // Handle "empty" state
+                        } else {
+                            @this.set('qualPost', contents); // Update Livewire property
+                        }
+                    }
+                }
+            });
+
+            // Initialize the remarks editor
+            $('#remText').summernote({
+                placeholder: 'Write remarks here...',
+                tabsize: 2,
+                height: 120,
+                disableResizeEditor: true, // Optional to remove resize
+                disableDragAndDrop: true, // Prevent drag-and-drop for images
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onChange: function(contents) {
+                        if ($('#remText').summernote('isEmpty')) {
+                            @this.set('remPost', ''); // Handle "empty" state
+                        } else {
+                            @this.set('remPost', contents); // Update Livewire property
+                        }
+                    }
+                }
+            });
+
+            // Hide the status bar for all editors
+            $('.note-statusbar').hide();
+        }
+    </script>
+@endpush

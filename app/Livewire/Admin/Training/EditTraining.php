@@ -316,6 +316,12 @@ class EditTraining extends Component
             toastr()->error('Job position not found.');
             return;
         }
+        $totalTags = count($this->displayTags);
+
+        if ($totalTags >= 15) {
+            toastr()->error('You can only have a maximum of 15 tags.');
+            return;
+        }
 
         $newTag = [
             'position_id' => $id,

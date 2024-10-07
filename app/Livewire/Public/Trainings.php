@@ -22,6 +22,7 @@ class Trainings extends Component
     use WithPagination;
     use WithoutUrlPagination;
     public $ticket = [];
+    public $ticketData = [];
 
     public $search, $searchHistory, $sortType, $sortDate, $filter;
 
@@ -62,6 +63,11 @@ class Trainings extends Component
                 'program_id' => $data->program_id,
                 'employee_id' => $data->employee_id,
                 'created_at' => $data->created_at->format('Y-m-d H:i:s'), // Explicitly format the timestamp
+            ];
+
+            $this->ticketData = [
+                'programTitle' => $data->programs->program_Title,
+                'programDate' => $data->programs->program_Deadline->format('F j, Y'),
             ];
 
             // Encrypt the ticket data
@@ -223,7 +229,7 @@ class Trainings extends Component
     public function closeTicket()
     {
         $this->dispatch('close-modal', 'ticket-modal');
-        $this->reset('ticket');
+        $this->reset('ticket', 'ticketData');
     }
     public function render()
     {

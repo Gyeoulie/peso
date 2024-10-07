@@ -308,9 +308,9 @@
                                 <h1 class="text-md font-semibold">{{ $jobpost->peso_accounts->peso_accounts_Fname }}
                                     {{ $jobpost->peso_accounts->peso_accounts_Lname }}</h1>
                             @endif
-
-                            <h1 class="text-md ">{{ $jobpost->responded_at->format('F j, Y') }}</h1>
-
+                            @if ($jobpost->responded_at)
+                                <h1 class="text-md ">{{ $jobpost->responded_at->format('F j, Y') }}</h1>
+                            @endif
                         </div>
 
 
