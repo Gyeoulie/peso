@@ -195,7 +195,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
                                 @foreach ($pesoAnnouncements as $data)
                                     <a wire:navigate
                                         href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
@@ -222,16 +222,6 @@
                                 @endforeach
                             </div>
                         @endif
-
-
-
-                        {{-- <div class="flex justify-center mt-6">
-                            <button wire:click="loadMore"
-                                class="px-4 py-2 rounded-lg bg-blue-500 text-white rounded hover:bg-blue-600">
-                                Load More
-                            </button>
-                        </div> --}}
-
 
 
                     </div>

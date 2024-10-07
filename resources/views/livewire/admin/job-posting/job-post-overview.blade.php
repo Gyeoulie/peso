@@ -1,29 +1,26 @@
 <div wire:poll class="md:mx-10">
     <div class="container py-8">
 
-        <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+        <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
 
             {{-- FIRST CONTAINER --}}
             <div class="col-span-4 lg:col-span-12">
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+                <div class="flex flex-col p-6 bg-white rounded-lg shadow">
 
-                    {{-- PHONE DATE (SMALL SCREEN) --}}
-                    <div class="hidden flex flex-row w-full justify-end">
-                        <h1 class="text-sm font-light ml-auto mr-5 mt-1 mb-auto">April 28, 2024</h1>
-                    </div>
+        
 
                     <div class="flex flex-row w-full">
 
-                        <div class="flex flex-row w-full items-center">
+                        <div class="flex flex-row items-center w-full">
                             {{-- IMG --}}
                             <img src="{{ asset('storage/' . $jobpost->company->company_img) }}"
-                                class="w-32 h-32 bg-gray-300 object-cover rounded-lg shrink-0 shadow-lg">
+                                class="object-cover w-32 h-32 bg-gray-300 rounded-lg shadow-lg shrink-0">
                             </img>
 
-                            <div class="flex flex-col ml-4 w-full">
-                                <h1 class="text-xl lg:text-3xl font-bold">{{ $jobpost->company->business_Name }}</h1>
-                                <p class="text-sm lg:text-lg text-gray-700 uppercase">
+                            <div class="flex flex-col w-full ml-4">
+                                <h1 class="text-xl font-bold lg:text-3xl">{{ $jobpost->company->business_Name }}</h1>
+                                <p class="text-sm text-gray-700 uppercase lg:text-lg">
                                     {{ $jobpost->company->company_Address }},
                                     {{ $jobpost->barangay->barangay_Name }},
                                     {{ $jobpost->barangay->municipality->municipality_Name }},
@@ -53,11 +50,11 @@
 
                         <div class="flex flex-col lg:w-full ">
                             {{-- WEB DATE --}}
-                            <h1 class="hidden lg:flex text-lg font-light ml-auto mr-2 mb-auto">
+                            <h1 class="hidden mb-auto ml-auto mr-2 text-lg font-light lg:flex">
                                 {{ $jobpost->created_at->format('F j, Y') }}</h1>
                             {{-- WEB BUTTONS --}}
                             @if ($jobpost->job_Status == 'PENDING')
-                                <div class="hidden lg:flex flex-row w-full justify-end">
+                                <div class="flex-row justify-end hidden w-full lg:flex">
                                     <x-danger-button class="w-[100px] justify-center me-2 mb-2" type="button"
                                         x-data=""
                                         x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Reject</x-danger-button>
@@ -66,7 +63,7 @@
                                         x-on:click.prevent="$dispatch('open-modal', 'approve-modal')">Approve</x-green-button>
                                 </div>
                             @elseif ($jobpost->job_Status == 'ACTIVE')
-                                <div class="hidden lg:flex flex-row w-full justify-end">
+                                <div class="flex-row justify-end hidden w-full lg:flex">
                                     <x-danger-button class="w-[100px] justify-center me-2 mb-2" type="button"
                                         x-data=""
                                         x-on:click.prevent="$dispatch('open-modal', 'cancel-modal')">CANCEL</x-danger-button>
@@ -77,7 +74,7 @@
                     </div>
                     @if ($jobpost->job_Status == 'PENDING')
                         {{-- MOBILE BUTTONS (SMALL SCREEN) --}}
-                        <div class="lg:hidden flex flex-row w-full mt-4 justify-center space-x-4">
+                        <div class="flex flex-row justify-center w-full mt-4 space-x-4 lg:hidden">
                             <button type="button"
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
                                 x-data=""
@@ -88,7 +85,7 @@
                                 x-on:click.prevent="$dispatch('open-modal', 'approve-modal')">Approve</button>
                         </div>
                     @elseif ($jobpost->job_Status == 'ACTIVE')
-                        <div class="lg:hidden flex flex-row w-full mt-4 justify-center space-x-4">
+                        <div class="flex flex-row justify-center w-full mt-4 space-x-4 lg:hidden">
                             <button type="button"
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
                                 x-data=""
@@ -101,15 +98,15 @@
 
             {{-- SECOND CONTAINER FOR JOB DESCRIPTION --}}
             <div class="col-span-4 lg:col-span-6">
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+                <div class="flex flex-col p-6 bg-white rounded-lg shadow">
 
-                    <div class="flex flex-col gap-2 lg:flex-row  lg:justify-between">
+                    <div class="flex flex-col gap-2 lg:flex-row lg:justify-between">
                         <h1 class="text-2xl font-bold">Job Posting Details</h1>
 
                         @if ($jobpost->job_Disability == 1)
                             <div
-                                class="flex rounded-full py-1 px-4 font-medium border bg-green-200 border-green-500 text-green-700 font-bold text-sm w-fit">
-                                <svg class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24"
+                                class="flex px-4 py-1 text-sm font-bold text-green-700 bg-green-200 border border-green-500 rounded-full w-fit">
+                                <svg class="w-5 h-5 text-green-500" width="24" height="24" viewBox="0 0 24 24"
                                     stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                                     stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" />
@@ -129,13 +126,13 @@
 
 
 
-                    <div class="flex flex-col lg:flex-row w-full gap-4">
+                    <div class="flex flex-col w-full gap-4 lg:flex-row">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="title"> <i class="fa-solid fa-briefcase"></i> Job
                                 Title
                             </x-input-label>
-                            <x-text-input id="title" class="block mt-1 w-full" type="text"
+                            <x-text-input id="title" class="block w-full mt-1" type="text"
                                 value="{{ $jobpost->job_Title }}" readonly />
                         </div>
 
@@ -147,16 +144,16 @@
                                         clip-rule="evenodd" />
                                 </svg>Job Industry
                             </x-input-label>
-                            <x-text-input id="industry" class="block mt-1 w-full" type="text"
+                            <x-text-input id="industry" class="block w-full mt-1" type="text"
                                 value="{{ $jobpost->job_industry->industry_Title }}" readonly />
                         </div>
 
                     </div>
 
 
-                    <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col w-full gap-4 mt-4 lg:flex-row">
 
-                        <div class="flex flex-col ml w-full">
+                        <div class="flex flex-col w-full ml">
                             <x-input-label for="education" class="flex flex-row items-center gap-1"> <svg
                                     class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
@@ -170,20 +167,20 @@
 
                                 Educational Attainment
                             </x-input-label>
-                            <x-text-input id="education" class="block mt-1 w-full" type="text"
+                            <x-text-input id="education" class="block w-full mt-1" type="text"
                                 value=" {{ $eduLevels[$jobpost->job_Edu] }}" readonly />
                         </div>
 
-                        <div class="flex flex-col lg:flex-col ml w-full">
+                        <div class="flex flex-col w-full lg:flex-col ml">
                             <x-input-label for="type"> <i class="fa-solid fa-briefcase"></i> Employment Type
                             </x-input-label>
-                            <x-text-input id="type" class="block mt-1 w-full" type="text"
+                            <x-text-input id="type" class="block w-full mt-1" type="text"
                                 value=" {{ $jobTypes[$jobpost->job_Type] }}" readonly />
                         </div>
 
                     </div>
 
-                    <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col w-full gap-4 mt-4 lg:flex-row">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="wage" class="flex flex-row items-center gap-1"><svg
@@ -198,7 +195,7 @@
                                 </svg>
                                 Wage Range
                             </x-input-label>
-                            <x-text-input id="wage" class="block mt-1 w-full" type="text" name="fnamePost"
+                            <x-text-input id="wage" class="block w-full mt-1" type="text" name="fnamePost"
                                 value="{{ $jobpost->job_MinWage
                                     ? '₱' .
                                         number_format($jobpost->job_MinWage) .
@@ -219,7 +216,7 @@
                                 Job
                                 Posting Duration
                             </x-input-label>
-                            <x-text-input id="duration" class="block mt-1 w-full" type="text"
+                            <x-text-input id="duration" class="block w-full mt-1" type="text"
                                 value=" {{ $jobpost->job_Duration->format('F j, Y') }}" readonly />
                         </div>
 
@@ -234,7 +231,7 @@
 
                                 Job Slots
                             </x-input-label>
-                            <x-text-input id="slots" class="block mt-1 w-full" type="text"
+                            <x-text-input id="slots" class="block w-full mt-1" type="text"
                                 value=" {{ $jobpost->job_Slots }}" readonly />
                         </div>
 
@@ -244,19 +241,19 @@
 
 
                 {{-- CONTAINER FOR JOB TAGS --}}
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
+                <div class="flex flex-col p-6 mt-4 bg-white rounded-lg shadow">
                     {{-- TITLE --}}
                     <h1 class="text-2xl font-bold">Job Posting Tags</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-row  w-full gap-4">
+                    <div class="flex flex-row w-full gap-4">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname"> </i> Job Position
                                 Tags
                             </x-input-label>
                             {{-- BADGE CONTAINER --}}
-                            <div id= "otherSkillRow" class="flex-inline border border-gray-300 rounded-lg p-1 mt-2">
+                            <div id= "otherSkillRow" class="p-1 mt-2 border border-gray-300 rounded-lg flex-inline">
 
                                 {{-- BADGE --}}
                                 @foreach ($jobpost->job_tags as $jobTag)
@@ -275,7 +272,7 @@
 
 
                 {{-- CONTAINER FOR DESCRIPTIONS --}}
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
+                <div class="flex flex-col p-6 mt-4 bg-white rounded-lg shadow">
 
                     <h1 class="text-2xl font-bold">Job Posting Description</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
@@ -294,7 +291,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-row w-full gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job
                                 Qualification
@@ -308,7 +305,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-row w-full gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname"> <i class="fa-solid fa-briefcase"></i> Job
                                 Company Remarks
@@ -330,7 +327,7 @@
 
             {{-- WEB REQUIREMENT CONTAINER --}}
             <div class="col-span-4 lg:col-span-6">
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+                <div class="flex flex-col p-6 bg-white rounded-lg shadow">
 
                     {{-- TITLE --}}
                     <h1 class="text-2xl font-bold ">Requirements</h1>
@@ -339,19 +336,19 @@
 
 
 
-                    <div class="flex flex-row flex-wrap mt-4 w-full gap-2">
+                    <div class="flex flex-row flex-wrap w-full gap-2 mt-4">
                         @foreach ($requirements->chunk(2) as $chunk)
-                            <div class="flex flex-col lg:flex-row w-full gap-2">
+                            <div class="flex flex-col w-full gap-2 lg:flex-row">
                                 @foreach ($chunk as $requirement)
                                     @if ($requirement->requirementPassed)
-                                        <div class="flex flex-col w-full w-full lg:w-1/2">
+                                        <div class="flex flex-col w-full lg:w-1/2">
                                             <button
                                                 wire:click.prevent='viewFile({{ $requirement->requirementPassed->req_passed_id }})'
                                                 type="button"
                                                 class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
                                                 <i class="fa-solid fa-file-contract me-2"></i>
                                                 View {{ $requirement->requirement_Title }}
-                                                <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                <svg class="w-6 h-6 ml-auto mr-0" xmlns="http://www.w3.org/2000/svg"
                                                     width="24" height="24" fill="none"
                                                     viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round"
@@ -377,13 +374,13 @@
 
                                         </div>
                                     @else
-                                        <div class="flex flex-col w-full w-full lg:w-1/2">
+                                        <div class="flex flex-col w-full lg:w-1/2">
                                             <div
                                                 class="text-red-900 bg-red-400 border border-red-500 focus:ring-4 focus:outline-none focus:ring-red-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
                                                 <i class="fa-solid fa-file-contract me-2"></i>
                                                 No uploaded {{ $requirement->requirement_Title }}.
 
-                                                <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                <svg class="w-6 h-6 ml-auto mr-0" xmlns="http://www.w3.org/2000/svg"
                                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                     stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -400,7 +397,7 @@
                 </div>
 
                 @if ($jobpost->job_Status != 'PENDING' && $jobpost->peso_Remarks)
-                    <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
+                    <div class="flex flex-col p-6 mt-4 bg-white rounded-lg shadow">
 
                         <div class="flex flex-row">
                             <h1 class="text-2xl font-bold ">PESO Remarks</h1>
@@ -408,9 +405,9 @@
 
                         </div>
                         <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                        <div class="flex lg:flex-row gap-4 lg:justify-between">
+                        <div class="flex gap-4 lg:flex-row lg:justify-between">
                             @if ($jobpost->peso_accounts)
-                                <h1 class="text-md font-semibold">{{ $jobpost->peso_accounts->peso_accounts_Fname }}
+                                <h1 class="font-semibold text-md">{{ $jobpost->peso_accounts->peso_accounts_Fname }}
                                     {{ $jobpost->peso_accounts->peso_accounts_Lname }}</h1>
                             @endif
 
@@ -430,15 +427,15 @@
 
 
 
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4 ">
-                    <h1 class="text-3xl font-bold mb-3">Matched Applicants</h1>
+                <div class="flex flex-col p-6 mt-4 bg-white rounded-lg shadow ">
+                    <h1 class="mb-3 text-3xl font-bold">Matched Applicants</h1>
                     <div class="max-h-[500px] overflow-y-auto">
                         @if ($matchingEmployees->isEmpty())
                             <div>
 
 
-                                <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                    <div class="flex  bg-gray-100 rounded-full p-1">
+                                <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                    <div class="flex p-1 bg-gray-100 rounded-full">
 
                                         <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -449,37 +446,37 @@
 
                                     </div>
 
-                                    <div class="text-center text-black text-xl font-semibold mt-5">
+                                    <div class="mt-5 text-xl font-semibold text-center text-black">
                                         No Matched Applicants
                                     </div>
                                 </div>
 
                             </div>
                         @else
-                            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
+                            <div class="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4">
                                 @foreach ($matchingEmployees as $data)
                                     <div wire:key='jobseeker-{{ $data->employee_id }}'
-                                        class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-blue-50 rounded-xl shrink-0 grow-0 w-full hover:bg-blue-200 transition-colors duration-300">
+                                        class="flex flex-col items-center justify-center w-full max-w-sm px-4 py-4 mx-auto transition-colors duration-300 bg-blue-50 rounded-xl shrink-0 grow-0 hover:bg-blue-200">
                                         <img class="flex mx-auto w-[100px] h-[100px] object-cover rounded-full lg:mx-0 lg:grow-0 lg:shrink-0 shadow-xl"
                                             src="{{ asset('storage/' . $data->pimg) }}"
                                             alt="jobseeker-{{ $data->employee_id }}">
                                         <div
-                                            class="flex flex-col items-center justify-center text-center  lg:text-left mt-2">
+                                            class="flex flex-col items-center justify-center mt-2 text-center lg:text-left">
                                             <div class="space-y-0.5">
-                                                <p class="text-lg text-black text-center font-semibold">
+                                                <p class="text-lg font-semibold text-center text-black">
                                                     {{ $data->fname }}
                                                     {{ $data->mname ?? '' }}
                                                     {{ $data->lname }}@if (!empty($data->suffix))
                                                         , {{ $data->suffix }}
                                                     @endif
                                                 </p>
-                                                <p class="text-slate-500 text-center font-medium">
+                                                <p class="font-medium text-center text-slate-500">
                                                     {{ $data->empstatus == 1 ? 'Employed' : 'Unemployed' }}
                                                 </p>
                                             </div>
                                             <a wire:navigate
                                                 href="{{ route('jobseeker.profile', ['id' => $data->employee_id]) }}"
-                                                class="mt-2 px-4 py-1 text-sm text-blue-600  bg-blue-300 font-semibold rounded-full border border-blue-200 hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
+                                                class="px-4 py-1 mt-2 text-sm font-semibold text-blue-600 bg-blue-300 border border-blue-200 rounded-full hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
                                         </div>
                                     </div>
                                 @endforeach
@@ -509,13 +506,13 @@
     </div>
 
     <x-modal name="approve-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ approveJob: @entangle('approveJob') }">
+        <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ approveJob: @entangle('approveJob') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to approve?') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label :value="__('Remarks')" />
                     <textarea wire:model='remarks' id="message" rows="4"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
@@ -524,12 +521,12 @@
                 </div>
 
             </div>
-            <div class="inline-flex justify-center items-center mt-2 w-full">
+            <div class="inline-flex items-center justify-center w-full mt-2">
                 <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="approveJob">
                     <input wire:model="approveJob" type="checkbox" id="approveJob"
-                        class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                        class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                     <span
-                        class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                        class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
                             fill="currentColor" stroke="currentColor" stroke-width="1">
                             <path fill-rule="evenodd"
@@ -542,7 +539,7 @@
                     Confirm the transaction
                 </label>
             </div>
-            <div class="mt-2 flex justify-between">
+            <div class="flex justify-between mt-2">
                 <x-secondary-button wire:click.prevent="close('approve-modal')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -555,7 +552,7 @@
                     {{ __('Approve Job Posting') }}
 
                     <div wire:loading.delay.long role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -577,13 +574,13 @@
 
     {{-- REJECT MODAL --}}
     <x-modal name="reject-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ rejectJob: @entangle('rejectJob') }">
+        <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ rejectJob: @entangle('rejectJob') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to reject?') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label :value="__('Remarks')" />
                     <textarea wire:model='remarks' id="message" rows="4"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
@@ -592,12 +589,12 @@
                 </div>
 
             </div>
-            <div class="inline-flex justify-center items-center mt-2 w-full">
+            <div class="inline-flex items-center justify-center w-full mt-2">
                 <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="rejectJob">
                     <input wire:model="rejectJob" type="checkbox" id="rejectJob"
-                        class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                        class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                     <span
-                        class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                        class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
                             fill="currentColor" stroke="currentColor" stroke-width="1">
                             <path fill-rule="evenodd"
@@ -610,7 +607,7 @@
                     Confirm the transaction
                 </label>
             </div>
-            <div class="mt-2 flex justify-between">
+            <div class="flex justify-between mt-2">
                 <x-secondary-button wire:click.prevent="close('reject-modal')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -620,7 +617,7 @@
                     type="button">
                     {{ __('Reject Application') }}
                     <div wire:loading.delay.long role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -638,13 +635,13 @@
 
 
     <x-modal name="cancel-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ cancelJob: @entangle('cancelJob') }">
+        <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ cancelJob: @entangle('cancelJob') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to cancel?') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label :value="__('Remarks')" />
                     <textarea wire:model='cancelRemarks' id="message" rows="4"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
@@ -653,16 +650,16 @@
                 </div>
 
             </div>
-            <p class="text-sm lg:text-md text-gray-600 mt-4 text-justify">
+            <p class="mt-4 text-sm text-justify text-gray-600 lg:text-md">
                 {{ __('Please note that by canceling this job posting, all uncompleted job applications associated with it will be automatically canceled. This includes any active, pending, or incomplete applications that are currently being processed. We strongly recommend reviewing all ongoing recruitment activities and notifying relevant applicants before proceeding to ensure no disruptions in communication or expectations.') }}
             </p>
 
-            <div class="inline-flex justify-center items-center mt-2 w-full">
+            <div class="inline-flex items-center justify-center w-full mt-2">
                 <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="cancelJob">
                     <input wire:model="cancelJob" type="checkbox" id="cancelJob"
-                        class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                        class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                     <span
-                        class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                        class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
                             fill="currentColor" stroke="currentColor" stroke-width="1">
                             <path fill-rule="evenodd"
@@ -675,7 +672,7 @@
                     Confirm the transaction
                 </label>
             </div>
-            <div class="mt-2 flex justify-between">
+            <div class="flex justify-between mt-2">
                 <x-secondary-button wire:click.prevent="close('reject-modal')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -684,7 +681,7 @@
                     class="ms-3" type="button">
                     {{ __('Cancel Job Post') }}
                     <div wire:loading.delay.long role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

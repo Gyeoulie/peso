@@ -30,19 +30,19 @@
 
 
     @livewireStyles
-    @vite(['resources/css/app.css', 'resources/css/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
 
-<body class="font-sans antialiased bg-gray-100 flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen font-sans antialiased bg-gray-100">
     <div class="mb-24">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
         @if (isset($header))
             <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 lg:px-6 lg:px-8">
+                <div class="px-4 py-6 mx-auto max-w-7xl lg:px-8">
                     {{ $header }}
                 </div>
             </header>
@@ -54,12 +54,12 @@
         </main>
     </div>
 
-    <footer class="bg-white rounded-lg shadowm-4 mt-auto">
-        <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8 ">
+    <footer class="mt-auto bg-white rounded-lg shadowm-4">
+        <div class="w-full max-w-screen-xl p-4 mx-auto md:py-8 ">
             <div class="lg:flex lg:items-center lg:justify-between">
-                <a href="#" class="flex items-center mb-4 lg:mb-0 space-x-3 rtl:space-x-reverse">
+                <a href="#" class="flex items-center mb-4 space-x-3 lg:mb-0 rtl:space-x-reverse">
                     <img src="{{ asset('assets/img/PESO-Logo.png') }}" class="h-8" alt="Flowbite Logo" />
-                    <span class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap ">Public Employment
+                    <span class="self-center text-xl font-semibold md:text-2xl whitespace-nowrap ">Public Employment
                         Service Office</span>
                 </a>
                 <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 lg:mb-0 ">
@@ -75,7 +75,7 @@
                     </li>
                 </ul>
             </div>
-            <hr class="my-6 border-gray-200 lg:mx-auto  lg:my-8" />
+            <hr class="my-6 border-gray-200 lg:mx-auto lg:my-8" />
             <span class="block text-sm text-gray-500 lg:text-center ">© 2023 <a href="#"
                     class="hover:underline">PESO™</a>. All Rights
                 Reserved.</span>

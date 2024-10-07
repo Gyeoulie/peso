@@ -1,4 +1,4 @@
-<div class="flex flex-col my-4 w-full gap-4 mt-4 w-full">
+<div class="flex flex-col my-4 gap-4 mt-4 w-full">
     <h1 class="text-2xl font-bold">Profile Privacy</h1>
     <div class="text-center mb-4">
 
@@ -72,7 +72,7 @@
     </div>
 
     <!-- Error Message -->
-    <div class="flex flex-row justify-between space-x-4 mt-4 ">
+    <div class="flex flex-row justify-between space-x-4 mt-4">
         <x-secondary-button wire:loading.attr='disabled' wire:click.prevent='prev' type="button">
             Previous
             <div wire:loading.delay.long wire:target="prev" role="status">

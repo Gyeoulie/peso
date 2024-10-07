@@ -33,11 +33,11 @@
 
 
     @livewireStyles
-    @vite(['resources/css/app.css', 'resources/css/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
-<body class="font-sans text-gray-900 antialiased bg-gray-100">
+<body class="font-sans antialiased text-gray-900 bg-gray-100">
 
 
 

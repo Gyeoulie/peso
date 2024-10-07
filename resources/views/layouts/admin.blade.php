@@ -38,10 +38,10 @@
 
     <!-- Scripts -->
     @livewireStyles
-    @vite(['resources/css/app.css', 'resources/css/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-gray-100 flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen font-sans antialiased bg-gray-100">
 
     @include('layouts.navigation')
 

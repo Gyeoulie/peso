@@ -1,21 +1,21 @@
 <x-modal wire:poll name="work-experience-modal" focusable>
-    <div class="w-full max-w-4xl px-6 py-6 items-center">
+    <div class="items-center w-full max-w-4xl px-6 py-6">
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Work Experience') }}
         </h2>
         <hr>
         <div class="flex flex-col mt-2">
-            <div class="flex flex-col mt-2 w-full">
+            <div class="flex flex-col w-full mt-2">
                 <x-input-label for="workEmp" :value="__('Employer*')" />
-                <x-text-input wire:model="workEmp" class="block mt-1 w-full" type="text" />
+                <x-text-input wire:model="workEmp" class="block w-full mt-1" type="text" />
                 <x-input-error :messages="$errors->get('workEmp')" class="mt-2" />
             </div>
-            <div class="flex flex-col mt-2 w-full">
+            <div class="flex flex-col w-full mt-2">
                 <x-input-label for="workAddress" :value="__('Address*')" />
-                <x-text-input wire:model="workAdd" class="block mt-1 w-full" type="text" />
+                <x-text-input wire:model="workAdd" class="block w-full mt-1" type="text" />
                 <x-input-error :messages="$errors->get('workAdd')" class="mt-2" />
             </div>
-            <div class="flex flex-col lg:flex-row mt-2 w-full">
+            <div class="flex flex-col w-full mt-2 lg:flex-row">
 
                 <div class="flex flex-col w-full">
                     <x-input-label for="workPos" :value="__('Job Position*')" />
@@ -27,7 +27,7 @@
                                     {{ $workPositionTitle ?? 'Select Job Position' }}
                                 </div>
                                 <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -51,7 +51,7 @@
                                 @foreach ($job_positions as $data)
                                     <x-dropdown-link wire:loading.attr="disabled"
                                         wire:click.prevent='selectWorkPosition({{ $data->position_id }})'
-                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->position_Title }}</x-dropdown-link>
+                                        class="block px-4 py-2 uppercase cursor-pointer hover:bg-gray-100">{{ $data->position_Title }}</x-dropdown-link>
                                 @endforeach
                             </div>
                         </x-slot>
@@ -62,7 +62,7 @@
 
                 <div class="flex flex-col w-full ml-4">
                     <x-input-label for="workStatus" :value="__('Status*')" />
-                    <select wire:model="workStatus" class="block mt-1 w-full  rounded-lg ">
+                    <select wire:model="workStatus" class="block w-full mt-1 rounded-lg ">
                         <option value="" disabled selected>Select Work Status</option>
                         <option value="Permanent">Permanent</option>
                         <option value="Contractual">Contractual</option>
@@ -73,21 +73,21 @@
                 </div>
             </div>
 
-            <div class="flex flex-row mt-2 w-full">
+            <div class="flex flex-row w-full mt-2">
                 <div class="flex flex-col w-full">
                     <x-input-label for="workStart" :value="__('Started*')" />
-                    <x-text-input wire:model="workStart" class="block mt-1 w-full" type="date" />
+                    <x-text-input wire:model="workStart" class="block w-full mt-1" type="date" />
                     <x-input-error :messages="$errors->get('workStart')" class="mt-2" />
                 </div>
-                <div class="flex flex-col ml-4 w-full">
+                <div class="flex flex-col w-full ml-4">
                     <x-input-label for="workEnd" :value="__('Ended')" />
-                    <x-text-input wire:model="workEnd" class="block mt-1 w-full" type="date" />
+                    <x-text-input wire:model="workEnd" class="block w-full mt-1" type="date" />
                     <x-input-error :messages="$errors->get('workEnd')" class="mt-2" />
                 </div>
 
             </div>
         </div>
-        <div class="mt-6 flex justify-end">
+        <div class="flex justify-end mt-6">
             <x-secondary-button wire:loading.attr="disabled" wire:click.prevent='close' type="button">
                 {{ __('Cancel') }}
             </x-secondary-button>

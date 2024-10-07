@@ -1,7 +1,7 @@
 <div class="flex flex-col w-full h-full gap-4">
     <h1 class="text-2xl font-bold">Contact Information</h1>
     <span class="text-sm text-gray-600">Fields with * are required.</span>
-    <div class="flex flex-col lg:w-2/3 gap-4 w-full mt-5">
+    <div class="flex flex-col w-full gap-4 mt-5 lg:w-2/3">
         <div class="flex flex-col w-full">
             <x-input-label for="presentAddress" :value="__('Contact Person*')" />
             <x-text-input wire:model='name' class="block mt-1" type="text" />
@@ -14,7 +14,7 @@
             <x-input-error :messages="$errors->get('position')" class="mt-2" />
 
         </div>
-        <div class="flex flex-col lg:flex-row w-full gap-4">
+        <div class="flex flex-col w-full gap-4 lg:flex-row">
             <div class="flex flex-col w-full">
                 <x-input-label for="email" :value="__('Email Address*')" />
                 <x-text-input wire:model='email' class="block mt-1" type="email" />
@@ -28,7 +28,7 @@
 
             </div>
         </div>
-        <div class="flex flex-col lg:flex-row w-full gap-4">
+        <div class="flex flex-col w-full gap-4 lg:flex-row">
             <div class="flex flex-col w-full">
                 <x-input-label for="phone" :value="__('Mobile No.*')" />
                 <x-text-input wire:model='phone' class="block mt-1" type="tel" />
@@ -47,11 +47,11 @@
 
     </div>
 
-    <div class="flex flex-row justify-between space-x-4 mt-4 lg:mt-auto lg:mb-4">
+    <div class="flex flex-row justify-between mt-4 space-x-4 lg:mt-auto lg:mb-4">
         <x-secondary-button wire:loading.attr='disabled' wire:click='prev' type="button">
             Previous
             <div wire:loading.delay.long wire:target="prev" role="status">
-                <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -68,7 +68,7 @@
         <x-blue-button wire:loading.attr='disabled' wire:click.prevent='next' type="button">
             Next
             <div wire:loading.delay.long wire:target="next" role="status">
-                <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

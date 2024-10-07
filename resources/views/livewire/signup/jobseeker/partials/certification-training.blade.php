@@ -1,30 +1,30 @@
 <div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Certification and Training</h1>
     <span class="text-sm text-gray-600">Fields with * are required.</span>
-    <div class="flex flex-col gap-4 mt-5 w-full h-full">
+    <div class="flex flex-col w-full h-full gap-4 mt-5">
 
 
         @if ($certificateData)
-            <div class="relative overflow-x-auto shadow-md lg:rounded-lg  mx-auto">
-                <table class="w-full text-md text-center rtl:text-center text-gray-500">
-                    <thead class="text-md text-gray-100 uppercase bg-blue-500 ">
+            <div class="relative mx-auto overflow-x-auto shadow-md lg:rounded-lg">
+                <table class="w-full text-center text-gray-500 text-md rtl:text-center">
+                    <thead class="text-gray-100 uppercase bg-blue-500 text-md">
                         <tr>
-                            <th scope="col" class="border px-6 py-3">
+                            <th scope="col" class="px-6 py-3 border">
                                 Certification
                             </th>
-                            <th scope="col" class="border px-6 py-3 ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Issued By
                             </th>
-                            <th scope="col" class="border px-6 py-3 ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Date
                             </th>
-                            <th scope="col" class="border px-6 py-3  ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Rating
                             </th>
-                            <th scope="col" class="border px-6 py-3 ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Edit
                             </th>
-                            <th scope="col" class="border px-6 py-3 ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Delete
                             </th>
                         </tr>
@@ -32,25 +32,25 @@
                     <tbody>
                         @foreach ($certificateData as $index => $data)
                             <tr wire:key='certification-{{ $index }}'
-                                class="bg-white border-b hover:bg-gray-50 content-center">
-                                <th scope="row" class="border px-6 py-4 font-bold text-gray-900 ">
+                                class="content-center bg-white border-b hover:bg-gray-50">
+                                <th scope="row" class="px-6 py-4 font-bold text-gray-900 border">
                                     {{ $data['certName'] }}
                                 </th>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     {{ $data['certFrom'] }}
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     {{ date('F j, Y', strtotime($data['certEarned'])) }}
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     {{ $data['certRate'] }}
 
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     <button wire:click.prevent='editCertificate({{ $data['certTypeID'] }})'
                                         class="font-medium text-blue-600 hover:underline">Edit</button>
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     <button wire:click.prevent='removeCertificate({{ $data['certTypeID'] }})'
                                         class="font-medium text-red-600 hover:underline">Delete</button>
                                 </td>
@@ -61,44 +61,44 @@
                 </table>
             </div>
         @endif
-        <div class="flex flex-row mt-4 ">
+        <div class="flex flex-row mt-4">
             <button type="button" x-data=""
                 x-on:click.prevent="$dispatch('open-modal', 'certificate-modal')"
-                class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                class="px-4 py-2 font-semibold text-blue-700 bg-transparent border border-blue-500 rounded hover:bg-blue-500 hover:text-white hover:border-transparent">
                 ADD CERTIFICATION
             </button>
         </div>
     </div>
 
 
-    <div class="flex flex-col gap-4 mt-5 w-full h-full">
+    <div class="flex flex-col w-full h-full gap-4 mt-5">
         @if ($trainingData)
-            <div class="relative overflow-x-auto shadow-md lg:rounded-lg ">
-                <table class="w-full text-md text-center rtl:text-center text-gray-500">
-                    <thead class="text-md text-gray-100 uppercase bg-blue-500 ">
+            <div class="relative overflow-x-auto shadow-md lg:rounded-lg">
+                <table class="w-full text-center text-gray-500 text-md rtl:text-center">
+                    <thead class="text-gray-100 uppercase bg-blue-500 text-md">
                         <tr>
-                            <th scope="col" class="border px-6 py-3">
+                            <th scope="col" class="px-6 py-3 border">
                                 Training
                             </th>
-                            <th scope="col" class="border px-6 py-3 ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Date Started
                             </th>
-                            <th scope="col" class="border px-6 py-3 ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Date Ended
                             </th>
-                            <th scope="col" class="border px-6 py-3  ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Training Institution
                             </th>
-                            <th scope="col" class="border px-6 py-3  ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Certifcate
                             </th>
-                            <th scope="col" class="border px-6 py-3  ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Completed
                             </th>
-                            <th scope="col" class="border px-6 py-3 ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Edit
                             </th>
-                            <th scope="col" class="border px-6 py-3 ">
+                            <th scope="col" class="px-6 py-3 border">
                                 Delete
                             </th>
                         </tr>
@@ -106,35 +106,35 @@
                     <tbody>
                         @foreach ($trainingData as $index => $data)
                             <tr wire:key='training-{{ $index }}'
-                                class="bg-white border-b hover:bg-gray-50 content-center">
-                                <td scope="row" class="border px-6 py-4 font-medium text-gray-900 ">
+                                class="content-center bg-white border-b hover:bg-gray-50">
+                                <td scope="row" class="px-6 py-4 font-medium text-gray-900 border">
                                     {{ $data['trainName'] }}
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     {{ date('F j, Y', strtotime($data['trainStart'])) }}
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     {{ $data['trainEnd'] ? date('F j, Y', strtotime($data['trainEnd'])) : 'Present' }}
 
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     {{ $data['trainInstitution'] }}
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     {{ $data['trainCert'] }}
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     <div class="flex items-center justify-center">
                                         <input type="checkbox" disabled {{ $data['trainStat'] == 1 ? 'checked' : '' }}
                                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                                     </div>
                                 </td>
 
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     <button wire:click.prevent='editTraining({{ $index }})'
                                         class="font-medium text-blue-600 hover:underline">Edit</button>
                                 </td>
-                                <td class="border px-6 py-4">
+                                <td class="px-6 py-4 border">
                                     <button
                                         wire:click.prevent='removeTraining({{ $index }})'class="font-medium text-red-600 hover:underline">Delete</button>
                                 </td>
@@ -144,19 +144,19 @@
                 </table>
             </div>
         @endif
-        <div class="flex flex-row mt-4 ">
+        <div class="flex flex-row mt-4">
             <button type="button" x-data=""
                 x-on:click.prevent="$dispatch('open-modal', 'training-modal')"
-                class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                class="px-4 py-2 font-semibold text-blue-700 bg-transparent border border-blue-500 rounded hover:bg-blue-500 hover:text-white hover:border-transparent">
                 ADD TRAINING
             </button>
         </div>
 
-        <div class="flex flex-row justify-between space-x-4 mt-4 lg:mt-auto lg:mb-4">
+        <div class="flex flex-row justify-between mt-4 space-x-4 lg:mt-auto lg:mb-4">
             <x-secondary-button wire:loading.attr='disabled' wire:click.prevent='prev' type="button">
                 Previous
                 <div wire:loading.delay.long wire:target="prev" role="status">
-                    <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                    <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -173,7 +173,7 @@
             <x-blue-button wire:loading.attr='disabled' wire:click.prevent='next' type="button">
                 Next
                 <div wire:loading.delay.long wire:target="next" role="status">
-                    <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                    <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

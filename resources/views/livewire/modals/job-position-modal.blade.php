@@ -1,5 +1,5 @@
 <x-modal wire:poll name="job-position-modal" focusable>
-    <div class="w-full max-w-4xl px-6 py-6 items-center">
+    <div class="items-center w-full max-w-4xl px-6 py-6">
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Choose Job Tags') }}
         </h2>
@@ -7,12 +7,12 @@
 
         <div class="relative mt-4">
             <div
-                class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4 overflow-visible">
+                class="flex flex-col gap-2 p-1 pb-4 space-y-4 overflow-visible lg:flex-row lg:justify-between lg:space-y-0">
 
 
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
-                    <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <div class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                         <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -22,7 +22,7 @@
 
                     {{-- LICENSE SEARCH --}}
                     <input type="search" wire:model.live='search'
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search Job Position">
                 </div>
 
@@ -30,12 +30,12 @@
             </div>
             <div class="overflow-x-auto ">
                 {{-- LICENSE MODAL --}}
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>
-                            <th scope="col" class="px-6 py-3 w-1/4"></th>
+                            <th scope="col" class="w-1/4 px-6 py-3"></th>
                             <th scope="col" class="px-6 py-3 uppercase">Job Position</th>
-                            <th scope="col" class="px-6 py-3 uppercase hidden sm:table-cell">Code</th>
+                            <th scope="col" class="hidden px-6 py-3 uppercase sm:table-cell">Code</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,7 +51,7 @@
                                                     d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                             </svg>
                                         </div>
-                                        <p class="text-xl font-bold text-black text-center mt-2">No Record Found!</p>
+                                        <p class="mt-2 text-xl font-bold text-center text-black">No Record Found!</p>
                                     </div>
                                 </td>
                             </tr>
@@ -68,13 +68,13 @@
                                             class="text-blue-500 hover:underline">Select</button>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="font-semibold text-base uppercase">{{ $data->position_Title }}</div>
+                                        <div class="text-base font-semibold uppercase">{{ $data->position_Title }}</div>
                                         <!-- Extra mobile information -->
-                                        <div class="sm:hidden text-sm text-gray-500">Code: {{ $data->position_Code }}
+                                        <div class="text-sm text-gray-500 sm:hidden">Code: {{ $data->position_Code }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 hidden sm:table-cell">
-                                        <div class="font-semibold text-base uppercase">{{ $data->position_Code }}</div>
+                                    <td class="hidden px-6 py-4 sm:table-cell">
+                                        <div class="text-base font-semibold uppercase">{{ $data->position_Code }}</div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -90,7 +90,7 @@
             {{ $jobposition->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
         </div>
 
-        <div class="mt-6 flex justify-end">
+        <div class="flex justify-end mt-6">
             <x-secondary-button type="button" x-data=""
                 x-on:click="$dispatch('close-modal', 'job-position-modal')">
                 {{ __('Cancel') }}

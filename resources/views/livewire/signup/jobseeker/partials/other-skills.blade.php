@@ -1,9 +1,9 @@
 <div wire:poll class="flex flex-col w-full h-full">
 
     <h1 class="text-2xl font-bold">Add Other Skills</h1>
-    <div class="flex flex-col gap-4 mt-5 w-full h-full">
+    <div class="flex flex-col w-full h-full gap-4 mt-5">
         <div class="flex flex-row w-full overflow-auto">
-            <table class="ml-10 table-fixed ">
+            <table class="ml-10 table-fixed">
                 <tbody>
                     <tr>
                         <td class="px-6 py-1">
@@ -201,11 +201,11 @@
             </table>
         </div>
 
-        <div class="flex flex-row px-4 lg:px-12 mt-4 w-full">
+        <div class="flex flex-row w-full px-4 mt-4 lg:px-12">
             <div class="flex flex-col w-full">
                 <x-input-label for="presentAddress" :value="__('Other Skills')" />
                 <div class="flex flex-row gap-4">
-                    <x-text-input wire:model='inputSkills' class="block mt-1 w-1/2" type="text" name="hnum" />
+                    <x-text-input wire:model='inputSkills' class="block w-1/2 mt-1" type="text" name="hnum" />
                     <x-primary-button wire:click.prevent='addSkills' type="button"
                         class="flex justify-center items-center lg:w-[100px] text-white rounded">Add
                         Skill</x-primary-button>
@@ -216,13 +216,13 @@
         </div>
 
 
-        <div id="otherSkillRow" class="flex-inline px-2 lg:px-12 mt-2">
+        <div id="otherSkillRow" class="px-2 mt-2 flex-inline lg:px-12">
             @foreach ($inputData as $index => $data)
                 <span wire:key="jobPref-{{ $index }}"
                     class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                     {{ $data }}
                     <button wire:click.prevent="removeSkills('{{ $data }}')" type="button"
-                        class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
+                        class="inline-flex items-center justify-center flex-shrink-0 rounded-full size-4 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
                         <span class="sr-only">Remove badge</span>
                         <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -237,11 +237,11 @@
 
 
 
-        <div class="flex flex-row justify-between space-x-4 mt-4 lg:mt-auto lg:mb-4">
+        <div class="flex flex-row justify-between mt-4 space-x-4 lg:mt-auto lg:mb-4">
             <x-secondary-button wire:loading.attr='disabled' wire:click.prevent='prev' type="button">
                 Previous
                 <div wire:loading.delay.long wire:target="prev" role="status">
-                    <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                    <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -257,7 +257,7 @@
             <x-blue-button wire:loading.attr='disabled' wire:click.prevent='next' type="button">
                 Next
                 <div wire:loading.delay.long wire:target="next" role="status">
-                    <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                    <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

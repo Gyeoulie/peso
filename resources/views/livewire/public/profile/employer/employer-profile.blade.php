@@ -214,7 +214,7 @@
                                     <div wire:key='{{ $jobPosts->job_id }}' class="container p-3 ">
 
                                         <div
-                                            class="flex flex-row h-full items-center bg-white  rounded-lg hover:shadow-lg transition-shadow duration-300 transition-transform duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl">
+                                            class="flex flex-row h-full items-center bg-white  rounded-lg hover:shadow-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl">
 
                                             <div class="flex flex-col">
                                                 <svg class="w-10 h-10 lg:w-20 lg:h-20 text-gray-800"
