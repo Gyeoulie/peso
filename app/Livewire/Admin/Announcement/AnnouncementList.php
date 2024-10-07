@@ -59,7 +59,7 @@ class AnnouncementList extends Component
     {
         session()->put('announcementData', $id);
 
-        $this->redirectRoute('admin-edit-announcement', navigate: true);
+        $this->redirectRoute('admin-edit-announcement');
 
     }
 

@@ -40,7 +40,7 @@ class TrainingDetails extends Component
     {
         session()->put('programData', $this->id);
 
-        $this->redirectRoute('admin-edit-training', navigate: true);
+        $this->redirectRoute('admin-edit-training', navigate:true);
 
     }
 

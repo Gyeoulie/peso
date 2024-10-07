@@ -326,77 +326,100 @@
 
 </div>
 
-{{-- @scipt --}}
-<script data-navigate-once>
-    document.addEventListener('livewire:navigated', () => {
 
-        $('#descText').summernote({
-            placeholder: 'Write training description here...',
-            tabsize: 2,
-            height: 300,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#descText').summernote('isEmpty')) {
-                        @this.set('descPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('descPost', contents);
-                    }
-                }
-            }
-        });
-        $('#qualText').summernote({
-            placeholder: 'Write training qualifications here...',
-            tabsize: 2,
-            height: 300,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#qualText').summernote('isEmpty')) {
-                        @this.set('qualPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('qualPost', contents);
-                    }
-                }
-            }
-        });
-        $('#remText').summernote({
-            placeholder: 'Write remarks here...',
-            tabsize: 2,
-            height: 120,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#remText').summernote('isEmpty')) {
-                        @this.set('remPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('remPost', contents);
-                    }
-                }
-            }
+@push('scripts')
+    <script data-navigate-once>
+        document.addEventListener('livewire:load', () => {
+            initializeSummernote();
         });
 
-        $('.note-statusbar').hide();
-    })
-</script>
+        document.addEventListener('livewire:navigated', () => {
+            initializeSummernote();
+        });
+
+        function initializeSummernote() {
+            // Ensure the Summernote editor is initialized only once
+            if ($('#descText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+            if ($('#qualText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+            if ($('#remText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+
+            // Initialize the description editor
+            $('#descText').summernote({
+                placeholder: 'Write training description here...',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#descText').summernote('code', @this.get('descPost') || '');
+                    },
+                    onChange: function(contents) {
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('descPost')) {
+                            @this.set('descPost', contents);
+                        }
+                    }
+                }
+            });
+
+            // Initialize the qualifications editor
+            $('#qualText').summernote({
+                placeholder: 'Write training qualifications here...',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#qualText').summernote('code', @this.get('qualPost') || '');
+                    },
+                    onChange: function(contents) {
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('qualPost')) {
+                            @this.set('qualPost', contents);
+                        }
+                    }
+                }
+            });
+
+            // Initialize the remarks editor
+            $('#remText').summernote({
+                placeholder: 'Write remarks here...',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#remText').summernote('code', @this.get('remPost') || '');
+                    },
+                    onChange: function(contents) {
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('remPost')) {
+                            @this.set('remPost', contents);
+                        }
+                    }
+                }
+            });
+
+            // Hide the status bar for all editors
+            $('.note-statusbar').hide();
+        }
+    </script>
+@endpush

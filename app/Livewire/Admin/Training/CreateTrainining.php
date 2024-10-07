@@ -139,7 +139,7 @@ class CreateTrainining extends Component
             'progModality.string' => 'The program modality must be a string.',
             'progModality.max' => 'The program modality may not be greater than 255 characters.',
 
-            'progImg.image' => 'The program image is required.',
+            'progImg.required' => 'The program image is required.',
             'progImg.image' => 'The program image must be an image file.',
             'progImg.mimes' => 'The program image must be a file of type: jpg, jpeg, png.',
             'progImg.max' => 'The program image may not be greater than 10MB.',

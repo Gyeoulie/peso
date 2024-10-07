@@ -138,27 +138,6 @@
                                 </x-primary-button>
 
                             </div>
-                            {{-- <div
-                                class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($programInfo->program_tags)) h-[40px] @endif ">
-                                @foreach ($programInfo->program_tags as $jobData)
-                                    <span
-                                        class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
-                                        {{ $jobData->job_positions->position_Title }}
-                                        <button wire:click.prevent='removeTag( {{ $jobData->program_tags_id }})'
-                                            type="button"
-                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
-                                            <span class="sr-only">Remove badge</span>
-                                            <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
-                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path d="M18 6 6 18" />
-                                                <path d="m6 6 12 12" />
-                                            </svg>
-                                        </button>
-                                    </span>
-                                @endforeach
-                            </div> --}}
 
                             <div
                                 class="flex-inline border border-gray-300 rounded-lg p-1 mt-2 @if (empty($displayTags)) h-[40px] @endif">
@@ -255,7 +234,7 @@
                         <x-input-label for="descPost">Program Description
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='descPost' id="descText">{!! $descPost !!}</textarea>
+                            <textarea id="descText">{!! $descPost !!}</textarea>
                         </div>
 
                         @if ($errors->has('descPost'))
@@ -267,7 +246,7 @@
                         <x-input-label for="qualPost">Program Qualification
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='qualPost' id="qualText">{!! $qualPost !!}</textarea>
+                            <textarea id="qualText">{!! $qualPost !!}</textarea>
                         </div>
 
                         @if ($errors->has('qualPost'))
@@ -281,7 +260,7 @@
                     <x-input-label for="remPost">Program Remarks
                     </x-input-label>
                     <div wire:ignore>
-                        <textarea wire:model='remPost' id="remText">{!! $remPost !!}</textarea>
+                        <textarea id="remText">{!! $remPost !!}</textarea>
                     </div>
                     @if ($errors->has('remPost'))
                         <x-input-error :messages="$errors->get('remPost')" class="mt-2" />
@@ -352,71 +331,101 @@
 
 </div>
 
+
 {{-- @scipt --}}
-<script data-navigate-once>
-    document.addEventListener('livewire:navigated', () => {
-
-        $('#descText').summernote({
-            placeholder: 'Write training description here...',
-            tabsize: 2,
-            height: 120,
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#descText').summernote('isEmpty')) {
-                        @this.set('descPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('descPost', contents);
-                    }
-                }
-            }
-        });
-        $('#qualText').summernote({
-            placeholder: 'Write training qualifications here...',
-            tabsize: 2,
-            height: 120,
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#qualText').summernote('isEmpty')) {
-                        @this.set('qualPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('qualPost', contents);
-                    }
-                }
-            }
-        });
-        $('#remText').summernote({
-            placeholder: 'Write remarks here...',
-            tabsize: 2,
-            height: 120,
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#remText').summernote('isEmpty')) {
-                        @this.set('remPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('remPost', contents);
-                    }
-                }
-            }
+@push('scripts')
+    <script data-navigate-once>
+        document.addEventListener('livewire:load', () => {
+            initializeSummernote();
         });
 
-        $('.note-statusbar').hide();
-    })
-</script>
+        document.addEventListener('livewire:navigated', () => {
+            initializeSummernote();
+        });
+
+        function initializeSummernote() {
+            // Ensure the Summernote editor is initialized only once
+            if ($('#descText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+            if ($('#qualText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+            if ($('#remText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+
+            // Initialize the description editor
+            $('#descText').summernote({
+                placeholder: 'Write training description here...',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#descText').summernote('code', @this.get('descPost') || '');
+                    },
+                    onChange: function(contents) {
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('descPost')) {
+                            @this.set('descPost', contents);
+                        }
+                    }
+                }
+            });
+
+            // Initialize the qualifications editor
+            $('#qualText').summernote({
+                placeholder: 'Write training qualifications here...',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#qualText').summernote('code', @this.get('qualPost') || '');
+                    },
+                    onChange: function(contents) {
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('qualPost')) {
+                            @this.set('qualPost', contents);
+                        }
+                    }
+                }
+            });
+
+            // Initialize the remarks editor
+            $('#remText').summernote({
+                placeholder: 'Write remarks here...',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#remText').summernote('code', @this.get('remPost') || '');
+                    },
+                    onChange: function(contents) {
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('remPost')) {
+                            @this.set('remPost', contents);
+                        }
+                    }
+                }
+            });
+
+            // Hide the status bar for all editors
+            $('.note-statusbar').hide();
+        }
+    </script>
+@endpush
