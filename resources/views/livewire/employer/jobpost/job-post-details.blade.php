@@ -796,6 +796,8 @@
         </div>
     </div>
 
+</div>
+@push('scripts')
     @script
         <script>
             Livewire.on('viewFile', event => {
@@ -803,9 +805,6 @@
                 if (Array.isArray(event) && event.length > 0) {
                     // Access the first element and then its properties
                     const data = event[0]; // Assuming the data object is the first element
-
-                    // Log the entire data object for verification
-                    console.log('Data:', data);
 
                     // Extract URL and handle dynamic keys
                     const url = data.url;
@@ -852,4 +851,4 @@
             });
         </script>
     @endscript
-</div>
+@endpush

@@ -583,16 +583,19 @@
                                                         {{ $data->peso->municipality->municipality_Name }}
                                                     </div>
                                                     <div class="lg:hidden text-gray-500">
-                                                        <span class="block text-sm">Status: 
+                                                        <span class="block text-sm">Status:
                                                             @if ($data->partnership_Status == 'PENDING')
-                                                                <span class="font-semibold text-yellow-800">PENDING</span>
+                                                                <span
+                                                                    class="font-semibold text-yellow-800">PENDING</span>
                                                             @elseif ($data->partnership_Status == 'APPROVED')
-                                                                <span class="font-semibold text-green-800">ACTIVE</span>
+                                                                <span
+                                                                    class="font-semibold text-green-800">ACTIVE</span>
                                                             @elseif ($data->partnership_Status == 'REJECTED' || $data->partnership_Status == 'CANCELLED')
-                                                                <span class="font-semibold text-red-800">{{ $data->partnership_Status }}</span>
+                                                                <span
+                                                                    class="font-semibold text-red-800">{{ $data->partnership_Status }}</span>
                                                             @endif
                                                         </span>
-                                                        <span class="block text-sm">Partnership Date: 
+                                                        <span class="block text-sm">Partnership Date:
                                                             @if ($data->responded_at)
                                                                 {{ $data->responded_at->format('F j, Y') }}
                                                             @else
@@ -601,32 +604,37 @@
                                                         </span>
                                                     </div>
                                                 </td>
-                            
+
                                                 <td class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-4">
                                                     <div class="text-black font-bold">
                                                         @if ($data->partnership_Status == 'PENDING')
-                                                            <span class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                            <span
+                                                                class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                                                         @elseif ($data->partnership_Status == 'APPROVED')
-                                                            <span class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
+                                                            <span
+                                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
                                                         @elseif ($data->partnership_Status == 'REJECTED' || $data->partnership_Status == 'CANCELLED')
-                                                            <span class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->partnership_Status }}</span>
+                                                            <span
+                                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->partnership_Status }}</span>
                                                         @endif
                                                     </div>
                                                 </td>
-                            
+
                                                 <td class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-4">
                                                     <div class="text-gray-500 text-md">
                                                         @if ($data->responded_at)
                                                             {{ $data->responded_at->format('F j, Y') }}
                                                         @else
                                                             <div class="flex items-center font-semibold">
-                                                                <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                                </div>
                                                                 PENDING
                                                             </div>
                                                         @endif
                                                     </div>
                                                 </td>
-                            
+
                                                 <td class="px-4 py-2 lg:px-6 lg:py-4">
                                                     <div class="flex flex-row items-center justify-center gap-6">
                                                         @if ($data->partnership_Status != 'PENDING')
@@ -673,7 +681,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            
+
                         </div>
                     </div>
 
@@ -859,72 +867,65 @@
     </x-modal>
 
 
-
-
-
-
-
-
-
 </div>
 
-@script
-    <script>
-        Livewire.on('viewFile', event => {
-            // Check if the event is an array and has at least one element
-            if (Array.isArray(event) && event.length > 0) {
-                // Access the first element and then its properties
-                const data = event[0]; // Assuming the data object is the first element
 
-                // Log the entire data object for verification
-                console.log('Data:', data);
+@push('scripts')
+    @script
+        <script>
+            Livewire.on('viewFile', event => {
+                // Check if the event is an array and has at least one element
+                if (Array.isArray(event) && event.length > 0) {
+                    // Access the first element and then its properties
+                    const data = event[0]; // Assuming the data object is the first element
 
-                // Extract URL and handle dynamic keys
-                const url = data.url;
-                const formData = {
-                    ...data
-                }; // Spread the data object to use for form inputs
+                    // Extract URL and handle dynamic keys
+                    const url = data.url;
+                    const formData = {
+                        ...data
+                    }; // Spread the data object to use for form inputs
 
-                // Check if URL is present
-                if (url) {
-                    // Create and configure the form element
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = url;
-                    form.target = '_blank';
+                    // Check if URL is present
+                    if (url) {
+                        // Create and configure the form element
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = url;
+                        form.target = '_blank';
 
-                    // Add CSRF token as a hidden input
-                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = '_token';
-                    csrfInput.value = csrfToken;
-                    form.appendChild(csrfInput);
+                        // Add CSRF token as a hidden input
+                        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+                        form.appendChild(csrfInput);
 
-                    // Add all data inputs dynamically
-                    for (const [key, value] of Object.entries(formData)) {
-                        // Skip the URL and CSRF token from being added as form inputs
-                        if (key !== 'url') {
-                            const input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = key;
-                            input.value = value;
-                            form.appendChild(input);
+                        // Add all data inputs dynamically
+                        for (const [key, value] of Object.entries(formData)) {
+                            // Skip the URL and CSRF token from being added as form inputs
+                            if (key !== 'url') {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = key;
+                                input.value = value;
+                                form.appendChild(input);
+                            }
                         }
+
+                        // Append form to the body and submit
+                        document.body.appendChild(form);
+                        form.submit();
+
+                        // Clean up by removing the form element
+                        document.body.removeChild(form);
+                    } else {
+                        console.error('URL not found in event data');
                     }
-
-                    // Append form to the body and submit
-                    document.body.appendChild(form);
-                    form.submit();
-
-                    // Clean up by removing the form element
-                    document.body.removeChild(form);
                 } else {
-                    console.error('URL not found in event data');
+                    console.error('Event is not in the expected format');
                 }
-            } else {
-                console.error('Event is not in the expected format');
-            }
-        });
-    </script>
-@endscript
+            });
+        </script>
+    @endscript
+@endpush

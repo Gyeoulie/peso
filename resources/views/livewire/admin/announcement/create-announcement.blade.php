@@ -141,37 +141,45 @@
 
 </div>
 
-{{-- @scipt --}}
-<script data-navigate-once>
-    document.addEventListener('livewire:navigated', () => {
+@push('scripts')
+    <script data-navigate-once>
+        document.addEventListener('livewire:load', () => {
+            initializeSummernote();
+        });
 
-        $('#descText').summernote({
-            placeholder: 'Write training description here...',
-            tabsize: 4,
-            height: 600,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['fontsize', ['fontsize', 'fontname']],
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                // ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#descText').summernote('isEmpty')) {
-                        @this.set('contentPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('contentPost', contents);
+        document.addEventListener('livewire:navigated', () => {
+            initializeSummernote();
+        });
+
+        function initializeSummernote() {
+            // Ensure the Summernote editor is initialized only once
+            if ($('#descText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+
+            // Initialize the description editor
+            $('#descText').summernote({
+                placeholder: 'Write training description here...',
+                tabsize: 4,
+                height: 600,
+                disableResizeEditor: true, // Optional to remove resize
+                disableDragAndDrop: true, // Prevent drag-and-drop for images
+                toolbar: [
+                    ['fontsize', ['fontsize', 'fontname']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                ],
+                callbacks: {
+                    onChange: function(contents) {
+                        if ($('#descText').summernote('isEmpty')) {
+                            @this.set('contentPost', ''); // Handle "empty" state
+                        } else {
+                            @this.set('contentPost', contents); // Update Livewire property
+                        }
                     }
                 }
-            }
-        });
-    })
-
-
-    // $('.note-statusbar').hide();
-</script>
+            });
+        }
+    </script>
+@endpush

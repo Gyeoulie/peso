@@ -836,7 +836,8 @@
                                             @if ($jobseeker->license->isEmpty())
                                                 <tr>
                                                     <td colspan="2">
-                                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                        <div
+                                                            class="flex flex-col items-center justify-center mt-24 mb-24">
                                                             <div class="p-6 bg-gray-100 rounded-full">
                                                                 <svg class="w-24 h-24 text-black" aria-hidden="true"
                                                                     xmlns="http://www.w3.org/2000/svg" width="24"
@@ -863,7 +864,8 @@
                                                                     {{ $data->license_type->license_Name }}
                                                                 </div>
                                                                 <div class="lg:hidden text-sm text-gray-600">
-                                                                    Valid until: {{ $data->license_Validity->format('F m, Y') }}
+                                                                    Valid until:
+                                                                    {{ $data->license_Validity->format('F m, Y') }}
                                                                 </div>
                                                             </div>
                                                         </th>
@@ -877,7 +879,7 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    
+
                                 </div>
                             </div>
 
@@ -905,7 +907,8 @@
                                             @if ($jobseeker->eligibility->isEmpty())
                                                 <tr>
                                                     <td colspan="2">
-                                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                                        <div
+                                                            class="flex flex-col items-center justify-center mt-24 mb-24">
                                                             <div class="p-6 bg-gray-100 rounded-full">
                                                                 <svg class="w-24 h-24 text-black" aria-hidden="true"
                                                                     xmlns="http://www.w3.org/2000/svg" width="24"
@@ -932,7 +935,8 @@
                                                                     {{ $data->eligibility_type->eligibility_Name }}
                                                                 </div>
                                                                 <div class="lg:hidden text-sm text-gray-600">
-                                                                    Valid until: {{ $data->eligibility_Date->format('F m, Y') }}
+                                                                    Valid until:
+                                                                    {{ $data->eligibility_Date->format('F m, Y') }}
                                                                 </div>
                                                             </div>
                                                         </th>
@@ -946,7 +950,7 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    
+
                                 </div>
                             </div>
 
@@ -1426,62 +1430,58 @@
 
 
 
+@push('scripts')
+    @script
+        <script>
+            Livewire.on('viewFile', event => {
+                // Check if the event is an array and has at least one element
+                if (Array.isArray(event) && event.length > 0) {
+                    // Access the first element and then its properties
+                    const data = event[0]; // Assuming the data object is the first element
 
-@script
-    <script>
-        Livewire.on('viewFile', event => {
-            // Check if the event is an array and has at least one element
-            if (Array.isArray(event) && event.length > 0) {
-                // Access the first element and then its properties
-                const data = event[0]; // Assuming the data object is the first element
+                    // Extract URL and handle dynamic keys
+                    const url = data.url;
 
-                // Log the entire data object for verification
-                console.log('Data:', data);
+                    // Ensure URL is present
+                    if (url) {
+                        // Create and configure the form element
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = url;
+                        form.target = '_blank';
 
-                // Extract URL and handle dynamic keys
-                const url = data.url;
+                        // Add CSRF token as a hidden input
+                        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+                        form.appendChild(csrfInput);
 
-                // Ensure URL is present
-                if (url) {
-                    // Create and configure the form element
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = url;
-                    form.target = '_blank';
+                        // Add all data inputs dynamically
+                        Object.entries(data).forEach(([key, value]) => {
+                            if (key !== 'url') {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = key;
+                                input.value = value;
+                                form.appendChild(input);
+                            }
+                        });
 
-                    // Add CSRF token as a hidden input
-                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = '_token';
-                    csrfInput.value = csrfToken;
-                    form.appendChild(csrfInput);
+                        // Append form to the body and submit
+                        document.body.appendChild(form);
+                        form.submit();
 
-                    // Add all data inputs dynamically
-                    Object.entries(data).forEach(([key, value]) => {
-                        if (key !== 'url') {
-                            const input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = key;
-                            input.value = value;
-                            form.appendChild(input);
-                        }
-                    });
-
-                    // Append form to the body and submit
-                    document.body.appendChild(form);
-                    form.submit();
-
-                    // Clean up by removing the form element
-                    document.body.removeChild(form);
+                        // Clean up by removing the form element
+                        document.body.removeChild(form);
+                    } else {
+                        console.error('URL not found in event data');
+                    }
                 } else {
-                    console.error('URL not found in event data');
+                    console.error('Event is not in the expected format');
                 }
-            } else {
-                console.error('Event is not in the expected format');
-            }
-        });
-    </script>
-@endscript
-
-
+            });
+        </script>
+    @endscript
+@endpush
