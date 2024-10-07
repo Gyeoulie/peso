@@ -10,7 +10,7 @@
                             partnership to access job posting.
                         </p>
                         <div x-data="{ tooltip: 'View company settings to review current partnerships status.' }">
-                            <svg x-tooltip="tooltip" class="w-9 h-9 sm:w-9 sm:h-9 text-yellow-700 me-2.5 hover:scale-110"
+                            <svg x-tooltip="tooltip" class="w-9 h-9 lg:w-9 lg:h-9 text-yellow-700 me-2.5 hover:scale-110"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                 <path fill-rule="evenodd"
                                     d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             @else
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg">
                     <div class="flex flex-col w-full">
                         <div class="flex flex-row w-full">
                             <div class="flex flex-row">
@@ -50,7 +50,7 @@
 
     <div class="table-container overflow-visible">
         <div class="max-w-7xl mx-auto overflow-visible">
-            <div class="bg-white overflow-hidden sm:rounded-lg p-2 overflow-visible">
+            <div class="bg-white overflow-hidden lg:rounded-lg p-2 overflow-visible">
 
 
                 <div class="p-2" x-data="{
@@ -68,7 +68,7 @@
                         });
                     }
                 }" x-init="init()">
-                    <div class="sm:hidden">
+                    <div class="lg:hidden">
                         <label for="tabs" class="sr-only">Select Filter</label>
                         <select id="tabs"
                             class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -81,7 +81,7 @@
                             <option value="OTHERS">Others ({{ $othersCount }})</option>
                         </select>
                     </div>
-                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex ">
+                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex ">
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('ALL')"
                                 :class="filter === 'ALL' ? activeFilter : inactiveFilter"
@@ -125,7 +125,7 @@
 
                 <div class="relative">
                     <div
-                        class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0  overflow-visbile">
+                        class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0  overflow-visbile">
 
 
                         <label for="table-search" class="sr-only">Search</label>
@@ -139,7 +139,7 @@
                                 </svg>
                             </div>
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job posting">
                         </div>
                         <div class="flex flex-wrap mr-3 gap-2">
@@ -192,13 +192,13 @@
                                     <th scope="col" class="px-6 py-3 md:w-64">
                                         Candidates
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         PESO Branch
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         Status
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         Date
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -233,14 +233,14 @@
                                                 <div class="ps-3">
                                                     <div class="text-base font-semibold">{{ $data->job_Title }}</div>
                                                     <div
-                                                        class="font-normal text-gray-500 text-xs sm:text-sm uppercase">
+                                                        class="font-normal text-gray-500 text-xs lg:text-sm uppercase">
                                                         {{ $data->job_Address }},
                                                         {{ $data->barangay->barangay_Name }},
                                                         {{ $data->barangay->municipality->municipality_Name }},
                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                     </div>
                                                     <!-- Additional info for mobile view -->
-                                                    <div class="sm:hidden mt-2">
+                                                    <div class="lg:hidden mt-2">
                                                         <span class="block text-xs text-gray-600">PESO Branch:
                                                             {{ $data->peso->municipality->municipality_Name }}</span>
                                                         <span class="block text-xs text-gray-600">Status:
@@ -272,12 +272,12 @@
                                                         REJECTED</span>
                                                 </div>
                                             </td>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 <div class="font-normal text-gray-500 text-sm">
                                                     {{ $data->peso->municipality->municipality_Name }}
                                                 </div>
                                             </td>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 <div class="flex items-center">
                                                     @if ($data->job_Status == 'ACTIVE')
                                                         <div
@@ -302,7 +302,7 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 <div class="font-normal text-gray-500 text-sm">
                                                     {{ $data->created_at->format('F j, Y') }}
                                                 </div>

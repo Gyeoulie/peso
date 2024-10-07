@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-9xl mx-auto px-4 lg:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -14,7 +14,7 @@
 
                 @if (Auth::check())
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <div class="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
 
                         @if (auth()->user()->usertype == 2)
                             <x-nav-link :href="route('fill_profile')" :active="request()->routeIs('fill_profile')">
@@ -73,7 +73,7 @@
                         @endif
                     </div>
                 @else
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <div class="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
@@ -86,7 +86,7 @@
 
             @if (Auth::check() && auth()->user()->usertype > 3)
                 @if (auth()->user()->usertype != 5)
-                    <div class="hidden sm:flex mr-1 ml-auto  w-40 lg:w-96">
+                    <div class="hidden lg:flex mr-1 ml-auto  w-40 lg:w-96">
 
 
                         <livewire:components.profile-search />
@@ -96,7 +96,7 @@
                 @endif
 
                 <!-- Settings Dropdown -->
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <div class="hidden lg:flex lg:items-center lg:ms-6">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
@@ -140,7 +140,7 @@
                 </div>
 
                 <!-- Hamburger -->
-                <div class="-me-2 flex items-center sm:hidden">
+                <div class="-me-2 flex items-center lg:hidden">
                     <button @click="open = ! open"
                         class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -181,7 +181,7 @@
     </div>
     @if (Auth::check())
         <!-- Responsive Navigation Menu -->
-        <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden relative">
+        <div :class="{ 'block': open, 'hidden': !open }" class="hidden lg:hidden relative">
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}

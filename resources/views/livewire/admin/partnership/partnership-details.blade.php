@@ -1,12 +1,12 @@
 <div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Patnerships \ Employer Details</h1>
         </div>
         {{-- PROFILE CONTAINER --}}
-        <div class="col-span-4 sm:col-span-4 ">
+        <div class="col-span-4 lg:col-span-4 ">
             <div class="bg-white shadow rounded-lg p-6">
 
                 <div class="flex flex-col items-center">
@@ -163,7 +163,7 @@
         </div>
 
         {{-- CONTAINER FOR TABS --}}
-        <div class="col-span-4 sm:col-span-8 row">
+        <div class="col-span-4 lg:col-span-8 row">
 
 
 
@@ -174,7 +174,7 @@
             <div class="bg-white shadow rounded-lg p-6">
                 <h1 class="text-2xl font-bold ">Company Details</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="bname" :value="__('Business Name')" />
                         <x-text-input wire:model="businessName" class="block mt-1 w-full" type="text" disabled />
@@ -188,7 +188,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="tin" :value="__('TIN')" />
                         <x-text-input wire:model="tin" class="block mt-1 w-full" type="text" disabled />
@@ -220,7 +220,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="empType" :value="__('Employer Type')" />
                         <select wire:model='empType' class="block mt-1 w-full rounded" disabled>
@@ -251,7 +251,7 @@
                 </div>
 
 
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="companyAddress" :value="__('Company Address')" />
                         <x-text-input wire:model="companyAddress" class="block mt-1 w-full" type="text"
@@ -266,7 +266,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="mun" :value="__('Municipality')" />
                         <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" disabled />
@@ -299,7 +299,7 @@
 
             @if ($partnersData->partnership_Status != 'PENDING')
                 <div class="bg-white shadow rounded-lg p-6 mt-4">
-                    <div class="flex sm:flex-row gap-4 sm:justify-between">
+                    <div class="flex lg:flex-row gap-4 lg:justify-between">
                         <h1 class="text-2xl font-bold ">Partnership Details</h1>
 
                         @if ($partnersData->partnership_Status == 'PENDING')
@@ -315,7 +315,7 @@
                     </div>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                     <div class="flex flex-col w-full">
-                        <div class="flex sm:flex-row gap-4 sm:justify-between">
+                        <div class="flex lg:flex-row gap-4 lg:justify-between">
                             <h1 class="text-md font-semibold">Partnership Remarks</h1>
                             <h1 class="text-md ">{{ $partnersData->responded_at->format('F j, Y') }}</h1>
 

@@ -1,11 +1,11 @@
 <div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Partnerships</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <div class="bg-white shadow rounded-lg p-6" x-data="{
                 filter: @entangle('filter').defer || '', // Default value is ''
                 activeClasses: 'text-gray-900 bg-gray-400 active',
@@ -24,7 +24,7 @@
 
                 <div class="relative overflow-x-auto p-1">
                     <!-- Mobile Dropdown -->
-                    <div class="sm:hidden">
+                    <div class="lg:hidden">
                         <label for="tabs" class="sr-only">Select Filter</label>
                         <select id="tabs"
                             class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -37,7 +37,7 @@
                     </div>
 
                     <!-- Desktop Tabs -->
-                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex mb-3">
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('')"
                                 :class="filter === '' ? activeClasses : inactiveClasses"
@@ -62,8 +62,8 @@
                     </ul>
 
 
-                    <div class="relative p-1 sm:mt-2">
-                        <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="relative p-1 lg:mt-2">
+                        <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
 
                             <label for="table-search" class="sr-only">Search</label>
@@ -79,7 +79,7 @@
 
                                 {{-- SEARCH --}}
                                 <input wire:model.live='search' type="search"
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search">
                             </div>
 
@@ -88,21 +88,21 @@
                         {{-- TABLE --}}
                         <div class="overflow-x-auto ">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-300 hidden sm:table-header-group">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-300 hidden lg:table-header-group">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
                                             Business Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                             Company Type
                                         </th>
-                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                             Employer Type
                                         </th>
-                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                             Partnership Status
                                         </th>
-                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                             Joined Date
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -136,8 +136,8 @@
                                                 class="bg-white border-b hover:bg-gray-50">
                                                 <!-- Business Name and Address for Mobile -->
                                                 <th scope="row"
-                                                    class="flex flex-col sm:flex-row sm:items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                    <img class="w-10 h-10 rounded-full cover-full mb-2 sm:mb-0 shadow-xl"
+                                                    class="flex flex-col lg:flex-row lg:items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                    <img class="w-10 h-10 rounded-full cover-full mb-2 lg:mb-0 shadow-xl"
                                                         src="{{ asset('storage/' . $data->company->company_img) }}"
                                                         alt="img">
                                                     <div class="ps-3 text-wrap">
@@ -148,20 +148,20 @@
                                                             {{ $data->company->barangay->barangay_Name }},
                                                             {{ $data->company->barangay->municipality->municipality_Name }}
                                                         </div>
-                                                        <div class="block sm:hidden mt-2 text-sm text-gray-500">
+                                                        <div class="block lg:hidden mt-2 text-sm text-gray-500">
                                                             <div class="text-gray-700 font-semibold">Company Type:</div>
                                                             <div>
                                                                 {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
                                                             </div>
                                                         </div>
-                                                        <div class="block sm:hidden mt-2 text-sm text-gray-500">
+                                                        <div class="block lg:hidden mt-2 text-sm text-gray-500">
                                                             <div class="text-gray-700 font-semibold">Employer Type:
                                                             </div>
                                                             <div>
                                                                 {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
                                                             </div>
                                                         </div>
-                                                        <div class="block sm:hidden mt-2 text-sm text-gray-500">
+                                                        <div class="block lg:hidden mt-2 text-sm text-gray-500">
                                                             <div class="text-gray-700 font-semibold">Joined Date:</div>
                                                             <div>{{ $data->company->created_at->format('F j, Y') }}
                                                             </div>
@@ -171,21 +171,21 @@
                                                 </th>
 
                                                 <!-- Company Type for larger screens -->
-                                                <td class="px-6 py-4 hidden sm:table-cell">
+                                                <td class="px-6 py-4 hidden lg:table-cell">
                                                     <div class="font-normal text-gray-500 text-sm font-semibold">
                                                         {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
                                                     </div>
                                                 </td>
 
                                                 <!-- Employer Type for larger screens -->
-                                                <td class="px-6 py-4 hidden sm:table-cell">
+                                                <td class="px-6 py-4 hidden lg:table-cell">
                                                     <div class="font-normal text-gray-500 text-sm font-semibold">
                                                         {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
                                                     </div>
                                                 </td>
 
                                                 <!-- Partnership Status -->
-                                                <td class="px-6 py-4 hidden sm:table-cell">
+                                                <td class="px-6 py-4 hidden lg:table-cell">
                                                     @if ($data->partnership_Status == 'PENDING')
                                                         <span
                                                             class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -199,7 +199,7 @@
                                                 </td>
 
                                                 <!-- Joined Date for larger screens -->
-                                                <td class="px-6 py-4 hidden sm:table-cell">
+                                                <td class="px-6 py-4 hidden lg:table-cell">
                                                     {{ $data->company->created_at->format('F j, Y') }}
                                                 </td>
 
@@ -226,7 +226,7 @@
                                             </tr>
 
                                             <!-- Mobile-specific row (for company details) -->
-                                            <tr class="block sm:hidden">
+                                            <tr class="block lg:hidden">
                                                 <td colspan="6" class="px-6 py-3">
 
                                                 </td>

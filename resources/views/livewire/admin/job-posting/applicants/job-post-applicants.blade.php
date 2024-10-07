@@ -1,13 +1,13 @@
 <div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
-        <div class="col-span-4 sm:col-span-12">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+        <div class="col-span-4 lg:col-span-12">
 
             {{-- TITLE --}}
             <h1 class="text-2xl font-bold">Job Posting \ Applicants List</h1>
         </div>
 
         {{-- COMPANY CONTAINER --}}
-        <div class="col-span-4 px-2 sm:px-0">
+        <div class="col-span-4 px-2 lg:px-0">
             <div class="bg-white shadow rounded-lg p-6">
 
                 <div class="flex flex-col items-center">
@@ -157,19 +157,19 @@
 
 
         {{-- CONTAINER FOR TABS --}}
-        <div class="col-span-4 sm:col-span-8 px-2 sm:px-0">
+        <div class="col-span-4 lg:col-span-8 px-2 lg:px-0">
 
             {{-- APPLICATION LIST CONTAINER --}}
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex flex-row justify-between">
-                    <h1 class="text-md sm:text-2xl font-bold mb">Applicant List</h1>
-                    <h1 class="text-md sm:text-2xl font-bold mb">Slots Remaining: {{ $jobpost->slotsLeft }} </h1>
+                    <h1 class="text-md lg:text-2xl font-bold mb">Applicant List</h1>
+                    <h1 class="text-md lg:text-2xl font-bold mb">Slots Remaining: {{ $jobpost->slotsLeft }} </h1>
 
                 </div>
                 <hr class="h-px my-4  bg-gray-200 border-0 dark:bg-gray-700">
 
                 <div class="relative overflow-x-auto">
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
@@ -184,13 +184,13 @@
 
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for Applicants">
                         </div>
                         <div class="flex flex-wrap mr-3 gap-2">
                             <div x-data="{ tooltip: 'Export to Excel' }">
                                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
-                                    class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                                    class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                                     <span class="mr-2">Export</span>
                                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -210,9 +210,9 @@
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">Name</th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">Status</th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">PESO Status</th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">Date Applied</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">Status</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">PESO Status</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">Date Applied</th>
                                     <th scope="col" class="px-6 py-3"></th>
                                 </tr>
                             </thead>
@@ -258,7 +258,7 @@
                                                     </div>
 
                                                     <div
-                                                        class="font-normal text-gray-500 text-sm uppercase sm:hidden mt-2">
+                                                        class="font-normal text-gray-500 text-sm uppercase lg:hidden mt-2">
                                                         Status:
                                                         <span class="font-bold">
                                                             @if ($applicants->applicant_Status == 'PENDING')
@@ -276,7 +276,7 @@
                                                             @endif
                                                         </span>
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
                                                         PESO:
                                                         <span class="font-bold">
                                                             @if ($applicants->peso_Status == 'PENDING')
@@ -295,7 +295,7 @@
                                                         </span>
                                                     </div>
                                                     <!-- Show date on mobile -->
-                                                    <div class="text-gray-500 text-xs sm:hidden">
+                                                    <div class="text-gray-500 text-xs lg:hidden">
                                                         Applied: {{ $applicants->created_at->format('F j, Y') }}
                                                     </div>
 
@@ -303,7 +303,7 @@
 
 
                                                 <!-- Status (Hidden on mobile) -->
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="font-semibold">
                                                     @if ($applicants->applicant_Status == 'PENDING')
                                                         <div
@@ -320,7 +320,7 @@
                                                 </div>
                                             </td>
                                             <!-- PESO Status (Hidden on mobile) -->
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="font-semibold">
                                                     @if ($applicants->peso_Status == 'PENDING')
                                                         <div
@@ -337,7 +337,7 @@
                                                 </div>
                                             </td>
                                             <!-- Date Applied (Hidden on mobile) -->
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-sm">{{ $applicants->created_at->format('F j, Y') }}
                                                 </div>
                                             </td>

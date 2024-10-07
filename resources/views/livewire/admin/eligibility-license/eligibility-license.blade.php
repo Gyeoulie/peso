@@ -1,11 +1,11 @@
 <div wire:poll.5s class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
-        <div class="col-span-4 sm:col-span-12">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Data Management / Eligibility - License</h1>
         </div>
 
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             {{-- @livewire('admin.eligibility-license.eligibility-table') --}}
 
             <div class="bg-white shadow rounded-lg p-6">
@@ -22,7 +22,7 @@
 
                 </div>
                 <div class="relative">
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
 
                         <label for="table-search" class="sr-only">Search</label>
@@ -38,7 +38,7 @@
 
                             {{-- ELIGIBILITY SEARCH --}}
                             <input wire:model.live='searchEligiblity' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search eligibility">
                         </div>
                         <div class="flex flex-wrap mr-3 gap-2">
@@ -86,7 +86,7 @@
                                     <th scope="col" class="px-6 py-3">
                                         Eligibility Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Eligibility Title
                                     </th>
                                     <th scope="col" class="px-6 py-3 w-1/4">
@@ -121,10 +121,10 @@
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
                                                 <div
-                                                    class="hidden sm:block text-gray-500 font-medium text-lg uppercase">
+                                                    class="hidden lg:block text-gray-500 font-medium text-lg uppercase">
                                                     {{ $data->eligibility_Code }}
                                                 </div>
-                                                <div class="block sm:hidden">
+                                                <div class="block lg:hidden">
                                                     <div class="text-black font-bold text-md uppercase">
                                                         {{ $data->eligibility_Name }}
                                                     </div>
@@ -134,7 +134,7 @@
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-black font-bold text-lg uppercase">
                                                     {{ $data->eligibility_Name }}
                                                 </div>
@@ -215,7 +215,7 @@
 
 
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             {{-- @livewire('admin.eligibility-license.license-table') --}}
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex flex-row justify-between mb-4">
@@ -230,7 +230,7 @@
 
                 </div>
                 <div class="relative overflow-x-auto">
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
@@ -245,7 +245,7 @@
 
                             {{-- ELIGIBILITY SEARCH --}}
                             <input type="search" wire:model.live='searchLicense' id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search license">
                         </div>
 
@@ -293,10 +293,10 @@
                                     <th scope="col" class="px-6 py-3 ">
                                         Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         License
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w sm:w-1/4">
+                                    <th scope="col" class="px-6 py-3 w lg:w-1/4">
 
                                     </th>
                                 </tr>
@@ -328,10 +328,10 @@
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
                                                 <div
-                                                    class="hidden sm:block text-gray-500 font-medium text-lg uppercase">
+                                                    class="hidden lg:block text-gray-500 font-medium text-lg uppercase">
                                                     {{ $data->license_Code }}
                                                 </div>
-                                                <div class="block sm:hidden">
+                                                <div class="block lg:hidden">
                                                     <div class="text-black font-bold text-md uppercase break-all">
                                                         {{ $data->license_Name }}
                                                     </div>
@@ -341,7 +341,7 @@
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-black font-bold text-lg uppercase">
                                                     {{ $data->license_Name }}
                                                 </div>
@@ -425,7 +425,7 @@
                         {{ __('Manage Eligibility Record') }}
                     </h2>
                     <hr>
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-6 mt-2 w-full">
 
                         <div class="flex flex-col mt-2 w-full">
                             <x-input-label for="eligibilityPost" :value="__('Eligibility Title')" />
@@ -461,7 +461,7 @@
                         {{ __('Manage License Record') }}
                     </h2>
                     <hr>
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-6 mt-2 w-full">
 
                         <div class="flex flex-col mt-2 w-full">
                             <x-input-label for="licensePost" :value="__('License Title')" />

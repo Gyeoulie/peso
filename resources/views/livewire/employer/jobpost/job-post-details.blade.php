@@ -1,20 +1,20 @@
 <div class="w-full">
-    <div wire:poll class="flex mx-auto sm:mx-12 py-2 ">
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0 w-full">
-            <div class="col-span-4 sm:col-span-12">
+    <div wire:poll class="flex mx-auto lg:mx-12 py-2 ">
+        <div class="grid grid-cols-4 lg:grid-cols-12 gap-10 p-3 lg:p-0 w-full">
+            <div class="col-span-4 lg:col-span-12">
                 {{-- TITLE --}}
 
             </div>
 
 
             {{-- FIRST CONTAINER --}}
-            {{-- <div class="col-span-4 sm:col-span-12">
+            {{-- <div class="col-span-4 lg:col-span-12">
               
 
             </div> --}}
 
             {{-- SECOND CONTAINER FOR JOB DESCRIPTION --}}
-            <div class="col-span-4 sm:col-span-6">
+            <div class="col-span-4 lg:col-span-6">
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col">
 
                     {{-- PHONE DATE (SMALL SCREEN) --}}
@@ -31,8 +31,8 @@
                             </img>
 
                             <div class="flex flex-col ml-4 w-full">
-                                <h1 class="text-xl sm:text-3xl font-bold">{{ $jobpost->company->business_Name }}</h1>
-                                <p class="text-sm sm:text-lg text-gray-700 uppercase">
+                                <h1 class="text-xl lg:text-3xl font-bold">{{ $jobpost->company->business_Name }}</h1>
+                                <p class="text-sm lg:text-lg text-gray-700 uppercase">
                                     {{ $jobpost->company->company_Address }},
                                     {{ $jobpost->barangay->barangay_Name }},
                                     {{ $jobpost->barangay->municipality->municipality_Name }},
@@ -41,19 +41,19 @@
                                 <div class="flex">
                                     @if ($jobpost->job_Status == 'PENDING')
                                         <span
-                                            class="bg-yellow-100 text-yellow-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">PENDING</span>
+                                            class="bg-yellow-100 text-yellow-800 text-sm font-medium px-2.5 py-1 lg:text-md lg:font-semibold me-2 lg:px-10 lg:py-2 rounded-lg ">PENDING</span>
                                     @elseif($jobpost->job_Status == 'ACTIVE')
                                         <span
-                                            class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">ACTIVE</span>
+                                            class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-1 lg:text-md lg:font-semibold me-2 lg:px-10 lg:py-2 rounded-lg ">ACTIVE</span>
                                     @elseif($jobpost->job_Status == 'CLOSED')
                                         <span
-                                            class="bg-cyan-100 text-cyan-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">CLOSED</span>
+                                            class="bg-cyan-100 text-cyan-800 text-sm font-medium px-2.5 py-1 lg:text-md lg:font-semibold me-2 lg:px-10 lg:py-2 rounded-lg ">CLOSED</span>
                                     @elseif($jobpost->job_Status == 'COMPLETED')
                                         <span
-                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">COMPLETED</span>
+                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-1 lg:text-md lg:font-semibold me-2 lg:px-10 lg:py-2 rounded-lg ">COMPLETED</span>
                                     @else
                                         <span
-                                            class="bg-red-100 text-red-800 text-sm font-medium px-2.5 py-1 sm:text-md sm:font-semibold me-2 sm:px-10 sm:py-2 rounded-lg ">{{ $jobpost->job_Status }}</span>
+                                            class="bg-red-100 text-red-800 text-sm font-medium px-2.5 py-1 lg:text-md lg:font-semibold me-2 lg:px-10 lg:py-2 rounded-lg ">{{ $jobpost->job_Status }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
 
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
 
-                    <div class="flex flex-col gap-2 sm:flex-row  sm:justify-between">
+                    <div class="flex flex-col gap-2 lg:flex-row  lg:justify-between">
                         <h1 class="text-2xl font-bold">Job Posting Details</h1>
 
                         @if ($jobpost->job_Disability == 1)
@@ -92,7 +92,7 @@
 
 
 
-                    <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="title"> <i class="fa-solid fa-briefcase"></i> Job
@@ -117,7 +117,7 @@
                     </div>
 
 
-                    <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
 
                         <div class="flex flex-col ml w-full">
                             <x-input-label for="education" class="flex flex-row items-center gap-1"> <svg
@@ -137,7 +137,7 @@
                                 value=" {{ $eduLevels[$jobpost->job_Edu] }}" readonly />
                         </div>
 
-                        <div class="flex flex-col sm:flex-col ml w-full">
+                        <div class="flex flex-col lg:flex-col ml w-full">
                             <x-input-label for="type"> <i class="fa-solid fa-briefcase"></i> Employment Type
                             </x-input-label>
                             <x-text-input id="type" class="block mt-1 w-full" type="text"
@@ -146,7 +146,7 @@
 
                     </div>
 
-                    <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="wage" class="flex flex-row items-center gap-1"><svg class="w-5 h-5"
@@ -204,7 +204,7 @@
                 {{-- CONTAINER FOR JOB TAGS --}}
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
                     {{-- TITLE --}}
-                    <h1 class="text-xl sm:text-3xl font-bold">Job Posting Tags</h1>
+                    <h1 class="text-xl lg:text-3xl font-bold">Job Posting Tags</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                     <div class="flex flex-row mt-4 w-full gap-4">
@@ -235,7 +235,7 @@
                 {{-- CONTAINER FOR DESCRIPTIONS --}}
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
 
-                    <h1 class="text-xl sm:text-3xl font-bold">Job Posting Description</h1>
+                    <h1 class="text-xl lg:text-3xl font-bold">Job Posting Description</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                     <div class="flex flex-row mt-4 w-full gap-4">
@@ -287,7 +287,7 @@
 
 
             {{-- WEB REQUIREMENT CONTAINER --}}
-            <div class="col-span-4 sm:col-span-6" x-data="{
+            <div class="col-span-4 lg:col-span-6" x-data="{
                 selectedApplicant: @entangle('selectedApplicant')
             }">
 
@@ -303,7 +303,7 @@
 
                         </div>
                         <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                        <div class="flex sm:flex-row gap-4 sm:justify-between">
+                        <div class="flex lg:flex-row gap-4 lg:justify-between">
                             @if ($jobpost->peso_accounts)
                                 <h1 class="text-md font-semibold">{{ $jobpost->peso_accounts->peso_accounts_Fname }}
                                     {{ $jobpost->peso_accounts->peso_accounts_Lname }}</h1>
@@ -329,7 +329,7 @@
                 <div x-show="!selectedApplicant" class="bg-white shadow rounded-lg p-6 flex flex-col mt-4"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
-                    <h1 class="text-xl sm:text-3xl font-bold mb-3">Job Applicants</h1>
+                    <h1 class="text-xl lg:text-3xl font-bold mb-3">Job Applicants</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                     <div class="p-1 flex flex-col" x-transition:enter="transition ease-out duration-300"
@@ -339,7 +339,7 @@
                         <div class="relative">
 
                             <div
-                                class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+                                class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4 overflow-visible">
 
                                 <div>
 
@@ -359,7 +359,7 @@
                                         {{-- SEARCH --}}
                                         <input wire:model.live='applicantSearch' type="search"
                                             id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search applicants">
                                     </div>
                                 </div>
@@ -472,15 +472,15 @@
                                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">
+                                            <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">
                                                 <!-- Adjusted padding -->
                                                 Name
                                             </th>
-                                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                            <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                 <!-- Hidden on mobile -->
                                                 Status
                                             </th>
-                                            <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">
+                                            <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">
                                                 <!-- Adjusted padding -->
                                                 Action
                                             </th>
@@ -510,7 +510,7 @@
                                                 <tr wire:key='jobApplicant-{{ $data->applicant_id }}'
                                                     class="bg-white border-b hover:bg-gray-50">
                                                     <th scope="row"
-                                                        class="flex items-center px-4 py-2 sm:px-6 sm:py-4 text-gray-900 whitespace-nowrap">
+                                                        class="flex items-center px-4 py-2 lg:px-6 lg:py-4 text-gray-900 whitespace-nowrap">
                                                         <!-- Adjusted padding -->
                                                         <img class="w-10 h-10 rounded-full object-cover"
                                                             src="{{ asset('storage/' . $data->employee->pimg) }}"
@@ -527,7 +527,7 @@
                                                             </div>
                                                             <div class="text-gray-500 font-medium text-xs">Applied
                                                                 date: {{ $data->created_at->format('F j, Y') }}</div>
-                                                            <div class="sm:hidden text-sm">
+                                                            <div class="lg:hidden text-sm">
                                                                 <div class="flex items-center ">
                                                                     @if ($data->applicant_Status === 'PENDING')
                                                                         <div
@@ -566,7 +566,7 @@
                                                         </div>
                                                     </th>
 
-                                                    <td class="hidden sm:table-cell px-6 py-4">
+                                                    <td class="hidden lg:table-cell px-6 py-4">
                                                         <!-- Hidden on mobile -->
                                                         <div class="flex items-center">
                                                             @if ($data->applicant_Status === 'PENDING')
@@ -601,7 +601,7 @@
                                                         </div>
                                                     </td>
 
-                                                    <td class="px-4 py-2 sm:px-6 sm:py-4"> <!-- Adjusted padding -->
+                                                    <td class="px-4 py-2 lg:px-6 lg:py-4"> <!-- Adjusted padding -->
                                                         <div class="flex flex-row gap-4 items-center">
                                                             <div x-data="{ tooltip: 'Applicant Info' }">
                                                                 <button
@@ -655,7 +655,7 @@
                                     </svg>
                                 </div>
                             </button>
-                            <h2 class="text-lg sm:text-2xl font-bold">Applicant Information</h2>
+                            <h2 class="text-lg lg:text-2xl font-bold">Applicant Information</h2>
 
                         </div>
 

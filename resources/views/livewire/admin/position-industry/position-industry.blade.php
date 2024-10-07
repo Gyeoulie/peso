@@ -1,15 +1,15 @@
 <div wire:poll.5s class="container mx-auto py-8">
 
     {{-- CONTIANER --}}
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold ">Data Management / Position - Industry</h1>
         </div>
 
         {{-- JOB POSITION CONTAINER --}}
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex flex-row justify-between mb-4">
                     {{-- TITLE --}}
@@ -28,7 +28,7 @@
 
                 <div class="relative overflow-x-auto ">
 
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
 
                         <label for="table-search" class="sr-only">Search</label>
@@ -45,7 +45,7 @@
                             </div>
                             {{-- SEARCH --}}
                             <input type="search" wire:model.live='searchPosition'
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job position">
                         </div>
                         <div class="flex flex-wrap mr-3 gap-2">
@@ -92,13 +92,13 @@
                         <table class="w-full text-sm text-left rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 sm:w-1/3">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/3">
                                         Job Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 sm:w-full hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 lg:w-full hidden lg:table-cell">
                                         Position Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3 sm:w-1/3">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/3">
 
                                     </th>
                                 </tr>
@@ -129,10 +129,10 @@
                                     @foreach ($jobpositions as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="hidden sm:block text-gray-500 font-medium text-lg uppercase">
+                                                <div class="hidden lg:block text-gray-500 font-medium text-lg uppercase">
                                                     {{ $data->position_Code }}
                                                 </div>
-                                                <div class="block sm:hidden">
+                                                <div class="block lg:hidden">
                                                     <div class="text-black font-bold text-md uppercase">
                                                         {{ $data->position_Title }}
                                                     </div>
@@ -142,7 +142,7 @@
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-black font-bold text-lg uppercase">
                                                     {{ $data->position_Title }}
                                                 </div>
@@ -216,7 +216,7 @@
 
 
         {{-- INDUSTRY CONTAINER --}}
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6">
 
                 {{-- TITLE --}}
@@ -238,7 +238,7 @@
 
                 <div class="relative overflow-x-auto ">
 
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
 
                         <label for="table-search" class="sr-only">Search</label>
@@ -255,7 +255,7 @@
                             </div>
                             {{-- SEARCH --}}
                             <input type="search" wire:model.live='searchIndustry'
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for industry">
                         </div>
                         <div class="flex flex-wrap mr-3 gap-2">
@@ -300,13 +300,13 @@
                         <table class="w-full text-sm text-left rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 sm:w-1/3">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/3">
                                         Industry Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 sm:w-full hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 lg:w-full hidden lg:table-cell">
                                         Industry Title
                                     </th>
-                                    <th scope="col" class="px-6 py-3 sm:w-1/3">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/3">
 
                                     </th>
                                 </tr>
@@ -337,10 +337,10 @@
                                     @foreach ($industry as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="hidden sm:block text-gray-500 font-medium text-lg uppercase">
+                                                <div class="hidden lg:block text-gray-500 font-medium text-lg uppercase">
                                                     {{ $data->industry_Code }}
                                                 </div>
-                                                <div class="block sm:hidden">
+                                                <div class="block lg:hidden">
                                                     <div class="text-black font-bold text-md uppercase">
                                                         {{ $data->industry_Title }}
                                                     </div>
@@ -350,7 +350,7 @@
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-black font-bold text-lg uppercase">
                                                     {{ $data->industry_Title }}
                                                 </div>
@@ -439,7 +439,7 @@
 
             <hr>
 
-            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
+            <div class="flex flex-col lg:flex-row gap-2 lg:gap-6 mt-2 w-full">
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="positionPost" :value="__('Job Position Title')" />
@@ -480,7 +480,7 @@
 
             <hr>
 
-            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
+            <div class="flex flex-col lg:flex-row gap-2 lg:gap-6 mt-2 w-full">
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="industryPost" :value="__('Industry Title')" />

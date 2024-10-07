@@ -6,11 +6,11 @@
         </h2>
     </x-slot>
 
-    <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
-        <div class="col-span-4 sm:col-span-5">
+    <div class="grid grid-cols-4 lg:grid-cols-12 mt-4 mx-8 p-0 lg:p-6 gap-5">
+        <div class="col-span-4 lg:col-span-5">
 
             <div
-                class="flex flex-col sm:flex-row p-1 sm:items-center sm:jstify-between flex-column flex-wrap sm:flex-row gap-2 space-y-4 sm:space-y-0 pb-4">
+                class="flex flex-col lg:flex-row p-1 lg:items-center lg:jstify-between flex-column flex-wrap lg:flex-row gap-2 space-y-4 lg:space-y-0 pb-4">
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -23,7 +23,7 @@
 
                     {{-- SEARCH --}}
                     <input wire:model.live='postSearch' type="search" id="table-search-users"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for job posting">
                 </div>
                 <div class="flex flex-wrap gap-2 mr-3">
@@ -91,24 +91,24 @@
 
                     </div>
                 @else
-                    <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full"
+                    <div class="flex flex-row lg:flex-col gap-4 overflow-y-auto lg:overflow-visible	 w-full"
                         x-data="{
                             selectedJob: @entangle('selectedJob'),
                         }">
                         @foreach ($jobs as $data)
-                            <div class="relative flex-shrink-0 w-[90%] sm:w-full">
+                            <div class="relative flex-shrink-0 w-[90%] lg:w-full">
                                 <a wire:key='jobPost-{{ $data->job_id }}'
                                     wire:click.prevent='getJob({{ $data->job_id }})' class="cursor-pointer">
 
                                     <div
-                                        class="@if ($data->job_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col h-full sm:hover:scale-105 sm:transition-transform overflow-hidden">
+                                        class="@if ($data->job_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col h-full lg:hover:scale-105 lg:transition-transform overflow-hidden">
 
-                                        <div class="flex flex-row gap-4 sm:gap-0 justify-end">
+                                        <div class="flex flex-row gap-4 lg:gap-0 justify-end">
 
                                             <div class="flex flex-col w-full">
-                                                <h1 class="text-xl sm:text-2xl font-bold underline">
+                                                <h1 class="text-xl lg:text-2xl font-bold underline">
                                                     {{ $data->job_Title }}</h1>
-                                                <h1 class="text-md sm:text-lg text-gray-600">
+                                                <h1 class="text-md lg:text-lg text-gray-600">
                                                     {{ $data->company->business_Name }}
                                                 </h1>
                                                 <div class="flex flex-row">
@@ -116,21 +116,21 @@
                                                 </div>
 
                                             </div>
-                                            <div class="hidden sm:flex w-full justify-end mb-auto mt-0">
+                                            <div class="hidden lg:flex w-full justify-end mb-auto mt-0">
                                                 <span
                                                     class=" bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
                                                     PESO {{ $data->peso->municipality->municipality_Name }}
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="sm:hidden flex w-full">
+                                        <div class="lg:hidden flex w-full">
                                             <span
                                                 class=" bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
                                                 PESO {{ $data->peso->municipality->municipality_Name }}
                                             </span>
                                         </div>
 
-                                        <div class="text-sm sm:text-md flex flex-row mt-2">
+                                        <div class="text-sm lg:text-md flex flex-row mt-2">
                                             <p class="mb-2 font-bold">Applicants:</p>
                                             <p class="ms-2">{{ $data->job_applicants_count }}</p>
                                         </div>
@@ -140,24 +140,24 @@
                                             <div class="flex flex-col md:flex-row">
                                                 <div class="md:w-1/4 text-left">
 
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                    <h3 class="text-xs lg:text-sm uppercase"> <i
                                                             class="fa-solid fa-location-dot"></i>
                                                         {{ $data->barangay->municipality->municipality_Name }},
                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center uppercase">
-                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                    <h3 class="text-xs lg:text-sm"> <i
                                                             class="fa-solid fa-graduation-cap"></i>
                                                         {{ $eduLevels[$data->job_Edu] }}</h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                    <h3 class="text-xs lg:text-sm uppercase"> <i
                                                             class="fa-solid fa-briefcase"></i>
                                                         {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
                                                     </h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                    <h3 class="text-xs lg:text-sm uppercase"> <i
                                                             class="fa-solid fa-calendar"></i>
                                                         {{ $data->created_at->format('F j, Y') }}
                                                     </h3>
@@ -178,7 +178,7 @@
             </div>
         </div>
 
-        <div class="col-span-4 sm:col-span-7" x-data="{
+        <div class="col-span-4 lg:col-span-7" x-data="{
             selectedApplicant: @entangle('selectedApplicant')
         }">
             @if ($applicants)
@@ -193,7 +193,7 @@
                             activeFilter: 'text-gray-900 bg-gray-400 active',
                             inactiveFilter: 'bg-white hover:text-gray-700 hover:bg-gray-50',
                         }" x-init="$wire.set('filter', filter)">
-                            <div class="sm:hidden">
+                            <div class="lg:hidden">
                                 <label for="tabs" class="sr-only">Select Filter</label>
                                 <select id="tabs"
                                     class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -208,7 +208,7 @@
                                 </select>
                             </div>
                             <ul
-                                class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                                class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex mb-3">
                                 <li class="w-full focus-within:z-10">
                                     <button wire:click.prevent='changeFilter("ALL")'
                                         :class="filter === 'ALL' ? activeFilter : inactiveFilter"
@@ -256,7 +256,7 @@
 
 
                         <div
-                            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                            class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                             <div>
 
@@ -275,7 +275,7 @@
                                     {{-- SEARCH --}}
                                     <input wire:model.live.prevent='applicantSearch' type="text"
                                         id="table-search-users"
-                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Search applicants">
                                 </div>
                             </div>
@@ -332,15 +332,15 @@
                                         <th scope="col" class="px-6 py-3 ">
                                             Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                             PESO Status
                                         </th>
                                         @if ($filter === 'ALL')
-                                            <th scope="col"class="px-6 py-3 hidden sm:table-cell">
+                                            <th scope="col"class="px-6 py-3 hidden lg:table-cell">
                                                 Status
                                             </th>
                                         @endif
-                                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                             Documents
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -391,7 +391,7 @@
                                                         </div>
                                                         <div class="text-gray-500 font-medium text-xs">Applied date:
                                                             {{ $data->created_at->format('F j, Y') }}</div>
-                                                        <div class="text-gray-500 text-xs sm:hidden">
+                                                        <div class="text-gray-500 text-xs lg:hidden">
                                                             Status:
                                                             @if ($data->peso_Status === 'PENDING')
                                                                 <span
@@ -426,7 +426,7 @@
                                                     </div>
                                                 </th>
 
-                                                <td class="px-6 py-4 font-semibold hidden sm:table-cell">
+                                                <td class="px-6 py-4 font-semibold hidden lg:table-cell">
                                                     <div class="flex items-center">
                                                         @if ($data->peso_Status === 'PENDING')
                                                             <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
@@ -445,7 +445,7 @@
                                                 </td>
 
                                                 @if ($filter === 'ALL')
-                                                    <td class="px-6 py-4 hidden sm:table-cell">
+                                                    <td class="px-6 py-4 hidden lg:table-cell">
                                                         <div class="flex items-center">
                                                             @if ($data->applicant_Status === 'PENDING')
                                                                 <div
@@ -480,7 +480,7 @@
                                                     </td>
                                                 @endif
 
-                                                <td class="px-6 py-4 hidden sm:table-cell">
+                                                <td class="px-6 py-4 hidden lg:table-cell">
                                                     <div class="flex flex-row gap-4 items-center">
                                                         <div x-data="{ tooltip: 'View Resume' }">
                                                             <button
@@ -672,7 +672,7 @@
                                     </svg>
                                 </div>
                             </button>
-                            <h2 class="text-lg sm:text-2xl font-bold">Applicant Information</h2>
+                            <h2 class="text-lg lg:text-2xl font-bold">Applicant Information</h2>
 
                         </div>
 

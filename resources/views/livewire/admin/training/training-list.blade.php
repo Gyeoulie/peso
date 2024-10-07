@@ -1,11 +1,11 @@
 <div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Trainings / Training List</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <div class="bg-white shadow rounded-lg p-6 overflow-visible" x-data="{
                 openTab: @entangle('filter').defer || '', // Default value to 'ALL'
                 activeClasses: 'text-gray-900 bg-gray-400 active',
@@ -23,7 +23,7 @@
 
                 <div class="relative p-1 overflow-visible">
                     <!-- Mobile Dropdown -->
-                    <div class="sm:hidden">
+                    <div class="lg:hidden">
                         <label for="tabs" class="sr-only">Select Filter</label>
                         <select id="tabs"
                             class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -35,7 +35,7 @@
                     </div>
 
                     <!-- Desktop Tabs -->
-                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex mb-3">
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('')"
                                 :class="openTab === '' ? activeClasses : inactiveClasses"
@@ -55,7 +55,7 @@
                     </ul>
 
 
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
@@ -70,14 +70,14 @@
 
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
                         <div class="flex flex-wrap mr-3 gap-2">
                             <div x-data="{ tooltip: 'Export to Excel' }">
                                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
-                                    class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                                    class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                                     <span class="mr-2">Export</span>
                                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -91,7 +91,7 @@
                             <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs lg:text-sm px-3 py-1.5">
                                         <div>
                                             {{ $sortType ?: 'Sort By Type' }}
                                         </div>
@@ -131,7 +131,7 @@
                             <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs lg:text-sm px-3 py-1.5">
                                         <div>
                                             @if (empty($sortDate))
                                                 Sort By Date
@@ -179,19 +179,19 @@
                                     <th scope="col" class="px-6 py-3 ">
                                         Program Title
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Program Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Program Registrants
                                     </th>
-                                    <th scope="col" class="px-6 py-3 text-center hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 text-center hidden lg:table-cell">
                                         Date Posted
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Registration Deadline
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Program Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -232,23 +232,23 @@
                                                     <div class="text-base font-semibold">{{ $data->program_Title }}
                                                     </div>
                                                     <div
-                                                        class="font-normal text-gray-500 text-sm uppercase hidden sm:block">
+                                                        class="font-normal text-gray-500 text-sm uppercase hidden lg:block">
                                                         {{ $data->program_Host }}
                                                     </div>
 
                                                     <!-- Extra information for mobile screens -->
-                                                    <div class="sm:hidden text-gray-500 text-sm">
+                                                    <div class="lg:hidden text-gray-500 text-sm">
                                                         {{ $data->program_Host }}
                                                     </div>
-                                                    <div class="sm:hidden text-gray-500 text-sm">
+                                                    <div class="lg:hidden text-gray-500 text-sm">
                                                         Registrants: <span
                                                             class="text-black font-bold">{{ $data->program_reg_count }}</span>
                                                     </div>
-                                                    <div class="sm:hidden text-gray-500 text-sm">
+                                                    <div class="lg:hidden text-gray-500 text-sm">
                                                         Deadline: <span class="text-black font-bold">
                                                             {{ $data->program_Deadline->format('F j, Y') }}</span>
                                                     </div>
-                                                    <div class="sm:hidden text-gray-500 text-sm">
+                                                    <div class="lg:hidden text-gray-500 text-sm">
                                                         <div class="flex items-center">
                                                             <div
                                                                 class="h-2.5 w-2.5 rounded-full {{ $data->program_Status === 'ACTIVE' ? 'bg-green-500' : ($data->program_Status === 'CLOSED' ? 'bg-cyan-500' : ($data->program_Status === 'COMPLETED' ? 'bg-blue-500' : 'bg-red-500')) }} me-2">
@@ -259,22 +259,22 @@
 
                                                 </div>
                                             </th>
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-base font-semibold">{{ $data->program_Type }}</div>
                                             </td>
-                                            <td class="px-6 py-4 hidden sm:table-cell">{{ $data->program_reg_count }}
+                                            <td class="px-6 py-4 hidden lg:table-cell">{{ $data->program_reg_count }}
                                             </td>
-                                            <td class="px-6 py-4 text-center hidden sm:table-cell">
+                                            <td class="px-6 py-4 text-center hidden lg:table-cell">
                                                 <div class="text-base font-semibold">
                                                     {{ $data->created_at->format('g:i A') }}</div>
                                                 <div class="text-base font-semibold">
                                                     {{ $data->created_at->format('F j, Y') }}</div>
                                             </td>
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-base font-semibold">
                                                     {{ $data->program_Deadline->format('F j, Y') }}</div>
                                             </td>
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="flex items-center">
                                                     <div
                                                         class="h-2.5 w-2.5 rounded-full {{ $data->program_Status === 'ACTIVE' ? 'bg-green-500' : ($data->program_Status === 'CLOSED' ? 'bg-cyan-500' : ($data->program_Status === 'COMPLETED' ? 'bg-blue-500' : 'bg-red-500')) }} me-2">

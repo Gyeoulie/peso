@@ -1,7 +1,7 @@
 <div class="flex flex-col w-full h-full" x-data="{ agreeBox: @entangle('agreeBox') }">
     <h1 class="text-2xl font-bold">Certification And Authorization</h1>
-    <div class="flex flex-col mt-4 w-full justify-center items-center mt-10 px-4 sm:px-12">
-        <p class="text-sm sm:text-xl text-justify">
+    <div class="flex flex-col mt-4 w-full justify-center items-center mt-10 px-4 lg:px-12">
+        <p class="text-sm lg:text-xl text-justify">
             This is to certify that, before signing up, you understand and acknowledge that by submitting this form, you
             are certifying that all the data and information provided herein are true and accurate to the best of your
             knowledge. You also agree that the information you provide may be accessed and utilized by authorized
@@ -34,7 +34,7 @@
             </label>
         </div>
     </div>
-    <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
+    <div class="flex flex-row justify-between space-x-4 mt-4 lg:mt-auto lg:mb-4">
         <x-secondary-button wire:loading.attr='disabled' wire:click.prevent='prev' type="button">
             Previous
             <div wire:loading.delay.long wire:target="prev" role="status">

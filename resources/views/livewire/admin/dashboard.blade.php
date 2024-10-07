@@ -145,10 +145,10 @@
                                 <th scope="col" class="px-2 md:px-6 py-3">
                                     <span class="text-black font-bold text-md">Business Name</span>
                                 </th>
-                                <th scope="col" class="px-2 md:px-6 py-3  hidden sm:table-cell">
+                                <th scope="col" class="px-2 md:px-6 py-3  hidden lg:table-cell">
                                     <span class="text-black font-bold text-md">Job Title</span>
                                 </th>
-                                <th scope="col" class="px-2 md:px-6 py-3  hidden sm:table-cell">
+                                <th scope="col" class="px-2 md:px-6 py-3  hidden lg:table-cell">
                                     <span class="text-black font-bold text-md">Date</span>
                                 </th>
                                 <th scope="col" class="px-2 md:px-6 py-3">
@@ -193,25 +193,25 @@
                                                 </div>
                                                 <!-- Show Job Title on mobile view -->
                                                 <div
-                                                    class="font-normal text-gray-500 text-xs md:text-sm uppercase sm:hidden">
+                                                    class="font-normal text-gray-500 text-xs md:text-sm uppercase lg:hidden">
                                                     Job: <span
                                                         class="text-blue-500 font-bold text-sm md:text-md">{{ $data->job_Title }}</span>
                                                 </div>
                                                 <!-- Show Date on mobile view -->
-                                                <div class="text-gray-500 text-xs sm:hidden">
+                                                <div class="text-gray-500 text-xs lg:hidden">
                                                     Posted: {{ $data->created_at->format('F j, Y') }}
                                                 </div>
                                             </div>
                                         </th>
                                         <!-- Hide Job Title on mobile view -->
-                                        <td class="px-2 md:px-6 py-4 hidden sm:table-cell">
+                                        <td class="px-2 md:px-6 py-4 hidden lg:table-cell">
                                             <div class="font-normal text-gray-500 text-xs md:text-sm uppercase">
                                                 <span
                                                     class="text-blue-500 font-bold text-sm md:text-md">{{ $data->job_Title }}</span>
                                             </div>
                                         </td>
                                         <!-- Hide Date on mobile view -->
-                                        <td class="px-2 md:px-6 py-4 hidden sm:table-cell">
+                                        <td class="px-2 md:px-6 py-4 hidden lg:table-cell">
                                             {{ $data->created_at->format('F j, Y') }}
                                         </td>
                                         <td class="px-2 md:px-6 py-4">
@@ -264,10 +264,10 @@
                                 <th scope="col" class="px-6 py-3">
                                     <span class="text-black font-bold text-md">Applicant Name</span>
                                 </th>
-                                <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                     <span class="text-black font-bold text-md">Job Title</span>
                                 </th>
-                                <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                     <span class="text-black font-bold text-md">Date</span>
                                 </th>
                                 <th scope="col" class="px-6 py-3"></th>
@@ -313,24 +313,24 @@
                                                     {{ $data->employee->barangay->municipality->municipality_Name }}
                                                 </div>
                                                 <!-- Show Job Title on mobile view -->
-                                                <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
                                                     Job: <span
                                                         class="text-blue-500 font-bold text-md">{{ $data->job_posting->job_Title }}</span>
                                                 </div>
                                                 <!-- Show Date on mobile view -->
-                                                <div class="text-gray-500 text-xs sm:hidden">
+                                                <div class="text-gray-500 text-xs lg:hidden">
                                                     Applied: {{ $data->created_at->format('F j, Y') }}
                                                 </div>
                                             </div>
                                         </th>
                                         <!-- Hide Job Title and Date on mobile view -->
-                                        <td class="px-6 py-4 hidden sm:table-cell">
+                                        <td class="px-6 py-4 hidden lg:table-cell">
                                             <div class="font-normal text-gray-500 text-sm uppercase">
                                                 <span
                                                     class="text-blue-500 font-bold text-md">{{ $data->job_posting->job_Title }}</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 hidden sm:table-cell">
+                                        <td class="px-6 py-4 hidden lg:table-cell">
                                             {{ $data->created_at->format('F j, Y') }}
                                         </td>
                                         <td class="px-6 py-4">

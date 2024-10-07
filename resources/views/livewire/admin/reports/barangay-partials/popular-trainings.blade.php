@@ -10,10 +10,10 @@
                     <th scope="col" class="px-6 py-3 w-full">
                         <span class="text-black font-bold text-md">Training Title</span>
                     </th>
-                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                         <span class="text-black font-bold text-md">Type</span>
                     </th>
-                    <th scope="col" class="hidden sm:table-cell px-6 py-3 text-center">
+                    <th scope="col" class="hidden lg:table-cell px-6 py-3 text-center">
                         <span class="text-black font-bold text-md">Registered</span>
                     </th>
                     <th scope="col" class="px-6 py-3"></th>
@@ -51,10 +51,10 @@
                                             {{ $data->program_Host }}
                                         </div>
                                     </div>
-                                    <div class="text-sm text-gray-500 sm:hidden">
+                                    <div class="text-sm text-gray-500 lg:hidden">
                                         {{ $data->program_Type }}
                                     </div>
-                                    <div class="text-sm text-gray-500 sm:hidden">
+                                    <div class="text-sm text-gray-500 lg:hidden">
                                         Registrants: <span
                                             class="text-black font-bold">{{ $data->registration_count }}</span>
                                     </div>
@@ -62,11 +62,11 @@
                                 </div>
                             </th>
 
-                            <td class="hidden sm:table-cell px-6 py-4">
+                            <td class="hidden lg:table-cell px-6 py-4">
                                 {{ $data->program_Type }}
                             </td>
 
-                            <td class="hidden sm:table-cell px-6 py-4">
+                            <td class="hidden lg:table-cell px-6 py-4">
                                 <div class="font-normal text-gray-500 text-sm text-center uppercase">
                                     <span class="text-blue-500 font-bold text-md">
                                         {{ $data->registration_count }}</span>

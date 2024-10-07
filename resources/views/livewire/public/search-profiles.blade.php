@@ -1,7 +1,7 @@
 <div class="container mx-auto py-8">
 
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
-        <div class="col-span-4 sm:col-start-4 sm:col-end-10">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+        <div class="col-span-4 lg:col-start-4 lg:col-end-10">
             <div class="relative w-full shadow-xl">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"

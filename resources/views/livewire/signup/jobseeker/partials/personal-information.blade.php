@@ -1,7 +1,7 @@
 <div class="flex flex-col w-full h-full">
     <h1 class="text-2xl font-bold">Personal Information</h1>
     <span class="text-sm text-gray-600">Fields with * are required.</span>
-    <div class="flex flex-col sm:flex-row gap-4 w-full mt-5">
+    <div class="flex flex-col lg:flex-row gap-4 w-full mt-5">
         <div class="flex flex-col w-full">
             <x-input-label for="presentAddress" :value="__('Present Address*')" />
             <x-text-input wire:model='address' class="block mt-1 w-full" type="text" />
@@ -15,7 +15,7 @@
             <x-input-error :messages="$errors->get('barangayID')" class="mt-2" />
         </div>
     </div>
-    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+    <div class="flex flex-col lg:flex-row gap-4 mt-4">
         <div class="flex flex-col w-full">
             <x-input-label for="city" :value="__('Municipality*')" />
             <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
@@ -25,7 +25,7 @@
             <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
         </div>
     </div>
-    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+    <div class="flex flex-col lg:flex-row gap-4 mt-4">
         <div class="flex flex-col w-full">
             <x-input-label for="civilstatus" :value="__('Civil Status*')" />
             <select wire:model='civilstatus' class="block mt-1 w-full rounded">
@@ -87,7 +87,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+    <div class="flex flex-col lg:flex-row gap-4 mt-4">
         <div class="flex flex-col w-full">
             <x-input-label for="phone" :value="__('Cellphone No.*')" />
             <x-text-input wire:model='phone' class="block mt-1 w-full" type="tel" />
@@ -107,12 +107,12 @@
     </div>
 
 
-    <div class="flex flex-col sm:flex-row mt-4 gap-4" x-data="{ otherDisability: false }">
+    <div class="flex flex-col lg:flex-row mt-4 gap-4" x-data="{ otherDisability: false }">
         <div class="flex flex-col w-full">
             <x-input-label for="disability" :value="__('Disability')" />
-            <div class="flex flex-col mt-2 sm:flex-row gap-1 sm:gap-4">
+            <div class="flex flex-col mt-2 lg:flex-row gap-1 lg:gap-4">
                 <div
-                    class="mb-[0.125rem] block min-h-[1.5rem] sm:min-h-auto sm:mb-[0.5rem] md:min-h-auto md:mb-[0.125rem] pl-[1.5rem]">
+                    class="mb-[0.125rem] block min-h-[1.5rem] lg:min-h-auto lg:mb-[0.5rem] md:min-h-auto md:mb-[0.125rem] pl-[1.5rem]">
                     <input wire:model='disabilityBox'
                         class="relative float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent"
                         type="checkbox" value="Visual" id="checkboxDefault1" name="disabilityBox[0]" />
@@ -177,7 +177,7 @@
     </div>
 
 
-    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+    <div class="flex flex-col lg:flex-row gap-4 mt-4">
         <div class="flex flex-col w-1/3">
             <x-input-label for="OFW" :value="__('Are you an OFW?*')" />
             <div class="flex flex-row gap-4 mt-2">
@@ -217,7 +217,7 @@
                 <x-input-error :messages="$errors->get('fourP')" class="mt-2" />
 
             </div>
-            <div class="flex flex-col w-full sm:w-1/2" x-show="household == 1">
+            <div class="flex flex-col w-full lg:w-1/2" x-show="household == 1">
                 <x-input-label for="fourPID" :value="__('If yes, Household ID No.*')" />
                 <x-text-input wire:model='fourPID' class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('fourPID')" class="mt-2" />

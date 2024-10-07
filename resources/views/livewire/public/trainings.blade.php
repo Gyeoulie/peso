@@ -1,4 +1,4 @@
-<div wire:poll.5s class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16" x-data="{
+<div wire:poll.5s class="max-w-screen-xl mx-auto p-5 lg:p-10 md:p-16" x-data="{
     openTab: 1,
     activeTab: 'text-blue-600 border-b-2 border-blue-600  active',
     inactiveTab: 'text-gray-500 hover:text-gray-600 ',
@@ -34,12 +34,12 @@
     <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
         <div
-            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+            class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4 overflow-visible">
 
 
             <label for="table-search" class="sr-only">Search</label>
 
-            <div class="relative w-full sm:w-auto">
+            <div class="relative w-full lg:w-auto">
 
                 <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@
                 </div>
                 {{-- SEARCH --}}
                 <input wire:model.live='search' type="search"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search for trainings">
             </div>
 
@@ -193,14 +193,14 @@
         <div>
 
 
-            <div class="grid grid-cols-4 sm:grid-cols-12 gap-10">
+            <div class="grid grid-cols-4 lg:grid-cols-12 gap-10">
 
                 <!-- CARD 1 -->
 
 
 
                 @if ($programList->isEmpty())
-                    <div class="col-span-4 sm:col-span-12">
+                    <div class="col-span-4 lg:col-span-12">
                         <div class="flex flex-col items-center justify-center mt-24 mb-24">
                             <div class="p-6 bg-white rounded-full">
                                 <svg class="w-24 h-24 text-black" aria-hidden="true"
@@ -219,7 +219,7 @@
                 @else
                     @foreach ($programList as $data)
                         <a href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                            class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl sm:hover:scale-105 sm:transition-transform">
+                            class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl lg:hover:scale-105 lg:transition-transform">
                             <div class="flex flex-col h-full">
                                 <div>
                                     <div class="relative">
@@ -297,12 +297,12 @@
             <div class="col-span-4">
                 <div class="table-container overflow-visible">
                     <div class="max-w-7xl mx-auto overflow-visible">
-                        <div class="bg-white overflow-hidden sm:rounded-lg p-2 overflow-visible">
+                        <div class="bg-white overflow-hidden lg:rounded-lg p-2 overflow-visible">
                             <div class="relative">
                                 <div class=" p-6 overflow-visible">
 
                                     <div
-                                        class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                                        class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
                                         {{-- SEARCH BOX --}}
 
                                         <label for="table-search" class="sr-only">Search</label>
@@ -318,7 +318,7 @@
                                                 </svg>
                                             </div>
                                             <input wire:model.live.prevent='searchHistory' type="text"
-                                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                                 placeholder="Search for trainings">
                                         </div>
 
@@ -421,7 +421,7 @@
                                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                                 <tr>
                                                     <th scope="col" class="px-6 py-3 md:w-96">Event Title</th>
-                                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                                         Registered Date</th>
                                                     <th scope="col" class="px-6 py-3 hidden md:table-cell">
                                                         Registration Status</th>
@@ -456,16 +456,16 @@
                                                         <tr wire:key='progReg-{{ $data->progra_reg_id }}'
                                                             class="bg-white border-b">
                                                             <th scope="row"
-                                                                class="flex flex-col sm:flex-row items-start px-6 py-4 text-gray-900">
+                                                                class="flex flex-col lg:flex-row items-start px-6 py-4 text-gray-900">
                                                                 <div class="ps-3">
                                                                     <div class="text-base font-semibold">
                                                                         {{ $data->programs->program_Title }}</div>
                                                                     <div class="font-normal text-gray-500 text-sm">
                                                                         {{ $data->programs->program_Location }}</div>
-                                                                    <div class="sm:hidden mt-2 text-gray-500 text-sm">
+                                                                    <div class="lg:hidden mt-2 text-gray-500 text-sm">
                                                                         {{ $data->created_at->format('F j, Y') }}</div>
                                                                     <!-- Mobile view -->
-                                                                    <div class="sm:hidden mt-2 text-gray-500 text-sm">
+                                                                    <div class="lg:hidden mt-2 text-gray-500 text-sm">
                                                                         Program Status:
                                                                         <div class="flex items-center">
                                                                             @if ($data->programs->program_Status === 'ACTIVE')
@@ -487,7 +487,7 @@
                                                                             @endif
                                                                         </div>
                                                                     </div>
-                                                                    <div class="sm:hidden mt-2 text-gray-500 text-sm">
+                                                                    <div class="lg:hidden mt-2 text-gray-500 text-sm">
                                                                         Registration Status:
                                                                         <div class="flex items-center">
                                                                             @if ($data->program_reg_Status == 'REGISTERED')
@@ -507,7 +507,7 @@
                                                                     </div>
                                                                 </div>
                                                             </th>
-                                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                                 <div class="font-normal text-gray-500 text-sm">
                                                                     {{ $data->created_at->format('F j, Y') }}</div>
                                                             </td>
@@ -624,11 +624,11 @@
             <hr>
             <div class="flex flex-col my-4 w-full h-full justify-center items-center">
                 @if ($ticket)
-                    <div class="hidden sm:flex my-4 ">
+                    <div class="hidden lg:flex my-4 ">
                         {!! QrCode::size(400)->generate($ticket) !!}
 
                     </div>
-                    <div class="sm:hidden flex my-4 ">
+                    <div class="lg:hidden flex my-4 ">
                         {!! QrCode::size(300)->generate($ticket) !!}
 
                     </div>
@@ -652,9 +652,9 @@
     </x-modal>
 
     <div id="sticky-banner" tabindex="-1"
-        class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-4 sm:p-8 border-b border-gray-200 bg-blue-500">
+        class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-4 lg:p-8 border-b border-gray-200 bg-blue-500">
         <div class="flex items-center mx-auto">
-            <p class="flex items-center text-sm sm:text-xl text-justify text-white font-bold">
+            <p class="flex items-center text-sm lg:text-xl text-justify text-white font-bold">
 
                 </span>
                 <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Postings are

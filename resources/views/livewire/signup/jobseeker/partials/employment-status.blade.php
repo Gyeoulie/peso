@@ -4,7 +4,7 @@
         <div x-data="employmentStatusHandler()" @change-status.window="updateEmpDesc" class="flex flex-col w-full h-full">
             <h1 class="text-2xl font-bold">Employment Status</h1>
             <span class="text-sm text-gray-600">Fields with * are required.</span>
-            <div class="flex flex-col sm:flex-row gap-4 mt-5">
+            <div class="flex flex-col lg:flex-row gap-4 mt-5">
                 <div class="flex flex-col w-full">
                     <x-input-label for="empStatus" :value="__('Employment Status*')" />
                     <select wire:model='empStatus' x-model="empStatus" @change="updateEmpDesc"
@@ -28,7 +28,7 @@
                     </h1>
                 </div>
             </div>
-            <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
+            <div class="flex flex-row justify-between space-x-4 mt-4 lg:mt-auto lg:mb-4">
                 <x-secondary-button wire:loading.attr='disabled' wire:click.prevent='prev' type="button">
                     Previous
                     <div wire:loading.delay.long wire:target="prev" role="status">

@@ -50,7 +50,7 @@
                     </div>
                 </div>
             @else
-                {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
+                {{-- <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 "> --}}
 
                 @foreach ($educ as $education)
                     <div wire:key="{{ $education->education_id }}" class="container p-3">
@@ -59,7 +59,7 @@
 
                             <div class="flex flex-col">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 ">
+                                    class="w-10 h-10 lg:w-20 lg:h-20 text-gray-800 ">
                                     <path
                                         d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
                                     <path
@@ -180,7 +180,7 @@
                         <x-input-error :messages="$errors->get('eduCourse')" class="mt-2" />
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row  mt-2 w-full gap-4" x-data="{ eduOngoing: @entangle('eduOngoing'), eduEnd: @entangle('eduEnd') }">
+                <div class="flex flex-col lg:flex-row  mt-2 w-full gap-4" x-data="{ eduOngoing: @entangle('eduOngoing'), eduEnd: @entangle('eduEnd') }">
                     <div class="flex flex-col w-full">
                         <x-input-label for="eduStart" :value="__('Started')" />
                         <x-text-input wire:model="eduStart" class="block mt-1 w-full" type="date" />
@@ -194,7 +194,7 @@
                         <x-input-error :messages="$errors->get('eduEnd')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-row h-full w-full items-center justify-center sm:mt-8">
+                    <div class="flex flex-row h-full w-full items-center justify-center lg:mt-8">
                         <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
                             <input @click="eduEnd = eduOngoing ? eduEnd: ''" wire:model='eduOngoing'
                                 x-model="eduOngoing"

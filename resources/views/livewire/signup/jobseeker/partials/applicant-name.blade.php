@@ -45,7 +45,7 @@
 
 
 
-    <div class="flex flex-col sm:flex-row mt-4 gap-4 w-full">
+    <div class="flex flex-col lg:flex-row mt-4 gap-4 w-full">
         <div class="flex flex-col w-full">
             <x-input-label for="fname" :value="__('First Name*')" />
             <x-text-input wire:model='fname' class="block mt-1 w-full" type="text" />
@@ -58,7 +58,7 @@
             <x-input-error :messages="$errors->get('lname')" class="mt-2" />
         </div>
     </div>
-    <div class="flex flex-col sm:flex-row mt-4 gap-4">
+    <div class="flex flex-col lg:flex-row mt-4 gap-4">
         <div class="flex flex-col w-full">
             <x-input-label for="mname" :value="__('Middle Name')" />
             <x-text-input wire:model='mname' class="block mt-1 w-full" type="text" />
@@ -85,7 +85,7 @@
             <x-input-error :messages="$errors->get('suffix')" class="mt-2" />
         </div>
     </div>
-    <div class="flex flex-col sm:flex-row mt-4 gap-4">
+    <div class="flex flex-col lg:flex-row mt-4 gap-4">
         <div wire:model='bday' class="flex flex-col w-full">
             <x-input-label for="birthdate" :value="__('Birthdate*')" />
             <x-text-input class="block mt-1 w-full" type="date" />

@@ -1,17 +1,17 @@
 <div wire:poll>
     <div class="mt-12">
-        <div class="max-w-3xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto px-2 lg:px-6 lg:px-8">
 
-            <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500  sm:text-base">
+            <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500  lg:text-base">
                 <li
-                    class="flex md:w-full items-center text-blue-600  sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 ">
-                    <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 ">
-                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    class="flex md:w-full items-center text-blue-600  lg:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden lg:after:inline-block after:mx-6 xl:after:mx-10 ">
+                    <span class="flex items-center after:content-['/'] lg:after:hidden after:mx-2 after:text-gray-200 ">
+                        <svg class="w-3.5 h-3.5 lg:w-4 lg:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor" viewBox="0 0 20 20">
                             <path
                                 d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
                         </svg>
-                        Job <span class="hidden sm:inline-flex sm:ms-2">Information</span>
+                        Job <span class="hidden lg:inline-flex lg:ms-2">Information</span>
                     </span>
                 </li>
 
@@ -24,8 +24,8 @@
                 @else
                     <li class="flex items-center text-blue-600">
                         <span
-                            class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true"
+                            class="flex items-center after:content-['/'] lg:after:hidden after:mx-2 after:text-gray-200">
+                            <svg class="w-3.5 h-3.5 lg:w-4 lg:h-4 me-2.5" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                 <path
                                     d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
@@ -43,16 +43,16 @@
 
 
     <div class=" {{ $currentSlide != 1 ? 'hidden' : '' }} post-section py-3" id="step1">
-        <div class="max-w-6xl mx-auto p-2 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto p-2 lg:px-6 lg:px-8">
 
 
             {{-- FIRST CONTAINER - JOB INFORMATION --}}
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
+            <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg px-6">
                 {{-- TITLE --}}
                 <h1 class="text-5xl font-bold mt-4 mb-4">Fill in the Details</h1>
 
 
-                <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
+                <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
 
                     <div class="flex flex-col w-full">
                         <x-input-label for="jobTitlePost">Job Title*
@@ -72,9 +72,9 @@
 
                 </div>
 
-                <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
+                <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
 
-                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-1/2">
+                    <div class="flex flex-col lg:flex-row gap-4 w-full lg:w-1/2">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="minWagePost">Minimum Wage
@@ -93,7 +93,7 @@
                     </div>
 
 
-                    <div class="flex flex-col sm:w-1/2">
+                    <div class="flex flex-col lg:w-1/2">
                         <x-input-label for="eduPost">Educational Attainment*
                         </x-input-label>
                         <select wire:model='eduPost' class="block mt-1 w-full rounded">
@@ -129,7 +129,7 @@
                         <x-input-error :messages="$errors->get('eduPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col sm:w-1/2">
+                    <div class="flex flex-col lg:w-1/2">
                         <x-input-label for="jtypePost">Job Type*
                         </x-input-label>
                         <select wire:model='jtypePost' class="block mt-1 w-full rounded">
@@ -148,9 +148,9 @@
 
                 </div>
 
-                <div class="flex flex-col sm:flex-row mt-4 w-full gap-4 mb-4">
+                <div class="flex flex-col lg:flex-row mt-4 w-full gap-4 mb-4">
 
-                    <div class="flex flex-row gap-4 w-full sm:w-1/3">
+                    <div class="flex flex-row gap-4 w-full lg:w-1/3">
                         <div class="flex flex-col w-full">
                             <x-input-label for="wAddPost">Work Address*
                             </x-input-label>
@@ -160,7 +160,7 @@
 
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-2/3">
+                    <div class="flex flex-col lg:flex-row gap-4 w-full lg:w-2/3">
                         <div class="flex flex-col w-full">
                             <x-input-label for="barPost">Barangay*
                             </x-input-label>
@@ -190,12 +190,12 @@
 
         </div>
 
-        <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 mt-3">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
+        <div class="max-w-6xl mx-auto px-2 lg:px-6 lg:px-8 mt-3">
+            <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg px-6">
 
-                <div class="flex flex-col sm:flex-row my-4 w-full gap-4">
+                <div class="flex flex-col lg:flex-row my-4 w-full gap-4">
 
-                    <div class="flex flex-col w-full sm:w-1/2">
+                    <div class="flex flex-col w-full lg:w-1/2">
                         <x-input-label for="pesoPost">PESO Branch*
                         </x-input-label>
                         <select wire:model='pesoPost' class="block mt-1 w-full rounded">
@@ -208,7 +208,7 @@
                         </select>
                         <x-input-error :messages="$errors->get('pesoPost')" class="mt-2" />
                     </div>
-                    <div class="flex flex-col  w-full sm:w-1/2">
+                    <div class="flex flex-col  w-full lg:w-1/2">
                         <x-input-label for="disability" :value="__('Accept PWDs?*')" />
                         <div class="flex flex-row gap-4 mt-2">
                             <div class="flex items-center">
@@ -233,16 +233,16 @@
 
                 </div>
 
-                <div class="flex flex-col sm:flex-row mt-4 w-full gap-4">
+                <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
 
-                    <div class="flex flex-col w-full sm:w-1/2">
+                    <div class="flex flex-col w-full lg:w-1/2">
                         <x-input-label for="durationPost">Job Posting Duration*
                         </x-input-label>
                         <x-text-input wire:model='durationPost' class="block mt-1 w-full" type="date" />
                         <x-input-error :messages="$errors->get('durationPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col w-full sm:w-1/3 mb-5">
+                    <div class="flex flex-col w-full lg:w-1/3 mb-5">
                         <x-input-label for="slotsPost">Job Slots*
                         </x-input-label>
                         <x-text-input wire:model='slotsPost' class="block mt-1 w-full" type="text" />
@@ -257,8 +257,8 @@
 
 
 
-        <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 mt-3">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
+        <div class="max-w-6xl mx-auto px-2 lg:px-6 lg:px-8 mt-3">
+            <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg px-6">
 
                 <div class="flex flex-row my-4 w-full gap-4">
                     <div class="flex flex-col w-full">
@@ -308,12 +308,12 @@
         </div>
 
 
-        <div class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8 mt-3">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
+        <div class="max-w-6xl mx-auto px-2 lg:px-6 lg:px-8 mt-3">
+            <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg px-6">
 
-                <div class="flex flex-col sm:flex-row w-full space-y-5 sm:sm:space-y-0 sm:space-x-5 mt-4">
+                <div class="flex flex-col lg:flex-row w-full space-y-5 lg:lg:space-y-0 lg:space-x-5 mt-4">
 
-                    <div class="flex flex-col w-full sm:w-1/2 ">
+                    <div class="flex flex-col w-full lg:w-1/2 ">
                         <x-input-label for="descPost">Job Description*
                         </x-input-label>
                         <div wire:ignore>
@@ -331,7 +331,7 @@
                     </div>
 
 
-                    <div class="flex flex-col w-full sm:w-1/2 ">
+                    <div class="flex flex-col w-full lg:w-1/2 ">
                         <x-input-label for="qualPost">Job Qualification*
                         </x-input-label>
                         <div wire:ignore>
@@ -392,14 +392,14 @@
 
     <div class=" {{ $currentSlide != 2 ? 'hidden' : '' }} post-section py-3" id="step3" x-data="{ agreePost: @entangle('agreePost') }">
 
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6">
+        <div class="max-w-6xl mx-auto lg:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg px-6">
                 <div class="flex flex-row w-full justify-center items-center mt-10">
                     <x-profile-logo class="h-36 w-36">
 
                     </x-profile-logo>
                 </div>
-                <div class="flex flex-col px-2 sm:px-20 mt-4 justify-center w-full">
+                <div class="flex flex-col px-2 lg:px-20 mt-4 justify-center w-full">
                     <div>
                         <p>By checking the box provided, you acknowledge that the information contained in this job
                             posting
@@ -432,7 +432,7 @@
                     <div class="flex flex-col justify-center items-center w-full mt-12 ">
                         <div class="flex flex-row justify-center items-center w-full">
                             <input wire:model='agreePost' id="link-checkbox" type="checkbox" value="1"
-                                class="sm:mr-2 font-medium rounded-lg text-sm px-3 py-3 justify-center">
+                                class="lg:mr-2 font-medium rounded-lg text-sm px-3 py-3 justify-center">
                             <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 ">I
                                 agree with the <p class="text-blue-600 hover:underline">terms and
                                     conditions.</p></label>
@@ -475,80 +475,80 @@
     <livewire:modals.barangay-modal />
 
 
-    {{-- @scipt --}}
     <script data-navigate-once>
-        $('#descText').summernote({
-            placeholder: 'Write job description here...',
-            tabsize: 2,
-            height: 300,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#descText').summernote('isEmpty')) {
-                        @this.set('descPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('descPost', contents);
-                    }
-                }
-            }
-        });
-        $('#qualText').summernote({
-            placeholder: 'Write job qualifications here...',
-            tabsize: 2,
-            height: 300,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#qualText').summernote('isEmpty')) {
-                        @this.set('qualPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('qualPost', contents);
-                    }
-                }
-            }
-        });
-        $('#remText').summernote({
-            placeholder: 'Write remarks here...',
-            tabsize: 2,
-            height: 120,
-            disableResizeEditor: true, // This is optional if you want to remove resize
-            disableDragAndDrop: true, // Set the height here (e.g., 300px)
-            toolbar: [
-                ['font', ['bold', 'underline']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ],
-            callbacks: {
-                onChange: function(contents, $editable) {
-                    if ($('#remText').summernote('isEmpty')) {
-                        @this.set('remPost',
-                            ''
-                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                    } else {
-                        @this.set('remPost', contents);
-                    }
-                }
-            }
-        });
+        document.addEventListener('livewire:navigated', () => {
 
-        $('.note-statusbar').hide();
+            $('#descText').summernote({
+                placeholder: 'Write job description here...',
+                tabsize: 2,
+                height: 300,
+                disableResizeEditor: true, // This is optional if you want to remove resize
+                disableDragAndDrop: true, // Set the height here (e.g., 300px)
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        if ($('#descText').summernote('isEmpty')) {
+                            @this.set('descPost',
+                                ''
+                            ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
+                        } else {
+                            @this.set('descPost', contents);
+                        }
+                    }
+                }
+            });
+            $('#qualText').summernote({
+                placeholder: 'Write job qualifications here...',
+                tabsize: 2,
+                height: 300,
+                disableResizeEditor: true, // This is optional if you want to remove resize
+                disableDragAndDrop: true, // Set the height here (e.g., 300px)
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        if ($('#qualText').summernote('isEmpty')) {
+                            @this.set('qualPost',
+                                ''
+                            ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
+                        } else {
+                            @this.set('qualPost', contents);
+                        }
+                    }
+                }
+            });
+            $('#remText').summernote({
+                placeholder: 'Write remarks here...',
+                tabsize: 2,
+                height: 120,
+                disableResizeEditor: true, // This is optional if you want to remove resize
+                disableDragAndDrop: true, // Set the height here (e.g., 300px)
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        if ($('#remText').summernote('isEmpty')) {
+                            @this.set('remPost',
+                                ''
+                            ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
+                        } else {
+                            @this.set('remPost', contents);
+                        }
+                    }
+                }
+            });
+
+            $('.note-statusbar').hide();
+        })
     </script>
 
-
-    {{-- @endscript --}}
 
 
 </div>

@@ -1,7 +1,7 @@
 <div class="flex flex-col w-full h-full gap-4">
     <h1 class="text-2xl font-bold">Company Information</h1>
     <span class="text-sm text-gray-600">Fields with * are required.</span>
-    <div class="flex flex-col mt-5 sm:flex-row-reverse">
+    <div class="flex flex-col mt-5 lg:flex-row-reverse">
         <div class="flex flex-col items-center  w-full">
             <div class="flex flex-col items-center">
                 <x-input-label for="image" :value="__('Upload Company Logo')" />
@@ -55,7 +55,7 @@
                 <x-text-input wire:model='trade' class="block mt-1" type="text" />
                 <x-input-error :messages="$errors->get('trade')" class="mt-2" />
             </div>
-            <div class="flex flex-col w-full sm:flex-row  mt-4 gap-4">
+            <div class="flex flex-col w-full lg:flex-row  mt-4 gap-4">
                 <div class="flex flex-col w-full">
                     <x-input-label for="loctype" :value="__('Location Type*')" />
                     <select wire:model='locType' class="block mt-1 w-full rounded">
@@ -81,8 +81,8 @@
             </div>
 
             <div x-data="employmentHandler()">
-                <div class="flex flex-col w-full sm:flex-row mt-4 gap-4" @change-status.window="updateEmpDesc">
-                    <div class="flex flex-col w-full sm:w-3/4">
+                <div class="flex flex-col w-full lg:flex-row mt-4 gap-4" @change-status.window="updateEmpDesc">
+                    <div class="flex flex-col w-full lg:w-3/4">
                         <x-input-label for="empStatus" :value="__('Employer Type*')" />
                         <select wire:model='empType' class="block mt-1 w-full rounded" x-model="empType"
                             x-on:change="updateEmpDesc">
@@ -159,7 +159,7 @@
             <div class="flex flex-col mt-4 w-full gap-4 w-full">
                 <div class="flex flex-col">
                     <x-input-label for="province" :value="__('Barangay*')" />
-                    <x-text-input wire:model='bar' class="block mt-1 sm:w-2/3" type="text" readonly
+                    <x-text-input wire:model='bar' class="block mt-1 lg:w-2/3" type="text" readonly
                         x-data="" x-on:click.prevent="$dispatch('open-modal', 'barangay-modal')"
                         x-on:focus="$dispatch('open-modal', 'barangay-modal')" />
                     <x-input-error :messages="$errors->get('barangayID')" class="mt-2" />
@@ -167,12 +167,12 @@
 
                 <div class="flex flex-col">
                     <x-input-label for="province" :value="__('Municipality*')" />
-                    <x-text-input wire:model='mun' class="block mt-1 sm:w-2/3" type="text" readonly />
+                    <x-text-input wire:model='mun' class="block mt-1 lg:w-2/3" type="text" readonly />
                 </div>
 
                 <div class="flex flex-col">
                     <x-input-label for="province" :value="__('Province*')" />
-                    <x-text-input wire:model='prov' class="block mt-1 sm:w-2/3" type="text" readonly />
+                    <x-text-input wire:model='prov' class="block mt-1 lg:w-2/3" type="text" readonly />
                 </div>
             </div>
 
@@ -188,7 +188,7 @@
 
 
 
-    <div class="flex flex-row justify-end space-x-4 mt-4 sm:mt-auto sm:mb-4">
+    <div class="flex flex-row justify-end space-x-4 mt-4 lg:mt-auto lg:mb-4">
 
         <x-blue-button wire:loading.attr='disabled' wire:click.prevent='next' type="button">
             Next

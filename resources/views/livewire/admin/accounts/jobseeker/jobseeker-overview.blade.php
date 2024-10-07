@@ -1,12 +1,12 @@
 <div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Jobseeker Management \ Jobseeker Overview</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12 mt-5">
+        <div class="col-span-4 lg:col-span-12 mt-5">
 
             <div class="flex flex-row">
 
@@ -40,7 +40,7 @@
         </div>
 
         {{-- PROFILE CONTAINER --}}
-        <div class="col-span-4 sm:col-span-4">
+        <div class="col-span-4 lg:col-span-4">
             <div class="bg-white shadow rounded-lg p-6">
 
                 <div class="flex flex-col items-center">
@@ -143,7 +143,7 @@
         </div>
 
         {{-- CONTAINER FOR TABS --}}
-        <div class="col-span-4 sm:col-span-8 row" x-data="{
+        <div class="col-span-4 lg:col-span-8 row" x-data="{
             selectedTab: 1,
             activeTab: 'text-white  bg-blue-700 active',
             inactiveTab: 'hover:text-white-300 bg-gray-300 hover:bg-gray-400',
@@ -208,7 +208,7 @@
                     <h1 class="text-2xl font-bold ">Overview</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex flex-col lg:flex-row gap-4">
                         <div class="flex flex-col w-full gap-4">
                             @if ($jobseeker->industry_preference->count() >= 1)
 
@@ -346,7 +346,7 @@
                 </div>
 
                 {{-- APPLICATION HISTORY CONTAINER --}}
-                <div class="col-span-4 sm:col-span-6" x-data="{
+                <div class="col-span-4 lg:col-span-6" x-data="{
                     openTab: 1,
                     activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
                     inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
@@ -382,7 +382,7 @@
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
                                 <div
-                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                                    class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
@@ -400,7 +400,7 @@
                                         {{-- SEARCH --}}
                                         <input wire:model.live='searchApplications' type="search"
                                             id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Applications">
                                     </div>
                                 </div>
@@ -410,18 +410,18 @@
                                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                             <tr>
-                                                <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">Job Position</th>
-                                                <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">Company</th>
+                                                <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">Job Position</th>
+                                                <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">Company</th>
                                                 <th scope="col"
-                                                    class="px-4 py-2 sm:px-6 sm:py-3 hidden sm:table-cell">Application
+                                                    class="px-4 py-2 lg:px-6 lg:py-3 hidden lg:table-cell">Application
                                                     Status</th>
                                                 <th scope="col"
-                                                    class="px-4 py-2 sm:px-6 sm:py-3 hidden sm:table-cell">PESO
+                                                    class="px-4 py-2 lg:px-6 lg:py-3 hidden lg:table-cell">PESO
                                                     Recommendation</th>
                                                 <th scope="col"
-                                                    class="px-4 py-2 sm:px-6 sm:py-3 hidden sm:table-cell">Applied Date
+                                                    class="px-4 py-2 lg:px-6 lg:py-3 hidden lg:table-cell">Applied Date
                                                 </th>
-                                                <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">Action</th>
+                                                <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -449,23 +449,23 @@
                                                 @foreach ($application_history as $data)
                                                     <tr class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
-                                                            class="flex items-center px-4 py-2 sm:px-6 sm:py-4 text-gray-900 whitespace-nowrap">
+                                                            class="flex items-center px-4 py-2 lg:px-6 lg:py-4 text-gray-900 whitespace-nowrap">
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
                                                                     {{ $data->job_posting->job_Title }}</div>
-                                                                <div class="sm:hidden text-sm text-gray-500">Status:
+                                                                <div class="lg:hidden text-sm text-gray-500">Status:
                                                                     {{ $data->applicant_Status }}</div>
                                                                 <!-- Mobile info -->
                                                             </div>
                                                         </th>
-                                                        <td class="px-4 py-2 sm:px-6 sm:py-4">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->job_posting->company->business_Name }}</div>
-                                                            <div class="sm:hidden text-sm text-gray-500">Applied:
+                                                            <div class="lg:hidden text-sm text-gray-500">Applied:
                                                                 {{ $data->created_at->format('F m, Y') }}</div>
                                                             <!-- Mobile info -->
                                                         </td>
-                                                        <td class="px-4 py-2 sm:px-6 sm:py-4 hidden sm:table-cell">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4 hidden lg:table-cell">
                                                             @if ($data->applicant_Status == 'PENDING')
                                                                 <span
                                                                     class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -487,7 +487,7 @@
                                                             @endif
 
                                                         </td>
-                                                        <td class="px-4 py-2 sm:px-6 sm:py-4 hidden sm:table-cell">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4 hidden lg:table-cell">
                                                             @if ($data->peso_Status == 'PENDING')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -504,11 +504,11 @@
                                                             @endif
 
                                                         </td>
-                                                        <td class="px-4 py-2 sm:px-6 sm:py-4 hidden sm:table-cell">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4 hidden lg:table-cell">
                                                             <div class="text-base">
                                                                 {{ $data->created_at->format('F m, Y') }}</div>
                                                         </td>
-                                                        <td class="px-4 py-2 sm:px-6 sm:py-4 text-center">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4 text-center">
                                                             <div class="flex flex-row gap-5">
                                                                 @if ($data->job_posting->peso_id == Auth::user()->peso_accounts->peso_id)
                                                                     <div x-data="{ tooltip: 'Application Overview' }">
@@ -551,7 +551,7 @@
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative overflow-x-auto p-1 mt-4">
                                 <div
-                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                                    class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div
@@ -567,7 +567,7 @@
 
                                         {{-- SEARCH --}}
                                         <input wire:model.live='searchEvents' type="search" id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Events">
                                     </div>
                                 </div>
@@ -579,10 +579,10 @@
                                             <th scope="col" class="px-6 py-3">
                                                 Training Name
                                             </th>
-                                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                            <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                 Registered Date
                                             </th>
-                                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                            <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                 Status
                                             </th>
                                             <th scope="col" class="px-6 py-3">
@@ -619,7 +619,7 @@
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->programs->program_Title }}
                                                             </div>
-                                                            <div class="block sm:hidden text-gray-500 text-sm">
+                                                            <div class="block lg:hidden text-gray-500 text-sm">
                                                                 {{ $data->created_at->format('F m, Y') }} -
                                                                 @if ($data->program_reg_Status == 'REGISTERED')
                                                                     <span class="text-yellow-800">REGISTERED</span>
@@ -631,12 +631,12 @@
                                                             </div>
                                                         </div>
                                                     </th>
-                                                    <td class="hidden sm:table-cell px-6 py-4">
+                                                    <td class="hidden lg:table-cell px-6 py-4">
                                                         <div class="text-base font-semibold">
                                                             {{ $data->created_at->format('F m, Y') }}</div>
                                                     </td>
 
-                                                    <td class="hidden sm:table-cell px-6 py-4">
+                                                    <td class="hidden lg:table-cell px-6 py-4">
                                                         @if ($data->program_reg_Status == 'REGISTERED')
                                                             <span
                                                                 class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
@@ -688,7 +688,7 @@
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
                                 <div
-                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                                    class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
@@ -705,7 +705,7 @@
 
                                         {{-- SEARCH --}}
                                         <input wire:model.live='searchJobs' type="search" id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Jobs">
                                     </div>
                                 </div>
@@ -716,7 +716,7 @@
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                             <tr>
                                                 <th scope="col" class="px-6 py-3">Job Position</th>
-                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">Company</th>
+                                                <th scope="col" class="hidden lg:table-cell px-6 py-3">Company</th>
                                                 <th scope="col" class="hidden md:table-cell px-6 py-3">Slots
                                                     Available</th>
                                                 <th scope="col" class="hidden md:table-cell px-6 py-3">Application
@@ -752,22 +752,22 @@
                                                         <th scope="row"
                                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                                             <div class="ps-3 text-wrap">
-                                                                <div class="font-normal text-gray-500 sm:hidden">
+                                                                <div class="font-normal text-gray-500 lg:hidden">
                                                                     {{ $data->company->business_Name }}
                                                                 </div>
                                                                 <div class="text-base font-semibold">
                                                                     {{ $data->job_Title }}</div>
 
-                                                                <div class="font-normal text-gray-500 sm:hidden">
+                                                                <div class="font-normal text-gray-500 lg:hidden">
                                                                     Slots: {{ $data->available_slots }}
                                                                 </div>
-                                                                <div class="font-normal text-gray-500 sm:hidden">
+                                                                <div class="font-normal text-gray-500 lg:hidden">
                                                                     Deadline:
                                                                     {{ $data->job_Duration->format('F m, Y') }}
                                                                 </div>
                                                             </div>
                                                         </th>
-                                                        <td class="hidden sm:table-cell px-6 py-4">
+                                                        <td class="hidden lg:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->company->business_Name }}</div>
                                                         </td>
@@ -827,7 +827,7 @@
                                                 <th scope="col" class="px-6 py-3">
                                                     License
                                                 </th>
-                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                                <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                     Validity
                                                 </th>
                                             </tr>
@@ -862,12 +862,12 @@
                                                                 <div class="text-base font-semibold">
                                                                     {{ $data->license_type->license_Name }}
                                                                 </div>
-                                                                <div class="sm:hidden text-sm text-gray-600">
+                                                                <div class="lg:hidden text-sm text-gray-600">
                                                                     Valid until: {{ $data->license_Validity->format('F m, Y') }}
                                                                 </div>
                                                             </div>
                                                         </th>
-                                                        <td class="hidden sm:table-cell px-6 py-4">
+                                                        <td class="hidden lg:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->license_Validity->format('F m, Y') }}
                                                             </div>
@@ -896,7 +896,7 @@
                                                 <th scope="col" class="px-6 py-3">
                                                     Eligibility
                                                 </th>
-                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                                <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                     Validity
                                                 </th>
                                             </tr>
@@ -931,12 +931,12 @@
                                                                 <div class="text-base font-semibold">
                                                                     {{ $data->eligibility_type->eligibility_Name }}
                                                                 </div>
-                                                                <div class="sm:hidden text-sm text-gray-600">
+                                                                <div class="lg:hidden text-sm text-gray-600">
                                                                     Valid until: {{ $data->eligibility_Date->format('F m, Y') }}
                                                                 </div>
                                                             </div>
                                                         </th>
-                                                        <td class="hidden sm:table-cell px-6 py-4">
+                                                        <td class="hidden lg:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->eligibility_Date->format('F m, Y') }}
                                                             </div>
@@ -969,7 +969,7 @@
                     <h1 class="text-2xl font-bold ">Details</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname" :value="__('First Name')" />
                             <x-text-input wire:model='fname' class="block mt-1 w-full" type="text" />
@@ -983,7 +983,7 @@
 
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="mname" :value="__('Middle Name')" />
                             <x-text-input wire:model='mname' class="block mt-1 w-full" type="text" />
@@ -1013,7 +1013,7 @@
                         <x-input-error :messages="$errors->get('suffix')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="birthdate" :value="__('Birthdate')" />
                             <x-text-input wire:model='birthdate' class="block mt-1 w-full" type="date" />
@@ -1034,7 +1034,7 @@
                     </div>
 
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="civilstatus" :value="__('Civil Status')" />
                             <select wire:model='civilstatus' class="block mt-1 w-full rounded-md">
@@ -1313,7 +1313,7 @@
                     <x-input-error :messages="$errors->get('deactRemarks')" class="mt-2" />
                 </div>
 
-                <p class="text-sm sm:text-md text-gray-600 mt-2">
+                <p class="text-sm lg:text-md text-gray-600 mt-2">
                     {{ __('Please note that deactivating this account will cancel all active and pending transactions associated with it. Make sure to review any ongoing processes before proceeding.') }}
                 </p>
 

@@ -1,9 +1,9 @@
 <div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
-            <div class="flex flex-col sm:flex-row justify-between gap-4">
+        <div class="col-span-4 lg:col-span-12">
+            <div class="flex flex-col lg:flex-row justify-between gap-4">
                 <h1 class="text-2xl font-bold">Announcements</h1>
 
                 <a href="{{ route('admin-create-announcement') }}" wire:navigate>
@@ -17,14 +17,14 @@
 
 
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <div class="bg-white shadow rounded-lg p-6 overflow-visible">
 
 
                 <div class="relative p-1 overflow-visible">
 
 
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
@@ -39,7 +39,7 @@
 
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
@@ -50,7 +50,7 @@
                             <x-dropdown align="left" width="24">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs lg:text-sm px-3 py-1.5">
                                         <div>
                                             {{ $filter }}
                                         </div>
@@ -92,7 +92,7 @@
                             <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs lg:text-sm px-3 py-1.5">
                                         <div>
                                             @if (empty($sortDate))
                                                 Sort By Date
@@ -141,10 +141,10 @@
                                     <th scope="col" class="px-6 py-3">
                                         Announcement Title
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Posted Date
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -186,23 +186,23 @@
                                                         {{ $data->announcement_Title }}
                                                     </div>
                                                     <div
-                                                        class="font-normal text-gray-500 text-sm uppercase hidden sm:block">
+                                                        class="font-normal text-gray-500 text-sm uppercase hidden lg:block">
                                                         PESO {{ $data->peso->municipality->municipality_Name }}
                                                     </div>
                                                     <!-- Add extra information for mobile screens -->
                                                     <div
-                                                        class="font-normal text-gray-500 text-sm uppercase block sm:hidden">
+                                                        class="font-normal text-gray-500 text-sm uppercase block lg:hidden">
                                                         PESO {{ $data->peso->municipality->municipality_Name }} -
                                                         {{ $data->announcement_Status }}
                                                     </div>
                                                 </div>
                                             </th>
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-base font-semibold">
                                                     {{ $data->created_at->format('F j Y') }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 font-semibold hidden sm:table-cell">
+                                            <td class="px-6 py-4 font-semibold hidden lg:table-cell">
                                                 {{ $data->announcement_Status }}
                                             </td>
                                             <td class="px-6 py-4">

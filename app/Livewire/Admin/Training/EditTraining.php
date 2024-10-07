@@ -189,7 +189,7 @@ class EditTraining extends Component
 
     public function cancelEdit()
     {
-        $this->redirectRoute('admin-view-training', ['id' => $this->programData], navigate: true);
+        $this->redirectRoute('admin-view-training', ['id' => $this->programData]);
         // session()->forget('programData');
 
     }
@@ -284,7 +284,7 @@ class EditTraining extends Component
                 DB::commit();
 
                 // Redirect and display success message
-                $this->redirectRoute('admin-view-training', ['id' => $programInfo->program_id], navigate: true);
+                $this->redirectRoute('admin-view-training', ['id' => $programInfo->program_id]);
                 toastr()->success('Program has been updated!');
             } else {
                 DB::rollBack();

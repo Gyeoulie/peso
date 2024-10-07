@@ -1,14 +1,14 @@
 <div wire:poll.5s>
     <div class="container mx-auto py-8">
 
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+        <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
 
 
 
 
 
-            <div class="col-span-4 sm:col-span-5">
+            <div class="col-span-4 lg:col-span-5">
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4">
                     <div class="flex flex-row justify-center items-center h-full p-5 flex-shrink-0">
                         <img src="{{ asset('storage/' . $ProgramInfo->program_pubmat) }}" alt="Default I mage"
@@ -268,14 +268,14 @@
 
 
 
-            <div class="col-span-4 sm:col-span-7">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="col-span-4 lg:col-span-7">
+                <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg">
 
 
                     <div class="flex flex-col w-full h-full p-5 space-y-2">
 
                         <div class="flex flex-col">
-                            <h1 class="text-3xl text-blue-500 sm:text-6xl font-bold">{{ $ProgramInfo->program_Title }}
+                            <h1 class="text-3xl text-blue-500 lg:text-6xl font-bold">{{ $ProgramInfo->program_Title }}
                             </h1>
                         </div>
 
@@ -337,7 +337,7 @@
                 <hr>
                 <div class="flex flex-col my-4">
                     <div class="flex flex-col mt-4 w-full justify-center items-center px-4">
-                        <p class="text-sm sm:text-md text-justify">
+                        <p class="text-sm lg:text-md text-justify">
                             By registering for skills training with the Public Employment Services Office (PESO), you
                             confirm that all information provided is accurate and up-to-date. You consent to the
                             collection and use of your personal data for training and employment purposes in line with

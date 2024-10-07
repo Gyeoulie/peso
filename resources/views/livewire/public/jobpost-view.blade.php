@@ -1,11 +1,11 @@
 <div wire:poll.5s>
     <div class="container mx-auto py-8">
 
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+        <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
 
 
-            <div class="col-span-4 sm:col-span-12">
+            <div class="col-span-4 lg:col-span-12">
 
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg">
 
@@ -13,25 +13,25 @@
                     <div class="flex flex-row w-full h-full">
                         <div class="flex flex-row justify-center items-center h-full p-5 flex-shrink-0">
                             <img src="{{ asset('storage/' . $JobPost->company->company_img) }}" alt="Default I mage"
-                                class="w-36 h-36    sm:w-48 sm:h-48 bg-gray-300 rounded object-contain">
+                                class="w-36 h-36    lg:w-48 lg:h-48 bg-gray-300 rounded object-contain">
                         </div>
-                        <div class="flex flex-col w-full h-full sm:ml-5 py-5 sm:mt-5">
+                        <div class="flex flex-col w-full h-full lg:ml-5 py-5 lg:mt-5">
 
                             <div class="flex flex-row">
-                                <h1 class=" text-4xl text-blue-500 sm:text-6xl font-bold uppercase">
+                                <h1 class=" text-4xl text-blue-500 lg:text-6xl font-bold uppercase">
                                     {{ $JobPost->job_Title }}
                                 </h1>
                             </div>
 
-                            <div class="flex-row sm:mt-5">
-                                <h2 class="text-md sm:text-3xl font-semibold">{{ $JobPost->company->business_Name }}
+                            <div class="flex-row lg:mt-5">
+                                <h2 class="text-md lg:text-3xl font-semibold">{{ $JobPost->company->business_Name }}
                                 </h2>
                             </div>
 
 
-                            <div class="flex flex-col sm:flex-row sm:space-x-4  sm:mt-8">
+                            <div class="flex flex-col lg:flex-row lg:space-x-4  lg:mt-8">
                                 <div class="">
-                                    <h3 class="text-xs sm:text-lg text-blue-900"> <i
+                                    <h3 class="text-xs lg:text-lg text-blue-900"> <i
                                             class="fa-solid fa-location-dot"></i>
                                         {{ $JobPost->barangay->municipality->municipality_Name }},
                                         {{ $JobPost->barangay->municipality->province->province_Name }}
@@ -43,17 +43,17 @@
                                 </div>
 
                                 <div class="">
-                                    <h3 class="text-xs sm:text-lg text-blue-900"> <i
+                                    <h3 class="text-xs lg:text-lg text-blue-900"> <i
                                             class="fa-solid fa-graduation-cap"></i>
                                         {{ $eduLevels[$JobPost->job_Edu] }}
                                     </h3>
                                 </div>
-                                <div class="hidden sm:flex items-center justify-center">
+                                <div class="hidden lg:flex items-center justify-center">
                                     <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
                                 </div>
 
                                 <div class="">
-                                    <h3 class="text-xs sm:text-lg text-blue-900"> <i class="fa-solid fa-briefcase"></i>
+                                    <h3 class="text-xs lg:text-lg text-blue-900"> <i class="fa-solid fa-briefcase"></i>
                                         @if ($JobPost->job_Type == 1)
                                             Full Time
                                         @elseif ($JobPost->job_Type == 2)
@@ -62,12 +62,12 @@
                                     </h3>
                                 </div>
 
-                                <div class="hidden sm:flex items-center justify-center">
+                                <div class="hidden lg:flex items-center justify-center">
                                     <i class="fa-solid fa-circle text-xs" style="font-size: 0.4rem;"></i>
                                 </div>
 
                                 <div class="">
-                                    <h3 class="text-xs sm:text-lg text-blue-900"> <i class="fa-solid fa-calendar"></i>
+                                    <h3 class="text-xs lg:text-lg text-blue-900"> <i class="fa-solid fa-calendar"></i>
                                         {{ $JobPost->created_at->format('F j, Y') }}
                                     </h3>
                                 </div>
@@ -84,8 +84,8 @@
 
 
 
-            <div class="col-span-4 sm:col-span-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="col-span-4 lg:col-span-8">
+                <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg">
 
                     <div class="flex flex-col w-full h-full p-5 space-y-2">
 
@@ -133,7 +133,7 @@
             </div>
 
 
-            <div class="col-span-4 sm:col-span-4">
+            <div class="col-span-4 lg:col-span-4">
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4">
                     <div class="flex flex-col w-full">
 
@@ -494,14 +494,14 @@
 
 
 
-                    <div class="flex flex-row w-full gap-4 sm:gap-24 justify-center items-center mt-8">
+                    <div class="flex flex-row w-full gap-4 lg:gap-24 justify-center items-center mt-8">
 
                         <div wire:click.prevent='updateOption(1)' x-on:click="selectedOption = 1"
                             :class="selectedOption === 1 ? selected : unselected"
-                            class="flex flex-col w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center  gap-2 shadow-lg cursor-pointer">
+                            class="flex flex-col w-[120px] h-[120px] lg:w-[150px] lg:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center  gap-2 shadow-lg cursor-pointer">
 
                             <div>
-                                <svg class="h-10 w-10 sm:h-14 sm:w-14" xmlns="http://www.w3.org/2000/svg"
+                                <svg class="h-10 w-10 lg:h-14 lg:w-14" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
@@ -517,10 +517,10 @@
 
                         <div wire:click.prevent='updateOption(2)' x-on:click="selectedOption = 2"
                             :class="selectedOption === 2 ? selected : unselected"
-                            class="flex flex-col  w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center gap-2 shadow-lg  cursor-pointer">
+                            class="flex flex-col  w-[120px] h-[120px] lg:w-[150px] lg:h-[150px] p-2 rounded-lg border-2 border-blue-400 items-center justify-center gap-2 shadow-lg  cursor-pointer">
 
                             <div>
-                                <svg class="h-10 w-10 sm:h-14 sm:w-14" xmlns="http://www.w3.org/2000/svg"
+                                <svg class="h-10 w-10 lg:h-14 lg:w-14" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
@@ -587,7 +587,7 @@
                     </x-secondary-button>
                     {{-- 
                 <x-blue-button wire:click.prevent='createApplication()' type="button"
-                    class="ml-auto mr-0 sm:mr-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 justify-center w-[100px]">Confirm
+                    class="ml-auto mr-0 lg:mr-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 justify-center w-[100px]">Confirm
 
                 </x-blue-button> --}}
 

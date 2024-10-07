@@ -1,14 +1,14 @@
 <div class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Employer Management \ Employer Overview</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12 mt-5">
+        <div class="col-span-4 lg:col-span-12 mt-5">
 
-            <div class="flex flex-col sm:flex-row justify-between gap-2">
+            <div class="flex flex-col lg:flex-row justify-between gap-2">
 
                 <div class="flex flex-col">
                     <h1 class="text-xl font-medium">Employer ID: {{ $employer->company_id }}</h1>
@@ -45,7 +45,7 @@
         </div>
 
         {{-- PROFILE CONTAINER --}}
-        <div class="col-span-4 sm:col-span-4">
+        <div class="col-span-4 lg:col-span-4">
             <div class="bg-white shadow rounded-lg p-6">
 
                 <div class="flex flex-col items-center">
@@ -190,7 +190,7 @@
         </div>
 
         {{-- CONTAINER FOR TABS --}}
-        <div class="col-span-4 sm:col-span-8 row" x-data="{
+        <div class="col-span-4 lg:col-span-8 row" x-data="{
             selectedTab: 1,
             activeTab: 'text-white  bg-blue-700 active',
             inactiveTab: 'hover:text-white-300 bg-gray-300 hover:bg-gray-400',
@@ -314,7 +314,7 @@
                 </div>
 
                 {{-- APPLICATION HISTORY CONTAINER --}}
-                <div class="col-span-4 sm:col-span-6" x-data="{
+                <div class="col-span-4 lg:col-span-6" x-data="{
                     openTab: 1,
                     activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
                     inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
@@ -334,7 +334,7 @@
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
                                 <div
-                                    class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                                    class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div
@@ -350,7 +350,7 @@
 
                                         {{-- SEARCH --}}
                                         <input wire:model.live='searchJobs' type="search" id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Jobs">
                                     </div>
                                 </div>
@@ -363,13 +363,13 @@
                                                 <th scope="col" class="px-6 py-3">
                                                     Job Position
                                                 </th>
-                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                                <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                     Number of Applicants
                                                 </th>
-                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                                <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                     Status
                                                 </th>
-                                                <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                                <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                     Application Deadline
                                                 </th>
                                                 <th scope="col" class="px-6 py-3">
@@ -406,7 +406,7 @@
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
                                                                     {{ $data->job_Title }}</div>
-                                                                <div class="flex flex-col sm:hidden">
+                                                                <div class="flex flex-col lg:hidden">
 
                                                                     <span class="text-gray-500 ">Applicants:
                                                                         <span class="text-black font-semibold">
@@ -438,11 +438,11 @@
                                                                 </div>
                                                             </div>
                                                         </th>
-                                                        <td class="hidden sm:table-cell px-6 py-4">
+                                                        <td class="hidden lg:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->applicants_count }}</div>
                                                         </td>
-                                                        <td class="hidden sm:table-cell px-6 py-4">
+                                                        <td class="hidden lg:table-cell px-6 py-4">
                                                             <span
                                                                 class="inline-flex items-center rounded-md 
                                                                 @if ($data->job_Status == 'PENDING') bg-yellow-200 text-yellow-800 ring-yellow-600/20
@@ -452,7 +452,7 @@
                                                                 @else bg-red-200 text-red-800 ring-red-600/20 @endif 
                                                                 px-2 py-1 text-sm font-medium ring-1 ring-inset">{{ $data->job_Status }}</span>
                                                         </td>
-                                                        <td class="hidden sm:table-cell px-6 py-4">
+                                                        <td class="hidden lg:table-cell px-6 py-4">
                                                             <div class="text-base">
                                                                 {{ $data->job_Duration->format('F m, Y') }}</div>
                                                         </td>
@@ -506,7 +506,7 @@
                     <h1 class="text-2xl font-bold ">Details</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="bname" :value="__('Business Name')" />
                             <x-text-input wire:model="businessName" class="block mt-1 w-full" type="text" />
@@ -520,7 +520,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="tin" :value="__('TIN')" />
                             <x-text-input wire:model="TIN" class="block mt-1 w-full" type="text" />
@@ -553,7 +553,7 @@
                     </div>
 
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <!-- Employment Status Dropdown -->
                         <div class="flex flex-col w-full">
                             <x-input-label for="empType" :value="__('Employer Type')" />
@@ -713,7 +713,7 @@
                 </div>
 
             </div>
-            <p class="text-sm sm:text-md text-gray-600 mt-2 text-justify">
+            <p class="text-sm lg:text-md text-gray-600 mt-2 text-justify">
                 {{ __('Please note that cancel partnership with this company will cancel all active and pending transactions associated with it. Make sure to review any ongoing processes before proceeding.') }}
             </p>
             <div class="inline-flex justify-center items-center mt-2 w-full">
@@ -819,7 +819,7 @@
                     <x-input-error :messages="$errors->get('deactRemarks')" class="mt-2" />
                 </div>
 
-                <p class="text-sm sm:text-md text-gray-600 mt-2">
+                <p class="text-sm lg:text-md text-gray-600 mt-2">
                     {{ __('Please note that deactivating this account will cancel all active and pending transactions associated with it. Make sure to review any ongoing processes before proceeding.') }}
                 </p>
 

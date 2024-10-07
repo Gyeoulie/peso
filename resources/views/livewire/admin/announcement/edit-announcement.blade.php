@@ -1,10 +1,10 @@
 <div class="container mx-auto py-8">
 
     {{-- GRID --}}
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Announcements / Create an Announcement</h1>
         </div>
 
@@ -12,14 +12,14 @@
 
 
 
-        <div class="col-span-4 sm:col-span-4">
+        <div class="col-span-4 lg:col-span-4">
 
             <div class="bg-white shadow rounded-lg p-6 w-full">
                 <div class="flex flex-col items-center mt-4 w-full h-full">
                     <x-input-label class="" for="fname" :value="__('Announcement Image')" />
                     <div class="flex flex-col items-center mt-4">
                         <div
-                            class="sm:w-[400px] sm:h-[500px] bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
+                            class="lg:w-[400px] lg:h-[500px] bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
 
                             @if ($announcementImage && !$errors->has('announcementImage'))
                                 <img id="uploadedImage"
@@ -63,7 +63,7 @@
 
         </div>
 
-        <div class="col-span-4 sm:col-span-8">
+        <div class="col-span-4 lg:col-span-8">
             <div class="bg-white shadow rounded-lg p-6 ">
                 <div class="flex flex-col w-full h-full gap-4">
 
@@ -149,29 +149,32 @@
 
 {{-- @scipt --}}
 <script data-navigate-once>
-    $('#descText').summernote({
-        placeholder: 'Write training description here...',
-        tabsize: 4,
-        height: 600,
-        disableResizeEditor: true, // This is optional if you want to remove resize
-        disableDragAndDrop: true, // Set the height here (e.g., 300px)
-        toolbar: [
-            ['fontsize', ['fontsize', 'fontname']],
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            // ['font', ['bold', 'underline']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-        ],
-        callbacks: {
-            onChange: function(contents, $editable) {
-                if ($('#descText').summernote('isEmpty')) {
-                    @this.set('contentPost',
-                        ''
-                    ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                } else {
-                    @this.set('contentPost', contents);
+    document.addEventListener('livewire:navigated', () => {
+
+        $('#descText').summernote({
+            placeholder: 'Write training description here...',
+            tabsize: 4,
+            height: 600,
+            disableResizeEditor: true, // This is optional if you want to remove resize
+            disableDragAndDrop: true, // Set the height here (e.g., 300px)
+            toolbar: [
+                ['fontsize', ['fontsize', 'fontname']],
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                // ['font', ['bold', 'underline']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+            ],
+            callbacks: {
+                onChange: function(contents, $editable) {
+                    if ($('#descText').summernote('isEmpty')) {
+                        @this.set('contentPost',
+                            ''
+                        ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
+                    } else {
+                        @this.set('contentPost', contents);
+                    }
                 }
             }
-        }
-    });
+        });
+    })
 </script>

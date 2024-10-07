@@ -201,13 +201,13 @@
             </table>
         </div>
 
-        <div class="flex flex-row px-4 sm:px-12 mt-4 w-full">
+        <div class="flex flex-row px-4 lg:px-12 mt-4 w-full">
             <div class="flex flex-col w-full">
                 <x-input-label for="presentAddress" :value="__('Other Skills')" />
                 <div class="flex flex-row gap-4">
                     <x-text-input wire:model='inputSkills' class="block mt-1 w-1/2" type="text" name="hnum" />
                     <x-primary-button wire:click.prevent='addSkills' type="button"
-                        class="flex justify-center items-center sm:w-[100px] text-white rounded">Add
+                        class="flex justify-center items-center lg:w-[100px] text-white rounded">Add
                         Skill</x-primary-button>
                 </div>
                 <x-input-error :messages="$errors->get('inputSkills')" class="mt-2" />
@@ -216,7 +216,7 @@
         </div>
 
 
-        <div id="otherSkillRow" class="flex-inline px-2 sm:px-12 mt-2">
+        <div id="otherSkillRow" class="flex-inline px-2 lg:px-12 mt-2">
             @foreach ($inputData as $index => $data)
                 <span wire:key="jobPref-{{ $index }}"
                     class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -237,7 +237,7 @@
 
 
 
-        <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
+        <div class="flex flex-row justify-between space-x-4 mt-4 lg:mt-auto lg:mb-4">
             <x-secondary-button wire:loading.attr='disabled' wire:click.prevent='prev' type="button">
                 Previous
                 <div wire:loading.delay.long wire:target="prev" role="status">

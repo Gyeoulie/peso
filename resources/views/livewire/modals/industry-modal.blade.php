@@ -7,7 +7,7 @@
 
         <div class="relative mt-4">
             <div
-                class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+                class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4 overflow-visible">
 
 
                 <label for="table-search" class="sr-only">Search</label>
@@ -22,7 +22,7 @@
 
                     {{-- LICENSE SEARCH --}}
                     <input wire:model.live='search' type="search"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search industry">
                 </div>
 
