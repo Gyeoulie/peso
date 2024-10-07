@@ -699,7 +699,7 @@
 
 
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-center text-gray-500 rtl:text-right">
+                    <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
                                 <th scope="col" class="w-1/4 px-4 py-2 "> <!-- Hidden on small screens -->
@@ -843,7 +843,7 @@
                 </div>
                 <div class="overflow-x-auto ">
 
-                    <table class="w-full text-sm text-left text-center text-gray-500 rtl:text-right">
+                    <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
                                 <th scope="col" class="w-1/4 px-6 py-3"></th> <!-- Hidden on small screens -->

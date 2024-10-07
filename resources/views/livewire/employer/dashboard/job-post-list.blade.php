@@ -1,11 +1,11 @@
 <div wire:poll>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto ">
+        <div class="mx-auto max-w-7xl ">
             @if (Auth::check() && !$activePartnership)
-                <div class="bg-yellow-100 shadow rounded-lg p-6">
+                <div class="p-6 bg-yellow-100 rounded-lg shadow">
                     <div class="flex flex-row items-center justify-between">
-                        <p class="text-yellow-700 font-bold text-xl">
+                        <p class="text-xl font-bold text-yellow-700">
                             Access to job post applications is restricted. Please ensure your company has an active
                             partnership to access job posting.
                         </p>
@@ -21,16 +21,16 @@
                     </div>
                 </div>
             @else
-                <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg">
+                <div class="overflow-hidden bg-white shadow-sm lg:rounded-lg">
                     <div class="flex flex-col w-full">
                         <div class="flex flex-row w-full">
                             <div class="flex flex-row">
                                 <div class="p-6 text-xl font-medium text-gray-900">
-                                    Welcome, <span class="text-black font-bold">
+                                    Welcome, <span class="font-bold text-black">
                                         {{ auth()->user()->company->business_Name }}!</span>
                                 </div>
                             </div>
-                            <div class="flex flex-col ml-auto mr-2 justify-center">
+                            <div class="flex flex-col justify-center ml-auto mr-2">
                                 <a wire:navigate href="{{ route('jobpost.apply') }}">
                                     <x-primary-button type="button" class="w-[150px] mr-2 justify-center">
 
@@ -48,9 +48,9 @@
         </div>
     </div>
 
-    <div class="table-container overflow-visible">
-        <div class="max-w-7xl mx-auto overflow-visible">
-            <div class="bg-white overflow-hidden lg:rounded-lg p-2 overflow-visible">
+    <div class="overflow-visible table-container">
+        <div class="mx-auto overflow-visible max-w-7xl">
+            <div class="p-2 overflow-visible bg-white lg:rounded-lg">
 
 
                 <div class="p-2" x-data="{
@@ -125,13 +125,13 @@
 
                 <div class="relative">
                     <div
-                        class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0  overflow-visbile">
+                        class="flex flex-col gap-2 p-1 space-y-4 lg:flex-row lg:justify-between lg:space-y-0 overflow-visbile">
 
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                 <svg class="w-4 h-4 text-gray-500 " aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -139,10 +139,10 @@
                                 </svg>
                             </div>
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job posting">
                         </div>
-                        <div class="flex flex-wrap mr-3 gap-2">
+                        <div class="flex flex-wrap gap-2 mr-3">
                             {{-- SORT --}}
                             <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
@@ -153,7 +153,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -182,8 +182,8 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto mt-2">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 lg:table-fixed">
+                    <div class="mt-2 overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 rtl:text-right lg:table-fixed">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 md:w-96">
@@ -192,13 +192,13 @@
                                     <th scope="col" class="px-6 py-3 md:w-64">
                                         Candidates
                                     </th>
-                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         PESO Branch
                                     </th>
-                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Status
                                     </th>
-                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Date
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -220,7 +220,7 @@
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                <p class="mt-2 text-xl font-bold text-center text-black">
                                                     No Job Posting Found
                                                 </p>
                                             </div>
@@ -233,14 +233,14 @@
                                                 <div class="ps-3">
                                                     <div class="text-base font-semibold">{{ $data->job_Title }}</div>
                                                     <div
-                                                        class="font-normal text-gray-500 text-xs lg:text-sm uppercase">
+                                                        class="text-xs font-normal text-gray-500 uppercase lg:text-sm">
                                                         {{ $data->job_Address }},
                                                         {{ $data->barangay->barangay_Name }},
                                                         {{ $data->barangay->municipality->municipality_Name }},
                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                     </div>
                                                     <!-- Additional info for mobile view -->
-                                                    <div class="lg:hidden mt-2">
+                                                    <div class="mt-2 lg:hidden">
                                                         <span class="block text-xs text-gray-600">PESO Branch:
                                                             {{ $data->peso->municipality->municipality_Name }}</span>
                                                         <span class="block text-xs text-gray-600">Status:
@@ -253,31 +253,31 @@
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-wrap gap-2">
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">{{ $data->pending_count }}
+                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">{{ $data->pending_count }}
                                                         PENDING</span>
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-xs font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">{{ $data->interested_count }}
+                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-purple-800 bg-purple-200 rounded-md ring-1 ring-inset ring-purple-600/20">{{ $data->interested_count }}
                                                         INTERESTED</span>
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-xs font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">{{ $data->interview_count }}
+                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-800 bg-blue-200 rounded-md ring-1 ring-inset ring-blue-600/20">{{ $data->interview_count }}
                                                         INTERVIEW</span>
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20">{{ $data->hired_count }}
+                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">{{ $data->hired_count }}
                                                         HIRED</span>
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-emerald-200 px-2 py-1 text-xs font-medium text-emerald-800 ring-1 ring-inset ring-emerald-600/20">{{ $data->accepted_count }}
+                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-emerald-200 text-emerald-800 ring-1 ring-inset ring-emerald-600/20">{{ $data->accepted_count }}
                                                         ACCEPTED</span>
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-xs font-medium text-red-800 ring-1 ring-inset ring-red-600/20">{{ $data->rejected_count }}
+                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">{{ $data->rejected_count }}
                                                         REJECTED</span>
                                                 </div>
                                             </td>
-                                            <td class="hidden lg:table-cell px-6 py-4">
-                                                <div class="font-normal text-gray-500 text-sm">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                <div class="text-sm font-normal text-gray-500">
                                                     {{ $data->peso->municipality->municipality_Name }}
                                                 </div>
                                             </td>
-                                            <td class="hidden lg:table-cell px-6 py-4">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
                                                 <div class="flex items-center">
                                                     @if ($data->job_Status == 'ACTIVE')
                                                         <div
@@ -302,21 +302,21 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="hidden lg:table-cell px-6 py-4">
-                                                <div class="font-normal text-gray-500 text-sm">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                <div class="text-sm font-normal text-gray-500">
                                                     {{ $data->created_at->format('F j, Y') }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="flex flex-row  gap-2">
+                                                <div class="flex flex-row gap-2">
                                                     @if ($filter == 'PENDING' && $data->job_Status == 'PENDING')
                                                         <div x-data="{ tooltip: 'Edit Job Post' }">
                                                             <button
                                                                 wire:click.prevent='editJobPost({{ $data->job_id }})'
                                                                 x-tooltip="tooltip" type="button"
-                                                                class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center border rounded-lg text-cyan-700 border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300">
 
-                                                                <svg class="h-5 w-5"
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
                                                                     stroke="currentColor">
@@ -333,8 +333,8 @@
                                                         <a wire:navigate
                                                             href="{{ route('jobpost.show', ['id' => $data->job_id]) }}"
                                                             x-tooltip="tooltip" type="button"
-                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                 viewBox="0 0 24 24" fill="currentColor">
                                                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                                 <path fill-rule="evenodd"
@@ -349,7 +349,7 @@
                                                         <a wire:navigate
                                                             href="{{ route('jobpost.details', ['id' => $data->job_id]) }}"
                                                             x-tooltip="tooltip" type="button"
-                                                            class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            class="inline-flex items-center p-1 text-sm font-medium text-center border rounded-lg text-cyan-700 border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300">
                                                             <svg class="w-5 h-5 " xmlns="http://www.w3.org/2000/svg"
                                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                                 stroke="currentColor">

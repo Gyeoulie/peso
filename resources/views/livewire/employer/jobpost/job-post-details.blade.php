@@ -1,6 +1,6 @@
 <div class="w-full">
-    <div wire:poll class="flex mx-auto lg:mx-12 py-2 ">
-        <div class="grid grid-cols-4 lg:grid-cols-12 gap-10 p-3 lg:p-0 w-full">
+    <div wire:poll class="flex py-2 mx-auto lg:mx-12 ">
+        <div class="grid w-full grid-cols-4 gap-10 p-3 lg:grid-cols-12 lg:p-0">
             <div class="col-span-4 lg:col-span-12">
                 {{-- TITLE --}}
 
@@ -15,24 +15,20 @@
 
             {{-- SECOND CONTAINER FOR JOB DESCRIPTION --}}
             <div class="col-span-4 lg:col-span-6">
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+                <div class="flex flex-col p-6 bg-white rounded-lg shadow">
 
-                    {{-- PHONE DATE (SMALL SCREEN) --}}
-                    <div class="hidden flex flex-row w-full justify-end">
-                        <h1 class="text-sm font-light ml-auto mr-5 mt-1 mb-auto">April 28, 2024</h1>
-                    </div>
 
                     <div class="flex flex-row w-full">
 
-                        <div class="flex flex-row w-full items-center">
+                        <div class="flex flex-row items-center w-full">
                             {{-- IMG --}}
                             <img src="{{ asset('storage/' . $jobpost->company->company_img) }}"
-                                class="w-32 h-32 bg-gray-300 rounded-lg object-cover shadow-lg shrink-0">
+                                class="object-cover w-32 h-32 bg-gray-300 rounded-lg shadow-lg shrink-0">
                             </img>
 
-                            <div class="flex flex-col ml-4 w-full">
-                                <h1 class="text-xl lg:text-3xl font-bold">{{ $jobpost->company->business_Name }}</h1>
-                                <p class="text-sm lg:text-lg text-gray-700 uppercase">
+                            <div class="flex flex-col w-full ml-4">
+                                <h1 class="text-xl font-bold lg:text-3xl">{{ $jobpost->company->business_Name }}</h1>
+                                <p class="text-sm text-gray-700 uppercase lg:text-lg">
                                     {{ $jobpost->company->company_Address }},
                                     {{ $jobpost->barangay->barangay_Name }},
                                     {{ $jobpost->barangay->municipality->municipality_Name }},
@@ -66,15 +62,15 @@
 
                 </div>
 
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
+                <div class="flex flex-col p-6 mt-4 bg-white rounded-lg shadow">
 
-                    <div class="flex flex-col gap-2 lg:flex-row  lg:justify-between">
+                    <div class="flex flex-col gap-2 lg:flex-row lg:justify-between">
                         <h1 class="text-2xl font-bold">Job Posting Details</h1>
 
                         @if ($jobpost->job_Disability == 1)
                             <div
-                                class="flex rounded-full py-1 px-4 font-medium border bg-green-200 border-green-500 text-green-700 font-bold text-sm w-fit">
-                                <svg class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24"
+                                class="flex px-4 py-1 text-sm font-bold text-green-700 bg-green-200 border border-green-500 rounded-full w-fit">
+                                <svg class="w-5 h-5 text-green-500" width="24" height="24" viewBox="0 0 24 24"
                                     stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                                     stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" />
@@ -92,13 +88,13 @@
 
 
 
-                    <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col w-full gap-4 mt-4 lg:flex-row">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="title"> <i class="fa-solid fa-briefcase"></i> Job
                                 Title
                             </x-input-label>
-                            <x-text-input id="title" class="block mt-1 w-full" type="text"
+                            <x-text-input id="title" class="block w-full mt-1" type="text"
                                 value="{{ $jobpost->job_Title }}" readonly />
                         </div>
 
@@ -110,16 +106,16 @@
                                         clip-rule="evenodd" />
                                 </svg>Job Industry
                             </x-input-label>
-                            <x-text-input id="industry" class="block mt-1 w-full" type="text"
+                            <x-text-input id="industry" class="block w-full mt-1" type="text"
                                 value="{{ $jobpost->job_industry->industry_Title }}" readonly />
                         </div>
 
                     </div>
 
 
-                    <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col w-full gap-4 mt-4 lg:flex-row">
 
-                        <div class="flex flex-col ml w-full">
+                        <div class="flex flex-col w-full ml">
                             <x-input-label for="education" class="flex flex-row items-center gap-1"> <svg
                                     class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                     fill="currentColor">
@@ -133,20 +129,20 @@
 
                                 Educational Attainment
                             </x-input-label>
-                            <x-text-input id="education" class="block mt-1 w-full" type="text"
+                            <x-text-input id="education" class="block w-full mt-1" type="text"
                                 value=" {{ $eduLevels[$jobpost->job_Edu] }}" readonly />
                         </div>
 
-                        <div class="flex flex-col lg:flex-col ml w-full">
+                        <div class="flex flex-col w-full lg:flex-col ml">
                             <x-input-label for="type"> <i class="fa-solid fa-briefcase"></i> Employment Type
                             </x-input-label>
-                            <x-text-input id="type" class="block mt-1 w-full" type="text"
+                            <x-text-input id="type" class="block w-full mt-1" type="text"
                                 value="{{ $jobTypes[$jobpost->job_Type] }}" readonly />
                         </div>
 
                     </div>
 
-                    <div class="flex flex-col lg:flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-col w-full gap-4 mt-4 lg:flex-row">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="wage" class="flex flex-row items-center gap-1"><svg class="w-5 h-5"
@@ -160,14 +156,14 @@
                                 </svg>
                                 Wage Range
                             </x-input-label>
-                            <x-text-input id="wage" class="block mt-1 w-full" type="text" name="fnamePost"
+                            <x-text-input id="wage" class="block w-full mt-1" type="text" name="fnamePost"
                                 value="₱{{ number_format($jobpost->job_MinWage) }} - ₱{{ number_format($jobpost->job_MaxWage) }}"
                                 readonly />
                         </div>
 
                         <div class="flex flex-col w-full">
-                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg
-                                    class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <x-input-label for="duration" class="flex flex-row items-center gap-1"> <svg class="w-5 h-5"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
                                     <path fill-rule="evenodd"
@@ -177,7 +173,7 @@
                                 Job
                                 Posting Duration
                             </x-input-label>
-                            <x-text-input id="duration" class="block mt-1 w-full" type="text"
+                            <x-text-input id="duration" class="block w-full mt-1" type="text"
                                 value=" {{ $jobpost->job_Duration->format('F j, Y') }}" readonly />
                         </div>
 
@@ -192,7 +188,7 @@
 
                                 Job Slots
                             </x-input-label>
-                            <x-text-input id="slots" class="block mt-1 w-full" type="text"
+                            <x-text-input id="slots" class="block w-full mt-1" type="text"
                                 value=" {{ $jobpost->job_Slots }}" readonly />
                         </div>
 
@@ -202,19 +198,19 @@
 
 
                 {{-- CONTAINER FOR JOB TAGS --}}
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
+                <div class="flex flex-col p-6 mt-4 bg-white rounded-lg shadow">
                     {{-- TITLE --}}
-                    <h1 class="text-xl lg:text-3xl font-bold">Job Posting Tags</h1>
+                    <h1 class="text-xl font-bold lg:text-3xl">Job Posting Tags</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-row w-full gap-4 mt-4">
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname"> </i> Job Position
                                 Tags
                             </x-input-label>
                             {{-- BADGE CONTAINER --}}
-                            <div id= "otherSkillRow" class="flex-inline border border-gray-300 rounded-lg p-1 mt-2">
+                            <div id= "otherSkillRow" class="p-1 mt-2 border border-gray-300 rounded-lg flex-inline">
 
                                 {{-- BADGE --}}
                                 @foreach ($jobpost->job_tags as $jobTag)
@@ -233,12 +229,12 @@
 
 
                 {{-- CONTAINER FOR DESCRIPTIONS --}}
-                <div class="bg-white shadow rounded-lg p-6 flex flex-col mt-4">
+                <div class="flex flex-col p-6 mt-4 bg-white rounded-lg shadow">
 
-                    <h1 class="text-xl lg:text-3xl font-bold">Job Posting Description</h1>
+                    <h1 class="text-xl font-bold lg:text-3xl">Job Posting Description</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-row w-full gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname"> </i> Job
                                 Description
@@ -252,7 +248,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-row w-full gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname"></i> Job
                                 Qualification
@@ -266,7 +262,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row mt-4 w-full gap-4">
+                    <div class="flex flex-row w-full gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname"></i> Job
                                 Company Remarks
@@ -295,7 +291,7 @@
                 @if (
                     ($jobpost->job_Status == 'ACTIVE' || $jobpost->job_Status == 'REJECTED' || $jobpost->job_Status == 'CANCELLED') &&
                         $jobpost->peso_Remarks)
-                    <div class="bg-white shadow rounded-lg p-6 flex flex-col">
+                    <div class="flex flex-col p-6 bg-white rounded-lg shadow">
 
                         <div class="flex flex-row">
                             <h1 class="text-2xl font-bold ">PESO Remarks</h1>
@@ -303,9 +299,9 @@
 
                         </div>
                         <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                        <div class="flex lg:flex-row gap-4 lg:justify-between">
+                        <div class="flex gap-4 lg:flex-row lg:justify-between">
                             @if ($jobpost->peso_accounts)
-                                <h1 class="text-md font-semibold">{{ $jobpost->peso_accounts->peso_accounts_Fname }}
+                                <h1 class="font-semibold text-md">{{ $jobpost->peso_accounts->peso_accounts_Fname }}
                                     {{ $jobpost->peso_accounts->peso_accounts_Lname }}</h1>
                             @endif
                             @if ($jobpost->responded_at)
@@ -326,27 +322,27 @@
 
 
 
-                <div x-show="!selectedApplicant" class="bg-white shadow rounded-lg p-6 flex flex-col mt-4"
+                <div x-show="!selectedApplicant" class="flex flex-col p-6 mt-4 bg-white rounded-lg shadow"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
-                    <h1 class="text-xl lg:text-3xl font-bold mb-3">Job Applicants</h1>
+                    <h1 class="mb-3 text-xl font-bold lg:text-3xl">Job Applicants</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="p-1 flex flex-col" x-transition:enter="transition ease-out duration-300"
+                    <div class="flex flex-col p-1" x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
 
 
                         <div class="relative">
 
                             <div
-                                class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4 overflow-visible">
+                                class="flex flex-col gap-2 p-1 pb-4 space-y-4 overflow-visible lg:flex-row lg:justify-between lg:space-y-0">
 
                                 <div>
 
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative ">
                                         <div
-                                            class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                            class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                             <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 20 20">
@@ -359,7 +355,7 @@
                                         {{-- SEARCH --}}
                                         <input wire:model.live='applicantSearch' type="search"
                                             id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search applicants">
                                     </div>
                                 </div>
@@ -376,7 +372,7 @@
                                                 </div>
 
                                                 <div class="ms-1">
-                                                    <svg class="fill-current h-4 w-4"
+                                                    <svg class="w-4 h-4 fill-current"
                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
                                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -433,7 +429,7 @@
                                                 </div>
 
                                                 <div class="ms-1">
-                                                    <svg class="fill-current h-4 w-4"
+                                                    <svg class="w-4 h-4 fill-current"
                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
                                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -469,14 +465,14 @@
 
                             {{-- TABLE --}}
                             <div class="overflow-x-auto">
-                                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                                <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                         <tr>
                                             <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">
                                                 <!-- Adjusted padding -->
                                                 Name
                                             </th>
-                                            <th scope="col" class="hidden lg:table-cell px-6 py-3">
+                                            <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                                 <!-- Hidden on mobile -->
                                                 Status
                                             </th>
@@ -500,7 +496,7 @@
                                                                     d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                             </svg>
                                                         </div>
-                                                        <p class="text-xl font-bold text-black text-center mt-2 mb-20">
+                                                        <p class="mt-2 mb-20 text-xl font-bold text-center text-black">
                                                             No Applicants Found</p>
                                                     </div>
                                                 </td>
@@ -510,9 +506,9 @@
                                                 <tr wire:key='jobApplicant-{{ $data->applicant_id }}'
                                                     class="bg-white border-b hover:bg-gray-50">
                                                     <th scope="row"
-                                                        class="flex items-center px-4 py-2 lg:px-6 lg:py-4 text-gray-900 whitespace-nowrap">
+                                                        class="flex items-center px-4 py-2 text-gray-900 lg:px-6 lg:py-4 whitespace-nowrap">
                                                         <!-- Adjusted padding -->
-                                                        <img class="w-10 h-10 rounded-full object-cover"
+                                                        <img class="object-cover w-10 h-10 rounded-full"
                                                             src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                             alt="Profile image">
                                                         <div class="ps-3 text-wrap">
@@ -525,9 +521,9 @@
                                                                     {{ $data->employee->lname }}
                                                                 </a>
                                                             </div>
-                                                            <div class="text-gray-500 font-medium text-xs">Applied
+                                                            <div class="text-xs font-medium text-gray-500">Applied
                                                                 date: {{ $data->created_at->format('F j, Y') }}</div>
-                                                            <div class="lg:hidden text-sm">
+                                                            <div class="text-sm lg:hidden">
                                                                 <div class="flex items-center ">
                                                                     @if ($data->applicant_Status === 'PENDING')
                                                                         <div
@@ -566,7 +562,7 @@
                                                         </div>
                                                     </th>
 
-                                                    <td class="hidden lg:table-cell px-6 py-4">
+                                                    <td class="hidden px-6 py-4 lg:table-cell">
                                                         <!-- Hidden on mobile -->
                                                         <div class="flex items-center">
                                                             @if ($data->applicant_Status === 'PENDING')
@@ -602,12 +598,12 @@
                                                     </td>
 
                                                     <td class="px-4 py-2 lg:px-6 lg:py-4"> <!-- Adjusted padding -->
-                                                        <div class="flex flex-row gap-4 items-center">
+                                                        <div class="flex flex-row items-center gap-4">
                                                             <div x-data="{ tooltip: 'Applicant Info' }">
                                                                 <button
                                                                     wire:click.prevent="getApplicant({{ $data->applicant_id }})"
                                                                     x-tooltip="tooltip" type="button"
-                                                                    class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center border rounded-lg text-cyan-700 border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         class="w-5 h-5" fill="none"
                                                                         viewBox="0 0 24 24" stroke-width="1.5"
@@ -640,14 +636,14 @@
                 </div>
 
 
-                <div x-show="selectedApplicant" class="bg-white shadow rounded-lg p-6 flex flex-col mt-4"
+                <div x-show="selectedApplicant" class="flex flex-col p-6 mt-4 bg-white rounded-lg shadow"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
                     @if ($selectedApplicant)
                         <div class="flex flex-row items-center gap-4">
                             <button @click="selectedApplicant = null">
-                                <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                <div class="flex items-center p-1 transition-transform rounded-full hover:bg-gray-300">
                                     <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -655,7 +651,7 @@
                                     </svg>
                                 </div>
                             </button>
-                            <h2 class="text-lg lg:text-2xl font-bold">Applicant Information</h2>
+                            <h2 class="text-lg font-bold lg:text-2xl">Applicant Information</h2>
 
                         </div>
 
@@ -665,8 +661,8 @@
                                     class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                                 </img>
                             </div>
-                            <div class="flex flex-col ml-4 w-full justify-center">
-                                <h1 class="text-3xl  font-bold">
+                            <div class="flex flex-col justify-center w-full ml-4">
+                                <h1 class="text-3xl font-bold">
                                     {{ $applicantInfo->employee->fname }} {{ $applicantInfo->employee->mname }}
                                     {{ $applicantInfo->employee->lname }}
                                 </h1>
@@ -681,7 +677,7 @@
                         <hr class="mt-4">
                         <div class="flex flex-col mt-4">
 
-                            <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">APPLICATION
+                            <span class="mb-2 font-bold tracking-wider text-gray-700 uppercase">APPLICATION
                                 DETAIL</span>
 
                             <ul>
@@ -722,17 +718,17 @@
 
                                         @if ($applicantInfo->peso_Status == 'PENDING')
                                             <span
-                                                class="inlineflex items-center rounded-md bg-yellow-200 px-1 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                class="items-center px-1 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md inlineflex ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                                         @elseif ($applicantInfo->peso_Status == 'RECOMMENDED')
                                             <span
-                                                class="inline-flex items-center rounded-md bg-green-200 px-1 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
+                                                class="inline-flex items-center px-1 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">RECOMMENDED</span>
                                         @elseif ($applicantInfo->peso_Status == 'REJECT')
                                             <span
-                                                class="inline-flex items-center rounded-md bg-red-200 px-1 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">NOT
+                                                class="inline-flex items-center px-1 py-1 text-sm font-medium text-red-800 uppercase bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">NOT
                                                 RECOMMENDED</span>
                                         @elseif ($applicantInfo->peso_Status == 'CANCELLED')
                                             <span
-                                                class="inline-flex items-center rounded-md bg-red-200 px-1 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">CANCELLED</span>
+                                                class="inline-flex items-center px-1 py-1 text-sm font-medium text-red-800 uppercase bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                         @endif
 
 
@@ -742,19 +738,19 @@
 
                             </ul>
 
-                            <div class="flex flex-col  mt-2">
+                            <div class="flex flex-col mt-2">
                                 <h1 class="mb-2 font-bold">Remarks</h1>
                                 <textarea id="message" rows="6"
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
                                     placeholder="My remarks..." maxlength="600" readonly>{{ $applicantInfo->company_Remarks }}</textarea>
                             </div>
 
-                            <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                            <div class="flex flex-wrap justify-center gap-4 mt-6">
                                 <div x-data="{ tooltip: 'View Resume' }">
                                     <button
                                         wire:click.prevent="viewFile({{ $applicantInfo->employee_id }},{{ $applicantInfo->applicant_Resume }} )"
                                         x-tooltip="tooltip" type="button"
-                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                        class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
                                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -767,7 +763,7 @@
 
                                         <button wire:click.prevent="viewFile({{ $applicantInfo->applicant_id }}, 3 )"
                                             x-tooltip="tooltip" type="button"
-                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"

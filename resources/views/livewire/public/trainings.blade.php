@@ -1,10 +1,10 @@
-<div wire:poll.5s class="max-w-screen-xl mx-auto p-5 lg:p-10 md:p-16" x-data="{
+<div wire:poll.5s class="max-w-screen-xl p-5 mx-auto lg:p-10 md:p-16" x-data="{
     openTab: 1,
     activeTab: 'text-blue-600 border-b-2 border-blue-600  active',
     inactiveTab: 'text-gray-500 hover:text-gray-600 ',
 }">
 
-    <div class="border-b mb-5 flex justify-between text-sm">
+    <div class="flex justify-between mb-5 text-sm border-b">
         <div class="flex flex-row gap-6">
             <button x-on:click="openTab = 1" :class="openTab === 1 ? activeTab : inactiveTab"
                 class="flex items-center pb-2 pr-2">
@@ -14,7 +14,7 @@
                         d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
                 </svg>
 
-                <span class="font-semibold inline-block">Trainings List</span>
+                <span class="inline-block font-semibold">Trainings List</span>
             </button>
             @if (Auth::check() && auth()->user()->usertype == 4)
                 <button x-on:click="openTab = 2" :class="openTab === 2 ? activeTab : inactiveTab"
@@ -25,7 +25,7 @@
                             d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" />
                     </svg>
 
-                    <span class="font-semibold inline-block">My Trainings</span>
+                    <span class="inline-block font-semibold">My Trainings</span>
                 </button>
             @endif
         </div>
@@ -34,14 +34,14 @@
     <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
         <div
-            class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4 overflow-visible">
+            class="flex flex-col gap-2 p-1 pb-4 space-y-4 overflow-visible lg:flex-row lg:justify-between lg:space-y-0">
 
 
             <label for="table-search" class="sr-only">Search</label>
 
             <div class="relative w-full lg:w-auto">
 
-                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                <div class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                     <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -50,7 +50,7 @@
                 </div>
                 {{-- SEARCH --}}
                 <input wire:model.live='search' type="search"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search for trainings">
             </div>
 
@@ -67,7 +67,7 @@
                                 </div>
 
                                 <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -114,7 +114,7 @@
                             </div>
 
                             <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -159,7 +159,7 @@
                             </div>
 
                             <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -193,7 +193,7 @@
         <div>
 
 
-            <div class="grid grid-cols-4 lg:grid-cols-12 gap-10">
+            <div class="grid grid-cols-4 gap-10 lg:grid-cols-12">
 
                 <!-- CARD 1 -->
 
@@ -211,7 +211,7 @@
                                 </svg>
 
                             </div>
-                            <p class="text-2xl font-bold text-black text-center mt-2">
+                            <p class="mt-2 text-2xl font-bold text-center text-black">
                                 No Trainings Found
                             </p>
                         </div>
@@ -219,33 +219,33 @@
                 @else
                     @foreach ($programList as $data)
                         <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                            class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl lg:hover:scale-105 lg:transition-transform">
+                            class="block col-span-4 overflow-hidden bg-white rounded-lg shadow-xl lg:hover:scale-105 lg:transition-transform">
                             <div class="flex flex-col h-full">
                                 <div>
                                     <div class="relative">
                                         <div class="w-full h-64 overflow-hidden">
-                                            <img class="w-full h-full object-cover"
+                                            <img class="object-cover w-full h-full"
                                                 src="{{ asset('storage/' . $data->program_pubmat) }}"
                                                 alt="prog-{{ $data->program_id }}">
                                         </div>
                                         <div
-                                            class="text-xs absolute top-0 right-0 bg-indigo-600 px-4 py-2 text-white mt-3 mr-3 transition duration-500 ease-in-out">
+                                            class="absolute top-0 right-0 px-4 py-2 mt-3 mr-3 text-xs text-white transition duration-500 ease-in-out bg-indigo-600">
                                             {{ $data->program_Type }}
                                         </div>
                                     </div>
                                     <div class="px-6 py-4 mb-auto ">
                                         <span
-                                            class="flex justify-center text-center font-bold text-2xl text-blue-500 inline-block hover:text-blue-800 transition duration-500 ease-in-out mb-2">
+                                            class="flex justify-center mb-2 text-2xl font-bold text-center text-blue-500 transition duration-500 ease-in-out hover:text-blue-800">
                                             {{ $data->program_Title }}
                                         </span>
-                                        <p class="text-gray-500 text-sm flex justify-center text-justify">
+                                        <p class="flex justify-center text-sm text-justify text-gray-500">
                                             {!! \Illuminate\Support\Str::limit(strip_tags($data->program_Description), 175, '...') !!}
                                         </p>
                                     </div>
                                 </div>
                                 <!-- Bottom section for PESO Municipality and Date -->
-                                <div class="mt-auto px-6 py-3 flex flex-row items-center justify-between bg-white">
-                                    <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
+                                <div class="flex flex-row items-center justify-between px-6 py-3 mt-auto bg-white">
+                                    <span class="flex flex-row items-center py-1 text-xs text-gray-900 font-regular">
                                         <svg height="13px" width="13px" version="1.1"
                                             xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -261,7 +261,7 @@
                                         </svg>
                                         <span class="ml-1">{{ $data->program_Deadline->format('F j, Y') }}</span>
                                     </span>
-                                    <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
+                                    <span class="flex flex-row items-center py-1 text-xs text-gray-900 font-regular">
                                         <svg class="h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -295,20 +295,20 @@
             x-transition:enter-end="opacity-100 scale-100" x-cloak>
 
             <div class="col-span-4">
-                <div class="table-container overflow-visible">
-                    <div class="max-w-7xl mx-auto overflow-visible">
-                        <div class="bg-white overflow-hidden lg:rounded-lg p-2 overflow-visible">
+                <div class="overflow-visible table-container">
+                    <div class="mx-auto overflow-visible max-w-7xl">
+                        <div class="p-2 overflow-visible bg-white lg:rounded-lg">
                             <div class="relative">
-                                <div class=" p-6 overflow-visible">
+                                <div class="p-6 overflow-visible ">
 
                                     <div
-                                        class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+                                        class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
                                         {{-- SEARCH BOX --}}
 
                                         <label for="table-search" class="sr-only">Search</label>
                                         <div class="relative">
                                             <div
-                                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                                 <svg class="w-4 h-4 text-gray-500 " aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 20 20">
@@ -318,7 +318,7 @@
                                                 </svg>
                                             </div>
                                             <input wire:model.live.prevent='searchHistory' type="text"
-                                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                                 placeholder="Search for trainings">
                                         </div>
 
@@ -333,7 +333,7 @@
                                                         </div>
 
                                                         <div class="ms-1">
-                                                            <svg class="fill-current h-4 w-4"
+                                                            <svg class="w-4 h-4 fill-current"
                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                 viewBox="0 0 20 20">
                                                                 <path fill-rule="evenodd"
@@ -384,7 +384,7 @@
                                                         </div>
 
                                                         <div class="ms-1">
-                                                            <svg class="fill-current h-4 w-4"
+                                                            <svg class="w-4 h-4 fill-current"
                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                 viewBox="0 0 20 20">
                                                                 <path fill-rule="evenodd"
@@ -417,15 +417,15 @@
 
                                     <div class="overflow-x-auto">
                                         <table
-                                            class="w-full text-sm text-left rtl:text-right text-gray-500 lg:table-fixed">
+                                            class="w-full text-sm text-left text-gray-500 rtl:text-right lg:table-fixed">
                                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                                 <tr>
                                                     <th scope="col" class="px-6 py-3 md:w-96">Event Title</th>
-                                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
+                                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                                         Registered Date</th>
-                                                    <th scope="col" class="px-6 py-3 hidden md:table-cell">
+                                                    <th scope="col" class="hidden px-6 py-3 md:table-cell">
                                                         Registration Status</th>
-                                                    <th scope="col" class="px-6 py-3 hidden md:table-cell">Program
+                                                    <th scope="col" class="hidden px-6 py-3 md:table-cell">Program
                                                         Status</th>
                                                     <th scope="col" class="px-6 py-3 w-md">Action</th>
                                                 </tr>
@@ -446,7 +446,7 @@
                                                                     </svg>
                                                                 </div>
                                                                 <p
-                                                                    class="text-xl font-bold text-black text-center mt-2">
+                                                                    class="mt-2 text-xl font-bold text-center text-black">
                                                                     No Trainings Found</p>
                                                             </div>
                                                         </td>
@@ -456,16 +456,16 @@
                                                         <tr wire:key='progReg-{{ $data->progra_reg_id }}'
                                                             class="bg-white border-b">
                                                             <th scope="row"
-                                                                class="flex flex-col lg:flex-row items-start px-6 py-4 text-gray-900">
+                                                                class="flex flex-col items-start px-6 py-4 text-gray-900 lg:flex-row">
                                                                 <div class="ps-3">
                                                                     <div class="text-base font-semibold">
                                                                         {{ $data->programs->program_Title }}</div>
-                                                                    <div class="font-normal text-gray-500 text-sm">
+                                                                    <div class="text-sm font-normal text-gray-500">
                                                                         {{ $data->programs->program_Location }}</div>
-                                                                    <div class="lg:hidden mt-2 text-gray-500 text-sm">
+                                                                    <div class="mt-2 text-sm text-gray-500 lg:hidden">
                                                                         {{ $data->created_at->format('F j, Y') }}</div>
                                                                     <!-- Mobile view -->
-                                                                    <div class="lg:hidden mt-2 text-gray-500 text-sm">
+                                                                    <div class="mt-2 text-sm text-gray-500 lg:hidden">
                                                                         Program Status:
                                                                         <div class="flex items-center">
                                                                             @if ($data->programs->program_Status === 'ACTIVE')
@@ -487,7 +487,7 @@
                                                                             @endif
                                                                         </div>
                                                                     </div>
-                                                                    <div class="lg:hidden mt-2 text-gray-500 text-sm">
+                                                                    <div class="mt-2 text-sm text-gray-500 lg:hidden">
                                                                         Registration Status:
                                                                         <div class="flex items-center">
                                                                             @if ($data->program_reg_Status == 'REGISTERED')
@@ -507,11 +507,11 @@
                                                                     </div>
                                                                 </div>
                                                             </th>
-                                                            <td class="px-6 py-4 hidden lg:table-cell">
-                                                                <div class="font-normal text-gray-500 text-sm">
+                                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                                <div class="text-sm font-normal text-gray-500">
                                                                     {{ $data->created_at->format('F j, Y') }}</div>
                                                             </td>
-                                                            <td class="px-6 py-4 hidden md:table-cell">
+                                                            <td class="hidden px-6 py-4 md:table-cell">
                                                                 <div class="flex items-center">
                                                                     @if ($data->program_reg_Status == 'REGISTERED')
                                                                         <div
@@ -528,7 +528,7 @@
                                                                     @endif
                                                                 </div>
                                                             </td>
-                                                            <td class="px-6 py-4 hidden md:table-cell">
+                                                            <td class="hidden px-6 py-4 md:table-cell">
                                                                 <div class="flex items-center">
                                                                     @if ($data->programs->program_Status === 'ACTIVE')
                                                                         <div
@@ -556,8 +556,8 @@
                                                                             <a wire:navigate
                                                                                 href="{{ route('training.show', ['id' => $data->programs->program_id]) }}"
                                                                                 x-tooltip="tooltip" type="button"
-                                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                                <svg class="h-5 w-5"
+                                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                                                <svg class="w-5 h-5"
                                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                                     viewBox="0 0 24 24"
                                                                                     fill="currentColor">
@@ -574,7 +574,7 @@
                                                                         <button
                                                                             wire:click.prevent='viewTicket({{ $data->program_reg_id }})'
                                                                             x-tooltip="tooltip" type="button"
-                                                                            class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                            class="inline-flex items-center p-1 text-sm font-medium text-center border rounded-lg text-cyan-700 border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300">
                                                                             <svg class="w-5 h-5"
                                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                                 fill="none" viewBox="0 0 24 24"
@@ -596,7 +596,7 @@
 
                                     </div>
                                     {{-- navbar --}}
-                                    <div class="mt-2 p-4">
+                                    <div class="p-4 mt-2">
                                         {{ $programHistory->links('vendor.livewire.tailwind') }}
                                     </div>
                                 </div>
@@ -617,24 +617,24 @@
     @endif
 
     <x-modal name="ticket-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('My Event Ticket') }}
             </h2>
             <hr>
-            <div class="flex flex-col my-4 w-full h-full justify-center items-center">
+            <div class="flex flex-col items-center justify-center w-full h-full my-4">
                 @if ($ticket)
-                    <div class="hidden lg:flex my-4 ">
+                    <div class="hidden my-4 lg:flex ">
                         {!! QrCode::size(400)->generate($ticket) !!}
 
                     </div>
-                    <div class="lg:hidden flex my-4 ">
+                    <div class="flex my-4 lg:hidden ">
                         {!! QrCode::size(300)->generate($ticket) !!}
 
                     </div>
-                    <div class="text-center mt-4">
-                        <h3 class="text-2xl font-semibold text-blue-500">{{$ticketData['programTitle']}}</h3>
-                        <p class="text-gray-600 text-sm">{{$ticketData['programDate']}}
+                    <div class="mt-4 text-center">
+                        <h3 class="text-2xl font-semibold text-blue-500">{{ $ticketData['programTitle'] }}</h3>
+                        <p class="text-sm text-gray-600">{{ $ticketData['programDate'] }}
                         </p>
                     </div>
                 @else
@@ -646,7 +646,7 @@
                     </div>
                 @endif
             </div>
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button wire:click.prevent='closeTicket'>
                     {{ __('Close') }}
                 </x-secondary-button>
@@ -657,9 +657,9 @@
     </x-modal>
 
     <div id="sticky-banner" tabindex="-1"
-        class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-4 lg:p-8 border-b border-gray-200 bg-blue-500">
+        class="fixed bottom-0 z-50 flex justify-between w-full p-4 bg-blue-500 border-b border-gray-200 start-0 lg:p-8">
         <div class="flex items-center mx-auto">
-            <p class="flex items-center text-sm lg:text-xl text-justify text-white font-bold">
+            <p class="flex items-center text-sm font-bold text-justify text-white lg:text-xl">
 
                 </span>
                 <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Postings are

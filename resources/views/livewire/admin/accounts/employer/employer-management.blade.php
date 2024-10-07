@@ -1,23 +1,23 @@
-<div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+<div wire:poll class="container py-8 mx-auto">
+    <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
         <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Role Management / Employer Management</h1>
         </div>
 
         <div class="col-span-4 lg:col-span-12">
-            <div class="bg-white shadow rounded-lg p-6">
-                <h1 class="text-3xl text-center font-bold">Employers / Companies
+            <div class="p-6 bg-white rounded-lg shadow">
+                <h1 class="text-3xl font-bold text-center">Employers / Companies
                 </h1>
 
                 <div class="relative p-1 mt-4">
 
-                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+                    <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -27,7 +27,7 @@
 
                             {{-- SEARCH --}}
                             <input wire:model.live='searchEmployers' type="search"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
@@ -61,7 +61,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -96,19 +96,19 @@
 
                     {{-- TABLE --}}
                     <div class="overflow-x-auto ">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         Business Name
                                     </th>
-                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Company Type
                                     </th>
-                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Employment Type
                                     </th>
-                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Partnered
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -130,7 +130,7 @@
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                <p class="mt-2 text-xl font-bold text-center text-black">
                                                     No Records Found!
                                                 </p>
                                             </div>
@@ -142,7 +142,7 @@
                                             class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full object-cover"
+                                                <img class="object-cover w-10 h-10 rounded-full"
                                                     src="{{ asset('storage/' . $data->company->company_img) }}"
                                                     alt="employer-{{$data->company_id}}">
                                                 <div class="ps-3 text-wrap">
@@ -152,36 +152,36 @@
                                                         </div>
                                                     </div>
                                                     <div
-                                                        class="font-normal text-gray-500 text-sm uppercase hidden lg:block">
+                                                        class="hidden text-sm font-normal text-gray-500 uppercase lg:block">
                                                         {{ $data->company->company_Address }},
                                                         {{ $data->company->barangay->barangay_Name }},
                                                         {{ $data->company->barangay->municipality->municipality_Name }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
+                                                    <div class="text-sm font-normal text-gray-500 uppercase lg:hidden">
                                                         {{ $data->company->company_Address }},
                                                         {{ $data->company->barangay->barangay_Name }},
                                                         {{ $data->company->barangay->municipality->municipality_Name }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
+                                                    <div class="text-sm font-normal text-gray-500 uppercase lg:hidden">
                                                         {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
+                                                    <div class="text-sm font-normal text-gray-500 uppercase lg:hidden">
                                                         {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
 
                                                     </div>
                                                 </div>
                                             </th>
-                                            <td class="hidden lg:table-cell px-6 py-4">
-                                                <div class="font-normal text-gray-500 text-sm font-semibold">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                <div class="text-sm font-semibold text-gray-500">
                                                     {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
                                                 </div>
                                             </td>
-                                            <td class="hidden lg:table-cell px-6 py-4">
-                                                <div class="font-normal text-gray-500 text-sm">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                <div class="text-sm font-normal text-gray-500">
                                                     {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
                                                 </div>
                                             </td>
-                                            <td class="hidden lg:table-cell px-6 py-4">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
                                                 {{ $data->responded_at->format('F j, Y') }}
                                             </td>
                                             <td class="px-6 py-4">
@@ -190,8 +190,8 @@
                                                         <a wire:navigate
                                                             href="{{ route('admin-users-employer-overview', ['id' => $data->company->company_id]) }}"
                                                             x-tooltip="tooltip" type="button"
-                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                 viewBox="0 0 24 24" fill="currentColor">
                                                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                                 <path fill-rule="evenodd"
@@ -225,87 +225,87 @@
 
 
     <x-modal name="filter-employer-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Filter Employers') }}
             </h2>
             <hr>
             <div class="flex flex-col w-full">
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Company Type</h1>
+                    <h1 class="font-semibold text-md">Sort By Company Type</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountCompanyType' id="companyType-all" type="radio" value=""
                                 name="companyType" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="companyType-all" class="ms-2 text-sm font-medium text-gray-900">None</label>
+                            <label for="companyType-all" class="text-sm font-medium text-gray-900 ms-2">None</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountCompanyType' id="companyType-main" type="radio" value="1"
                                 name="companyType"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="companyType-main" class="ms-2 text-sm font-medium text-gray-900">Main</label>
+                            <label for="companyType-main" class="text-sm font-medium text-gray-900 ms-2">Main</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountCompanyType' id="companyType-branch" type="radio"
                                 value="2" name="companyType"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                             <label for="companyType-branch"
-                                class="ms-2 text-sm font-medium text-gray-900">Branch</label>
+                                class="text-sm font-medium text-gray-900 ms-2">Branch</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Job Posting</h1>
+                    <h1 class="font-semibold text-md">Sort By Job Posting</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountJobPosting' id="job-all" type="radio" value=""
                                 name="jobpostFilter" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="job-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            <label for="job-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountJobPosting' id="job-with" type="radio" value="with_posting"
                                 name="jobpostFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="job-with" class="ms-2 text-sm font-medium text-gray-900">With Active Job
+                            <label for="job-with" class="text-sm font-medium text-gray-900 ms-2">With Active Job
                                 Posting</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountJobPosting' id="job-without" type="radio"
                                 value="without_posting" name="jobpostFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="job-without" class="ms-2 text-sm font-medium text-gray-900">Without Active Job
+                            <label for="job-without" class="text-sm font-medium text-gray-900 ms-2">Without Active Job
                                 Posting</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Location</h1>
+                    <h1 class="font-semibold text-md">Sort By Location</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountLocation' id="location-all" type="radio" value=""
                                 name="location" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="location-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            <label for="location-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountLocation' id="location-within" type="radio" value="within"
                                 name="location" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="location-within" class="ms-2 text-sm font-medium text-gray-900">Within
+                            <label for="location-within" class="text-sm font-medium text-gray-900 ms-2">Within
                                 Municipality</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountLocation' id="location-outside" type="radio" value="outside"
                                 name="location"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="location-outside" class="ms-2 text-sm font-medium text-gray-900">Outside
+                            <label for="location-outside" class="text-sm font-medium text-gray-900 ms-2">Outside
                                 Municipality</label>
                         </div>
 
@@ -313,12 +313,12 @@
                 </div>
 
                 <div class="flex flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Employment Type</h1>
-                    <div class="flex flex-col lg:flex-row gap-4" x-data="employmentHandler()"
+                    <h1 class="font-semibold text-md">Sort By Employment Type</h1>
+                    <div class="flex flex-col gap-4 lg:flex-row" x-data="employmentHandler()"
                         @change-status.window="updateEmpDesc">
                         <div class="flex flex-col w-full">
 
-                            <select wire:model='mountEmpType' class="block mt-1 w-full rounded" x-model="empType"
+                            <select wire:model='mountEmpType' class="block w-full mt-1 rounded" x-model="empType"
                                 x-on:change="updateEmpDesc">
                                 <option value="" disabled selected>Select Employment Type</option>
                                 <option value="1">Public</option>
@@ -330,7 +330,7 @@
                         </div>
                         <div class="flex flex-col w-full">
 
-                            <select wire:model='mountEmpDesc' class="block mt-1 w-full rounded" x-model="empDesc">
+                            <select wire:model='mountEmpDesc' class="block w-full mt-1 rounded" x-model="empDesc">
                                 <option value="" disabled selected>Select Description</option>
                                 <template x-for="desc in empDescriptions" :key="desc.value">
                                     <option :value="desc.value" x-text="desc.text"></option>
@@ -344,7 +344,7 @@
 
 
             </div>
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'filter-employer-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -357,7 +357,7 @@
                         type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="mountFilter" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

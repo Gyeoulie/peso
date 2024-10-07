@@ -2,11 +2,11 @@
     <h1 class="text-2xl font-bold">Company Information</h1>
     <span class="text-sm text-gray-600">Fields with * are required.</span>
     <div class="flex flex-col mt-5 lg:flex-row-reverse">
-        <div class="flex flex-col items-center  w-full">
+        <div class="flex flex-col items-center w-full">
             <div class="flex flex-col items-center">
                 <x-input-label for="image" :value="__('Upload Company Logo')" />
                 <div
-                    class="bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center mt-2 shrink-0 grow-0">
+                    class="flex items-center justify-center mt-2 overflow-hidden bg-gray-200 border border-gray-300 rounded-lg shrink-0 grow-0">
                     <!-- Display uploaded image here -->
                     @if ($cimg)
                         <img id="uploadedImage"
@@ -21,12 +21,12 @@
                 </div>
             </div>
             <x-input-error :messages="$errors->get('cimg')" class="mt-2" />
-            <div class="mt-4 w-160 flex justify-center">
+            <div class="flex justify-center mt-4 w-160">
                 <label for="imageUpload" wire:loading.attr="cimg" wire:target="cimg"
-                    class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md cursor-pointer hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     Upload Image
                     <div wire:loading.delay.long wire:target="cimg" role="status">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -44,21 +44,21 @@
         <div class="flex flex-col w-full">
 
 
-            <div class="flex flex-col mt-4 w-full">
+            <div class="flex flex-col w-full mt-4">
                 <x-input-label for="businessname" :value="__('Business Name*')" />
                 <x-text-input wire:model='business' class="block mt-1" type="text" />
                 <x-input-error :messages="$errors->get('business')" class="mt-2" />
 
             </div>
-            <div class="flex flex-col mt-4 w-full">
+            <div class="flex flex-col w-full mt-4">
                 <x-input-label for="tradename" :value="__('Trade Name*')" />
                 <x-text-input wire:model='trade' class="block mt-1" type="text" />
                 <x-input-error :messages="$errors->get('trade')" class="mt-2" />
             </div>
-            <div class="flex flex-col w-full lg:flex-row  mt-4 gap-4">
+            <div class="flex flex-col w-full gap-4 mt-4 lg:flex-row">
                 <div class="flex flex-col w-full">
                     <x-input-label for="loctype" :value="__('Location Type*')" />
-                    <select wire:model='locType' class="block mt-1 w-full rounded">
+                    <select wire:model='locType' class="block w-full mt-1 rounded">
                         <option value="" disabled selected>Select Location Type</option>
                         <option value="1">Main</option>
                         <option value="2">Branch</option>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <x-input-label for="workforce" :value="__('Total Work Force*')" />
-                    <select wire:model='workForce' class="block mt-1 w-full rounded">
+                    <select wire:model='workForce' class="block w-full mt-1 rounded">
                         <option value="" disabled selected>Select Total Work Force</option>
                         <option value="1">1 - 9 (Micro)</option>
                         <option value="2">10 - 99 (Small)</option>
@@ -81,10 +81,10 @@
             </div>
 
             <div x-data="employmentHandler()">
-                <div class="flex flex-col w-full lg:flex-row mt-4 gap-4" @change-status.window="updateEmpDesc">
+                <div class="flex flex-col w-full gap-4 mt-4 lg:flex-row" @change-status.window="updateEmpDesc">
                     <div class="flex flex-col w-full lg:w-3/4">
                         <x-input-label for="empStatus" :value="__('Employer Type*')" />
-                        <select wire:model='empType' class="block mt-1 w-full rounded" x-model="empType"
+                        <select wire:model='empType' class="block w-full mt-1 rounded" x-model="empType"
                             x-on:change="updateEmpDesc">
                             <option value="" disabled selected>Select Employer Type</option>
                             <option value="1">Public</option>
@@ -95,7 +95,7 @@
 
                     <div class="flex flex-col w-full">
                         <x-input-label for="empDesc" :value="__('Description*')" />
-                        <select wire:model='empDesc' class="block mt-1 w-full rounded" x-model="empDesc">
+                        <select wire:model='empDesc' class="block w-full mt-1 rounded" x-model="empDesc">
                             <option value="" disabled selected>Select Description</option>
                             <template x-for="desc in empDescriptions" :key="desc.value">
                                 <option :value="desc.value" x-text="desc.text"></option>
@@ -106,7 +106,7 @@
                 </div>
 
                 <!-- TIN Field - Hidden unless Private (empType == 2) -->
-                <div class="flex flex-col mt-4 w-full " x-show="empType == 2">
+                <div class="flex flex-col w-full mt-4 " x-show="empType == 2">
                     <x-input-label for="TIN" :value="__('TIN*')" />
                     <x-text-input wire:model='tin' class="block mt-1" type="text" />
                     <x-input-error :messages="$errors->get('tin')" class="mt-2" />
@@ -116,16 +116,16 @@
 
             <x-input-label for="lineofIndustry" :value="__('Line of Industry*')" class="mt-4" />
             <div class="flex flex-row w-full">
-                <div class="flex-inline mt-2 ">
+                <div class="mt-2 flex-inline">
 
 
                     @foreach ($industryData as $industryData)
                         <span wire:key='jobPref-{{ $industryData['industry_id'] }}'
-                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ">
+                            class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                             {{ $industryData['industry_Title'] }}
                             <button wire:click.prevent='removeIndustry( {{ $industryData['industry_id'] }})'
                                 type="button"
-                                class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                class="inline-flex items-center justify-center flex-shrink-0 rounded-full size-4 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
                                 <span class="sr-only">Remove badge</span>
                                 <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -143,7 +143,7 @@
                 <div class="flex flex-row">
                     <button type="button" x-data=""
                         x-on:click.prevent="$dispatch('open-modal', 'industry-modal')"
-                        class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                        class="px-4 py-2 font-semibold text-blue-700 bg-transparent border border-blue-500 rounded hover:bg-blue-500 hover:text-white hover:border-transparent">
                         ADD INDUSTRY
                     </button>
                 </div>
@@ -152,11 +152,11 @@
 
             <div class="flex flex-col w-full mt-4">
                 <x-input-label for="presentAddress" :value="__('Address*')" />
-                <x-text-input wire:model='address' class="block mt-1 w-full" type="text"
+                <x-text-input wire:model='address' class="block w-full mt-1" type="text"
                     placeholder="HOUSE/BUILDING NO,. STREET, VILLAGE" />
                 <x-input-error :messages="$errors->get('address')" class="mt-2" />
             </div>
-            <div class="flex flex-col mt-4 w-full gap-4 w-full">
+            <div class="flex flex-col w-full gap-4 mt-4">
                 <div class="flex flex-col">
                     <x-input-label for="province" :value="__('Barangay*')" />
                     <x-text-input wire:model='bar' class="block mt-1 lg:w-2/3" type="text" readonly
@@ -188,12 +188,12 @@
 
 
 
-    <div class="flex flex-row justify-end space-x-4 mt-4 lg:mt-auto lg:mb-4">
+    <div class="flex flex-row justify-end mt-4 space-x-4 lg:mt-auto lg:mb-4">
 
         <x-blue-button wire:loading.attr='disabled' wire:click.prevent='next' type="button">
             Next
             <div wire:loading.delay.long wire:target="next" role="status">
-                <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

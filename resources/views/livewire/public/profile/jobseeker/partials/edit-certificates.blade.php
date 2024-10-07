@@ -1,11 +1,11 @@
 <div>
     <div x-show="profileTab === 'editCertificates'" class="container" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="bg-white shadow-lg rounded-lg p-6">
-            <div class="flex flex-row w-full items-center justify-between mb-4">
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <div class="flex flex-row items-center justify-between w-full mb-4">
                 <div class="flex flex-row items-center gap-4">
 
-                    <div class="cursor-pointer flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
+                    <div class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300"
                         @click="profileTab = 'profileOverview'">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -17,10 +17,10 @@
 
                 </div>
 
-                <div class="flex flex-row gap-4 items-center">
+                <div class="flex flex-row items-center gap-4">
                     <div x-data="{ tooltip: 'Add Certificate Record' }">
                         <div x-tooltip="tooltip"
-                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer"
+                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300"
                             x-data="" wire:click.prevent = 'addModal'>
                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor">
@@ -33,8 +33,8 @@
             </div>
             @if ($certs->isEmpty())
 
-                <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                    <div class="flex bg-blue-200  rounded-full p-1">
+                <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                    <div class="flex p-1 bg-blue-200 rounded-full">
 
                         <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -44,19 +44,19 @@
 
                     </div>
 
-                    <div class="text-center text-black text-xl font-semibold mt-5">
+                    <div class="mt-5 text-xl font-semibold text-center text-black">
                         Certificate Record is empty.
                     </div>
                 </div>
             @else
-                {{-- <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 "> --}}
+                {{-- <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 "> --}}
                 @foreach ($certs as $userCerts)
                     <div wire:key="{{ $userCerts->cert_id }}" class="container p-3">
 
-                        <div class="flex flex-row h-full items-center">
+                        <div class="flex flex-row items-center h-full">
 
                             <div class="flex flex-col">
-                                <svg class="w-10 h-10 lg:w-20 lg:h-20 text-gray-800" xmlns="http://www.w3.org/2000/svg"
+                                <svg class="w-10 h-10 text-gray-800 lg:w-20 lg:h-20" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                     <path
                                         d="M211 7.3C205 1 196-1.4 187.6 .8s-14.9 8.9-17.1 17.3L154.7 80.6l-62-17.5c-8.4-2.4-17.4 0-23.5 6.1s-8.5 15.1-6.1 23.5l17.5 62L18.1 170.6c-8.4 2.1-15 8.7-17.3 17.1S1 205 7.3 211l46.2 45L7.3 301C1 307-1.4 316 .8 324.4s8.9 14.9 17.3 17.1l62.5 15.8-17.5 62c-2.4 8.4 0 17.4 6.1 23.5s15.1 8.5 23.5 6.1l62-17.5 15.8 62.5c2.1 8.4 8.7 15 17.1 17.3s17.3-.2 23.4-6.4l45-46.2 45 46.2c6.1 6.2 15 8.7 23.4 6.4s14.9-8.9 17.1-17.3l15.8-62.5 62 17.5c8.4 2.4 17.4 0 23.5-6.1s8.5-15.1 6.1-23.5l-17.5-62 62.5-15.8c8.4-2.1 15-8.7 17.3-17.1s-.2-17.4-6.4-23.4l-46.2-45 46.2-45c6.2-6.1 8.7-15 6.4-23.4s-8.9-14.9-17.3-17.1l-62.5-15.8 17.5-62c2.4-8.4 0-17.4-6.1-23.5s-15.1-8.5-23.5-6.1l-62 17.5L341.4 18.1c-2.1-8.4-8.7-15-17.1-17.3S307 1 301 7.3L256 53.5 211 7.3z" />
@@ -64,25 +64,25 @@
                             </div>
 
 
-                            <div class="flex flex-col ml-4 w-full">
+                            <div class="flex flex-col w-full ml-4">
                                 <span
-                                    class="text-3xl text-black font-black uppercase">{{ $userCerts->certificateType->cert_Name }}</span>
-                                <span class="text-xl text-black font-semibold uppercase">
+                                    class="text-3xl font-black text-black uppercase">{{ $userCerts->certificateType->cert_Name }}</span>
+                                <span class="text-xl font-semibold text-black uppercase">
                                     {{ $userCerts->cert_From }}
                                 </span>
-                                <span class="text-md text-gray-700 font-medium uppercase"> {{ $userCerts->cert_Rating }}
+                                <span class="font-medium text-gray-700 uppercase text-md"> {{ $userCerts->cert_Rating }}
                                 </span>
-                                <span class="text-md text-gray-700 font-medium uppercase">
+                                <span class="font-medium text-gray-700 uppercase text-md">
                                     {{ $userCerts->cert_Date_Issued->format('F Y') }}
                                 </span>
                             </div>
 
                            
-                            <div class="flex flex-row h-full items-center justify-center gap-2">
+                            <div class="flex flex-row items-center justify-center h-full gap-2">
                                 <div x-data="{ tooltip: 'Remove Training Record' }">
                                     <div x-tooltip="tooltip"
                                         wire:click.prevent='deleteData({{ $userCerts->cert_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-red-300 transition-transform p-1">
+                                        class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-red-300">
                                         <svg class="w-10 h-10 text-red-700" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -94,7 +94,7 @@
                                 </div>
                                 <div x-tooltip="tooltip" x-data="{ tooltip: 'Edit Certificate Record' }">
                                     <div wire:click.prevent = 'editModal({{ $userCerts->cert_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1 cursor-pointer">
+                                        class="flex items-center p-1 transition-transform rounded-full cursor-pointer  hover:bg-blue-300">
                                         <svg class="w-10 h-10 text-blue-700" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -120,7 +120,7 @@
 
 
     <x-modal name="certificate-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Certificate Record') }}
             </h2>
@@ -128,7 +128,7 @@
             <div class="flex flex-col mt-2">
 
 
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="level" :value="__('Certification')" />
 
                     {{-- DROP DOWN --}}
@@ -140,7 +140,7 @@
                                     {{ $certName ?? 'Select Certification' }}
                                 </div>
                                 <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -164,7 +164,7 @@
                                 {{-- LOOP HERE --}}
                                 @foreach ($certTypes as $certType)
                                     <x-dropdown-link wire:click.prevent='certtypeid({{ $certType->cert_type_id }})'
-                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">
+                                        class="block px-4 py-2 uppercase cursor-pointer hover:bg-gray-100">
                                         {{ $certType->cert_Name }}
                                     </x-dropdown-link>
                                 @endforeach
@@ -177,29 +177,29 @@
                     <x-input-error :messages="$errors->get('certName')" class="mt-2" />
                 </div>
 
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="certIssued" :value="__('Issued By')" />
-                    <x-text-input wire:model="certFrom" id="certIssued" class="block mt-1 w-full" type="text" />
+                    <x-text-input wire:model="certFrom" id="certIssued" class="block w-full mt-1" type="text" />
                     <x-input-error :messages="$errors->get('jobTags')" class="mt-2" />
                 </div>
 
-                <div class="flex flex-row mt-2 w-full">
+                <div class="flex flex-row w-full mt-2">
                     <div class="flex flex-col w-full">
                         <x-input-label for="certDate" :value="__('Earned At')" />
-                        <x-text-input wire:model="certEarned" id="certDate" class="block mt-1 w-full"
+                        <x-text-input wire:model="certEarned" id="certDate" class="block w-full mt-1"
                             type="date" />
                         <x-input-error :messages="$errors->get('certEarned')" class="mt-2" />
                     </div>
-                    <div class="flex flex-col ml-4 w-full">
+                    <div class="flex flex-col w-full ml-4">
                         <x-input-label for="certRating" :value="__('Rating')" />
-                        <x-text-input wire:model="certRate" id="certRating" class="block mt-1 w-full"
+                        <x-text-input wire:model="certRate" id="certRating" class="block w-full mt-1"
                             type="number" />
                         <x-input-error :messages="$errors->get('certRate')" class="mt-2" />
                     </div>
                 </div>
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent='close' type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -213,18 +213,18 @@
     </x-modal>
 
     <x-modal name="delete-cert-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Action Confirmation') }}
             </h2>
             <hr>
-            <div class="flex flex-col justify-center items-center my-12">
+            <div class="flex flex-col items-center justify-center my-12">
 
                 <h1 class="text-2xl font-bold">Are you sure you want to delete this certifcate record?</h1>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'delete-cert-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -233,7 +233,7 @@
                     type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="deleteRecord()" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

@@ -1,5 +1,5 @@
 <div>
-    <div class="grid grid-cols-4 lg:grid-cols-12 mt-4 mx-8 p-0 lg:p-6 gap-5 items-center">
+    <div class="grid items-center grid-cols-4 gap-5 p-0 mx-8 mt-4 lg:grid-cols-12 lg:p-6">
         <div class="col-span-4 lg:col-span-3">
 
         </div>
@@ -8,7 +8,7 @@
 
             <div class="flex flex-row items-center gap-4">
                 <a href="{{ route('employer.profile', ['id' => auth()->user()->company->company_id]) }}">
-                    <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                    <div class="flex items-center p-1 transition-transform rounded-full hover:bg-gray-300">
                         <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -33,7 +33,7 @@
             activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
             inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
         }">
-            <div class="bg-white shadow-lg rounded-lg p-6">
+            <div class="p-6 bg-white rounded-lg shadow-lg">
 
 
                 <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200">
@@ -87,13 +87,13 @@
 
 
                         <x-input-error :messages="$errors->get('companyImage')" class="mt-2" />
-                        <div class="mt-4 w-160 flex justify-center">
+                        <div class="flex justify-center mt-4 w-160">
                             <label for="imageUpload" wire:loading.attr="disabled" wire:target="companyImage"
-                                class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md cursor-pointer hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                 Upload Image
                                 <div wire:loading.delay.long wire:target="companyImage" role="status">
                                     <svg aria-hidden="true"
-                                        class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                        class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -111,30 +111,30 @@
                     </div>
 
                     {{-- FIELDS START --}}
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="bname" :value="__('Business Name')" />
-                            <x-text-input wire:model="businessName" class="block mt-1 w-full" type="text" disabled />
+                            <x-text-input wire:model="businessName" class="block w-full mt-1" type="text" disabled />
                             <x-input-error :messages="$errors->get('businessName')" class="mt-2" />
 
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="tname" :value="__('Trade Name')" />
-                            <x-text-input wire:model="tradeName" class="block mt-1 w-full" type="text" disabled />
+                            <x-text-input wire:model="tradeName" class="block w-full mt-1" type="text" disabled />
                             <x-input-error :messages="$errors->get('tradeName')" class="mt-2" />
                         </div>
                     </div>
 
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="tin" :value="__('TIN')" />
-                            <x-text-input wire:model="tin" class="block mt-1 w-full" type="text" disabled />
+                            <x-text-input wire:model="tin" class="block w-full mt-1" type="text" disabled />
                             <x-input-error :messages="$errors->get('tin')" class="mt-2" />
                         </div>
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="loctype" :value="__('Location Type')" />
-                            <select wire:model="locType" class="block mt-1 w-full rounded-md" disabled>
+                            <select wire:model="locType" class="block w-full mt-1 rounded-md" disabled>
                                 <option value="" disabled selected>Select Location Type</option>
                                 <option value="1">Main</option>
                                 <option value="2">Branch</option>
@@ -144,7 +144,7 @@
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="workforce" :value="__('Total Work Force')" />
-                            <select wire:model="workforce" class="block mt-1 w-full rounded-md">
+                            <select wire:model="workforce" class="block w-full mt-1 rounded-md">
                                 <option value="" disabled selected>Select Total Work Force</option>
                                 <option value="1">1 - 9 (Micro)</option>
                                 <option value="2">10 - 99 (Small)</option>
@@ -156,10 +156,10 @@
 
                         </div>
                     </div>
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="empType" :value="__('Employment Status')" />
-                            <select wire:model='empType' class="block mt-1 w-full rounded" disabled>
+                            <select wire:model='empType' class="block w-full mt-1 rounded" disabled>
                                 <option value="" disabled selected>Select Employment Type</option>
                                 {{-- <option value="1">Public</option> --}}
                                 <option value="2">Private</option>
@@ -170,7 +170,7 @@
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="empDesc" :value="__('Description')" />
-                            <select wire:model='empDesc' class="block mt-1 w-full rounded" disabled>
+                            <select wire:model='empDesc' class="block w-full mt-1 rounded" disabled>
                                 <option value="" disabled selected>Select Description</option>
                                 <option value="1">National Government Agency</option>
                                 <option value="2">Local Government Unit</option>
@@ -186,46 +186,46 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="emptype" :value="__('Employment Type')" />
-                            <x-text-input wire:model="empType" class="block mt-1 w-full" type="text" disabled />
+                            <x-text-input wire:model="empType" class="block w-full mt-1" type="text" disabled />
                             <x-input-error :messages="$errors->get('empType')" class="mt-2" />
                         </div>
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="empdesc" :value="__('Employment Description')" />
-                            <x-text-input wire:model="empDesc" class="block mt-1 w-full" type="text" disabled />
+                            <x-text-input wire:model="empDesc" class="block w-full mt-1" type="text" disabled />
                             <x-input-error :messages="$errors->get('empDesc')" class="mt-2" />
                         </div>
                     </div>
 
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="companyAddress" :value="__('Company Address')" />
-                            <x-text-input wire:model="companyAddress" class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model="companyAddress" class="block w-full mt-1" type="text" />
                             <x-input-error :messages="$errors->get('companyAddress')" class="mt-2" />
 
                         </div>
                         <div class="flex flex-col w-full">
                             <livewire:modals.barangay-modal />
                             <x-input-label for="city" :value="__('Barangay')" />
-                            <x-text-input wire:model='bar' class="block mt-1 w-full" type="text" readonly
+                            <x-text-input wire:model='bar' class="block w-full mt-1" type="text" readonly
                                 x-data="" x-on:click.prevent="dispatch('open-modal', 'barangay-modal')"
                                 x-on:focus="$dispatch('open-modal', 'barangay-modal')" />
                             <x-input-error :messages="$errors->get('bar')" class="mt-2" />
                         </div>
                     </div>
 
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="mun" :value="__('Municipality')" />
-                            <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
+                            <x-text-input wire:model='mun' class="block w-full mt-1" type="text" readonly />
                             <x-input-error :messages="$errors->get('mun')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="province" :value="__('Province')" />
-                            <x-text-input wire:model='prov' class="block mt-1 w-full" type="text" readonly />
+                            <x-text-input wire:model='prov' class="block w-full mt-1" type="text" readonly />
                             <x-input-error :messages="$errors->get('prov')" class="mt-2" />
                         </div>
                     </div>
@@ -237,7 +237,7 @@
                             x-data="" {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> x-on:click.prevent="saveDetails(general)" --}}>
                             Save
                             <div wire:loading.delay.long wire:target="companyImage, saveCompany" role="status">
-                                <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -259,46 +259,46 @@
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
 
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactPerson" :value="__('Contact Person')" />
-                            <x-text-input wire:model="contactPerson" class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model="contactPerson" class="block w-full mt-1" type="text" />
                             <x-input-error :messages="$errors->get('contactPerson')" class="mt-2" />
 
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactPosition" :value="__('Position')" />
-                            <x-text-input wire:model="contactPosition" class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model="contactPosition" class="block w-full mt-1" type="text" />
                             <x-input-error :messages="$errors->get('contactPosition')" class="mt-2" />
 
                         </div>
                     </div>
 
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactEmail" :value="__('E-mail Address')" />
-                            <x-text-input wire:model="contactEmail" class="block mt-1 w-full" type="email" />
+                            <x-text-input wire:model="contactEmail" class="block w-full mt-1" type="email" />
                             <x-input-error :messages="$errors->get('contactEmail')" class="mt-2" />
                         </div>
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactTel" :value="__('Telephone No.')" />
-                            <x-text-input wire:model="contactTnum" class="block mt-1 w-full" type="tel" />
+                            <x-text-input wire:model="contactTnum" class="block w-full mt-1" type="tel" />
                             <x-input-error :messages="$errors->get('contactTnum')" class="mt-2" />
                         </div>
 
                     </div>
 
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactMobile" :value="__('Mobile No.')" />
-                            <x-text-input wire:model="contactPnum" class="block mt-1 w-full" type="tel" />
+                            <x-text-input wire:model="contactPnum" class="block w-full mt-1" type="tel" />
                             <x-input-error :messages="$errors->get('contactPnum')" class="mt-2" />
                         </div>
 
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactFax" :value="__('Fax No.')" />
-                            <x-text-input wire:model="contactFnum" class="block mt-1 w-full" type="tel" />
+                            <x-text-input wire:model="contactFnum" class="block w-full mt-1" type="tel" />
                             <x-input-error :messages="$errors->get('contactFnum')" class="mt-2" />
                         </div>
 
@@ -310,7 +310,7 @@
                             x-data="" {{-- x-on:click.prevent="$dispatch('open-modal', 'jobTag-modal')"> x-on:click.prevent="saveDetails(general)" --}}>
                             Save
                             <div wire:loading.delay.long wire:target="saveContact" role="status">
-                                <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -334,10 +334,10 @@
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
 
-                    <div class="flex flex-row my-4 w-full gap-4 mt-4">
+                    <div class="flex flex-row w-full gap-4 my-4 mt-4">
                         <div class="flex flex-col w-full">
 
-                            <div class="flex flex-row w-full items-center">
+                            <div class="flex flex-row items-center w-full">
 
                                 <x-input-label for="fname"> </i>Industry Preference
                                 </x-input-label>
@@ -349,7 +349,7 @@
 
                             </div>
 
-                            <div class="flex-inline border border-gray-300 rounded-lg p-1 mt-2">
+                            <div class="p-1 mt-2 border border-gray-300 rounded-lg flex-inline">
 
 
                                 @foreach ($employerDetails->company_industry_line as $industryLine)
@@ -359,7 +359,7 @@
                                         <button
                                             wire:click.prevent="removeIndustry({{ $industryLine->company_industry_line_id }})"
                                             type="button"
-                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
+                                            class="inline-flex items-center justify-center flex-shrink-0 rounded-full size-4 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500">
                                             <span class="sr-only">Remove badge</span>
                                             <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -385,12 +385,12 @@
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
-                    <div class="flex flex-col my-4 w-full gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-4 my-4 mt-4">
 
 
 
                         @foreach ($requirements as $requirement)
-                            <div class="flex flex-col lg:flex-row w-full gap-2 md:gap-4">
+                            <div class="flex flex-col w-full gap-2 lg:flex-row md:gap-4">
 
                                 @if ($requirement->requirementPassed)
                                     <div class="flex flex-col w-full">
@@ -400,7 +400,7 @@
                                             class="text-blue-900 bg-blue-400 hover:bg-blue-100 border border-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
                                             <i class="fa-solid fa-file-contract me-2"></i>
                                             View {{ $requirement->requirement_Title }}
-                                            <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-6 h-6 ml-auto mr-0" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round"
                                                     stroke-linejoin="round" stroke-width="2"
@@ -430,7 +430,7 @@
                                             class="text-red-900 bg-red-400 border border-red-500 focus:ring-4 focus:outline-none focus:ring-red-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2">
                                             <i class="fa-solid fa-file-contract me-2"></i>
                                             You have not uploaded {{ $requirement->requirement_Title }}.
-                                            <svg class="ml-auto mr-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-6 h-6 ml-auto mr-0" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                 stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -440,7 +440,7 @@
                                     </div>
                                 @endif
                                 <div class="flex flex-col w-full h-full">
-                                    <div class="flex flex-row w-full h-full justify-center items-center gap-2">
+                                    <div class="flex flex-row items-center justify-center w-full h-full gap-2">
                                         <div class="flex flex-col w-full">
                                             <input wire:model='req.{{ $requirement->requirement_id }}'
                                                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
@@ -451,7 +451,7 @@
                                         <div wire:loading.delay.long
                                             wire:target="req.{{ $requirement->requirement_id }}" role="status">
                                             <svg aria-hidden="true"
-                                                class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                                class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                                                 viewBox="0 0 100 101" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -481,7 +481,7 @@
                             x-data="">
                             Save
                             <div wire:loading.delay.long wire:target="pimg, saveProfile" role="status">
-                                <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -506,14 +506,14 @@
                     <div class="relative mt-4">
 
                         <div
-                            class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                            class="flex flex-wrap items-center justify-between p-1 pb-4 space-y-4 flex-column md:flex-row md:space-y-0">
 
                             <label for="table-search" class="sr-only">Search</label>
 
 
                             <div class="relative">
                                 <div
-                                    class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                     <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -522,7 +522,7 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <input type="search" wire:model.live='search'
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for partnerships">
                             </div>
 
@@ -544,10 +544,10 @@
                                         <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">
                                             PESO Municipality
                                         </th>
-                                        <th scope="col" class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-3">
+                                        <th scope="col" class="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3">
                                             Status
                                         </th>
-                                        <th scope="col" class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-3">
+                                        <th scope="col" class="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3">
                                             Partnership Date
                                         </th>
                                         <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">
@@ -569,7 +569,7 @@
                                                                 d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                         </svg>
                                                     </div>
-                                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                                    <p class="mt-2 text-xl font-bold text-center text-black">
                                                         No Records Found!
                                                     </p>
                                                 </div>
@@ -579,10 +579,10 @@
                                         @foreach ($partnerships as $data)
                                             <tr class="bg-white border-b hover:bg-gray-50">
                                                 <td class="px-4 py-2 lg:px-6 lg:py-4">
-                                                    <div class="text-black font-bold text-lg uppercase">
+                                                    <div class="text-lg font-bold text-black uppercase">
                                                         {{ $data->peso->municipality->municipality_Name }}
                                                     </div>
-                                                    <div class="lg:hidden text-gray-500">
+                                                    <div class="text-gray-500 lg:hidden">
                                                         <span class="block text-sm">Status:
                                                             @if ($data->partnership_Status == 'PENDING')
                                                                 <span
@@ -605,22 +605,22 @@
                                                     </div>
                                                 </td>
 
-                                                <td class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-4">
-                                                    <div class="text-black font-bold">
+                                                <td class="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-4">
+                                                    <div class="font-bold text-black">
                                                         @if ($data->partnership_Status == 'PENDING')
                                                             <span
-                                                                class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                                                class="inline-flex items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                                                         @elseif ($data->partnership_Status == 'APPROVED')
                                                             <span
-                                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">ACTIVE</span>
+                                                                class="inline-flex items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">ACTIVE</span>
                                                         @elseif ($data->partnership_Status == 'REJECTED' || $data->partnership_Status == 'CANCELLED')
                                                             <span
-                                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20 uppercase">{{ $data->partnership_Status }}</span>
+                                                                class="inline-flex items-center px-2 py-1 text-sm font-medium text-red-800 uppercase bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">{{ $data->partnership_Status }}</span>
                                                         @endif
                                                     </div>
                                                 </td>
 
-                                                <td class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-4">
+                                                <td class="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-4">
                                                     <div class="text-gray-500 text-md">
                                                         @if ($data->responded_at)
                                                             {{ $data->responded_at->format('F j, Y') }}
@@ -642,8 +642,8 @@
                                                                 <button
                                                                     wire:click.prevent="viewPartnership({{ $data->partnership_id }})"
                                                                     x-tooltip="tooltip" type="button"
-                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                    <svg class="h-5 w-5"
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                                    <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         viewBox="0 0 24 24" fill="currentColor">
                                                                         <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
@@ -659,9 +659,9 @@
                                                             <div x-data="{ tooltip: 'Reapply Partnership' }">
                                                                 <button x-tooltip="tooltip" type="button"
                                                                     wire:click.prevent='reapplyClick({{ $data->partnership_id }})'
-                                                                    class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-green-700 border border-green-700 rounded-lg hover:bg-green-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-green-300">
 
-                                                                    <svg class="h-5 w-5"
+                                                                    <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         viewBox="0 0 24 24" fill="currentColor">
                                                                         <path fill-rule="evenodd"
@@ -708,20 +708,20 @@
     <livewire:modals.industry-modal />
 
     <x-modal name="partnership-info-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Partnership Details') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label :value="__('Remarks')" />
                     <textarea rows="4"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
                         readonly>{{ $partnershipRemarks ?? 'No remarks found.' }}</textarea>
                 </div>
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'partnership-info-modal')" type="button">
                     {{ __('Close') }}
                 </x-secondary-button>
@@ -732,7 +732,7 @@
 
 
     <x-modal name="partnership-apply-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ agreeBox: @entangle('agreeBox') }">
+        <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ agreeBox: @entangle('agreeBox') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Apply for Partnership') }}
             </h2>
@@ -744,11 +744,11 @@
                     <x-slot name="trigger">
                         <button
                             class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
-                            <div class="w-full ml-2 text-left font-extrabold font-mono text-xl">
+                            <div class="w-full ml-2 font-mono text-xl font-extrabold text-left">
                                 {{ $selMun && $selProv ? $selMun . ', ' . $selProv : 'Select a Municipality' }}
                             </div>
                             <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -770,7 +770,7 @@
                             <!-- Dropdown links -->
                             @foreach ($pesoNotInPartnerships as $data)
                                 <x-dropdown-link wire:click.prevent='selectBranch({{ $data->peso_id }})'
-                                    class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">
+                                    class="block px-4 py-2 uppercase cursor-pointer hover:bg-gray-100">
                                     {{ $data->municipality->municipality_Name }},
                                     {{ $data->municipality->province->province_Name }}
                                 </x-dropdown-link>
@@ -780,10 +780,10 @@
                 </x-dropdown>
                 <x-input-error :messages="$errors->get('selID')" class="mt-2" />
 
-                <div class="flex items-center space-x-3 mt-8 lg:mx-24 ">
+                <div class="flex items-center mt-8 space-x-3 lg:mx-24 ">
                     <input wire:model="agreeBox" type="checkbox" id="agreeBox"
-                        class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                    <label for="agreeBox" class="text-gray-700 text-sm font-light">
+                        class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                    <label for="agreeBox" class="text-sm font-light text-gray-700">
                         By confirming, you acknowledge that the PESO municipality selected will have access to the
                         company’s
                         information and agree to proceed with the partnership application.
@@ -792,7 +792,7 @@
 
             </div>
 
-            <div class="mt-8 flex justify-end">
+            <div class="flex justify-end mt-8">
                 <x-secondary-button wire:click.prevent="closeModal('partnership-apply')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -802,7 +802,7 @@
                     {{ __('Apply Partnership') }}
                     <div wire:loading.delay.long wire:loading.attr="disabled" wire:target="applyPartnership"
                         role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -820,7 +820,7 @@
 
 
     <x-modal name="partnership-reapply-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 mx-auto bg-white rounded-lg shadow-lg border border-gray-200"
+        <div class="w-full max-w-4xl px-6 py-6 mx-auto bg-white border border-gray-200 rounded-lg shadow-lg"
             x-data="{ agreeBox: @entangle('agreeBox') }">
             <h2 class="text-xl font-semibold text-gray-900">
                 {{ __('Reapply for Partnership') }}
@@ -828,33 +828,33 @@
             <hr class="my-4 border-gray-300">
 
             <div class="flex flex-col w-full mt-4 space-y-4">
-                <p class="text-lg text-black font-bold items-center">
+                <p class="items-center text-lg font-bold text-black">
                     Are you sure you want to reapply to this municipality?
                 </p>
 
-                <div class="flex items-center space-x-3 mt-8 lg:mx-24 ">
+                <div class="flex items-center mt-8 space-x-3 lg:mx-24 ">
                     <input wire:model="agreeBox" type="checkbox" id="agreeBox"
-                        class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                    <label for="agreeBox" class="text-gray-700 text-sm font-light leading-tight">
+                        class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                    <label for="agreeBox" class="text-sm font-light leading-tight text-gray-700">
                         By confirming, you acknowledge that the PESO municipality selected will have access to the
                         company’s information and agree to proceed with the partnership application.
                     </label>
                 </div>
             </div>
 
-            <div class="mt-8 flex justify-end space-x-4">
+            <div class="flex justify-end mt-8 space-x-4">
                 <x-secondary-button wire:click.prevent="closeModal('partnership-reapply')"
-                    class="bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors duration-300">
+                    class="text-gray-800 transition-colors duration-300 bg-gray-200 hover:bg-gray-300">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
                 <x-primary-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled"
                     wire:click.prevent='reapplyPartnership'
-                    class="bg-blue-500 hover:bg-blue-600 text-white transition-transform transform hover:scale-105 ms-3"
+                    class="text-white transition-transform transform bg-blue-500 hover:bg-blue-600 hover:scale-105 ms-3"
                     type="button">
                     {{ __('Apply Partnership') }}
                     <div wire:loading.delay.long wire:target="reapplyPartnership" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

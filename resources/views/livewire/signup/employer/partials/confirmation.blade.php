@@ -1,7 +1,7 @@
 <div class="flex flex-col w-full h-full" x-data="{ agreeBox: @entangle('agreeBox') }">
     <h1 class="text-2xl font-bold">Certification And Authorization</h1>
-    <div class="flex flex-col mt-4 w-full justify-center items-center mt-10 px-4 lg:px-12">
-        <p class="text-sm lg:text-xl text-justify">
+    <div class="flex flex-col items-center justify-center w-full px-4 mt-10 lg:px-12">
+        <p class="text-sm text-justify lg:text-xl">
             This is to certify that, before signing up, you understand and acknowledge that by submitting this form, you
             are certifying that all the data and information provided herein are true and accurate to the best of your
             knowledge. You also agree that the information you provide may be accessed and utilized by authorized
@@ -34,11 +34,11 @@
             </label>
         </div>
     </div>
-    <div class="flex flex-row justify-between space-x-4 mt-4 lg:mt-auto lg:mb-4">
+    <div class="flex flex-row justify-between mt-4 space-x-4 lg:mt-auto lg:mb-4">
         <x-secondary-button wire:loading.attr='disabled' wire:click.prevent='prev' type="button">
             Previous
             <div wire:loading.delay.long wire:target="prev" role="status">
-                <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin fill-blue-600 ml-4"
+                <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -53,7 +53,7 @@
         <x-green-button wire:click.prevent='save' x-show="agreeBox">
             Submit
             <div wire:loading.delay.long role="status">
-                <svg aria-hidden="true" class="w-5 h-5 text-gray-200 animate-spin fill-blue-600 ml-4"
+                <svg aria-hidden="true" class="w-5 h-5 ml-4 text-gray-200 animate-spin fill-blue-600"
                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

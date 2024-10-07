@@ -1,10 +1,10 @@
 <div>
     <div x-show="profileTab === 'editEducation'" class="container" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="bg-white shadow-lg rounded-lg p-6">
-            <div class="flex flex-row w-full items-center justify-between mb-4">
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <div class="flex flex-row items-center justify-between w-full mb-4">
                 <div class="flex flex-row items-center gap-4">
-                    <div class="cursor-pointer flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
+                    <div class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300"
                         @click="profileTab = 'profileOverview'">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -16,10 +16,10 @@
 
                 </div>
 
-                <div class="flex flex-row gap-4 items-center">
+                <div class="flex flex-row items-center gap-4">
                     <div x-data="{ tooltip: 'Add Education Record' }">
                         <div x-tooltip="tooltip"
-                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer"
+                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300"
                             x-data="" {{-- x-on:click.prevent="$dispatch('open-modal', 'education-modal')" --}} wire:click.prevent='addModal()'>
                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor">
@@ -34,8 +34,8 @@
 
             @if ($educ->isEmpty())
 
-                <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                    <div class="flex bg-blue-200 rounded-full p-1">
+                <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                    <div class="flex p-1 bg-blue-200 rounded-full">
 
                         <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -45,21 +45,21 @@
 
                     </div>
 
-                    <div class="text-center text-black text-xl font-semibold mt-5">
+                    <div class="mt-5 text-xl font-semibold text-center text-black">
                         Education is empty.
                     </div>
                 </div>
             @else
-                {{-- <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 "> --}}
+                {{-- <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 "> --}}
 
                 @foreach ($educ as $education)
                     <div wire:key="{{ $education->education_id }}" class="container p-3">
 
-                        <div class="flex flex-row h-full items-center">
+                        <div class="flex flex-row items-center h-full">
 
                             <div class="flex flex-col">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="w-10 h-10 lg:w-20 lg:h-20 text-gray-800 ">
+                                    class="w-10 h-10 text-gray-800 lg:w-20 lg:h-20 ">
                                     <path
                                         d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
                                     <path
@@ -69,21 +69,21 @@
                                 </svg>
                             </div>
 
-                            <div class="flex flex-col ml-4 w-full">
-                                <span class="text-3xl text-black font-black uppercase">{{ $education->edu_School }}</span>
-                                <div class="text-xl text-black font-semibold uppercase">{{ $education->edu_Course }}</div>
-                                <span class="text-md text-gray-700 font-medium uppercase">
+                            <div class="flex flex-col w-full ml-4">
+                                <span class="text-3xl font-black text-black uppercase">{{ $education->edu_School }}</span>
+                                <div class="text-xl font-semibold text-black uppercase">{{ $education->edu_Course }}</div>
+                                <span class="font-medium text-gray-700 uppercase text-md">
                                     {{ $education->edu_Started->format('F Y') }} -
                                     {{ $education->edu_Ongoing == 1 ? 'Present' : $education->edu_Ended->format('F Y') }}
                                 </span>
                             </div>
 
 
-                            <div class="flex flex-row h-full items-center justify-center gap-2">
+                            <div class="flex flex-row items-center justify-center h-full gap-2">
                                 <div x-data="{ tooltip: 'Remove Education Record' }">
                                     <div x-tooltip="tooltip"
                                         wire:click.prevent='deleteData({{ $education->education_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-red-300 transition-transform p-1">
+                                        class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-red-300">
                                         <svg class="w-10 h-10 text-red-700" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -96,7 +96,7 @@
                                 <div x-data="{ tooltip: 'Edit Education Record' }">
                                     <div x-tooltip="tooltip"
                                         wire:click.prevent='editModal({{ $education->education_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1">
+                                        class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-blue-300">
                                         <svg class="w-10 h-10 text-blue-700" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -126,22 +126,22 @@
 
 
     <x-modal name="education-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Education Record') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
 
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="eduSchool" :value="__('School')" />
-                    <x-text-input wire:model="eduSchool" class="block mt-1 w-full" type="text" />
+                    <x-text-input wire:model="eduSchool" class="block w-full mt-1" type="text" />
                     <x-input-error :messages="$errors->get('eduSchool')" class="mt-2" />
                 </div>
-                <div class="flex flex-row mt-2 w-full">
+                <div class="flex flex-row w-full mt-2">
                     <div class="flex flex-col w-full">
                         <x-input-label for="eduLevel" :value="__('Level')" />
-                        <select wire:model='eduLevel' class="block mt-1 w-full rounded"
+                        <select wire:model='eduLevel' class="block w-full mt-1 rounded"
                             x-on:change="$wire.eduLevel <= 18 ? $wire.eduCourse = '' : ''">
                             <option value="" disabled>Select Level</option>
                             <option value="1">GRADE I</option>
@@ -173,28 +173,28 @@
                         </select>
                         <x-input-error :messages="$errors->get('eduLevel')" class="mt-2" />
                     </div>
-                    <div class="flex flex-col ml-4 w-full">
+                    <div class="flex flex-col w-full ml-4">
                         <x-input-label for="eduCourse" :value="__('Course')" />
                         <x-text-input wire:model="eduCourse" x-bind:disabled="$wire.eduLevel <= 18"
-                            class="block mt-1 w-full" type="text" />
+                            class="block w-full mt-1" type="text" />
                         <x-input-error :messages="$errors->get('eduCourse')" class="mt-2" />
                     </div>
                 </div>
-                <div class="flex flex-col lg:flex-row  mt-2 w-full gap-4" x-data="{ eduOngoing: @entangle('eduOngoing'), eduEnd: @entangle('eduEnd') }">
+                <div class="flex flex-col w-full gap-4 mt-2 lg:flex-row" x-data="{ eduOngoing: @entangle('eduOngoing'), eduEnd: @entangle('eduEnd') }">
                     <div class="flex flex-col w-full">
                         <x-input-label for="eduStart" :value="__('Started')" />
-                        <x-text-input wire:model="eduStart" class="block mt-1 w-full" type="date" />
+                        <x-text-input wire:model="eduStart" class="block w-full mt-1" type="date" />
                         <x-input-error :messages="$errors->get('eduStart')" class="mt-2" />
                     </div>
-                    <div class="flex flex-col ml-4 w-full">
+                    <div class="flex flex-col w-full ml-4">
                         <x-input-label for="eduEnd" :value="__('Ended')" />
-                        <x-text-input wire:model="eduEnd" class="block mt-1 w-full" type="date"
+                        <x-text-input wire:model="eduEnd" class="block w-full mt-1" type="date"
                             x-bind:disabled='eduOngoing' />
 
                         <x-input-error :messages="$errors->get('eduEnd')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-row h-full w-full items-center justify-center lg:mt-8">
+                    <div class="flex flex-row items-center justify-center w-full h-full lg:mt-8">
                         <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
                             <input @click="eduEnd = eduOngoing ? eduEnd: ''" wire:model='eduOngoing'
                                 x-model="eduOngoing"
@@ -207,7 +207,7 @@
                 </div>
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent='close' type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -221,18 +221,18 @@
 
 
     <x-modal name="delete-education-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Action Confirmation') }}
             </h2>
             <hr>
-            <div class="flex flex-col justify-center items-center my-12">
+            <div class="flex flex-col items-center justify-center my-12">
 
                 <h1 class="text-2xl font-bold">Are you sure you want to delete this education record?</h1>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'delete-education-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -241,7 +241,7 @@
                     type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="deleteRecord()" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

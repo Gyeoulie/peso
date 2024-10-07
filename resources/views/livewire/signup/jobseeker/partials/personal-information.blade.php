@@ -196,7 +196,7 @@
             <x-input-error :messages="$errors->get('ofw')" class="mt-2" />
 
         </div>
-        <div class="flex w-full flex-wrap gap-6 w-1/3" x-data="{ household: null }">
+        <div class="flex flex-wrap gap-6 w-1/3" x-data="{ household: null }">
 
             <div class="flex flex-col">
                 <x-input-label for="4ps" :value="__('Are you a 4Ps beneficiary*')" />
@@ -229,7 +229,7 @@
 
     </div>
 
-    <div class="flex flex-row justify-between space-x-4 mt-4 ">
+    <div class="flex flex-row justify-between space-x-4 mt-4">
         <x-secondary-button wire:loading.attr='disabled' wire:click.prevent='prev' type="button">
             Previous
             <div wire:loading.delay.long wire:target="prev" role="status">
