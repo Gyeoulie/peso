@@ -35,17 +35,8 @@
 
     <link href="https://pagecdn.io/lib/easyfonts/fonts.css" rel="stylesheet" />
 
-    {{-- QR CODE --}}
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
-
-    {{-- CHARTS --}}
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    @livewireChartsScripts
-
     <!-- Scripts -->
     @livewireStyles
-    @livewireScripts
     @vite(['resources/css/app.css'])
 </head>
 
@@ -67,6 +58,8 @@
 
         </div>
     </div>
+    @livewireChartsScripts
+    @livewireScripts
     <script>
         @if (session('login_success'))
             localStorage.removeItem('user-logged-out');

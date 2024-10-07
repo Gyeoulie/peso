@@ -217,7 +217,7 @@
                                             class="flex flex-row h-full items-center bg-white  rounded-lg hover:shadow-lg transition-shadow duration-300 transition-transform duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl">
 
                                             <div class="flex flex-col">
-                                                <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800"
+                                                <svg class="w-10 h-10 lg:w-20 lg:h-20 text-gray-800"
                                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                     width="24" height="24" fill="currentColor"
                                                     viewBox="0 0 24 24">

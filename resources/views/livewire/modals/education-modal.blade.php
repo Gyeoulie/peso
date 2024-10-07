@@ -11,7 +11,7 @@
                 <x-text-input wire:model='eduSchool' class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('eduSchool')" class="mt-2" />
             </div>
-            <div class="flex flex-col sm:flex-row gap-4 mt-2 w-full">
+            <div class="flex flex-col lg:flex-row gap-4 mt-2 w-full">
                 <div class="flex flex-col w-full">
                     <x-input-label for="eduLevel" :value="__('Level*')" />
                     <select wire:model='eduLevel' class="block mt-1 w-full rounded"
@@ -54,7 +54,7 @@
                 </div>
 
             </div>
-            <div class="flex flex-col sm:flex-row  mt-2 w-full gap-4" x-data="{ eduOngoing: @entangle('eduOngoing'), eduEnd: @entangle('eduEnd') }">
+            <div class="flex flex-col lg:flex-row  mt-2 w-full gap-4" x-data="{ eduOngoing: @entangle('eduOngoing'), eduEnd: @entangle('eduEnd') }">
                 <div class="flex flex-col w-full">
                     <x-input-label for="eduStart" :value="__('Started*')" />
                     <x-text-input wire:model='eduStart' class="block mt-1 w-full" type="date" />
@@ -66,7 +66,7 @@
                         x-bind:disabled='eduOngoing' />
                     <x-input-error :messages="$errors->get('eduEnd')" class="mt-2" />
                 </div>
-                <div class="flex flex-row h-full w-full items-center justify-center sm:mt-8">
+                <div class="flex flex-row h-full w-full items-center justify-center lg:mt-8">
                     <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
                         <input x-on:click="eduEnd = eduOngoing ? null : eduEnd" wire:model='eduOngoing'
                             x-model="eduOngoing"

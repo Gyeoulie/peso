@@ -1,11 +1,11 @@
 <div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Job Posting</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <div class="bg-white shadow rounded-lg p-6" x-data="{
                 filter: @entangle('filter').defer || 'ALL', // Set default value to 'ALL'
                 activeFilter: 'text-gray-900 bg-gray-400 active',
@@ -24,7 +24,7 @@
 
                 <div class="relative overflow-x-auto p-1">
                     <!-- Mobile Dropdown -->
-                    <div class="sm:hidden">
+                    <div class="lg:hidden">
                         <label for="tabs" class="sr-only">Select Filter</label>
                         <select id="tabs"
                             class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -39,7 +39,7 @@
                     </div>
 
                     <!-- Desktop Tabs -->
-                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex mb-3">
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('ALL')"
                                 :class="filter === 'ALL' ? activeFilter : inactiveFilter"
@@ -83,7 +83,7 @@
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
 
                         <label for="table-search" class="sr-only">Search</label>
@@ -99,7 +99,7 @@
 
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
                         <div class="flex flex-wrap mr-3 gap-2">
@@ -196,23 +196,23 @@
                                     <th scope="col" class="px-6 py-3 w-1/4">
                                         Company
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         Job Offering
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         Employment Type
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         Slots Available
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         @if ($filter == 'ACTIVE')
                                             Total Applicants
                                         @else
                                             Status
                                         @endif
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         Date Posted
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -244,11 +244,11 @@
                                     @foreach ($jobpost as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
-                                                class="flex flex-col sm:flex-row sm:items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full object-cover mb-2 sm:mb-0 shadow-xl"
+                                                class="flex flex-col lg:flex-row lg:items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                                                <img class="w-10 h-10 rounded-full object-cover mb-2 lg:mb-0 shadow-xl"
                                                     src="{{ asset('storage/' . $data->company->company_img) }}"
                                                     alt="Company image">
-                                                <div class="sm:ps-3 text-wrap">
+                                                <div class="lg:ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
                                                         {{ $data->company->business_Name }}
                                                     </div>
@@ -259,15 +259,15 @@
                                                         {{ $data->company->barangay->municipality->province->province_Name }}
                                                     </div>
                                                 </div>
-                                                <div class="block sm:hidden mt-2 text-sm text-gray-500">
+                                                <div class="block lg:hidden mt-2 text-sm text-gray-500">
                                                     {{ $data->job_Title }}
 
                                                 </div>
-                                                <div class="block sm:hidden text-sm text-gray-500">
+                                                <div class="block lg:hidden text-sm text-gray-500">
                                                     {{ $data->slotsLeft }} slots
 
                                                 </div>
-                                                <div class="block sm:hidden text-sm text-gray-500">
+                                                <div class="block lg:hidden text-sm text-gray-500">
                                                     @if ($filter == 'ACTIVE')
                                                         {{ $data->job_applicants_count }} Applicants
                                                     @else
@@ -308,16 +308,16 @@
                                                 </div>
 
                                             </th>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 {{ $data->job_Title }}
                                             </td>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 {{ $jobTypes[$data->job_Type] }}
                                             </td>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 {{ $data->slotsLeft }}
                                             </td>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 <div class="flex items-center">
                                                     @if ($filter == 'ACTIVE')
                                                         {{ $data->job_applicants_count }}
@@ -346,7 +346,7 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 <div class="text-base font-semibold">
                                                     {{ $data->created_at->format('g:i A') }}
                                                 </div>
@@ -422,7 +422,7 @@
             <hr>
 
             <div class="relative mt-4">
-                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative">
@@ -437,7 +437,7 @@
 
                         {{-- LICENSE SEARCH --}}
                         <input wire:model.live='searchIndustry' type="search"
-                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search industry">
                     </div>
 
@@ -485,7 +485,8 @@
                             @else
                                 @foreach ($industry as $data)
                                     <tr wire:key='industry-{{ $data->industry_id }}'
-                                        class="bg-white border-b hover:bg-gray-50">
+                                        class="bg-white border-b hover:bg-gray-50 cursor-pointer"
+                                        onclick="document.getElementById('industry-{{ $data->industry_id }}').click();">
                                         <td class="px-6 py-4 text-center">
 
                                             <label class="relative flex items-center p-3 rounded-full cursor-pointer"
@@ -572,7 +573,7 @@
             <hr>
 
             <div class="relative mt-4">
-                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative">
                         <div
@@ -585,7 +586,7 @@
                         </div>
 
                         <input type="search" wire:model.live='searchTags'
-                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search Job Position">
                     </div>
 

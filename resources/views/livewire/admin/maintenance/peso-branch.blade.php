@@ -1,13 +1,13 @@
 <div wire:poll.5s class="container mx-auto py-8">
     {{-- GRID --}}
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Maintenance / PESO Branches</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             {{-- @livewire('admin.requirements.requirements-table') --}}
             <div class="bg-white shadow rounded-lg p-6">
 
@@ -18,7 +18,7 @@
 
                 <div class="relative overflow-x-auto">
 
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -34,7 +34,7 @@
                             </div>
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
                         {{-- ADD BUTTON --}}
@@ -213,7 +213,7 @@
 
 
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6" x-data="{
                 selectedBranch: @entangle('selectedBranch')
             }">
@@ -277,7 +277,7 @@
                         <div class="mt-4">
                             <h1 class="text-lg font-bold">PESO Manager </h1>
                             <hr class="h-px my-2 bg-gray-200 border-0">
-                            <div class="flex flex-col sm:flex-row w-full gap-2 ">
+                            <div class="flex flex-col lg:flex-row w-full gap-2 ">
                                 <div class="flex flex-col mt-2 w-full">
                                     <x-input-label for="fname" :value="__('First Name*')" />
                                     <x-text-input wire:model="fname" class="block mt-1 w-full" type="text" />
@@ -295,7 +295,7 @@
                                 </div>
 
                             </div>
-                            <div class="flex flex-col sm:flex-row w-full mt-6 gap-2 ">
+                            <div class="flex flex-col lg:flex-row w-full mt-6 gap-2 ">
 
                                 <div class="flex flex-col mt-2 w-full">
                                     <x-input-label for="email" :value="__('Email*')" />
@@ -372,7 +372,7 @@
                                 <div x-show="selectedOption === '1'" class="mt-4">
                                     <h1 class="text-lg font-bold">Create PESO Manager</h1>
                                     <hr class="h-px my-2 bg-gray-200 border-0">
-                                    <div class="flex flex-col sm:flex-row w-full gap-2">
+                                    <div class="flex flex-col lg:flex-row w-full gap-2">
                                         <div class="flex flex-col mt-2 w-full">
                                             <x-input-label for="fname" :value="__('First Name*')" />
                                             <x-text-input wire:model="fname" class="block mt-1 w-full"
@@ -392,7 +392,7 @@
                                             <x-input-error :messages="$errors->get('lname')" class="mt-2" />
                                         </div>
                                     </div>
-                                    <div class="flex flex-col sm:flex-row w-full mt-6 gap-2">
+                                    <div class="flex flex-col lg:flex-row w-full mt-6 gap-2">
                                         <div class="flex flex-col mt-2 w-full">
                                             <x-input-label for="email" :value="__('Email*')" />
                                             <x-text-input wire:model="email" class="block mt-1 w-full"

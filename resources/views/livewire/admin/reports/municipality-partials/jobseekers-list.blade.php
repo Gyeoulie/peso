@@ -18,7 +18,7 @@
     </div>
     <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+        <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative">
@@ -32,14 +32,14 @@
 
                 {{-- SEARCH --}}
                 <input wire:model.live='searchJobseekers' type="search"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search">
             </div>
 
             <div class="flex flex-wrap mr-3 gap-2">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData('jobseekers')"
-                        class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <span class="mr-2">Export</span>
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -51,7 +51,7 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-jobseekers-modal')"
-                    class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                    class="py-1.5 px-5 text-xs lg:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -63,13 +63,13 @@
                         <th scope="col" class="px-6 py-3 w-full">
                             <span class="text-black font-bold text-md">Applicant Name</span>
                         </th>
-                        <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                        <th scope="col" class="hidden lg:table-cell px-6 py-3">
                             <span class="text-black font-bold text-md">Employment Status</span>
                         </th>
-                        <th scope="col" class="hidden sm:table-cell px-6 py-3 text-center">
+                        <th scope="col" class="hidden lg:table-cell px-6 py-3 text-center">
                             <span class="text-black font-bold text-md">Active Applications</span>
                         </th>
-                        <th scope="col" class="hidden sm:table-cell px-6 py-3 text-center">
+                        <th scope="col" class="hidden lg:table-cell px-6 py-3 text-center">
                             <span class="text-black font-bold text-md">Registered Trainings</span>
                         </th>
 
@@ -105,15 +105,15 @@
                                         </div>
 
 
-                                        <div class="text-sm text-gray-500 sm:hidden">
+                                        <div class="text-sm text-gray-500 lg:hidden">
                                             <span>Active Apps: <span
                                                     class="text-black font-bold">{{ $data->job_applications }}</span></span>
                                         </div>
-                                        <div class="text-sm text-gray-500 sm:hidden">
+                                        <div class="text-sm text-gray-500 lg:hidden">
                                             <span>Trainings: <span
                                                     class="text-black font-bold">{{ $data->program_reg_count }}</span></span>
                                         </div>
-                                        <div class="text-sm text-gray-500 sm:hidden">
+                                        <div class="text-sm text-gray-500 lg:hidden">
                                             <span>
                                                 @if ($data->empstatus == '2')
                                                     <span
@@ -127,7 +127,7 @@
                                     </div>
                                 </th>
 
-                                <td class="hidden sm:table-cell px-6 py-4">
+                                <td class="hidden lg:table-cell px-6 py-4">
                                     @if ($data->empstatus == '2')
                                         <span
                                             class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
@@ -137,14 +137,14 @@
                                     @endif
                                 </td>
 
-                                <td class="hidden sm:table-cell px-6 py-4 text-center">
+                                <td class="hidden lg:table-cell px-6 py-4 text-center">
                                     <div class="font-normal text-gray-500 text-sm uppercase">
                                         <span
                                             class="text-blue-500 font-bold text-md">{{ $data->job_applications }}</span>
                                     </div>
                                 </td>
 
-                                <td class="hidden sm:table-cell px-6 py-4 text-center">
+                                <td class="hidden lg:table-cell px-6 py-4 text-center">
                                     <div class="font-normal text-gray-500 text-sm uppercase">
                                         <span
                                             class="text-blue-500 font-bold text-md">{{ $data->program_reg_count }}</span>
@@ -181,7 +181,7 @@
 
     <div x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+        <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative">
@@ -195,14 +195,14 @@
 
                 {{-- SEARCH --}}
                 <input wire:model.live='searchCompany' type="search"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search">
             </div>
 
             <div class="flex flex-wrap mr-3 gap-2">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData('employers')"
-                        class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <span class="mr-2">Export</span>
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -214,7 +214,7 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-employers-modal')"
-                    class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                    class="py-1.5 px-5 text-xs lg:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -225,10 +225,10 @@
                         <th scope="col" class="px-6 py-3 ">
                             <span class="text-black font-bold text-md">Company Name</span>
                         </th>
-                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                             <span class="text-black font-bold text-md">Job Postings</span>
                         </th>
-                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                             <span class="text-black font-bold text-md">Hired Applicants</span>
                         </th>
                         <th scope="col" class="px-6 py-3"></th>
@@ -269,23 +269,23 @@
                                             <div class="text-base font-medium">
                                                 {{ $data->contact_Person }}
                                             </div>
-                                            <div class="text-sm text-gray-500 sm:hidden">
+                                            <div class="text-sm text-gray-500 lg:hidden">
                                                 Job Posting: {{ $data->total_job_postings }}
                                             </div>
-                                            <div class="text-sm text-gray-500 sm:hidden">
+                                            <div class="text-sm text-gray-500 lg:hidden">
                                                 Hired: {{ $data->hired_applicants }}
                                             </div>
                                         </div>
                                     </div>
                                 </th>
 
-                                <td class="px-6 py-4 hidden sm:table-cell">
+                                <td class="px-6 py-4 hidden lg:table-cell">
                                     <div class="font-normal text-gray-500 text-sm text-center uppercase">
                                         <span class="text-blue-500 font-bold text-md ">
                                             {{ $data->total_job_postings }}</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 hidden sm:table-cell">
+                                <td class="px-6 py-4 hidden lg:table-cell">
                                     <div class="font-normal text-gray-500 text-sm text-center uppercase">
                                         <span class="text-blue-500 font-bold text-md ">
                                             {{ $data->hired_applicants }}</span>

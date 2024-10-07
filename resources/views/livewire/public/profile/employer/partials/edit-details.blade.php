@@ -1,10 +1,10 @@
 <div>
-    <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5 items-center">
-        <div class="col-span-4 sm:col-span-3">
+    <div class="grid grid-cols-4 lg:grid-cols-12 mt-4 mx-8 p-0 lg:p-6 gap-5 items-center">
+        <div class="col-span-4 lg:col-span-3">
 
         </div>
 
-        <div class="col-span-4 sm:col-span-9">
+        <div class="col-span-4 lg:col-span-9">
 
             <div class="flex flex-row items-center gap-4">
                 <a href="{{ route('employer.profile', ['id' => auth()->user()->company->company_id]) }}">
@@ -23,12 +23,12 @@
 
         </div>
 
-        <div class="col-span-4 sm:col-span-3">
+        <div class="col-span-4 lg:col-span-3">
 
         </div>
 
 
-        <div class="col-span-4 sm:col-span-6" x-data="{
+        <div class="col-span-4 lg:col-span-6" x-data="{
             openTab: 1,
             activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
             inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
@@ -111,7 +111,7 @@
                     </div>
 
                     {{-- FIELDS START --}}
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="bname" :value="__('Business Name')" />
                             <x-text-input wire:model="businessName" class="block mt-1 w-full" type="text" disabled />
@@ -125,7 +125,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="tin" :value="__('TIN')" />
                             <x-text-input wire:model="tin" class="block mt-1 w-full" type="text" disabled />
@@ -156,7 +156,7 @@
 
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="empType" :value="__('Employment Status')" />
                             <select wire:model='empType' class="block mt-1 w-full rounded" disabled>
@@ -186,7 +186,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="emptype" :value="__('Employment Type')" />
                             <x-text-input wire:model="empType" class="block mt-1 w-full" type="text" disabled />
@@ -200,7 +200,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="companyAddress" :value="__('Company Address')" />
                             <x-text-input wire:model="companyAddress" class="block mt-1 w-full" type="text" />
@@ -217,7 +217,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="mun" :value="__('Municipality')" />
                             <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
@@ -259,7 +259,7 @@
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactPerson" :value="__('Contact Person')" />
                             <x-text-input wire:model="contactPerson" class="block mt-1 w-full" type="text" />
@@ -274,7 +274,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactEmail" :value="__('E-mail Address')" />
                             <x-text-input wire:model="contactEmail" class="block mt-1 w-full" type="email" />
@@ -289,7 +289,7 @@
 
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="contactMobile" :value="__('Mobile No.')" />
                             <x-text-input wire:model="contactPnum" class="block mt-1 w-full" type="tel" />
@@ -390,7 +390,7 @@
 
 
                         @foreach ($requirements as $requirement)
-                            <div class="flex flex-col sm:flex-row w-full gap-2 md:gap-4">
+                            <div class="flex flex-col lg:flex-row w-full gap-2 md:gap-4">
 
                                 @if ($requirement->requirementPassed)
                                     <div class="flex flex-col w-full">
@@ -522,7 +522,7 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <input type="search" wire:model.live='search'
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for partnerships">
                             </div>
 
@@ -541,16 +541,16 @@
                             <table class="w-full text-sm text-left rtl:text-right">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">
+                                        <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">
                                             PESO Municipality
                                         </th>
-                                        <th scope="col" class="hidden sm:table-cell px-4 py-2 sm:px-6 sm:py-3">
+                                        <th scope="col" class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-3">
                                             Status
                                         </th>
-                                        <th scope="col" class="hidden sm:table-cell px-4 py-2 sm:px-6 sm:py-3">
+                                        <th scope="col" class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-3">
                                             Partnership Date
                                         </th>
-                                        <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">
+                                        <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">
                                             Actions
                                         </th>
                                     </tr>
@@ -578,11 +578,11 @@
                                     @else
                                         @foreach ($partnerships as $data)
                                             <tr class="bg-white border-b hover:bg-gray-50">
-                                                <td class="px-4 py-2 sm:px-6 sm:py-4">
+                                                <td class="px-4 py-2 lg:px-6 lg:py-4">
                                                     <div class="text-black font-bold text-lg uppercase">
                                                         {{ $data->peso->municipality->municipality_Name }}
                                                     </div>
-                                                    <div class="sm:hidden text-gray-500">
+                                                    <div class="lg:hidden text-gray-500">
                                                         <span class="block text-sm">Status: 
                                                             @if ($data->partnership_Status == 'PENDING')
                                                                 <span class="font-semibold text-yellow-800">PENDING</span>
@@ -602,7 +602,7 @@
                                                     </div>
                                                 </td>
                             
-                                                <td class="hidden sm:table-cell px-4 py-2 sm:px-6 sm:py-4">
+                                                <td class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-4">
                                                     <div class="text-black font-bold">
                                                         @if ($data->partnership_Status == 'PENDING')
                                                             <span class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -614,7 +614,7 @@
                                                     </div>
                                                 </td>
                             
-                                                <td class="hidden sm:table-cell px-4 py-2 sm:px-6 sm:py-4">
+                                                <td class="hidden lg:table-cell px-4 py-2 lg:px-6 lg:py-4">
                                                     <div class="text-gray-500 text-md">
                                                         @if ($data->responded_at)
                                                             {{ $data->responded_at->format('F j, Y') }}
@@ -627,7 +627,7 @@
                                                     </div>
                                                 </td>
                             
-                                                <td class="px-4 py-2 sm:px-6 sm:py-4">
+                                                <td class="px-4 py-2 lg:px-6 lg:py-4">
                                                     <div class="flex flex-row items-center justify-center gap-6">
                                                         @if ($data->partnership_Status != 'PENDING')
                                                             <div x-data="{ tooltip: 'View Partnership Information' }">
@@ -768,7 +768,7 @@
                 </x-dropdown>
                 <x-input-error :messages="$errors->get('selID')" class="mt-2" />
 
-                <div class="flex items-center space-x-3 mt-8 sm:mx-24 ">
+                <div class="flex items-center space-x-3 mt-8 lg:mx-24 ">
                     <input wire:model="agreeBox" type="checkbox" id="agreeBox"
                         class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                     <label for="agreeBox" class="text-gray-700 text-sm font-light">
@@ -820,7 +820,7 @@
                     Are you sure you want to reapply to this municipality?
                 </p>
 
-                <div class="flex items-center space-x-3 mt-8 sm:mx-24 ">
+                <div class="flex items-center space-x-3 mt-8 lg:mx-24 ">
                     <input wire:model="agreeBox" type="checkbox" id="agreeBox"
                         class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                     <label for="agreeBox" class="text-gray-700 text-sm font-light leading-tight">

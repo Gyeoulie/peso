@@ -8,11 +8,11 @@
     </x-slot>
 
 
-    <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
-        <div class="col-span-4 sm:col-span-5">
+    <div class="grid grid-cols-4 lg:grid-cols-12 mt-4 mx-8 p-0 lg:p-6 gap-5">
+        <div class="col-span-4 lg:col-span-5">
 
             <div
-                class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4 overflow-visible">
+                class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4 overflow-visible">
 
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
@@ -26,7 +26,7 @@
 
                     {{-- SEARCH --}}
                     <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for applications">
                 </div>
                 <div class="flex flex-wrap gap-2 mr-3">
@@ -112,7 +112,7 @@
                 </div>
 
             </div>
-            <div class="flex overflow-x-auto sm:overflow-visible no-scrollbar">
+            <div class="flex overflow-x-auto lg:overflow-visible no-scrollbar">
                 @if ($applications->isEmpty())
                     <div class="flex w-full">
                         <div class="w-full rounded-lg p-10">
@@ -134,30 +134,30 @@
 
                     </div>
                 @else
-                    <div class="flex flex-row sm:flex-col gap-4  w-full" x-data="{
+                    <div class="flex flex-row lg:flex-col gap-4  w-full" x-data="{
                         selectedJob: @entangle('selectedJob'),
                     }">
                         @foreach ($applications as $data)
-                            <div class="relative flex-shrink-0 w-[90%] sm:w-full">
+                            <div class="relative flex-shrink-0 w-[90%] lg:w-full">
                                 <a class="cursor-pointer" wire:key='application-{{ $data->applicant_id }}'
                                     wire:click.prevent="updateSelection({{ $data->applicant_id }})">
                                     <div
-                                        class="@if ($data->applicant_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col  sm:hover:scale-105 sm:transition-transform">
+                                        class="@if ($data->applicant_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col  lg:hover:scale-105 lg:transition-transform">
 
                                         <div class="flex flex-row gap-4 w-full">
 
-                                            <div class="hidden sm:flex flex-col">
+                                            <div class="hidden lg:flex flex-col">
                                                 <img src="{{ asset('storage/' . $data->job_posting->company->company_img) }}"
                                                     class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                                                 </img>
                                             </div>
                                             <div class="flex flex-col w-full gap-1">
-                                                <h1 class="text-xl sm:text-2xl sm:font-bold underline">
+                                                <h1 class="text-xl lg:text-2xl lg:font-bold underline">
                                                     {{ $data->job_posting->job_Title }}
                                                 </h1>
-                                                <h1 class="text-md sm:text-lg text-gray-600">
+                                                <h1 class="text-md lg:text-lg text-gray-600">
                                                     {{ $data->job_posting->company->business_Name }}</h1>
-                                                <div class="sm:hidden mt-[-5px]">
+                                                <div class="lg:hidden mt-[-5px]">
                                                     @if ($data->applicant_Status == 'PENDING')
                                                         <span
                                                             class="inlineflex items-center rounded-md bg-yellow-200 px-1 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -181,7 +181,7 @@
                                                 <div class="flex flex-row">
                                                     <span
                                                         class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
-                                                        <svg class="w-1.5 h-1.5 me-1 sm:w-2.5 sm:h-2.5 sm:me-1.5"
+                                                        <svg class="w-1.5 h-1.5 me-1 lg:w-2.5 lg:h-2.5 lg:me-1.5"
                                                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                             fill="currentColor" viewBox="0 0 20 20">
                                                             <path
@@ -193,7 +193,7 @@
 
 
                                             </div>
-                                            <div class="hidden sm:flex flex-row ml-auto mr-0 mb-auto mt-0">
+                                            <div class="hidden lg:flex flex-row ml-auto mr-0 mb-auto mt-0">
 
                                                 @if ($data->applicant_Status == 'PENDING')
                                                     <span
@@ -223,10 +223,10 @@
                                             @endif
                                         </div>
 
-                                        <div class="flex flex-col w-full mt-2 sm:mt-4">
+                                        <div class="flex flex-col w-full mt-2 lg:mt-4">
                                             <div class="flex flex-col w-full md:flex-row">
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                    <h3 class="text-xs lg:text-sm uppercase"> <i
                                                             class="fa-solid fa-location-dot"></i> SM
                                                         {{ $data->job_posting->company->barangay->municipality->municipality_Name }},
                                                         {{ $data->job_posting->company->barangay->municipality->province->province_Name }}
@@ -234,18 +234,18 @@
 
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                    <h3 class="text-xs lg:text-sm uppercase"> <i
                                                             class="fa-solid fa-graduation-cap"></i>
                                                         {{ $eduLevels[$data->job_posting->job_Edu] }}</h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                    <h3 class="text-xs lg:text-sm uppercase"> <i
                                                             class="fa-solid fa-briefcase"></i>
                                                         {{ $jobTypes[$data->job_posting->job_Type] }}</h3>
                                                     </h3>
                                                 </div>
                                                 <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                    <h3 class="text-xs lg:text-sm uppercase"> <i
                                                             class="fa-solid fa-calendar"></i>
                                                         {{ $data->job_posting->created_at->format('F j, Y') }}
                                                     </h3>
@@ -267,20 +267,20 @@
             </div>
         </div>
 
-        <div class="col-span-4 sm:col-span-7">
+        <div class="col-span-4 lg:col-span-7">
             @if ($applicationInfo)
                 <div class="bg-white shadow rounded-lg p-6 flex flex-col">
                     <div class="flex flex-row">
-                        <div class="hidden sm:flex flex-col w-full sm:w-auto">
+                        <div class="hidden lg:flex flex-col w-full lg:w-auto">
                             <img src="{{ asset('storage/' . $applicationInfo->job_posting->company->company_img) }}"
                                 class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                             </img>
                         </div>
-                        <div class="flex flex-col sm:ml-4 w-full">
-                            <h1 class="text-2xl sm:text-6xl  font-bold underline">
+                        <div class="flex flex-col lg:ml-4 w-full">
+                            <h1 class="text-2xl lg:text-6xl  font-bold underline">
                                 {{ $applicationInfo->job_posting->job_Title }}
                             </h1>
-                            <h1 class="text-xl sm:text-3xl text-gray-600">
+                            <h1 class="text-xl lg:text-3xl text-gray-600">
                                 {{ $applicationInfo->job_posting->company->business_Name }}</h1>
 
                         </div>
@@ -308,7 +308,7 @@
                                 @endif
                             </div>
                             @if ($applicationInfo->applicant_Status == 'HIRED')
-                                <div class="hidden sm:flex flex-row w-full justify-end">
+                                <div class="hidden lg:flex flex-row w-full justify-end">
                                     <x-danger-button type="button" class="w-[100px] justify-center me-2 mb-2"
                                         x-data=""
                                         x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Cancel</x-danger-button>
@@ -321,7 +321,7 @@
 
                     </div>
                     @if ($applicationInfo->applicant_Status == 'HIRED')
-                        <div class="sm:hidden flex flex-row w-full justify-center mt-5">
+                        <div class="lg:hidden flex flex-row w-full justify-center mt-5">
                             <x-danger-button class="justify-center me-2 mb-2" type="button" x-data=""
                                 x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Cancel</x-danger-button>
                             <x-green-button type="button" class="justify-center me-2 mb-2" x-data=""
@@ -329,7 +329,7 @@
                         </div>
                     @endif
 
-                    <hr class="mt-2 sm:mt-4">
+                    <hr class="mt-2 lg:mt-4">
                     <div class="flex flex-col mt-4">
 
                         <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">APPLICATION DETAIL</span>

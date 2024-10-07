@@ -195,7 +195,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
                                 @foreach ($pesoAnnouncements as $data)
                                     <a wire:navigate
                                         href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
@@ -213,7 +213,7 @@
                                                     {{ Str::limit(strip_tags($data->announcement_Title), 60, '...') }}
                                                 </h4>
                                                 <div
-                                                    class="mt-auto text-center text-xs sm:text-sm font-normal text-gray-600">
+                                                    class="mt-auto text-center text-xs lg:text-sm font-normal text-gray-600">
                                                     {{ $data->created_at->format('F j, Y') }}
                                                 </div>
                                             </div>

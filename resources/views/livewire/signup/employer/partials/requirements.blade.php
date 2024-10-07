@@ -2,9 +2,9 @@
     <h1 class="text-2xl font-bold">Contact Information</h1>
     <span class="text-sm text-gray-600">Fields with * are required.</span>
     @foreach ($requirements->chunk(2) as $chunk)
-        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 w-full mt-4">
+        <div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-5 w-full mt-4">
             @foreach ($chunk as $requirement)
-                <div wire:key='jobRequirement-{{ $requirement->requirement_id }}' class="flex flex-col w-full sm:w-1/2 ">
+                <div wire:key='jobRequirement-{{ $requirement->requirement_id }}' class="flex flex-col w-full lg:w-1/2 ">
                     <label class="block text-sm font-medium text-gray-900"
                         for="file_input">{{ $requirement->requirement_Title }}*</label>
                     <div class="flex flex-row w-full h-full justify-center items-center gap-2">
@@ -34,7 +34,7 @@
         </div>
     @endforeach
 
-    <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
+    <div class="flex flex-row justify-between space-x-4 mt-4 lg:mt-auto lg:mb-4">
         <x-secondary-button wire:loading.attr='disabled' wire:click='prev' type="button">
             Previous
             <div wire:loading.delay.long wire:target="prev" role="status">

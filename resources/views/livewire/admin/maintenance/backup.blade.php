@@ -1,11 +1,11 @@
 <div class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Maintenance / Backups</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6" x-data="{
                 openTab: 1,
                 activeClasses: 'text-gray-900 bg-gray-400 active',
@@ -138,7 +138,7 @@
 
 
         </div>
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6" x-data="{
                 openTab: 1,
                 activeClasses: 'text-gray-900 bg-gray-400 active',

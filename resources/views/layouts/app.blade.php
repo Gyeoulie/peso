@@ -30,22 +30,13 @@
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
     {{-- ALPINE TOOLTIP --}}
     <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
 
     <link href="https://pagecdn.io/lib/easyfonts/fonts.css" rel="stylesheet" />
 
-    {{-- QR CODE --}}
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
-
-    {{-- CHARTS --}}
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    @livewireChartsScripts
-
-
     @livewireStyles
-    @livewireScripts
     @vite(['resources/css/app.css'])
 
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
@@ -59,7 +50,7 @@
         <!-- Page Heading -->
         @if (isset($header))
             <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-6 px-4 lg:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
@@ -73,13 +64,13 @@
 
     <footer class="bg-white rounded-lg shadowm-4 mt-auto">
         <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8 ">
-            <div class="sm:flex sm:items-center sm:justify-between">
-                <a href="#" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+            <div class="lg:flex lg:items-center lg:justify-between">
+                <a href="#" class="flex items-center mb-4 lg:mb-0 space-x-3 rtl:space-x-reverse">
                     <img src="{{ asset('assets/img/PESO-Logo.png') }}" class="h-8" alt="Flowbite Logo" />
                     <span class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap ">Public Employment
                         Service Office</span>
                 </a>
-                <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 ">
+                <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 lg:mb-0 ">
                     <li>
                         <a href="#" class="hover:underline me-4 md:me-6">About</a>
                     </li>
@@ -92,12 +83,15 @@
                     </li>
                 </ul>
             </div>
-            <hr class="my-6 border-gray-200 sm:mx-auto  lg:my-8" />
-            <span class="block text-sm text-gray-500 sm:text-center ">© 2023 <a href="#"
+            <hr class="my-6 border-gray-200 lg:mx-auto  lg:my-8" />
+            <span class="block text-sm text-gray-500 lg:text-center ">© 2023 <a href="#"
                     class="hover:underline">PESO™</a>. All Rights
                 Reserved.</span>
         </div>
     </footer>
+
+    @livewireChartsScripts
+    @livewireScripts
     <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 

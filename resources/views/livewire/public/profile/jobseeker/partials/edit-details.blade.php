@@ -1,10 +1,10 @@
 <div>
-    <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5 items-center">
-        <div class="col-span-4 sm:col-span-3">
+    <div class="grid grid-cols-4 lg:grid-cols-12 mt-4 mx-8 p-0 lg:p-6 gap-5 items-center">
+        <div class="col-span-4 lg:col-span-3">
 
         </div>
 
-        <div class="col-span-4 sm:col-span-9">
+        <div class="col-span-4 lg:col-span-9">
 
             <div class="flex flex-row items-center gap-4">
                 <a href="{{ route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id]) }}">
@@ -23,12 +23,12 @@
 
         </div>
 
-        <div class="col-span-4 sm:col-span-3">
+        <div class="col-span-4 lg:col-span-3">
 
         </div>
 
 
-        <div class="col-span-4 sm:col-span-6" x-data="{
+        <div class="col-span-4 lg:col-span-6" x-data="{
             openTab: 1,
             activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
             inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
@@ -113,7 +113,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname" :value="__('First Name')" />
                             <x-text-input wire:model="fname" class="block mt-1 w-full" type="text" disabled />
@@ -127,7 +127,7 @@
 
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="mname" :value="__('Middle Name')" />
                             <x-text-input wire:model="mname" class="block mt-1 w-full" type="text" disabled />
@@ -159,7 +159,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="birthdate" :value="__('Birthdate')" />
                             <x-text-input wire:model="birthdate" class="block mt-1 w-full" type="date" disabled />
@@ -180,7 +180,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="presentAddress" :value="__('Present Address')" />
                             <x-text-input wire:model="address" class="block mt-1 w-full" type="text"
@@ -198,7 +198,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="city" :value="__('Municipality')" />
                             <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" readonly />
@@ -211,7 +211,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="civilstatus" :value="__('Civil Status')" />
                             <select wire:model="civilstatus" name="civilstatusPost"
@@ -276,7 +276,7 @@
                     </div>
 
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="pnum" :value="__('Cellphone No.')" />
                             <x-text-input wire:model="pnumber" class="block mt-1 w-full" type="tel"
@@ -299,7 +299,7 @@
 
 
 
-                    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-4 mt-4">
                         <!-- Employment Status Dropdown -->
                         <div class="flex flex-col w-full">
                             <x-input-label for="empStatus" :value="__('Employment Status')" />
@@ -326,7 +326,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-4 mt-4">
                         <div class="flex flex-col w-1/3">
                             <x-input-label for="OFW" :value="__('Are you an OFW?*')" />
                             <div class="flex flex-row gap-4 mt-2">
@@ -371,7 +371,7 @@
                                 <x-input-error :messages="$errors->get('fourp')" class="mt-2" />
 
                             </div>
-                            <div class="flex flex-col w-full sm:w-1/2" x-show="household == 1">
+                            <div class="flex flex-col w-full lg:w-1/2" x-show="household == 1">
                                 <x-input-label for="fourpID" :value="__('If yes, Household ID No.*')" />
                                 <x-text-input wire:model='fourpID' class="block mt-1 w-full" type="text" />
                                 <x-input-error :messages="$errors->get('fourpID')" class="mt-2" />
@@ -525,7 +525,7 @@
                     <div class="relative mt-4">
 
                         <div
-                            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                            class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                             <label for="table-search" class="sr-only">Search</label>
 
@@ -541,7 +541,7 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <input wire:model.live='searchLang' type="search"
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for language">
                             </div>
 
@@ -561,16 +561,16 @@
                                         <th scope="col" class="border px-6 py-3">
                                             Language
                                         </th>
-                                        <th scope="col" class="border px-6 py-3 text-center hidden sm:table-cell">
+                                        <th scope="col" class="border px-6 py-3 text-center hidden lg:table-cell">
                                             Read
                                         </th>
-                                        <th scope="col" class="border px-6 py-3 text-center hidden sm:table-cell">
+                                        <th scope="col" class="border px-6 py-3 text-center hidden lg:table-cell">
                                             Write
                                         </th>
-                                        <th scope="col" class="border px-6 py-3 text-center hidden sm:table-cell">
+                                        <th scope="col" class="border px-6 py-3 text-center hidden lg:table-cell">
                                             Speak
                                         </th>
-                                        <th scope="col" class="border px-6 py-3 text-center hidden sm:table-cell">
+                                        <th scope="col" class="border px-6 py-3 text-center hidden lg:table-cell">
                                             Understand
                                         </th>
                                         <th scope="col" class="border px-6 py-3 text-center">
@@ -604,7 +604,7 @@
                                                 <th
                                                     class="border px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                                     {{ $data->language_Type }}
-                                                    <div class="sm:hidden text-gray-500">
+                                                    <div class="lg:hidden text-gray-500">
                                                         <!-- Additional mobile information -->
                                                         <p>Read: {{ $data->language_Read == '1' ? 'Yes' : 'No' }}</p>
                                                         <p>Write: {{ $data->language_Write == '1' ? 'Yes' : 'No' }}</p>
@@ -614,7 +614,7 @@
                                                     </div>
 
                                                 </th>
-                                                <td scope="row" class="border px-6 py-1 hidden sm:table-cell">
+                                                <td scope="row" class="border px-6 py-1 hidden lg:table-cell">
                                                     <div class="flex items-center justify-center">
                                                         <input type="checkbox"
                                                             @if ($data->language_Read == '1') checked @endif
@@ -623,7 +623,7 @@
                                                         <label for="checkbox-read" class="sr-only">checkbox</label>
                                                     </div>
                                                 </td>
-                                                <td class="border px-6 py-1 hidden sm:table-cell">
+                                                <td class="border px-6 py-1 hidden lg:table-cell">
                                                     <div class="flex items-center justify-center">
                                                         <input type="checkbox"
                                                             @if ($data->language_Write == '1') checked @endif
@@ -632,7 +632,7 @@
                                                         <label for="checkbox-write" class="sr-only">checkbox</label>
                                                     </div>
                                                 </td>
-                                                <td class="border px-6 py-1 hidden sm:table-cell">
+                                                <td class="border px-6 py-1 hidden lg:table-cell">
                                                     <div class="flex items-center justify-center">
                                                         <input type="checkbox"
                                                             @if ($data->language_Speak == '1') checked @endif
@@ -641,7 +641,7 @@
                                                         <label for="checkbox-speak" class="sr-only">checkbox</label>
                                                     </div>
                                                 </td>
-                                                <td class="border px-6 py-1 hidden sm:table-cell">
+                                                <td class="border px-6 py-1 hidden lg:table-cell">
                                                     <div class="flex items-center justify-center">
                                                         <input id="checkbox-understand" type="checkbox"
                                                             @if ($data->language_Understand == '1') checked @endif
@@ -707,7 +707,7 @@
                     <div class="relative mt-4">
 
                         <div
-                            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                            class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
                             <label for="table-search" class="sr-only">Search</label>
 
 
@@ -722,7 +722,7 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <input wire:model.live='search' type="text"
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for eligibility">
                             </div>
 
@@ -744,7 +744,7 @@
                                         <th scope="col" class="px-6 py-3">
                                             License
                                         </th>
-                                        <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                        <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                             Validity
                                         </th>
                                         <th scope="col" class="px-6 py-3 w-1/3">
@@ -782,12 +782,12 @@
                                                         <div class="text-base font-semibold">
                                                             {{ $eli->eligibility_type->eligibility_Name }}
                                                         </div>
-                                                        <div class="sm:hidden text-sm text-gray-600">
+                                                        <div class="lg:hidden text-sm text-gray-600">
                                                             Valid until: {{ $eli->eligibility_Date->format('F j, Y') }}
                                                         </div>
                                                     </div>
                                                 </th>
-                                                <td class="hidden sm:table-cell px-6 py-4">
+                                                <td class="hidden lg:table-cell px-6 py-4">
                                                     <div class="text-base font-semibold">
                                                         {{ $eli->eligibility_Date->format('F j, Y') }}
                                                     </div>
@@ -853,7 +853,7 @@
                     <div class="relative mt-4">
 
                         <div
-                            class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                            class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                             <label for="table-search" class="sr-only">Search</label>
 
@@ -869,7 +869,7 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <input type="text" wire:model.live.prevent='search'
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for job position">
                             </div>
 
@@ -891,7 +891,7 @@
                                         <th scope="col" class="px-6 py-3">
                                             License
                                         </th>
-                                        <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                        <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                             Validity
                                         </th>
                                         <th scope="col" class="px-6 py-3 w-1/3">
@@ -929,13 +929,13 @@
                                                         <div class="text-base font-semibold">
                                                             {{ $empLicense->license_type->license_Name }}
                                                         </div>
-                                                        <div class="sm:hidden text-sm text-gray-600">
+                                                        <div class="lg:hidden text-sm text-gray-600">
                                                             Valid until:
                                                             {{ $empLicense->license_Validity->format('F j, Y') }}
                                                         </div>
                                                     </div>
                                                 </th>
-                                                <td class="hidden sm:table-cell px-6 py-4">
+                                                <td class="hidden lg:table-cell px-6 py-4">
                                                     <div class="text-base font-semibold">
                                                         {{ $empLicense->license_Validity->format('F j, Y') }}
                                                     </div>
@@ -996,7 +996,7 @@
                     <div class="flex flex-row my-4 w-full gap-4 mt-4">
                         <div class="flex flex-col w-full">
 
-                            <div class="flex flex-col sm:flex-row w-full sm:justify-between gap-2">
+                            <div class="flex flex-col lg:flex-row w-full lg:justify-between gap-2">
 
                                 <span class="text-xl font-bold">Job Preference</span>
 
@@ -1041,7 +1041,7 @@
                     <div class="flex flex-row my-4 w-full gap-4 mt-4">
                         <div class="flex flex-col w-full">
 
-                            <div class="flex flex-col sm:flex-row w-full sm:justify-between">
+                            <div class="flex flex-col lg:flex-row w-full lg:justify-between">
 
 
                                 <span class="text-xl font-bold">Industry Preference</span>
@@ -1504,7 +1504,7 @@
                 </div>
 
                 <div class="flex flex-col mt-4 w-full">
-                    <div class="flex flex-col sm:flex-row justify-center gap-2 sm:gap-5 w-full">
+                    <div class="flex flex-col lg:flex-row justify-center gap-2 lg:gap-5 w-full">
                         <div>
                             <input wire:model='read' type="checkbox" id="read-option" class="hidden peer"
                                 required="">

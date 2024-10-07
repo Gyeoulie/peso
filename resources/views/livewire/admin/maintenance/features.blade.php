@@ -1,11 +1,11 @@
 <div class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Maintenance / Experimental Features</h1>
         </div>
-        <div class="col-span-4 sm:col-span-12">
-            <div class="p-4 sm:p-8 bg-white shadow-xl rounded-lg">
+        <div class="col-span-4 lg:col-span-12">
+            <div class="p-4 lg:p-8 bg-white shadow-xl rounded-lg">
                 <div class="w-full">
                     <div>
 
@@ -42,8 +42,8 @@
 
             </div>
         </div>
-        <div class="col-span-4 sm:col-span-12">
-            <div class="p-4 sm:p-8 bg-white shadow-xl rounded-lg">
+        <div class="col-span-4 lg:col-span-12">
+            <div class="p-4 lg:p-8 bg-white shadow-xl rounded-lg">
                 <div class="w-full">
                     <div>
 

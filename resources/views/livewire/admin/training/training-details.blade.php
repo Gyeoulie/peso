@@ -1,16 +1,16 @@
 <div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Trainings / Training List / Training Details</h1>
         </div>
 
 
-        <div class="col-span-4 sm:col-span-5">
+        <div class="col-span-4 lg:col-span-5">
             <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4">
                 <div class="flex flex-row justify-center items-center h-full p-5 flex-shrink-0">
                     <img src="{{ asset('storage/' . $programInfo->program_pubmat) }}" alt="Default I mage"
-                        class="w-[260px] h-[200px] sm:w-[600px] sm:h-[450px] bg-gray-300 rounded object-fill">
+                        class="w-[260px] h-[200px] lg:w-[600px] lg:h-[450px] bg-gray-300 rounded object-fill">
                 </div>
 
 
@@ -45,15 +45,15 @@
 
                         </div>
                     @else
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
                             @foreach ($matchingEmployees as $data)
                                 <div wire:key='jobseeker-{{ $data->employee_id }}'
                                     class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-blue-50 rounded-xl shrink-0 grow-0 w-full hover:bg-blue-200 transition-colors duration-300">
-                                    <img class="flex mx-auto w-[100px] h-[100px] object-cover rounded-full sm:mx-0 sm:grow-0 sm:shrink-0 shadow-xl"
+                                    <img class="flex mx-auto w-[100px] h-[100px] object-cover rounded-full lg:mx-0 lg:grow-0 lg:shrink-0 shadow-xl"
                                         src="{{ asset('storage/' . $data->pimg) }}"
                                         alt="jobseeker-{{ $data->employee_id }}">
                                     <div
-                                        class="flex flex-col items-center justify-center text-center  sm:text-left mt-2">
+                                        class="flex flex-col items-center justify-center text-center  lg:text-left mt-2">
                                         <div class="space-y-0.5">
                                             <p class="text-lg text-black text-center font-semibold">
                                                 {{ $data->fname }}
@@ -86,14 +86,14 @@
 
 
 
-        <div class="col-span-4 sm:col-span-7">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="col-span-4 lg:col-span-7">
+            <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg">
 
 
                 <div class="flex flex-col w-full h-full p-5 space-y-2">
 
                     <div class="flex flex-row justify-between">
-                        <h1 class="text-xl text-blue-900 sm:text-2xl font-bold">Program Information
+                        <h1 class="text-xl text-blue-900 lg:text-2xl font-bold">Program Information
                         </h1>
                         <div class="flex flex-row gap-4">
                             @if ($programInfo->program_Status == 'ACTIVE')
@@ -112,7 +112,7 @@
 
                     <div class="mt-6">
                         <div class="flex flex-col w-full h-full ">
-                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
+                            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
                                 <div class="flex flex-col w-full">
                                     <x-input-label for="progTitle" :value="__('Program Title')" />
                                     <x-text-input value="{{ $programInfo->program_Title }}" class="block mt-1 w-full"
@@ -126,8 +126,8 @@
                             </div>
                         </div>
                         <div class="flex flex-col w-full h-full">
-                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
-                                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
+                            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+                                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
                                     <div class="flex flex-col w-full">
                                         <x-input-label for="progTitle" :value="__('Date Posted')" />
                                         <x-text-input value="{{ $programInfo->created_at->format('F j, Y') }}"
@@ -140,7 +140,7 @@
                                     </div>
                                 </div>
                                 @if ($programInfo->program_Datetime)
-                                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
+                                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
                                         <div class="flex flex-col w-full">
                                             <x-input-label for="progTitle" :value="__('Program Date')" />
                                             <x-text-input
@@ -158,13 +158,13 @@
                             </div>
                         </div>
                         <div class="flex flex-col w-full h-full">
-                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
+                            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
                                 <div class="flex flex-col w-full">
                                     <x-input-label for="progTitle" :value="__('Program Type')" />
                                     <x-text-input value="{{ $programInfo->program_Type }}" class="block mt-1 w-full"
                                         type="text" disabled />
                                 </div>
-                                <div class="flex flex-row gap-2 sm:gap-4 w-full">
+                                <div class="flex flex-row gap-2 lg:gap-4 w-full">
                                     <div class="flex flex-col w-full">
                                         <x-input-label for="progHost" :value="__('Program Modality')" />
                                         <x-text-input value="{{ $programInfo->program_Modality }}"
@@ -179,13 +179,13 @@
                             </div>
                         </div>
                         <div class="flex flex-col w-full h-full">
-                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
+                            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
                                 <div class="flex flex-col w-full">
                                     <x-input-label for="progTitle" :value="__('Program Location')" />
                                     <x-text-input value="{{ $programInfo->program_Location }}"
                                         class="block mt-1 w-full" type="text" disabled />
                                 </div>
-                                <div class="flex flex-col w-full sm:w-1/3">
+                                <div class="flex flex-col w-full lg:w-1/3">
                                     <x-input-label for="progTitle" :value="__('Industry Tag')" />
                                     <x-text-input value="{{ $programInfo->job_industry->industry_Title }}"
                                         class="block mt-1 w-full" type="text" disabled />

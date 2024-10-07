@@ -2,7 +2,7 @@
     <h1 class="text-2xl font-bold">Profile Privacy</h1>
     <div class="text-center mb-4">
 
-        <p class="mt-2 text-gray-600 text-sm sm:text-md text-justify">
+        <p class="mt-2 text-gray-600 text-sm lg:text-md text-justify">
             The information you provide during profile creation will be used to craft a detailed profile showcasing your
             qualifications, skills, and preferences. This profile not only determines how you're visible on our platform
             but also serves as the foundation for an automatically generated resume. You have full control
@@ -26,7 +26,7 @@
                     class="w-5 h-5 mt-1 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                 <div class="ml-3">
                     <span class="text-lg font-medium text-gray-800">Private</span>
-                    <p class="text-xs sm:text-sm text-gray-600 mt-1">
+                    <p class="text-xs lg:text-sm text-gray-600 mt-1">
                         Only you will be able to view your profile. Your information will be completely hidden from all
                         employers and the public.
                         This option provides the highest level of privacy for your personal details.
@@ -41,7 +41,7 @@
                     class="w-5 h-5 mt-1 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                 <div class="ml-3">
                     <span class="text-lg font-medium text-gray-800">Employers</span>
-                    <p class="text-xs sm:text-sm text-gray-600 mt-1">
+                    <p class="text-xs lg:text-sm text-gray-600 mt-1">
                         Your profile will be visible only to verified employers. This option allows potential employers
                         to view your qualifications
                         and reach out to you for opportunities, while keeping your profile hidden from the general
@@ -57,7 +57,7 @@
                     class="w-5 h-5 mt-1 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                 <div class="ml-3">
                     <span class="text-lg font-medium text-gray-800">Public</span>
-                    <p class="text-xs sm:text-sm text-gray-600 mt-1">
+                    <p class="text-xs lg:text-sm text-gray-600 mt-1">
                         Your profile will be publicly available to everyone. This option maximizes visibility, allowing
                         both employers and
                         the general public to access your information. Choose this if you want to reach the widest

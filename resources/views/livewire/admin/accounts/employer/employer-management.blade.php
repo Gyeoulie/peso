@@ -1,18 +1,18 @@
 <div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Role Management / Employer Management</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <div class="bg-white shadow rounded-lg p-6">
                 <h1 class="text-3xl text-center font-bold">Employers / Companies
                 </h1>
 
                 <div class="relative p-1 mt-4">
 
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
@@ -27,7 +27,7 @@
 
                             {{-- SEARCH --}}
                             <input wire:model.live='searchEmployers' type="search"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
@@ -35,7 +35,7 @@
                         <div class="flex flex-wrap gap-2">
                             <div x-data="{ tooltip: 'Export to Excel' }">
                                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
-                                    class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                                    class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                                     <span class="mr-2">Export</span>
                                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -49,7 +49,7 @@
                             {{-- <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs lg:text-sm px-3 py-1.5">
                                         <div>
                                             @if (empty($sortName))
                                                 Sort By Name
@@ -89,7 +89,7 @@
 
                             <button type="button" x-data=""
                                 x-on:click.prevent="$dispatch('open-modal', 'filter-employer-modal')"
-                                class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                                class="py-1.5 px-5 text-xs lg:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
                         </div>
 
                     </div>
@@ -102,13 +102,13 @@
                                     <th scope="col" class="px-6 py-3">
                                         Business Name
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         Company Type
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         Employment Type
                                     </th>
-                                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                         Partnered
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -152,36 +152,36 @@
                                                         </div>
                                                     </div>
                                                     <div
-                                                        class="font-normal text-gray-500 text-sm uppercase hidden sm:block">
+                                                        class="font-normal text-gray-500 text-sm uppercase hidden lg:block">
                                                         {{ $data->company->company_Address }},
                                                         {{ $data->company->barangay->barangay_Name }},
                                                         {{ $data->company->barangay->municipality->municipality_Name }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
                                                         {{ $data->company->company_Address }},
                                                         {{ $data->company->barangay->barangay_Name }},
                                                         {{ $data->company->barangay->municipality->municipality_Name }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
                                                         {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase sm:hidden">
+                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
                                                         {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
 
                                                     </div>
                                                 </div>
                                             </th>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 <div class="font-normal text-gray-500 text-sm font-semibold">
                                                     {{ $data->company->company_Type == 1 ? 'MAIN' : 'BRANCH' }}
                                                 </div>
                                             </td>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 <div class="font-normal text-gray-500 text-sm">
                                                     {{ $data->company->employer_Type == 1 ? 'PUBLIC' : 'PRIVATE' }}
                                                 </div>
                                             </td>
-                                            <td class="hidden sm:table-cell px-6 py-4">
+                                            <td class="hidden lg:table-cell px-6 py-4">
                                                 {{ $data->responded_at->format('F j, Y') }}
                                             </td>
                                             <td class="px-6 py-4">
@@ -314,7 +314,7 @@
 
                 <div class="flex flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Employment Type</h1>
-                    <div class="flex flex-col sm:flex-row gap-4" x-data="employmentHandler()"
+                    <div class="flex flex-col lg:flex-row gap-4" x-data="employmentHandler()"
                         @change-status.window="updateEmpDesc">
                         <div class="flex flex-col w-full">
 

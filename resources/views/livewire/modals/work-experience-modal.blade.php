@@ -15,7 +15,7 @@
                 <x-text-input wire:model="workAdd" class="block mt-1 w-full" type="text" />
                 <x-input-error :messages="$errors->get('workAdd')" class="mt-2" />
             </div>
-            <div class="flex flex-col sm:flex-row mt-2 w-full">
+            <div class="flex flex-col lg:flex-row mt-2 w-full">
 
                 <div class="flex flex-col w-full">
                     <x-input-label for="workPos" :value="__('Job Position*')" />

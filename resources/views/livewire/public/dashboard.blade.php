@@ -8,7 +8,7 @@
                     partnership to access job posting.
                 </p>
                 <div x-data="{ tooltip: 'View company settings to review current partnerships status.' }">
-                    <svg x-tooltip="tooltip" class="w-9 h-9 sm:w-9 sm:h-9 text-yellow-700 me-2.5 hover:scale-110"
+                    <svg x-tooltip="tooltip" class="w-9 h-9 lg:w-9 lg:h-9 text-yellow-700 me-2.5 hover:scale-110"
                         viewBox="0 0 24 24" fill="currentColor">
                         <path fill-rule="evenodd"
                             d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
@@ -18,22 +18,22 @@
             </div>
         </div>
     @else
-        <div class="flex flex-row justify-between mx-auto sm:mx-12 py-2 mt-4">
+        <div class="flex flex-row justify-between mx-auto lg:mx-12 py-2 mt-4">
             <div>
                 @if (Auth::check() && Auth::user()->usertype == 4)
-                    <h1 class="text-lg sm:text-2xl font-semibold">Recommended Trainings</h1>
+                    <h1 class="text-lg lg:text-2xl font-semibold">Recommended Trainings</h1>
                 @else
-                    <h1 class="text-lg sm:text-2xl font-semibold">Available Trainings</h1>
+                    <h1 class="text-lg lg:text-2xl font-semibold">Available Trainings</h1>
                 @endif
             </div>
             <div class="flex items-end">
                 <a wire:navigate href="{{ route('trainings') }}"
-                    class="text-sm sm:text-md
+                    class="text-sm lg:text-md
                 font-semibold hover:text-blue-400">View more</a>
             </div>
 
         </div>
-        <hr class="h-1 mx-auto sm:mx-12  bg-gray-200 border-0">
+        <hr class="h-1 mx-auto lg:mx-12  bg-gray-200 border-0">
 
         @if ($programList->isEmpty())
             <div class="flex w-full justify-center  mx-4">
@@ -54,18 +54,18 @@
             </div>
         @else
             <div class="overflow-x-auto no-scrollbar">
-                <div class="flex flex-nowrap gap-6 py-4 mx-4 sm:mx-12">
+                <div class="flex flex-nowrap gap-6 py-4 mx-4 lg:mx-12">
 
                     @foreach ($programList as $data)
                         <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                            class="shrink-0 flex flex-col sm:flex-row w-full sm:max-w-xl sm:max-h-72 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                            <img class="w-full sm:w-60 object-cover h-48 sm:h-full"
+                            class="shrink-0 flex flex-col lg:flex-row w-full lg:max-w-xl lg:max-h-72 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                            <img class="w-full lg:w-60 object-cover h-48 lg:h-full"
                                 src="{{ $data->program_pubmat && file_exists(public_path('storage/' . $data->program_pubmat)) ? asset('storage/' . $data->program_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                 alt="prog-{{ $data->program_id }}">
 
 
-                            <div class="flex flex-col justify-between p-4 sm:p-4 flex-1">
-                                <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
+                            <div class="flex flex-col justify-between p-4 lg:p-4 flex-1">
+                                <h5 class="text-xl lg:text-2xl font-bold tracking-tight text-blue-500 leading-snug">
                                     {{ $data->program_Title }}
                                 </h5>
                                 <hr class="mb-2">
@@ -95,17 +95,17 @@
         @endif
     @endif
 
-    <div wire:poll.5s class="flex mx-auto sm:mx-12 py-2 ">
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-10 p-3 sm:p-0 w-full">
+    <div wire:poll.5s class="flex mx-auto lg:mx-12 py-2 ">
+        <div class="grid grid-cols-4 lg:grid-cols-12 gap-10 p-3 lg:p-0 w-full">
 
             {{-- MAIN BAR FOR JOB POST --}}
-            <div class="col-span-4 sm:col-span-9">
+            <div class="col-span-4 lg:col-span-9">
                 <div class="bg-white shadow rounded-lg p-6 overflow-visible">
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
 
-                        <div class="relative w-full sm:w-auto">
+                        <div class="relative w-full lg:w-auto">
 
                             <div
                                 class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -117,7 +117,7 @@
                             </div>
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job posting">
                         </div>
 
@@ -328,20 +328,20 @@
                                                         class="flex flex-col justify-center items-center h-full  flex-shrink-0">
                                                         <img src="{{ file_exists(public_path('storage/' . $data->company->company_img)) ? asset('storage/' . $data->company->company_img) : asset('assets/img/PESO-Logo.png') }}"
                                                             alt="company-{{ $data->job_id }}"
-                                                            class="w-24 h-24 sm:w-48 sm:h-48 bg-gray-300 rounded object-contain">
+                                                            class="w-24 h-24 lg:w-48 lg:h-48 bg-gray-300 rounded object-contain">
                                                     </div>
-                                                    <div class="flex-col w-full ml-5 space-y-1 sm:space-y-8">
+                                                    <div class="flex-col w-full ml-5 space-y-1 lg:space-y-8">
                                                         <div class="flex flex-col">
-                                                            <div class="flex flex-col sm:flex-row  text-left">
-                                                                <div class="flex flex-col sm:w-3/4">
+                                                            <div class="flex flex-col lg:flex-row  text-left">
+                                                                <div class="flex flex-col lg:w-3/4">
                                                                     <h1
-                                                                        class="text-blue-500 text-2xl sm:text-5xl font-semibold uppercase">
+                                                                        class="text-blue-500 text-2xl lg:text-5xl font-semibold uppercase">
                                                                         {{ $data->job_Title }}
                                                                     </h1>
                                                                 </div>
-                                                                <div class="hidden sm:flex flex-col sm:w-1/4">
+                                                                <div class="hidden lg:flex flex-col lg:w-1/4">
                                                                     <h1
-                                                                        class="text-blue-500 text-xs sm:text-xl text-left sm:text-center font-medium">
+                                                                        class="text-blue-500 text-xs lg:text-xl text-left lg:text-center font-medium">
                                                                         @if ($data->job_MinWage)
                                                                             ₱{{ number_format($data->job_MinWage) }}
                                                                             @if ($data->job_MaxWage)
@@ -358,22 +358,22 @@
                                                         </div>
 
                                                         <div class="flex flex-col">
-                                                            <div class="flex-row sm:w-3/4 text-left">
-                                                                <h2 class="text-lg sm:text-2xl font-semibold">
+                                                            <div class="flex-row lg:w-3/4 text-left">
+                                                                <h2 class="text-lg lg:text-2xl font-semibold">
                                                                     {{ $data->company->business_Name }}</h2>
                                                             </div>
                                                             <h1
-                                                                class="sm:hidden text-black text-sm text-left sm:text-center font-medium">
+                                                                class="lg:hidden text-black text-sm text-left lg:text-center font-medium">
                                                                 ₱{{ number_format($data->job_MinWage) }} -
                                                                 ₱{{ number_format($data->job_MaxWage) }}</h1>
                                                         </div>
 
                                                         <div class="flex flex-col w-full">
-                                                            <div class="flex flex-col sm:flex-row">
-                                                                <div class="sm:w-1/5 text-left">
+                                                            <div class="flex flex-col lg:flex-row">
+                                                                <div class="lg:w-1/5 text-left">
 
                                                                     <h3
-                                                                        class="text-xs sm:text-sm text-blue-900 uppercase">
+                                                                        class="text-xs lg:text-sm text-blue-900 uppercase">
                                                                         <i class="fa-solid fa-location-dot"></i>
                                                                         {{ $data->job_Address }},
                                                                         {{ $data->barangay->barangay_Name }},
@@ -381,31 +381,31 @@
                                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/5 text-left sm:text-center">
+                                                                <div class="lg:w-1/5 text-left lg:text-center">
                                                                     <h3
-                                                                        class="text-xs sm:text-sm text-blue-900 uppercase">
+                                                                        class="text-xs lg:text-sm text-blue-900 uppercase">
                                                                         <i class="fa-solid fa-graduation-cap"></i>
                                                                         {{ $eduLevels[$data->job_Edu] }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/5 text-left sm:text-center">
+                                                                <div class="lg:w-1/5 text-left lg:text-center">
                                                                     <h3
-                                                                        class="text-xs sm:text-sm uppercase text-blue-900">
+                                                                        class="text-xs lg:text-sm uppercase text-blue-900">
                                                                         <i class="fa-solid fa-briefcase uppercase"></i>
                                                                         {{ $jobTypes[$data->job_Type] }}
 
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/5 text-left sm:text-center">
+                                                                <div class="lg:w-1/5 text-left lg:text-center">
                                                                     <h3
-                                                                        class="text-xs sm:text-sm uppercase text-blue-900">
+                                                                        class="text-xs lg:text-sm uppercase text-blue-900">
                                                                         <i class="fa-solid fa-calendar"></i>
                                                                         {{ $data->job_Duration->format('F j, Y') }}
                                                                     </h3>
                                                                 </div>
-                                                                <div class="sm:w-1/5 text-left sm:text-center">
+                                                                <div class="lg:w-1/5 text-left lg:text-center">
                                                                     <h3
-                                                                        class="text-xs sm:text-sm uppercase text-blue-900">
+                                                                        class="text-xs lg:text-sm uppercase text-blue-900">
                                                                         <i class="fa-solid fa-building-ngo"></i>
                                                                         PESO
                                                                         {{ $data->peso->municipality->municipality_Name }}
@@ -437,11 +437,11 @@
 
             {{-- SIDE BAR --}}
             @if (Auth::check() && (auth()->user()->usertype == 5 || auth()->user()->usertype == 6))
-                <div class="col-span-4 sm:col-span-3">
+                <div class="col-span-4 lg:col-span-3">
                     <div class="bg-white shadow rounded-lg p-4">
                         <div class="p-3 text-gray-900 text-center w-full">
                             <h1 class="font-bold text-2xl">Notifications</h1>
-                            <div class="overflow-y-auto max-h-[300px] sm:max-h-[900px]"> <!-- Set max height here -->
+                            <div class="overflow-y-auto max-h-[300px] lg:max-h-[900px]"> <!-- Set max height here -->
                                 @if (empty($formattedNotifications))
                                     <div class="flex flex-col items-center justify-center  mt-12 mb-12">
                                         <div class="p-6 bg-gray-100 rounded-full">
@@ -529,7 +529,7 @@
 
                 </div>
             @else
-                <div class="col-span-4 sm:col-span-3">
+                <div class="col-span-4 lg:col-span-3">
                     <div class="flex flex-col w-full gap-4">
 
                         <div class="bg-white shadow-md shadow-md rounded-md p-4">
@@ -599,11 +599,11 @@
                                     </div>
                                 @else
                                     <div
-                                        class="mt-2 flex flex-row sm:flex-col  gap-4 overflow-x-auto sm:overflow-visible no-scrollbar w-full">
+                                        class="mt-2 flex flex-row lg:flex-col  gap-4 overflow-x-auto lg:overflow-visible no-scrollbar w-full">
                                         @foreach ($announcements as $data)
                                             <a wire:navigate
                                                 href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
-                                                class="flex-shrink-0 w-full sm:w-full">
+                                                class="flex-shrink-0 w-full lg:w-full">
                                                 <div
                                                     class="relative flex flex-col w-full max-w-sm h-96 overflow-hidden rounded-lg bg-white text-gray-700 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
                                                     <div class="relative w-full h-56 overflow-hidden rounded-t-lg">
@@ -646,9 +646,9 @@
     </div>
 
     <div id="sticky-banner" tabindex="-1"
-        class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-4 sm:p-8 border-b border-gray-200 bg-blue-500">
+        class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-4 lg:p-8 border-b border-gray-200 bg-blue-500">
         <div class="flex items-center mx-auto">
-            <p class="flex items-center text-sm sm:text-xl text-justify text-white font-bold">
+            <p class="flex items-center text-sm lg:text-xl text-justify text-white font-bold">
 
                 </span>
                 <span class="font-bold uppercase">Please note: The system is currently in a testing phase. Postings are
@@ -676,7 +676,7 @@
             <hr>
 
             <div class="relative mt-4">
-                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative">
@@ -691,7 +691,7 @@
 
                         {{-- LICENSE SEARCH --}}
                         <input wire:model.live='searchIndustry' type="search"
-                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search industry">
                     </div>
 
@@ -739,7 +739,8 @@
                             @else
                                 @foreach ($industry as $data)
                                     <tr wire:key='industry-{{ $data->industry_id }}'
-                                        class="bg-white border-b hover:bg-gray-50">
+                                        class="bg-white border-b hover:bg-gray-50 cursor-pointer"
+                                        onclick="document.getElementById('industry-{{ $data->industry_id }}').click();">
                                         <td class="px-6 py-4 text-center">
 
                                             <label class="relative flex items-center p-3 rounded-full cursor-pointer"
@@ -826,7 +827,7 @@
             <hr>
 
             <div class="relative mt-4">
-                <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative">
                         <div
@@ -839,7 +840,7 @@
                         </div>
 
                         <input type="search" wire:model.live='searchTags'
-                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search Job Position">
                     </div>
 

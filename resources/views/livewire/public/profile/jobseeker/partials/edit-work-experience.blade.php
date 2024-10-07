@@ -51,7 +51,7 @@
                     </div>
                 </div>
             @else
-                {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
+                {{-- <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 "> --}}
 
                 @foreach ($workexp as $experience)
                     <div wire:key="{{ $experience->workexp_id }}" class="container p-3">
@@ -59,7 +59,7 @@
                         <div class="flex flex-row h-full items-center">
 
                             <div class="flex flex-col">
-                                <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800" aria-hidden="true"
+                                <svg class="w-10 h-10 lg:w-20 lg:h-20 text-gray-800" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     viewBox="0 0 24 24">
                                     <path fill-rule="evenodd"
@@ -147,7 +147,7 @@
                     <x-text-input wire:model="workAdd" class="block mt-1 w-full" type="text" />
                     <x-input-error :messages="$errors->get('workAdd')" class="mt-2" />
                 </div>
-                <div class="flex flex-col sm:flex-row mt-2 w-full">
+                <div class="flex flex-col lg:flex-row mt-2 w-full">
 
                     <div class="flex flex-col w-full">
                         <x-input-label for="workPos" :value="__('Job Position')" />

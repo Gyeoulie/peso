@@ -1,14 +1,14 @@
 <div class="container mx-auto py-8">
 
     {{-- GRID --}}
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Requirements Management</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             {{-- @livewire('admin.requirements.requirements-table') --}}
             <div class="bg-white shadow rounded-lg p-6">
 
@@ -19,7 +19,7 @@
 
                 <div class="relative overflow-x-auto">
 
-                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
 
                         <label for="table-search" class="sr-only">Search</label>
@@ -36,7 +36,7 @@
                             </div>
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
                         {{-- ADD BUTTON --}}
@@ -89,16 +89,16 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 sm:w-1/4">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/4">
                                         Requirement Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Date Created
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -138,7 +138,7 @@
                                                     <div class="text-base font-semibold">{{ $data->requirement_Title }}
                                                     </div>
 
-                                                    <div class="block sm:hidden">
+                                                    <div class="block lg:hidden">
                                                         <div class="text-gray-500 font-semibold text-sm uppercase">
                                                             @if ($data->requirement_Type == 1)
                                                                 PUBLIC
@@ -168,7 +168,7 @@
                                                 </div>
 
                                             </th>
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <span class="font-semibold">
                                                     @if ($data->requirement_Type == 1)
                                                         PUBLIC
@@ -177,7 +177,7 @@
                                                     @endif
                                                 </span>
                                             </td>
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="flex items-center uppercase">
                                                     @if ($data->requirement_Status == 1)
                                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
@@ -188,7 +188,7 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 hidden sm:table-cell">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-base font-light uppercase text-sm">
                                                     {{ $data->created_at->format('h:i A') }}
                                                 </div>
@@ -247,13 +247,13 @@
 
 
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             {{-- @livewire('admin.requirements.requirements-add') --}}
             <div class="bg-white shadow rounded-lg p-6">
 
                 <h1 class="text-2xl font-bold mb-4">Add Requirements</h1>
                 <div>
-                    <div class="flex flex-col sm:flex-row sm:gap-5 w-full mt-6 gap-6 ">
+                    <div class="flex flex-col lg:flex-row lg:gap-5 w-full mt-6 gap-6 ">
 
 
                         <div class="flex flex-col mt-2 w-full">

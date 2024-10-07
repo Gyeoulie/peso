@@ -3,7 +3,7 @@
 
     <div class="flex flex-col gap-4 mt-5 w-full h-full">
         @if ($partnershipData)
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg  mx-auto">
+            <div class="relative overflow-x-auto shadow-md lg:rounded-lg  mx-auto">
                 <table class="w-full text-md text-center rtl:text-center text-gray-500">
                     <thead class="text-md text-gray-100 uppercase bg-blue-500 ">
                         <tr>
@@ -44,7 +44,7 @@
             </button>
         </div>
     </div>
-    <div class="flex flex-row justify-between space-x-4 mt-4 sm:mt-auto sm:mb-4">
+    <div class="flex flex-row justify-between space-x-4 mt-4 lg:mt-auto lg:mb-4">
         <x-secondary-button wire:loading.attr='disabled' wire:click='prev' type="button">
             Previous
             <div wire:loading.delay.long wire:target="prev" role="status">
