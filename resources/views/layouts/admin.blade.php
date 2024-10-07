@@ -38,7 +38,7 @@
 
     <!-- Scripts -->
     @livewireStyles
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/css/app.js'])
 </head>
 
 <body class="font-sans antialiased bg-gray-100 flex flex-col min-h-screen">

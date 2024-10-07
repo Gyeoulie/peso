@@ -30,7 +30,7 @@
 
 
     @livewireStyles
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/css/app.js'])
 
 </head>
 
@@ -81,9 +81,6 @@
                 Reserved.</span>
         </div>
     </footer>
-
-    @livewireChartsScripts
-    @livewireScripts
 
     {{-- SCRIPTS --}}
     @livewireChartsScripts

@@ -682,6 +682,10 @@
                                 </tbody>
                             </table>
 
+                            <div class="mt-4">
+                                {{ $partnerships->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
+                            </div>
+
                         </div>
                     </div>
 

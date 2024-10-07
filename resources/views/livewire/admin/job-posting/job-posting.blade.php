@@ -171,7 +171,7 @@
                                 :class="filterIndustry.length > 0 ?
                                     'bg-blue-500 text-white hover:bg-blue-600' :
                                     'bg-white text-gray-500 hover:bg-gray-100'"
-                                class="inline-flex items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                class="inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
                                 Industry Filter
                             </button>
                             <button type="button" x-data="{ filterJobTags: @entangle('filterJobTags') }"
@@ -179,7 +179,7 @@
                                 :class="filterJobTags.length > 0 ?
                                     'bg-blue-500 text-white hover:bg-blue-600' :
                                     'bg-white text-gray-500 hover:bg-gray-100'"
-                                class="inline-flex items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                class="inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
                                 Job Tags Filter
                             </button>
 
@@ -435,29 +435,25 @@
                             </svg>
                         </div>
 
-                        {{-- LICENSE SEARCH --}}
+                  
                         <input wire:model.live='searchIndustry' type="search"
                             class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search industry">
                     </div>
 
-                    {{-- WEB BUTTON --}}
+                  
                 </div>
 
-                {{-- LICENSE MODAL --}}
+               
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
-                                <th scope="col" class="px-6 py-3 w-1/4">
-
+                                <th scope="col" class="px-4 py-2 w-1/4 "> <!-- Hidden on small screens -->
                                 </th>
-                                <th scope="col" class="px-6 py-3 uppercase">
-                                    Job Industry
-                                </th>
-                                <th scope="col" class="px-6 py-3 uppercase">
-                                    Code
-                                </th>
+                                <th scope="col" class="px-4 py-2 uppercase">Job Industry</th>
+                                <th scope="col" class="px-4 py-2 uppercase hidden sm:table-cell">Code</th>
+                                <!-- Hidden on small screens -->
                             </tr>
                         </thead>
                         <tbody>
@@ -473,13 +469,10 @@
                                                         stroke-width="2"
                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
-
                                             </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                No Record Found!
+                                            <p class="text-xl font-bold text-black text-center mt-2">No Record Found!
                                             </p>
                                         </div>
-
                                     </td>
                                 </tr>
                             @else
@@ -487,8 +480,8 @@
                                     <tr wire:key='industry-{{ $data->industry_id }}'
                                         class="bg-white border-b hover:bg-gray-50 cursor-pointer"
                                         onclick="document.getElementById('industry-{{ $data->industry_id }}').click();">
-                                        <td class="px-6 py-4 text-center">
-
+                                        <td class="px-4 py-2 text-center sm:table-cell">
+                                            <!-- Hidden on small screens -->
                                             <label class="relative flex items-center p-3 rounded-full cursor-pointer"
                                                 for="agreeBox">
                                                 <input wire:model="mountIndustryFilter" type="checkbox"
@@ -506,13 +499,15 @@
                                                     </svg>
                                                 </span>
                                             </label>
-
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-4 py-2">
                                             <div class="font-semibold text-base uppercase">{{ $data->industry_Title }}
                                             </div>
+                                            <!-- Additional information for mobile view -->
+                                            <div class="sm:hidden text-sm text-gray-500">Code:
+                                                {{ $data->industry_Code }}</div>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-4 py-2 hidden sm:table-cell"> <!-- Hidden on small screens -->
                                             <div class="font-semibold text-base uppercase">{{ $data->industry_Code }}
                                             </div>
                                         </td>
@@ -521,6 +516,7 @@
                             @endif
                         </tbody>
                     </table>
+
                 </div>
             </div>
 
@@ -597,15 +593,10 @@
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
-                                <th scope="col" class="px-6 py-3 w-1/4">
-
-                                </th>
-                                <th scope="col" class="px-6 py-3 uppercase">
-                                    Job Position
-                                </th>
-                                <th scope="col" class="px-6 py-3 uppercase">
-                                    Code
-                                </th>
+                                <th scope="col" class="px-6 py-3 w-1/4"></th> <!-- Hidden on small screens -->
+                                <th scope="col" class="px-6 py-3 uppercase">Job Position</th>
+                                <th scope="col" class="px-6 py-3 uppercase hidden md:table-cell">Code</th>
+                                <!-- Hidden on smaller than md screens -->
                             </tr>
                         </thead>
                         <tbody>
@@ -621,26 +612,22 @@
                                                         stroke-width="2"
                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
-
                                             </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                No Record Found!
+                                            <p class="text-xl font-bold text-black text-center mt-2">No Record Found!
                                             </p>
                                         </div>
-
                                     </td>
                                 </tr>
                             @else
                                 @foreach ($jobposition as $data)
-                                    <tr wire:key='position-{{ $data->position_id }}'
+                                    <tr wire:key='jobTags-{{ $data->position_id }}'
                                         class="bg-white border-b hover:bg-gray-50 cursor-pointer"
                                         onclick="document.getElementById('jobTags-{{ $data->position_id }}').click();">
-                                        <!-- Adding onclick event to the row -->
                                         <td class="px-6 py-4 text-center">
                                             <label class="relative flex items-center p-3 rounded-full cursor-pointer"
-                                                for="job-{{ $data->position_id }}">
+                                                for="jobTags-{{ $data->position_id }}">
                                                 <input wire:model="mountJobTagsFilter" type="checkbox"
-                                                    id="job-{{ $data->position_id }}"
+                                                    id="jobTags-{{ $data->position_id }}"
                                                     value="{{ $data->position_id }}"
                                                     class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
                                                 <span
@@ -659,17 +646,21 @@
                                             <div class="font-semibold text-base uppercase">
                                                 {{ $data->position_Title }}
                                             </div>
+                                            <div class="sm:hidden text-sm text-gray-600">
+                                                Code: {{ $data->position_Code }}
+                                                <!-- Extra information for mobile screens -->
+                                            </div>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-6 py-4 hidden md:table-cell">
                                             <div class="font-semibold text-base uppercase">{{ $data->position_Code }}
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
-
                             @endif
                         </tbody>
                     </table>
+
                 </div>
             </div>
 
@@ -714,4 +705,5 @@
 
 
     </x-modal>
+
 </div>

@@ -22,6 +22,13 @@ class JobPreference extends Component
             return;
         }
 
+        $totalTags = count($this->jobpreference);
+
+        if ($totalTags >= 12) {
+            toastr()->error('You can only have a maximum of 12 tags.');
+            return;
+        }
+
         // If the job position does not exist in the array, add it
         $jobposition = Job_Positions::find($id);
 
@@ -46,8 +53,8 @@ class JobPreference extends Component
             return;
         }
 
-        if (count($this->industrypreference) >= 1) {
-            toastr()->warning('You can only choose one industry.');
+        if (count($this->industrypreference) >= 3) {
+            toastr()->warning('You can only choose three industry.');
             $this->dispatch('close-modal', 'industry-modal');
             return;
         }

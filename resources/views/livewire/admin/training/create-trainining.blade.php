@@ -231,7 +231,7 @@
                         <x-input-label for="descPost">Program Description
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='descPost' id="descText"></textarea>
+                            <textarea id="descText"></textarea>
                         </div>
 
                         @if ($errors->has('descPost'))
@@ -243,7 +243,7 @@
                         <x-input-label for="qualPost">Program Qualification
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='qualPost' id="qualText"></textarea>
+                            <textarea id="qualText"></textarea>
                         </div>
 
                         @if ($errors->has('qualPost'))
@@ -257,7 +257,7 @@
                     <x-input-label for="remPost">Program Remarks
                     </x-input-label>
                     <div wire:ignore>
-                        <textarea wire:model='remPost' id="remText"></textarea>
+                        <textarea id="remText"></textarea>
                     </div>
                     @if ($errors->has('remPost'))
                         <x-input-error :messages="$errors->get('remPost')" class="mt-2" />

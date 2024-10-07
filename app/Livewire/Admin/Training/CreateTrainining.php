@@ -266,6 +266,12 @@ class CreateTrainining extends Component
             toastr()->warning('This job position is already selected.');
             return;
         }
+        $totalTags = count($this->jobTags);
+
+        if ($totalTags >= 15) {
+            toastr()->error('You can only have a maximum of 15 tags.');
+            return;
+        }
 
         // If the job position does not exist in the array, add it
         $jobposition = Job_Positions::find($id);

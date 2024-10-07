@@ -33,15 +33,9 @@
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>
-                            <th scope="col" class="px-6 py-3 w-1/4">
-
-                            </th>
-                            <th scope="col" class="px-6 py-3 uppercase">
-                                Job Position
-                            </th>
-                            <th scope="col" class="px-6 py-3 uppercase">
-                                Code
-                            </th>
+                            <th scope="col" class="px-6 py-3 w-1/4"></th>
+                            <th scope="col" class="px-6 py-3 uppercase">Job Position</th>
+                            <th scope="col" class="px-6 py-3 uppercase hidden sm:table-cell">Code</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,39 +50,38 @@
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                                                     d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                             </svg>
-
                                         </div>
-                                        <p class="text-xl font-bold text-black text-center mt-2">
-                                            No Record Found!
-                                        </p>
+                                        <p class="text-xl font-bold text-black text-center mt-2">No Record Found!</p>
                                     </div>
-
                                 </td>
                             </tr>
                         @else
                             @foreach ($jobposition as $data)
                                 <tr wire:key='position-{{ $data->position_id }}'
-                                    class="bg-white border-b hover:bg-gray-50">
+                                    class="bg-white border-b hover:bg-gray-50 hover:cursor-pointer"
+                                    wire:loading.attr="disabled"
+                                    wire:click.prevent='positionSelect({{ $data->position_id }})'>
                                     <td class="px-6 py-4 text-center">
-
                                         <button wire:loading.attr="disabled"
                                             wire:click.prevent='positionSelect({{ $data->position_id }})'
+                                            onclick="event.stopPropagation();"
                                             class="text-blue-500 hover:underline">Select</button>
-
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="font-semibold text-base uppercase"> {{ $data->position_Title }}
+                                        <div class="font-semibold text-base uppercase">{{ $data->position_Title }}</div>
+                                        <!-- Extra mobile information -->
+                                        <div class="sm:hidden text-sm text-gray-500">Code: {{ $data->position_Code }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <div class="font-semibold text-base uppercase">{{ $data->position_Code }}
-                                        </div>
+                                    <td class="px-6 py-4 hidden sm:table-cell">
+                                        <div class="font-semibold text-base uppercase">{{ $data->position_Code }}</div>
                                     </td>
                                 </tr>
                             @endforeach
                         @endif
                     </tbody>
                 </table>
+
             </div>
         </div>
 

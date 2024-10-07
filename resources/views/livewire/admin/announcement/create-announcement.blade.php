@@ -72,7 +72,7 @@
                         <x-input-label for="descText">Announcement Content
                         </x-input-label>
                         <div wire:ignore class="flex h-full w-full">
-                            <textarea wire:model='contentPost' id="descText"></textarea>
+                            <textarea id="descText"></textarea>
                         </div>
 
 

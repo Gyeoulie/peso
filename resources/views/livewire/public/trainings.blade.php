@@ -218,7 +218,7 @@
                     </div>
                 @else
                     @foreach ($programList as $data)
-                        <a href="{{ route('training.show', ['id' => $data->program_id]) }}"
+                        <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
                             class="bg-white block col-span-4 rounded-lg overflow-hidden shadow-xl lg:hover:scale-105 lg:transition-transform">
                             <div class="flex flex-col h-full">
                                 <div>
@@ -631,6 +631,11 @@
                     <div class="lg:hidden flex my-4 ">
                         {!! QrCode::size(300)->generate($ticket) !!}
 
+                    </div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-2xl font-semibold text-blue-500">{{$ticketData['programTitle']}}</h3>
+                        <p class="text-gray-600 text-sm">{{$ticketData['programDate']}}
+                        </p>
                     </div>
                 @else
                     <div class="flex">
