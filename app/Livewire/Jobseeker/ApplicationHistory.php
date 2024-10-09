@@ -63,6 +63,8 @@ class ApplicationHistory extends Component
     public $selectedJob;
     public $search, $filter = 'All', $sort = 'Newest';
 
+    public $acceptBox = false, $rejectBox = false;
+
     public function handleResponse($status, $id)
     {
         $user = Auth::user();
@@ -99,8 +101,8 @@ class ApplicationHistory extends Component
 
                     if ($jobPosting && $jobPosting->slotsLeft() <= 0) {
                         // Dispatch the command to handle the job posting closure and notifications
-                        // Artisan::call('jobposting:process', ['jobId' => $applicant->job_id]);
-                        artisan::call('app:complete-job-postings', ['jobId' => $applicant->job_id]);
+                        Artisan::call('jobposting:process', ['jobId' => $applicant->job_id]);
+
                     }
 
                     // Commit the transaction

@@ -57,8 +57,8 @@
 
                     @foreach ($programList as $data)
                         <a wire:navigate href="{{ route('training.show', ['id' => $data->program_id]) }}"
-                            class="flex flex-col w-full overflow-hidden transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-lg shrink-0 lg:flex-row lg:max-w-xl lg:max-h-72 hover:shadow-xl">
-                            <img class="object-cover w-full h-48 lg:w-60 lg:h-full"
+                            class="flex flex-col w-full overflow-hidden  duration-300 bg-white border border-gray-200 rounded-lg shadow-lg shrink-0 lg:flex-row lg:max-w-xl lg:max-h-72 hover:shadow-xl transition-transform ease-in-out hover:scale-[1.02]">
+                            <img class="object-cover w-full h-48 select-none lg:w-60 lg:h-full "
                                 src="{{ $data->program_pubmat && file_exists(public_path('storage/' . $data->program_pubmat)) ? asset('storage/' . $data->program_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                 alt="prog-{{ $data->program_id }}">
 
@@ -327,7 +327,7 @@
                                                         class="flex flex-col items-center justify-center flex-shrink-0 h-full">
                                                         <img src="{{ file_exists(public_path('storage/' . $data->company->company_img)) ? asset('storage/' . $data->company->company_img) : asset('assets/img/PESO-Logo.png') }}"
                                                             alt="company-{{ $data->job_id }}"
-                                                            class="object-contain w-24 h-24 bg-gray-300 rounded lg:w-48 lg:h-48">
+                                                            class="object-contain w-24 h-24 bg-gray-300 rounded select-none lg:w-48 lg:h-48">
                                                     </div>
                                                     <div class="flex-col w-full ml-5 space-y-1 lg:space-y-8">
                                                         <div class="flex flex-col">
@@ -530,49 +530,56 @@
             @else
                 <div class="col-span-4 lg:col-span-3">
                     <div class="flex flex-col w-full gap-4">
-
-                        <div class="p-4 bg-white rounded-md shadow-md">
-                            <h1 class="mb-4 text-2xl font-bold text-center">TOP JOB TAGS</h1>
-                            <ul>
-                                @foreach ($topJobTags as $index => $jobTag)
-                                    <li class="flex items-center justify-between py-2 border-b border-gray-300">
-                                        <div class="flex items-center">
-                                            <span class="mr-4 text-lg font-semibold">{{ $index + 1 }}</span>
-                                            <span
-                                                wire:click.prevent="mountTopJobTags('{{ $jobTag->position_Title }}')"
-                                                class="font-semibold text-gray-800 break-all cursor-pointer hover:text-blue-500"
-                                                style="max-width: 200px;">
-                                                {{ $jobTag->position_Title }}
-                                            </span>
-                                        </div>
-                                        <span
-                                            class="ml-4 font-semibold text-green-500">{{ $jobTag->active_job_posting_count }}
-                                            Active Jobs</span>
-                                    </li>
-                                @endforeach
-                            </ul>
-
-                            <h1 class="mt-4 mb-4 text-2xl font-bold text-center">TOP JOB INDUSTRY</h1>
-                            <ul>
-                                @foreach ($topJobIndustries as $index => $jobTag)
-                                    <li class="flex items-center justify-between py-2 border-b border-gray-300">
-                                        <div class="flex items-center">
-                                            <span class="mr-4 text-lg font-semibold">{{ $index + 1 }}</span>
-                                            <span
-                                                wire:click.prevent="mountTopJobTags('{{ $jobTag->industry_Title }}')"
-                                                class="font-semibold text-gray-800 break-all cursor-pointer hover:text-blue-500"
-                                                style="max-width: 200px;">
-                                                {{ $jobTag->industry_Title }}
-                                            </span>
-                                        </div>
-                                        <span
-                                            class="ml-4 font-semibold text-green-500">{{ $jobTag->active_job_posting_count }}
-                                            Active Jobs</span>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-
+                        @if (isset($topJobTags) || isset($topJobIndustries))
+                            <div class="p-4 bg-white rounded-md shadow-md">
+                                @if (isset($topJobTags))
+                                    <h1 class="mb-4 text-2xl font-bold text-center">TOP JOB TAGS</h1>
+                                    <ul>
+                                        @foreach ($topJobTags as $index => $jobTag)
+                                            <li
+                                                class="flex items-center justify-between py-2 border-b border-gray-300">
+                                                <div class="flex items-center">
+                                                    <span
+                                                        class="mr-4 text-lg font-semibold">{{ $index + 1 }}</span>
+                                                    <span
+                                                        wire:click.prevent="mountTopJobTags('{{ $jobTag->position_Title }}')"
+                                                        class="font-semibold text-gray-800 break-all cursor-pointer hover:text-blue-500"
+                                                        style="max-width: 200px;">
+                                                        {{ $jobTag->position_Title }}
+                                                    </span>
+                                                </div>
+                                                <span
+                                                    class="ml-4 font-semibold text-green-500">{{ $jobTag->active_job_posting_count }}
+                                                    Active Jobs</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                                @if (isset($topJobIndustries))
+                                    <h1 class="mt-4 mb-4 text-2xl font-bold text-center">TOP JOB INDUSTRY</h1>
+                                    <ul>
+                                        @foreach ($topJobIndustries as $index => $jobTag)
+                                            <li
+                                                class="flex items-center justify-between py-2 border-b border-gray-300">
+                                                <div class="flex items-center">
+                                                    <span
+                                                        class="mr-4 text-lg font-semibold">{{ $index + 1 }}</span>
+                                                    <span
+                                                        wire:click.prevent="mountTopJobTags('{{ $jobTag->industry_Title }}')"
+                                                        class="font-semibold text-gray-800 break-all cursor-pointer hover:text-blue-500"
+                                                        style="max-width: 200px;">
+                                                        {{ $jobTag->industry_Title }}
+                                                    </span>
+                                                </div>
+                                                <span
+                                                    class="ml-4 font-semibold text-green-500">{{ $jobTag->active_job_posting_count }}
+                                                    Active Jobs</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </div>
+                        @endif
 
 
 
@@ -608,7 +615,7 @@
                                                     <div class="relative w-full h-56 overflow-hidden rounded-t-lg">
                                                         <img src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                                             alt="announcement-{{ $data->announcement_id }}"
-                                                            class="object-cover w-full h-full transition-transform duration-300 ease-in-out rounded-t-lg hover:scale-110" />
+                                                            class="object-cover w-full h-full transition-transform duration-300 ease-in-out rounded-t-lg select-none hover:scale-110" />
 
 
                                                     </div>
@@ -620,7 +627,8 @@
                                                         <div
                                                             class="flex items-end justify-between mt-auto text-xs font-normal text-gray-600">
                                                             <p class="truncate">PESO
-                                                                {{ $data->peso->municipality->municipality_Name }}</p>
+                                                                {{ $data->peso->municipality->municipality_Name }}
+                                                            </p>
                                                             <p class="truncate">
                                                                 {{ $data->created_at->format('F j, Y') }}
                                                             </p>

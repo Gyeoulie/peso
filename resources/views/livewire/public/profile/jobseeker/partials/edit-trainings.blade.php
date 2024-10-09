@@ -129,7 +129,7 @@
 
     {{-- TRAINING MODAL --}}
     <x-modal name="training-modal" focusable>
-        <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Training Record') }}
             </h2>

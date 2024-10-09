@@ -15,7 +15,7 @@
                         <div class="flex flex-row items-center w-full">
                             {{-- IMG --}}
                             <img src="{{ asset('storage/' . $jobpost->company->company_img) }}"
-                                class="object-cover w-32 h-32 bg-gray-300 rounded-lg shadow-lg shrink-0">
+                                class="select-none object-cover w-32 h-32 bg-gray-300 rounded-lg shadow-lg shrink-0">
                             </img>
 
                             <div class="flex flex-col w-full ml-4">
@@ -457,7 +457,7 @@
                                 @foreach ($matchingEmployees as $data)
                                     <div wire:key='jobseeker-{{ $data->employee_id }}'
                                         class="flex flex-col items-center justify-center w-full max-w-sm px-4 py-4 mx-auto transition-colors duration-300 bg-blue-50 rounded-xl shrink-0 grow-0 hover:bg-blue-200">
-                                        <img class="flex mx-auto w-[100px] h-[100px] object-cover rounded-full lg:mx-0 lg:grow-0 lg:shrink-0 shadow-xl"
+                                        <img class="select-none flex mx-auto w-[100px] h-[100px] object-cover rounded-full lg:mx-0 lg:grow-0 lg:shrink-0 shadow-xl"
                                             src="{{ asset('storage/' . $data->pimg) }}"
                                             alt="jobseeker-{{ $data->employee_id }}">
                                         <div

@@ -137,9 +137,9 @@
                                                 <!-- Business Name and Address for Mobile -->
                                                 <th scope="row"
                                                     class="flex flex-col px-6 py-4 text-gray-900 lg:flex-row lg:items-center whitespace-nowrap">
-                                                    <img class="w-10 h-10 mb-2 rounded-full shadow-xl cover-full lg:mb-0"
+                                                    <img class="select-none w-10 h-10 mb-2 rounded-full shadow-xl cover-full lg:mb-0"
                                                         src="{{ asset('storage/' . $data->company->company_img) }}"
-                                                        alt="img">
+                                                        alt="company-{{ $data->company->company_id }}">
                                                     <div class="ps-3 text-wrap">
                                                         <div class="text-base font-bold uppercase">
                                                             {{ $data->company->business_Name }}</div>

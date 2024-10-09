@@ -129,7 +129,7 @@
                                             <!-- Combined for mobile view -->
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center">
-                                                    <img class="w-10 h-10 rounded-full object-cover"
+                                                    <img class="select-none w-10 h-10 rounded-full object-cover"
                                                         src="{{ asset('storage/' . $data->pimg) }}" alt="employee-{{$data->employee_id}}">
                                                     <div class="ps-3">
                                                         <!-- Name and Address -->

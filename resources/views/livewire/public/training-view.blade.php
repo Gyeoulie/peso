@@ -9,7 +9,7 @@
 
 
             <div class="col-span-4 lg:col-span-5">
-                <div class="p-4 overflow-hidden bg-white rounded-lg shadow-sm">
+                <div class="p-4 overflow-hidden bg-white rounded-lg shadow-sm select-none">
                     <div class="flex flex-row items-center justify-center flex-shrink-0 h-full p-5">
                         <img src="{{ asset('storage/' . $ProgramInfo->program_pubmat) }}" alt="Default I mage"
                             class="w-[450px] h-[450px] bg-gray-300 rounded object-contain">
@@ -247,7 +247,7 @@
                 </div>
 
                 <div class="p-4 mt-4 overflow-hidden bg-white rounded-lg shadow-sm">
-                    <div class="flex flex-row w-full">
+                    <div class="flex flex-row w-full select-none	">
                         <h1 class="text-xl font-bold text-blue-900">Job Tags</h1>
                     </div>
                     <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">

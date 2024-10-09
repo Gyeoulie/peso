@@ -376,7 +376,7 @@
                                                 class="bg-white border-b hover:bg-gray-50">
                                                 <th scope="row"
                                                     class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                    <img class="object-cover w-10 h-10 rounded-full"
+                                                    <img class="select-none object-cover w-10 h-10 rounded-full"
                                                         src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                         alt="Profile Image">
                                                     <div class="ps-3 text-wrap">
@@ -391,7 +391,7 @@
                                                         </div>
                                                         <div class="text-xs font-medium text-gray-500">Applied date:
                                                             {{ $data->created_at->format('F j, Y') }}</div>
-                                                        <div class="text-xs text-gray-500 lg:hidden">
+                                                        <div class="text-xs text-gray-500 lg:hidden select-none">
                                                             Status:
                                                             @if ($data->peso_Status === 'PENDING')
                                                                 <span
@@ -427,7 +427,7 @@
                                                 </th>
 
                                                 <td class="hidden px-6 py-4 font-semibold lg:table-cell">
-                                                    <div class="flex items-center">
+                                                    <div class="flex items-center select-none">
                                                         @if ($data->peso_Status === 'PENDING')
                                                             <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
                                                             </div>
@@ -446,7 +446,7 @@
 
                                                 @if ($filter === 'ALL')
                                                     <td class="hidden px-6 py-4 lg:table-cell">
-                                                        <div class="flex items-center">
+                                                        <div class="flex items-center select-none">
                                                             @if ($data->applicant_Status === 'PENDING')
                                                                 <div
                                                                     class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
@@ -679,7 +679,7 @@
                         <div class="flex flex-row mt-2">
                             <div class="flex flex-col">
                                 <img src="{{ asset('storage/' . $applicantInfo->employee->pimg) }}"
-                                    class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
+                                    class="select-none flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                                 </img>
                             </div>
                             <div class="flex flex-col justify-center w-full ml-4">
@@ -726,7 +726,7 @@
                                         {{ $applicantInfo->created_at->format('F j, Y') }}
                                     </p>
                                 </div>
-                                <div class="flex flex-row ">
+                                <div class="flex flex-row select-none">
                                     <li class="mb-2 font-bold">Applicant Status:</li>
                                     <p class="ms-4">
 
@@ -750,7 +750,7 @@
                                 </div>
 
 
-                                <div class="flex flex-row ">
+                                <div class="flex flex-row select-none">
                                     <li class="mb-2 font-bold">PESO Status:</li>
                                     <p class="ms-4">
 

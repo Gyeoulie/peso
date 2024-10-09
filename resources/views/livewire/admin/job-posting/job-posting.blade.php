@@ -245,7 +245,7 @@
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex flex-col px-6 py-4 text-gray-900 lg:flex-row lg:items-center whitespace-nowrap">
-                                                <img class="object-cover w-10 h-10 mb-2 rounded-full shadow-xl lg:mb-0"
+                                                <img class="select-none object-cover w-10 h-10 mb-2 rounded-full shadow-xl lg:mb-0"
                                                     src="{{ asset('storage/' . $data->company->company_img) }}"
                                                     alt="Company image">
                                                 <div class="lg:ps-3 text-wrap">

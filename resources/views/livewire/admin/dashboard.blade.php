@@ -180,7 +180,7 @@
                                         class="bg-white border-b hover:bg-gray-50">
                                         <th scope="row"
                                             class="flex items-center px-2 md:px-6 py-4 text-gray-900 whitespace-nowrap">
-                                            <img class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shadow-lg"
+                                            <img class="select-none w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shadow-lg"
                                                 src="{{ asset('storage/' . $data->company->company_img) }}"
                                                 alt="company-{{ $data->job_id }}">
                                             <div class="ps-3 text-wrap">
@@ -299,7 +299,7 @@
                                         class="bg-white border-b hover:bg-gray-50">
                                         <th scope="row"
                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                            <img class="w-10 h-10 rounded-full object-cover shadow-xl"
+                                            <img class="select-none w-10 h-10 rounded-full object-cover shadow-xl"
                                                 src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                 alt="applicant-{{ $data->job_id }}">
                                             <div class="ps-3 text-wrap">

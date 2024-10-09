@@ -46,7 +46,7 @@
                 <div class="flex flex-col items-center">
                     {{-- IMAGE --}}
                     <img src="{{ asset('storage/' . $jobseeker->pimg) }}"
-                        class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 grow-0 object-cover">
+                        class="select-none w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 grow-0 object-cover">
 
                     </img>
 

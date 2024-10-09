@@ -105,7 +105,7 @@ class TrainingView extends Component
             $this->dispatch('open-modal', 'register-modal');
         } else {
             // Show an error if the user's municipality does not match
-            toastr()->error('This event is only available to ' . $training->peso->municipality_Name . ' residents.');
+            toastr()->error('This event is only available to ' . $training->peso->municipality->municipality_Name . ' residents.');
         }
     }
 
