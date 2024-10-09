@@ -80,6 +80,7 @@ class Dashboard extends Component
         $this->filterJobTags = $this->mountJobTagsFilter;
         $this->dispatch('close-modal', 'job-tag-filter-modal');
         $this->resetPage('jobs');
+        $this->updateFilter('My Municipality');
 
     }
     public function mountIndustry()
@@ -87,6 +88,7 @@ class Dashboard extends Component
         $this->filterIndustry = $this->mountIndustryFilter;
         $this->dispatch('close-modal', 'industry-filter-modal');
         $this->resetPage('jobs');
+        $this->updateFilter('My Municipality');
 
     }
 
@@ -139,6 +141,7 @@ class Dashboard extends Component
 
         $this->resetPage('jobs');
         $this->search = $value;
+        $this->updateFilter('My Municipality');
     }
     public function updateFilter($value)
     {
@@ -328,7 +331,7 @@ class Dashboard extends Component
             case 'Oldest':
                 $query->orderBy('created_at', 'ASC');
                 break;
-          
+
         }
 
         return $query->paginate($this->pagination, ['*'], 'jobs');

@@ -51,7 +51,7 @@
                 <div class="flex flex-col items-center">
                     {{-- IMAGE --}}
                     <img src="{{ asset('storage/' . $employer->company_img) }}"
-                        class="object-cover w-32 h-32 mb-4 bg-gray-300 rounded-md shrink-0 grow-0">
+                        class="select-none object-cover w-32 h-32 mb-4 bg-gray-300 rounded-md shrink-0 grow-0">
 
                     </img>
 

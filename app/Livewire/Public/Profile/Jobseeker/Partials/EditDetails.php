@@ -1249,9 +1249,12 @@ class EditDetails extends Component
                 DB::commit();
 
                 toastr()->success('Profile privacy has been updated!');
+            }else{
+                
+                toastr()->info('No changes detected!');
+
             }
 
-            toastr()->info('No changes detected!');
 
         } catch (\Exception $e) {
             DB::rollBack();

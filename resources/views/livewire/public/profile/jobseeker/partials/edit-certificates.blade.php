@@ -77,11 +77,10 @@
                                 </span>
                             </div>
 
-                           
+
                             <div class="flex flex-row items-center justify-center h-full gap-2">
                                 <div x-data="{ tooltip: 'Remove Training Record' }">
-                                    <div x-tooltip="tooltip"
-                                        wire:click.prevent='deleteData({{ $userCerts->cert_id }})'
+                                    <div x-tooltip="tooltip" wire:click.prevent='deleteData({{ $userCerts->cert_id }})'
                                         class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-red-300">
                                         <svg class="w-10 h-10 text-red-700" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -120,7 +119,7 @@
 
 
     <x-modal name="certificate-modal" focusable>
-        <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Certificate Record') }}
             </h2>
@@ -174,7 +173,7 @@
                         </x-slot>
 
                     </x-dropdown>
-                    <x-input-error :messages="$errors->get('certName')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('certTypeID')" class="mt-2" />
                 </div>
 
                 <div class="flex flex-col w-full mt-2">

@@ -142,7 +142,7 @@
                                             class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="object-cover w-10 h-10 rounded-full"
+                                                <img class="object-cover w-10 h-10 rounded-full select-none"
                                                     src="{{ asset('storage/' . $data->company->company_img) }}"
                                                     alt="employer-{{$data->company_id}}">
                                                 <div class="ps-3 text-wrap">

@@ -94,7 +94,7 @@
                     <div class="flex flex-col items-center">
                         {{-- IMAGE --}}
                         <img src="{{ asset('storage/' . $applicant->job_posting->company->company_img) }}"
-                            class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 object-cover shadow-xl">
+                            class="select-none w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 object-cover shadow-xl">
                         </img>
 
                         <h1 class="text-xl font-bold">{{ $applicant->job_posting->company->business_Name }}</h1>
@@ -278,7 +278,7 @@
                         <div class="flex flex-row w-full items-center">
                             {{-- IMG --}}
                             <img src="{{ asset('storage/' . $applicant->employee->pimg) }}"
-                                class="w-32 h-32 bg-gray-300 rounded-lg shrink-0 object-cover shadow-lg">
+                                class="select-none w-32 h-32 bg-gray-300 rounded-lg shrink-0 object-cover shadow-lg">
                             </img>
 
                             <div class="flex flex-col ml-4 w-full">

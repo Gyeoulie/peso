@@ -148,7 +148,7 @@
 
                                             <div class="flex-col hidden lg:flex">
                                                 <img src="{{ asset('storage/' . $data->job_posting->company->company_img) }}"
-                                                    class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
+                                                    class="select-none flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                                                 </img>
                                             </div>
                                             <div class="flex flex-col w-full gap-1">
@@ -157,7 +157,7 @@
                                                 </h1>
                                                 <h1 class="text-gray-600 text-md lg:text-lg">
                                                     {{ $data->job_posting->company->business_Name }}</h1>
-                                                <div class="lg:hidden mt-[-5px]">
+                                                <div class="lg:hidden mt-[-5px] select-none">
                                                     @if ($data->applicant_Status == 'PENDING')
                                                         <span
                                                             class="items-center px-1 py-1 text-xs font-medium text-yellow-800 bg-yellow-200 rounded-md inlineflex ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -193,7 +193,7 @@
 
 
                                             </div>
-                                            <div class="flex-row hidden mt-0 mb-auto ml-auto mr-0 lg:flex">
+                                            <div class="flex-row hidden mt-0 mb-auto ml-auto mr-0 lg:flex select-none">
 
                                                 @if ($data->applicant_Status == 'PENDING')
                                                     <span
@@ -273,7 +273,7 @@
                     <div class="flex flex-row">
                         <div class="flex-col hidden w-full lg:flex lg:w-auto">
                             <img src="{{ asset('storage/' . $applicationInfo->job_posting->company->company_img) }}"
-                                class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
+                                class="select-none flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                             </img>
                         </div>
                         <div class="flex flex-col w-full lg:ml-4">
@@ -286,7 +286,7 @@
                         </div>
 
                         <div class="flex flex-col ">
-                            <div class="flex flex-row mt-0 mb-auto ml-auto mr-0">
+                            <div class="flex flex-row mt-0 mb-auto ml-auto mr-0 select-none">
                                 @if ($applicationInfo->applicant_Status == 'PENDING')
                                     <span
                                         class="items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md inlineflex ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -364,7 +364,7 @@
 
                             <div class="flex flex-row ">
                                 <li class="mb-2 font-bold">PESO Status:</li>
-                                <p class="ms-4">
+                                <p class="ms-4 select-none">
 
 
 
@@ -448,26 +448,60 @@
 
                 </div>
                 <x-modal name="accept-modal" focusable>
-                    <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
+                    <div class="items-center w-full max-w-4xl px-6 py-6 border-b" x-data="{ acceptBox: @entangle('acceptBox') }">
                         <h2 class="text-lg font-medium text-gray-900">
                             {{ __('Job Confirmation') }}
                         </h2>
                         <hr>
-                        <div class="flex flex-col mt-4">
-
-                            <h1 class="text-xl font-bold">Are you sure you want to accept this job?</h1>
-
+                        <div class="flex flex-col my-4">
+                            <div class="flex flex-col items-center justify-center w-full px-4 mt-4">
+                                <p class="text-sm text-justify lg:text-md">
+                                    By accepting this job offer, you confirm that all the information provided in your
+                                    application is
+                                    accurate and truthful. Upon accepting, both the Employer and the Public Employment
+                                    Service Office
+                                    (PESO) will be notified of your acceptance. You will also be automatically marked as
+                                    employed within
+                                    the system, and your employment status will be updated accordingly. Your application
+                                    and acceptance
+                                    details will be officially recorded and shared with PESO for documentation and
+                                    monitoring purposes.
+                                    Please note that once accepted, the offer cannot be withdrawn, and you will be bound
+                                    by the terms and
+                                    conditions of employment as outlined by the Employer and PESO.
+                                </p>
+                                <div class="inline-flex items-center mt-4">
+                                    <label class="relative flex items-center p-3 rounded-full cursor-pointer"
+                                        for="acceptBox">
+                                        <input wire:model="acceptBox" type="checkbox" id="acceptBox"
+                                            class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
+                                        <span
+                                            class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
+                                                viewBox="0 0 20 20" fill="currentColor" stroke="currentColor"
+                                                stroke-width="1">
+                                                <path fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                    <label class="mt-px font-light text-gray-700 cursor-pointer select-none"
+                                        for="acceptBox">
+                                        I agree with the terms
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
 
-
-                        <div class="flex justify-end mt-6">
+                        <div class="flex justify-between mt-6">
                             <x-secondary-button x-data=""
                                 x-on:click.prevent="$dispatch('close-modal', 'accept-modal')" type="button">
                                 {{ __('Cancel') }}
                             </x-secondary-button>
 
-                            <x-green-button wire:loading.attr="disabled"
+                            <x-green-button x-show="acceptBox" wire:loading.attr="disabled"
                                 wire:click.prevent="handleResponse('ACCEPTED', {{ $applicationInfo->applicant_id }})"
                                 class="ms-3" type="button">
 
@@ -493,26 +527,54 @@
                     </div>
                 </x-modal>
                 <x-modal name="reject-modal" focusable>
-                    <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
+                    <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ rejectBox: @entangle('rejectBox') }">
                         <h2 class="text-lg font-medium text-gray-900">
                             {{ __('Job Confirmation') }}
                         </h2>
                         <hr>
-                        <div class="flex flex-col mt-4">
-
-                            <h1 class="text-xl font-bold">Are you sure you want to cancel this job?</h1>
-
+                        <div class="flex flex-col my-4">
+                            <div class="flex flex-col items-center justify-center w-full px-4 mt-4">
+                                <p class="text-sm text-justify lg:text-md">
+                                    By declining this job offer, you acknowledge that your application status will be
+                                    marked as "Declined" in the system. Your decision will be communicated to both the
+                                    employer and the Public Employment Services Office (PESO). While you may still be
+                                    eligible for other opportunities, please note that declining this offer will
+                                    finalize your decision for this specific job, and further applications to this
+                                    position may not be possible.
+                                </p>
+                                <div class="inline-flex items-center mt-4">
+                                    <label class="relative flex items-center p-3 rounded-full cursor-pointer"
+                                        for="rejectBox">
+                                        <input wire:model="rejectBox" type="checkbox" id="rejectBox"
+                                            class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
+                                        <span
+                                            class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
+                                                viewBox="0 0 20 20" fill="currentColor" stroke="currentColor"
+                                                stroke-width="1">
+                                                <path fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                    <label class="mt-px font-light text-gray-700 cursor-pointer select-none"
+                                        for="rejectBox">
+                                        I agree with the terms
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
 
 
-                        <div class="flex justify-end mt-6">
+                        <div class="flex justify-between mt-6">
                             <x-secondary-button x-data=""
                                 x-on:click.prevent="$dispatch('close-modal', 'reject-modal')" type="button">
                                 {{ __('Cancel') }}
                             </x-secondary-button>
 
-                            <x-danger-button wire:loading.attr="disabled"
+                            <x-danger-button x-show="rejectBox" wire:loading.attr="disabled"
                                 wire:click.prevent="handleResponse('CANCELLED', {{ $applicationInfo->applicant_id }})"
                                 class="ms-3" type="button">
 

@@ -134,7 +134,7 @@
 
 
             <div class="col-span-4 lg:col-span-4">
-                <div class="p-4 overflow-hidden bg-white rounded-lg shadow-sm">
+                <div class="p-4 overflow-hidden bg-white rounded-lg shadow-sm select-none">
                     <div class="flex flex-col w-full">
 
                         @if (auth()->check() &&
@@ -203,7 +203,7 @@
                         @endif
 
 
-                        <div class="flex flex-col w-full px-5 mt-5">
+                        <div class="flex flex-col w-full px-5 mt-5 select-none">
 
                             <ul>
                                 <li class="mb-4">
@@ -442,12 +442,12 @@
                 </div>
 
                 <div class="p-4 mt-4 overflow-hidden bg-white rounded-lg shadow-sm">
-                    <div class="flex flex-row w-full">
+                    <div class="flex flex-row w-full select-none">
                         <h1 class="text-xl font-bold text-blue-900">Job Tags</h1>
                     </div>
                     <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="p-1 mt-2 rounded-lg flex-inline ">
+                    <div class="p-1 mt-2 rounded-lg flex-inline select-none	">
                         @foreach ($JobPost->job_tags as $jobTag)
                             <span wire:key='jobTag-{{ $jobTag->job_positions->position_id }}'
                                 class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">

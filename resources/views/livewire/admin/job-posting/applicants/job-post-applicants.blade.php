@@ -13,7 +13,7 @@
                 <div class="flex flex-col items-center">
                     {{-- COMPANY IMAGE --}}
                     <img src="{{ asset('storage/' . $jobpost->company->company_img) }}"
-                        class="w-32 h-32 bg-gray-300 rounded-md mb-4  shrink-0 object-cover shadow-xl">
+                        class="select-none w-32 h-32 bg-gray-300 rounded-md mb-4  shrink-0 object-cover shadow-xl">
 
 
                     </img>
@@ -242,7 +242,7 @@
                                             <th scope="row"
                                                 class="flex items-center px-2 md:px-6 py-4 text-gray-900 whitespace-nowrap">
 
-                                                <img class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shadow-lg"
+                                                <img class="select-none w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shadow-lg"
                                                     src="{{ asset('storage/' . $applicants->employee->pimg) }}"
                                                     alt="company-{{ $applicants->applicant_id }}">
                                                 <div class="ps-3 text-wrap">
