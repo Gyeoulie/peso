@@ -283,10 +283,12 @@
                                         wire:navigate href="{{ route('admin-users-employer') }}">
                                         Employers Management
                                     </a>
-                                    <a :class="currentRoute === 'admin-users-peso' ? activeItem : inactiveItem"
-                                        wire:navigate href="{{ route('admin-users-peso') }}">
-                                        PESO Accounts
-                                    </a>
+                                    @if (Auth::check() && Auth::user()->usertype == 10)
+                                        <a :class="currentRoute === 'admin-users-peso' ? activeItem : inactiveItem"
+                                            wire:navigate href="{{ route('admin-users-peso') }}">
+                                            PESO Accounts
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         @endif

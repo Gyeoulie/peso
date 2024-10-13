@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <form x-ref="passwordForm" x-on:submit.prevent="$dispatch('open-modal', 'confirm-email-change-modal')" method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+    <form x-ref="passwordForm" x-on:submit.prevent="$dispatch('open-modal', 'confirm-password-change-modal')" method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('put')
 
