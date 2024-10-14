@@ -174,7 +174,7 @@
             </table>
 
             <div class="mt-4">
-                {{ $jobseekers->links('vendor.livewire.tailwind') }}
+                {{ $jobseekers->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
             </div>
         </div>
     </div>
@@ -315,7 +315,7 @@
             </table>
 
             <div class="mt-4">
-                {{ $employers->links('vendor.livewire.tailwind') }}
+                {{ $employers->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
             </div>
         </div>
     </div>

@@ -95,7 +95,8 @@
                                                 class="text-black font-bold">{{ $data->program_reg_count }}</span></span>
                                     </div>
                                     <div class="text-sm text-gray-500 lg:hidden">
-                                        <span>@if ($data->empstatus == '2')
+                                        <span>
+                                            @if ($data->empstatus == '2')
                                                 <span
                                                     class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
                                             @elseif ($data->empstatus == '1')
@@ -154,7 +155,7 @@
 
 
         <div class="mt-4">
-            {{ $barangayJobSeekers->links('vendor.pagination.tailwind') }}
+            {{ $barangayJobSeekers->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
         </div>
     </div>
 
