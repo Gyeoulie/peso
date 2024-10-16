@@ -759,7 +759,7 @@
                                                                     {{ $data->job_Title }}</div>
 
                                                                 <div class="font-normal text-gray-500 lg:hidden">
-                                                                    Slots: {{ $data->slotsLeft }}
+                                                                    Slots: {{ $data->slotsLeft() }}
                                                                 </div>
                                                                 <div class="font-normal text-gray-500 lg:hidden">
                                                                     Deadline:
@@ -773,7 +773,7 @@
                                                         </td>
                                                         <td class="hidden md:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
-                                                                {{ $data->available_slots }}</div>
+                                                                {{ $data->slotsLeft() }}</div>
                                                         </td>
                                                         <td class="hidden md:table-cell px-6 py-4">
                                                             <div class="text-base">
