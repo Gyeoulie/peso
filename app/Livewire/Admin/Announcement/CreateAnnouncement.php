@@ -121,7 +121,7 @@ class CreateAnnouncement extends Component
             }
 
             $this->dispatch('close-modal', 'confirm-modal');
-            $this->redirectRoute('admin-announcement', navigate: true);
+            $this->redirectRoute('admin-announcement');
             toastr()->success('Announcement has been posted!');
         } catch (\Exception $e) {
 

@@ -197,17 +197,6 @@ class JobseekerOverview extends Component
         $userHasDisability = Disability::where('employee_id', $id)->exists() ? 1 : 2;
 
         return Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'peso.municipality', 'job_industry'])
-            ->select([
-                'job_posting.*',
-                DB::raw('
-                    job_Slots - COALESCE((
-                        SELECT COUNT(*)
-                        FROM job_applicants
-                        WHERE job_applicants.job_id = job_posting.job_id
-                        AND job_applicants.applicant_Status = "COMPLETED"
-                    ), 0) AS available_slots
-                '),
-            ])
             ->where('job_Status', 'ACTIVE')
             ->whereHas('peso.municipality', function ($query) use ($userMunicipalityId) {
                 $query->where('municipality_id', $userMunicipalityId);
@@ -233,19 +222,6 @@ class JobseekerOverview extends Component
                         });
                     });
             })
-            ->where(function ($query) {
-                $query->whereHas('company', function ($query) {
-                    $query->where('business_Name', 'like', '%' . $this->searchJobs . '%')
-                        ->orWhere('trade_Name', 'like', '%' . $this->searchJobs . '%');
-                })
-                    ->orWhere('job_Title', 'like', '%' . $this->searchJobs . '%')
-                    ->orWhereHas('job_tags.job_positions', function ($query) {
-                        $query->where('position_Title', 'like', '%' . $this->searchJobs . '%');
-                    })
-                    ->orWhereHas('job_industry', function ($query) {
-                        $query->where('industry_Title', 'like', '%' . $this->searchJobs . '%');
-                    });
-            })
             ->withCount(['job_tags as job_tags_count' => function ($query) use ($userJobPreferences) {
                 $query->whereIn('position_id', $userJobPreferences);
             }])
@@ -253,18 +229,18 @@ class JobseekerOverview extends Component
                 $query->whereIn('industry_id', $userIndustryPreference);
             }])
             ->orderByRaw('
-            CASE
-                -- Prioritize jobs accepting disabilities if the user has a disability
-                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count > 0 THEN 1
-                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count = 0 THEN 2
-                WHEN job_Disability = 1 AND ? = 1 AND industry_count = 0 AND job_tags_count > 0 THEN 3
-                -- Rank jobs normally if the user has no disability
-                WHEN industry_count > 0 AND job_tags_count > 0 THEN 4
-                WHEN industry_count > 0 AND job_tags_count = 0 THEN 5
-                WHEN industry_count = 0 AND job_tags_count > 0 THEN 6
-                ELSE 7
-            END
-        ', [$userHasDisability, $userHasDisability, $userHasDisability])
+        CASE
+            -- Prioritize jobs accepting disabilities if the user has a disability
+            WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count > 0 THEN 1
+            WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count = 0 THEN 2
+            WHEN job_Disability = 1 AND ? = 1 AND industry_count = 0 AND job_tags_count > 0 THEN 3
+            -- Rank jobs normally if the user has no disability
+            WHEN industry_count > 0 AND job_tags_count > 0 THEN 4
+            WHEN industry_count > 0 AND job_tags_count = 0 THEN 5
+            WHEN industry_count = 0 AND job_tags_count > 0 THEN 6
+            ELSE 7
+        END
+    ', [$userHasDisability, $userHasDisability, $userHasDisability])
             ->orderByDesc('job_tags_count')
             ->distinct()
             ->orderBy('created_at', 'DESC')
