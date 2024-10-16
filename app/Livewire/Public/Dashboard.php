@@ -80,7 +80,10 @@ class Dashboard extends Component
         $this->filterJobTags = $this->mountJobTagsFilter;
         $this->dispatch('close-modal', 'job-tag-filter-modal');
         $this->resetPage('jobs');
-        $this->updateFilter('My Municipality');
+
+        if (Auth::check() && Auth::user()->usertype && !in_array(Auth::user()->usertype, [5, 6, 11])) {
+            $this->updateFilter('My Municipality');
+        }
 
     }
     public function mountIndustry()

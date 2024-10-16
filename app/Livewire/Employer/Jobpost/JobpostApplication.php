@@ -100,7 +100,7 @@ class JobpostApplication extends Component
                 'disabilityPost.required' => 'Please select an option.',
                 'durationPost.required' => 'Job duration is required.',
                 'durationPost.date' => 'Job duration must be a valid date.',
-                'durationPost.after_or_equal' => 'The job posting must start at least 1 week in the future.',
+                'durationPost.after_or_equal' => 'The job posting must last at least 1 week in the future.',
                 'durationPost.before_or_equal' => 'The job posting duration must not exceed 1 month from today.',
                 'slotsPost.required' => 'Number of slots is required.',
                 'slotsPost.numeric' => 'Slots must be a number.',

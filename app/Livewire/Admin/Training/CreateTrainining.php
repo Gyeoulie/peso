@@ -227,7 +227,7 @@ class CreateTrainining extends Component
             // SendMatchedEmails::dispatch($trainingProgram->program_id);
 
             $this->dispatch('close-modal', 'confirm-modal');
-            $this->redirectRoute('admin-view-training', ['id' => $trainingProgram->program_id], navigate: true);
+            $this->redirectRoute('admin-view-training', ['id' => $trainingProgram->program_id]);
             toastr()->success('Training has been posted!');
         } catch (\Exception $e) {
 
