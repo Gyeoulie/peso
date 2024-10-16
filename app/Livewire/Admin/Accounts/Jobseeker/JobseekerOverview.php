@@ -181,20 +181,20 @@ class JobseekerOverview extends Component
         $this->dispatch('close-modal', $modal . '-modal');
     }
 
-    public function recommendedJobs($id)
+    public function recommendedJobs($jobseeker)
     {
-        $highestEducationLevel = Education::where('employee_id', $id)
+        $highestEducationLevel = Education::where('employee_id', $jobseeker->employee_id)
             ->max('edu_Level');
 
-        $userMunicipalityId = Barangay::where('barangay_id', $id)
+        $userMunicipalityId = Barangay::where('barangay_id', $jobseeker->barangay_id)
             ->value('municipality_id');
 
-        $userJobPreferences = Job_Preference::where('employee_id', $id)
+        $userJobPreferences = Job_Preference::where('employee_id', $jobseeker->employee_id)
             ->pluck('position_id');
 
-        $userIndustryPreference = Industry_Preference::where('employee_id', $id)
+        $userIndustryPreference = Industry_Preference::where('employee_id', $jobseeker->employee_id)
             ->pluck('industry_id');
-        $userHasDisability = Disability::where('employee_id', $id)->exists() ? 1 : 2;
+        $userHasDisability = Disability::where('employee_id', $jobseeker->employee_id)->exists() ? 1 : 2;
 
         return Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'peso.municipality', 'job_industry'])
             ->where('job_Status', 'ACTIVE')
@@ -222,6 +222,19 @@ class JobseekerOverview extends Component
                         });
                     });
             })
+            ->where(function ($query) {
+                $query->whereHas('company', function ($query) {
+                    $query->where('business_Name', 'like', '%' . $this->searchJobs . '%')
+                        ->orWhere('trade_Name', 'like', '%' . $this->searchJobs . '%');
+                })
+                    ->orWhere('job_Title', 'like', '%' . $this->searchJobs . '%')
+                    ->orWhereHas('job_tags.job_positions', function ($query) {
+                        $query->where('position_Title', 'like', '%' . $this->searchJobs . '%');
+                    })
+                    ->orWhereHas('job_industry', function ($query) {
+                        $query->where('industry_Title', 'like', '%' . $this->searchJobs . '%');
+                    });
+            })
             ->withCount(['job_tags as job_tags_count' => function ($query) use ($userJobPreferences) {
                 $query->whereIn('position_id', $userJobPreferences);
             }])
@@ -229,18 +242,18 @@ class JobseekerOverview extends Component
                 $query->whereIn('industry_id', $userIndustryPreference);
             }])
             ->orderByRaw('
-        CASE
-            -- Prioritize jobs accepting disabilities if the user has a disability
-            WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count > 0 THEN 1
-            WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count = 0 THEN 2
-            WHEN job_Disability = 1 AND ? = 1 AND industry_count = 0 AND job_tags_count > 0 THEN 3
-            -- Rank jobs normally if the user has no disability
-            WHEN industry_count > 0 AND job_tags_count > 0 THEN 4
-            WHEN industry_count > 0 AND job_tags_count = 0 THEN 5
-            WHEN industry_count = 0 AND job_tags_count > 0 THEN 6
-            ELSE 7
-        END
-    ', [$userHasDisability, $userHasDisability, $userHasDisability])
+            CASE
+                -- Prioritize jobs accepting disabilities if the user has a disability
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count > 0 THEN 1
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count = 0 THEN 2
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count = 0 AND job_tags_count > 0 THEN 3
+                -- Rank jobs normally if the user has no disability
+                WHEN industry_count > 0 AND job_tags_count > 0 THEN 4
+                WHEN industry_count > 0 AND job_tags_count = 0 THEN 5
+                WHEN industry_count = 0 AND job_tags_count > 0 THEN 6
+                ELSE 7
+            END
+        ', [$userHasDisability, $userHasDisability, $userHasDisability])
             ->orderByDesc('job_tags_count')
             ->distinct()
             ->orderBy('created_at', 'DESC')
@@ -423,7 +436,7 @@ class JobseekerOverview extends Component
             $isResident = true;
         }
 
-        $joblist = $this->recommendedJobs($jobseeker->employee_id);
+        $joblist = $this->recommendedJobs($jobseeker);
 
         $application_history = $this->applicationHistory($jobseeker->employee_id);
 
