@@ -480,7 +480,7 @@
                                     <tr wire:key='industry-{{ $data->industry_id }}'
                                         class="bg-white border-b cursor-pointer hover:bg-gray-50"
                                         onclick="document.getElementById('industry-{{ $data->industry_id }}').click();">
-                                        <td class="px-4 py-2 text-center sm:table-cell">
+                                        <td class="px-6 py-4 text-center">
                                             <!-- Hidden on small screens -->
                                             <input wire:model="mountIndustryFilter" type="checkbox"
                                                 id="industry-{{ $data->industry_id }}"
