@@ -91,7 +91,9 @@ class Dashboard extends Component
         $this->filterIndustry = $this->mountIndustryFilter;
         $this->dispatch('close-modal', 'industry-filter-modal');
         $this->resetPage('jobs');
-        $this->updateFilter('My Municipality');
+        if (Auth::check() && Auth::user()->usertype && !in_array(Auth::user()->usertype, [5, 6, 11])) {
+            $this->updateFilter('My Municipality');
+        }
 
     }
 
@@ -144,7 +146,9 @@ class Dashboard extends Component
 
         $this->resetPage('jobs');
         $this->search = $value;
-        $this->updateFilter('My Municipality');
+        if (Auth::check() && Auth::user()->usertype && !in_array(Auth::user()->usertype, [5, 6, 11])) {
+            $this->updateFilter('My Municipality');
+        }
     }
     public function updateFilter($value)
     {
