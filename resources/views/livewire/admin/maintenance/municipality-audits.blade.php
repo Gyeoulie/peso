@@ -1,11 +1,11 @@
-<div class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+<div wire:poll.5s class="container mx-auto py-8">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Maintenance / Audit Logs</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <div class="bg-white shadow rounded-lg p-6 overflow-visible" x-data="{
                 openTab: '',
                 activeClasses: 'text-gray-900 bg-gray-400 active',
@@ -14,7 +14,7 @@
                     this.openTab = value;
                     this.$wire.call('updateFilter', value); // Call Livewire method to update filter
                 },
-                init() {
+                ainit() {
                     this.$watch('openTab', value => {
                         this.changeFilter(value); // Ensure Livewire is updated when openTab changes
                     });
@@ -23,7 +23,7 @@
 
                 <div class="relative overflow-x-auto p-1">
                     <!-- Mobile Dropdown -->
-                    <div class="sm:hidden">
+                    <div class="lg:hidden">
                         <label for="tabs" class="sr-only">Select your category</label>
                         <select id="tabs"
                             class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -41,7 +41,7 @@
                     </div>
 
                     <!-- Desktop Tabs -->
-                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex mb-3">
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('')"
                                 :class="openTab === '' ? activeClasses : inactiveClasses"
@@ -79,7 +79,7 @@
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('6')"
                                 :class="openTab === '6' ? activeClasses : inactiveClasses"
-                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none rounded-e-lg">Announcements</button>
+                                class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none">Announcements</button>
                         </li>
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('7')"
@@ -94,28 +94,6 @@
                         Tooltip on top
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
-
-                    {{-- <div
-                        class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
-
-                        <label for="table-search" class="sr-only">Search</label>
-                        <div class="relative">
-                            <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                </svg>
-                            </div>
-
-                          
-                            <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                                class="block p-1.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Search">
-                        </div>
-                     
-                    </div> --}}
 
                     {{-- TABLE --}}
                     <div class="overflow-x-auto">

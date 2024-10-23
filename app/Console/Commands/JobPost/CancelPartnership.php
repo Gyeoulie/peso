@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\JobPost;
 
+use App\Mail\JobPostingCancellationNotification;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Services\CustomAuditLogger;
@@ -34,7 +35,7 @@ class CancelPartnership extends Command
         // Retrieve job postings by company and peso_id
         $jobPostings = Job_Posting::where('company_id', $companyId)
             ->where('peso_id', $pesoId)
-            ->where('job_Status', '!=', 'CANCELLED')
+            ->whereIn('job_Status', ['PENDING', 'ACTIVE', 'CLOSED'])
             ->get();
 
         foreach ($jobPostings as $jobPosting) {
@@ -48,14 +49,14 @@ class CancelPartnership extends Command
             $jobPosting->save();
 
             // Log the audit for job posting updates
-            CustomAuditLogger::log(
-                Job_Posting::class,
-                $jobPosting->job_id,
-                'updated',
-                $oldJobPostingValues, // Old values
-                ['job_Status' => 'CANCELLED'], // New values
-                0// System or user ID
-            );
+            // CustomAuditLogger::log(
+            //     Job_Posting::class,
+            //     $jobPosting->job_id,
+            //     'updated',
+            //     $oldJobPostingValues, // Old values
+            //     ['job_Status' => 'CANCELLED'], // New values
+            //     0// System or user ID
+            // );
 
             // Notify all job applicants about the cancellation and update their status
             $jobApplicants = $jobPosting->job_applicants;
@@ -93,17 +94,17 @@ class CancelPartnership extends Command
                     $newValues['peso_Remarks'] = 'Job posting was cancelled';
                 }
 
-                CustomAuditLogger::log(
-                    Job_Applicants::class,
-                    $applicant->applicant_id,
-                    'updated',
-                    $oldApplicantValues, // Old values
-                    $newValues, // New values
-                    0// System or user ID
-                );
+                // CustomAuditLogger::log(
+                //     Job_Applicants::class,
+                //     $applicant->applicant_id,
+                //     'updated',
+                //     $oldApplicantValues, // Old values
+                //     $newValues, // New values
+                //     0// System or user ID
+                // );
 
                 // Notify the applicant via email
-                // Mail::to($applicant->email)->queue(new JobPostingCancellationNotification($jobPosting));
+                Mail::to($applicant->employee->user->email)->queue(new JobPostingCancellationNotification($applicant));
             }
         }
 

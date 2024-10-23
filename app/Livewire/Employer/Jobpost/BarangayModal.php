@@ -10,9 +10,14 @@ use Livewire\WithPagination;
 class BarangayModal extends Component
 {
 
-    use WithPagination, WithoutUrlPagination; 
+    use WithPagination, WithoutUrlPagination;
 
     public $search;
+
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
 
     public function barSelect($id)
     {

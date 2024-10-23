@@ -1,19 +1,18 @@
-<div class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+<div wire:poll class="container mx-auto py-8">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Role Management / Jobseeker Management</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <div class="bg-white shadow rounded-lg p-6">
 
 
 
                 <div class="relative p-1 mt-4">
 
-                    <div
-                        class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
@@ -27,15 +26,16 @@
                             </div>
 
                             {{-- SEARCH --}}
-                            <input wire:model.live.prevent='searchUsers' type="text" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-64 md:w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            <input wire:model.live='searchUsers' type="search" id="table-search-users"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
-                        <div class="flex flex-row gap-2">
+                        <div class="flex flex-wrap mr-3 gap-2">
+
                             <div x-data="{ tooltip: 'Export to Excel' }">
                                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
-                                    class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                                    class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                                     <span class="mr-2">Export</span>
                                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -45,9 +45,49 @@
                                 </button>
 
                             </div>
+                            <x-dropdown align="left" width="36">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs lg:text-sm px-3 py-1.5">
+                                        <div>
+                                            @if (empty($sortName))
+                                                Sort By Name
+                                            @elseif($sortName === 'ASC')
+                                                Ascending
+                                            @elseif($sortName === 'DESC')
+                                                Descending
+                                            @endif
+                                        </div>
+
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
+
+                                    <x-dropdown-link wire:click.prevent="updateSort('ASC')" class="cursor-pointer">
+                                        Ascending
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateSort('DESC')" class="cursor-pointer">
+                                        Descending
+                                    </x-dropdown-link>
+
+                                </x-slot>
+                            </x-dropdown>
                             <button type="button" x-data=""
                                 x-on:click.prevent="$dispatch('open-modal', 'filter-jobseekers-modal')"
-                                class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                                class="py-1.5 px-5 text-xs lg:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
                         </div>
 
                     </div>
@@ -57,19 +97,10 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 ">
-                                        Name
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Employment Status
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Joined Date
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
-
+                                    <th scope="col" class="px-6 py-3">Name</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">Employment Status</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">Joined Date</th>
+                                    <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,69 +116,69 @@
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
-
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
-                                                    No Records Found!
-                                                </p>
+                                                <p class="text-xl font-bold text-black text-center mt-2">No Records
+                                                    Found!</p>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @else
                                     @foreach ($jobseeker as $data)
                                         <tr wire:key='emp-{{ $data->employee_id }}'
                                             class="bg-white border-b hover:bg-gray-50">
-                                            <th scope="row"
-                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full"
-                                                    src="{{ asset('storage/' . $data->pimg) }}" alt="Jese image">
-                                                <div class="ps-3 text-wrap">
-                                                    <div class="text-base font-semibold">
+                                            <!-- Combined for mobile view -->
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center">
+                                                    <img class="select-none w-10 h-10 rounded-full object-cover"
+                                                        src="{{ asset('storage/' . $data->pimg) }}" alt="employee-{{$data->employee_id}}">
+                                                    <div class="ps-3">
+                                                        <!-- Name and Address -->
                                                         <div class="text-base font-semibold uppercase">
-                                                            {{ $data->fname }}
-                                                            {{ $data->mname ?? '' }}
-                                                            {{ $data->lname }}
-                                                            @if (!empty($data->suffix))
-                                                                , {{ $data->suffix }}
-                                                            @endif
+                                                            {{ $data->lname }}, {{ $data->fname }}
+                                                            {{ $data->mname ?? '' }}{{ !empty($data->suffix) ? ', ' . $data->suffix : '' }}
                                                         </div>
+                                                        <div class="font-normal text-gray-500 text-sm uppercase">
+                                                            {{ $data->address }}, {{ $data->barangay->barangay_Name }},
+                                                            {{ $data->barangay->municipality->municipality_Name }}</div>
 
-                                                    </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase">
-                                                        {{ $data->address }}, {{ $data->barangay->barangay_Name }},
-                                                        {{ $data->barangay->municipality->municipality_Name }}
+                                                        <!-- Employment status and joined date for small screens -->
+                                                        <div class="font-normal text-gray-500 lg:hidden">
+                                                            <div class="flex items-center">
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full {{ $data->empstatus == 1 ? 'bg-green-500' : 'bg-red-500' }} mr-2">
+                                                                </div>
+                                                                {{ $data->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
+                                                            </div>
+                                                            <span class="block">Joined:
+                                                                {{ $data->created_at->format('F j, Y') }}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-
-                                            </th>
-                                            <td class="px-6 py-4">
-
-                                                @if ($data->empstatus == 1)
-                                                    <div class="flex flex-row items-center">
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                                        EMPLOYED
-                                                    </div>
-                                                @else
-                                                    <div class="flex flex-row items-center">
-                                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                                        UNEMPLOYED
-                                                    </div>
-                                                @endif
-
                                             </td>
-                                            <td class="px-6 py-4">
+
+                                            <!-- Employment Status (visible on larger screens) -->
+                                            <td class="px-6 py-4 hidden lg:table-cell">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="h-2.5 w-2.5 rounded-full {{ $data->empstatus == 1 ? 'bg-green-500' : 'bg-red-500' }} mr-2">
+                                                    </div>
+                                                    {{ $data->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
+                                                </div>
+                                            </td>
+
+                                            <!-- Joined Date (visible on larger screens) -->
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 {{ $data->created_at->format('F j, Y') }}
                                             </td>
 
-
+                                            <!-- Action buttons (visible on larger screens) -->
                                             <td class="px-6 py-4">
-                                                <div class="flex flex-row  gap-5">
+                                                <div class="flex flex-row gap-5">
                                                     <div x-data="{ tooltip: 'Jobseeker Overview' }">
                                                         <a wire:navigate
                                                             href="{{ route('admin-users-jobseeker-overview', ['id' => $data->employee_id]) }}"
-                                                            x-tooltip="tooltip" type="button"
-                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            x-tooltip="tooltip"
+                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 inline-flex items-center">
                                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                                 viewBox="0 0 24 24" fill="currentColor">
                                                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
@@ -157,22 +188,20 @@
                                                             </svg>
                                                         </a>
                                                     </div>
-
-
+                                                </div>
                                             </td>
-
-
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 
                 {{-- PAGINATION --}}
                 <div class="mt-4">
-                    {{ $jobseeker->links('vendor.pagination.tailwind') }}
+                    {{ $jobseeker->links('vendor.livewire.tailwind') }}
                 </div>
 
             </div>
@@ -334,6 +363,57 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By OFW Record</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-all" type="radio" value=""
+                                name="ofwFilter" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-yes" type="radio" value="1"
+                                name="ofwFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-yes" class="ms-2 text-sm font-medium text-gray-900">OFW</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-no" type="radio" value="2"
+                                name="ofwFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-no" class="ms-2 text-sm font-medium text-gray-900">Not OFW</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By 4Ps Record</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-all" type="radio" value=""
+                                name="4psFilter" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-yes" type="radio" value="1"
+                                name="4psFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-yes" class="ms-2 text-sm font-medium text-gray-900">4Ps Member</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-no" type="radio" value="2"
+                                name="4psFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">Not 4Ps
+                                Member</label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Educational Attainment</h1>
 

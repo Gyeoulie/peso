@@ -1,7 +1,7 @@
-<div class="container mx-auto py-8">
+<div wire:poll.5s class="container py-8 mx-auto">
 
     {{-- GRID --}}
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 gap-4 p-3 sm:grid-cols-12 sm:p-0">
 
         {{-- TITLE --}}
         <div class="col-span-4 sm:col-span-12">
@@ -12,18 +12,18 @@
         <div class="col-span-4 sm:col-span-6">
 
 
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
                 <div class="relative overflow-x-auto">
 
-                    <div
-                        class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 p-1">
+                    <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 sm:flex-row sm:justify-between sm:space-y-0">
+
 
                         <label for="table-search" class="sr-only">Search</label>
 
 
                         <div class="relative">
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -31,16 +31,16 @@
                                 </svg>
                             </div>
                             {{-- SEARCH --}}
-                            <input wire:model.live.prevent="search" type="text"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            <input wire:model.live="search" type="search"
+                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
                         {{-- ADD BUTTON --}}
-                        <div class="mr-3">
+                        <div class="flex flex-wrap gap-2 mr-3">
 
                             <div class="flex flex-row items-center">
-                                <h1 class="text-md font-semibold mr-2">Filter by:</h1>
+                                <h1 class="mr-2 font-semibold text-md">Filter by:</h1>
                                 <x-dropdown align="right" width="48">
                                     <x-slot name="trigger">
                                         <button
@@ -48,7 +48,7 @@
                                             <div>{{ $defaultFilter }}</div>
 
                                             <div class="ms-1">
-                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd"
                                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -64,15 +64,15 @@
                                             max-h-[300px] bg-white
                                         </x-slot>
 
-                                        <x-dropdown-link href="#" wire:click="locationFilter('Barangay')"
-                                            class="block px-4 py-2 hover:bg-gray-100">Barangay</x-dropdown-link>
+                                        <x-dropdown-link wire:click.prevent="locationFilter('Barangay')"
+                                            class="block px-4 py-2 cursor-pointer hover:bg-gray-100">Barangay</x-dropdown-link>
 
                                         <!-- Authentication -->
-                                        <x-dropdown-link href="#" wire:click="locationFilter('Municipalities')"
-                                            class="block px-4 py-2 hover:bg-gray-100">Municipalities</x-dropdown-link>
+                                        <x-dropdown-link wire:click.prevent="locationFilter('Municipalities')"
+                                            class="block px-4 py-2 cursor-pointer hover:bg-gray-100">Municipalities</x-dropdown-link>
 
-                                        <x-dropdown-link href="#" wire:click="locationFilter('Provinces')"
-                                            class="block px-4 py-2 hover:bg-gray-100">Provinces</x-dropdown-link>
+                                        <x-dropdown-link wire:click.prevent="locationFilter('Provinces')"
+                                            class="block px-4 py-2 cursor-pointer hover:bg-gray-100">Provinces</x-dropdown-link>
 
                                         </form>
                                     </x-slot>
@@ -90,16 +90,16 @@
                     {{-- TABLE BARANGAY/LOCATION --}}
                     @if ($defaultFilter === 'Barangay')
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                            <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
                                             Barangay
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="hidden px-6 py-3 sm:table-cell">
                                             Municipality
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="hidden px-6 py-3 sm:table-cell">
                                             Province
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -123,7 +123,7 @@
                                                         </svg>
 
                                                     </div>
-                                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                                    <p class="mt-2 text-xl font-bold text-center text-black">
                                                         No Records Found!
                                                     </p>
                                                 </div>
@@ -135,16 +135,22 @@
                                             <tr wire:key='barangay-{{ $data->barangay_id }}'
                                                 class="bg-white border-b hover:bg-gray-50">
                                                 <td class="px-6 py-4">
-                                                    <div class="text-black uppercase font-semibold">
+                                                    <div class="font-semibold text-black uppercase">
                                                         {{ $data->barangay_Name }}
+                                                        <div class="block sm:hidden">
+                                                            <div class="font-semibold text-black uppercase">
+                                                                {{ $data->municipality->municipality_Name }},
+                                                                {{ $data->municipality->province->province_Name }}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="text-black uppercase font-semibold">
+                                                <td class="hidden px-6 py-4 sm:table-cell">
+                                                    <div class="font-semibold text-black uppercase">
                                                         {{ $data->municipality->municipality_Name }}</div>
                                                 </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="text-black uppercase font-semibold">
+                                                <td class="hidden px-6 py-4 sm:table-cell">
+                                                    <div class="font-semibold text-black uppercase">
                                                         {{ $data->municipality->province->province_Name }}
                                                     </div>
                                                 </td>
@@ -155,8 +161,8 @@
                                                             <button
                                                                 wire:click.prevent="editLocation('barangay', {{ $data->barangay_id }})"
                                                                 x-tooltip="tooltip" type="button"
-                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                     fill="none" viewBox="0 0 24 24"
                                                                     stroke-width="1.5" stroke="currentColor">
                                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -166,8 +172,8 @@
                                                         </div>
                                                         {{-- <div x-data="{ tooltip: 'Delete Barangay' }">
                                                             <button x-tooltip="tooltip" type="button"
-                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-red-700 border border-red-700 rounded-lg hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300">
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
                                                                     stroke="currentColor">
@@ -190,13 +196,13 @@
                         </div>
                     @elseif ($defaultFilter === 'Municipalities')
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                            <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
                                             Municipality
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="hidden px-6 py-3 sm:table-cell">
                                             Province
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -219,7 +225,7 @@
                                                         </svg>
 
                                                     </div>
-                                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                                    <p class="mt-2 text-xl font-bold text-center text-black">
                                                         No Records Found!
                                                     </p>
                                                 </div>
@@ -230,12 +236,15 @@
                                         @foreach ($locationData as $data)
                                             <tr class="bg-white border-b hover:bg-gray-50 ">
                                                 <td class="px-6 py-4">
-                                                    <div class="text-black uppercase font-semibold">
+                                                    <div class="font-semibold text-black uppercase">
                                                         {{ $data->municipality_Name }}
+                                                        <div class="font-semibold text-black uppercase">
+                                                            {{ $data->province->province_Name }}
+                                                        </div>
                                                     </div>
                                                 </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="text-black uppercase font-semibold">
+                                                <td class="hidden px-6 py-4 sm:table-cell">
+                                                    <div class="font-semibold text-black uppercase">
                                                         {{ $data->province->province_Name }}
                                                     </div>
                                                 </td>
@@ -246,8 +255,8 @@
                                                             <button
                                                                 wire:click.prevent="editLocation('municipality', {{ $data->municipality_id }})"
                                                                 x-tooltip="tooltip" type="button"
-                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
                                                                     stroke="currentColor">
@@ -259,8 +268,8 @@
                                                         </div>
                                                         {{-- <div x-data="{ tooltip: 'Delete Municipality' }">
                                                             <button x-tooltip="tooltip" type="button"
-                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-red-700 border border-red-700 rounded-lg hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300">
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
                                                                     stroke="currentColor">
@@ -280,9 +289,9 @@
                                 </tbody>
                             </table>
                         </div>
-                        @elseif ($defaultFilter === 'Provinces')
+                    @elseif ($defaultFilter === 'Provinces')
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                            <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
@@ -309,7 +318,7 @@
                                                         </svg>
 
                                                     </div>
-                                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                                    <p class="mt-2 text-xl font-bold text-center text-black">
                                                         No Records Found!
                                                     </p>
                                                 </div>
@@ -320,7 +329,7 @@
                                         @foreach ($locationData as $data)
                                             <tr class="bg-white border-b hover:bg-gray-50">
                                                 <td class="px-6 py-4">
-                                                    <div class="text-black uppercase font-semibold">
+                                                    <div class="font-semibold text-black uppercase">
                                                         {{ $data->province_Name }}
                                                     </div>
                                                 </td>
@@ -331,8 +340,8 @@
                                                             <button
                                                                 wire:click.prevent="editLocation('province', {{ $data->province_id }})"
                                                                 x-tooltip="tooltip" type="button"
-                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
                                                                     stroke="currentColor">
@@ -344,8 +353,8 @@
                                                         </div>
                                                         {{-- <div x-data="{ tooltip: 'Delete Province' }">
                                                             <button x-tooltip="tooltip" type="button"
-                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-red-700 border border-red-700 rounded-lg hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300">
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
                                                                     stroke="currentColor">
@@ -385,9 +394,9 @@
             activeClasses: 'text-gray-900 bg-gray-100 active',
             inactiveClasses: 'bg-white hover:text-gray-700 hover:bg-gray-50'
         }">
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
 
-                <h1 class="text-2xl font-bold mb-4">Add Locations</h1>
+                <h1 class="mb-4 text-2xl font-bold">Add Locations</h1>
 
 
 
@@ -408,7 +417,7 @@
                     </li>
                     <li class="w-full focus-within:z-10">
                         <button x-on:click="openTab = 2" :class="openTab === 2 ? activeClasses : inactiveClasses"
-                            class="inline-block w-full p-4  border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none ">Municipality</button>
+                            class="inline-block w-full p-4 border-r border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none ">Municipality</button>
                     </li>
                     <li class="w-full focus-within:z-10">
                         <button x-on:click="openTab = 3" :class="openTab === 3 ? activeClasses : inactiveClasses"
@@ -420,26 +429,26 @@
                 <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
 
-                    <div class="flex flex-col md:flex-row w-full mt-6 gap-2 md:gap-6">
+                    <div class="flex flex-col w-full gap-2 mt-6 md:flex-row md:gap-6">
 
 
-                        <div class="flex flex-col mt-2 w-full">
+                        <div class="flex flex-col w-full mt-2">
                             <x-input-label for="barPost" :value="__('Barangay Title')" />
-                            <x-text-input wire:model="barPost" class="block mt-1 w-full uppercase" type="text" />
+                            <x-text-input wire:model="barPost" class="block w-full mt-1 uppercase" type="text" />
                             <x-input-error :messages="$errors->get('barPost')" class="mt-2" />
                         </div>
 
-                        <div class="flex flex-col mt-2 w-full">
+                        <div class="flex flex-col w-full mt-2">
                             <x-input-label for="bcodePost" :value="__('Barangay Code')" />
-                            <x-text-input wire:model="bcodePost" class="block mt-1 w-full uppercase"
+                            <x-text-input wire:model="bcodePost" class="block w-full mt-1 uppercase"
                                 type="text" />
                             <x-input-error :messages="$errors->get('bcodePost')" class="mt-2" />
                         </div>
 
 
-                        <div class="flex flex-col mt-2 w-full">
+                        <div class="flex flex-col w-full mt-2">
                             <x-input-label for="municipalitySelect" :value="__('Municipality')" />
-                            <x-text-input wire:model="munSelect" class="block mt-1 w-full uppercase" type="text"
+                            <x-text-input wire:model="munSelect" class="block w-full mt-1 uppercase" type="text"
                                 placeholder="Select Municipality" x-data=""
                                 x-on:click.prevent="$dispatch('open-modal', 'municipality-modal')"
                                 x-on:focus="$dispatch('open-modal', 'municipality-modal')" readonly />
@@ -448,12 +457,12 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row w-ful mt-6 ">
+                    <div class="flex flex-row mt-6 w-ful ">
                         <x-green-button wire:click.prevent="saveLocation('barangay')" type="submit"
                             class="ml-auto mr-3">
                             {{ __('Add Barangay') }}
                             <div wire:loading.delay.long wire:target="saveLocation('barangay')" role="status">
-                                <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -474,27 +483,27 @@
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
                     <div class="flex flex-col w-full ">
-                        <div class="flex flex-col md:flex-row w-full mt-6 gap-2 md:gap-6">
+                        <div class="flex flex-col w-full gap-2 mt-6 md:flex-row md:gap-6">
 
 
-                            <div class="flex flex-col mt-2 w-full">
+                            <div class="flex flex-col w-full mt-2">
                                 <x-input-label for="munPost" :value="__('Municipality Title')" />
-                                <x-text-input wire:model="munPost" class="block mt-1 w-full uppercase" type="text"
+                                <x-text-input wire:model="munPost" class="block w-full mt-1 uppercase" type="text"
                                     name="munPost" />
                                 <x-input-error :messages="$errors->get('munPost')" class="mt-2" />
                             </div>
 
-                            <div class="flex flex-col mt-2 w-full">
+                            <div class="flex flex-col w-full mt-2">
                                 <x-input-label for="mcodePost" :value="__('Municipality Code')" />
-                                <x-text-input wire:model="mcodePost" class="block mt-1 w-full uppercase"
+                                <x-text-input wire:model="mcodePost" class="block w-full mt-1 uppercase"
                                     type="text" name="mcodePost" />
                                 <x-input-error :messages="$errors->get('mcodePost')" class="mt-2" />
                             </div>
 
 
-                            <div class="flex flex-col mt-2 w-full">
+                            <div class="flex flex-col w-full mt-2">
                                 <x-input-label for="provSelect" :value="__('Province')" />
-                                <x-text-input wire:model="provSelect" class="block mt-1 w-full uppercase"
+                                <x-text-input wire:model="provSelect" class="block w-full mt-1 uppercase"
                                     type="text" name="provSelect" placeholder="Select Province"
                                     x-data=""
                                     x-on:click.prevent="$dispatch('open-modal', 'province-modal')"
@@ -504,14 +513,14 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-row w-ful mt-6 ">
+                        <div class="flex flex-row mt-6 w-ful ">
                             <x-green-button wire:click.prevent="saveLocation('municipality')" type="submit"
                                 class="ml-auto mr-3">
                                 {{ __('Add Municipality') }}
                                 <div wire:loading.delay.long wire:target="saveLocation('municipality')"
                                     role="status">
                                     <svg aria-hidden="true"
-                                        class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                        class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -531,18 +540,18 @@
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
                     <div class="flex flex-col w-full">
-                        <div class="flex flex-col md:flex-row w-full mt-6 gap-2 md:gap-6">
+                        <div class="flex flex-col w-full gap-2 mt-6 md:flex-row md:gap-6">
 
 
-                            <div class="flex flex-col mt-2 w-1/2">
+                            <div class="flex flex-col w-1/2 mt-2">
                                 <x-input-label for="provPost" :value="__('Province Title')" />
-                                <x-text-input wire:model="provPost" class="block mt-1 w-full uppercase"
+                                <x-text-input wire:model="provPost" class="block w-full mt-1 uppercase"
                                     type="text" name="provPost" />
                                 <x-input-error :messages="$errors->get('provPost')" class="mt-2" />
                             </div>
-                            <div class="flex flex-col mt-2 w-1/2">
+                            <div class="flex flex-col w-1/2 mt-2">
                                 <x-input-label for="pcodePost" :value="__('Province Code')" />
-                                <x-text-input wire:model="pcodePost" class="block mt-1 w-full uppercase"
+                                <x-text-input wire:model="pcodePost" class="block w-full mt-1 uppercase"
                                     type="text" name="pcodePost" />
                                 <x-input-error :messages="$errors->get('pcodePost')" class="mt-2" />
                             </div>
@@ -550,13 +559,13 @@
 
 
 
-                        <div class="flex flex-row w-ful mt-6 ">
+                        <div class="flex flex-row mt-6 w-ful ">
                             <x-green-button wire:click.prevent="saveLocation('province')" type="submit"
                                 class="ml-auto mr-3">
                                 {{ __('Add Province') }}
                                 <div wire:loading.delay.long wire:target="saveLocation('province')" role="status">
                                     <svg aria-hidden="true"
-                                        class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                        class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -584,7 +593,7 @@
     {{-- MODALS --}}
 
     <x-modal name="municipality-modal" focusable>
-        <div class="flex flex-col w-full  px-6 py-6 ">
+        <div class="flex flex-col w-full px-6 py-6 ">
 
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Choose a Municipality') }}
@@ -593,12 +602,12 @@
 
             <div class="relative mt-4">
                 <div
-                    class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    class="flex flex-wrap items-center justify-between pb-4 space-y-4 flex-column md:flex-row md:space-y-0">
 
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative">
                         <div
-                            class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                            class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                             <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -608,17 +617,17 @@
 
                         {{-- LICENSE SEARCH --}}
                         <input wire:model.live.prevent="searchMun" type="text"
-                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            class="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 w-60 md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search municipality">
                     </div>
 
                 </div>
 
                 {{-- LICENSE MODAL --}}
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>
-                            <th scope="col" class="px-6 py-3 w-1/4">
+                            <th scope="col" class="w-1/4 px-6 py-3">
 
                             </th>
                             <th scope="col" class="px-6 py-3 uppercase">
@@ -640,7 +649,7 @@
                                             </svg>
 
                                         </div>
-                                        <p class="text-xl font-bold text-black text-center mt-2">
+                                        <p class="mt-2 text-xl font-bold text-center text-black">
                                             No Record Found
                                         </p>
                                     </div>
@@ -659,7 +668,7 @@
 
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="font-semibold text-base uppercase">{{ $data->municipality_Name }},
+                                        <div class="text-base font-semibold uppercase">{{ $data->municipality_Name }},
                                             {{ $data->province->province_Name }} </div>
                                     </td>
                                 </tr>
@@ -674,7 +683,7 @@
                 {{ $municipalities->links('vendor.livewire.tailwind') }}
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent="close('municipality')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -685,7 +694,7 @@
     </x-modal>
 
     <x-modal name="province-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Choose a Province') }}
             </h2>
@@ -693,12 +702,12 @@
 
             <div class="relative mt-4">
                 <div
-                    class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    class="flex flex-wrap items-center justify-between pb-4 space-y-4 flex-column md:flex-row md:space-y-0">
 
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative">
                         <div
-                            class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                            class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                             <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -708,7 +717,7 @@
 
                         {{-- SEARCH --}}
                         <input wire:model.live.prevent="searchProv" type="text"
-                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            class="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 w-60 md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Search province">
                     </div>
 
@@ -716,10 +725,10 @@
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                    <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
-                                <th scope="col" class="px-6 py-3 w-1/4">
+                                <th scope="col" class="w-1/4 px-6 py-3">
 
                                 </th>
                                 <th scope="col" class="px-6 py-3 uppercase">
@@ -742,7 +751,7 @@
                                                 </svg>
 
                                             </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
+                                            <p class="mt-2 text-xl font-bold text-center text-black">
                                                 No Record Found
                                             </p>
                                         </div>
@@ -761,7 +770,7 @@
 
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="font-semibold text-base uppercase">{{ $data->province_Name }}
+                                            <div class="text-base font-semibold uppercase">{{ $data->province_Name }}
                                             </div>
                                         </td>
                                     </tr>
@@ -778,7 +787,7 @@
 
             </div>
 
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent="close('province')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -790,23 +799,23 @@
     </x-modal>
 
     <x-modal name="bar-edit-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Edit Barangay') }}
             </h2>
             <hr>
 
-            <div class="flex flex-col w-full mt-6 gap-6 ">
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
-                    <div class="flex flex-col mt-2 w-full">
+            <div class="flex flex-col w-full gap-6 mt-6 ">
+                <div class="flex flex-col w-full gap-2 mt-2 sm:flex-row sm:gap-6">
+                    <div class="flex flex-col w-full mt-2">
                         <x-input-label for="barPost" :value="__('Barangay Title')" />
-                        <x-text-input wire:model="editbarPost" class="block mt-1 w-full uppercase" type="text" />
+                        <x-text-input wire:model="editbarPost" class="block w-full mt-1 uppercase" type="text" />
                         <x-input-error :messages="$errors->get('editbarPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col mt-2 w-full">
+                    <div class="flex flex-col w-full mt-2">
                         <x-input-label for="bcodePost" :value="__('Barangay Code')" />
-                        <x-text-input wire:model="editbcodePost" class="block mt-1 w-full uppercase"
+                        <x-text-input wire:model="editbcodePost" class="block w-full mt-1 uppercase"
                             type="text" />
                         <x-input-error :messages="$errors->get('editbcodePost')" class="mt-2" />
                     </div>
@@ -819,10 +828,10 @@
                     <x-dropdown align="left" width="[300px]">
                         <x-slot name="trigger">
                             <button
-                                class="w-full inline-flex text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-1.5 py-2 w-[300px]">
+                                class="inline-flex text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-1.5 py-2 w-[300px]">
                                 <div class="w-full ml-2 text-left uppercase">{{ $editmunSelect }}</div>
                                 <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -843,9 +852,9 @@
                             <div class="max-h-[150px] bg-white overflow-y-auto no-scrollbar">
                                 <!-- Dropdown links -->
                                 @foreach ($municipalities as $data)
-                                    <x-dropdown-link href="#"
-                                        wire:click="setLocation('municipality','{{ $data->municipality_id }}')"
-                                        class="block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->municipality_Name }}
+                                    <x-dropdown-link
+                                        wire:click.prevent="setLocation('municipality','{{ $data->municipality_id }}')"
+                                        class="block px-4 py-2 uppercase cursor-pointer hover:bg-gray-100">{{ $data->municipality_Name }}
                                         ,
                                         {{ $data->province->province_Name }}</x-dropdown-link>
                                 @endforeach
@@ -859,7 +868,7 @@
 
             </div>
 
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent="close('bar-edit')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -867,7 +876,7 @@
                 <x-primary-button wire:click.prevent="updateLocation('barangay')" type="submit" class="ms-3">
                     {{ __('Save') }}
                     <div wire:loading.delay.long wire:target="updateLocation('barangay')" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -885,23 +894,23 @@
     </x-modal>
 
     <x-modal name="mun-edit-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Edit Municipality') }}
             </h2>
             <hr>
 
-            <div class="flex flex-col w-full mt-6 gap-6 ">
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
-                    <div class="flex flex-col mt-2 w-full">
+            <div class="flex flex-col w-full gap-6 mt-6 ">
+                <div class="flex flex-col w-full gap-2 mt-2 sm:flex-row sm:gap-6">
+                    <div class="flex flex-col w-full mt-2">
                         <x-input-label for="munPost" :value="__('Municipality Title')" />
-                        <x-text-input wire:model="editmunPost" class="block mt-1 w-full uppercase" type="text" />
+                        <x-text-input wire:model="editmunPost" class="block w-full mt-1 uppercase" type="text" />
                         <x-input-error :messages="$errors->get('editmunPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col mt-2 w-full">
+                    <div class="flex flex-col w-full mt-2">
                         <x-input-label for="mcodePost" :value="__('Municipality Code')" />
-                        <x-text-input wire:model="editmcodePost" class="block mt-1 w-full uppercase"
+                        <x-text-input wire:model="editmcodePost" class="block w-full mt-1 uppercase"
                             type="text" />
                         <x-input-error :messages="$errors->get('editmcodePost')" class="mt-2" />
                     </div>
@@ -915,10 +924,10 @@
                     <x-dropdown align="left" width="80">
                         <x-slot name="trigger">
                             <button
-                                class="w-full inline-flex text-left text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 w-[150px]">
-                                <div class="w-full  uppercase">{{ $editprovSelect }}</div>
+                                class="inline-flex text-left text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 w-[150px]">
+                                <div class="w-full uppercase">{{ $editprovSelect }}</div>
                                 <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -939,9 +948,9 @@
                             <div class="max-h-[150px] bg-white overflow-y-auto no-scrollbar">
                                 <!-- Dropdown links -->
                                 @foreach ($provinces as $data)
-                                    <x-dropdown-link href="#"
-                                        wire:click="setLocation('province','{{ $data->province_id }}')"
-                                        class="block px-4 py-2 hover:bg-gray-100 uppercase">
+                                    <x-dropdown-link 
+                                        wire:click.prevent="setLocation('province','{{ $data->province_id }}')"
+                                        class="block px-4 py-2 uppercase cursor-pointer hover:bg-gray-100">
                                         {{ $data->province_Name }}</x-dropdown-link>
                                 @endforeach
                             </div>
@@ -953,7 +962,7 @@
 
             </div>
 
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent="close('mun-edit')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -961,7 +970,7 @@
                 <x-primary-button wire:click.prevent="updateLocation('municipality')" type="submit"
                     class="ms-3">{{ __('Save') }}
                     <div wire:loading.delay.long wire:target="updateLocation('municipality')" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -979,23 +988,23 @@
     </x-modal>
 
     <x-modal name="prov-edit-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Edit Province') }}
             </h2>
             <hr>
 
-            <div class="flex flex-col w-full mt-6 gap-6 ">
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
-                    <div class="flex flex-col mt-2 w-full">
+            <div class="flex flex-col w-full gap-6 mt-6 ">
+                <div class="flex flex-col w-full gap-2 mt-2 sm:flex-row sm:gap-6">
+                    <div class="flex flex-col w-full mt-2">
                         <x-input-label for="editprovPost" :value="__('Province Title')" />
-                        <x-text-input wire:model="editprovPost" class="block mt-1 w-full uppercase" type="text" />
+                        <x-text-input wire:model="editprovPost" class="block w-full mt-1 uppercase" type="text" />
                         <x-input-error :messages="$errors->get('editprovPost')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col mt-2 w-full">
+                    <div class="flex flex-col w-full mt-2">
                         <x-input-label for="editpcodePost" :value="__('Province Code')" />
-                        <x-text-input wire:model="editpcodePost" class="block mt-1 w-full uppercase"
+                        <x-text-input wire:model="editpcodePost" class="block w-full mt-1 uppercase"
                             type="text" />
                         <x-input-error :messages="$errors->get('editpcodePost')" class="mt-2" />
                     </div>
@@ -1005,7 +1014,7 @@
 
             </div>
 
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent="close('prov-edit')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -1013,7 +1022,7 @@
                 <x-primary-button wire:click.prevent="updateLocation('province')" type="submit" class="ms-3">
                     {{ __('Save') }}
                     <div wire:loading.delay.long wire:target="updateLocation('province')" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

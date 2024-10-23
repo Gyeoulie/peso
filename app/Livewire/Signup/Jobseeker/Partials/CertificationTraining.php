@@ -49,12 +49,12 @@ class CertificationTraining extends Component
             'certificateData' => $this->certificateData,
             'trainingData' => $this->trainingData,
         ]);
-        $this->dispatch('nextStep');
+        $this->dispatch('nextStep', $this->stepNumber + 1);
     }
 
     public function prev()
     {
-        $this->dispatch('prevStep');
+        $this->dispatch('prevStep', $this->stepNumber - 1);
     }
 
     #[On('refreshCertTrain')]

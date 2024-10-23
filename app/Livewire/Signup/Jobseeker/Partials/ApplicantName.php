@@ -14,15 +14,13 @@ class ApplicantName extends Component
 
     public $fname, $mname, $lname, $suffix = "", $bday, $gender = "";
 
-    public $test;
-
     #[Validate]
     public $pimage;
 
     public function rules()
     {
         return [
-            'pimage' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'pimage' => 'required|image|mimes:jpeg,png,jpg',
         ];
     }
 
@@ -32,7 +30,7 @@ class ApplicantName extends Component
             'pimage.required' => 'The image is required.',
             'pimage.image' => 'The uploaded file must be an image.',
             'pimage.mimes' => 'The image must be a file of type: jpeg, png, jpg.',
-            'pimage.max' => 'The image may not be greater than 5MB.',
+            // 'pimage.max' => 'The image may not be greater than 15MB.',
         ];
     }
     public function next()
@@ -48,7 +46,7 @@ class ApplicantName extends Component
                 'before_or_equal:' . now()->subYears(18)->format('Y-m-d'), // Ensures the date is not today or any future date
             ],
             'gender' => 'required|in:1,2', // Assuming gender can only be Male or Female
-            'pimage' => 'required|image|mimes:jpeg,png,jpg|max:5120', // Required image, max 5MB, allowed types: jpeg, png, jpg
+            'pimage' => 'required|image|mimes:jpeg,png,jpg', // Required image, max 5MB, allowed types: jpeg, png, jpg
         ];
         $messages = [
             'fname.required' => 'First name is required.',
@@ -69,7 +67,7 @@ class ApplicantName extends Component
             'pimage.required' => 'Profile image is required.',
             'pimage.image' => 'Uploaded file must be an image.',
             'pimage.mimes' => 'Only JPEG, PNG, and JPG formats are allowed for images.',
-            'pimage.max' => 'Uploaded image may not be greater than 5MB.',
+            // 'pimage.max' => 'Uploaded image may not be greater than 15MB.',
         ];
 
         $this->validate($rules, $messages);
@@ -77,21 +75,21 @@ class ApplicantName extends Component
         $imgPath = $this->pimage->store('temp/user_data', 'public');
 
         $this->dispatch('handleStepData', $this->stepNumber, [
-            'fname' => $this->fname,
-            'mname' => $this->mname,
-            'lname' => $this->lname,
+            'fname' => ucwords(strtolower($this->fname)),
+            'mname' => ucwords(strtolower($this->mname)),
+            'lname' => ucwords(strtolower($this->lname)),
             'suffix' => $this->suffix,
             'bday' => $this->bday,
             'gender' => $this->gender,
             'pimage' => $imgPath,
         ]);
-        $this->dispatch('nextStep');
+        $this->dispatch('nextStep', $this->stepNumber + 1);
     }
 
-    public function prev()
-    {
-        $this->dispatch('prevStep');
-    }
+    // public function prev()
+    // {
+    //     $this->dispatch('prevStep', $this->stepNumber - 1);
+    // }
 
     public function render()
     {

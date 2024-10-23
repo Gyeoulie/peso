@@ -4,10 +4,14 @@ namespace App\Livewire\Public;
 
 use App\Models\Announcements;
 use App\Models\Barangay;
+use App\Models\Disability;
 use App\Models\Education;
 use App\Models\Industry_preference;
+use App\Models\Job_Industry;
+use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
+use App\Models\Partnerships;
 use App\Models\PESO;
 use App\Models\Programs;
 use Illuminate\Support\Facades\Auth;
@@ -52,14 +56,72 @@ class Dashboard extends Component
         '26' => 'MASTERAL/POST GRADUATE',
     ];
 
-    public $search;
-    public $filter = 'All';
-    public $sort = 'Newest';
-    public $pagination = 5;
+    public $jobTypes = [
+        '0' => 'None',
+        '1' => 'Full Time',
+        '2' => 'Contractual',
+        '3' => 'Part Time',
+        '4' => 'Project-Based',
+        '5' => 'Internship/OJT',
+        '6' => 'Work From Home',
+    ];
 
+    public $search, $searchIndustry, $searchTags;
+    public $filter = 'All';
+
+    public $jobTypeFilter;
+    public $sort = 'Newest';
+    public $pagination = 8;
+
+    public $filterJobTags = [], $filterIndustry = [], $mountJobTagsFilter = [], $mountIndustryFilter = [];
+
+    public function mountJobTags()
+    {
+        $this->filterJobTags = $this->mountJobTagsFilter;
+        $this->dispatch('close-modal', 'job-tag-filter-modal');
+        $this->resetPage('jobs');
+
+        if (Auth::check() && Auth::user()->usertype && !in_array(Auth::user()->usertype, [5, 6, 11])) {
+            $this->updateFilter('My Municipality');
+        }
+
+    }
+    public function mountIndustry()
+    {
+        $this->filterIndustry = $this->mountIndustryFilter;
+        $this->dispatch('close-modal', 'industry-filter-modal');
+        $this->resetPage('jobs');
+        if (Auth::check() && Auth::user()->usertype && !in_array(Auth::user()->usertype, [5, 6, 11])) {
+            $this->updateFilter('My Municipality');
+        }
+
+    }
+
+    public function resetJobTags()
+    {
+        $this->reset('filterJobTags', 'mountJobTagsFilter');
+        $this->resetPage('job_position');
+        $this->resetPage('jobs');
+
+    }
+    public function resetIndustry()
+    {
+        $this->reset('filterIndustry', 'mountIndustryFilter');
+        $this->resetPage('job_industry');
+        $this->resetPage('jobs');
+
+    }
     public function updatedSearch()
     {
-        $this->resetPage();
+        $this->resetPage('jobs');
+    }
+    public function updatedsearchIndustry()
+    {
+        $this->resetPage('job_industry');
+    }
+    public function updatedsearchTags()
+    {
+        $this->resetPage('job_position');
     }
     public function mount()
     {
@@ -79,19 +141,33 @@ class Dashboard extends Component
             }
         }
     }
+    public function mountTopJobTags($value)
+    {
 
+        $this->resetPage('jobs');
+        $this->search = $value;
+        if (Auth::check() && Auth::user()->usertype && !in_array(Auth::user()->usertype, [5, 6, 11])) {
+            $this->updateFilter('My Municipality');
+        }
+    }
     public function updateFilter($value)
     {
         $this->filter = $value;
         $this->sort = 'Newest';
-        $this->resetPage();
+        $this->resetPage('jobs');
     }
 
     public function updateSort($value)
     {
         $this->sort = $value;
-        $this->resetPage();
+        $this->resetPage('jobs');
 
+    }
+
+    public function updateJobType($value)
+    {
+        $this->jobTypeFilter = $value;
+        $this->resetPage('jobs');
     }
 
     private function getHighestEducationLevel()
@@ -122,6 +198,16 @@ class Dashboard extends Component
             ->pluck('industry_id');
     }
 
+    private function checkUserDisability()
+    {
+        $user = Auth::user();
+
+        // Check if there is a disability record for the user
+        $hasDisability = Disability::where('employee_id', $user->employee->employee_id)->exists();
+
+        return $hasDisability ? 1 : 2; // Return 1 if a record exists, otherwise return 2
+    }
+
     private function buildJobQuery()
     {
         $query = Job_Posting::with([
@@ -141,26 +227,34 @@ class Dashboard extends Component
             $userMunicipalityId = $this->getUserMunicipalityId();
             $userJobPreferences = $this->getUserJobPreferences();
             $userIndustryPreference = $this->getUserIndustryPreference();
+            $userHasDisability = $this->checkUserDisability();
 
             // Query for matching job postings
             $query
-                ->whereHas('peso', function ($query) use ($userMunicipalityId) {
+                ->whereHas('peso.municipality', function ($query) use ($userMunicipalityId) {
                     $query->where('municipality_id', $userMunicipalityId);
-                })->where('job_Edu', '<=', $highestEducationLevel)
-
+                })
+                ->where('job_Edu', '<=', $highestEducationLevel)
                 ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
-                    $query->where(function ($query) use ($userJobPreferences) {
-                        $query->whereHas('job_tags', function ($query) use ($userJobPreferences) {
-                            $query->whereIn('position_id', $userJobPreferences);
-                        });
+                    $query->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                        $query->whereHas('job_tags', function ($q) use ($userJobPreferences) {
+                            $q->whereIn('position_id', $userJobPreferences);
+                        })
+                            ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                                $q->whereIn('industry_id', $userIndustryPreference);
+                            });
                     })
                         ->orWhere(function ($query) use ($userIndustryPreference) {
-                            $query->whereHas('job_industry', function ($query) use ($userIndustryPreference) {
-                                $query->whereIn('industry_id', $userIndustryPreference);
+                            $query->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                                $q->whereIn('industry_id', $userIndustryPreference);
+                            });
+                        })
+                        ->orWhere(function ($query) use ($userJobPreferences) {
+                            $query->whereHas('job_tags', function ($q) use ($userJobPreferences) {
+                                $q->whereIn('position_id', $userJobPreferences);
                             });
                         });
                 })
-
                 ->withCount(['job_tags as job_tags_count' => function ($query) use ($userJobPreferences) {
                     $query->whereIn('position_id', $userJobPreferences);
                 }])
@@ -168,13 +262,18 @@ class Dashboard extends Component
                     $query->whereIn('industry_id', $userIndustryPreference);
                 }])
                 ->orderByRaw('
-                    CASE
-                        WHEN industry_count > 0 AND job_tags_count > 0 THEN 1
-                        WHEN industry_count > 0 AND job_tags_count = 0 THEN 2
-                        WHEN industry_count = 0 AND job_tags_count > 0 THEN 3
-                        ELSE 4
-                    END
-                ')
+            CASE
+                -- Prioritize jobs accepting disabilities if the user has a disability
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count > 0 THEN 1
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count = 0 THEN 2
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count = 0 AND job_tags_count > 0 THEN 3
+                -- Rank jobs normally if the user has no disability
+                WHEN industry_count > 0 AND job_tags_count > 0 THEN 4
+                WHEN industry_count > 0 AND job_tags_count = 0 THEN 5
+                WHEN industry_count = 0 AND job_tags_count > 0 THEN 6
+                ELSE 7
+            END
+        ', [$userHasDisability, $userHasDisability, $userHasDisability])
                 ->orderByDesc('job_tags_count')
                 ->distinct();
             // dd($query->get(), $userJobPreferences, $userIndustryPreference, $highestEducationLevel, $userMunicipalityId);
@@ -186,6 +285,19 @@ class Dashboard extends Component
 
             $query->whereHas('peso.municipality', function ($query) use ($municipalityId) {
                 $query->where('municipality_id', $municipalityId);
+            });
+        }
+
+        // Apply the job_tags and industry filters
+        if (!empty($this->filterJobTags)) {
+            $query->whereHas('job_tags', function ($query) {
+                $query->whereIn('position_id', $this->filterJobTags);
+            });
+        }
+
+        if (!empty($this->filterIndustry)) {
+            $query->whereHas('job_industry', function ($query) {
+                $query->whereIn('industry_id', $this->filterIndustry);
             });
         }
 
@@ -206,6 +318,10 @@ class Dashboard extends Component
                         $query->where('municipality_name', 'like', '%' . $this->search . '%');
                     });
             });
+
+        }
+        if ($this->jobTypeFilter) {
+            $query->where('job_Type', $this->jobTypeFilter);
         }
 
         return $query;
@@ -222,12 +338,10 @@ class Dashboard extends Component
             case 'Oldest':
                 $query->orderBy('created_at', 'ASC');
                 break;
-                // case 'Random':
-                //     $query->inRandomOrder();
-                //     break;
+
         }
 
-        return $query->paginate($this->pagination);
+        return $query->paginate($this->pagination, ['*'], 'jobs');
     }
 
     public function companyNotifications($empID)
@@ -344,7 +458,7 @@ class Dashboard extends Component
             $query->where('peso_id', $pesoId);
 
         }
-        return $query->where('announcement_Status', 'ACTIVE')->latest()->limit(5)->get();
+        return $query->where('announcement_Status', 'ACTIVE')->latest()->limit(3)->get();
     }
 
     public function setAnnouncements($user = null)
@@ -443,6 +557,98 @@ class Dashboard extends Component
         $programQuery = $this->buildProgramQuery();
         return $programQuery->orderBy('created_at', 'desc')->take(4)->get();
     }
+    public function getTopJobTags($user = null)
+    {
+        // Determine the municipality ID based on user status
+        if ($user && $user->employee) {
+            // Fetch municipality ID based on employee's municipality
+            $municipalityId = $user->employee->barangay->municipality_id;
+        } elseif ($user && $user->peso_accounts) {
+            // Fetch municipality ID based on user's PESO account
+            $municipalityId = $user->peso_accounts->peso->municipality_id;
+        } else {
+            // If no user or not logged in, set municipality ID to null
+            $municipalityId = null;
+        }
+
+        // Fetch top job positions based on active job postings
+        $jobPositions = Job_Positions::whereHas('job_tags.job_posting', function ($query) use ($municipalityId) {
+            // Ensure job postings are ACTIVE
+            $query->where('job_Status', 'ACTIVE')
+                ->when($municipalityId, function ($query) use ($municipalityId) {
+                    // Filter by municipality if available
+                    $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                        $subQuery->where('municipality_id', $municipalityId);
+                    });
+                });
+        })
+        // Count active job postings associated with each position
+            ->withCount(['job_tags as active_job_posting_count' => function ($query) use ($municipalityId) {
+                $query->whereHas('job_posting', function ($subQuery) use ($municipalityId) {
+                    $subQuery->where('job_Status', 'ACTIVE') // Count only active postings
+                        ->when($municipalityId, function ($subQuery) use ($municipalityId) {
+                            // Filter by municipality if available
+                            $subQuery->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                                $subQuery->where('municipality_id', $municipalityId);
+                            });
+                        });
+                });
+            }])
+            ->orderBy('active_job_posting_count', 'desc') // Order by count of active job postings
+            ->take(5) // Limit to top 5 positions
+            ->get();
+
+        return $jobPositions;
+    }
+
+    public function getTopJobIndustries($user = null)
+    {
+        // Determine the municipality ID based on user status
+        if ($user && $user->employee) {
+            // Fetch municipality ID based on employee's municipality
+            $municipalityId = $user->employee->barangay->municipality_id;
+        } elseif ($user && $user->peso_accounts) {
+            // Fetch municipality ID based on user's PESO account
+            $municipalityId = $user->peso_accounts->peso->municipality_id;
+        } else {
+            // If no user or not logged in, set municipality ID to null
+            $municipalityId = null;
+        }
+
+        // Fetch top job industries based on active job postings and municipality
+        $jobIndustries = Job_Industry::whereHas('job_posting', function ($query) use ($municipalityId) {
+            $query->where('job_Status', 'ACTIVE') // Ensure job postings are ACTIVE
+                ->when($municipalityId, function ($query) use ($municipalityId) {
+                    $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                        $subQuery->where('municipality_id', $municipalityId); // Filter by municipality if available
+                    });
+                });
+        })
+        // Count only active job postings associated with each industry
+            ->withCount(['job_posting as active_job_posting_count' => function ($query) use ($municipalityId) {
+                $query->where('job_Status', 'ACTIVE') // Count only active postings
+                    ->when($municipalityId, function ($query) use ($municipalityId) {
+                        $query->whereHas('peso.municipality', function ($subQuery) use ($municipalityId) {
+                            $subQuery->where('municipality_id', $municipalityId); // Filter by municipality if available
+                        });
+                    });
+            }])
+
+            ->orderBy('active_job_posting_count', 'desc') // Order by count of active job postings
+            ->take(5) // Limit to top 5 industries
+            ->get();
+
+        return $jobIndustries;
+    }
+
+    public function checkPartnerships($user)
+    {
+
+        return Partnerships::where('company_id', $user->company->company_id)
+            ->where('partnership_Status', 'APPROVED')
+            ->exists(); // This will return true if a record exists, otherwise false
+
+    }
 
     public function render()
     {
@@ -452,10 +658,23 @@ class Dashboard extends Component
 
         $user = Auth::user();
         $formattedNotifications = $user && $user->company ? $this->companyNotifications($user->company->company_id) : [];
-        // dd($formattedNotifications);
+
+        $jobposition = Job_Positions::where('position_Status', 1)->where('position_Title', 'like', '%' . $this->searchTags . '%')
+            ->paginate(8, ['*'], 'job_position');
+        $industry = Job_Industry::where('industry_Status', 1)->where('industry_Title', 'like', '%' . $this->searchIndustry . '%')
+            ->paginate(8, ['*'], 'job_industry');
 
         $announcements = $this->setAnnouncements($user);
+        $topJobTags = $this->getTopJobTags($user);
+        $topJobIndustries = $this->getTopJobIndustries($user);
 
-        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements'));
+        $activePartnership = true;
+
+        if ($user && ($user->usertype >= 6 && $user->usertype < 8) && $user->company) {
+            $activePartnership = $this->checkPartnerships($user);
+            // dd($activePartnership);
+        }
+
+        return view('livewire.public.dashboard', compact('joblist', 'programList', 'formattedNotifications', 'announcements', 'jobposition', 'industry', 'topJobTags', 'topJobIndustries', 'activePartnership'));
     }
 }

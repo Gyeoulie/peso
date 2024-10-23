@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use App\Models\Experimental_Features;
 use App\Models\Programs;
 use App\Models\Program_Reg;
 use Illuminate\Support\Facades\Auth;
@@ -94,12 +95,17 @@ class TrainingView extends Component
 
         $trainingMunicipalityId = $training->peso->municipality_id;
 
-        if ($userMunicipalityId == $trainingMunicipalityId) {
-            // Open the apply modal if the user's municipality matches the job posting's municipality
+        $crossProgramFeature = Experimental_Features::find(2);
+
+        $isCrossProgramEnabled = $crossProgramFeature && $crossProgramFeature->feature_Status === 'enabled';
+
+        // Check if the user is eligible to apply for the job posting
+        if ($isCrossProgramEnabled || $userMunicipalityId == $trainingMunicipalityId) {
+            // Open the apply modal
             $this->dispatch('open-modal', 'register-modal');
         } else {
             // Show an error if the user's municipality does not match
-            toastr()->error('This event is only available to ' . $training->peso->municipality_Name . ' residents.');
+            toastr()->error('This event is only available to ' . $training->peso->municipality->municipality_Name . ' residents.');
         }
     }
 

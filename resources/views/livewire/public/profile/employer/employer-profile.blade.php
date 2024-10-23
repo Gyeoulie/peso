@@ -1,28 +1,29 @@
 <div>
-    <div class="flex flex-col md:flex-row w-full h-full gap-4 container mx-auto p-4 md:p-0 md:py-8">
+    <div class="container flex flex-col w-full h-full gap-4 p-4 mx-auto md:flex-row md:p-0 md:py-8">
 
-        <div class="flex flex-col md:w-1/4 h-full md:sticky top-5">
-            <div class="bg-white shadow-xl rounded-lg p-6">
+        <div class="flex flex-col h-full md:w-1/4 md:sticky top-5">
+            <div class="p-6 bg-white rounded-lg shadow-xl">
                 <div class="flex flex-col items-center">
                     <img src="{{ $employer->company_img ? asset('storage/' . $employer->company_img) : asset('https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/') }}"
-                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
+                        alt="Company-{{ $employer->company_id }}"
+                        class="object-cover w-32 h-32 mb-4 bg-gray-300 rounded-full shadow-xl select-none shrink-0">
                     </img>
-                    <h1 class="text-xl font-bold break-all">{{ $employer->business_Name }}</h1>
+                    <h1 class="text-xl font-bold text-center uppercase">{{ $employer->business_Name }}</h1>
 
 
 
-                    <p class="text-gray-700 break-all">{{ $employer->trade_Name }}</p>
+                    <p class="text-sm text-gray-700 uppercase break-all">{{ $employer->trade_Name }}</p>
 
                 </div>
                 <hr class="my-6 border-t border-gray-300">
-                <div class="flex flex-col w-full px-5 mt-5">
+                <div class="flex flex-col w-full px-5 mt-5 select-none">
 
                     <ul>
                         <li class="mb-4">
-                            <div class="flex flex-row gap-4 w-full">
+                            <div class="flex flex-row w-full gap-4">
                                 <div class="flex flex-col">
 
-                                    <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    <svg class="text-blue-500 w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
@@ -35,7 +36,7 @@
                                         Company Type
 
                                     </div>
-                                    <div class="text-md font-medium uppercase break-all">
+                                    <div class="font-medium uppercase break-all text-md">
 
                                         {{ $employer->company_Type == 1 ? 'Main' : ($employer->company_Type == 2 ? 'Branch' : '') }}
 
@@ -47,9 +48,9 @@
                         </li>
 
                         <li class="mb-4">
-                            <div class="flex flex-row gap-4 w-full">
+                            <div class="flex flex-row w-full gap-4">
                                 <div class="flex flex-col">
-                                    <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    <svg class="text-blue-500 w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
@@ -59,7 +60,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Employer Type
                                     </div>
-                                    <div class="text-md font-medium uppercase">
+                                    <div class="font-medium uppercase text-md">
                                         {{ $employer->employer_Type == 1 ? 'Public' : ($employer->employer_Type == 2 ? 'Private' : '') }}
                                     </div>
 
@@ -69,9 +70,9 @@
                         </li>
 
                         <li class="mb-4">
-                            <div class="flex flex-row gap-4 w-full">
+                            <div class="flex flex-row w-full gap-4">
                                 <div class="flex flex-col">
-                                    <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    <svg class="text-blue-500 w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
@@ -82,7 +83,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Workforce
                                     </div>
-                                    <div class="text-md font-medium uppercase">
+                                    <div class="font-medium uppercase text-md">
                                         {{ $employer->company_Total_workforce == 1
                                             ? '1 - 9 (Micro)'
                                             : ($employer->company_Total_workforce == 2
@@ -101,9 +102,9 @@
                         </li>
 
                         <li class="mb-4">
-                            <div class="flex flex-row gap-4 w-full">
+                            <div class="flex flex-row w-full gap-4">
                                 <div class="flex flex-col">
-                                    <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    <svg class="text-blue-500 w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -117,7 +118,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Company Address
                                     </div>
-                                    <div class="text-md font-medium uppercase">
+                                    <div class="font-medium uppercase text-md">
                                         {{ $employer->barangay->barangay_Name }},
                                         {{ $employer->barangay->municipality->municipality_Name }},
                                         {{ $employer->barangay->municipality->province->province_Name }}
@@ -140,14 +141,14 @@
             <div class="flex flex-col space-y-5">
 
                 <div class="container">
-                    <div class="bg-white shadow-lg rounded-lg p-6 text-wrap">
-                        <div class="flex flex-row w-full items-center justify-between">
+                    <div class="p-6 bg-white rounded-lg shadow-lg text-wrap">
+                        <div class="flex flex-row items-center justify-between w-full">
                             <h2 class="text-xl font-bold">Company Description</h2>
 
 
                             @if ($isOwner)
                                 <div
-                                    class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                    class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                     <div x-data="{ tooltip: 'Edit Company Description' }">
                                         <svg x-tooltip="tooltip" wire:click.prevent="open" class="w-8 h-8"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -161,7 +162,7 @@
 
                         </div>
 
-                        <p class="text-gray-700 text-wrap break-words">
+                        <p class="text-gray-700 break-words text-wrap">
                             {{ !empty($employer->company_Desc) ? $employer->company_Desc : 'Empty Company Description' }}
 
                         </p>
@@ -172,15 +173,15 @@
 
 
 
-                <div class="container">
-                    <div class="bg-white shadow rounded-lg p-6">
+                <div class="container select-none">
+                    <div class="p-6 bg-white rounded-lg shadow">
 
                         <div class="flex flex-row justify-between w-full mb-4">
                             <h2 class="text-xl font-bold">Job Postings</h2>
 
 
                             {{-- <div
-                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                 <a wire:navigate href="{{ route('edit.details.emp') }}">
                                     <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -193,8 +194,8 @@
                         </div>
                         @if ($employer->job_posting->isEmpty())
 
-                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                <div class="flex  bg-gray-100 rounded-full p-1">
+                            <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                <div class="flex p-1 bg-gray-100 rounded-full">
 
                                     <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -204,7 +205,7 @@
 
                                 </div>
 
-                                <div class="text-center text-black text-xl font-semibold mt-5">
+                                <div class="mt-5 text-xl font-semibold text-center text-black">
                                     No job posting found.
                                 </div>
                             </div>
@@ -214,10 +215,10 @@
                                     <div wire:key='{{ $jobPosts->job_id }}' class="container p-3 ">
 
                                         <div
-                                            class="flex flex-row h-full items-center bg-white  rounded-lg hover:shadow-lg transition-shadow duration-300 transition-transform duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-xl">
+                                            class="flex flex-row items-center h-full p-2 transition-transform duration-300 ease-in-out transform bg-white rounded-lg hover:shadow-xl group-hover:scale-105 group-hover:shadow-xl">
 
                                             <div class="flex flex-col">
-                                                <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800"
+                                                <svg class="w-10 h-10 text-gray-800 lg:w-20 lg:h-20"
                                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                     width="24" height="24" fill="currentColor"
                                                     viewBox="0 0 24 24">
@@ -227,25 +228,33 @@
                                                 </svg>
                                             </div>
 
-                                            <div class="flex flex-col ml-4 w-full">
-                                                <span class="text-2xl text-blue-500 font-bold">
+                                            <div class="flex flex-col w-full ml-4">
+                                                <span class="text-2xl font-bold text-blue-500">
                                                     {{ $jobPosts->job_Title }}
                                                 </span>
-                                                <span class="text-lg text-black font-semibold">
+                                                <span class="text-lg font-semibold text-black">
                                                     {{ $jobPosts->barangay->municipality->municipality_Name }},
                                                     {{ $jobPosts->barangay->municipality->province->province_Name }}
                                                 </span>
                                                 <div class="flex flex-row w-full gap-5">
-                                                    <span class="text-md text-black font-semibold">
-                                                        {{ $jobPosts->job_Type == 1 ? 'Full Time' : ($jobPosts->job_Type == 2 ? 'Part Time' : '') }}
+                                                    <span class="font-semibold text-black text-md">
+                                                        {{ $jobTypes[$jobPosts->job_Type] }}
                                                     </span>
-                                                    <span class="text-md text-black font-semibold">
-                                                        ₱{{ number_format($jobPosts->job_MinWage, 2) }} -
-                                                        ₱{{ number_format($jobPosts->job_MaxWage, 2) }}
+                                                    -
+                                                    <span class="font-semibold text-black text-md">
+                                                        @if ($jobPosts->job_MinWage)
+                                                            ₱{{ number_format($jobPosts->job_MinWage) }}
+                                                            @if ($jobPosts->job_MaxWage)
+                                                                -
+                                                                ₱{{ number_format($jobPosts->job_MaxWage) }}
+                                                            @endif
+                                                        @else
+                                                            Salary Not Specified
+                                                        @endif
                                                     </span>
                                                 </div>
 
-                                                <span class="text-sm text-gray-700 font-medium">Posted at:
+                                                <span class="text-sm font-medium text-gray-700">Posted at:
                                                     {{ $jobPosts->created_at->format('F j, Y') }}</span>
                                             </div>
 
@@ -283,13 +292,13 @@
 
 
     <x-modal name="aboutme-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-xl font-bold text-gray-900">
                 {{ __('Edit Company Description') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     {{-- <x-input-label :value="__('Company Description')" /> --}}
                     <textarea wire:model='description' id="message" rows="10" required
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
@@ -301,9 +310,21 @@
 
 
 
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button wire:click.prevent="close" type="button">
+            <div class="flex justify-end mt-6">
+                <x-secondary-button wire:loading.attr="disabled" wire:click.prevent="close" type="button">
                     {{ __('Cancel') }}
+                    <div wire:loading.delay.long wire:target="close" role="status">
+                        <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </x-secondary-button>
 
 
@@ -315,7 +336,7 @@
 
                         <div wire:loading.delay.long wire:target='save' role="status">
 
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

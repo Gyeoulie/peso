@@ -1,9 +1,9 @@
 <div>
     <div class="container mx-auto py-8">
 
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+        <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
-            <div class="col-span-4 sm:col-span-4">
+            <div class="col-span-4 lg:col-span-4">
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4">
                     <div class="flex flex-row justify-center items-center h-full p-5 flex-shrink-0">
                         <img src="{{ asset('storage/' . $announcementInfo->announcement_pubmat) }}"
@@ -20,14 +20,14 @@
 
 
 
-            <div class="col-span-4 sm:col-span-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="col-span-4 lg:col-span-8">
+                <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg">
 
 
                     <div class="flex flex-col w-full h-full p-5 space-y-2">
 
                         <div class="flex flex-col">
-                            <h1 class="text-3xl text-blue-500 sm:text-6xl font-bold">
+                            <h1 class="text-3xl text-blue-500 lg:text-6xl font-bold">
                                 {{ $announcementInfo->announcement_Title }}
                             </h1>
                         </div>

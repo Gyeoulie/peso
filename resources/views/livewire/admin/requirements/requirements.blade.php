@@ -1,14 +1,14 @@
 <div class="container mx-auto py-8">
 
     {{-- GRID --}}
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Requirements Management</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             {{-- @livewire('admin.requirements.requirements-table') --}}
             <div class="bg-white shadow rounded-lg p-6">
 
@@ -19,8 +19,8 @@
 
                 <div class="relative overflow-x-auto">
 
-                    <div
-                        class="flex p-1 items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -35,19 +35,17 @@
                                 </svg>
                             </div>
                             {{-- SEARCH --}}
-                            <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            <input wire:model.live='search' type="search" id="table-search-users"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
                         {{-- ADD BUTTON --}}
-                        <div class="mr-3">
-
-
+                        <div class="flex flex-wrap mr-3 gap-2">
                             <x-dropdown align="right" width="48">
                                 <x-slot name="trigger">
                                     <button
                                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
-                                        <div>{{ $filter == 1 ? 'Active' : ($filter == 2 ? 'Disabled' : 'All') }}</div>
+                                        <div>{{ $filter == 1 ? 'Public' : ($filter == 2 ? 'Private' : 'All') }}</div>
 
                                         <div class="ms-1">
                                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -71,10 +69,10 @@
                                     <hr>
                                     <!-- Authentication -->
                                     <x-dropdown-link href="#" wire:click="updateFilter('1')"
-                                        class="block px-4 py-2 hover:bg-gray-100">Active</x-dropdown-link>
+                                        class="block px-4 py-2 hover:bg-gray-100">Public</x-dropdown-link>
 
                                     <x-dropdown-link href="#" wire:click="updateFilter('2')"
-                                        class="block px-4 py-2 hover:bg-gray-100">Disabled</x-dropdown-link>
+                                        class="block px-4 py-2 hover:bg-gray-100">Private</x-dropdown-link>
 
                                     </form>
                                 </x-slot>
@@ -91,17 +89,17 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/4">
                                         Requirement Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
+                                        Type
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Date Created
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Date Updated
                                     </th>
                                     <th scope="col" class="px-6 py-3">
 
@@ -139,10 +137,47 @@
                                                 <div class="ps-3 uppercase">
                                                     <div class="text-base font-semibold">{{ $data->requirement_Title }}
                                                     </div>
+
+                                                    <div class="block lg:hidden">
+                                                        <div class="text-gray-500 font-semibold text-sm uppercase">
+                                                            @if ($data->requirement_Type == 1)
+                                                                PUBLIC
+                                                            @else
+                                                                PRIVATE
+                                                            @endif
+                                                        </div>
+                                                        <div class=" text-gray-500 font-medium text-sm uppercase">
+                                                            <div class="flex items-center uppercase">
+                                                                @if ($data->requirement_Status == 1)
+                                                                    <div
+                                                                        class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                    </div>
+                                                                    ACTIVE
+                                                                @else
+                                                                    <div
+                                                                        class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
+                                                                    </div>
+                                                                    DISABLED
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-gray-500 font-semibold text-sm">
+                                                            Created: {{ $data->created_at->format('F d Y') }}
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                             </th>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
+                                                <span class="font-semibold">
+                                                    @if ($data->requirement_Type == 1)
+                                                        PUBLIC
+                                                    @else
+                                                        PRIVATE
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="flex items-center uppercase">
                                                     @if ($data->requirement_Status == 1)
                                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
@@ -153,20 +188,12 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-base font-light uppercase text-sm">
                                                     {{ $data->created_at->format('h:i A') }}
                                                 </div>
                                                 <div class="text-base font-medium uppercase text-sm">
                                                     {{ $data->created_at->format('F d Y') }}
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="text-base font-light uppercase text-sm">
-                                                    {{ $data->updated_at->format('h:i A') }}
-                                                </div>
-                                                <div class="text-base font-medium uppercase text-sm">
-                                                    {{ $data->updated_at->format('F d Y') }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
@@ -220,13 +247,13 @@
 
 
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             {{-- @livewire('admin.requirements.requirements-add') --}}
             <div class="bg-white shadow rounded-lg p-6">
 
                 <h1 class="text-2xl font-bold mb-4">Add Requirements</h1>
                 <div>
-                    <div class="flex flex-col sm:flex-row sm:gap-5 w-full mt-6 gap-6 ">
+                    <div class="flex flex-col lg:flex-row lg:gap-5 w-full mt-6 gap-6 ">
 
 
                         <div class="flex flex-col mt-2 w-full">
@@ -237,24 +264,26 @@
                         </div>
 
                         <div class="flex flex-col mt-2 w-full">
-                            <x-input-label for="trainingComplete" :value="__('Requirement Status')" />
+                            <x-input-label for="trainingComplete" :value="__('Requirement Type')" />
                             <div class="flex flex-row w-full gap-2 mt-1">
                                 <div class="flex flex-row items-center h-10  px-4 border border-gray-400 rounded">
-                                    <input wire:model='statusPost' id="bordered-radio-1" type="radio"
-                                        value="1" name="bordered-radio"
+                                    <input wire:model='reqType' id="bordered-radio-1" type="radio" value="1"
+                                        name="bordered-radio"
                                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                     <label for="bordered-radio-1"
-                                        class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Active</label>
+                                        class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Public
+                                        Employers</label>
                                 </div>
                                 <div class="flex items-center h-10 px-4 border border-gray-400 rounded">
-                                    <input wire:model='statusPost' id="bordered-radio-2" type="radio"
-                                        value="2" name="bordered-radio"
+                                    <input wire:model='reqType' id="bordered-radio-2" type="radio" value="2"
+                                        name="bordered-radio"
                                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                     <label for="bordered-radio-2"
-                                        class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Disabled</label>
+                                        class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Private
+                                        Employers</label>
                                 </div>
                             </div>
-                            <x-input-error :messages="$errors->get('statusPost')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('reqType')" class="mt-2" />
                         </div>
 
                     </div>

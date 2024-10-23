@@ -76,14 +76,18 @@ class CreateAnnouncement extends Component
     {
         // Get the municipality_id from the announcement's PESO
         $announcementMunicipalityId = $announcement->peso->municipality_id;
-
-        // Find jobseekers that belong to the same municipality
-        $matchedResidents = Employee::whereHas('barangay', function ($query) use ($announcementMunicipalityId) {
-            $query->where('municipality_id', $announcementMunicipalityId);
-        })->get();
-
+    
+        // Find jobseekers that belong to the same municipality and have userstatus == 1
+        $matchedResidents = Employee::whereHas('user', function ($query) {
+                $query->where('userstatus', 1); // Ensure userstatus == 1
+            })
+            ->whereHas('barangay', function ($query) use ($announcementMunicipalityId) {
+                $query->where('municipality_id', $announcementMunicipalityId);
+            })->get();
+    
         return $matchedResidents;
     }
+    
 
     public function saveAnnouncement()
     {
@@ -117,7 +121,7 @@ class CreateAnnouncement extends Component
             }
 
             $this->dispatch('close-modal', 'confirm-modal');
-            $this->redirectRoute('admin-announcement', navigate: true);
+            $this->redirectRoute('admin-announcement');
             toastr()->success('Announcement has been posted!');
         } catch (\Exception $e) {
 

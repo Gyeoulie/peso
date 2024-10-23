@@ -1,12 +1,12 @@
-<div class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+<div wire:poll class="container mx-auto py-8">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Patnerships \ Employer Details</h1>
         </div>
         {{-- PROFILE CONTAINER --}}
-        <div class="col-span-4 sm:col-span-4 ">
+        <div class="col-span-4 lg:col-span-4 ">
             <div class="bg-white shadow rounded-lg p-6">
 
                 <div class="flex flex-col items-center">
@@ -163,7 +163,7 @@
         </div>
 
         {{-- CONTAINER FOR TABS --}}
-        <div class="col-span-4 sm:col-span-8 row">
+        <div class="col-span-4 lg:col-span-8 row">
 
 
 
@@ -174,7 +174,7 @@
             <div class="bg-white shadow rounded-lg p-6">
                 <h1 class="text-2xl font-bold ">Company Details</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="bname" :value="__('Business Name')" />
                         <x-text-input wire:model="businessName" class="block mt-1 w-full" type="text" disabled />
@@ -188,7 +188,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="tin" :value="__('TIN')" />
                         <x-text-input wire:model="tin" class="block mt-1 w-full" type="text" disabled />
@@ -220,11 +220,11 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
-                        <x-input-label for="empType" :value="__('Employment Status')" />
+                        <x-input-label for="empType" :value="__('Employer Type')" />
                         <select wire:model='empType' class="block mt-1 w-full rounded" disabled>
-                            <option value="" disabled selected>Select Employment Type</option>
+                            <option value="" disabled selected>Select Employer Type</option>
                             <option value="1">Public</option>
                             <option value="2">Private</option>
                         </select>
@@ -242,7 +242,7 @@
                             <option value="4">State/Local University or College</option>
                             <option value="5">Direct Hire</option>
                             <option value="6">Private Employment Agency</option>
-                            <option value="7">Overseas Recruitment Agency</option>
+                            {{-- <option value="7">Overseas Recruitment Agency</option> --}}
                             <option value="8">'D.O. 174, s. 2017</option>
                         </select>
                         <x-input-error :messages="$errors->get('empDesc')" class="mt-2" />
@@ -251,7 +251,7 @@
                 </div>
 
 
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="companyAddress" :value="__('Company Address')" />
                         <x-text-input wire:model="companyAddress" class="block mt-1 w-full" type="text"
@@ -266,7 +266,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                     <div class="flex flex-col w-full">
                         <x-input-label for="mun" :value="__('Municipality')" />
                         <x-text-input wire:model='mun' class="block mt-1 w-full" type="text" disabled />
@@ -299,7 +299,7 @@
 
             @if ($partnersData->partnership_Status != 'PENDING')
                 <div class="bg-white shadow rounded-lg p-6 mt-4">
-                    <div class="flex sm:flex-row gap-4 sm:justify-between">
+                    <div class="flex lg:flex-row gap-4 lg:justify-between">
                         <h1 class="text-2xl font-bold ">Partnership Details</h1>
 
                         @if ($partnersData->partnership_Status == 'PENDING')
@@ -315,7 +315,7 @@
                     </div>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                     <div class="flex flex-col w-full">
-                        <div class="flex sm:flex-row gap-4 sm:justify-between">
+                        <div class="flex lg:flex-row gap-4 lg:justify-between">
                             <h1 class="text-md font-semibold">Partnership Remarks</h1>
                             <h1 class="text-md ">{{ $partnersData->responded_at->format('F j, Y') }}</h1>
 
@@ -392,7 +392,7 @@
 
     {{-- REJECT MODAL --}}
     <x-modal name="reject-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to reject this partnership?') }}
             </h2>
@@ -435,63 +435,64 @@
     </x-modal>
 
 </div>
-@script
-    <script>
-        Livewire.on('viewFile', event => {
-            // Check if the event is an array and has at least one element
-            if (Array.isArray(event) && event.length > 0) {
-                // Access the first element and then its properties
-                const data = event[0]; // Assuming the data object is the first element
 
-                // Log the entire data object for verification
-                console.log('Data:', data);
+@push('scripts')
+    @script
+        <script>
+            Livewire.on('viewFile', event => {
+                // Check if the event is an array and has at least one element
+                if (Array.isArray(event) && event.length > 0) {
+                    // Access the first element and then its properties
+                    const data = event[0]; // Assuming the data object is the first element
 
-                // Extract URL and handle dynamic keys
-                const url = data.url;
-                const formData = {
-                    ...data
-                }; // Spread the data object to use for form inputs
 
-                // Check if URL is present
-                if (url) {
-                    // Create and configure the form element
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = url;
-                    form.target = '_blank';
+                    // Extract URL and handle dynamic keys
+                    const url = data.url;
+                    const formData = {
+                        ...data
+                    }; // Spread the data object to use for form inputs
 
-                    // Add CSRF token as a hidden input
-                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = '_token';
-                    csrfInput.value = csrfToken;
-                    form.appendChild(csrfInput);
+                    // Check if URL is present
+                    if (url) {
+                        // Create and configure the form element
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = url;
+                        form.target = '_blank';
 
-                    // Add all data inputs dynamically
-                    for (const [key, value] of Object.entries(formData)) {
-                        // Skip the URL and CSRF token from being added as form inputs
-                        if (key !== 'url') {
-                            const input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = key;
-                            input.value = value;
-                            form.appendChild(input);
+                        // Add CSRF token as a hidden input
+                        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+                        form.appendChild(csrfInput);
+
+                        // Add all data inputs dynamically
+                        for (const [key, value] of Object.entries(formData)) {
+                            // Skip the URL and CSRF token from being added as form inputs
+                            if (key !== 'url') {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = key;
+                                input.value = value;
+                                form.appendChild(input);
+                            }
                         }
+
+                        // Append form to the body and submit
+                        document.body.appendChild(form);
+                        form.submit();
+
+                        // Clean up by removing the form element
+                        document.body.removeChild(form);
+                    } else {
+                        console.error('URL not found in event data');
                     }
-
-                    // Append form to the body and submit
-                    document.body.appendChild(form);
-                    form.submit();
-
-                    // Clean up by removing the form element
-                    document.body.removeChild(form);
                 } else {
-                    console.error('URL not found in event data');
+                    console.error('Event is not in the expected format');
                 }
-            } else {
-                console.error('Event is not in the expected format');
-            }
-        });
-    </script>
-@endscript
+            });
+        </script>
+    @endscript
+@endpush

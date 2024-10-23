@@ -1,41 +1,41 @@
 <x-modal name="training-modal" focusable>
-    <div class="w-full max-w-4xl px-6 py-6 items-center">
+    <div class="items-center w-full max-w-4xl px-6 py-6">
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Training Record') }}
         </h2>
         <hr>
         <div class="flex flex-col mt-2">
 
-            <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="trainingName" :value="__('Training Name')" />
-                <x-text-input wire:model="trainName" class="block mt-1 w-full" type="text" />
+            <div class="flex flex-col w-full mt-2">
+                <x-input-label for="trainingName" :value="__('Training Name*')" />
+                <x-text-input wire:model="trainName" class="block w-full mt-1" type="text" />
                 <x-input-error :messages="$errors->get('trainName')" class="mt-2" />
             </div>
-            <div class="flex flex-row mt-2 w-full">
+            <div class="flex flex-row w-full mt-2">
                 <div class="flex flex-col w-full">
-                    <x-input-label for="trainingStart" :value="__('Started')" />
-                    <x-text-input wire:model="trainStart" class="block mt-1 w-full" type="date" />
+                    <x-input-label for="trainingStart" :value="__('Started*')" />
+                    <x-text-input wire:model="trainStart" class="block w-full mt-1" type="date" />
                     <x-input-error :messages="$errors->get('trainStart')" class="mt-2" />
                 </div>
-                <div class="flex flex-col ml-4 w-full">
+                <div class="flex flex-col w-full ml-4">
                     <x-input-label for="trainingEnd" :value="__('Ended')" />
-                    <x-text-input wire:model="trainEnd" class="block mt-1 w-full" type="date" />
+                    <x-text-input wire:model="trainEnd" class="block w-full mt-1" type="date" />
                     <x-input-error :messages="$errors->get('trainEnd')" class="mt-2" />
                 </div>
             </div>
-            <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="trainingInsti" :value="__('Training Institution')" />
-                <x-text-input wire:model="trainInstitution" class="block mt-1 w-full" type="text" />
+            <div class="flex flex-col w-full mt-2">
+                <x-input-label for="trainingInsti" :value="__('Training Institution*')" />
+                <x-text-input wire:model="trainInstitution" class="block w-full mt-1" type="text" />
                 <x-input-error :messages="$errors->get('trainInstitution')" class="mt-2" />
             </div>
 
-            <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="trainingCert" :value="__('Certificate Recieved')" />
-                <x-text-input wire:model="trainCert" class="block mt-1 w-full" type="text" />
+            <div class="flex flex-col w-full mt-2">
+                <x-input-label for="trainingCert" :value="__('Certificate Recieved*')" />
+                <x-text-input wire:model="trainCert" class="block w-full mt-1" type="text" />
                 <x-input-error :messages="$errors->get('trainCert')" class="mt-2" />
             </div>
             <div class="mt-2">
-                <x-input-label for="trainingComplete" :value="__('Completed')" />
+                <x-input-label for="trainingComplete" :value="__('Completed*')" />
                 <div class="flex items-center">
                     <label for="completeCheckBoxYes" class="mr-2">
                         <input wire:model="trainStat" type="radio" name="completeCheckBox" value="1">
@@ -49,12 +49,12 @@
                 <x-input-error :messages="$errors->get('trainStat')" class="mt-2" />
             </div>
         </div>
-        <div class="mt-6 flex justify-end">
+        <div class="flex justify-end mt-6">
             <x-secondary-button wire:click.prevent='close' type="button">
                 {{ __('Cancel') }}
             </x-secondary-button>
 
-            <x-primary-button wire:click.prevent='save' class="ms-3" type="button">
+            <x-primary-button wire:loading.attr="disabled" wire:click.prevent='save' class="ms-3" type="button">
                 {{ __('Save') }}
             </x-primary-button>
         </div>

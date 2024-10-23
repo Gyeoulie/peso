@@ -3,7 +3,7 @@
 
 Dear {{ $applicantName }},
 
-We hope this message finds you well. We regret to inform you that the job posting for **"{{ $jobTitle }}"** has been canceled, and as a result, your application has also been canceled.
+We hope this message finds you well. We regret to inform you that the job posting for **"{{ $jobTitle }}"** has been cancelled, and as a result, your application has also been canceled.
 
 ## Important Information:
 - **Job Post Title:** {{ $jobTitle }}

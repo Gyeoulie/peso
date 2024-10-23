@@ -1,4 +1,4 @@
-<div class="container mx-auto py-8">
+<div wire:poll.5s class="container mx-auto py-8">
 
     {{-- GRID --}}
     <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
@@ -22,8 +22,8 @@
 
                 <div class="relative ">
 
-                    <div
-                        class="flex p-1 items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col sm:flex-row p-1 sm:justify-between gap-2 space-y-4 sm:space-y-0 pb-4">
+
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -38,44 +38,46 @@
                                 </svg>
                             </div>
                             {{-- SEARCH --}}
-                            <input type="text" id="table-search-users" wire:model.live.debounce.250ms="search"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            <input type="search" id="table-search-users" wire:model.live.="search"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
+                        <div class="flex flex-wrap mr-3 gap-2">
 
-                        <x-dropdown align="right" width="30">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
-                                    <div>{{ $filterCert }}</div>
+                            <x-dropdown align="right" width="30">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        <div>{{ $filterCert }}</div>
 
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-
-                            <x-slot name="content">
-                                <x-slot name="contentClasses">
-                                    max-h-[300px] bg-white
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
                                 </x-slot>
 
-                                <x-dropdown-link wire:click.prevent="updateFilter('All')"
-                                    class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">All</x-dropdown-link>
 
-                                <!-- Authentication -->
-                                <x-dropdown-link wire:click.prevent="updateFilter('Archived')"
-                                    class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Archived</x-dropdown-link>
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
 
-                            </x-slot>
-                        </x-dropdown>
+                                    <x-dropdown-link wire:click.prevent="updateFilter('All')"
+                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">All</x-dropdown-link>
+
+                                    <!-- Authentication -->
+                                    <x-dropdown-link wire:click.prevent="updateFilter('Archived')"
+                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Archived</x-dropdown-link>
+
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
 
                     </div>
 
@@ -89,10 +91,10 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                    <th scope="col" class="px-6 py-3 w-full sm:w-1/4">
                                         Certificate Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                                         Certificate Title
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -127,12 +129,21 @@
                                         <tr wire:key="{{ $data->cert_type_id }}"
                                             class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="text-gray-500 font-medium text-md uppercase">
+                                                <div
+                                                    class="hidden sm:block text-gray-500 font-medium text-md uppercase">
                                                     {{ $data->cert_Code }}
+                                                </div>
+                                                <div class="block sm:hidden">
+                                                    <div class="text-black font-bold text-md uppercase">
+                                                        {{ $data->cert_Name }}
+                                                    </div>
+                                                    <div class=" text-gray-500 font-medium text-md uppercase">
+                                                        {{ $data->cert_Code }}
+                                                    </div>
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden sm:table-cell">
                                                 <div class="text-black font-bold text-md uppercase">
                                                     {{ $data->cert_Name }}
                                                 </div>

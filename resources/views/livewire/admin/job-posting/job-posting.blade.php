@@ -1,12 +1,12 @@
-<div class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+<div wire:poll class="container py-8 mx-auto">
+    <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Job Posting</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12">
-            <div class="bg-white shadow rounded-lg p-6" x-data="{
+        <div class="col-span-4 lg:col-span-12">
+            <div class="p-6 bg-white rounded-lg shadow" x-data="{
                 filter: @entangle('filter').defer || 'ALL', // Set default value to 'ALL'
                 activeFilter: 'text-gray-900 bg-gray-400 active',
                 inactiveFilter: 'bg-gray-100 hover:text-gray-700 hover:bg-gray-50',
@@ -22,9 +22,9 @@
                 }
             }" x-init="init()">
 
-                <div class="relative overflow-x-auto p-1">
+                <div class="relative p-1 overflow-x-auto">
                     <!-- Mobile Dropdown -->
-                    <div class="sm:hidden">
+                    <div class="lg:hidden">
                         <label for="tabs" class="sr-only">Select Filter</label>
                         <select id="tabs"
                             class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -39,7 +39,7 @@
                     </div>
 
                     <!-- Desktop Tabs -->
-                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                    <ul class="hidden mb-3 text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex">
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('ALL')"
                                 :class="filter === 'ALL' ? activeFilter : inactiveFilter"
@@ -83,13 +83,13 @@
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
 
-                    <div
-                        class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
+
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -98,48 +98,121 @@
                             </div>
 
                             {{-- SEARCH --}}
-                            <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                                class="block p-1.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            <input wire:model.live='search' type="search" id="table-search-users"
+                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
-                        <div x-data="{ tooltip: 'Export to Excel' }">
-                            <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
-                                class="flex items-center py-2 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
-                                <span class="mr-2">Export</span>
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                                </svg>
+                        <div class="flex flex-wrap gap-2 mr-3">
+                            <div x-data="{ tooltip: 'Export to Excel' }">
+                                <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
+                                    class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                    <span class="mr-2">Export</span>
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                                    </svg>
+                                </button>
+
+                            </div>
+                            <x-dropdown align="left" width="36">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        <div>
+                                            {{ $jobTypeFilter ? $jobTypes[$jobTypeFilter] : 'Employment Type' }}
+                                        </div>
+
+                                        <div class="ms-1">
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                </x-slot>
+
+
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
+
+                                    <x-dropdown-link wire:click.prevent="updateJobType('')" class="cursor-pointer">
+                                        All
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(1)" class="cursor-pointer">
+                                        Full Time
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(2)" class="cursor-pointer">
+                                        Contractual
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(3)" class="cursor-pointer">
+                                        Part Time
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(4)" class="cursor-pointer">
+                                        Project-Based
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(5)" class="cursor-pointer">
+                                        Internship/OJT
+                                    </x-dropdown-link>
+                                    <x-dropdown-link wire:click.prevent="updateJobType(6)" class="cursor-pointer">
+                                        Work From Home
+                                    </x-dropdown-link>
+
+
+                                </x-slot>
+                            </x-dropdown>
+
+                            <button type="button" x-data="{ filterIndustry: @entangle('filterIndustry') }"
+                                x-on:click.prevent="$dispatch('open-modal', 'industry-filter-modal')"
+                                :class="filterIndustry.length > 0 ?
+                                    'bg-blue-500 text-white hover:bg-blue-600' :
+                                    'bg-white text-gray-500 hover:bg-gray-100'"
+                                class="inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                Industry Filter
                             </button>
+                            <button type="button" x-data="{ filterJobTags: @entangle('filterJobTags') }"
+                                x-on:click.prevent="$dispatch('open-modal', 'job-tag-filter-modal')"
+                                :class="filterJobTags.length > 0 ?
+                                    'bg-blue-500 text-white hover:bg-blue-600' :
+                                    'bg-white text-gray-500 hover:bg-gray-100'"
+                                class="inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                Job Tags Filter
+                            </button>
+
+
+
 
                         </div>
                     </div>
                     <div class="overflow-x-auto">
                         {{-- TABLE --}}
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/4">
+                                    <th scope="col" class="w-1/4 px-6 py-3">
                                         Company
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Job Offering
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Employment Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Slots Available
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         @if ($filter == 'ACTIVE')
                                             Total Applicants
                                         @else
                                             Status
                                         @endif
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Date Posted
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -160,51 +233,92 @@
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
-
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                <p class="mt-2 text-xl font-bold text-center text-black">
                                                     No Records Found!
                                                 </p>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @else
                                     @foreach ($jobpost as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
-                                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full"
+                                                class="flex flex-col px-6 py-4 text-gray-900 lg:flex-row lg:items-center whitespace-nowrap">
+                                                <img class="select-none object-cover w-10 h-10 mb-2 rounded-full shadow-xl lg:mb-0"
                                                     src="{{ asset('storage/' . $data->company->company_img) }}"
-                                                    alt="Jese image">
-                                                <div class="ps-3 text-wrap">
+                                                    alt="Company image">
+                                                <div class="lg:ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
                                                         {{ $data->company->business_Name }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase">
-                                                        {{ $data->company->company_Address }}
+                                                    <div class="text-sm font-normal text-gray-500 uppercase">
+                                                        {{ $data->company->company_Address }},
                                                         {{ $data->company->barangay->barangay_Name }},
                                                         {{ $data->company->barangay->municipality->municipality_Name }},
                                                         {{ $data->company->barangay->municipality->province->province_Name }}
                                                     </div>
                                                 </div>
+                                                <div class="block mt-2 text-sm text-gray-500 lg:hidden">
+                                                    {{ $data->job_Title }}
+
+                                                </div>
+                                                <div class="block text-sm text-gray-500 lg:hidden">
+                                                    {{ $data->slotsLeft }} slots
+
+                                                </div>
+                                                <div class="block text-sm text-gray-500 lg:hidden">
+                                                    @if ($filter == 'ACTIVE')
+                                                        {{ $data->job_applicants_count }} Applicants
+                                                    @else
+                                                        @if ($data->job_Status == 'ACTIVE')
+                                                            <div class="flex items-center">
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2">
+                                                                </div>
+                                                                ACTIVE
+                                                            </div>
+                                                        @elseif ($data->job_Status == 'PENDING')
+                                                            <div class="flex items-center">
+                                                                <div
+                                                                    class="h-2.5 w-2.5 rounded-full bg-yellow-500 mr-2">
+                                                                </div>
+                                                                {{ $data->job_Status }}
+                                                            </div>
+                                                        @elseif ($data->job_Status == 'CLOSED')
+                                                            <div class="flex items-center">
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 mr-2">
+                                                                </div>
+                                                                {{ $data->job_Status }}
+                                                            </div>
+                                                        @elseif ($data->job_Status == 'COMPLETED')
+                                                            <div class="flex items-center">
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-2">
+                                                                </div>
+                                                                {{ $data->job_Status }}
+                                                            </div>
+                                                        @else
+                                                            <div class="flex items-center">
+                                                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2">
+                                                                </div>
+                                                                {{ $data->job_Status }}
+                                                            </div>
+                                                        @endif
+                                                    @endif
+                                                </div>
 
                                             </th>
-                                            <td class="px-6 py-4">
-                                                <div class="text-base font-semibold">{{ $data->job_Title }}</div>
+                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                {{ $data->job_Title }}
                                             </td>
-                                            <td class="px-6 py-4">
-                                                {{ $data->job_Title == 1 ? 'PART TIME' : 'FULL TIME' }}
+                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                {{ $jobTypes[$data->job_Type] }}
                                             </td>
-                                            <td class="px-6 py-4">
-                                                {{-- {{ $data->job_Slots }} --}}
-
+                                            <td class="hidden px-6 py-4 lg:table-cell">
                                                 {{ $data->slotsLeft }}
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
                                                 <div class="flex items-center">
-
-
                                                     @if ($filter == 'ACTIVE')
                                                         {{ $data->job_applicants_count }}
                                                     @else
@@ -232,22 +346,22 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
                                                 <div class="text-base font-semibold">
-                                                    {{ $data->created_at->format(' g:i A') }}
+                                                    {{ $data->created_at->format('g:i A') }}
                                                 </div>
                                                 <div class="text-base font-semibold">
                                                     {{ $data->created_at->format('F j, Y') }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="flex flex-row  gap-5">
+                                                <div class="flex flex-row gap-5">
                                                     <div x-data="{ tooltip: 'View Job Post Information' }">
                                                         <a wire:navigate
                                                             href="{{ route('admin.jobpost', ['id' => $data->job_id]) }}"
                                                             x-tooltip="tooltip" type="button"
-                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                 viewBox="0 0 24 24" fill="currentColor">
                                                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                                 <path fill-rule="evenodd"
@@ -262,7 +376,7 @@
                                                             <a wire:navigate
                                                                 href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
                                                                 x-tooltip="tooltip" type="button"
-                                                                class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center border rounded-lg text-cyan-700 border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300">
                                                                 <svg class="w-5 h-5 " aria-hidden="true"
                                                                     xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" fill="none"
@@ -274,22 +388,20 @@
                                                             </a>
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </td>
-
-
                                         </tr>
                                     @endforeach
                                 @endif
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 
                 {{-- PAGINATION --}}
                 <div class="mt-4">
-                    {{ $jobpost->links('vendor.livewire.tailwind') }}
+                    {{ $jobpost->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
                 </div>
 
             </div>
@@ -299,4 +411,297 @@
         </div>
 
     </div>
+
+
+
+    <x-modal name="industry-filter-modal" focusable>
+        <div class="items-center w-full max-w-4xl px-6 py-6">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Filter Industry') }}
+            </h2>
+            <hr>
+
+            <div class="relative mt-4">
+                <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
+
+                    <label for="table-search" class="sr-only">Search</label>
+                    <div class="relative">
+                        <div
+                            class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
+                            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+
+
+                        <input wire:model.live='searchIndustry' type="search"
+                            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Search industry">
+                    </div>
+
+
+                </div>
+
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+                            <tr>
+                                <th scope="col" class="w-1/4 px-4 py-2 "> <!-- Hidden on small screens -->
+                                </th>
+                                <th scope="col" class="px-4 py-2 uppercase">Job Industry</th>
+                                <th scope="col" class="hidden px-4 py-2 uppercase sm:table-cell">Code</th>
+                                <!-- Hidden on small screens -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($industry->isEmpty())
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                            <div class="p-6 bg-gray-100 rounded-full">
+                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-width="2"
+                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                </svg>
+                                            </div>
+                                            <p class="mt-2 text-xl font-bold text-center text-black">No Record Found!
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @else
+                                @foreach ($industry as $data)
+                                    <tr wire:key='industry-{{ $data->industry_id }}'
+                                        class="bg-white border-b cursor-pointer hover:bg-gray-50"
+                                        onclick="document.getElementById('industry-{{ $data->industry_id }}').click();">
+                                        <td class="px-6 py-4 text-center">
+                                            <!-- Hidden on small screens -->
+                                            <input wire:model="mountIndustryFilter" type="checkbox"
+                                                id="industry-{{ $data->industry_id }}"
+                                                value="{{ $data->industry_id }}"
+                                                onclick="document.getElementById('industry-{{ $data->industry_id }}').click();"
+                                                class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
+                                            <span
+                                                class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
+                                                    viewBox="0 0 20 20" fill="currentColor" stroke="currentColor"
+                                                    stroke-width="1">
+                                                    <path fill-rule="evenodd"
+                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                            </span>
+                                            </label>
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            <div class="text-base font-semibold uppercase">{{ $data->industry_Title }}
+                                            </div>
+                                            <!-- Additional information for mobile view -->
+                                            <div class="text-sm text-gray-500 sm:hidden">Code:
+                                                {{ $data->industry_Code }}</div>
+                                        </td>
+                                        <td class="hidden px-4 py-2 sm:table-cell"> <!-- Hidden on small screens -->
+                                            <div class="text-base font-semibold uppercase">{{ $data->industry_Code }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+            {{-- PAGINATION --}}
+            <div class="mt-4">
+                {{ $industry->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
+            </div>
+
+
+            <div class="flex justify-between mt-6">
+                <x-secondary-button type="button" x-data=""
+                    x-on:click="$dispatch('close-modal', 'industry-filter-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <div>
+                    <x-danger-button wire:click.prevent="resetIndustry">
+                        {{ __('Reset') }}
+                    </x-danger-button>
+                    <x-primary-button wire:loading.attr="disabled" wire:click.prevent="mountIndustry" class="ms-3"
+                        type="button">
+                        {{ __('Confirm') }}
+                        <div wire:loading.delay.long wire:target="mountIndustry" role="status">
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
+                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    fill="currentFill" />
+                            </svg>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </x-primary-button>
+                </div>
+
+
+            </div>
+        </div>
+
+    </x-modal>
+
+    <x-modal name="job-tag-filter-modal" focusable>
+        <div class="items-center w-full max-w-4xl px-6 py-6">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Filter Job Tags') }}
+            </h2>
+            <hr>
+
+            <div class="relative mt-4">
+                <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
+                    <label for="table-search" class="sr-only">Search</label>
+                    <div class="relative">
+                        <div
+                            class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
+                            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+
+                        <input type="search" wire:model.live='searchTags'
+                            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Search Job Position">
+                    </div>
+
+
+                </div>
+                <div class="overflow-x-auto ">
+
+                    <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+                            <tr>
+                                <th scope="col" class="w-1/4 px-6 py-3"></th> <!-- Hidden on small screens -->
+                                <th scope="col" class="px-6 py-3 uppercase">Job Position</th>
+                                <th scope="col" class="hidden px-6 py-3 uppercase md:table-cell">Code</th>
+                                <!-- Hidden on smaller than md screens -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($jobposition->isEmpty())
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="flex flex-col items-center justify-center mt-24 mb-24">
+                                            <div class="p-6 bg-gray-100 rounded-full">
+                                                <svg class="w-24 h-24 text-black" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-width="2"
+                                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                                                </svg>
+                                            </div>
+                                            <p class="mt-2 text-xl font-bold text-center text-black">No Record Found!
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @else
+                                @foreach ($jobposition as $data)
+                                    <tr wire:key='jobTags-{{ $data->position_id }}'
+                                        class="bg-white border-b cursor-pointer hover:bg-gray-50"
+                                        onclick="document.getElementById('jobTags-{{ $data->position_id }}').click();">
+                                        <td class="px-6 py-4 text-center">
+                                            <input wire:model="mountJobTagsFilter" type="checkbox"
+                                                id="jobTags-{{ $data->position_id }}"
+                                                value="{{ $data->position_id }}"
+                                                onclick="document.getElementById('jobTags-{{ $data->position_id }}').click();"
+                                                class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
+                                            <span
+                                                class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"
+                                                    viewBox="0 0 20 20" fill="currentColor" stroke="currentColor"
+                                                    stroke-width="1">
+                                                    <path fill-rule="evenodd"
+                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                            </span>
+                                            </label>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="text-base font-semibold uppercase">
+                                                {{ $data->position_Title }}
+                                            </div>
+                                            <div class="text-sm text-gray-600 sm:hidden">
+                                                Code: {{ $data->position_Code }}
+                                                <!-- Extra information for mobile screens -->
+                                            </div>
+                                        </td>
+                                        <td class="hidden px-6 py-4 md:table-cell">
+                                            <div class="text-base font-semibold uppercase">{{ $data->position_Code }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            {{-- PAGINATION --}}
+            <div class="mt-4">
+                {{ $jobposition->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
+            </div>
+
+            <div class="flex justify-between mt-6">
+                <x-secondary-button type="button" x-data=""
+                    x-on:click="$dispatch('close-modal', 'job-tag-filter-modal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <div>
+                    <x-danger-button wire:click.prevent="resetJobTags">
+                        {{ __('Reset') }}
+                    </x-danger-button>
+                    <x-primary-button wire:loading.attr="disabled" wire:click.prevent="mountJobTags" class="ms-3"
+                        type="button">
+                        {{ __('Confirm') }}
+                        <div wire:loading.delay.long wire:target="mountJobTags" role="status">
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
+                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    fill="currentFill" />
+                            </svg>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </x-primary-button>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </x-modal>
+
 </div>

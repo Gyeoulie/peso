@@ -3,6 +3,7 @@
 namespace App\Livewire\Public;
 
 use App\Models\Barangay;
+use App\Models\Employee;
 use App\Models\Industry_preference;
 use App\Models\Job_Preference;
 use App\Models\Programs;
@@ -21,6 +22,7 @@ class Trainings extends Component
     use WithPagination;
     use WithoutUrlPagination;
     public $ticket = [];
+    public $ticketData = [];
 
     public $search, $searchHistory, $sortType, $sortDate, $filter;
 
@@ -61,6 +63,11 @@ class Trainings extends Component
                 'program_id' => $data->program_id,
                 'employee_id' => $data->employee_id,
                 'created_at' => $data->created_at->format('Y-m-d H:i:s'), // Explicitly format the timestamp
+            ];
+
+            $this->ticketData = [
+                'programTitle' => $data->programs->program_Title,
+                'programDate' => $data->programs->program_Deadline->format('F j, Y'),
             ];
 
             // Encrypt the ticket data
@@ -106,8 +113,7 @@ class Trainings extends Component
     public function getRecommended($id)
     {
 
-        $userMunicipalityId = Barangay::where('barangay_id', $id)
-            ->value('municipality_id');
+        $userMunicipalityId = Employee::find($id)->barangay->municipality_id;
 
         $userJobPreferences = Job_Preference::where('employee_id', $id)
             ->pluck('position_id');
@@ -121,15 +127,22 @@ class Trainings extends Component
                 $query->where('municipality_id', $userMunicipalityId);
             })
             ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
-                // Ensure that either job tags match or industry matches, or both
-                $query->where(function ($query) use ($userJobPreferences) {
-                    $query->whereHas('program_tags', function ($query) use ($userJobPreferences) {
-                        $query->whereIn('position_id', $userJobPreferences);
-                    });
+                $query->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                    $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
+                        $q->whereIn('position_id', $userJobPreferences);
+                    })
+                        ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                            $q->whereIn('industry_id', $userIndustryPreference);
+                        });
                 })
                     ->orWhere(function ($query) use ($userIndustryPreference) {
-                        $query->whereHas('job_industry', function ($query) use ($userIndustryPreference) {
-                            $query->whereIn('industry_id', $userIndustryPreference);
+                        $query->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                            $q->whereIn('industry_id', $userIndustryPreference);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($userJobPreferences) {
+                        $query->whereHas('program_tags.job_positions', function ($q) use ($userJobPreferences) {
+                            $q->whereIn('position_id', $userJobPreferences);
                         });
                     });
             })
@@ -144,21 +157,22 @@ class Trainings extends Component
                         $query->where('industry_Title', 'like', '%' . $this->search . '%');
                     });
             })
-            ->withCount(['program_tags as program_tags_count' => function ($query) use ($userJobPreferences) {
+            ->withCount(['program_tags as tags_count' => function ($query) use ($userJobPreferences) {
                 $query->whereIn('position_id', $userJobPreferences);
             }])
             ->withCount(['job_industry as industry_count' => function ($query) use ($userIndustryPreference) {
                 $query->whereIn('industry_id', $userIndustryPreference);
             }])
             ->orderByRaw('
-    CASE
-        WHEN industry_count > 0 AND program_tags_count > 0 THEN 1
-        WHEN industry_count > 0 AND program_tags_count = 0 THEN 2
-        WHEN industry_count = 0 AND program_tags_count > 0 THEN 3
-        ELSE 4
-    END
-')
-            ->orderByDesc('program_tags_count')
+        CASE
+            WHEN industry_count > 0 AND tags_count > 0 THEN 1
+            WHEN industry_count > 0 AND tags_count = 0 THEN 2
+            WHEN industry_count = 0 AND tags_count > 0 THEN 3
+            ELSE 4
+        END
+    ')
+            ->orderByDesc('tags_count')
+            ->orderByDesc('industry_count')
             ->distinct();
     }
 
@@ -215,7 +229,7 @@ class Trainings extends Component
     public function closeTicket()
     {
         $this->dispatch('close-modal', 'ticket-modal');
-        $this->reset('ticket');
+        $this->reset('ticket', 'ticketData');
     }
     public function render()
     {
@@ -251,7 +265,7 @@ class Trainings extends Component
             $query->orderBy('created_at', $this->sortDate);
         }
 
-        $programList = $query->paginate(15, ['*'], 'events');
+        $programList = $query->paginate(9, ['*'], 'events');
 
         if (Auth::check()) {
 

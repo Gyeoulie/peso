@@ -1,40 +1,84 @@
-<div class="sm:mx-10">
+<div wire:poll class="lg:mx-10">
     <div class="container py-8">
 
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+        <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
 
-            <div class="col-span-4 sm:col-span-12">
+            <div class="col-span-4 lg:col-span-12">
 
                 {{-- TITLE --}}
                 <h1 class="text-2xl font-bold">Job Posting \ Applicants List \ Applicant Overview</h1>
             </div>
 
             {{-- ALERT MESSAGE FOR MATCH --}}
-            <div class="col-span-4 sm:col-span-12">
+            <div class="col-span-4 lg:col-span-12">
 
                 @if ($isMatch === true)
                     <div class="bg-green-100 shadow rounded-lg p-6">
                         <div class="flex flex-row items-center justify-between">
-                            <p class="text-green-700 font-bold text-xl">This job matches the applicant's preferences</p>
-                            <svg class="w-9 h-9 sm:w-9 sm:h-9 text-green-700 me-2.5" aria-hidden="true"
+                            <p class="text-green-700 font-bold text-xl">This job matches the applicant's preferences.</p>
+                            <svg class="w-9 h-9 lg:w-9 lg:h-9 text-green-700 me-2.5" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                 <path
                                     d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
                             </svg>
                         </div>
+                        @if ($isResident === false)
+                            <div class="flex flex-row items-center mt-2 gap-1">
+                                <svg class="w-4 h-4 lg:w-6 lg:h-6 text-yellow-700" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+
+                                <p class="text-yellow-700 font-bold text-sm">This applicant is from a different
+                                    municipality.
+                                </p>
+                            </div>
+                        @endif
                     </div>
                 @else
                     <div class="bg-red-100 shadow rounded-lg p-6">
                         <div class="flex flex-row items-center justify-between">
                             <p class="text-red-700 font-bold  text-xl">This job doesn't match the applicant's
-                                preferences
+                                preferences.
                             </p>
-                            <svg class="w-9 h-9 sm:w-10 sm:h-10 text-red-700 me-2" aria-hidden="true"
+                            <svg class="w-9 h-9 lg:w-10 lg:h-10 text-red-700 me-2" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path fill-rule="evenodd"
                                     d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        @if ($isResident === false)
+                            <div class="flex flex-row items-center mt-2 gap-1">
+                                <svg class="w-4 h-4 lg:w-6 lg:h-6 text-yellow-700" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+
+                                <p class="text-yellow-700 font-bold text-sm">This applicant is from a different
+                                    municipality.
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
+                @if ($isResident === false)
+                    <div class="bg-yellow-100 shadow rounded-lg p-6 mt-2">
+                        <div class="flex flex-row items-center justify-between">
+                            <p class="text-yellow-700 font-bold  text-xl">This applicant is from a different
+                                municipality.
+                            </p>
+                            <svg class="w-9 h-9 lg:w-10 lg:h-10 text-yellow-700 me-2" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
                                     clip-rule="evenodd" />
                             </svg>
                         </div>
@@ -44,21 +88,23 @@
             </div>
 
             {{-- COMPANY CONTAINER --}}
-            <div class="col-span-4 px-2 sm:px-0">
+            <div class="col-span-4 px-2 lg:px-0">
                 <div class="bg-white shadow rounded-lg p-6">
 
                     <div class="flex flex-col items-center">
                         {{-- IMAGE --}}
                         <img src="{{ asset('storage/' . $applicant->job_posting->company->company_img) }}"
-                            class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 object-cover shadow-xl">
+                            class="select-none w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 object-cover shadow-xl">
                         </img>
 
                         <h1 class="text-xl font-bold">{{ $applicant->job_posting->company->business_Name }}</h1>
                         <p class="text-gray-700">#{{ $applicant->job_posting->company->company_id }}</p>
 
                         <div class="flex flex-row mt-6 justify-between w-full">
-                            <p class="text-md text-gray-800">{{ $applicant->job_posting->company->company_Email }}</p>
-                            <p class="text-sm text-gray-800">{{ $applicant->job_posting->company->company_Pnum }}</p>
+                            <p class="text-md text-gray-800">
+                                {{ $applicant->job_posting->company->company_Email }}</p>
+                            <p class="text-sm text-gray-800">
+                                {{ $applicant->job_posting->company->company_Pnum }}</p>
                         </div>
 
                     </div>
@@ -78,27 +124,48 @@
 
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Industry:</li>
-                                <p class="ms-4 text-right">{{ $applicant->job_posting->job_industry->industry_Title }}
+                                <p class="ms-4 text-right">
+                                    {{ $applicant->job_posting->job_industry->industry_Title }}
                                 </p>
                             </div>
 
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Education Attainment:</li>
-                                <p class="ms-4 text-right">{{ $eduLevels[$applicant->job_posting->job_Edu] }}</p>
+                                <p class="ms-4 text-right">{{ $eduLevels[$applicant->job_posting->job_Edu] }}
+                                </p>
                             </div>
 
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Salary Range:</li>
-                                <p class="ms-4 text-right">₱{{ number_format($applicant->job_posting->job_MinWage) }} -
-                                    ₱{{ number_format($applicant->job_posting->job_MaxWage) }}</p>
+                                <p class="ms-4 text-right">
+                                    @if ($applicant->job_posting->job_MinWage)
+                                        ₱{{ number_format($applicant->job_posting->job_MinWage) }}
+                                        @if ($applicant->job_posting->job_MaxWage)
+                                            -
+                                            ₱{{ number_format($applicant->job_posting->job_MaxWage) }}
+                                        @endif
+                                    @else
+                                        Salary Not Specified
+                                    @endif
+
                             </div>
+
+
+                            @if ($applicant->job_posting->job_Disability === 1)
+                                <div class="flex flex-row justify-between">
+                                    <li class="mb-2 font-bold">PWDs:</li>
+                                    <p class="ms-4">Accepted</p>
+                                </div>
+                            @endif
 
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Address:</li>
-                                <p class="ms-4 uppercase text-right">{{ $applicant->job_posting->job_Address }},
+                                <p class="ms-4 uppercase text-right">
+                                    {{ $applicant->job_posting->job_Address }},
                                     {{ $applicant->job_posting->barangay->barangay_Name }},
                                     {{ $applicant->job_posting->barangay->municipality->municipality_Name }},
-                                    {{ $applicant->job_posting->barangay->municipality->province->province_Name }}</p>
+                                    {{ $applicant->job_posting->barangay->municipality->province->province_Name }}
+                                </p>
                             </div>
 
                         </ul>
@@ -170,7 +237,7 @@
 
 
 
-            <div class="col-span-4 sm:col-span-8 px-2 sm:px-0">
+            <div class="col-span-4 lg:col-span-8 px-2 lg:px-0">
                 {{-- CONTAINER FOR APPLICANT INFORMATION --}}
                 <div class="bg-white shadow rounded-lg p-6">
                     <div class="flex flex-row justify-between items-center  mb-6">
@@ -203,7 +270,7 @@
 
 
                     {{-- PHONE DATE (SMALL SCREEN) --}}
-                    <div class="sm:hidden flex flex-row w-full justify-end">
+                    <div class="lg:hidden flex flex-row w-full justify-end">
                         <h1 class="text-sm font-light ml-auto mr-5 mt-1 mb-auto">April 28, 2024</h1>
                     </div>
 
@@ -211,13 +278,14 @@
                         <div class="flex flex-row w-full items-center">
                             {{-- IMG --}}
                             <img src="{{ asset('storage/' . $applicant->employee->pimg) }}"
-                                class="w-32 h-32 bg-gray-300 rounded-lg shrink-0 object-cover shadow-lg">
+                                class="select-none w-32 h-32 bg-gray-300 rounded-lg shrink-0 object-cover shadow-lg">
                             </img>
 
                             <div class="flex flex-col ml-4 w-full">
-                                <h1 class="text-xl sm:text-3xl font-bold">{{ $applicant->employee->fname }}
-                                    {{ $applicant->employee->mname }}. {{ $applicant->employee->lname }}</h1>
-                                <p class="text-sm sm:text-lg text-gray-700">Employee ID:
+                                <h1 class="text-xl lg:text-3xl font-bold uppercase">
+                                    {{ $applicant->employee->fname }}
+                                    {{ $applicant->employee->mname }} {{ $applicant->employee->lname }}</h1>
+                                <p class="text-sm lg:text-lg text-gray-700">Employee ID:
                                     {{ $applicant->employee->employee_id }}</p>
                                 <div>
                                     @if ($applicant->peso_Status == 'PENDING')
@@ -241,12 +309,12 @@
 
                         <div class="flex flex-col w-full">
                             {{-- WEB DATE --}}
-                            <h1 class="hidden sm:block text-lg font-light ml-auto mr-2 mb-auto">
+                            <h1 class="hidden lg:block text-lg font-light ml-auto mr-2 mb-auto">
                                 {{ $applicant->created_at->format('F j, Y') }}
                             </h1>
                             {{-- WEB BUTTONS --}}
                             @if ($applicant->peso_Status == 'PENDING')
-                                <div class="hidden sm:flex flex-row w-full justify-end gap-2">
+                                <div class="hidden lg:flex flex-row w-full justify-end gap-2">
                                     <x-danger-button type="button" x-data=""
                                         x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Not
                                         Recommend</x-danger-button>
@@ -261,7 +329,7 @@
 
                     {{-- MOBILE BUTTONS (SMALL SCREEN) --}}
                     @if ($applicant->peso_Status == 'PENDING')
-                        <div class="sm:hidden flex flex-row w-full mt-4 justify-center space-x-4">
+                        <div class="lg:hidden flex flex-row w-full mt-4 justify-center space-x-4">
                             <x-danger-button type="button" x-data=""
                                 x-on:click.prevent="$dispatch('open-modal', 'reject-modal')">Not
                                 Recommend</x-danger-button>
@@ -272,7 +340,7 @@
 
                     <hr class="my-6 border-t border-gray-300">
 
-                    <div class="flex flex-col sm:flex-row">
+                    <div class="flex flex-col lg:flex-row">
 
                         <div class="flex flex-col w-full">
                             <ul>
@@ -290,7 +358,8 @@
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Gender:</li>
-                                    <p class="ms-4"> {{ $applicant->employee->gender == 1 ? 'Male' : 'Female' }}</p>
+                                    <p class="ms-4">
+                                        {{ $applicant->employee->gender == 1 ? 'Male' : 'Female' }}</p>
                                 </div>
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Contact:</li>
@@ -312,7 +381,26 @@
                                         {{ $totalExperience }} Months
                                     </p>
                                 </div>
-
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">OFW Record:</li>
+                                    <p class="ms-4 uppercase">
+                                        {{ $applicant->employee->ofw == 1 ? 'Yes' : 'No' }}
+                                    </p>
+                                </div>
+                                <div class="flex flex-row">
+                                    <li class="mb-2 font-bold">4Ps Member:</li>
+                                    <p class="ms-4 uppercase">
+                                        {{ $applicant->employee->fourp == 1 ? 'Yes' : 'No' }}
+                                    </p>
+                                </div>
+                                @if ($applicant->employee->fourp == 1 && $applicant->employee->fourpID)
+                                    <div class="flex flex-row">
+                                        <li class="mb-2 font-bold">4Ps Member ID:</li>
+                                        <p class="ms-4 uppercase">
+                                            {{ $applicant->employee->fourpID }}
+                                        </p>
+                                    </div>
+                                @endif
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Address:</li>
@@ -554,60 +642,58 @@
 
 
 </div>
+@push('scripts')
+    @script
+        <script>
+            Livewire.on('viewFile', event => {
+                // Check if the event is an array and has at least one element
+                if (Array.isArray(event) && event.length > 0) {
+                    // Access the first element and then its properties
+                    const data = event[0]; // Assuming the data object is the first element
 
-@script
-    <script>
-        Livewire.on('viewFile', event => {
-            // Check if the event is an array and has at least one element
-            if (Array.isArray(event) && event.length > 0) {
-                // Access the first element and then its properties
-                const data = event[0]; // Assuming the data object is the first element
+                    // Extract URL and handle dynamic keys
+                    const url = data.url;
 
-                // Log the entire data object for verification
-                console.log('Data:', data);
+                    // Ensure URL is present
+                    if (url) {
+                        // Create and configure the form element
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = url;
+                        form.target = '_blank';
 
-                // Extract URL and handle dynamic keys
-                const url = data.url;
+                        // Add CSRF token as a hidden input
+                        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+                        form.appendChild(csrfInput);
 
-                // Ensure URL is present
-                if (url) {
-                    // Create and configure the form element
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = url;
-                    form.target = '_blank';
+                        // Add all data inputs dynamically
+                        Object.entries(data).forEach(([key, value]) => {
+                            if (key !== 'url') {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = key;
+                                input.value = value;
+                                form.appendChild(input);
+                            }
+                        });
 
-                    // Add CSRF token as a hidden input
-                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = '_token';
-                    csrfInput.value = csrfToken;
-                    form.appendChild(csrfInput);
+                        // Append form to the body and submit
+                        document.body.appendChild(form);
+                        form.submit();
 
-                    // Add all data inputs dynamically
-                    Object.entries(data).forEach(([key, value]) => {
-                        if (key !== 'url') {
-                            const input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = key;
-                            input.value = value;
-                            form.appendChild(input);
-                        }
-                    });
-
-                    // Append form to the body and submit
-                    document.body.appendChild(form);
-                    form.submit();
-
-                    // Clean up by removing the form element
-                    document.body.removeChild(form);
+                        // Clean up by removing the form element
+                        document.body.removeChild(form);
+                    } else {
+                        console.error('URL not found in event data');
+                    }
                 } else {
-                    console.error('URL not found in event data');
+                    console.error('Event is not in the expected format');
                 }
-            } else {
-                console.error('Event is not in the expected format');
-            }
-        });
-    </script>
-@endscript
+            });
+        </script>
+    @endscript
+@endpush

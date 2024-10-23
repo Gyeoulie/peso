@@ -3,6 +3,7 @@
 namespace App\Livewire\Public;
 
 use App\Mail\NewJobApplicationNotification;
+use App\Models\Experimental_Features;
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,15 @@ class JobpostView extends Component
         '25' => 'MASTERAL/POST GRADUATE LEVEL',
         '26' => 'MASTERAL/POST GRADUATE',
     ];
+    public $jobTypes = [
+        '0' => 'None',
+        '1' => 'Full Time',
+        '2' => 'Contractual',
+        '3' => 'Part Time',
+        '4' => 'Project-Based',
+        '5' => 'Internship/OJT',
+        '6' => 'Work From Home',
+    ];
 
     public $option;
     public $resume;
@@ -88,13 +98,20 @@ class JobpostView extends Component
 
         $jobpostMunicipalityId = $jobpost->peso->municipality_id;
 
-        if ($userMunicipalityId == $jobpostMunicipalityId) {
-            // Open the apply modal if the user's municipality matches the job posting's municipality
+        $crossJobFeature = Experimental_Features::find(1);
+
+        // Determine whether cross-municipality applications are enabled
+        $isCrossJobEnabled = $crossJobFeature && $crossJobFeature->feature_Status === 'enabled';
+
+        // Check if the user is eligible to apply for the job posting
+        if ($isCrossJobEnabled || $userMunicipalityId == $jobpostMunicipalityId) {
+            // Open the apply modal
             $this->dispatch('open-modal', 'apply-modal');
         } else {
             // Show an error if the user's municipality does not match
             toastr()->error('This job posting is only available to ' . $jobpost->peso->municipality->municipality_Name . ' residents.');
         }
+
     }
 
     public function updateOption($option)

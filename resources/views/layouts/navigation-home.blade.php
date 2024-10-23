@@ -1,12 +1,12 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="px-4 mx-auto max-w-9xl lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="flex items-center shrink-0">
                     <a href="{{ route('welcome') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block w-auto text-gray-800 fill-current h-9" />
                     </a>
                 </div>
 
@@ -14,7 +14,7 @@
 
                 @if (Auth::check())
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <div class="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
 
                         @if (auth()->user()->usertype == 2)
                             <x-nav-link :href="route('fill_profile')" :active="request()->routeIs('fill_profile')">
@@ -73,7 +73,7 @@
                         @endif
                     </div>
                 @else
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <div class="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
@@ -86,7 +86,7 @@
 
             @if (Auth::check() && auth()->user()->usertype > 3)
                 @if (auth()->user()->usertype != 5)
-                    <div class="hidden sm:flex mr-1 ml-auto  w-40 lg:w-96">
+                    <div class="hidden w-40 ml-auto mr-1 lg:flex lg:w-96">
 
 
                         <livewire:components.profile-search />
@@ -96,15 +96,15 @@
                 @endif
 
                 <!-- Settings Dropdown -->
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <div class="hidden lg:flex lg:items-center lg:ms-6">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none">
                                 <div>{{ Auth::user()->name }}</div>
 
                                 <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -140,10 +140,10 @@
                 </div>
 
                 <!-- Hamburger -->
-                <div class="-me-2 flex items-center sm:hidden">
+                <div class="flex items-center -me-2 lg:hidden">
                     <button @click="open = ! open"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        class="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500">
+                        <svg class="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
@@ -156,7 +156,7 @@
             @endif
             @if (Auth::check() && auth()->user()->usertype <= 3)
                 <!-- Settings Dropdown -->
-                <div class="flex flex-row gap-6 items-center justify-end">
+                <div class="flex flex-row items-center justify-end gap-6">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
@@ -168,7 +168,7 @@
 
             @if (!Auth::check())
                 <!-- Settings Dropdown -->
-                <div class="flex flex-row gap-6 justify-end">
+                <div class="flex flex-row justify-end gap-6">
                     <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
                         {{ __('Login') }}
                     </x-nav-link>
@@ -181,7 +181,7 @@
     </div>
     @if (Auth::check())
         <!-- Responsive Navigation Menu -->
-        <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden relative">
+        <div :class="{ 'block': open, 'hidden': !open }" class="relative hidden lg:hidden">
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
@@ -229,10 +229,10 @@
                     <div x-data="{
                         dropdowns: {
                             roleManagement: ['admin-users-peso', 'admin-users-jobseeker', 'admin-users-employer', 'admin-users-jobseeker-overview', 'admin-users-employer-overview'].includes(@js(request()->route()->getName())),
-                            trainings: ['admin-training', 'admin-create-training', 'admin-view-training'].includes(@js(request()->route()->getName())),
+                            trainings: ['admin-training', 'admin-create-training', 'admin-view-training', 'admin-registrants-training'].includes(@js(request()->route()->getName())),
                             reports: ['admin-reports-barangay', 'admin-reports-municipality', 'super-municipality', 'super-province'].includes(@js(request()->route()->getName())),
                             dataManagement: ['admin-certificate', 'admin-eligibility', 'admin-location', 'admin-industry'].includes(@js(request()->route()->getName())),
-                            maintenance: ['admin-audits', 'admin-peso', 'admin-backups'].includes(@js(request()->route()->getName())),
+                            maintenance: ['admin-audits', 'admin-peso', 'admin-backups', 'admin-municipality-audits', 'admin-features'].includes(@js(request()->route()->getName())),
                         },
                         activeItem: 'ml-6 block p-2 w-full border-l-4 border-indigo-400 text-start text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out',
                         inactiveItem: 'ml-6 block p-2 w-full border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out',
@@ -264,7 +264,7 @@
 
                             <div>
                                 <div x-on:click="dropdowns.roleManagement = !dropdowns.roleManagement"
-                                    class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    class="flex flex-row items-center justify-between w-full py-2 text-base font-medium text-gray-600 transition duration-150 ease-in-out border-l-4 border-transparent ps-3 pe-4 text-start hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300">
                                     Role Management
                                     <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 10 6">
@@ -293,7 +293,7 @@
                         @if (Auth::check() && Auth::user()->usertype == 11)
                             <div>
                                 <div x-on:click="dropdowns.dataManagement = !dropdowns.dataManagement"
-                                    class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    class="flex flex-row items-center justify-between w-full py-2 text-base font-medium text-gray-600 transition duration-150 ease-in-out border-l-4 border-transparent ps-3 pe-4 text-start hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300">
                                     Data Management
                                     <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 10 6">
@@ -311,11 +311,11 @@
                                         Eligibility and License
                                     </a>
                                     <a :class="currentRoute === 'admin-location' ? activeItem : inactiveItem"
-                                        wire:navigate href="{{ route('admin-location') }}">
+                                        href="{{ route('admin-location') }}">
                                         Locations
                                     </a>
                                     <a :class="currentRoute === 'admin-industry' ? activeItem : inactiveItem"
-                                        wire:navigate href="{{ route('admin-industry') }}">
+                                        href="{{ route('admin-industry') }}">
                                         Positions and Industry
                                     </a>
                                 </div>
@@ -333,7 +333,7 @@
                             <!-- Trainings Dropdown -->
                             <div>
                                 <div x-on:click="dropdowns.trainings = !dropdowns.trainings"
-                                    class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    class="flex flex-row items-center justify-between w-full py-2 text-base font-medium text-gray-600 transition duration-150 ease-in-out border-l-4 border-transparent ps-3 pe-4 text-start hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300">
                                     Trainings
                                     <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 10 6">
@@ -358,7 +358,7 @@
                         <!-- Reports Dropdown -->
                         <div>
                             <div x-on:click="dropdowns.reports = !dropdowns.reports"
-                                class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
+                                class="flex flex-row items-center justify-between w-full py-2 text-base font-medium text-gray-600 transition duration-150 ease-in-out border-l-4 border-transparent ps-3 pe-4 text-start hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300">
                                 Reports
                                 <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 10 6">
@@ -389,36 +389,48 @@
                                 @endif
                             </div>
                         </div>
-                        @if (Auth::check() && Auth::user()->usertype == 11)
-                            <div>
-                                <div x-on:click="dropdowns.maintenance = !dropdowns.maintenance"
-                                    class="flex flex-row items-center justify-between w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">
-                                    Maintenance
-                                    <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 1 4 4 4-4" />
-                                    </svg>
-                                </div>
-                                <div x-show="dropdowns.maintenance" x-cloak>
+
+                        <div>
+                            <div x-on:click="dropdowns.maintenance = !dropdowns.maintenance"
+                                class="flex flex-row items-center justify-between w-full py-2 text-base font-medium text-gray-600 transition duration-150 ease-in-out border-l-4 border-transparent ps-3 pe-4 text-start hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300">
+                                Maintenance
+                                <svg class="w-3 h-3 me-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m1 1 4 4 4-4" />
+                                </svg>
+                            </div>
+                            <div x-show="dropdowns.maintenance" x-cloak>
+                                @if (Auth::check() && Auth::user()->usertype == 11)
                                     <a :class="currentRoute === 'admin-peso' ? activeItem : inactiveItem"
-                                        wire:navigate href="{{ route('admin-peso') }}">
+                                        href="{{ route('admin-peso') }}">
                                         PESO Branch
                                     </a>
                                     <a :class="currentRoute === 'admin-audits' ? activeItem : inactiveItem"
-                                        wire:navigate href="{{ route('admin-audits') }}">
+                                        href="{{ route('admin-audits') }}">
                                         Audit Logs
                                     </a>
                                     <a :class="currentRoute === 'admin-backups' ? activeItem : inactiveItem"
-                                        wire:navigate href="{{ route('admin-backups') }}">
+                                        href="{{ route('admin-backups') }}">
                                         Backups
                                     </a>
-                                </div>
+                                    <a :class="currentRoute === 'admin-features' ? activeItem : inactiveItem"
+                                        href="{{ route('admin-features') }}">
+                                        Experimental Features
+                                    </a>
+                                @endif
+                                @if (Auth::check() && Auth::user()->usertype != 11)
+                                    <a :class="currentRoute === 'admin-municipality-audits' ? activeItem : inactiveItem"
+                                        href="{{ route('admin-municipality-audits') }}">
+                                        Audit Logs
+                                    </a>
+                                @endif
                             </div>
-                        @endif
-                    </div>
+                        </div>
 
+                    </div>
                 @endif
+
 
 
 
@@ -429,8 +441,8 @@
             <!-- Responsive Settings Options -->
             <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="px-4">
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="text-base font-medium text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="text-sm font-medium text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
 
                 <div class="mt-3 space-y-1">

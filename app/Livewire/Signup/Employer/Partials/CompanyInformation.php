@@ -28,7 +28,7 @@ class CompanyInformation extends Component
     public function rules()
     {
         return [
-            'cimg' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'cimg' => 'required|image|mimes:jpeg,png,jpg',
         ];
     }
     public function messages()
@@ -37,7 +37,7 @@ class CompanyInformation extends Component
             'cimg.required' => 'The image is required.',
             'cimg.image' => 'The uploaded file must be an image.',
             'cimg.mimes' => 'The image must be a file of type: jpeg, png, jpg.',
-            'cimg.max' => 'The image may not be greater than 5MB.',
+            // 'cimg.max' => 'The image may not be greater than 15MB.',
         ];
     }
 
@@ -101,7 +101,7 @@ class CompanyInformation extends Component
     public function next()
     {
         $rules = [
-            'tin' => 'required|digits:9|unique:company,company_TIN',
+            'tin' => 'required_if:empType,2|digits:9|unique:company,company_TIN',
             'business' => 'required|string|min:5|unique:company,business_Name',
             'trade' => 'required|string|min:5|unique:company,trade_Name',
             'locType' => 'required',
@@ -111,11 +111,11 @@ class CompanyInformation extends Component
             'address' => 'required|string|min:5',
             'barangayID' => 'required',
             'industryData' => 'required|array|min:1',
-            'cimg' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'cimg' => 'required|image|mimes:jpeg,png,jpg',
         ];
 
         $messages = [
-            'tin.required' => 'The TIN is required.',
+            'tin.required_if' => 'The TIN is required for private employers.',
             'tin.digits' => 'TIN must have 9 characters.',
             'tin.unique' => 'The TIN has already been taken.',
 
@@ -150,7 +150,7 @@ class CompanyInformation extends Component
             'cimg.required' => 'The image is required.',
             'cimg.image' => 'The uploaded file must be an image.',
             'cimg.mimes' => 'The image must be a file of type: jpeg, png, jpg.',
-            'cimg.max' => 'The image may not be greater than 5MB.',
+            // 'cimg.max' => 'The image may not be greater than 15MB.',
         ];
 
         $this->validate($rules, $messages);
@@ -171,7 +171,7 @@ class CompanyInformation extends Component
             'industryData' => $this->industryData,
 
         ]);
-        $this->dispatch('nextStep');
+        $this->dispatch('nextStep', $this->stepNumber + 1);
 
     }
 

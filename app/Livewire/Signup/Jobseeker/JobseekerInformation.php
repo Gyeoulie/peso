@@ -16,6 +16,7 @@ use App\Models\Training;
 use App\Models\Work_Exp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -76,6 +77,10 @@ class JobseekerInformation extends Component
                 'tinnum' => $allData['tin'],
                 'empstatus' => $allData['empStatus'],
                 'empstatusdesc' => $allData['empDescription'],
+                'ofw' => $allData['ofw'],
+                'fourp' => $allData['fourP'],
+                'fourpID' => $allData['fourPID'],
+                'empprofile' => $allData['privacySetting'],
                 'pimg' => $imgfinalPath,
             ]);
 
@@ -135,7 +140,7 @@ class JobseekerInformation extends Component
                         'edu_Level' => $educationData['eduLevel'],
                         'edu_Course' => $educationData['eduCourse'],
                         'edu_Started' => date('Y-m-d', strtotime($educationData['eduStart'])),
-                        'edu_Ended' => date('Y-m-d', strtotime($educationData['eduEnd'])),
+                        'edu_Ended' => is_null($educationData['eduEnd']) ? null : date('Y-m-d', strtotime($educationData['eduEnd'])),
                         'edu_Ongoing' => $ongoing,
                     ]);
                 }
@@ -190,7 +195,7 @@ class JobseekerInformation extends Component
                         'work_Address' => $workExperienceData['workAdd'],
                         'position_id' => $workExperienceData['workPositionId'],
                         'work_Start' => date('Y-m-d', strtotime($workExperienceData['workStart'])),
-                        'work_End' => date('Y-m-d', strtotime($workExperienceData['workEnd'])),
+                        'work_End' => is_null($workExperienceData['workEnd']) ? null : date('Y-m-d', strtotime($workExperienceData['workEnd'])),
                         'work_Status' => $workExperienceData['workStatus'],
                     ]);
                 }
@@ -216,7 +221,8 @@ class JobseekerInformation extends Component
         } catch (\Exception $e) {
             DB::rollback();
             $success = false;
-            dd($e->getMessage());
+            // dd($e->getMessage());
+            Log::error('Error registering employee: ' . $e->getMessage());
             toastr()->error('Error in updating user details, please try again later');
 
         }
@@ -231,15 +237,15 @@ class JobseekerInformation extends Component
     }
 
     #[On('nextStep')]
-    public function nextStep()
+    public function nextStep($id)
     {
-        $this->currentStep++;
+        $this->currentStep = $id;
     }
 
     #[On('prevStep')]
-    public function prevStep()
+    public function prevStep($id)
     {
-        $this->currentStep--;
+        $this->currentStep = $id;
     }
 
     public function render()

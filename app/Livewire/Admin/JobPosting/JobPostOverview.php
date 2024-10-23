@@ -3,10 +3,12 @@
 namespace App\Livewire\Admin\JobPosting;
 
 use App\Mail\JobPostApplicationNotification;
+use App\Mail\JobpostCancelledNotification;
 use App\Mail\JobPostingNotification;
 use App\Models\Employee;
 use App\Models\Job_Posting;
 use App\Models\Requirements;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +22,7 @@ class JobPostOverview extends Component
 
     public $id;
 
-    public $remarks;
+    public $remarks, $cancelRemarks;
 
     public $eduLevels = [
         '0' => 'NONE',
@@ -52,7 +54,19 @@ class JobPostOverview extends Component
         '26' => 'MASTERAL/POST GRADUATE',
     ];
 
+    public $jobTypes = [
+        '0' => 'None',
+        '1' => 'Full Time',
+        '2' => 'Contractual',
+        '3' => 'Part Time',
+        '4' => 'Project-Based',
+        '5' => 'Internship/OJT',
+        '6' => 'Work From Home',
+    ];
+
     public $selectedReqPassedId;
+
+    public $cancelJob, $rejectJob, $approveJob;
 
     public function mount()
     {
@@ -69,6 +83,10 @@ class JobPostOverview extends Component
             return $this->redirectRoute('dashboard');
 
         }
+
+        $this->cancelJob = false;
+        $this->rejectJob = false;
+        $this->approveJob = false;
 
     }
 
@@ -155,11 +173,67 @@ class JobPostOverview extends Component
         }
     }
 
+    public function cancelJobPost()
+    {
+        // dd('hello');
+        $user = Auth::user();
+
+        // Validate the input
+        $this->validate(
+            [
+                'cancelRemarks' => 'required|string',
+            ],
+            [
+                'cancelRemarks.required' => 'The cancellation remarks are required.',
+                'cancelRemarks.string' => 'The cancellation remarks must be a valid string.',
+            ]
+        );
+
+        DB::beginTransaction();
+
+        try {
+            // Find and update the job posting
+            $jobPosting = Job_Posting::findOrFail($this->id);
+
+            $jobPosting->update([
+                'job_Status' => 'CANCELLED',
+                'peso_Remarks' => $this->cancelRemarks,
+                'peso_id' => $user->peso_accounts->peso_accounts_id,
+
+            ]);
+
+            Artisan::call('app:cancel-job-posting', [
+                'jobId' => $this->id,
+            ]);
+            DB::commit();
+            Mail::to($jobPosting->company->user->email)
+                ->queue(new JobpostCancelledNotification($jobPosting));
+            $this->dispatch('close-modal', 'cancel-modal');
+            toastr()->success('Job Posting Cancelled');
+
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+            dd($e->getMessage());
+
+            // Log the error for debugging
+            Log::error('Job update failed', ['error' => $e->getMessage()]);
+
+            // Show an error message
+            toastr()->error('An error occurred while updating the job posting.');
+            return;
+        }
+
+    }
+
     public function close($modal)
     {
         $this->reset('remarks');
         $this->resetValidation();
         $this->dispatch('close-modal', $modal);
+        $this->cancelJob = false;
+        $this->rejectJob = false;
+        $this->approveJob = false;
     }
 
     public function getMatched($jobpost)
@@ -171,21 +245,23 @@ class JobPostOverview extends Component
         $jobTagIds = $jobpost->job_tags->pluck('position_id')->toArray();
 
         // Build the query to get matched employees
-        return Employee::whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
-            $query->where('municipality_id', $jobMunicipalityId);
+        return Employee::whereHas('user', function ($query) {
+            $query->where('userstatus', 1); // Ensure userstatus == 1
         })
+            ->whereHas('barangay.municipality', function ($query) use ($jobMunicipalityId) {
+                $query->where('municipality_id', $jobMunicipalityId);
+            })
             ->whereHas('education', function ($query) use ($jobEducationLevel) {
                 $query->where('edu_Level', '>=', $jobEducationLevel);
             })
             ->where(function ($query) use ($jobTagIds, $jobIndustryId) {
+                // Broad matching: either job preferences or industry preference, or both
                 $query->whereHas('job_preference', function ($query) use ($jobTagIds) {
                     $query->whereIn('position_id', $jobTagIds);
                 })
-                    ->orWhere(function ($query) use ($jobIndustryId) {
+                    ->orWhereHas('industry_preference', function ($query) use ($jobIndustryId) {
                         if ($jobIndustryId) {
-                            $query->whereHas('industry_preference', function ($query) use ($jobIndustryId) {
-                                $query->where('industry_id', $jobIndustryId);
-                            });
+                            $query->where('industry_id', $jobIndustryId);
                         }
                     });
             })
@@ -226,6 +302,8 @@ class JobPostOverview extends Component
             },
         ])
             ->where('requirement_Status', 1)
+            ->where('requirement_Type', $jobpost->company->employer_Type)
+
             ->get();
 
         return view('livewire.admin.job-posting.job-post-overview', compact('jobpost', 'matchingEmployees', 'requirements'));

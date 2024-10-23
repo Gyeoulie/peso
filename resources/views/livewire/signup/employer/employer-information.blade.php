@@ -1,7 +1,7 @@
 <div>
     <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
         <!-- Primary Navigation Menu -->
-        <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-9xl mx-auto px-4 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <!-- Logo -->
@@ -10,7 +10,7 @@
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                         </a>
                     </div>
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <div class="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
 
                         @if (auth()->user()->usertype == 3)
                             <x-nav-link wire:navigate :href="route('fill_employer')" :active="request()->routeIs('fill_employer')">
@@ -36,30 +36,30 @@
     </nav>
 
 
-    <div class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
+    <div class="grid grid-cols-4 lg:grid-cols-12 mt-4 mx-8 p-0 lg:p-6 gap-5">
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
 
             <div class="flex flex-col items-center gap-3 text-center">
                 <x-application-logo class="w-[150px] h-[150px] text-gray-500" />
-                <h1 class="text-3xl sm:text-4xl  font-bold">Complete your Details</h1>
+                <h1 class="text-3xl lg:text-4xl  font-bold">Complete your Details</h1>
             </div>
 
         </div>
 
-        <div class="col-span-4 sm:col-start-2 sm:col-end-12" x-data="{
+        <div class="col-span-4 lg:col-start-2 lg:col-end-12" x-data="{
             currentStep: @entangle('currentStep'),
             activeTab: 'bg-blue-400',
             inactiveTab: 'bg-white',
         }">
 
             <div class="flex flex-col items-center  text-center">
-                <h1 class="sm:hidden  text-2xl font-bold mb-2"><span class="text-blue-500">Step
-                        {{ $this->currentStep }}</span> / 3</h1>
+                <h1 class="lg:hidden  text-2xl font-bold mb-2"><span class="text-blue-500">Step
+                        {{ $this->currentStep }}</span> / 5</h1>
             </div>
 
             <div class="flex flex-row h-full w-full">
-                <ul class="hidden sm:block border border-gray-200 rounded overflow-hidden shadow-md">
+                <ul class="hidden lg:block border border-gray-200 rounded overflow-hidden shadow-md">
                     <li :class="currentStep === 1 ? activeTab : inactiveTab"
                         class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Employer Details</li>
@@ -76,7 +76,7 @@
                         class="section-item px-4 py-2 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out">
                         Certification And Authorization</li>
                 </ul>
-                <div class="w-full px-6 py-6 bg-white shadow-md sm:rounded-r-lg">
+                <div class="w-full px-6 py-6 bg-white shadow-md lg:rounded-r-lg">
 
                     {{-- APPLICANT NAME --}}
                     <div x-show="currentStep === 1" class="section employerDetails-section  h-full w-full"
@@ -108,8 +108,9 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        <livewire:signup.employer.partials.requirements />
-
+                        @if ($formData)
+                            <livewire:signup.employer.partials.requirements :reqType="$formData[1]['empType']" />
+                        @endif
                     </div>
 
                     {{-- employment status --}}
@@ -117,7 +118,9 @@
                         x-transition:enter="transition ease-out duration-300 transform"
                         x-transition:enter-start="opacity-0 translate-x-full"
                         x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
+
                         <livewire:signup.employer.partials.confirmation />
+
                     </div>
 
 

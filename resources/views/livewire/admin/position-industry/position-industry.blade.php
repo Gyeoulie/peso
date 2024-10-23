@@ -1,15 +1,15 @@
-<div class="container mx-auto py-8">
+<div wire:poll.5s class="container mx-auto py-8">
 
     {{-- CONTIANER --}}
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold ">Data Management / Position - Industry</h1>
         </div>
 
         {{-- JOB POSITION CONTAINER --}}
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex flex-row justify-between mb-4">
                     {{-- TITLE --}}
@@ -28,8 +28,8 @@
 
                 <div class="relative overflow-x-auto ">
 
-                    <div
-                        class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -44,42 +44,45 @@
                                 </svg>
                             </div>
                             {{-- SEARCH --}}
-                            <input type="text" wire:model.live.prevent='searchPosition'
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-40 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            <input type="search" wire:model.live='searchPosition'
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job position">
                         </div>
-                        <x-dropdown align="right" width="30">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
-                                    <div>{{ $filterJob }}</div>
+                        <div class="flex flex-wrap mr-3 gap-2">
+                            <x-dropdown align="right" width="30">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        <div>{{ $filterJob }}</div>
 
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-
-                            <x-slot name="content">
-                                <x-slot name="contentClasses">
-                                    max-h-[300px] bg-white
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
                                 </x-slot>
 
-                                <x-dropdown-link wire:click.prevent="updateFilter(1, 'All')"
-                                    class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">All</x-dropdown-link>
 
-                                <!-- Authentication -->
-                                <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateFilter(1, 'Archived')"
-                                    class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Archived</x-dropdown-link>
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
 
-                            </x-slot>
-                        </x-dropdown>
+                                    <x-dropdown-link wire:click.prevent="updateFilter(1, 'All')"
+                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">All</x-dropdown-link>
+
+                                    <!-- Authentication -->
+                                    <x-dropdown-link class="cursor-pointer"
+                                        wire:click.prevent="updateFilter(1, 'Archived')"
+                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Archived</x-dropdown-link>
+
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
 
 
                     </div>
@@ -89,13 +92,13 @@
                         <table class="w-full text-sm text-left rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/3">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/3">
                                         Job Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-full">
+                                    <th scope="col" class="px-6 py-3 lg:w-full hidden lg:table-cell">
                                         Position Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-1/3">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/3">
 
                                     </th>
                                 </tr>
@@ -126,12 +129,20 @@
                                     @foreach ($jobpositions as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="text-gray-500 font-medium text-lg uppercase">
+                                                <div class="hidden lg:block text-gray-500 font-medium text-lg uppercase">
                                                     {{ $data->position_Code }}
+                                                </div>
+                                                <div class="block lg:hidden">
+                                                    <div class="text-black font-bold text-md uppercase">
+                                                        {{ $data->position_Title }}
+                                                    </div>
+                                                    <div class=" text-gray-500 font-medium text-md uppercase">
+                                                        {{ $data->position_Code }}
+                                                    </div>
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-black font-bold text-lg uppercase">
                                                     {{ $data->position_Title }}
                                                 </div>
@@ -205,7 +216,7 @@
 
 
         {{-- INDUSTRY CONTAINER --}}
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             <div class="bg-white shadow rounded-lg p-6">
 
                 {{-- TITLE --}}
@@ -227,8 +238,8 @@
 
                 <div class="relative overflow-x-auto ">
 
-                    <div
-                        class="p-1 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 ">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+
 
                         <label for="table-search" class="sr-only">Search</label>
 
@@ -243,44 +254,45 @@
                                 </svg>
                             </div>
                             {{-- SEARCH --}}
-                            <input type="text" wire:model.live.prevent='searchIndustry'
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            <input type="search" wire:model.live='searchIndustry'
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for industry">
                         </div>
+                        <div class="flex flex-wrap mr-3 gap-2">
+                            <x-dropdown align="right" width="30">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                        <div>{{ $filterIndustry }}</div>
 
-                        <x-dropdown align="right" width="30">
-                            <x-slot name="trigger">
-                                <button
-                                    class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
-                                    <div>{{ $filterIndustry }}</div>
-
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-
-                            <x-slot name="content">
-                                <x-slot name="contentClasses">
-                                    max-h-[300px] bg-white
+                                        <div class="ms-1">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </button>
                                 </x-slot>
 
-                                <x-dropdown-link wire:click.prevent="updateFilter(2, 'All')"
-                                    class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">All</x-dropdown-link>
 
-                                <!-- Authentication -->
-                                <x-dropdown-link wire:click.prevent="updateFilter(2, 'Archived')"
-                                    class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Archived</x-dropdown-link>
+                                <x-slot name="content">
+                                    <x-slot name="contentClasses">
+                                        max-h-[300px] bg-white
+                                    </x-slot>
 
-                            </x-slot>
-                        </x-dropdown>
+                                    <x-dropdown-link wire:click.prevent="updateFilter(2, 'All')"
+                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">All</x-dropdown-link>
 
+                                    <!-- Authentication -->
+                                    <x-dropdown-link wire:click.prevent="updateFilter(2, 'Archived')"
+                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Archived</x-dropdown-link>
+
+                                </x-slot>
+                            </x-dropdown>
+
+                        </div>
                     </div>
 
                     {{-- POSITION TABLE --}}
@@ -288,13 +300,13 @@
                         <table class="w-full text-sm text-left rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 w-1/3">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/3">
                                         Industry Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-full">
+                                    <th scope="col" class="px-6 py-3 lg:w-full hidden lg:table-cell">
                                         Industry Title
                                     </th>
-                                    <th scope="col" class="px-6 py-3 w-1/3">
+                                    <th scope="col" class="px-6 py-3 lg:w-1/3">
 
                                     </th>
                                 </tr>
@@ -325,12 +337,20 @@
                                     @foreach ($industry as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="text-gray-500 font-medium text-lg uppercase">
+                                                <div class="hidden lg:block text-gray-500 font-medium text-lg uppercase">
                                                     {{ $data->industry_Code }}
+                                                </div>
+                                                <div class="block lg:hidden">
+                                                    <div class="text-black font-bold text-md uppercase">
+                                                        {{ $data->industry_Title }}
+                                                    </div>
+                                                    <div class=" text-gray-500 font-medium text-md uppercase">
+                                                        {{ $data->industry_Code }}
+                                                    </div>
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-black font-bold text-lg uppercase">
                                                     {{ $data->industry_Title }}
                                                 </div>
@@ -419,7 +439,7 @@
 
             <hr>
 
-            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
+            <div class="flex flex-col lg:flex-row gap-2 lg:gap-6 mt-2 w-full">
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="positionPost" :value="__('Job Position Title')" />
@@ -460,7 +480,7 @@
 
             <hr>
 
-            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 mt-2 w-full">
+            <div class="flex flex-col lg:flex-row gap-2 lg:gap-6 mt-2 w-full">
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="industryPost" :value="__('Industry Title')" />

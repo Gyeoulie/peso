@@ -140,6 +140,7 @@ class Location extends Component
                 $validationData[$type]['model']::create($dataToCreate);
 
                 toastr()->success($validationData[$type]['successMessage']);
+                $this->resetExcept('defaultFilter');
             } catch (\Exception $e) {
                 dd($e->getMessage());
                 toastr()->error('There was an Error');
@@ -287,6 +288,7 @@ class Location extends Component
 
                     DB::commit();
                     $this->close('bar-edit');
+                    $this->resetExcept('defaultFilter');
 
                 } catch (\Exception $e) {
                     DB::rollBack();
@@ -338,6 +340,7 @@ class Location extends Component
 
                 DB::commit();
                 $this->close('mun-edit');
+                $this->resetExcept('defaultFilter');
             } catch (\Exception $e) {
                 DB::rollBack();
                 $this->close('mun-edit');
@@ -378,6 +381,8 @@ class Location extends Component
 
                 DB::commit();
                 $this->close('prov-edit');
+                $this->resetExcept('defaultFilter');
+
             } catch (\Exception $e) {
                 DB::rollBack();
                 $this->close('prov-edit');
@@ -429,6 +434,7 @@ class Location extends Component
                 ->orWhereHas('municipality.province', function ($query) {
                     $query->where('province_Name', 'like', '%' . $this->search . '%');
                 })
+                ->orderBy('barangay_Name', 'asc')
                 ->paginate(10);
         } else if ($this->defaultFilter === 'Municipalities') {
             $locationData = Municipality::with('province')
@@ -436,10 +442,10 @@ class Location extends Component
                 ->orWhereHas('province', function ($query) {
                     $query->where('province_Name', 'like', '%' . $this->search . '%');
                 })
-                ->paginate(10);
+                ->orderBy('municipality_Name', 'asc')->paginate(10);
         } else if ($this->defaultFilter === 'Provinces') {
             $locationData = Province::where('province_Name', 'like', '%' . $this->search . '%')
-                ->paginate(10);
+            ->orderBy('province_Name', 'asc') ->paginate(10);
         }
 
         // MODALS FETCH
@@ -453,7 +459,7 @@ class Location extends Component
             ->paginate(10);
 
         $provinces = Province::where('province_Name', 'like', '%' . $this->searchProv . '%')
-            ->paginate(10);
+        ->orderBy('province_Name', 'asc')->paginate(10);
 
         return view('livewire.admin.location-management.location', compact('locationData', 'municipalities', 'provinces'));
     }

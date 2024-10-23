@@ -1,4 +1,4 @@
-<x-modal name="industry-modal" focusable>
+<x-modal wire:poll name="industry-modal" focusable>
     <div class="w-full max-w-4xl px-6 py-6 items-center">
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Choose Industry') }}
@@ -6,7 +6,9 @@
         <hr>
 
         <div class="relative mt-4">
-            <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+            <div
+                class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4 overflow-visible">
+
 
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
@@ -19,8 +21,8 @@
                     </div>
 
                     {{-- LICENSE SEARCH --}}
-                    <input wire:model.live.prevent='search' type="text"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    <input wire:model.live='search' type="search"
+                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search industry">
                 </div>
 
@@ -29,18 +31,12 @@
 
             {{-- LICENSE MODAL --}}
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-center">
+                <table class="w-full text-sm rtl:text-right text-gray-500 text-center">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>
-                            <th scope="col" class="px-6 py-3 w-1/4">
-
-                            </th>
-                            <th scope="col" class="px-6 py-3 uppercase">
-                                Job Position
-                            </th>
-                            <th scope="col" class="px-6 py-3 uppercase">
-                                Code
-                            </th>
+                            <th scope="col" class="px-6 py-3 w-1/4"></th>
+                            <th scope="col" class="px-6 py-3 uppercase">Job Industry</th>
+                            <th scope="col" class="px-6 py-3 uppercase hidden sm:table-cell">Code</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,29 +51,30 @@
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                                                     d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                             </svg>
-
                                         </div>
-                                        <p class="text-xl font-bold text-black text-center mt-2">
-                                            No Record Found!
-                                        </p>
+                                        <p class="text-xl font-bold text-black text-center mt-2">No Record Found!</p>
                                     </div>
-
                                 </td>
                             </tr>
                         @else
                             @foreach ($industry as $data)
                                 <tr wire:key='industry-{{ $data->industry_id }}'
-                                    class="bg-white border-b hover:bg-gray-50">
+                                    class="bg-white border-b hover:bg-gray-50 hover:cursor-pointer"
+                                    wire:loading.attr="disabled"
+                                    wire:click.prevent='industrySelect({{ $data->industry_id }})'>
                                     <td class="px-6 py-4 text-center">
-
-                                        <button wire:click.prevent='industrySelect({{ $data->industry_id }})'
+                                        <button wire:loading.attr="disabled"
+                                            wire:click.prevent='industrySelect({{ $data->industry_id }})'
+                                            onclick="event.stopPropagation();"
                                             class="text-blue-500 hover:underline">Select</button>
-
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="font-semibold text-base uppercase">{{ $data->industry_Title }}</div>
+                                        <!-- Extra mobile information -->
+                                        <div class="sm:hidden text-sm text-gray-500">Code: {{ $data->industry_Code }}
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 hidden sm:table-cell">
                                         <div class="font-semibold text-base uppercase">{{ $data->industry_Code }}</div>
                                     </td>
                                 </tr>
@@ -85,13 +82,14 @@
                         @endif
                     </tbody>
                 </table>
+
             </div>
         </div>
 
 
         {{-- PAGINATION --}}
-        <div>
-            {{ $industry->links('vendor.livewire.tailwind') }}
+        <div class="mt-4">
+            {{ $industry->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
         </div>
 
 

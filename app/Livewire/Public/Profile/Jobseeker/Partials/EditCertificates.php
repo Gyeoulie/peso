@@ -6,6 +6,7 @@ use App\Models\Certificate;
 use App\Models\Certificate_Type;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class EditCertificates extends Component
@@ -57,11 +58,6 @@ class EditCertificates extends Component
     public function save()
     {
         $rules = [
-            'certName' => [
-                'required',
-                'string',
-                'max:255', // Optional: add a max length if needed
-            ],
             'certFrom' => [
                 'required',
                 'string',
@@ -78,12 +74,19 @@ class EditCertificates extends Component
                 'min:0', // Optional: ensures the value is non-negative
                 'max:100', // Optional: if the rate should be a percentage, this limits it to 100
             ],
+            'certTypeID' => [
+                'required',
+                Rule::unique('certificate', 'cert_Type_id') // Specify the correct column name
+                    ->where(function ($query) {
+                        // Ensure uniqueness for this employee and exclude trashed records
+                        $query->where('employee_id', $this->userID)
+                            ->whereNull('deleted_at'); // Exclude trashed records
+                    })
+                    ->ignore($this->certID, 'cert_id'), // Ignore the current record when updating
+            ],
         ];
 
         $messages = [
-            'certName.required' => 'The certificate name is required.',
-            'certName.string' => 'The certificate name must be a string.',
-            'certName.max' => 'The certificate name must not exceed 255 characters.',
             'certFrom.required' => 'The certificate provider is required.',
             'certFrom.string' => 'The certificate provider must be a string.',
             'certFrom.max' => 'The certificate provider must not exceed 255 characters.',
@@ -94,6 +97,9 @@ class EditCertificates extends Component
             'certRate.numeric' => 'The certificate rate must be a number.',
             'certRate.min' => 'The certificate rate must be at least 0.',
             'certRate.max' => 'The certificate rate must not exceed 100.',
+            'certTypeID.required' => 'The certificate type is required',
+            'certTypeID.unique' => 'The certificate type has already been taken for this user.',
+
         ];
 
         // Validate input

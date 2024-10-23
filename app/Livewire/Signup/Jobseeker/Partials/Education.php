@@ -62,12 +62,12 @@ class Education extends Component
         $this->dispatch('handleStepData', $this->stepNumber, [
             'educationData' => $this->educationData,
         ]);
-        $this->dispatch('nextStep');
+        $this->dispatch('nextStep', $this->stepNumber + 1);
     }
 
     public function prev()
     {
-        $this->dispatch('prevStep');
+        $this->dispatch('prevStep', $this->stepNumber - 1);
     }
 
     #[On('refreshEdu')]

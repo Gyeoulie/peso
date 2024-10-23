@@ -58,9 +58,12 @@ class CreateTrainining extends Component
         $jobIndustryId = $programInfo->industry_id;
         $jobTagIds = $programInfo->program_tags->pluck('position_id');
 
-        return Employee::whereHas('barangay.municipality', function ($query) use ($programMunicipalityId) {
-            $query->where('municipality_id', $programMunicipalityId);
+        return Employee::whereHas('user', function ($query) {
+            $query->where('userstatus', 1); // Ensure userstatus == 1
         })
+            ->whereHas('barangay.municipality', function ($query) use ($programMunicipalityId) {
+                $query->where('municipality_id', $programMunicipalityId);
+            })
             ->whereHas('job_preference', function ($query) use ($jobTagIds) {
                 $query->whereIn('position_id', $jobTagIds);
             })
@@ -136,7 +139,7 @@ class CreateTrainining extends Component
             'progModality.string' => 'The program modality must be a string.',
             'progModality.max' => 'The program modality may not be greater than 255 characters.',
 
-            'progImg.image' => 'The program image is required.',
+            'progImg.required' => 'The program image is required.',
             'progImg.image' => 'The program image must be an image file.',
             'progImg.mimes' => 'The program image must be a file of type: jpg, jpeg, png.',
             'progImg.max' => 'The program image may not be greater than 10MB.',
@@ -224,7 +227,7 @@ class CreateTrainining extends Component
             // SendMatchedEmails::dispatch($trainingProgram->program_id);
 
             $this->dispatch('close-modal', 'confirm-modal');
-            $this->redirectRoute('admin-view-training', ['id' => $trainingProgram->program_id], navigate: true);
+            $this->redirectRoute('admin-view-training', ['id' => $trainingProgram->program_id]);
             toastr()->success('Training has been posted!');
         } catch (\Exception $e) {
 
@@ -261,6 +264,12 @@ class CreateTrainining extends Component
         // Check if the selected job position already exists in the $jobTags array
         if (collect($this->jobTags)->contains('position_id', $id)) {
             toastr()->warning('This job position is already selected.');
+            return;
+        }
+        $totalTags = count($this->jobTags);
+
+        if ($totalTags >= 15) {
+            toastr()->error('You can only have a maximum of 15 tags.');
             return;
         }
 

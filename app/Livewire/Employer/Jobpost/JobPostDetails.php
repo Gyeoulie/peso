@@ -14,6 +14,8 @@ class JobPostDetails extends Component
 
     public $eduLevels;
 
+    public $jobTypes;
+
     public $applicantSearch, $selectedApplicant;
 
     public $filter = 'All';
@@ -51,6 +53,17 @@ class JobPostDetails extends Component
             '25' => 'MASTERAL/POST GRADUATE LEVEL',
             '26' => 'MASTERAL/POST GRADUATE',
         ];
+
+        $this->jobTypes = [
+            '0' => 'None',
+            '1' => 'Full Time',
+            '2' => 'Contractual',
+            '3' => 'Part Time',
+            '4' => 'Project-Based',
+            '5' => 'Internship/OJT',
+            '6' => 'Work From Home',
+        ];
+
     }
 
     public function viewFile($id, $fileToView)

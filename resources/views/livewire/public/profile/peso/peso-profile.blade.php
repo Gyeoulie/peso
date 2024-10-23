@@ -1,11 +1,12 @@
-<div>
-    <div class="flex flex-col md:flex-row w-full h-full gap-4 container mx-auto p-4 md:p-0 md:py-8">
+<div wire:poll.10s>
+    <div class="container flex flex-col w-full h-full gap-4 p-4 mx-auto md:flex-row md:p-0 md:py-8">
 
-        <div class="flex flex-col md:w-1/4 h-full md:sticky top-5">
-            <div class="bg-white shadow-xl rounded-lg p-6">
+        <div class="flex flex-col h-full md:w-1/4 md:sticky top-5">
+            <div class="p-6 bg-white rounded-lg shadow-xl">
                 <div class="flex flex-col items-center">
                     <img src="{{ $pesoInfo->peso_Img ? asset('storage/' . $pesoInfo->peso_Img) : asset('assets/img/PESO-Logo.png') }}"
-                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
+                        alt="peso-{{ $pesoInfo->peso_id }}"
+                        class="object-cover w-32 h-32 mb-4 bg-gray-300 rounded-full shadow-xl select-none shrink-0">
                     </img>
                     <h1 class="text-xl font-bold break-all">PESO {{ $pesoInfo->municipality->municipality_Name }}</h1>
 
@@ -20,9 +21,9 @@
                     <ul class="text-wrap ... break-words truncate ...">
                         @if ($pesoInfo->peso_Email)
                             <li class="mb-4">
-                                <div class="flex flex-row gap-4 w-full">
+                                <div class="flex flex-row w-full gap-4">
                                     <div class="flex flex-col">
-                                        <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg"
+                                        <svg class="text-blue-500 w-7 h-7" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
@@ -33,7 +34,7 @@
                                         <div class="text-lg font-bold text-black">
                                             Email
                                         </div>
-                                        <div class="text-md font-medium uppercase break-all">
+                                        <div class="font-medium uppercase break-all text-md">
                                             {{ $pesoInfo->peso_Email }}
 
                                         </div>
@@ -46,9 +47,9 @@
 
                         @if ($pesoInfo->peso_Phone)
                             <li class="mb-4">
-                                <div class="flex flex-row gap-4 w-full">
+                                <div class="flex flex-row w-full gap-4">
                                     <div class="flex flex-col">
-                                        <svg class="w-7 h-7 text-blue-500" viewBox="0 0 24 24" fill="none"
+                                        <svg class="text-blue-500 w-7 h-7" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                             stroke-linejoin="round">
                                             <rect x="5" y="2" width="14" height="20" rx="2"
@@ -63,7 +64,7 @@
                                         <div class="text-lg font-bold text-black">
                                             Phone Number
                                         </div>
-                                        <div class="text-md font-medium break-all">
+                                        <div class="font-medium break-all text-md">
                                             {{ $pesoInfo->peso_Phone }}
                                         </div>
 
@@ -75,9 +76,9 @@
 
                         @if ($pesoInfo->peso_Tel)
                             <li class="mb-4">
-                                <div class="flex flex-row gap-4 w-full">
+                                <div class="flex flex-row w-full gap-4">
                                     <div class="flex flex-col">
-                                        <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg"
+                                        <svg class="text-blue-500 w-7 h-7" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
@@ -88,7 +89,7 @@
                                         <div class="text-lg font-bold text-black">
                                             Telephone Number
                                         </div>
-                                        <div class="text-md font-medium uppercase break-all">
+                                        <div class="font-medium uppercase break-all text-md">
                                             {{ $pesoInfo->peso_Tel }}
                                         </div>
 
@@ -99,9 +100,9 @@
                         @endif
                         @if ($pesoInfo->peso_Fax)
                             <li class="mb-4">
-                                <div class="flex flex-row gap-4 w-full">
+                                <div class="flex flex-row w-full gap-4">
                                     <div class="flex flex-col">
-                                        <svg class="w-7 h-7 text-blue-500" viewBox="0 0 24 24" fill="none"
+                                        <svg class="text-blue-500 w-7 h-7" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                             stroke-linejoin="round">
                                             <polyline points="6 9 6 2 18 2 18 9" />
@@ -116,7 +117,7 @@
                                         <div class="text-lg font-bold text-black">
                                             Fax Number
                                         </div>
-                                        <div class="text-md font-medium uppercase break-all">
+                                        <div class="font-medium uppercase break-all text-md">
                                             {{ $pesoInfo->peso_Fax }}
                                         </div>
 
@@ -137,15 +138,15 @@
             <div class="flex flex-col space-y-5">
 
                 <div class="container">
-                    <div class="bg-white shadow-lg rounded-lg p-6 text-wrap">
-                        <div class="flex flex-row w-full items-center justify-between">
+                    <div class="p-6 bg-white rounded-lg shadow-lg text-wrap">
+                        <div class="flex flex-row items-center justify-between w-full">
                             <h2 class="text-xl font-bold">PESO Description</h2>
 
 
 
                         </div>
 
-                        <p class="text-gray-700 text-wrap break-words mt-2">
+                        <p class="mt-2 text-gray-700 break-words text-wrap">
                             {{ !empty($pesoInfo->peso_Description) ? $pesoInfo->peso_Description : 'Empty PESO Description' }}
 
                         </p>
@@ -156,15 +157,15 @@
 
 
 
-                <div class="container">
-                    <div class="bg-white shadow rounded-lg p-6">
+                <div class="container select-none">
+                    <div class="p-6 bg-white rounded-lg shadow">
 
                         <div class="flex flex-row justify-between w-full mb-4">
                             <h2 class="text-xl font-bold">Municipality Announcements</h2>
 
 
                             {{-- <div
-                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                 <a wire:navigate href="{{ route('edit.details.emp') }}">
                                     <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -177,8 +178,8 @@
                         </div>
                         @if ($pesoAnnouncements->isEmpty())
 
-                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                <div class="flex  bg-gray-100 rounded-full p-1">
+                            <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                <div class="flex p-1 bg-gray-100 rounded-full">
 
 
                                     <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -190,30 +191,30 @@
 
                                 </div>
 
-                                <div class="text-center text-black text-xl font-semibold mt-5">
+                                <div class="mt-5 text-xl font-semibold text-center text-black">
                                     No Announcements Found.
                                 </div>
                             </div>
                         @else
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+                            <div class="grid grid-cols-1 gap-6 p-4 md:grid-cols-3 lg:grid-cols-4">
                                 @foreach ($pesoAnnouncements as $data)
                                     <a wire:navigate
                                         href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
-                                        class="block transform transition-transform hover:scale-105 hover:shadow-lg hover:bg-gray-100">
+                                        class="block transition-transform transform hover:scale-105 hover:shadow-lg hover:bg-gray-100">
                                         <div
-                                            class="flex flex-col h-full overflow-hidden rounded-lg bg-white border border-gray-200 shadow-md">
-                                            <div class="relative w-full h-48 overflow-hidden rounded-t-lg bg-gray-200">
+                                            class="flex flex-col h-full overflow-hidden bg-white border border-gray-200 rounded-lg shadow-md">
+                                            <div class="relative w-full h-48 overflow-hidden bg-gray-200 rounded-t-lg">
                                                 <img src="{{ asset('storage/' . $data->announcement_pubmat) }}"
                                                     alt="announcement-{{ $data->announcement_id }}"
-                                                    class="object-cover w-full h-full transition-transform duration-300 ease-in-out hover:scale-110" />
+                                                    class="object-cover w-full h-full transition-transform duration-300 ease-in-out select-none hover:scale-110" />
                                             </div>
                                             <div class="flex flex-col flex-grow p-4">
                                                 <h4
-                                                    class="text-lg font-semibold text-blue-gray-900 mb-2 transition-colors duration-300 ease-in-out hover:text-blue-700">
+                                                    class="mb-2 text-lg font-semibold transition-colors duration-300 ease-in-out text-blue-gray-900 hover:text-blue-700">
                                                     {{ Str::limit(strip_tags($data->announcement_Title), 60, '...') }}
                                                 </h4>
                                                 <div
-                                                    class="mt-auto text-center text-xs sm:text-sm font-normal text-gray-600">
+                                                    class="mt-auto text-xs font-normal text-center text-gray-600 lg:text-sm">
                                                     {{ $data->created_at->format('F j, Y') }}
                                                 </div>
                                             </div>
@@ -222,16 +223,6 @@
                                 @endforeach
                             </div>
                         @endif
-
-
-
-                        {{-- <div class="flex justify-center mt-6">
-                            <button wire:click="loadMore"
-                                class="px-4 py-2 rounded-lg bg-blue-500 text-white rounded hover:bg-blue-600">
-                                Load More
-                            </button>
-                        </div> --}}
-
 
 
                     </div>

@@ -71,6 +71,7 @@ class Kernel extends HttpKernel
         'incomplete.user' => \App\Http\Middleware\IncompleteUser::class,
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
         'google2fa' => \App\Http\Middleware\Google2FAMiddleware::class,
+        'profile.privacy' => \App\Http\Middleware\profile\profileStatus::class,
 
     ];
 

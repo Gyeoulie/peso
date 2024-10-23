@@ -9,6 +9,7 @@ use App\Models\Partnerships;
 use App\Models\Requirements_Passed;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
@@ -139,7 +140,9 @@ class EmployerInformation extends Component
                 }
             }
 
-            dd($e->getMessage());
+            // dd($e->getMessage());
+            Log::error('Error registering employer: ' . $e->getMessage());
+
             toastr()->error('Error in updating user details, please try again later');
 
         }
@@ -155,15 +158,15 @@ class EmployerInformation extends Component
     }
 
     #[On('nextStep')]
-    public function nextStep()
+    public function nextStep($id)
     {
-        $this->currentStep++;
+        $this->currentStep = $id;
     }
 
     #[On('prevStep')]
-    public function prevStep()
+    public function prevStep($id)
     {
-        $this->currentStep--;
+        $this->currentStep = $id;
     }
 
     public function render()

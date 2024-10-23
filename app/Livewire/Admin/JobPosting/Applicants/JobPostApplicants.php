@@ -4,31 +4,39 @@ namespace App\Livewire\Admin\JobPosting\Applicants;
 
 use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 
 #[Layout('layouts.admin')]
 class JobPostApplicants extends Component
 {
 
+    use WithPagination, WithoutUrlPagination;
+
     public $id;
 
     public $search;
+    public function mount()
+    {
+        $user = Auth::user();
 
-// public function mount($id)
-// {
+        $jobpost = Job_Posting::findOrFail($this->id);
 
-//     try {
-//         $this->id = decrypt($id);
-//     } catch (DecryptException $e) {
+        if ($jobpost) {
+            if ($user->peso_accounts->peso_id != $jobpost->peso_id) {
+                return $this->redirectRoute('dashboard');
 
-//         return redirect()->route('error.404')->with('error', 'Invalid or tampered ID');
-//     }
-// }
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+
+        }
+    }
 
     public $eduLevels = [
         '0' => 'NONE',

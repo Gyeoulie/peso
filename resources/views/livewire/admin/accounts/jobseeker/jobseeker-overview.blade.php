@@ -1,12 +1,12 @@
-<div class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+<div wire:poll class="container mx-auto py-8">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Jobseeker Management \ Jobseeker Overview</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-12 mt-5">
+        <div class="col-span-4 lg:col-span-12 mt-5">
 
             <div class="flex flex-row">
 
@@ -17,44 +17,46 @@
                 </div>
 
                 {{-- DEACTIVATE BUTTON --}}
-                <div class="flex flex-col ml-auto mr-0">
-                    @if ($jobseeker->user->userstatus == 1)
-                        <button type="button" x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', 'deactivate-modal')"
-                            class="bg-red-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-red-600 hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
-                            Deactivate Account
-                        </button>
-                    @elseif($jobseeker->user->userstatus == 2)
-                        <button type="button" x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', 'reactivate-modal')"
-                            class="bg-green-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-green-600 hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
-                            Reactivate Account
-                        </button>
-                    @endif
-                </div>
+                @if ($isResident == true)
+                    <div class="flex flex-col ml-auto mr-0">
+                        @if ($jobseeker->user->userstatus == 1)
+                            <button type="button" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'deactivate-modal')"
+                                class="bg-red-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-red-600 hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
+                                Deactivate Account
+                            </button>
+                        @elseif($jobseeker->user->userstatus == 2)
+                            <button type="button" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'reactivate-modal')"
+                                class="bg-green-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-green-600 hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
+                                Reactivate Account
+                            </button>
+                        @endif
+                    </div>
+                @endif
 
             </div>
 
         </div>
 
         {{-- PROFILE CONTAINER --}}
-        <div class="col-span-4 sm:col-span-4">
+        <div class="col-span-4 lg:col-span-4">
             <div class="bg-white shadow rounded-lg p-6">
 
                 <div class="flex flex-col items-center">
                     {{-- IMAGE --}}
                     <img src="{{ asset('storage/' . $jobseeker->pimg) }}"
-                        class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 grow-0 object-cover">
+                        class="select-none w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0 grow-0 object-cover">
 
                     </img>
 
-                    <h1 class="text-xl font-bold uppercase"> {{ $jobseeker->fname }}
+                    <h1 class="text-xl font-bold uppercase text-center"> {{ $jobseeker->fname }}
                         {{ $jobseeker->mname ?? '' }}
                         {{ $jobseeker->lname }}@if (!empty($jobseeker->suffix))
                             , {{ $jobseeker->suffix }}
                         @endif
                     </h1>
-                    <p class="text-gray-700">#{{ $jobseeker->employee_id }}</p>
+                    <p class="text-gray-700">#{{ $jobseeker->user_id }}</p>
                 </div>
 
                 <hr class="my-6 border-t border-gray-300">
@@ -89,6 +91,20 @@
                             <li class="mb-2 font-bold">Birthday:</li>
                             <p class="ms-4 break-all">{{ $jobseeker->birthdate->format('F j, Y') }}</p>
                         </div>
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold">OFW:</li>
+                            <p class="ms-4 break-all"> {{ $jobseeker->ofw == 1 ? 'Yes' : 'No' }}</p>
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <li class="mb-2 font-bold">4Ps Member:</li>
+                            <p class="ms-4 break-all"> {{ $jobseeker->fourp == 1 ? 'Yes' : 'No' }}</p>
+                        </div>
+                        @if ($jobseeker->fourp == 1 && $jobseeker->fourpID)
+                            <div class="flex flex-row justify-between">
+                                <li class="mb-2 font-bold">4Ps Member ID:</li>
+                                <p class="ms-4 break-all"> {{ $jobseeker->fourpID }}</p>
+                            </div>
+                        @endif
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Work Experience:</li>
                             <p class="ms-4 break-all">{{ $totalExperience }} Months</p>
@@ -127,7 +143,7 @@
         </div>
 
         {{-- CONTAINER FOR TABS --}}
-        <div class="col-span-4 sm:col-span-8 row" x-data="{
+        <div class="col-span-4 lg:col-span-8 row" x-data="{
             selectedTab: 1,
             activeTab: 'text-white  bg-blue-700 active',
             inactiveTab: 'hover:text-white-300 bg-gray-300 hover:bg-gray-400',
@@ -149,37 +165,38 @@
                         Overview
                     </button>
                 </li>
+                @if ($isResident == true)
+                    <li>
+                        <button @click="selectedTab = 2" :class="selectedTab === 2 ? activeTab : inactiveTab"
+                            class="inline-flex items-center px-4 py-3 rounded-lg w-full">
+                            <svg :class="selectedTab === 2 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z"
+                                    clip-rule="evenodd" />
+                            </svg>
 
-                <li>
-                    <button @click="selectedTab = 2" :class="selectedTab === 2 ? activeTab : inactiveTab"
-                        class="inline-flex items-center px-4 py-3 rounded-lg w-full">
-                        <svg :class="selectedTab === 2 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z"
-                                clip-rule="evenodd" />
-                        </svg>
+                            Security
+                        </button>
+                    </li>
+                    <li>
+                        <button @click="selectedTab = 3" :class="selectedTab === 3 ? activeTab : inactiveTab"
+                            class="inline-flex items-center px-4 py-3 rounded-lg w-full" aria-current="page">
 
-                        Security
-                    </button>
-                </li>
-                <li>
-                    <button @click="selectedTab = 3" :class="selectedTab === 3 ? activeTab : inactiveTab"
-                        class="inline-flex items-center px-4 py-3 rounded-lg w-full" aria-current="page">
+                            <svg :class="selectedTab === 3 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M15.988 3.012A2.25 2.25 0 0 1 18 5.25v6.5A2.25 2.25 0 0 1 15.75 14H13.5V7A2.5 2.5 0 0 0 11 4.5H8.128a2.252 2.252 0 0 1 1.884-1.488A2.25 2.25 0 0 1 12.25 1h1.5a2.25 2.25 0 0 1 2.238 2.012ZM11.5 3.25a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 .75.75v.25h-3v-.25Z"
+                                    clip-rule="evenodd" />
+                                <path fill-rule="evenodd"
+                                    d="M2 7a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7Zm2 3.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Zm0 3.5a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z"
+                                    clip-rule="evenodd" />
+                            </svg>
 
-                        <svg :class="selectedTab === 3 ? activeIcon : inactiveIcon" class="w-4 h-4 me-2"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M15.988 3.012A2.25 2.25 0 0 1 18 5.25v6.5A2.25 2.25 0 0 1 15.75 14H13.5V7A2.5 2.5 0 0 0 11 4.5H8.128a2.252 2.252 0 0 1 1.884-1.488A2.25 2.25 0 0 1 12.25 1h1.5a2.25 2.25 0 0 1 2.238 2.012ZM11.5 3.25a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 .75.75v.25h-3v-.25Z"
-                                clip-rule="evenodd" />
-                            <path fill-rule="evenodd"
-                                d="M2 7a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7Zm2 3.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Zm0 3.5a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z"
-                                clip-rule="evenodd" />
-                        </svg>
-
-                        Audits
-                    </button>
-                </li>
+                            Audits
+                        </button>
+                    </li>
+                @endif
             </ul>
 
             {{-- 2ND TAB --}}
@@ -191,7 +208,7 @@
                     <h1 class="text-2xl font-bold ">Overview</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex flex-col lg:flex-row gap-4">
                         <div class="flex flex-col w-full gap-4">
                             @if ($jobseeker->industry_preference->count() >= 1)
 
@@ -255,12 +272,12 @@
                                 <div class="flex flex-col md:w-1/2">
 
                                     <span class="mb-1 font-bold">Disability:</span>
-                                   
+
                                     <div id= "disabilityRow" class="flex-inline p-1">
                                         {{-- BADGE --}}
 
                                         @foreach ($jobseeker->disability as $empDisability)
-                                            <span  wire:key='disability-{{ $empDisability->disability_id }}'
+                                            <span wire:key='disability-{{ $empDisability->disability_id }}'
                                                 class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                                 {{ $empDisability->disability_Type }}
                                             </span>
@@ -329,7 +346,7 @@
                 </div>
 
                 {{-- APPLICATION HISTORY CONTAINER --}}
-                <div class="col-span-4 sm:col-span-6" x-data="{
+                <div class="col-span-4 lg:col-span-6" x-data="{
                     openTab: 1,
                     activeTab: 'text-blue-600 bg-gray-100  rounded-t-lg active',
                     inactiveTab: ' rounded-t-lg hover:text-gray-600 hover:bg-gray-50',
@@ -365,7 +382,7 @@
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
                                 <div
-                                    class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
+                                    class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
@@ -381,9 +398,9 @@
                                         </div>
 
                                         {{-- SEARCH --}}
-                                        <input wire:model.live.prevent='searchApplications' type="text"
+                                        <input wire:model.live='searchApplications' type="search"
                                             id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Applications">
                                     </div>
                                 </div>
@@ -393,24 +410,18 @@
                                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                             <tr>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Job Position
+                                                <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">Job Position</th>
+                                                <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">Company</th>
+                                                <th scope="col"
+                                                    class="px-4 py-2 lg:px-6 lg:py-3 hidden lg:table-cell">Application
+                                                    Status</th>
+                                                <th scope="col"
+                                                    class="px-4 py-2 lg:px-6 lg:py-3 hidden lg:table-cell">PESO
+                                                    Recommendation</th>
+                                                <th scope="col"
+                                                    class="px-4 py-2 lg:px-6 lg:py-3 hidden lg:table-cell">Applied Date
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Company
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Application Status
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    PESO Recommendation
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Applied Date
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Action
-                                                </th>
+                                                <th scope="col" class="px-4 py-2 lg:px-6 lg:py-3">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -428,35 +439,33 @@
                                                                         stroke-width="2"
                                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                 </svg>
-
                                                             </div>
-                                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                                No Records Found!
-                                                            </p>
+                                                            <p class="text-xl font-bold text-black text-center mt-2">No
+                                                                Records Found!</p>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                             @else
                                                 @foreach ($application_history as $data)
                                                     <tr class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
-                                                            class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
+                                                            class="flex items-center px-4 py-2 lg:px-6 lg:py-4 text-gray-900 whitespace-nowrap">
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
-                                                                    {{ $data->job_posting->job_Title }}
-                                                                </div>
-
+                                                                    {{ $data->job_posting->job_Title }}</div>
+                                                                <div class="lg:hidden text-sm text-gray-500">Status:
+                                                                    {{ $data->applicant_Status }}</div>
+                                                                <!-- Mobile info -->
                                                             </div>
-
                                                         </th>
-                                                        <td class="px-6 py-4">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->job_posting->company->business_Name }}</div>
+                                                            <div class="lg:hidden text-sm text-gray-500">Applied:
+                                                                {{ $data->created_at->format('F m, Y') }}</div>
+                                                            <!-- Mobile info -->
                                                         </td>
-
-                                                        <td class="px-6 py-4">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4 hidden lg:table-cell">
                                                             @if ($data->applicant_Status == 'PENDING')
                                                                 <span
                                                                     class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -478,7 +487,7 @@
                                                             @endif
 
                                                         </td>
-                                                        <td class="px-6 py-4">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4 hidden lg:table-cell">
                                                             @if ($data->peso_Status == 'PENDING')
                                                                 <span
                                                                     class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
@@ -495,14 +504,13 @@
                                                             @endif
 
                                                         </td>
-                                                        <td class="px-6 py-4">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4 hidden lg:table-cell">
                                                             <div class="text-base">
-                                                                {{ $data->created_at->format('F m, Y') }}
-                                                            </div>
+                                                                {{ $data->created_at->format('F m, Y') }}</div>
                                                         </td>
-                                                        <td class="px-6 py-4 text-center">
-                                                            @if ($data->job_posting->peso_id == Auth::user()->peso_accounts->peso_id)
-                                                                <div class="flex flex-row  gap-5">
+                                                        <td class="px-4 py-2 lg:px-6 lg:py-4 text-center">
+                                                            <div class="flex flex-row gap-5">
+                                                                @if ($data->job_posting->peso_id == Auth::user()->peso_accounts->peso_id)
                                                                     <div x-data="{ tooltip: 'Application Overview' }">
                                                                         <a wire:navigate
                                                                             href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
@@ -520,13 +528,15 @@
                                                                             </svg>
                                                                         </a>
                                                                     </div>
-                                                            @endif
+                                                                @endif
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
 
@@ -541,8 +551,7 @@
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative overflow-x-auto p-1 mt-4">
                                 <div
-                                    class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
-
+                                    class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div
@@ -557,9 +566,8 @@
                                         </div>
 
                                         {{-- SEARCH --}}
-                                        <input wire:model.live.prevent='searchEvents' type="text"
-                                            id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        <input wire:model.live='searchEvents' type="search" id="table-search-users"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Events">
                                     </div>
                                 </div>
@@ -571,10 +579,10 @@
                                             <th scope="col" class="px-6 py-3">
                                                 Training Name
                                             </th>
-                                            <th scope="col" class="px-6 py-3">
+                                            <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                 Registered Date
                                             </th>
-                                            <th scope="col" class="px-6 py-3">
+                                            <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                 Status
                                             </th>
                                             <th scope="col" class="px-6 py-3">
@@ -595,13 +603,11 @@
                                                                     stroke-width="2"
                                                                     d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                             </svg>
-
                                                         </div>
                                                         <p class="text-xl font-bold text-black text-center mt-2">
                                                             No Records Found!
                                                         </p>
                                                     </div>
-
                                                 </td>
                                             </tr>
                                         @else
@@ -609,21 +615,28 @@
                                                 <tr class="bg-white border-b hover:bg-gray-50">
                                                     <th scope="row"
                                                         class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
                                                         <div class="ps-3 text-wrap">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->programs->program_Title }}
                                                             </div>
-
+                                                            <div class="block lg:hidden text-gray-500 text-sm">
+                                                                {{ $data->created_at->format('F m, Y') }} -
+                                                                @if ($data->program_reg_Status == 'REGISTERED')
+                                                                    <span class="text-yellow-800">REGISTERED</span>
+                                                                @elseif ($data->program_reg_Status == 'COMPLETED')
+                                                                    <span class="text-green-800">COMPLETED</span>
+                                                                @elseif ($data->program_reg_Status == 'REJECTED')
+                                                                    <span class="text-red-800">REJECTED</span>
+                                                                @endif
+                                                            </div>
                                                         </div>
-
                                                     </th>
-                                                    <td class="px-6 py-4">
+                                                    <td class="hidden lg:table-cell px-6 py-4">
                                                         <div class="text-base font-semibold">
                                                             {{ $data->created_at->format('F m, Y') }}</div>
                                                     </td>
 
-                                                    <td class="px-6 py-4">
+                                                    <td class="hidden lg:table-cell px-6 py-4">
                                                         @if ($data->program_reg_Status == 'REGISTERED')
                                                             <span
                                                                 class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
@@ -637,7 +650,7 @@
                                                     </td>
                                                     <td class="px-6 py-4 text-center">
                                                         @if ($data->programs->peso_id == Auth::user()->peso_accounts->peso_id)
-                                                            <div class="flex flex-row  gap-5">
+                                                            <div class="flex flex-row gap-5">
                                                                 <div x-data="{ tooltip: 'Application Overview' }">
                                                                     <a wire:navigate
                                                                         href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
@@ -662,6 +675,7 @@
                                         @endif
                                     </tbody>
                                 </table>
+
                             </div>
                             <div class="mt-4">
                                 {{ $programHistory->links('vendor.livewire.tailwind') }}
@@ -674,7 +688,7 @@
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
                             <div class="relative p-1 mt-4">
                                 <div
-                                    class="flex items-center justify-start flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 mr-1">
+                                    class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
@@ -690,9 +704,8 @@
                                         </div>
 
                                         {{-- SEARCH --}}
-                                        <input wire:model.live.prevent='searchJobs' type="text"
-                                            id="table-search-users"
-                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        <input wire:model.live='searchJobs' type="search" id="table-search-users"
+                                            class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                             placeholder="Search for Jobs">
                                     </div>
                                 </div>
@@ -702,21 +715,13 @@
                                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                             <tr>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Job Position
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Company
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Slots Available
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Application Deadline
-                                                </th>
-                                                <th scope="col" class="px-6 py-3">
-                                                    Action
-                                                </th>
+                                                <th scope="col" class="px-6 py-3">Job Position</th>
+                                                <th scope="col" class="hidden lg:table-cell px-6 py-3">Company</th>
+                                                <th scope="col" class="hidden md:table-cell px-6 py-3">Slots
+                                                    Available</th>
+                                                <th scope="col" class="hidden md:table-cell px-6 py-3">Application
+                                                    Deadline</th>
+                                                <th scope="col" class="px-6 py-3">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -734,13 +739,10 @@
                                                                         stroke-width="2"
                                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                 </svg>
-
                                                             </div>
-                                                            <p class="text-xl font-bold text-black text-center mt-2">
-                                                                No Matched Jobs!
-                                                            </p>
+                                                            <p class="text-xl font-bold text-black text-center mt-2">No
+                                                                Matched Jobs!</p>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                             @else
@@ -749,53 +751,62 @@
                                                         class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
                                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
                                                             <div class="ps-3 text-wrap">
-                                                                <div class="text-base font-semibold">
-                                                                    {{ $data->job_Title }}
+                                                                <div class="font-normal text-gray-500 lg:hidden">
+                                                                    {{ $data->company->business_Name }}
                                                                 </div>
+                                                                <div class="text-base font-semibold">
+                                                                    {{ $data->job_Title }}</div>
 
+                                                                <div class="font-normal text-gray-500 lg:hidden">
+                                                                    Slots: {{ $data->slotsLeft() }}
+                                                                </div>
+                                                                <div class="font-normal text-gray-500 lg:hidden">
+                                                                    Deadline:
+                                                                    {{ $data->job_Duration->format('F m, Y') }}
+                                                                </div>
                                                             </div>
-
                                                         </th>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden lg:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
                                                                 {{ $data->company->business_Name }}</div>
                                                         </td>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden md:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
-                                                                {{ $data->available_slots }}</div>
+                                                                {{ $data->slotsLeft() }}</div>
                                                         </td>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden md:table-cell px-6 py-4">
                                                             <div class="text-base">
-                                                                {{ $data->job_Duration->format('F m, Y') }}
-                                                            </div>
+                                                                {{ $data->job_Duration->format('F m, Y') }}</div>
                                                         </td>
                                                         <td class="px-6 py-4 text-center">
-                                                            <div class="flex flex-row  gap-5">
-
-                                                                <div x-data="{ tooltip: 'View Job Posting' }">
-                                                                    <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
-                                                                        x-tooltip="tooltip" type="button"
-                                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                        <svg class="h-5 w-5"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            viewBox="0 0 24 24" fill="currentColor">
-                                                                            <path
-                                                                                d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                                            <path fill-rule="evenodd"
-                                                                                d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                                                clip-rule="evenodd" />
-                                                                        </svg>
-                                                                    </a>
-                                                                </div>
-
+                                                            <div class="flex flex-row gap-5">
+                                                                @if (Auth::user()->peso_accounts->peso_id == $data->peso_id)
+                                                                    <div x-data="{ tooltip: 'View Job Posting' }">
+                                                                        <a href="{{ route('admin.jobpost.applicants', ['id' => $data->job_id]) }}"
+                                                                            x-tooltip="tooltip" type="button"
+                                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                            <svg class="h-5 w-5"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                viewBox="0 0 24 24"
+                                                                                fill="currentColor">
+                                                                                <path
+                                                                                    d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                                <path fill-rule="evenodd"
+                                                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                                                    clip-rule="evenodd" />
+                                                                            </svg>
+                                                                        </a>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
 
@@ -816,7 +827,7 @@
                                                 <th scope="col" class="px-6 py-3">
                                                     License
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">
+                                                <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                     Validity
                                                 </th>
                                             </tr>
@@ -836,13 +847,11 @@
                                                                         stroke-width="2"
                                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                 </svg>
-
                                                             </div>
                                                             <p class="text-xl font-bold text-black text-center mt-2">
                                                                 No Records Found!
                                                             </p>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                             @else
@@ -850,24 +859,27 @@
                                                     <tr class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
                                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
                                                                     {{ $data->license_type->license_Name }}
                                                                 </div>
-
+                                                                <div class="lg:hidden text-sm text-gray-600">
+                                                                    Valid until:
+                                                                    {{ $data->license_Validity->format('F m, Y') }}
+                                                                </div>
                                                             </div>
-
                                                         </th>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden lg:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
-                                                                {{ $data->license_Validity->format('F m, Y') }}</div>
+                                                                {{ $data->license_Validity->format('F m, Y') }}
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
 
@@ -884,9 +896,9 @@
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                             <tr>
                                                 <th scope="col" class="px-6 py-3">
-                                                    Eligiblity
+                                                    Eligibility
                                                 </th>
-                                                <th scope="col" class="px-6 py-3">
+                                                <th scope="col" class="hidden lg:table-cell px-6 py-3">
                                                     Validity
                                                 </th>
                                             </tr>
@@ -906,13 +918,11 @@
                                                                         stroke-width="2"
                                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                                 </svg>
-
                                                             </div>
                                                             <p class="text-xl font-bold text-black text-center mt-2">
                                                                 No Records Found!
                                                             </p>
                                                         </div>
-
                                                     </td>
                                                 </tr>
                                             @else
@@ -920,24 +930,27 @@
                                                     <tr class="bg-white border-b hover:bg-gray-50">
                                                         <th scope="row"
                                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-
                                                             <div class="ps-3 text-wrap">
                                                                 <div class="text-base font-semibold">
                                                                     {{ $data->eligibility_type->eligibility_Name }}
                                                                 </div>
-
+                                                                <div class="lg:hidden text-sm text-gray-600">
+                                                                    Valid until:
+                                                                    {{ $data->eligibility_Date->format('F m, Y') }}
+                                                                </div>
                                                             </div>
-
                                                         </th>
-                                                        <td class="px-6 py-4">
+                                                        <td class="hidden lg:table-cell px-6 py-4">
                                                             <div class="text-base font-semibold">
-                                                                {{ $data->eligibility_Date->format('F m, Y') }}</div>
+                                                                {{ $data->eligibility_Date->format('F m, Y') }}
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
 
@@ -960,7 +973,7 @@
                     <h1 class="text-2xl font-bold ">Details</h1>
                     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="fname" :value="__('First Name')" />
                             <x-text-input wire:model='fname' class="block mt-1 w-full" type="text" />
@@ -974,7 +987,7 @@
 
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="mname" :value="__('Middle Name')" />
                             <x-text-input wire:model='mname' class="block mt-1 w-full" type="text" />
@@ -1004,7 +1017,7 @@
                         <x-input-error :messages="$errors->get('suffix')" class="mt-2" />
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="birthdate" :value="__('Birthdate')" />
                             <x-text-input wire:model='birthdate' class="block mt-1 w-full" type="date" />
@@ -1025,7 +1038,7 @@
                     </div>
 
 
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="civilstatus" :value="__('Civil Status')" />
                             <select wire:model='civilstatus' class="block mt-1 w-full rounded-md">
@@ -1245,7 +1258,7 @@
 
 
     <x-modal name="reactivate-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to reactivate this account?') }}
             </h2>
@@ -1287,12 +1300,14 @@
     </x-modal>
 
     <x-modal name="deactivate-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ deactivateBox: @entangle('deactivateBox') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to deactivate this account?') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
+
+                <!-- Informational Message -->
 
                 <div class="flex flex-col mt-2 w-full">
                     <x-input-label for="remarks" :value="__('Remarks')" />
@@ -1302,14 +1317,37 @@
                     <x-input-error :messages="$errors->get('deactRemarks')" class="mt-2" />
                 </div>
 
+                <p class="text-sm lg:text-md text-gray-600 mt-2">
+                    {{ __('Please note that deactivating this account will cancel all active and pending transactions associated with it. Make sure to review any ongoing processes before proceeding.') }}
+                </p>
+
+                <div class="inline-flex justify-center items-center mt-2 w-full">
+                    <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="deactivateBox">
+                        <input wire:model="deactivateBox" type="checkbox" id="deactivateBox"
+                            class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                        <span
+                            class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                fill="currentColor" stroke="currentColor" stroke-width="1">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                    </label>
+                    <label class="mt-px font-light text-gray-700 cursor-pointer select-none" for="deactivateBox">
+                        Confirm the transaction
+                    </label>
+                </div>
+
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 flex justify-between">
                 <x-secondary-button wire:click.prevent="closeModal('deactivate')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button wire:loading.attr="disabled" wire:click.prevent="statusUser(2)" class="ms-3"
-                    type="button">
+                <x-danger-button x-show="deactivateBox" wire:loading.attr="disabled"
+                    wire:click.prevent="statusUser(2)" class="ms-3" type="button">
                     {{ __('Deactivate') }}
                     <div wire:loading.delay.long wire:target="statusUser(2)" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
@@ -1327,6 +1365,7 @@
             </div>
         </div>
     </x-modal>
+
 
 
     <x-modal name="reset-password-modal" focusable>
@@ -1368,8 +1407,8 @@
 
 
 
-                <x-danger-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled"
-                    wire:target='resetPassword' wire:click.prevent="resetPassword" class="ms-3" type="button">
+                <x-danger-button x-show="agreeBox" wire:loading.attr="disabled" wire:target='resetPassword'
+                    wire:click.prevent="resetPassword" class="ms-3" type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="resetPassword" role="status">
                         <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
@@ -1391,60 +1430,58 @@
 
 
 
+@push('scripts')
+    @script
+        <script>
+            Livewire.on('viewFile', event => {
+                // Check if the event is an array and has at least one element
+                if (Array.isArray(event) && event.length > 0) {
+                    // Access the first element and then its properties
+                    const data = event[0]; // Assuming the data object is the first element
 
-@script
-    <script>
-        Livewire.on('viewFile', event => {
-            // Check if the event is an array and has at least one element
-            if (Array.isArray(event) && event.length > 0) {
-                // Access the first element and then its properties
-                const data = event[0]; // Assuming the data object is the first element
+                    // Extract URL and handle dynamic keys
+                    const url = data.url;
 
-                // Log the entire data object for verification
-                console.log('Data:', data);
+                    // Ensure URL is present
+                    if (url) {
+                        // Create and configure the form element
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = url;
+                        form.target = '_blank';
 
-                // Extract URL and handle dynamic keys
-                const url = data.url;
+                        // Add CSRF token as a hidden input
+                        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+                        form.appendChild(csrfInput);
 
-                // Ensure URL is present
-                if (url) {
-                    // Create and configure the form element
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = url;
-                    form.target = '_blank';
+                        // Add all data inputs dynamically
+                        Object.entries(data).forEach(([key, value]) => {
+                            if (key !== 'url') {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = key;
+                                input.value = value;
+                                form.appendChild(input);
+                            }
+                        });
 
-                    // Add CSRF token as a hidden input
-                    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = '_token';
-                    csrfInput.value = csrfToken;
-                    form.appendChild(csrfInput);
+                        // Append form to the body and submit
+                        document.body.appendChild(form);
+                        form.submit();
 
-                    // Add all data inputs dynamically
-                    Object.entries(data).forEach(([key, value]) => {
-                        if (key !== 'url') {
-                            const input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = key;
-                            input.value = value;
-                            form.appendChild(input);
-                        }
-                    });
-
-                    // Append form to the body and submit
-                    document.body.appendChild(form);
-                    form.submit();
-
-                    // Clean up by removing the form element
-                    document.body.removeChild(form);
+                        // Clean up by removing the form element
+                        document.body.removeChild(form);
+                    } else {
+                        console.error('URL not found in event data');
+                    }
                 } else {
-                    console.error('URL not found in event data');
+                    console.error('Event is not in the expected format');
                 }
-            } else {
-                console.error('Event is not in the expected format');
-            }
-        });
-    </script>
-@endscript
+            });
+        </script>
+    @endscript
+@endpush

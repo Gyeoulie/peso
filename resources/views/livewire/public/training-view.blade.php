@@ -1,84 +1,23 @@
-<div>
-    <div class="container mx-auto py-8">
+<div wire:poll.5s>
+    <div class="container py-8 mx-auto">
 
-        <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
-
-
+        <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
 
 
 
-            <div class="col-span-4 sm:col-span-5">
-                <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4">
-                    <div class="flex flex-row justify-center items-center h-full p-5 flex-shrink-0">
+
+
+            <div class="col-span-4 lg:col-span-5">
+                <div class="p-4 overflow-hidden bg-white rounded-lg shadow-sm select-none">
+                    <div class="flex flex-row items-center justify-center flex-shrink-0 h-full p-5">
                         <img src="{{ asset('storage/' . $ProgramInfo->program_pubmat) }}" alt="Default I mage"
                             class="w-[450px] h-[450px] bg-gray-300 rounded object-contain">
                     </div>
 
-                    <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-4">
+                    <hr class="h-px mt-4 bg-gray-200 border-0 dark:bg-gray-700">
 
                     <div class="flex flex-col w-full">
-
-                        {{-- @if (auth()->user()->usertype >= 5)
-
-                            @if ($JobPost->job_Status == 'PENDING')
-                                <div class="bg-yellow-100 shadow rounded-lg p-6">
-                                    <div class="flex flex-row items-center justify-between">
-                                        <p class="text-yellow-700 font-bold text-xl">Application is Pending</p>
-                                    </div>
-                                </div>
-                            @elseif($JobPost->job_Status == 'REJECTED')
-                                <div class="bg-red-100 shadow rounded-lg p-6">
-                                    <div class="flex flex-row items-center justify-between">
-                                        <p class="text-red-700 font-bold text-xl">Application is Rejected</p>
-                                    </div>
-                                </div>
-
-
-                                <div class="flex flex-col w-full mt-4">
-                                    <x-input-label for="fname"> </i> PESO Remarks
-                                    </x-input-label>
-                                    <textarea id="message" rows="4" readonly
-                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="PESO Remarks">{{ $JobPost->peso_Remarks }}</textarea>
-                                </div>
-                            @endif
-
-                            @if (auth()->user()->usertype >= 8 && auth()->user()->peso->municipality_id == $JobPost->peso_municipality_id)
-                                <div class="flex flex-row items-center justify-center mt-2">
-                                    <a wire:navigate
-                                        href="{{ route('admin.jobpost.applicants', ['id' => $JobPost->job_id]) }}">
-                                        <x-primary-button class="w-[350px] h-[40px] justify-center">
-
-                                            View Job Applicants
-
-                                        </x-primary-button>
-                                    </a>
-                                </div>
-                            @endif
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-4">
-                        @endif
-
-                        @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
-                            @if ($isApplied == false)
-                                <div class="flex flex-row w-ful::withTrashed()l items-center justify-center mt-2">
-                                    <h1>Applicantion ends: <span
-                                            class="text-red-500 text-md font-black">{{ $JobPost->job_Duration->format('F j, Y') }}</span>
-                                    </h1>
-                                </div>
-                                <div class="flex flex-row items-center justify-center mt-2">
-                                    <x-primary-button class="w-[350px] h-[40px] justify-center" x-data=""
-                                        x-on:click.prevent="$dispatch('open-modal', 'apply-modal')">
-                                        Apply
-                                    </x-primary-button>
-                                </div>
-                            @else
-                                <div class="flex flex-row w-full items-center justify-center mt-2">
-                                    <h1 class="text-xl font-semibold text-blue-500">You have already applied for this
-                                        job position.
-                                    </h1>
-                                </div>
-                            @endif --}}
 
                         @php
                             $currentDate = now(); // Get the current date and time
@@ -91,12 +30,27 @@
                                     <!-- Check if current date is before the deadline -->
                                     @if (!$isRegistered)
                                         <x-blue-button class="w-[350px] h-[40px] justify-center"
+                                            wire:loading.attr="disabled" wire:target="registerValidate"
                                             wire:click.prevent='registerValidate'>
                                             PRE REGISTER
+                                            <div wire:loading.delay.long role="status" wire:target="registerValidate">
+                                                <svg aria-hidden="true"
+                                                    class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
+                                                    viewBox="0 0 100 101" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                        fill="currentFill" />
+                                                </svg>
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
                                         </x-blue-button>
                                         <h1 class="mt-2">
                                             Registration ends: <span
-                                                class="text-red-500 text-md font-black">{{ $deadline->format('F j, Y') }}</span>
+                                                class="font-black text-red-500 text-md">{{ $deadline->format('F j, Y') }}</span>
                                         </h1>
                                     @elseif (Auth::check() && $isRegistered)
                                         <h1 class="text-xl font-semibold text-blue-500">
@@ -118,7 +72,7 @@
 
                             <ul>
                                 <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
+                                    <div class="flex flex-row w-full gap-4">
                                         <div class="flex flex-col">
 
 
@@ -136,14 +90,14 @@
                                             <div class="text-xl font-bold text-black">
                                                 Program Host
                                             </div>
-                                            <div class="text-md font-medium break-all">
+                                            <div class="font-medium break-all text-md">
                                                 {{ $ProgramInfo->program_Host }}
                                             </div>
                                         </div>
                                     </div>
                                 </li>
                                 <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
+                                    <div class="flex flex-row w-full gap-4">
                                         <div class="flex flex-col">
                                             <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -157,7 +111,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Date Posted
                                             </div>
-                                            <div class="text-md font-medium break-all">
+                                            <div class="font-medium break-all text-md">
                                                 {{ $ProgramInfo->created_at->format('F j, Y') }}
                                             </div>
 
@@ -167,7 +121,7 @@
                                 </li>
                                 @if ($ProgramInfo->program_Datetime)
                                     <li class="mb-4">
-                                        <div class="flex flex-row gap-4 w-full">
+                                        <div class="flex flex-row w-full gap-4">
                                             <div class="flex flex-col">
 
                                                 <svg class="w-10 h-10 text-blue-500" viewBox="0 0 24 24" fill="none"
@@ -181,7 +135,7 @@
                                                 <div class="text-xl font-bold text-black">
                                                     Program Time
                                                 </div>
-                                                <div class="text-md font-medium break-all">
+                                                <div class="font-medium break-all text-md">
                                                     {{ $ProgramInfo->program_Datetime->format('F j, Y g:i A') }}
 
                                                 </div>
@@ -191,7 +145,7 @@
                                     </li>
                                 @endif
                                 <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
+                                    <div class="flex flex-row w-full gap-4">
                                         <div class="flex flex-col">
                                             <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -209,7 +163,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Location
                                             </div>
-                                            <div class="text-md font-medium break-all">
+                                            <div class="font-medium break-all text-md">
                                                 {{ $ProgramInfo->program_Location }}
                                             </div>
 
@@ -218,7 +172,7 @@
                                     </div>
                                 </li>
                                 <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
+                                    <div class="flex flex-row w-full gap-4">
                                         <div class="flex flex-col">
                                             <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg"
                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -232,14 +186,14 @@
                                             <div class="text-xl font-bold text-black">
                                                 Program Modality
                                             </div>
-                                            <div class="text-md font-medium break-all">
+                                            <div class="font-medium break-all text-md">
                                                 {{ $ProgramInfo->program_Modality }}
                                             </div>
                                         </div>
                                     </div>
                                 </li>
                                 <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
+                                    <div class="flex flex-row w-full gap-4">
                                         <div class="flex flex-col">
                                             <svg class="w-10 h-10 text-blue-500" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -254,7 +208,7 @@
                                             <div class="text-xl font-bold text-black">
                                                 Industry
                                             </div>
-                                            <div class="text-md font-medium break-all">
+                                            <div class="font-medium break-all text-md">
                                                 {{ $ProgramInfo->job_industry->industry_Title }}
                                             </div>
 
@@ -263,7 +217,7 @@
                                     </div>
                                 </li>
                                 <li class="mb-4">
-                                    <div class="flex flex-row gap-4 w-full">
+                                    <div class="flex flex-row w-full gap-4">
                                         <div class="flex flex-col">
 
                                             <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg"
@@ -279,7 +233,7 @@
                                                 Slots Left
                                             </div>
 
-                                            <div class="text-md font-medium  break-all">
+                                            <div class="font-medium break-all text-md">
                                                 {{ $ProgramInfo->program_Slots - $ProgramInfo->program_reg_count }}
                                             </div>
 
@@ -292,13 +246,13 @@
                     </div>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4 mt-4">
-                    <div class="flex flex-row w-full">
-                        <h1 class="text-xl text-blue-900 font-bold">Job Tags</h1>
+                <div class="p-4 mt-4 overflow-hidden bg-white rounded-lg shadow-sm">
+                    <div class="flex flex-row w-full select-none	">
+                        <h1 class="text-xl font-bold text-blue-900">Job Tags</h1>
                     </div>
-                    <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                    <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                    <div class="flex-inline  rounded-lg p-1 mt-2 ">
+                    <div class="p-1 mt-2 rounded-lg flex-inline ">
                         @foreach ($ProgramInfo->program_tags as $jobTag)
                             <span wire:key='jobTag-{{ $jobTag->job_positions->position_id }}'
                                 class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
@@ -314,22 +268,22 @@
 
 
 
-            <div class="col-span-4 sm:col-span-7">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="col-span-4 lg:col-span-7">
+                <div class="overflow-hidden bg-white shadow-sm lg:rounded-lg">
 
 
                     <div class="flex flex-col w-full h-full p-5 space-y-2">
 
                         <div class="flex flex-col">
-                            <h1 class="text-3xl text-blue-500 sm:text-6xl font-bold">{{ $ProgramInfo->program_Title }}
+                            <h1 class="text-3xl font-bold text-blue-500 lg:text-6xl">{{ $ProgramInfo->program_Title }}
                             </h1>
                         </div>
 
                         <div class="Job-Description ">
                             <div class="flex flex-row w-full mt-10">
-                                <h1 class="text-xl text-blue-900 font-bold">Description</h1>
+                                <h1 class="text-xl font-bold text-blue-900">Description</h1>
                             </div>
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                            <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                             <div class="p-2 no-tailwindcss-base">
                                 {!! $ProgramInfo->program_Description !!}
@@ -339,59 +293,35 @@
 
                         <div class="Job-Qualification">
 
-                            <h1 class="text-xl text-blue-900 font-bold">Qualification</h1>
+                            <h1 class="text-xl font-bold text-blue-900">Qualification</h1>
 
 
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                            <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                             <div class="p-2 no-tailwindcss-base">
                                 {!! $ProgramInfo->program_Qualification !!}
                             </div>
                         </div>
 
-                        <div class="Job-Remarks">
+                        @if ($ProgramInfo->program_Remarks)
+                            <div class="Job-Remarks">
 
-                            <h1 class="text-xl text-blue-900 font-bold">Remarks</h1>
+                                <h1 class="text-xl font-bold text-blue-900">Remarks</h1>
 
 
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                                <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
 
-                            <div class="p-2 no-tailwindcss-base">
-                                {!! $ProgramInfo->program_Remarks !!}
+                                <div class="p-2 no-tailwindcss-base">
+                                    {!! $ProgramInfo->program_Remarks !!}
 
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                     </div>
                 </div>
 
 
-
-
-                {{-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="flex flex-col w-full h-full p-5">
-    
-    
-                            <div class="About-Company">
-    
-                                <h1 class="text-xl text-blue-900 font-bold">About National University Baliwag</h1>
-    
-    
-                                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
-    
-                                <div class="mt-2">
-                                    National University (NU) Baliwag is a distinguished institution of higher education
-                                    situated
-                                    in Baliwag, Bulacan, Philippines. Committed to academic excellence, innovation, and
-                                    social
-                                    responsibility, NU Baliwag aims to empower minds and transform lives through quality
-                                    education and holistic development.
-    
-                                </div>
-                            </div>
-    
-                        </div>
-                    </div> --}}
             </div>
         </div>
 
@@ -400,14 +330,14 @@
 
 
         <x-modal name="register-modal" focusable>
-            <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ agreeBox: @entangle('agreeBox') }">
+            <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ agreeBox: @entangle('agreeBox') }">
                 <h2 class="text-lg font-medium text-gray-900">
                     {{ __('Are you sure you want to register?') }}
                 </h2>
                 <hr>
                 <div class="flex flex-col my-4">
-                    <div class="flex flex-col mt-4 w-full justify-center items-center px-4">
-                        <p class="text-sm sm:text-md text-justify">
+                    <div class="flex flex-col items-center justify-center w-full px-4 mt-4">
+                        <p class="text-sm text-justify lg:text-md">
                             By registering for skills training with the Public Employment Services Office (PESO), you
                             confirm that all information provided is accurate and up-to-date. You consent to the
                             collection and use of your personal data for training and employment purposes in line with
@@ -419,9 +349,9 @@
                         <div class="inline-flex items-center mt-4">
                             <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="agreeBox">
                                 <input wire:model="agreeBox" type="checkbox" id="agreeBox"
-                                    class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                                    class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                                 <span
-                                    class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                                    class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
                                         fill="currentColor" stroke="currentColor" stroke-width="1">
                                         <path fill-rule="evenodd"
@@ -436,16 +366,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-6 flex justify-between">
-                    <x-secondary-button x-on:click="$dispatch('close-modal', 'register-modal')">
+                <div class="flex justify-between mt-6">
+                    <x-secondary-button x-on:click="agreeBox = false; $dispatch('close-modal', 'register-modal')">
                         {{ __('Cancel') }}
                     </x-secondary-button>
 
-                    <x-green-button x-bind:disabled="!agreeBox" wire:loading.attr="disabled"
-                        wire:click.prevent="register" class="ms-3" type="button">
+                    <x-green-button x-show="agreeBox" wire:loading.attr="disabled" wire:click.prevent="register"
+                        class="ms-3" type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="updateApplicant('REJECT', 'reject')" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -463,18 +393,18 @@
 
         <x-modal name="login-modal" focusable>
             <div
-                class="w-full max-w-2xl mx-auto px-6 py-8 bg-gradient-to-r from-blue-50 to-white rounded-lg shadow-xl border border-gray-200">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-gray-300 pb-2">
+                class="w-full max-w-2xl px-6 py-8 mx-auto border border-gray-200 rounded-lg shadow-xl bg-gradient-to-r from-blue-50 to-white">
+                <h2 class="pb-2 mb-4 text-2xl font-bold text-gray-900 border-b-2 border-gray-300">
                     {{ __('Action Required') }}
                 </h2>
-                <div class="flex flex-col items-center text-center mb-8">
-                    <h1 class="text-2xl font-extrabold text-gray-800 mb-4">You need to be logged in to apply.</h1>
-                    <p class="text-gray-600 text-lg">Please log in to register. If you don't have an
+                <div class="flex flex-col items-center mb-8 text-center">
+                    <h1 class="mb-4 text-2xl font-extrabold text-gray-800">You need to be logged in to register.</h1>
+                    <p class="text-lg text-gray-600">Please log in to register. If you don't have an
                         account, you can register as well.</p>
                 </div>
                 <div class="flex justify-between mt-6 space-x-4">
                     <x-secondary-button x-on:click="$dispatch('close-modal', 'login-modal')"
-                        class="bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg shadow-sm transition-transform transform hover:scale-105"
+                        class="text-gray-800 transition-transform transform bg-gray-200 rounded-lg shadow-sm hover:bg-gray-300 hover:scale-105"
                         type="button">
                         {{ __('Cancel') }}
                     </x-secondary-button>
@@ -482,7 +412,7 @@
                     <div class="flex space-x-4">
                         <a href="{{ route('login') }}">
                             <x-green-button
-                                class="bg-green-500 hover:bg-green-600 text-white rounded-lg shadow-md transition-transform transform hover:scale-105"
+                                class="text-white transition-transform transform bg-green-500 rounded-lg shadow-md hover:bg-green-600 hover:scale-105"
                                 type="button">
                                 {{ __('Log In') }}
                             </x-green-button>
@@ -490,7 +420,7 @@
 
                         <a href="{{ route('register') }}">
                             <x-primary-button x-on:click="$dispatch('register-modal')"
-                                class="bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition-transform transform hover:scale-105"
+                                class="text-white transition-transform transform bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 hover:scale-105"
                                 type="button">
                                 {{ __('Register') }}
                             </x-primary-button>

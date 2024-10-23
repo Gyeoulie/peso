@@ -40,7 +40,7 @@ class PasswordController extends Controller
             'password.required' => 'A new password is required.',
             'password.confirmed' => 'The new password confirmation does not match.',
             'password.min' => 'The password must be at least :min characters long.',
-            'password.regex' => 'The password must include at least one lowercase letter, one uppercase letter, one number, and one special character.',
+            'password.regex' => 'The password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character.',
             'password.different_from_current' => 'The new password must not be the same as the current password.',
         ]);
 

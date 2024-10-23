@@ -1,18 +1,19 @@
-<div>
+<div wire:poll>
 
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Job Applicants') }}
         </h2>
     </x-slot>
 
-    <div wire:poll class="grid grid-cols-4 sm:grid-cols-12 mt-4 mx-8 p-0 sm:p-6 gap-5">
-        <div class="col-span-4 sm:col-span-5">
+    <div class="grid grid-cols-4 gap-5 p-0 mx-8 mt-4 lg:grid-cols-12 lg:p-6">
+        <div class="col-span-4 lg:col-span-5">
 
-            <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+            <div
+                class="flex flex-col flex-wrap gap-2 p-1 pb-4 space-y-4 lg:items-center lg:jstify-between flex-column lg:flex-row lg:space-y-0">
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
-                    <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <div class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                         <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -21,22 +22,22 @@
                     </div>
 
                     {{-- SEARCH --}}
-                    <input wire:model.live.prevent='postSearch' type="text" id="table-search-users"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    <input wire:model.live='postSearch' type="search" id="table-search-users"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for job posting">
                 </div>
-                <div>
+                <div class="flex flex-wrap gap-2 mr-3">
 
                     <x-dropdown align="right" width="36">
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
                                 <div>
-                                    Filter
+                                    {{ $jobFilter }}
                                 </div>
 
                                 <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -71,7 +72,7 @@
             <div class="flex">
                 @if ($jobs->isEmpty())
                     <div class="flex w-full">
-                        <div class="w-full rounded-lg p-10">
+                        <div class="w-full p-10 rounded-lg">
                             <div class="flex flex-col items-center justify-center w-full">
                                 <div class="p-6 bg-gray-100 rounded-full">
                                     <svg class="w-24 h-24 text-black" aria-hidden="true"
@@ -82,7 +83,7 @@
                                     </svg>
 
                                 </div>
-                                <p class="text-xl font-bold text-black text-center mt-2">
+                                <p class="mt-2 text-xl font-bold text-center text-black">
                                     No Job Posting Found!
                                 </p>
                             </div>
@@ -90,24 +91,24 @@
 
                     </div>
                 @else
-                    <div class="flex flex-row sm:flex-col gap-4 overflow-y-auto sm:overflow-visible	 w-full"
+                    <div class="flex flex-row w-full gap-4 overflow-y-auto lg:flex-col lg:overflow-visible"
                         x-data="{
                             selectedJob: @entangle('selectedJob'),
                         }">
                         @foreach ($jobs as $data)
-                            <div class="relative flex-shrink-0 w-[90%] sm:w-full">
+                            <div class="relative flex-shrink-0 w-[90%] lg:w-full">
                                 <a wire:key='jobPost-{{ $data->job_id }}'
                                     wire:click.prevent='getJob({{ $data->job_id }})' class="cursor-pointer">
 
                                     <div
-                                        class="@if ($data->job_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col h-full sm:hover:scale-105 sm:transition-transform overflow-hidden">
+                                        class="@if ($data->job_id == $selectedJob) bg-blue-300 @else bg-white @endif shadow rounded-lg p-6 flex flex-col h-full lg:hover:scale-105 lg:transition-transform overflow-hidden">
 
-                                        <div class="flex flex-row gap-4 sm:gap-0 justify-end">
+                                        <div class="flex flex-row justify-end gap-4 lg:gap-0">
 
                                             <div class="flex flex-col w-full">
-                                                <h1 class="text-xl sm:text-2xl font-bold underline">
+                                                <h1 class="text-xl font-bold underline lg:text-2xl">
                                                     {{ $data->job_Title }}</h1>
-                                                <h1 class="text-md sm:text-lg text-gray-600">
+                                                <h1 class="text-gray-600 text-md lg:text-lg">
                                                     {{ $data->company->business_Name }}
                                                 </h1>
                                                 <div class="flex flex-row">
@@ -115,21 +116,21 @@
                                                 </div>
 
                                             </div>
-                                            <div class="hidden sm:flex w-full justify-end mb-auto mt-0">
+                                            <div class="justify-end hidden w-full mt-0 mb-auto lg:flex">
                                                 <span
                                                     class=" bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
                                                     PESO {{ $data->peso->municipality->municipality_Name }}
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="sm:hidden flex w-full">
+                                        <div class="flex w-full lg:hidden">
                                             <span
                                                 class=" bg-gray-100 text-gray-800 text-md font-medium   items-center px-2.5 py-0.5 rounded me-2 border border-gray-500 ">
                                                 PESO {{ $data->peso->municipality->municipality_Name }}
                                             </span>
                                         </div>
 
-                                        <div class="text-sm sm:text-md flex flex-row mt-2">
+                                        <div class="flex flex-row mt-2 text-sm lg:text-md">
                                             <p class="mb-2 font-bold">Applicants:</p>
                                             <p class="ms-2">{{ $data->job_applicants_count }}</p>
                                         </div>
@@ -137,26 +138,26 @@
 
                                         <div class="flex flex-col w-full mt-4">
                                             <div class="flex flex-col md:flex-row">
-                                                <div class="md:w-1/4 text-left">
+                                                <div class="text-left md:w-1/4">
 
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                    <h3 class="text-xs uppercase lg:text-sm"> <i
                                                             class="fa-solid fa-location-dot"></i>
                                                         {{ $data->barangay->municipality->municipality_Name }},
                                                         {{ $data->barangay->municipality->province->province_Name }}
                                                 </div>
-                                                <div class="md:w-1/4 text-left md:text-center uppercase">
-                                                    <h3 class="text-xs sm:text-sm"> <i
+                                                <div class="text-left uppercase md:w-1/4 md:text-center">
+                                                    <h3 class="text-xs lg:text-sm"> <i
                                                             class="fa-solid fa-graduation-cap"></i>
                                                         {{ $eduLevels[$data->job_Edu] }}</h3>
                                                 </div>
-                                                <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                <div class="text-left md:w-1/4 md:text-center">
+                                                    <h3 class="text-xs uppercase lg:text-sm"> <i
                                                             class="fa-solid fa-briefcase"></i>
                                                         {{ $data->job_Type == 1 ? 'Full Time' : 'Part Time' }}
                                                     </h3>
                                                 </div>
-                                                <div class="md:w-1/4 text-left md:text-center">
-                                                    <h3 class="text-xs sm:text-sm uppercase"> <i
+                                                <div class="text-left md:w-1/4 md:text-center">
+                                                    <h3 class="text-xs uppercase lg:text-sm"> <i
                                                             class="fa-solid fa-calendar"></i>
                                                         {{ $data->created_at->format('F j, Y') }}
                                                     </h3>
@@ -177,11 +178,11 @@
             </div>
         </div>
 
-        <div class="col-span-4 sm:col-span-7" x-data="{
+        <div class="col-span-4 lg:col-span-7" x-data="{
             selectedApplicant: @entangle('selectedApplicant')
         }">
             @if ($applicants)
-                <div x-show="!selectedApplicant" class="bg-white shadow rounded-lg p-6 flex flex-col"
+                <div x-show="!selectedApplicant" class="flex flex-col p-6 bg-white rounded-lg shadow"
                     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                     x-transition:enter-end="opacity-100 scale-100">
 
@@ -192,7 +193,7 @@
                             activeFilter: 'text-gray-900 bg-gray-400 active',
                             inactiveFilter: 'bg-white hover:text-gray-700 hover:bg-gray-50',
                         }" x-init="$wire.set('filter', filter)">
-                            <div class="sm:hidden">
+                            <div class="lg:hidden">
                                 <label for="tabs" class="sr-only">Select Filter</label>
                                 <select id="tabs"
                                     class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -207,7 +208,7 @@
                                 </select>
                             </div>
                             <ul
-                                class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex mb-3">
+                                class="hidden mb-3 text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex">
                                 <li class="w-full focus-within:z-10">
                                     <button wire:click.prevent='changeFilter("ALL")'
                                         :class="filter === 'ALL' ? activeFilter : inactiveFilter"
@@ -255,13 +256,14 @@
 
 
                         <div
-                            class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 md:mx-1">
+                            class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
+
                             <div>
 
                                 <label for="table-search" class="sr-only">Search</label>
                                 <div class="relative ">
                                     <div
-                                        class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                         <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                             <path stroke="currentColor" stroke-linecap="round"
@@ -273,69 +275,72 @@
                                     {{-- SEARCH --}}
                                     <input wire:model.live.prevent='applicantSearch' type="text"
                                         id="table-search-users"
-                                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-70 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Search applicants">
                                 </div>
                             </div>
 
                             {{-- DROP DOWN BUTTON --}}
+                            <div class="flex flex-wrap gap-2 mr-2">
+                                <x-dropdown align="right" width="48">
+                                    <x-slot name="trigger">
+                                        <button
+                                            class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                                            <div>
+                                                {{ $sortDate === 'ASC' ? 'Oldest' : ($sortDate == 'DESC' ? 'Newest' : 'Sort by Date') }}
+                                            </div>
 
-                            <x-dropdown align="right" width="48">
-                                <x-slot name="trigger">
-                                    <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
-                                        <div>
-                                            {{ $sortDate === 'ASC' ? 'Oldest' : ($sortDate == 'DESC' ? 'Newest' : 'Sort by Date') }}
-                                        </div>
-
-                                        <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                    </button>
-                                </x-slot>
-
-
-                                <x-slot name="content">
-                                    <x-slot name="contentClasses">
-                                        max-h-[300px] bg-white
+                                            <div class="ms-1">
+                                                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </button>
                                     </x-slot>
 
-                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('DESC')">
-                                        Newest
-                                    </x-dropdown-link>
 
-                                    <!-- Authentication -->
-                                    <x-dropdown-link class="cursor-pointer" wire:click.prevent="updateSort('ASC')">
-                                        Oldest
-                                    </x-dropdown-link>
-                                </x-slot>
-                            </x-dropdown>
+                                    <x-slot name="content">
+                                        <x-slot name="contentClasses">
+                                            max-h-[300px] bg-white
+                                        </x-slot>
+
+                                        <x-dropdown-link class="cursor-pointer"
+                                            wire:click.prevent="updateSort('DESC')">
+                                            Newest
+                                        </x-dropdown-link>
+
+                                        <!-- Authentication -->
+                                        <x-dropdown-link class="cursor-pointer"
+                                            wire:click.prevent="updateSort('ASC')">
+                                            Oldest
+                                        </x-dropdown-link>
+                                    </x-slot>
+                                </x-dropdown>
+                            </div>
 
 
                         </div>
 
                         {{-- TABLE --}}
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 ">
                                             Name
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                             PESO Status
                                         </th>
                                         @if ($filter === 'ALL')
-                                            <th scope="col" class="px-6 py-3">
+                                            <th scope="col"class="hidden px-6 py-3 lg:table-cell">
                                                 Status
                                             </th>
                                         @endif
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                             Documents
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -358,7 +363,7 @@
                                                         </svg>
 
                                                     </div>
-                                                    <p class="text-xl font-bold text-black text-center mt-2 mb-20">
+                                                    <p class="mt-2 mb-20 text-xl font-bold text-center text-black">
                                                         No Applicants Found
                                                     </p>
                                                 </div>
@@ -371,26 +376,58 @@
                                                 class="bg-white border-b hover:bg-gray-50">
                                                 <th scope="row"
                                                     class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                    <img class="w-10 h-10 rounded-full object-cover"
+                                                    <img class="select-none object-cover w-10 h-10 rounded-full"
                                                         src="{{ asset('storage/' . $data->employee->pimg) }}"
-                                                        alt="Jese image">
+                                                        alt="Profile Image">
                                                     <div class="ps-3 text-wrap">
                                                         <div class="text-base font-semibold">
                                                             <a wire:navigate
                                                                 href="{{ route('jobseeker.profile', ['id' => $data->employee->employee_id]) }}"
-                                                                class="hover:text-blue-500">{{ $data->employee->fname }}
+                                                                class="hover:text-blue-500">
+                                                                {{ $data->employee->fname }}
                                                                 {{ $data->employee->mname }}
                                                                 {{ $data->employee->lname }}
                                                             </a>
                                                         </div>
-                                                        <div class="text-gray-500 font-medium text-xs">Applied date:
-                                                            {{ $data->created_at->format('F j, Y') }}
+                                                        <div class="text-xs font-medium text-gray-500">Applied date:
+                                                            {{ $data->created_at->format('F j, Y') }}</div>
+                                                        <div class="text-xs text-gray-500 lg:hidden select-none">
+                                                            Status:
+                                                            @if ($data->peso_Status === 'PENDING')
+                                                                <span
+                                                                    class="text-yellow-500">{{ $data->peso_Status }}</span>
+                                                            @elseif($data->peso_Status === 'RECOMMENDED')
+                                                                <span
+                                                                    class="text-green-500">{{ $data->peso_Status }}</span>
+                                                            @elseif($data->peso_Status === 'REJECT')
+                                                                <span
+                                                                    class="text-red-500">{{ $data->peso_Status }}</span>
+                                                            @endif
+                                                            (@if ($data->applicant_Status === 'PENDING')
+                                                                <span
+                                                                    class="text-yellow-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'INTERESTED')
+                                                                <span
+                                                                    class="text-purple-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'INTERVIEW')
+                                                                <span
+                                                                    class="text-blue-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'HIRED')
+                                                                <span
+                                                                    class="text-green-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'ACCEPTED')
+                                                                <span
+                                                                    class="text-emerald-500">{{ $data->applicant_Status }}</span>
+                                                            @elseif($data->applicant_Status === 'REJECTED' || $data->applicant_Status === 'CANCELLED')
+                                                                <span
+                                                                    class="text-red-500">{{ $data->applicant_Status }}</span>
+                                                            @endif)
                                                         </div>
                                                     </div>
-
                                                 </th>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center">
+
+                                                <td class="hidden px-6 py-4 font-semibold lg:table-cell">
+                                                    <div class="flex items-center select-none">
                                                         @if ($data->peso_Status === 'PENDING')
                                                             <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
                                                             </div>
@@ -406,9 +443,10 @@
                                                         @endif
                                                     </div>
                                                 </td>
+
                                                 @if ($filter === 'ALL')
-                                                    <td class="px-6 py-4">
-                                                        <div class="flex items-center">
+                                                    <td class="hidden px-6 py-4 lg:table-cell">
+                                                        <div class="flex items-center select-none">
                                                             @if ($data->applicant_Status === 'PENDING')
                                                                 <div
                                                                     class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
@@ -441,15 +479,14 @@
                                                         </div>
                                                     </td>
                                                 @endif
-                                                <td class="px-6 py-4">
-                                                    <div class="flex flex-row gap-4 items-center">
 
-
+                                                <td class="hidden px-6 py-4 lg:table-cell">
+                                                    <div class="flex flex-row items-center gap-4">
                                                         <div x-data="{ tooltip: 'View Resume' }">
                                                             <button
-                                                                wire:click.prevent="viewFile({{ $data->employee_id }},{{ $data->applicant_Resume }} )"
+                                                                wire:click.prevent="viewFile({{ $data->employee_id }}, {{ $data->applicant_Resume }})"
                                                                 x-tooltip="tooltip" type="button"
-                                                                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
                                                                 <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
@@ -459,19 +496,13 @@
                                                                         d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
                                                                 </svg>
                                                             </button>
-                                                            </form>
                                                         </div>
-
-
-
-
                                                         @if ($data->peso_Status === 'RECOMMENDED')
                                                             <div x-data="{ tooltip: 'View Recommendation Letter' }">
                                                                 <button
-                                                                    wire:click.prevent="viewFile({{ $data->applicant_id }}, 3 )"
+                                                                    wire:click.prevent="viewFile({{ $data->applicant_id }}, 3)"
                                                                     x-tooltip="tooltip" type="button"
-                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
                                                                     <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         fill="none" viewBox="0 0 24 24"
@@ -480,30 +511,28 @@
                                                                             stroke-linejoin="round"
                                                                             d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                                                                     </svg>
-
                                                                 </button>
-                                                                </form>
                                                             </div>
                                                         @endif
-
-
                                                     </div>
                                                 </td>
+
                                                 <td class="px-6 py-4">
-                                                    <div class="flex flex-row gap-4 items-center">
+                                                    <div class="flex flex-row items-center gap-4">
                                                         @if (
                                                             $filter != 'ACCEPTED' &&
                                                                 $filter != 'HIRED' &&
                                                                 $data->applicant_Status != 'INTERESTED' &&
                                                                 $data->applicant_Status != 'INTERVIEW' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
+                                                                $data->applicant_Status != 'HIRED' &&
                                                                 $data->applicant_Status != 'ACCEPTED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'Interested' }">
                                                                 <button
                                                                     wire:click.prevent="openModal('interested', {{ $data->applicant_id }})"
                                                                     x-tooltip="tooltip" type="button"
-                                                                    class="text-purple-700 border border-purple-700 hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-purple-700 border border-purple-700 rounded-lg hover:bg-purple-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-purple-300">
                                                                     <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         fill="none" viewBox="0 0 24 24"
@@ -527,7 +556,7 @@
                                                                 <button
                                                                     wire:click.prevent="openModal('interview', {{ $data->applicant_id }})"
                                                                     x-tooltip="tooltip" type="button"
-                                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
                                                                     <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         fill="none" viewBox="0 0 24 24"
@@ -540,7 +569,7 @@
                                                             </div>
                                                         @endif
                                                         @if (
-                                                            $filter != 'ACCEPTED' &&
+                                                            $filter == 'INTERVIEW' &&
                                                                 $data->applicant_Status != 'HIRED' &&
                                                                 $data->applicant_Status != 'ACCEPTED' &&
                                                                 $data->applicant_Status != 'REJECTED' &&
@@ -549,7 +578,7 @@
                                                                 <button
                                                                     wire:click.prevent="openModal('hire', {{ $data->applicant_id }})"
                                                                     x-tooltip="tooltip" type="button"
-                                                                    class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-green-700 border border-green-700 rounded-lg hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300">
                                                                     <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         fill="none" viewBox="0 0 24 24"
@@ -567,12 +596,13 @@
                                                                 $filter != 'HIRED' &&
                                                                 $data->applicant_Status != 'CANCELLED' &&
                                                                 $data->applicant_Status != 'ACCEPTED' &&
+                                                                $data->applicant_Status != 'HIRED' &&
                                                                 $data->applicant_Status != 'REJECTED')
                                                             <div x-data="{ tooltip: 'Reject' }">
                                                                 <button
                                                                     wire:click.prevent="openModal('reject', {{ $data->applicant_id }})"
                                                                     x-tooltip="tooltip" type="button"
-                                                                    class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-red-700 border border-red-700 rounded-lg hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300">
                                                                     <svg class="w-5 h-5"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                         fill="none" viewBox="0 0 24 24"
@@ -590,7 +620,7 @@
                                                                 <button
                                                                     wire:click.prevent="getApplicant({{ $data->applicant_id }})"
                                                                     x-tooltip="tooltip" type="button"
-                                                                    class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                                    class="inline-flex items-center p-1 text-sm font-medium text-center border rounded-lg text-cyan-700 border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-300">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         class="w-5 h-5" fill="none"
                                                                         viewBox="0 0 24 24" stroke-width="1.5"
@@ -627,14 +657,14 @@
 
 
 
-                <div x-show="selectedApplicant" class="bg-white shadow rounded-lg p-6 flex flex-col"
+                <div x-show="selectedApplicant" class="flex flex-col p-6 bg-white rounded-lg shadow"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                     x-cloak>
                     @if ($selectedApplicant)
                         <div class="flex flex-row items-center gap-4">
                             <button @click="selectedApplicant = null">
-                                <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                <div class="flex items-center p-1 transition-transform rounded-full hover:bg-gray-300">
                                     <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -642,18 +672,18 @@
                                     </svg>
                                 </div>
                             </button>
-                            <h2 class="text-lg sm:text-2xl font-bold">Applicant Information</h2>
+                            <h2 class="text-lg font-bold lg:text-2xl">Applicant Information</h2>
 
                         </div>
 
                         <div class="flex flex-row mt-2">
                             <div class="flex flex-col">
                                 <img src="{{ asset('storage/' . $applicantInfo->employee->pimg) }}"
-                                    class="flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
+                                    class="select-none flex w-[140px] h-[100px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                                 </img>
                             </div>
-                            <div class="flex flex-col ml-4 w-full justify-center">
-                                <h1 class="text-3xl  font-bold">
+                            <div class="flex flex-col justify-center w-full ml-4">
+                                <h1 class="text-3xl font-bold">
                                     {{ $applicantInfo->employee->fname }} {{ $applicantInfo->employee->mname }}
                                     {{ $applicantInfo->employee->lname }}
                                 </h1>
@@ -663,29 +693,29 @@
                                 </h1>
 
                             </div>
-                            <div class="flex flex-row ml-auto mr-0 mb-auto mt-0">
+                            <div class="flex flex-row mt-0 mb-auto ml-auto mr-0">
                                 {{-- @if ($applicationInfo->applicant_Status == 'PENDING')
                                 <span
-                                    class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                    class="items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md inlineflex ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                             @elseif ($applicationInfo->applicant_Status == 'INTERESTED')
                                 <span
-                                    class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">PENDING</span>
+                                    class="items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md inlineflex ring-1 ring-inset ring-yellow-600/20">PENDING</span>
                             @elseif ($applicationInfo->applicant_Status == 'INTERVIEW')
                                 <span
-                                    class="inline-flex items-center rounded-md bg-blue-200 px-2 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
+                                    class="inline-flex items-center px-2 py-1 text-sm font-medium text-blue-800 bg-blue-200 rounded-md ring-1 ring-inset ring-blue-600/20">INTERVIEW</span>
                             @elseif ($applicationInfo->applicant_Status == 'HIRED')
                                 <span
-                                    class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">HIRED</span>
+                                    class="inline-flex items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">HIRED</span>
                             @elseif ($applicationInfo->applicant_Status == 'REJECTED')
                                 <span
-                                    class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                    class="inline-flex items-center px-2 py-1 text-sm font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">REJECTED</span>
                             @endif --}}
                             </div>
                         </div>
                         <hr class="mt-4">
                         <div class="flex flex-col mt-4">
 
-                            <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">APPLICATION
+                            <span class="mb-2 font-bold tracking-wider text-gray-700 uppercase">APPLICATION
                                 DETAIL</span>
 
                             <ul>
@@ -696,7 +726,7 @@
                                         {{ $applicantInfo->created_at->format('F j, Y') }}
                                     </p>
                                 </div>
-                                <div class="flex flex-row ">
+                                <div class="flex flex-row select-none">
                                     <li class="mb-2 font-bold">Applicant Status:</li>
                                     <p class="ms-4">
 
@@ -720,7 +750,7 @@
                                 </div>
 
 
-                                <div class="flex flex-row ">
+                                <div class="flex flex-row select-none">
                                     <li class="mb-2 font-bold">PESO Status:</li>
                                     <p class="ms-4">
 
@@ -740,19 +770,19 @@
 
                             </ul>
 
-                            <div class="flex flex-col  mt-2">
+                            <div class="flex flex-col mt-2">
                                 <h1 class="mb-2 font-bold">Remarks</h1>
                                 <textarea id="message" rows="6"
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
                                     placeholder="My remarks..." maxlength="600" readonly>{{ $applicantInfo->company_Remarks }}</textarea>
                             </div>
 
-                            <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                            <div class="flex flex-wrap justify-center gap-4 mt-6">
                                 <div x-data="{ tooltip: 'View Resume' }">
                                     <button
                                         wire:click.prevent="viewFile({{ $applicantInfo->employee_id }},{{ $applicantInfo->applicant_Resume }} )"
                                         x-tooltip="tooltip" type="button"
-                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                        class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
                                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -765,7 +795,7 @@
 
                                         <button wire:click.prevent="viewFile({{ $applicantInfo->applicant_id }}, 3 )"
                                             x-tooltip="tooltip" type="button"
-                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -788,13 +818,13 @@
 
     {{-- MODALS --}}
     <x-modal name="interested-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Mark applicant as interested?') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label :value="__('Remarks')" />
                     <textarea wire:model='remarks' id="message" rows="6"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
@@ -806,13 +836,13 @@
 
 
 
-            <div class="mt-6 flex justify-end gap-4">
+            <div class="flex justify-end gap-4 mt-6">
                 <x-secondary-button wire:click.prevent="closeModal('interested')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
                 <button
-                    class="inline-flex items-center px-4 py-2 bg-purple-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-purple-800 border border-transparent rounded-md hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                     wire:loading.attr="disabled" wire:click.prevent="updateApplicant('INTERESTED', 'interested')"
                     class="ms-3" class="ms-3" type="button">
 
@@ -821,7 +851,7 @@
 
                     <div wire:loading.delay.long wire:target="updateApplicant('INTERESTED', 'interested')"
                         role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -840,13 +870,13 @@
 
 
     <x-modal name="interview-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to interivew?') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label :value="__('Remarks')" />
                     <textarea wire:model='remarks' id="message" rows="6"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
@@ -858,7 +888,7 @@
 
 
 
-            <div class="mt-6 flex justify-end gap-4">
+            <div class="flex justify-end gap-4 mt-6">
                 <x-secondary-button wire:click.prevent="closeModal('interview')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -872,7 +902,7 @@
 
                     <div wire:loading.delay.long wire:target="updateApplicant('INTERVIEW', 'interview')"
                         role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -890,13 +920,13 @@
     </x-modal>
 
     <x-modal name="hire-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to hire the applicant?') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label :value="__('Remarks')" />
                     <textarea wire:model='remarks' id="message" rows="6"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
@@ -908,7 +938,7 @@
 
 
 
-            <div class="mt-6 flex justify-end gap-4">
+            <div class="flex justify-end gap-4 mt-6">
                 <x-secondary-button wire:click.prevent="closeModal('hire')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -920,7 +950,7 @@
                     {{ __('Hire Applicant') }}
 
                     <div wire:loading.delay.long wire:target="updateApplicant('HIRED', 'hire')" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -938,13 +968,13 @@
     </x-modal>
 
     <x-modal name="reject-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6 border-b">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to reject the applicant?') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label :value="__('Remarks')" />
                     <textarea wire:model='remarks' id="message" rows="6"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
@@ -956,7 +986,7 @@
 
 
 
-            <div class="mt-6 flex justify-end gap-4">
+            <div class="flex justify-end gap-4 mt-6">
                 <x-secondary-button wire:click.prevent="closeModal('reject')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -968,7 +998,7 @@
                     {{ __('Reject Applicant') }}
 
                     <div wire:loading.delay.long wire:target="updateApplicant('REJECTED', 'reject')" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -985,17 +1015,10 @@
         </div>
     </x-modal>
 
+</div>
 
 
-
-
-
-
-
-
-
-
-
+@push('scripts')
     @script
         <script>
             Livewire.on('viewFile', event => {
@@ -1003,9 +1026,6 @@
                 if (Array.isArray(event) && event.length > 0) {
                     // Access the first element and then its properties
                     const data = event[0]; // Assuming the data object is the first element
-
-                    // Log the entire data object for verification
-                    console.log('Data:', data);
 
                     // Extract URL and handle dynamic keys
                     const url = data.url;
@@ -1052,5 +1072,4 @@
             });
         </script>
     @endscript
-
-</div>
+@endpush

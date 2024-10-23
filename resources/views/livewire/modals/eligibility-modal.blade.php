@@ -1,4 +1,4 @@
-<x-modal name="eligibility-modal" focusable>
+<x-modal wire:poll name="eligibility-modal" focusable>
     <div class="w-full max-w-4xl px-6 py-6 items-center">
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Eligibility Record') }}
@@ -6,7 +6,7 @@
         <hr>
         <div class="flex flex-col mt-2">
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="licenseType" :value="__('Eligibility')" />
+                <x-input-label for="licenseType" :value="__('Eligibility*')" />
 
                 <x-dropdown align="left" width="full">
                     <x-slot name="trigger">
@@ -28,7 +28,7 @@
                     <x-slot name="content">
                         <!-- Search input -->
                         <div class="p-2">
-                            <input wire:model.live.prevent='search' type="text" placeholder="Search..."
+                            <input wire:model.live='search' type="searcdh" placeholder="Search..."
                                 class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
                                 @click.stop>
                         </div>
@@ -38,7 +38,7 @@
                             <!-- Dropdown links -->
 
                             @foreach ($eligibility as $data)
-                                <x-dropdown-link
+                                <x-dropdown-link wire:loading.attr="disabled"
                                     wire:click.prevent='selectEligibility({{ $data->eligibility_type_id }})'
                                     class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->eligibility_Name }}</x-dropdown-link>
                             @endforeach
@@ -51,7 +51,7 @@
 
             </div>
             <div class="flex flex-col mt-2 w-full">
-                <x-input-label for="licenseDate" :value="__('Date Validity')" />
+                <x-input-label for="licenseDate" :value="__('Date Validity*')" />
                 <x-text-input wire:model='eligibilityDate' class="block mt-1 w-full" type="date" />
                 <x-input-error :messages="$errors->get('eligibilityDate')" class="mt-2" />
             </div>

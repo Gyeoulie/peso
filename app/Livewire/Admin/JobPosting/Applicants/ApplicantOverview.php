@@ -12,12 +12,10 @@ use App\Models\Job_Applicants;
 use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use App\Models\Work_Exp;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -61,6 +59,23 @@ class ApplicantOverview extends Component
 
     public $recommendationRemarks, $rejectRemarks, $recLetter;
 
+    public function mount()
+    {
+        $user = Auth::user();
+
+        $applicant = Job_Applicants::findOrFail($this->id);
+
+        if ($applicant) {
+            if ($user->peso_accounts->peso_id != $applicant->job_posting->peso_id) {
+                return $this->redirectRoute('dashboard');
+
+            }
+        } else {
+            return $this->redirectRoute('dashboard');
+
+        }
+    }
+
     public function viewFile($id, $fileToView)
     {
 
@@ -81,66 +96,6 @@ class ApplicantOverview extends Component
         }
 
     }
-
-    public function printResume($id, $type)
-    {
-
-        $employee = Employee::findOrFail($id);
-        $filename = $employee->fname . '_' . $employee->lname . '_resume.pdf';
-        if ($type == 1) {
-            // dd(public_path('storage/' . $employee->pimg));
-
-            $pdf = Pdf::loadView('resume', ['employee' => $employee]);
-
-            return response()->streamDownload(function () use ($pdf) {
-                echo $pdf->download();
-            }, $filename);
-            toastr()->success('Download Success');
-
-        } elseif ($type == 2) {
-
-            if (Storage::exists('public/' . $employee->resume)) {
-                // Get the URL of the PDF file
-                // $pdfUrl = Storage::url($path);
-
-                $fileContent = Storage::get('public/' . $employee->resume);
-
-                return response()->streamDownload(function () use ($fileContent) {
-                    echo $fileContent;
-                }, $filename);
-                // Redirect the user to the PDF URL
-                toastr()->success('Download Success');
-            } else {
-                // PDF file not found, handle the error accordingly
-                // For example, you can redirect the user or show a message
-            }
-        }
-
-    }
-
-    // public function printRecom($id)
-    // {
-
-    //     $applicant = Job_Applicants::findOrFail($id);
-
-    //     if (Storage::exists('public/' . $applicant->peso_Letter)) {
-    //         $filename = $applicant->employee->fname . '_' . $applicant->employee->lname . '_recommendation.pdf';
-
-    //         $fileContent = Storage::get('public/' . $applicant->peso_Letter);
-
-    //         return response()->streamDownload(function () use ($fileContent) {
-    //             echo $fileContent;
-    //         }, $filename);
-    //         // Redirect the user to the PDF URL
-    //         toastr()->success('Download Success');
-    //     } else {
-    //         // PDF file not found, handle the error accordingly
-    //         // For example, you can redirect the user or show a message
-    //         toastr()->error('Recommendation Letter not found!');
-
-    //     }
-
-    // }
 
     public function updateApplicant($action, $modal)
     {
@@ -170,14 +125,14 @@ class ApplicantOverview extends Component
                     'required',
                     'file',
                     'mimes:pdf',
-                    'max:5120', // 5MB
+                    'max:15360', // 5MB
                 ],
             ];
             $validationMessages = [
                 'recLetter.required' => 'The recommendation letter is required.',
                 'recLetter.file' => 'The recommendation letter must be a file.',
                 'recLetter.mimes' => 'The recommendation letter must be a PDF file.',
-                'recLetter.max' => 'The recommendation letter may not be greater than 5MB in size.',
+                'recLetter.max' => 'The recommendation letter may not be greater than 15MB in size.',
             ];
         } elseif ($action === 'REJECT') {
             $validationRules = [
@@ -246,6 +201,16 @@ class ApplicantOverview extends Component
         $this->dispatch('close-modal', $modal . '-modal');
     }
 
+    private function checkJobseekerMunicipality($applicant)
+    {
+        if ($applicant->employee->barangay->municipality_id == $applicant->job_posting->peso->municipality_id) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     private function checkIfJobSeekerMatches($applicant)
     {
         // Get the highest education level of the employee
@@ -269,9 +234,9 @@ class ApplicantOverview extends Component
         // Query to check if the specific job posting matches the employee
         return Job_Posting::where('job_id', $applicant->job_id)
         // ->where('job_Status', 'ACTIVE')
-            ->whereHas('peso.municipality', function ($query) use ($employeeMunicipalityId) {
-                $query->where('municipality_id', $employeeMunicipalityId);
-            })
+        // ->whereHas('peso.municipality', function ($query) use ($employeeMunicipalityId) {
+        //     $query->where('municipality_id', $employeeMunicipalityId);
+        // })
             ->where('job_Edu', '<=', $highestEducationLevel)
             ->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
                 $query->where(function ($subQuery) use ($employeeJobPreferences) {
@@ -321,13 +286,14 @@ class ApplicantOverview extends Component
         } else {
             $attainment = 'Other';
         }
-        
 
         $totalExperience = Work_Exp::getTotalExperience($applicant->employee_id);
 
         $isMatch = $this->checkIfJobSeekerMatches($applicant);
 
-        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant', 'isMatch', 'attainment', 'totalExperience'));
+        $isResident = $this->checkJobseekerMunicipality($applicant);
+
+        return view('livewire.admin.job-posting.applicants.applicant-overview', compact('applicant', 'isMatch', 'attainment', 'totalExperience', 'isResident'));
     }
 
 }

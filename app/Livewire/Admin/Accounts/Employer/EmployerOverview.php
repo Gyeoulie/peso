@@ -5,15 +5,18 @@ namespace App\Livewire\Admin\Accounts\Employer;
 use App\Helpers\AuditFormatter;
 use App\Mail\AdminDeactivationNotification;
 use App\Mail\AdminResetPasswordNotification;
+use App\Mail\JobCancelledNotification;
 use App\Mail\PartnershipCancellationNotification;
 use App\Models\Company;
 use App\Models\Job_Posting;
 use App\Models\Partnerships;
 use App\Models\Requirements;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -34,7 +37,9 @@ class EmployerOverview extends Component
 
     public $deactRemarks, $reactRemarks, $partRemarks;
 
-    public $agreeBox = false;
+    public $empDescriptions = [];
+
+    public $agreeBox = false, $deactivateBox = false, $cancelPartnership = false;
 
     public function updatedsearchJobs()
     {
@@ -51,6 +56,35 @@ class EmployerOverview extends Component
 
         if ($partnership->partnership_Status != 'APPROVED') {
             return $this->redirectRoute('dashboard');
+        }
+        $employer = Company::findOrFail($this->id);
+        $this->mountFields($employer);
+
+    }
+
+    public function updatedEmpType()
+    {
+        // Reset empDesc when empStatus changes
+        $this->empDesc = '';
+
+        // Update empDescriptions based on empStatus
+        if ($this->empType == '1') { // Employed
+            $this->empDescriptions = [
+                ['value' => 1, 'text' => 'National Government Agency'],
+                ['value' => 2, 'text' => 'Local Government Unit'],
+                ['value' => 3, 'text' => 'Government-owned and Controlled '],
+                ['value' => 4, 'text' => 'State/Local University or College'],
+
+            ];
+        } elseif ($this->empType == '2') { // Unemployed
+            $this->empDescriptions = [
+                ['value' => 5, 'text' => 'Direct Hire'],
+                ['value' => 6, 'text' => 'Private Employment Agency'],
+                // ['value' => 7, 'text' => 'Overseas Recruitment Agency'],
+                ['value' => 8, 'text' => 'D.O. 174, s. 2017'],
+            ];
+        } else {
+            $this->empDescriptions = [];
         }
     }
 
@@ -93,6 +127,7 @@ class EmployerOverview extends Component
                 // If no partnership record found, throw an exception
                 throw new \Exception('Partnership record not found.');
             }
+            // dd($partnership->company->user->email);
 
             // Update the partnership status and remarks
             $partnership->partnership_Status = 'CANCELLED'; // Update the status
@@ -102,22 +137,27 @@ class EmployerOverview extends Component
             $partnership->save();
 
             // Commit the transaction
-            DB::commit();
             Mail::to($partnership->company->user->email)->queue(new PartnershipCancellationNotification($partnership));
-            // Artisan::call('partnership:cancel', [
-            //     'companyId' => $this->id,
-            //     'pesoId' => $user->peso_accounts->peso_id,
-            // ]);
+            Artisan::call('partnership:cancel', [
+                'companyId' => $this->id,
+                'pesoId' => $user->peso_accounts->peso_id,
+            ]);
 
             toastr()->success('Partnership status has been updated successfully.');
 
             // Optionally, redirect or perform other actions
             $this->closeModal('partnership');
+            DB::commit();
+
             return redirect()->route('dashboard'); // Adjust the route as necessary
 
         } catch (\Exception $e) {
             // Rollback the transaction on general failure
             DB::rollBack();
+
+            Log::error('Error cancelling partnership: ' . $e->getMessage());
+            dd($e->getMessage());
+
             toastr()->error('Failed to update partnership status. Please try again.'); // Display general error
             $this->closeModal('partnership');
 
@@ -148,6 +188,7 @@ class EmployerOverview extends Component
         $this->locType = $employer->company_Type;
         $this->workforce = $employer->company_Total_workforce;
         $this->empType = $employer->employer_Type;
+        $this->updatedEmpType();
         $this->empDesc = $employer->employer_Type_Desc;
     }
 
@@ -278,6 +319,30 @@ class EmployerOverview extends Component
                 $user->save();
                 Mail::to($user->email)->queue(new AdminDeactivationNotification('deactivation'));
 
+                $company->job_posting()->whereNotIn('job_Status', ['CANCELLED', 'COMPLETED'])->each(function ($jobPosting) {
+                    $jobPosting->update([
+                        'job_Status' => 'CANCELLED',
+                        'peso_Remarks' => 'ACCOUNT DEACTIVATED',
+                    ]);
+
+                    // Update associated job applicants for the cancelled job postings
+                    $jobPosting->job_applicants()->update([
+                        'applicant_Status' => 'CANCELLED',
+                        'company_Remarks' => 'Employer Account Deactivated',
+                    ]);
+
+                    // Update pending peso_Status to Cancelled and notify affected applicants
+                    $jobPosting->job_applicants()->where('peso_Status', 'PENDING')->each(function ($applicant) {
+                        $applicant->update([
+                            'peso_Status' => 'CANCELLED',
+                            'peso_Remarks' => 'Employer Account Deactivated',
+                        ]);
+
+                        // Notify the applicant about the job cancellation
+                        Mail::to($applicant->employee->user->email)->queue(new JobCancelledNotification($applicant));
+                    });
+                });
+
                 toastr()->success('Account is successfully deactivated.');
                 $this->closeModal('deactivate');
             }
@@ -288,6 +353,8 @@ class EmployerOverview extends Component
             DB::rollBack(); // Rollback the transaction if something goes wrong
 
             // Log the error and show a toastr message
+            Log::error('Error updating reactivation/deactivation: ' . $e->getMessage());
+
             toastr()->error('There was an error processing the request. Please try again.');
         }
     }
@@ -295,6 +362,8 @@ class EmployerOverview extends Component
     public function closeModal($modal)
     {
         $this->reset('deactRemarks', 'reactRemarks', 'partRemarks');
+        $this->deactivateBox = false;
+        $this->cancelPartnership = false;
         $this->dispatch('close-modal', $modal . '-modal');
     }
 
@@ -450,13 +519,13 @@ class EmployerOverview extends Component
 
         if ($employer) {
             $joblist = $this->getJobs($user->peso_accounts->peso_id, $employer->company_id);
-            $this->mountFields($employer);
             $requirements = Requirements::with([
                 'requirementPassed' => function ($query) use ($employer) {
                     $query->where('company_id', $employer->company_id); // Use `where` for filtering
                 },
             ])
                 ->where('requirement_Status', 1)
+                ->where('requirement_Type', $this->empType)
                 ->get();
             $topTags = $this->getTopJobTagsByCompany($employer->company_id);
             $partnership = Partnerships::where('company_id', $this->id)

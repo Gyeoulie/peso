@@ -1,36 +1,48 @@
-<div>
-    <div class="flex flex-col md:flex-row w-full h-full gap-4 container mx-auto p-4 md:p-0 md:py-8">
+<div wire:poll.10s>
+    <div class="container flex flex-col w-full h-full gap-4 p-4 mx-auto md:flex-row md:p-0 md:py-8">
 
         <div class="flex flex-col md:w-1/4 h-full md:sticky top-5 truncate ...">
-            <div class="bg-white shadow-xl rounded-lg p-6 text-wrap ">
+            <div class="p-6 bg-white rounded-lg shadow-xl text-wrap ">
                 <div class="flex flex-col items-center">
                     {{-- <img src="https://randomuser.me/api/portraits/men/94.jpg" --}}
                     <img src="{{ $jobseeker->pimg ? asset('storage/' . $jobseeker->pimg) : asset('https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/') }}"
-                        alt="User Image" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 object-cover shadow-xl">
+                        alt="user-{{ $jobseeker->employee_id }}"
+                        class="object-cover w-32 h-32 mb-4 bg-gray-300 rounded-full shadow-xl select-none shrink-0">
                     </img>
-                    <h1 class="text-xl font-bold break-all">{{ $jobseeker->fname }} {{ $jobseeker->lname }}</h1>
+                    <h1 class="text-xl font-bold text-center uppercase">{{ $jobseeker->fname }} {{ $jobseeker->lname }}
+                    </h1>
 
 
 
-                    <p class="text-gray-700">
+                    <p class="text-gray-700 select-none">
                         {{ $jobseeker->empstatus == 1 ? 'EMPLOYED' : 'UNEMPLOYED' }}
                     </p>
 
 
-
-                    <div class="mt-6 flex flex-wrap gap-4 justify-center">
-                        <a href="mailto:{{ $jobseeker->user->email }}"
-                            class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
-                    </div>
+                    @if ($isOwner)
+                        <div class="flex flex-wrap justify-center gap-4 mt-6">
+                            <div x-data="{ tooltip: 'View Auto-Generated Resume' }">
+                                <button wire:click.prevent="viewFile({{ $jobseeker->employee_id }}, 2)"
+                                    x-tooltip="tooltip" type="button"
+                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
+                                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    @endif
                 </div>
                 <hr class="my-6 border-t border-gray-300">
-                <div class="flex flex-col w-full px-5 mt-5">
+                <div class="flex flex-col w-full px-5 mt-5 select-none">
 
                     <ul>
                         <li class="mb-4">
-                            <div class="flex flex-row gap-4 w-full">
+                            <div class="flex flex-row w-full gap-4">
                                 <div class="flex flex-col">
-                                    <svg class="w-7 h-7 text-blue-500" aria-hidden="true"
+                                    <svg class="text-blue-500 w-7 h-7" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                         viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-width="2"
@@ -42,7 +54,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Gender
                                     </div>
-                                    <div class="text-md font-medium break-all">
+                                    <div class="font-medium break-all text-md">
 
                                         {{ $jobseeker->gender == 1 ? 'MALE' : 'FEMALE' }}
 
@@ -54,9 +66,9 @@
                         </li>
 
                         <li class="mb-4">
-                            <div class="flex flex-row gap-4 w-full">
+                            <div class="flex flex-row w-full gap-4">
                                 <div class="flex flex-col">
-                                    <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    <svg class="text-blue-500 w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
@@ -66,7 +78,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Qualification
                                     </div>
-                                    <div class="text-md font-medium break-all">
+                                    <div class="font-medium break-all text-md">
                                         {{ $highestEduTitle }}
                                     </div>
 
@@ -75,10 +87,10 @@
                             </div>
                         </li>
 
-                        <li class="mb-4">
-                            <div class="flex flex-row gap-4 w-full">
+                        {{-- <li class="mb-4">
+                            <div class="flex flex-row w-full gap-4">
                                 <div class="flex flex-col">
-                                    <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    <svg class="text-blue-500 w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
@@ -89,7 +101,7 @@
                                     <div class="text-lg font-bold text-black">
                                         Email
                                     </div>
-                                    <div class="text-md font-medium uppercase break-all">
+                                    <div class="font-medium uppercase break-all text-md">
                                         {{ $jobseeker->user->email }}
 
                                     </div>
@@ -97,12 +109,12 @@
 
                                 </div>
                             </div>
-                        </li>
+                        </li> --}}
 
-                        <li class="mb-4">
-                            <div class="flex flex-row gap-4 w-full">
+                        {{-- <li class="mb-4">
+                            <div class="flex flex-row w-full gap-4">
                                 <div class="flex flex-col">
-                                    <svg class="w-7 h-7 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    <svg class="text-blue-500 w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
@@ -115,14 +127,14 @@
                                     <div class="text-lg font-bold text-black">
                                         Phone Number
                                     </div>
-                                    <div class="text-md font-medium break-all">
+                                    <div class="font-medium break-all text-md">
                                         {{ $jobseeker->pnumber }}
                                     </div>
 
 
                                 </div>
                             </div>
-                        </li>
+                        </li> --}}
 
 
 
@@ -140,15 +152,15 @@
                 x-transition:enter-end="opacity-100 scale-100">
 
                 <div class="container">
-                    <div class="bg-white shadow-lg rounded-lg p-6 text-wrap">
-                        <div class="flex flex-row w-full items-center justify-between">
+                    <div class="p-6 bg-white rounded-lg shadow-lg text-wrap">
+                        <div class="flex flex-row items-center justify-between w-full">
                             <h2 class="text-xl font-bold">About me</h2>
 
 
                             @if ($isOwner)
                                 <div x-data="{ tooltip: 'Edit Description' }">
                                     <div x-tooltip="tooltip"
-                                        class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                        class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                         <svg wire:click.prevent='editModal()' class="w-8 h-8"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor">
@@ -161,7 +173,7 @@
                         </div>
 
 
-                        <p class="text-gray-700 text-wrap text-justify px-1 break-words">
+                        <p class="px-1 text-justify text-gray-700 break-words text-wrap">
                             {{ $jobseeker->empDesc ?: 'No Description' }}
 
                         </p>
@@ -173,7 +185,7 @@
 
 
                 <div class="container">
-                    <div class="bg-white shadow rounded-lg p-6" x-data="{
+                    <div class="p-6 bg-white rounded-lg shadow" x-data="{
                         openTab: 1,
                         activeTab: 'text-blue-600 border-blue-600 active',
                         inactiveTab: 'border-transparent hover:text-gray-600 hover:border-gray-300',
@@ -250,11 +262,12 @@
                             </ul>
                         </div>
 
-                        <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
+                        <div class="select-none" x-show="openTab === 1"
+                            x-transition:enter="transition ease-out duration-300"
                             x-transition:enter-start="opacity-0 scale-90"
                             x-transition:enter-end="opacity-100 scale-100" x-cloak>
 
-                            <div class="flex flex-row w-full justify-between items-center mt-4 mb-4">
+                            <div class="flex flex-row items-center justify-between w-full mt-4 mb-4">
                                 <h2 class="text-3xl font-black">Jobseeker Details</h2>
 
                                 {{-- eto sa edit deets --}}
@@ -262,7 +275,7 @@
                                     <div x-data="{ tooltip: 'Edit Details' }">
                                         <a x-tooltip="tooltip" wire:navigate href="{{ route('edit.details') }}">
                                             <div
-                                                class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                                class="flex items-center p-1 transition-transform rounded-full hover:bg-gray-300">
                                                 <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg"
                                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                     stroke="currentColor">
@@ -275,15 +288,15 @@
                                 @endif
                             </div>
 
-                            {{-- <div class="flex bg-blue-500 w-60 h-10 rounded-r-lg items-center justify-center">
-                                <h2 class="text-lg text-white font-medium">Job Preference</h2>
+                            {{-- <div class="flex items-center justify-center h-10 bg-blue-500 rounded-r-lg w-60">
+                                <h2 class="text-lg font-medium text-white">Job Preference</h2>
                             </div> --}}
 
                             @if ($jobseeker->job_preference->count() >= 1)
-                                <h2 class="text-xl font-medium mt-4">Job Preference</h2>
+                                <h2 class="mt-4 text-xl font-medium">Job Preference</h2>
                                 <div class="flex flex-col w-full">
                                     {{-- BADGE CONTAINER --}}
-                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                    <div id= "otherSkillRow" class="p-1 flex-inline">
                                         {{-- BADGE --}}
                                         @foreach ($jobseeker->job_preference as $preferences)
                                             <span wire:key='jobPref-{{ $preferences->job_preference_id }}'
@@ -294,13 +307,30 @@
                                     </div>
                                 </div>
                             @endif
+                            @if ($jobseeker->industry_preference->count() >= 1)
+                                <h2 class="mt-4 text-xl font-medium">Industry Preference</h2>
+                                <div class="flex flex-col w-full">
+                                    {{-- BADGE CONTAINER --}}
+                                    <div id= "otherSkillRow" class="p-1 flex-inline">
+                                        {{-- BADGE --}}
+                                        @foreach ($jobseeker->industry_preference as $preferences)
+                                            <span wire:key='jobPref-{{ $preferences->industry_preference_id }}'
+                                                class="inline-flex items-center mr-1 my-1 gap-x-1.5 py-2 ps-3 pe-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                                {{ $preferences->job_industry->industry_Title }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+
 
 
                             @if ($jobseeker->skills->count() >= 1)
-                                <h2 class="text-xl font-medium mt-4">Skills</h2>
+                                <h2 class="mt-4 text-xl font-medium">Skills</h2>
                                 <div class="flex flex-col w-full">
                                     {{-- BADGE CONTAINER --}}
-                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                    <div id= "otherSkillRow" class="p-1 flex-inline">
                                         {{-- BADGE --}}
 
                                         @foreach ($jobseeker->skills as $empSkills)
@@ -315,9 +345,9 @@
                             @endif
 
                             @if ($jobseeker->language->count() >= 1)
-                                <div class="flex flex-col md:flex-row w-full gap-4 md:gap-10">
+                                <div class="flex flex-col w-full gap-4 md:flex-row md:gap-10">
                                     <div class="flex flex-col md:w-1/2 ">
-                                        <h2 class="text-xl font-medium mt-4">Language</h2>
+                                        <h2 class="mt-4 text-xl font-medium">Language</h2>
                                         <div class="flex flex-col gap-2 mt-2 ml-2">
                                             @foreach ($jobseeker->language as $empLanguage)
                                                 <div x-data="{
@@ -367,9 +397,9 @@
                             @if ($jobseeker->disability->count() >= 1)
                                 <div class="flex flex-col md:w-1/2">
 
-                                    <h2 class="text-xl font-medium mt-4">Disability</h2>
+                                    <h2 class="mt-4 text-xl font-medium">Disability</h2>
                                     <ul
-                                        class="max-w-md space-y-1 text-base font-medium text-blue-700 list-disc list-inside mt-4 ml-2">
+                                        class="max-w-md mt-4 ml-2 space-y-1 text-base font-medium text-blue-700 list-disc list-inside">
                                         @foreach ($jobseeker->disability as $empDisability)
                                             <li class="uppercase"
                                                 wire:key='disability-{{ $empDisability->disability_id }}'>
@@ -393,19 +423,20 @@
 
 
 
-                    <div x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
+                    <div class="select-none" x-show="openTab === 2"
+                        x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-cloak>
 
-                        <div class="flex flex-row w-full justify-between mt-6 mb-4">
+                        <div class="flex flex-row justify-between w-full mt-6 mb-4">
                             <h2 class="text-3xl font-black">Education</h2>
 
                             @if ($isOwner)
-                                <div class="flex flex-row gap-4 items-center">
+                                <div class="flex flex-row items-center gap-4">
                                     <div x-data="{ tooltip: 'Add Education Record' }">
                                         <div x-tooltip="tooltip" x-data=""
                                             x-on:click.prevent="$dispatch('open-modal', 'education-modal')"
-                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -416,7 +447,7 @@
                                     </div>
                                     <div x-data="{ tooltip: 'Edit Education Record' }">
                                         <div x-tooltip="tooltip" @click="profileTab = 'editEducation'"
-                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -430,8 +461,8 @@
                         </div>
                         @if ($jobseeker->education->isEmpty())
 
-                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                <div class="flex  bg-gray-100 rounded-full p-1">
+                            <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                <div class="flex p-1 bg-gray-100 rounded-full">
 
                                     <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -441,19 +472,19 @@
 
                                 </div>
 
-                                <div class="text-center text-black text-xl font-semibold mt-5">
+                                <div class="mt-5 text-xl font-semibold text-center text-black">
                                     Education is empty.
                                 </div>
                             </div>
                         @else
-                            {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
+                            {{-- <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 "> --}}
 
                             @foreach ($jobseeker->education as $educBackground)
                                 <div wire:key="{{ $educBackground->education_id }}" class="container p-3">
-                                    <div class="flex flex-row h-full items-center">
+                                    <div class="flex flex-row items-center h-full">
                                         <div class="flex flex-col">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor" class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800 ">
+                                                fill="currentColor" class="w-10 h-10 text-gray-800 lg:w-20 lg:h-20 ">
                                                 <path
                                                     d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
                                                 <path
@@ -463,13 +494,13 @@
                                             </svg>
                                         </div>
 
-                                        <div class="flex flex-col ml-4 w-full">
+                                        <div class="flex flex-col w-full ml-4">
                                             <span
-                                                class="text-xl md:text-2xl text-black font-black">{{ $educBackground->edu_School }}</span>
-                                            <div class="text-lg md:text-xl text-black font-semibold">
+                                                class="text-xl font-black text-black uppercase md:text-2xl">{{ $educBackground->edu_School }}</span>
+                                            <div class="text-lg font-semibold text-black uppercase md:text-xl">
                                                 <span>{{ $educBackground->edu_Course }}
                                             </div>
-                                            <span class="text-sm md:text-md text-gray-700 font-medium">
+                                            <span class="text-sm font-medium text-gray-700 uppercase md:text-md">
                                                 {{ $educBackground->edu_Started->format('F Y') }} -
                                                 {{ $educBackground->edu_Ongoing == 1 ? 'Present' : $educBackground->edu_Ended->format('F Y') }}</span>
                                         </div>
@@ -484,19 +515,20 @@
 
 
 
-                    <div x-show="openTab === 3" x-transition:enter="transition ease-out duration-300"
+                    <div class="select-none" x-show="openTab === 3"
+                        x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-cloak>
 
 
-                        <div class="flex flex-row w-full justify-between mt-6 mb-4">
+                        <div class="flex flex-row justify-between w-full mt-6 mb-4">
                             <h2 class="text-3xl font-black">Work Experience</h2>
                             @if ($isOwner)
-                                <div class="flex flex-row gap-4 items-center">
+                                <div class="flex flex-row items-center gap-4">
                                     <div x-data="{ tooltip: 'Add Work Experience' }">
                                         <div x-tooltip="tooltip" x-data=""
                                             x-on:click.prevent="$dispatch('open-modal', 'workExp-modal')"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -509,7 +541,7 @@
 
                                     <div x-data="{ tooltip: 'Edit Work Experience' }">
                                         <div x-tooltip="tooltip" @click="profileTab = 'editWorkExperience'"
-                                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -524,8 +556,8 @@
 
                         @if ($jobseeker->work_exp->isEmpty())
 
-                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                <div class="flex  bg-gray-100 rounded-full p-1">
+                            <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                <div class="flex p-1 bg-gray-100 rounded-full">
 
                                     <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -535,20 +567,20 @@
 
                                 </div>
 
-                                <div class="text-center text-black text-xl font-semibold mt-5">
+                                <div class="mt-5 text-xl font-semibold text-center text-black">
                                     Work Experience is Empty.
                                 </div>
                             </div>
                         @else
-                            {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
+                            {{-- <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 "> --}}
 
                             @foreach ($jobseeker->work_exp as $work_experience)
-                                <div wire:key="{{ $work_experience->workexp_id }}" class="container  p-3">
+                                <div wire:key="{{ $work_experience->workexp_id }}" class="container p-3">
 
-                                    <div class="flex flex-row h-full items-center">
+                                    <div class="flex flex-row items-center h-full">
 
                                         <div class="flex flex-col">
-                                            <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800" aria-hidden="true"
+                                            <svg class="w-10 h-10 text-gray-800 lg:w-20 lg:h-20" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 fill="currentColor" viewBox="0 0 24 24">
                                                 <path fill-rule="evenodd"
@@ -557,20 +589,24 @@
                                             </svg>
                                         </div>
 
-                                        <div class="flex flex-col ml-4 w-full">
+                                        <div class="flex flex-col w-full ml-4">
                                             <span
-                                                class="text-xl md:text-2xl text-black font-black">{{ $work_experience->work_Name }}</span>
-                                            <div class="text-lg md:text-xl text-black font-semibold">
+                                                class="text-xl font-black text-black uppercase md:text-2xl">{{ $work_experience->work_Name }}</span>
+                                            <div class="text-lg font-semibold text-black uppercase md:text-xl">
                                                 <span>{{ $work_experience->job_positions->position_Title }}</span>
                                                 -
                                                 <span>{{ $work_experience->work_Status }}</span>
                                             </div>
-                                            <span class="text-sm md:text-md text-gray-700 font-medium">
+                                            <span class="text-sm font-medium text-gray-700 uppercase md:text-md">
                                                 {{ $work_experience->work_Start->format('F Y') }} -
-                                                {{ $work_experience->work_End->format('F Y') }}
+                                                @if ($work_experience->work_End)
+                                                    {{ $work_experience->work_End->format('F Y') }}
+                                                @else
+                                                    Present
+                                                @endif
                                             </span>
                                             <span
-                                                class="text-xs md:text-sm text-gray-700 font-medium">{{ $work_experience->work_Address }}</span>
+                                                class="text-xs font-medium text-gray-700 uppercase md:text-sm">{{ $work_experience->work_Address }}</span>
                                         </div>
 
                                     </div>
@@ -587,19 +623,20 @@
 
 
 
-                    <div x-show="openTab === 4" x-transition:enter="transition ease-out duration-300"
+                    <div class="select-none" x-show="openTab === 4"
+                        x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-cloak>
 
-                        <div class="flex flex-row w-full justify-between mt-6 mb-4">
+                        <div class="flex flex-row justify-between w-full mt-6 mb-4">
                             <h2 class="text-3xl font-black">Trainings</h2>
 
                             @if ($isOwner)
-                                <div class="flex flex-row gap-4 items-center">
+                                <div class="flex flex-row items-center gap-4">
                                     <div x-data="{ tooltip: 'Add Training Record' }">
                                         <div x-tooltip="tooltip" x-data=""
                                             x-on:click.prevent="$dispatch('open-modal', 'training-modal')"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -610,7 +647,7 @@
 
                                     <div x-data="{ tooltip: 'Edit Training Record' }">
                                         <div x-tooltip="tooltip" @click="profileTab = 'editTrainings'"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -623,8 +660,8 @@
                         </div>
                         @if ($jobseeker->training->isEmpty())
 
-                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                <div class="flex  bg-gray-100 rounded-full p-1">
+                            <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                <div class="flex p-1 bg-gray-100 rounded-full">
 
                                     <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -634,20 +671,20 @@
 
                                 </div>
 
-                                <div class="text-center text-black text-xl font-semibold mt-5">
+                                <div class="mt-5 text-xl font-semibold text-center text-black">
                                     Training Record is Empty.
                                 </div>
                             </div>
                         @else
-                            {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
+                            {{-- <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 "> --}}
 
                             @foreach ($jobseeker->training as $empTraining)
                                 <div wire:key="{{ $empTraining->training_id }}" class="container p-3">
 
-                                    <div class="flex flex-row h-full items-center">
+                                    <div class="flex flex-row items-center h-full">
 
                                         <div class="flex flex-col">
-                                            <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800"
+                                            <svg class="w-10 h-10 text-gray-800 lg:w-20 lg:h-20"
                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                                 fill="currentColor">
                                                 <path fill-rule="evenodd"
@@ -662,19 +699,25 @@
 
                                         </div>
 
-                                        <div class="flex flex-col ml-4 w-full">
+                                        <div class="flex flex-col w-full ml-4">
                                             <span
-                                                class="text-xl md:text-2xl text-black font-black">{{ $empTraining->training_Name }}</span>
-                                            <div class="text-lg md:text-xl text-black font-semibold">
+                                                class="text-xl font-black text-black uppercase md:text-2xl">{{ $empTraining->training_Name }}</span>
+                                            <div class="text-lg font-semibold text-black uppercase md:text-xl">
                                                 <span>{{ $empTraining->training_Cert }}</span>
                                                 -
                                                 <span>{{ $empTraining->training_Status == 1 ? 'Completed' : 'Not Completed' }}</span>
                                             </div>
                                             <span
-                                                class="text-sm md:text-md text-gray-700 font-medium">{{ $empTraining->training_From }}</span>
-                                            <span class="text-sm md:text-md text-gray-700 font-medium">
+                                                class="text-sm font-medium text-gray-700 uppercase md:text-md">{{ $empTraining->training_From }}</span>
+                                            <span class="text-sm font-medium text-gray-700 uppercase md:text-md">
                                                 {{ $empTraining->training_Start->format('F Y') }} -
-                                                {{ $empTraining->training_End->format('F Y') }}</span>
+
+                                                @if ($empTraining->training_End)
+                                                    {{ $empTraining->training_End->format('F Y') }}
+                                                @else
+                                                    Present
+                                                @endif
+                                            </span>
                                         </div>
 
                                     </div>
@@ -688,19 +731,20 @@
                     </div>
 
 
-                    <div x-show="openTab === 5" x-transition:enter="transition ease-out duration-300"
+                    <div class="select-none" x-show="openTab === 5"
+                        x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-cloak>
 
-                        <div class="flex flex-row w-full justify-between mt-6 mb-4">
+                        <div class="flex flex-row justify-between w-full mt-6 mb-4">
                             <h2 class="text-3xl font-black">Certificates</h2>
 
                             @if ($isOwner)
-                                <div class="flex flex-row gap-4 items-center">
+                                <div class="flex flex-row items-center gap-4">
                                     <div x-data="{ tooltip: 'Add Certificate Record' }">
                                         <div x-tooltip="tooltip" x-data=""
                                             x-on:click.prevent="$dispatch('open-modal', 'certificate-modal')"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -711,7 +755,7 @@
 
                                     <div x-data="{ tooltip: 'Edit Certificate Record' }">
                                         <div x-tooltip="tooltip" @click="profileTab = 'editCertificates'"
-                                            class="flex  items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer">
+                                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300">
                                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -725,8 +769,8 @@
                         </div>
                         @if ($jobseeker->certificate->isEmpty())
 
-                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                <div class="flex bg-gray-100 rounded-full p-1">
+                            <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                <div class="flex p-1 bg-gray-100 rounded-full">
 
                                     <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -736,19 +780,19 @@
 
                                 </div>
 
-                                <div class="text-center text-black text-xl font-semibold mt-5">
+                                <div class="mt-5 text-xl font-semibold text-center text-black">
                                     Certificate Record is empty.
                                 </div>
                             </div>
                         @else
-                            {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
+                            {{-- <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 "> --}}
 
                             @foreach ($jobseeker->certificate as $certification)
                                 <div wire:key="{{ $certification->certificate_id }}" class="container p-3">
 
-                                    <div class="flex flex-row h-full items-center">
+                                    <div class="flex flex-row items-center h-full">
                                         <div class="flex flex-col">
-                                            <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800"
+                                            <svg class="w-10 h-10 text-gray-800 lg:w-20 lg:h-20"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                                 <path
@@ -756,15 +800,15 @@
                                             </svg>
                                         </div>
 
-                                        <div class="flex flex-col ml-4 w-full">
+                                        <div class="flex flex-col w-full ml-4">
                                             <span
-                                                class="text-xl md:text-2xl text-black font-black">{{ $certification->certificateType->cert_Name }}</span>
-                                            <span class="text-lg md:text-xl text-black font-semibold">
+                                                class="text-xl font-black text-black uppercase md:text-2xl">{{ $certification->certificateType->cert_Name }}</span>
+                                            <span class="text-lg font-semibold text-black uppercase md:text-xl">
                                                 {{ $certification->cert_From }}
                                             </span>
                                             <span
-                                                class="text-md md:text-lg text-gray-700 font-medium">{{ $certification->cert_Rating }}</span>
-                                            <span class="text-md text-gray-700 font-medium">
+                                                class="font-medium text-gray-700 uppercase text-md md:text-lg">{{ $certification->cert_Rating }}</span>
+                                            <span class="font-medium text-gray-700 uppercase text-md">
                                                 {{ $certification->cert_Date_Issued->format('F Y') }}
                                             </span>
                                         </div>
@@ -809,13 +853,13 @@
 
 
 <x-modal name="aboutme-modal" focusable>
-    <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+    <div class="items-center w-full max-w-4xl px-6 py-6">
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Edit About Me') }}
         </h2>
         <hr>
         <div class="flex flex-col mt-2">
-            <div class="flex flex-col mt-2 w-full">
+            <div class="flex flex-col w-full mt-2">
                 <x-input-label :value="__('About Me')" />
                 <textarea wire:model='description' id="message" rows="6" required
                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none overflow-y-auto"
@@ -827,9 +871,21 @@
 
 
 
-        <div class="mt-6 flex justify-end">
-            <x-secondary-button type="button" wire:click.prevent='close'>
+        <div class="flex justify-end mt-6">
+            <x-secondary-button wire:loading.attr="disabled" type="button" wire:click.prevent='close'>
                 {{ __('Cancel') }}
+                <div wire:loading.delay.long wire:target="close" role="status">
+                    <svg aria-hidden="true" class="w-6 h-6 ml-4 text-gray-200 animate-spin fill-blue-600"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
+                    </svg>
+                    <span class="sr-only">Loading...</span>
+                </div>
             </x-secondary-button>
 
             <div wire:click.prevent='save'>
@@ -838,7 +894,7 @@
 
                     <div wire:loading.delay.long role="status">
 
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -856,3 +912,64 @@
 </x-modal>
 
 </div>
+
+@push('scripts')
+    @script
+        <script>
+            Livewire.on('viewFile', event => {
+                // Check if the event is an array and has at least one element
+                if (Array.isArray(event) && event.length > 0) {
+                    // Access the first element and then its properties
+                    const data = event[0]; // Assuming the data object is the first element
+
+
+                    // Extract URL and handle dynamic keys
+                    const url = data.url;
+                    const formData = {
+                        ...data
+                    }; // Spread the data object to use for form inputs
+
+                    // Check if URL is present
+                    if (url) {
+                        // Create and configure the form element
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = url;
+                        form.target = '_blank';
+
+                        // Add CSRF token as a hidden input
+                        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+                        form.appendChild(csrfInput);
+
+                        // Add all data inputs dynamically
+                        for (const [key, value] of Object.entries(formData)) {
+                            // Skip the URL and CSRF token from being added as form inputs
+                            if (key !== 'url') {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = key;
+                                input.value = value;
+                                form.appendChild(input);
+                            }
+                        }
+
+                        // Append form to the body and submit
+                        document.body.appendChild(form);
+                        form.submit();
+
+                        // Clean up by removing the form element
+                        document.body.removeChild(form);
+                    } else {
+                        console.error('URL not found in event data');
+                    }
+                } else {
+                    console.error('Event is not in the expected format');
+                }
+            });
+        </script>
+    @endscript
+@endpush

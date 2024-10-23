@@ -1,10 +1,10 @@
 <div>
     <div x-show="profileTab === 'editTrainings'" class="container" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="bg-white shadow-lg rounded-lg p-6">
-            <div class="flex flex-row w-full items-center justify-between mb-4">
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <div class="flex flex-row items-center justify-between w-full mb-4">
                 <div class="flex flex-row items-center gap-4">
-                    <div class="cursor-pointer flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
+                    <div class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300"
                         @click="profileTab = 'profileOverview'">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -16,10 +16,10 @@
 
                 </div>
 
-                <div class="flex flex-row gap-4 items-center">
+                <div class="flex flex-row items-center gap-4">
                     <div x-data="{ tooltip: 'Add Training Record' }">
                         <div x-tooltip="tooltip"
-                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer"
+                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300"
                             wire:click.prevent='addModal()'>
                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor">
@@ -32,8 +32,8 @@
             </div>
             @if ($trainings->isEmpty())
 
-                <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                    <div class="flex bg-blue-200 rounded-full p-1">
+                <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                    <div class="flex p-1 bg-blue-200 rounded-full">
 
                         <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -43,19 +43,19 @@
 
                     </div>
 
-                    <div class="text-center text-black text-xl font-semibold mt-5">
+                    <div class="mt-5 text-xl font-semibold text-center text-black">
                         Training Record is empty.
                     </div>
                 </div>
             @else
-                {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
+                {{-- <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 "> --}}
                 @foreach ($trainings as $trainings)
                     <div wire:key="{{ $trainings->training_id }}" class="container p-3">
 
-                        <div class="flex flex-row h-full items-center">
+                        <div class="flex flex-row items-center h-full">
 
                             <div class="flex flex-col">
-                                <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800" xmlns="http://www.w3.org/2000/svg"
+                                <svg class="w-10 h-10 text-gray-800 lg:w-20 lg:h-20" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24" fill="currentColor">
                                     <path fill-rule="evenodd"
                                         d="M12 6.75a5.25 5.25 0 0 1 6.775-5.025.75.75 0 0 1 .313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 0 1 1.248.313 5.25 5.25 0 0 1-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 1 1 2.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0 1 12 6.75ZM4.117 19.125a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z"
@@ -69,21 +69,28 @@
 
                             </div>
 
-                            <div class="flex flex-col ml-4 w-full">
-                                <span class="text-3xl text-black font-black">{{ $trainings->training_Name }}</span>
-                                <span class="text-xl text-black font-semibold">{{ $trainings->training_Cert }}
+                            <div class="flex flex-col w-full ml-4">
+                                <span
+                                    class="text-3xl font-black text-black uppercase">{{ $trainings->training_Name }}</span>
+                                <span class="text-xl font-semibold text-black uppercase">{{ $trainings->training_Cert }}
                                 </span>
-                                <span class="text-md text-gray-700 font-medium">{{ $trainings->training_From }}</span>
-                                <span class="text-md text-gray-700 font-medium">
+                                <span
+                                    class="font-medium text-gray-700 uppercase text-md">{{ $trainings->training_From }}</span>
+                                <span class="font-medium text-gray-700 uppercase text-md">
                                     {{ $trainings->training_Start->format('F Y') }} -
-                                    {{ $trainings->training_End->format('F Y') }}</span>
+                                    @if ($trainings->training_End)
+                                        {{ $trainings->training_End->format('F Y') }}
+                                    @else
+                                        Present
+                                    @endif
+                                </span>
                             </div>
 
-                            <div class="flex flex-row h-full items-center justify-center gap-2">
+                            <div class="flex flex-row items-center justify-center h-full gap-2">
                                 <div x-data="{ tooltip: 'Remove Training Record' }">
                                     <div x-tooltip="tooltip"
                                         wire:click.prevent='deleteData({{ $trainings->training_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-red-300 transition-transform p-1">
+                                        class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-red-300">
                                         <svg class="w-10 h-10 text-red-700" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -95,7 +102,7 @@
                                 </div>
                                 <div x-tooltip="tooltip" x-data="{ tooltip: 'Add Training Record' }">
                                     <div wire:click.prevent='editModal({{ $trainings->training_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1 cursor-pointer">
+                                        class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-blue-300">
                                         <svg class="w-10 h-10 text-blue-700" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -122,42 +129,42 @@
 
     {{-- TRAINING MODAL --}}
     <x-modal name="training-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center border-b">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Training Record') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
 
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="trainingName" :value="__('Training Name')" />
-                    <x-text-input wire:model="trainName" id="trainingName" class="block mt-1 w-full" type="text" />
+                    <x-text-input wire:model="trainName" id="trainingName" class="block w-full mt-1" type="text" />
                     <x-input-error :messages="$errors->get('trainName')" class="mt-2" />
                 </div>
-                <div class="flex flex-row mt-2 w-full">
+                <div class="flex flex-row w-full mt-2">
                     <div class="flex flex-col w-full">
                         <x-input-label for="trainingStart" :value="__('Started')" />
-                        <x-text-input wire:model="trainStart" id="trainingStart" class="block mt-1 w-full"
+                        <x-text-input wire:model="trainStart" id="trainingStart" class="block w-full mt-1"
                             type="date" />
                         <x-input-error :messages="$errors->get('trainStart')" class="mt-2" />
                     </div>
-                    <div class="flex flex-col ml-4 w-full">
+                    <div class="flex flex-col w-full ml-4">
                         <x-input-label for="trainingEnd" :value="__('Ended')" />
-                        <x-text-input wire:model="trainEnd" id="trainingEnd" class="block mt-1 w-full"
+                        <x-text-input wire:model="trainEnd" id="trainingEnd" class="block w-full mt-1"
                             type="date" />
                         <x-input-error :messages="$errors->get('trainEnd')" class="mt-2" />
                     </div>
                 </div>
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="trainingInsti" :value="__('Training Institution')" />
-                    <x-text-input wire:model="trainInstitution" id="trainingInsti" class="block mt-1 w-full"
+                    <x-text-input wire:model="trainInstitution" id="trainingInsti" class="block w-full mt-1"
                         type="text" />
                     <x-input-error :messages="$errors->get('trainInstitution')" class="mt-2" />
                 </div>
 
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="trainingCert" :value="__('Certificate Recieved')" />
-                    <x-text-input wire:model="trainCert" id="trainingCert" class="block mt-1 w-full"
+                    <x-text-input wire:model="trainCert" id="trainingCert" class="block w-full mt-1"
                         type="text" />
                     <x-input-error :messages="$errors->get('trainCert')" class="mt-2" />
                 </div>
@@ -178,7 +185,7 @@
                     <x-input-error :messages="$errors->get('trainStat')" class="mt-2" />
                 </div>
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent='close' type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -191,18 +198,18 @@
     </x-modal>
 
     <x-modal name="delete-training-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Action Confirmation') }}
             </h2>
             <hr>
-            <div class="flex flex-col justify-center items-center my-12">
+            <div class="flex flex-col items-center justify-center my-12">
 
                 <h1 class="text-2xl font-bold">Are you sure you want to delete this training record?</h1>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'delete-training-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -211,7 +218,7 @@
                     type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="deleteRecord()" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

@@ -86,7 +86,7 @@ class EditAnnouncement extends Component
 
         } else {
 
-            $this->redirectRoute('admin-announcement', navigate: true);
+            $this->redirectRoute('admin-announcement');
             toastr()->error('There was an error fetching the data.');
 
         }
@@ -125,7 +125,7 @@ class EditAnnouncement extends Component
                 DB::commit();
 
                 // Redirect to the updated announcement route
-                $this->redirectRoute('announcement.show', ['id' => $announcementInfo->announcement_id], navigate: true);
+                $this->redirectRoute('announcement.show', ['id' => $announcementInfo->announcement_id]);
 
                 toastr()->success('Announcement has been updated!');
             } else {

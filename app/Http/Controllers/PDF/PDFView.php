@@ -8,7 +8,6 @@ use App\Models\Job_Applicants;
 use App\Models\Requirements_Passed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
 
 class PDFView extends Controller
 {
@@ -26,7 +25,9 @@ class PDFView extends Controller
         if ($request->input('resume_type') == 1) {
 
             if (!$employee->resume || !Storage::exists('public/' . $employee->resume)) {
-                return response()->json(['error' => 'Resume not found'], Response::HTTP_NOT_FOUND);
+
+                return redirect('/404')->with('error', 'There was an error with the resume.');
+
             }
 
             $filePath = $employee->resume;
@@ -84,7 +85,9 @@ class PDFView extends Controller
         // dd($applicant->peso_Letter);
 
         if (!$applicant->peso_Status == 'RECOMMENDED' || !Storage::exists('public/' . $applicant->peso_Letter)) {
-            return response()->json(['error' => 'Resume not found'], Response::HTTP_NOT_FOUND);
+            // return response()->json(['error' => 'Resume not found'], Response::HTTP_NOT_FOUND);
+            return redirect('/404')->with('error', 'There was an error with the recommendation letter.');
+
         }
 
         $filePath = $applicant->peso_Letter;
@@ -104,7 +107,9 @@ class PDFView extends Controller
         // dd($requirement->req_passed_Input);
 
         if (!Storage::exists('public/' . $requirement->req_passed_Input)) {
-            return response()->json(['error' => 'Requirement File not found'], Response::HTTP_NOT_FOUND);
+            // return response()->json(['error' => 'Requirement File not found'], Response::HTTP_NOT_FOUND);
+            return redirect('/404')->with('error', 'There was an error with the requirements.');
+
         }
 
         $filePath = $requirement->req_passed_Input;

@@ -8,6 +8,7 @@ class OtherSkills extends Component
 {
 
     public $inputSkills;
+    
     public $checkBoxData = [], $inputData = [];
     public $skills = [
         'AUTO MECHANIC',
@@ -87,12 +88,12 @@ class OtherSkills extends Component
             'otherSkills' => $otherSkills,
         ]);
 
-        $this->dispatch('nextStep');
+        $this->dispatch('nextStep', $this->stepNumber + 1);
     }
 
     public function prev()
     {
-        $this->dispatch('prevStep');
+        $this->dispatch('prevStep', $this->stepNumber - 1);
     }
 
     public function render()

@@ -30,6 +30,8 @@ class EditTraining extends Component
 
     public $jobIndustryPost, $jobIndustryHidden;
 
+    public $originalTags = [], $tagsToAdd = [], $tagsToRemove = [], $displayTags = [], $tagsToRestore = [];
+
     #[Validate]
     public $progImg;
 
@@ -57,6 +59,22 @@ class EditTraining extends Component
         // dd($this->programData);
         $this->mountData($this->programData);
 
+        $programtags = Program_Tags::where('program_id', $this->programData)->get();
+
+        $this->originalTags = $programtags->map(function ($tags) {
+            return [
+                'program_tags_id' => $tags->program_tags_id, // Access the individual tag's program_tags_id
+                'position_id' => $tags->position_id, // Access the individual tag's program_tags_id
+
+                'position_Title' => strtoupper($tags->job_positions->position_Title), // Access the related job position's name
+            ];
+        })->toArray();
+
+        // Initialize displayTags with the original tags for displaying them in the view
+        $this->displayTags = $this->originalTags;
+
+        // dd($this->originalTags);
+
     }
 
     public function validateInput()
@@ -77,6 +95,7 @@ class EditTraining extends Component
             'qualPost' => 'required|string',
             'remPost' => 'nullable|string', // Remarks are not required
             'jobIndustryPost' => 'required',
+            'displayTags' => 'required',
 
         ];
         $messages = [
@@ -127,6 +146,8 @@ class EditTraining extends Component
 
             'jobIndustryPost.required' => 'The industry is required.',
 
+            'displayTags.required' => 'There must be at least 1 program tags.',
+
         ];
 
         $this->validate($rules, $messages);
@@ -172,6 +193,7 @@ class EditTraining extends Component
         // session()->forget('programData');
 
     }
+
     public function saveProgram()
     {
         $programInfo = Programs::findOrFail($this->programData);
@@ -199,7 +221,7 @@ class EditTraining extends Component
                 }
             }
 
-            // Update model attributes
+            // Update program model attributes
             $programInfo->program_Title = $this->progTitle;
             $programInfo->program_Host = $this->progHost;
             $programInfo->program_Deadline = $this->regDeadline;
@@ -216,91 +238,177 @@ class EditTraining extends Component
             // Set the new image path or retain the old one
             $programInfo->program_pubmat = $imgPath ?? $programInfo->program_pubmat;
 
-            // Check if any attributes have changed
-            if ($programInfo->isDirty()) {
-                $programInfo->save();
+            // Check if any changes were made to the programInfo or the tags
+            $tagsChanged = $this->tagsToAdd || $this->tagsToRemove || $this->tagsToRestore;
+
+            // dd( $this->tagsToAdd, $this->tagsToRemove , $this->tagsToRestore);
+
+            if ($programInfo->isDirty() || $tagsChanged) {
+                // Save program info first if dirty
+                if ($programInfo->isDirty()) {
+                    $programInfo->save();
+                }
+
+                // Handle tag changes
+                // Add new tags
+                foreach ($this->tagsToAdd as $tag) {
+                    Program_Tags::create([
+                        'program_id' => $programInfo->program_id,
+                        'position_id' => $tag['position_id'],
+                    ]);
+                }
+
+                // Remove tags
+                foreach ($this->tagsToRemove as $tag) {
+                    $programTag = Program_Tags::where('program_id', $programInfo->program_id)
+                        ->where('program_tags_id', $tag['program_tags_id'])
+                        ->first();
+
+                    if ($programTag) {
+                        $programTag->delete();
+                    }
+                }
+
+                // Restore tags (assuming soft deletes)
+                foreach ($this->tagsToRestore as $tag) {
+                    $programTag = Program_Tags::withTrashed()
+                        ->where('program_id', $programInfo->program_id)
+                        ->where('program_tags_id', $tag['program_tags_id'])
+                        ->first();
+
+                    if ($programTag) {
+                        $programTag->restore();
+                    }
+                }
+
                 DB::commit();
 
+                // Redirect and display success message
                 $this->redirectRoute('admin-view-training', ['id' => $programInfo->program_id], navigate: true);
-                // session()->forget('programData');
-
                 toastr()->success('Program has been updated!');
-
             } else {
                 DB::rollBack();
                 toastr()->info('No changes detected.');
             }
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e->getMessage());
+
             // Delete new image if it was uploaded and an error occurred
             if ($imgPath) {
                 Storage::disk('public')->delete($imgPath);
             }
 
-            toastr()->error('There was an error updating the program: ');
+            toastr()->error('There was an error updating the program: ' . $e->getMessage());
         }
+
         $this->mount();
         $this->dispatch('close-modal', 'confirm-modal');
     }
 
-    #[On('industrySelect')]
-    public function industrySelect($id)
+    #[On('positionSelect')]
+    public function addTag($id)
     {
-        $industry = Job_Industry::find($id);
+        // Fetch the position name from the database
+        $jobPosition = Job_Positions::find($id);
 
-        if ($industry) {
-            $this->jobIndustryHidden = $industry->industry_id;
-            $this->jobIndustryPost = $industry->industry_Title;
+        if (!$jobPosition) {
+            toastr()->error('Job position not found.');
+            return;
+        }
+        $totalTags = count($this->displayTags);
 
-        } else {
-            toastr()->error('Could not fetch data');
+        if ($totalTags >= 15) {
+            toastr()->error('You can only have a maximum of 15 tags.');
+            return;
         }
 
-    }
-    #[On('positionSelect')]
-    public function positionSelect($id)
-    {
-        $positionExist = Program_Tags::where('position_id', $id)
-            ->where('program_id', $this->programData)->exists();
-        if ($positionExist) {
+        $newTag = [
+            'position_id' => $id,
+            'position_Title' => strtoupper($jobPosition->position_Title),
+        ];
+
+        // Check if the tag is in tagsToRestore
+        if (collect($this->tagsToRestore)->contains('position_id', $id)) {
+            // Move it to originalTags and displayTags
+            $this->tagsToRestore = collect($this->tagsToRestore)->reject(function ($tag) use ($id) {
+                return $tag['position_id'] === $id;
+            })->toArray();
+
+            // Add to originalTags if not already present
+            if (!collect($this->originalTags)->contains('position_id', $id)) {
+                $this->originalTags[] = $newTag;
+            }
+
+            $this->displayTags[] = $newTag;
+            toastr()->success('Program tag has been added.');
+
+            return;
+        }
+
+        // Check if the tag is in tagsToRemove
+        if (collect($this->tagsToRemove)->contains('position_id', $id)) {
+            // Remove from tagsToRemove and add to originalTags and displayTags
+            $this->tagsToRemove = collect($this->tagsToRemove)->reject(function ($tag) use ($id) {
+                return $tag['position_id'] === $id;
+            })->toArray();
+
+            // Add to originalTags if not already present
+            if (!collect($this->originalTags)->contains('position_id', $id)) {
+                $this->originalTags[] = $newTag;
+            }
+
+            $this->displayTags[] = $newTag;
+            toastr()->success('Program tag has been added.');
+
+            return;
+        }
+
+        // Check if the tag is already in originalTags
+        if (collect($this->originalTags)->contains('position_id', $id)) {
             toastr()->warning('This job tag is already selected.');
             return;
         }
 
-        $jobposition = Job_Positions::find($id);
-
-        if ($jobposition) {
-            Program_Tags::create([
-                'program_id' => $this->programData,
-                'position_id' => $id,
-            ]);
-            $this->dispatch('close-modal', 'job-position-modal');
-        } else {
-            toastr()->error('Could not fetch data');
-            $this->dispatch('close-modal', 'job-position-modal');
+        // Check if the tag is already in tagsToAdd
+        if (collect($this->tagsToAdd)->contains('position_id', $id)) {
+            toastr()->warning('This job tag is already added.');
+            return;
         }
+
+        // Add to tagsToAdd and displayTags
+        $this->tagsToAdd[] = $newTag;
+        $this->displayTags[] = $newTag;
+        toastr()->success('Program tag has been added.');
+
     }
 
-    public function removeTag($positionId)
+    public function removeTag($tagId)
     {
-        try {
-            // Count the number of tags for the current program
-            $tagCount = Program_Tags::where('program_id', $this->programData)->count();
+        // Check if the tag is in originalTags
+        if (collect($this->originalTags)->contains('position_id', $tagId)) {
+            // Move it to tagsToRemove and remove from displayTags
+            $this->tagsToRemove[] = collect($this->originalTags)->firstWhere('position_id', $tagId);
 
-            // Check if there is at least one tag remaining
-            if ($tagCount > 1) {
-                // Proceed to delete the tag
-                Program_Tags::where('program_tags_id', $positionId)
-                    ->where('program_id', $this->programData)
-                    ->delete();
+            // Update originalTags
+            $this->originalTags = collect($this->originalTags)->reject(function ($tag) use ($tagId) {
+                return $tag['position_id'] === $tagId;
+            })->toArray();
 
-                toastr()->success('Job tag record has been deleted.');
-            } else {
-                toastr()->warning('You must have at least one job tag.');
-            }
-        } catch (\Exception $e) {
-            toastr()->error('There was an error: ' . $e->getMessage());
+            $this->displayTags = collect($this->displayTags)->reject(function ($tag) use ($tagId) {
+                return $tag['position_id'] === $tagId;
+            })->toArray();
+        } else {
+            // Tag was added in this session, so just remove it from tagsToAdd
+            $this->tagsToAdd = collect($this->tagsToAdd)->reject(function ($tag) use ($tagId) {
+                return $tag['position_id'] === $tagId;
+            })->toArray();
         }
+
+        // Remove from tagsToRestore if present
+        $this->tagsToRestore = collect($this->tagsToRestore)->reject(function ($tag) use ($tagId) {
+            return $tag['position_id'] === $tagId;
+        })->toArray();
     }
 
     public function render()

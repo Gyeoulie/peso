@@ -218,15 +218,29 @@ class TrainingRegistrants extends Component
             ->whereHas('peso', function ($query) use ($employeeMunicipalityId) {
                 $query->where('municipality_id', $employeeMunicipalityId);
             })
-            ->where(function ($query) use ($employeeJobPreferences) {
-                $query->whereHas('program_tags', function ($query) use ($employeeJobPreferences) {
-                    $query->whereIn('position_id', $employeeJobPreferences);
-                });
-            })
-            ->orWhere(function ($query) use ($employeeIndustryPreference) {
-                $query->whereHas('job_industry', function ($query) use ($employeeIndustryPreference) {
-                    $query->whereIn('industry_id', $employeeIndustryPreference);
-                });
+            ->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
+                // Match based on job preferences or industry preferences
+                $query->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
+                    // Check for job preference match
+                    $query->whereHas('program_tags.job_positions', function ($q) use ($employeeJobPreferences) {
+                        $q->whereIn('position_id', $employeeJobPreferences);
+                    })
+                    // Check for industry preference match
+                        ->whereHas('job_industry', function ($q) use ($employeeIndustryPreference) {
+                            $q->whereIn('industry_id', $employeeIndustryPreference);
+                        });
+                })
+                // Check if either industry or job preferences match individually
+                    ->orWhere(function ($query) use ($employeeIndustryPreference) {
+                        $query->whereHas('job_industry', function ($q) use ($employeeIndustryPreference) {
+                            $q->whereIn('industry_id', $employeeIndustryPreference);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($employeeJobPreferences) {
+                        $query->whereHas('program_tags.job_positions', function ($q) use ($employeeJobPreferences) {
+                            $q->whereIn('position_id', $employeeJobPreferences);
+                        });
+                    });
             })
             ->exists();
     }
@@ -270,8 +284,6 @@ class TrainingRegistrants extends Component
 
         // Paginate the results
         $programRegistrants = $this->getRegistrants($programInfo->program_id)->paginate(10);
-
-      
 
         if ($this->selectedJobseeker) {
             $jobseekerInfo = Program_Reg::findOrFail($this->selectedJobseeker);

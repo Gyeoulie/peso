@@ -3,10 +3,10 @@
         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
         x-transition:enter-end="opacity-100 scale-100" x-cloak>
 
-        <div class="bg-white shadow-lg rounded-lg p-6">
-            <div class="flex flex-row w-full items-center justify-between mb-4">
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <div class="flex flex-row items-center justify-between w-full mb-4">
                 <div class="flex flex-row items-center gap-4">
-                    <div class="cursor-pointer flex items-center rounded-full hover:bg-gray-300 transition-transform p-1"
+                    <div class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300"
                         @click="profileTab = 'profileOverview'">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -18,10 +18,10 @@
 
                 </div>
 
-                <div class="flex flex-row gap-4 items-center">
+                <div class="flex flex-row items-center gap-4">
                     <div x-data="{ tooltip: 'Add Work Experience' }">
                         <div x-tooltip="tooltip"
-                            class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1 cursor-pointer"
+                            class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-gray-300"
                             wire:click.prevent='addModal()'>
                             <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor">
@@ -35,8 +35,8 @@
 
             @if ($workexp->isEmpty())
 
-                <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                    <div class="flex bg-blue-200 rounded-full p-1">
+                <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                    <div class="flex p-1 bg-blue-200 rounded-full">
 
                         <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -46,20 +46,20 @@
 
                     </div>
 
-                    <div class="text-center text-black text-xl font-semibold mt-5">
+                    <div class="mt-5 text-xl font-semibold text-center text-black">
                         Work Experience is Empty.
                     </div>
                 </div>
             @else
-                {{-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 "> --}}
+                {{-- <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 "> --}}
 
                 @foreach ($workexp as $experience)
                     <div wire:key="{{ $experience->workexp_id }}" class="container p-3">
 
-                        <div class="flex flex-row h-full items-center">
+                        <div class="flex flex-row items-center h-full">
 
                             <div class="flex flex-col">
-                                <svg class="w-10 h-10 sm:w-20 sm:h-20 text-gray-800" aria-hidden="true"
+                                <svg class="w-10 h-10 text-gray-800 lg:w-20 lg:h-20" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                     viewBox="0 0 24 24">
                                     <path fill-rule="evenodd"
@@ -68,25 +68,32 @@
                                 </svg>
                             </div>
 
-                            <div class="flex flex-col ml-4 w-full">
-                                <span class="text-3xl text-black font-black">{{ $experience->work_Name }}</span>
-                                <div class="text-xl text-black font-semibold">
+                            <div class="flex flex-col w-full ml-4">
+                                <span
+                                    class="text-3xl font-black text-black uppercase">{{ $experience->work_Name }}</span>
+                                <div class="text-xl font-semibold text-black uppercase">
                                     <span>{{ $experience->job_positions->position_Title }}</span>
                                     -
                                     <span>{{ $experience->work_Status }}</span>
                                 </div>
-                                <span class="text-md text-gray-700 font-medium">
+                                <span class="font-medium text-gray-700 uppercase text-md">
                                     {{ $experience->work_Start->format('F Y') }} -
-                                    {{ $experience->work_End->format('F Y') }}</span>
-                                <span class="text-md text-gray-700 font-medium">{{ $experience->work_Address }}</span>
+
+                                    @if ($experience->work_End)
+                                        {{ $experience->work_End->format('F Y') }}
+                                    @else
+                                        Present
+                                    @endif
+                                </span>
+                                <span class="font-medium text-gray-700 text-md">{{ $experience->work_Address }}</span>
                             </div>
 
 
-                            <div class="flex flex-row h-full items-center justify-center gap-2">
+                            <div class="flex flex-row items-center justify-center h-full gap-2">
                                 <div x-data="{ tooltip: 'Remove Work Experience' }">
                                     <div x-tooltip="tooltip"
                                         wire:click.prevent='deleteData({{ $experience->workexp_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-red-300 transition-transform p-1">
+                                        class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-red-300">
                                         <svg class="w-10 h-10 text-red-700" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -99,7 +106,7 @@
                                 <div x-data="{ tooltip: 'Edit Work Experience' }">
                                     <div x-tooltip="tooltip"
                                         wire:click.prevent='editModal({{ $experience->workexp_id }})'
-                                        class="cursor-pointer flex items-center rounded-full hover:bg-blue-300 transition-transform p-1 cursor-pointer">
+                                        class="flex items-center p-1 transition-transform rounded-full cursor-pointer hover:bg-blue-300">
                                         <svg class="w-10 h-10 text-blue-700" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -124,23 +131,23 @@
 
 
     <x-modal name="workExp-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Work Experience') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-2">
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="workEmp" :value="__('Employer')" />
-                    <x-text-input wire:model="workName" class="block mt-1 w-full" type="text" />
+                    <x-text-input wire:model="workName" class="block w-full mt-1" type="text" />
                     <x-input-error :messages="$errors->get('workName')" class="mt-2" />
                 </div>
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="workAddress" :value="__('Address')" />
-                    <x-text-input wire:model="workAdd" class="block mt-1 w-full" type="text" />
+                    <x-text-input wire:model="workAdd" class="block w-full mt-1" type="text" />
                     <x-input-error :messages="$errors->get('workAdd')" class="mt-2" />
                 </div>
-                <div class="flex flex-col sm:flex-row mt-2 w-full">
+                <div class="flex flex-col w-full mt-2 lg:flex-row">
 
                     <div class="flex flex-col w-full">
                         <x-input-label for="workPos" :value="__('Job Position')" />
@@ -152,7 +159,7 @@
                                         {{ $workPositionTitle ?? 'Select Job Position' }}
                                     </div>
                                     <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -164,7 +171,7 @@
                             <x-slot name="content">
                                 <!-- Search input -->
                                 <div class="p-2">
-                                    <input wire:model.live.prevent='search' type="text" wire:model="search"
+                                    <input wire:model.live='search' type="search" wire:model="search"
                                         placeholder="Search..."
                                         class="block w-full px-3 py-1.5 mb-2 border border-gray-300 rounded-md focus:outline-none"
                                         @click.stop>
@@ -175,7 +182,7 @@
                                     <!-- Dropdown links -->
                                     @foreach ($job_positions as $data)
                                         <x-dropdown-link wire:click.prevent='updateSelect({{ $data->position_id }})'
-                                            class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->position_Title }}</x-dropdown-link>
+                                            class="block px-4 py-2 uppercase cursor-pointer hover:bg-gray-100">{{ $data->position_Title }}</x-dropdown-link>
                                     @endforeach
                                 </div>
                             </x-slot>
@@ -186,7 +193,7 @@
 
                     <div class="flex flex-col w-full ml-4">
                         <x-input-label for="workStatus" :value="__('Status')" />
-                        <select wire:model="workStatus" class="block mt-1 w-full  rounded-lg ">
+                        <select wire:model="workStatus" class="block w-full mt-1 rounded-lg ">
                             <option value="" disabled selected>Select Work Status</option>
                             <option value="Permanent">Permanent</option>
                             <option value="Contractual">Contractual</option>
@@ -197,21 +204,21 @@
                     </div>
                 </div>
 
-                <div class="flex flex-row mt-2 w-full">
+                <div class="flex flex-row w-full mt-2">
                     <div class="flex flex-col w-full">
                         <x-input-label for="workStart" :value="__('Started')" />
-                        <x-text-input wire:model="workStart" class="block mt-1 w-full" type="date" />
+                        <x-text-input wire:model="workStart" class="block w-full mt-1" type="date" />
                         <x-input-error :messages="$errors->get('workStart')" class="mt-2" />
                     </div>
-                    <div class="flex flex-col ml-4 w-full">
+                    <div class="flex flex-col w-full ml-4">
                         <x-input-label for="workEnd" :value="__('Ended')" />
-                        <x-text-input wire:model="workEnd" class="block mt-1 w-full" type="date" />
+                        <x-text-input wire:model="workEnd" class="block w-full mt-1" type="date" />
                         <x-input-error :messages="$errors->get('workEnd')" class="mt-2" />
                     </div>
 
                 </div>
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent='close' type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -225,18 +232,18 @@
 
 
     <x-modal name="delete-workExp-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Action Confirmation') }}
             </h2>
             <hr>
-            <div class="flex flex-col justify-center items-center my-12">
+            <div class="flex flex-col items-center justify-center my-12">
 
                 <h1 class="text-2xl font-bold">Are you sure you want to delete this work expierence?</h1>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'delete-workExp-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -245,7 +252,7 @@
                     type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="deleteRecord()" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

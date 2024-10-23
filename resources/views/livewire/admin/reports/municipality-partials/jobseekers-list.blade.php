@@ -18,7 +18,7 @@
     </div>
     <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+        <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative">
@@ -31,15 +31,15 @@
                 </div>
 
                 {{-- SEARCH --}}
-                <input wire:model.live.prevent='searchJobseekers' type="text"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                <input wire:model.live='searchJobseekers' type="search"
+                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search">
             </div>
 
-            <div class="flex flex-row gap-2">
+            <div class="flex flex-wrap mr-3 gap-2">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData('jobseekers')"
-                        class="flex items-center py-1.5 px-4 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <span class="mr-2">Export</span>
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -51,31 +51,29 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-jobseekers-modal')"
-                    class="py-1.5 px-5 text-xs sm:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                    class="py-1.5 px-5 text-xs lg:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
             </div>
         </div>
         <div class="overflow-x-auto">
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
                 <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                     <tr>
                         <th scope="col" class="px-6 py-3 w-full">
                             <span class="text-black font-bold text-md">Applicant Name</span>
-
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="hidden lg:table-cell px-6 py-3">
                             <span class="text-black font-bold text-md">Employment Status</span>
                         </th>
-                        <th scope="col" class="px-6 py-3 text-center">
-                            <span class="text-black font-bold text-md ">Job Applications</span>
+                        <th scope="col" class="hidden lg:table-cell px-6 py-3 text-center">
+                            <span class="text-black font-bold text-md">Active Applications</span>
                         </th>
-                        <th scope="col" class="px-6 py-3 text-center">
-                            <span class="text-black font-bold text-md ">Registered Trainings</span>
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-
+                        <th scope="col" class="hidden lg:table-cell px-6 py-3 text-center">
+                            <span class="text-black font-bold text-md">Registered Trainings</span>
                         </th>
 
+                        <th scope="col" class="px-6 py-3"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,13 +88,9 @@
                                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                                                 d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                         </svg>
-
                                     </div>
-                                    <p class="text-xl font-bold text-black text-center mt-2">
-                                        No Records Found!
-                                    </p>
+                                    <p class="text-xl font-bold text-black text-center mt-2">No Records Found!</p>
                                 </div>
-
                             </td>
                         </tr>
                     @else
@@ -106,19 +100,34 @@
                                     <img class="w-10 h-10 rounded-full object-cover"
                                         src="{{ asset('storage/' . $data->pimg) }}" alt="img">
                                     <div class="ps-3 text-wrap">
-                                        <div class="text-base font-semibold">
-                                            <div class="text-base font-semibold uppercase">
-                                                {{ $data->fname }} {{ $data->mname }}
-                                                {{ $data->lname }}
+                                        <div class="text-base font-semibold uppercase">
+                                            {{ $data->fname }} {{ $data->mname }} {{ $data->lname }}
+                                        </div>
 
-                                            </div>
 
+                                        <div class="text-sm text-gray-500 lg:hidden">
+                                            <span>Active Apps: <span
+                                                    class="text-black font-bold">{{ $data->job_applications }}</span></span>
+                                        </div>
+                                        <div class="text-sm text-gray-500 lg:hidden">
+                                            <span>Trainings: <span
+                                                    class="text-black font-bold">{{ $data->program_reg_count }}</span></span>
+                                        </div>
+                                        <div class="text-sm text-gray-500 lg:hidden">
+                                            <span>
+                                                @if ($data->empstatus == '2')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
+                                                @elseif ($data->empstatus == '1')
+                                                    <span
+                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20">EMPLOYED</span>
+                                                @endif
+                                            </span>
                                         </div>
                                     </div>
-
                                 </th>
 
-                                <td class="px-6 py-4">
+                                <td class="hidden lg:table-cell px-6 py-4">
                                     @if ($data->empstatus == '2')
                                         <span
                                             class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
@@ -128,26 +137,19 @@
                                     @endif
                                 </td>
 
-                                <td class="px-6 py-4">
-
-                                    <div class="font-normal text-gray-500 text-sm text-center uppercase">
-                                        <span class="text-blue-500 font-bold text-md ">
-                                            {{ $data->job_applications }}</span>
-
+                                <td class="hidden lg:table-cell px-6 py-4 text-center">
+                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                        <span
+                                            class="text-blue-500 font-bold text-md">{{ $data->job_applications }}</span>
                                     </div>
-
-                                </td>
-                                <td class="px-6 py-4">
-
-                                    <div class="font-normal text-gray-500 text-sm text-center uppercase">
-                                        <span class="text-blue-500 font-bold text-md ">
-                                            {{ $data->program_reg_count }}</span>
-
-
-                                    </div>
-
                                 </td>
 
+                                <td class="hidden lg:table-cell px-6 py-4 text-center">
+                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                        <span
+                                            class="text-blue-500 font-bold text-md">{{ $data->program_reg_count }}</span>
+                                    </div>
+                                </td>
 
                                 <td>
                                     <div x-data="{ tooltip: 'Jobseeker Overview' }">
@@ -165,24 +167,21 @@
                                         </a>
                                     </div>
                                 </td>
-
-
                             </tr>
                         @endforeach
                     @endif
-
                 </tbody>
             </table>
 
             <div class="mt-4">
-                {{ $jobseekers->links('vendor.livewire.tailwind') }}
+                {{ $jobseekers->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
             </div>
         </div>
     </div>
 
     <div x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+        <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative">
@@ -195,15 +194,15 @@
                 </div>
 
                 {{-- SEARCH --}}
-                <input wire:model.live.prevent='searchCompany' type="text"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                <input wire:model.live='searchCompany' type="search"
+                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search">
             </div>
 
-            <div class="flex flex-row gap-2">
+            <div class="flex flex-wrap mr-3 gap-2">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData('employers')"
-                        class="flex items-center py-1.5 px-4 text-xs sm:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <span class="mr-2">Export</span>
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor">
@@ -215,7 +214,7 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-employers-modal')"
-                    class="py-1.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                    class="py-1.5 px-5 text-xs lg:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -225,18 +224,14 @@
                     <tr>
                         <th scope="col" class="px-6 py-3 ">
                             <span class="text-black font-bold text-md">Company Name</span>
-
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                             <span class="text-black font-bold text-md">Job Postings</span>
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                             <span class="text-black font-bold text-md">Hired Applicants</span>
                         </th>
-                        <th scope="col" class="px-6 py-3">
-
-                        </th>
-
+                        <th scope="col" class="px-6 py-3"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -251,13 +246,11 @@
                                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                                                 d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                         </svg>
-
                                     </div>
                                     <p class="text-xl font-bold text-black text-center mt-2">
                                         No Records Found!
                                     </p>
                                 </div>
-
                             </td>
                         </tr>
                     @else
@@ -276,33 +269,30 @@
                                             <div class="text-base font-medium">
                                                 {{ $data->contact_Person }}
                                             </div>
+                                            <div class="text-sm text-gray-500 lg:hidden">
+                                                Job Posting: {{ $data->total_job_postings }}
+                                            </div>
+                                            <div class="text-sm text-gray-500 lg:hidden">
+                                                Hired: {{ $data->hired_applicants }}
+                                            </div>
                                         </div>
                                     </div>
-
                                 </th>
 
-
-                                <td class="px-6 py-4">
-
+                                <td class="px-6 py-4 hidden lg:table-cell">
                                     <div class="font-normal text-gray-500 text-sm text-center uppercase">
                                         <span class="text-blue-500 font-bold text-md ">
                                             {{ $data->total_job_postings }}</span>
-
                                     </div>
-
                                 </td>
-                                <td class="px-6 py-4">
-
+                                <td class="px-6 py-4 hidden lg:table-cell">
                                     <div class="font-normal text-gray-500 text-sm text-center uppercase">
                                         <span class="text-blue-500 font-bold text-md ">
                                             {{ $data->hired_applicants }}</span>
-
                                     </div>
-
                                 </td>
 
-
-                                <td>
+                                <td class="px-6 py-4">
                                     <div x-data="{ tooltip: 'Employer Overview' }">
                                         <a wire:navigate
                                             href="{{ route('admin-users-employer-overview', ['id' => $data->company_id]) }}"
@@ -318,17 +308,14 @@
                                         </a>
                                     </div>
                                 </td>
-
-
                             </tr>
                         @endforeach
                     @endif
-
                 </tbody>
             </table>
 
             <div class="mt-4">
-                {{ $employers->links('vendor.livewire.tailwind') }}
+                {{ $employers->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
             </div>
         </div>
     </div>
@@ -428,7 +415,7 @@
                     </div>
                 </div>
 
-                <div class="flex-col mt-4">
+                {{-- <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Applications</h1>
 
                     <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
@@ -453,8 +440,117 @@
                                 Applications</label>
                         </div>
                     </div>
+                </div> --}}
+
+
+
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By Civil Status</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-all" type="radio" value=""
+                                name="civilStatus" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-single" type="radio" value="1"
+                                name="civilStatus" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-single" class="ms-2 text-sm font-medium text-gray-900">Single</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-married" type="radio" value="2"
+                                name="civilStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-married" class="ms-2 text-sm font-medium text-gray-900">Married</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountCivilStatus' id="civil-widowed" type="radio" value="3"
+                                name="civilStatus"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="civil-widowed" class="ms-2 text-sm font-medium text-gray-900">Widowed</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By OFW Record</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-all" type="radio" value=""
+                                name="ofwFilter" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-yes" type="radio" value="1"
+                                name="ofwFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-yes" class="ms-2 text-sm font-medium text-gray-900">OFW</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountOFWFilter' id="ofw-no" type="radio" value="2"
+                                name="ofwFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="ofw-no" class="ms-2 text-sm font-medium text-gray-900">Not OFW</label>
+                        </div>
+                    </div>
                 </div>
 
+                <div class="flex-col mt-4">
+                    <h1 class="text-md font-semibold">Sort By 4Ps Record</h1>
+
+                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-all" type="radio" value=""
+                                name="4psFilter" checked
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-yes" type="radio" value="1"
+                                name="4psFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-yes" class="ms-2 text-sm font-medium text-gray-900">4Ps Member</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input wire:model='mountFourPFilter' id="4ps-no" type="radio" value="2"
+                                name="4psFilter"
+                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                            <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">Not 4Ps
+                                Member</label>
+                        </div>
+                    </div>
+                </div>
+                @if ($crossJob == true)
+                    <div class="flex-col mt-4">
+                        <h1 class="text-md font-semibold">Sort By Residency</h1>
+
+                        <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                            <div class="flex items-center">
+                                <input wire:model='mountMunicipalityFilter' id="mun-all" type="radio"
+                                    value="" name="munFilter" checked
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="mun-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='mountMunicipalityFilter' id="mun-in" type="radio"
+                                    value="1" name="munFilter"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="mun-in" class="ms-2 text-sm font-medium text-gray-900">Resident</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='mountMunicipalityFilter' id="mun-out" type="radio"
+                                    value="2" name="munFilter"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="mun-out" class="ms-2 text-sm font-medium text-gray-900">Not
+                                    Resident</label>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <div class="flex flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Date</h1>
                     <div class="flex flex-row w-full gap-4 mt-2">
@@ -515,37 +611,6 @@
 
                     </div>
                 </div>
-
-                <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Civil Status</h1>
-
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
-                        <div class="flex items-center">
-                            <input wire:model='mountCivilStatus' id="civil-all" type="radio" value=""
-                                name="civilStatus" checked
-                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="civil-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input wire:model='mountCivilStatus' id="civil-single" type="radio" value="1"
-                                name="civilStatus" checked
-                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="civil-single" class="ms-2 text-sm font-medium text-gray-900">Single</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input wire:model='mountCivilStatus' id="civil-married" type="radio" value="2"
-                                name="civilStatus"
-                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="civil-married" class="ms-2 text-sm font-medium text-gray-900">Married</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input wire:model='mountCivilStatus' id="civil-widowed" type="radio" value="3"
-                                name="civilStatus"
-                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="civil-widowed" class="ms-2 text-sm font-medium text-gray-900">Widowed</label>
-                        </div>
-                    </div>
-                </div>
                 <div class="flex-col mt-4">
                     <h1 class="text-md font-semibold">Sort By Educational Attainment</h1>
 
@@ -558,6 +623,9 @@
                         <option value="College Graduate">College Graduate</option>
                     </select>
                 </div>
+
+
+
 
 
             </div>

@@ -32,9 +32,13 @@ class Employee extends Model implements Auditable
         'tinnum',
         'empstatus',
         'empstatusdesc',
+        'ofw',
+        'fourp',
+        'fourpID',
         'pimg',
         'resume',
         'empDesc',
+        'empprofile',
     ];
 
     protected $casts = [
@@ -115,29 +119,33 @@ class Employee extends Model implements Auditable
     }
 
     public static function fieldMappings()
-{
-    return [
-        'employee_id' => 'Employee ID',
-        'user_id' => 'User ID',
-        'fname' => 'First Name',
-        'mname' => 'Middle Name',
-        'lname' => 'Last Name',
-        'suffix' => 'Suffix',
-        'height' => 'Height',
-        'gender' => 'Gender',
-        'civilstatus' => 'Civil Status',
-        'religion' => 'Religion',
-        'birthdate' => 'Birthdate',
-        'pnumber' => 'Phone Number',
-        'address' => 'Address',
-        'barangay_id' => 'Barangay ID',
-        'tinnum' => 'TIN Number',
-        'empstatus' => 'Employment Status',
-        'empstatusdesc' => 'Employment Status Description',
-        'pimg' => 'Profile Image',
-        'resume' => 'Resume',
-        'empDesc' => 'Employee Description',
-    ];
-}
+    {
+        return [
+            'employee_id' => 'Employee ID',
+            'user_id' => 'User ID',
+            'fname' => 'First Name',
+            'mname' => 'Middle Name',
+            'lname' => 'Last Name',
+            'suffix' => 'Suffix',
+            'height' => 'Height',
+            'gender' => 'Gender',
+            'civilstatus' => 'Civil Status',
+            'religion' => 'Religion',
+            'birthdate' => 'Birthdate',
+            'pnumber' => 'Phone Number',
+            'address' => 'Address',
+            'barangay_id' => 'Barangay ID',
+            'tinnum' => 'TIN Number',
+            'empstatus' => 'Employment Status',
+            'empstatusdesc' => 'Employment Status Description',
+            'ofw' => 'OFW Status',
+            'fourp' => '4Ps Member',
+            'fourpID' => '4Ps Household No.',
+            'pimg' => 'Profile Image',
+            'resume' => 'Resume',
+            'empDesc' => 'Employee Description',
+            'empprofile' => 'Employee Profile Status',
+        ];
+    }
 
 }

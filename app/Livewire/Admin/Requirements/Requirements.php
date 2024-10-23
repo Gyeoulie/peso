@@ -25,7 +25,7 @@ class Requirements extends Component
     public $filter = '';
     public $rows = 10;
 
-    public $reqPost, $statusPost;
+    public $reqPost, $reqType;
 
     public $editreqID, $editreqPost, $editstatusPost;
 
@@ -38,14 +38,14 @@ class Requirements extends Component
     {
         $rules = [
             'reqPost' => ['required', 'string', Rule::unique('requirements', 'requirement_Title')],
-            'statusPost' => ['required'],
+            'reqType' => ['required'],
         ];
 
         $messages = [
             'reqPost.required' => 'The requirement title is required.',
             'reqPost.string' => 'The requirement title must be a string.',
             'reqPost.unique' => 'The requirement title has already been taken.',
-            'statusPost.required' => 'The requirement status is required.',
+            'reqType.required' => 'The requirement status is required.',
         ];
 
         $this->validate($rules, $messages);
@@ -54,19 +54,21 @@ class Requirements extends Component
         try {
             ModelsRequirements::create([
                 'requirement_Title' => strtoupper($this->reqPost),
-                'requirement_Status' => $this->statusPost,
+                'requirement_Status' => 1,
+                'requirement_Type' => $this->reqType,
+
             ]);
 
             // $this->reset();
             DB::commit();
             toastr()->success('New Requirement Added!');
 
-            $this->reset('reqPost', 'statusPost');
+            $this->reset('reqPost', 'reqType');
             $this->resetValidation();
 
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->reset('reqPost', 'statusPost');
+            $this->reset('reqPost', 'reqType');
             $this->resetValidation();
             toastr()->error('There was an error.');
         }
@@ -152,10 +154,10 @@ class Requirements extends Component
         $query = ModelsRequirements::where('requirement_Title', 'like', '%' . $this->search . '%');
 
         if (!empty($this->filter)) {
-            $query->where('requirement_Status', '=', $this->filter);
+            $query->where('requirement_Type', '=', $this->filter);
         }
 
-        $requirements = $query->paginate($this->rows);
+        $requirements = $query->orderBy('requirement_Title', 'asc')->paginate($this->rows);
         return view('livewire.admin.requirements.requirements', compact('requirements'));
     }
 }

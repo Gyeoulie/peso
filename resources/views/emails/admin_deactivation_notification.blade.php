@@ -7,6 +7,8 @@ We want to inform you that your account has been deactivated by an administrator
 ## 🚨 Important Information
 **Reason for Deactivation:** Admin Deactivation
 
+Please be aware that all your active transactions have also been cancelled as part of this deactivation process.
+
 If you have any questions regarding this deactivation or if you believe this action was taken in error, please contact your local PESO office or our support team for assistance.
 
 We understand that there may be concerns or questions, and we are here to assist you. Please do not hesitate to reach out to us for further support.

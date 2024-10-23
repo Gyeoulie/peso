@@ -1,20 +1,20 @@
 <div class="container mx-auto py-8">
 
     {{-- GRID --}}
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Trainings / Create a program</h1>
         </div>
 
 
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
 
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex flex-col w-full h-full">
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="progTitle" :value="__('Program Title')" />
                             <x-text-input wire:model='progTitle' class="block mt-1 w-full" type="text" />
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="flex flex-col w-full h-full">
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="regDeadline" :value="__('Registration Deadline')" />
                             <x-text-input wire:model='regDeadline' class="block mt-1 w-full" type="date" />
@@ -53,7 +53,7 @@
                         }
                     }
                 }">
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="progType" :value="__('Program Type')" />
                             <select name="progType" wire:model="progType" class="block mt-1 w-full rounded-md"
@@ -64,7 +64,7 @@
                             </select>
                             <x-input-error :messages="$errors->get('progType')" class="mt-2" />
                         </div>
-                        <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
+                        <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
                             <div class="flex flex-col w-full">
                                 <x-input-label for="progDate" :value="__('Program Date')" />
                                 <x-text-input wire:model="progDate" class="block mt-1 w-full" type="date"
@@ -82,13 +82,13 @@
                 </div>
 
                 <div class="flex flex-col w-full h-full">
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="progLoc" :value="__('Program Location')" />
                             <x-text-input wire:model='progLoc' class="block mt-1 w-full" type="text" />
                             <x-input-error :messages="$errors->get('progLoc')" class="mt-2" />
                         </div>
-                        <div class="flex flex-col w-1/3">
+                        <div class="flex flex-col w-full lg:w-1/3">
                             <x-input-label for="progModality" :value="__('Modality Type')" />
                             <select wire:model='progModality' name="progModality" class="block mt-1 w-full rounded-md">
                                 <option value="" disabled selected>Select Modality Type</option>
@@ -113,7 +113,7 @@
 
             <div class="bg-white shadow rounded-lg p-6 mt-4">
                 <div class="flex flex-col w-full h-full">
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
                         <div class="flex flex-col w-full">
                             <x-input-label for="industry_tag" :value="__('Industry Tag')" />
                             <x-text-input wire:model='jobIndustryPost' class="block mt-1 w-full" type="text" readonly
@@ -176,7 +176,7 @@
 
         </div>
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
 
             <div class="bg-white shadow rounded-lg p-6 w-full h-full">
                 <div class="flex flex-col items-center mt-4 w-full h-full">
@@ -222,16 +222,16 @@
 
         </div>
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <div class="bg-white shadow rounded-lg p-6">
 
-                <div class="flex flex-col sm:flex-row w-full gap-2 sm:gap-4 ">
+                <div class="flex flex-col lg:flex-row w-full gap-2 lg:gap-4 ">
 
-                    <div class="flex flex-col w-full sm:w-1/2">
+                    <div class="flex flex-col w-full lg:w-1/2">
                         <x-input-label for="descPost">Program Description
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='descPost' id="descText"></textarea>
+                            <textarea id="descText"></textarea>
                         </div>
 
                         @if ($errors->has('descPost'))
@@ -239,11 +239,11 @@
                         @endif
                     </div>
 
-                    <div class="flex flex-col w-full sm:w-1/2">
+                    <div class="flex flex-col w-full lg:w-1/2">
                         <x-input-label for="qualPost">Program Qualification
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='qualPost' id="qualText"></textarea>
+                            <textarea id="qualText"></textarea>
                         </div>
 
                         @if ($errors->has('qualPost'))
@@ -257,7 +257,7 @@
                     <x-input-label for="remPost">Program Remarks
                     </x-input-label>
                     <div wire:ignore>
-                        <textarea wire:model='remPost' id="remText"></textarea>
+                        <textarea id="remText"></textarea>
                     </div>
                     @if ($errors->has('remPost'))
                         <x-input-error :messages="$errors->get('remPost')" class="mt-2" />
@@ -326,75 +326,100 @@
 
 </div>
 
-{{-- @scipt --}}
-<script data-navigate-once>
-    console.log('Runs only on page one')
-    $('#descText').summernote({
-        placeholder: 'Write training description here...',
-        tabsize: 2,
-        height: 300,
-        disableResizeEditor: true, // This is optional if you want to remove resize
-        disableDragAndDrop: true, // Set the height here (e.g., 300px)
-        toolbar: [
-            ['font', ['bold', 'underline']],
-            ['para', ['ul', 'ol', 'paragraph']],
-        ],
-        callbacks: {
-            onChange: function(contents, $editable) {
-                if ($('#descText').summernote('isEmpty')) {
-                    @this.set('descPost',
-                        ''
-                    ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                } else {
-                    @this.set('descPost', contents);
-                }
-            }
-        }
-    });
-    $('#qualText').summernote({
-        placeholder: 'Write training qualifications here...',
-        tabsize: 2,
-        height: 300,
-        disableResizeEditor: true, // This is optional if you want to remove resize
-        disableDragAndDrop: true, // Set the height here (e.g., 300px)
-        toolbar: [
-            ['font', ['bold', 'underline']],
-            ['para', ['ul', 'ol', 'paragraph']],
-        ],
-        callbacks: {
-            onChange: function(contents, $editable) {
-                if ($('#qualText').summernote('isEmpty')) {
-                    @this.set('qualPost',
-                        ''
-                    ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                } else {
-                    @this.set('qualPost', contents);
-                }
-            }
-        }
-    });
-    $('#remText').summernote({
-        placeholder: 'Write remarks here...',
-        tabsize: 2,
-        height: 120,
-        disableResizeEditor: true, // This is optional if you want to remove resize
-        disableDragAndDrop: true, // Set the height here (e.g., 300px)
-        toolbar: [
-            ['font', ['bold', 'underline']],
-            ['para', ['ul', 'ol', 'paragraph']],
-        ],
-        callbacks: {
-            onChange: function(contents, $editable) {
-                if ($('#remText').summernote('isEmpty')) {
-                    @this.set('remPost',
-                        ''
-                    ); //Summernote is never really empty it has '<br>' or '<p><br></p>' when it's "empty"
-                } else {
-                    @this.set('remPost', contents);
-                }
-            }
-        }
-    });
 
-    $('.note-statusbar').hide();
-</script>
+@push('scripts')
+    <script data-navigate-once>
+        document.addEventListener('livewire:load', () => {
+            initializeSummernote();
+        });
+
+        document.addEventListener('livewire:navigated', () => {
+            initializeSummernote();
+        });
+
+        function initializeSummernote() {
+            // Ensure the Summernote editor is initialized only once
+            if ($('#descText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+            if ($('#qualText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+            if ($('#remText').hasClass('note-editor')) {
+                return; // Exit if already initialized
+            }
+
+            // Initialize the description editor
+            $('#descText').summernote({
+                placeholder: 'Write training description here...',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#descText').summernote('code', @this.get('descPost') || '');
+                    },
+                    onChange: function(contents) {
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('descPost')) {
+                            @this.set('descPost', contents);
+                        }
+                    }
+                }
+            });
+
+            // Initialize the qualifications editor
+            $('#qualText').summernote({
+                placeholder: 'Write training qualifications here...',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#qualText').summernote('code', @this.get('qualPost') || '');
+                    },
+                    onChange: function(contents) {
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('qualPost')) {
+                            @this.set('qualPost', contents);
+                        }
+                    }
+                }
+            });
+
+            // Initialize the remarks editor
+            $('#remText').summernote({
+                placeholder: 'Write remarks here...',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['font', ['bold', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#remText').summernote('code', @this.get('remPost') || '');
+                    },
+                    onChange: function(contents) {
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('remPost')) {
+                            @this.set('remPost', contents);
+                        }
+                    }
+                }
+            });
+
+            // Hide the status bar for all editors
+            $('.note-statusbar').hide();
+        }
+    </script>
+@endpush

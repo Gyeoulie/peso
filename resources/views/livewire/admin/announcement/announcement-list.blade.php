@@ -1,9 +1,9 @@
-<div class="container mx-auto py-8">
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+<div wire:poll class="container mx-auto py-8">
+    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
-            <div class="flex flex-col sm:flex-row justify-between gap-4">
+        <div class="col-span-4 lg:col-span-12">
+            <div class="flex flex-col lg:flex-row justify-between gap-4">
                 <h1 class="text-2xl font-bold">Announcements</h1>
 
                 <a href="{{ route('admin-create-announcement') }}" wire:navigate>
@@ -17,15 +17,14 @@
 
 
 
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <div class="bg-white shadow rounded-lg p-6 overflow-visible">
 
 
                 <div class="relative p-1 overflow-visible">
 
 
-                    <div
-                        class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
@@ -39,19 +38,19 @@
                             </div>
 
                             {{-- SEARCH --}}
-                            <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-40 sm:w-96 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            <input wire:model.live='search' type="search" id="table-search-users"
+                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
-                        <div class="flex flex-row gap-2">
+                        <div class="flex flex-wrap gap-2">
                             {{-- BUTTONS HERE --}}
 
 
                             <x-dropdown align="left" width="24">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs lg:text-sm px-3 py-1.5">
                                         <div>
                                             {{ $filter }}
                                         </div>
@@ -93,7 +92,7 @@
                             <x-dropdown align="left" width="36">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs sm:text-sm px-3 py-1.5">
+                                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs lg:text-sm px-3 py-1.5">
                                         <div>
                                             @if (empty($sortDate))
                                                 Sort By Date
@@ -139,13 +138,13 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 ">
+                                    <th scope="col" class="px-6 py-3">
                                         Announcement Title
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Posted Date
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
                                         Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -166,62 +165,61 @@
                                                             stroke-width="2"
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
-
                                                 </div>
                                                 <p class="text-xl font-bold text-black text-center mt-2">
                                                     No Records Found!
                                                 </p>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @else
                                     @foreach ($announcement as $data)
-                                        <tr wire:key='prog-{{ $data->annoucement_id }}'
+                                        <tr wire:key='prog-{{ $data->announcement_id }}'
                                             class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full"
+                                                <img class="select-none w-10 h-10 rounded-full object-cover shadow-xl"
                                                     src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                                     alt="pubmat-{{ $data->announcement_id }}">
-
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">
                                                         {{ $data->announcement_Title }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                                    <div
+                                                        class="font-normal text-gray-500 text-sm uppercase hidden lg:block">
                                                         PESO {{ $data->peso->municipality->municipality_Name }}
                                                     </div>
+                                                    <!-- Add extra information for mobile screens -->
+                                                    <div
+                                                        class="font-normal text-gray-500 text-sm uppercase block lg:hidden">
+                                                        PESO {{ $data->peso->municipality->municipality_Name }} -
+                                                        {{ $data->announcement_Status }}
+                                                    </div>
                                                 </div>
-
                                             </th>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 hidden lg:table-cell">
                                                 <div class="text-base font-semibold">
                                                     {{ $data->created_at->format('F j Y') }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 font-semibold">
+                                            <td class="px-6 py-4 font-semibold hidden lg:table-cell">
                                                 {{ $data->announcement_Status }}
                                             </td>
-
                                             <td class="px-6 py-4">
-                                                <div class="flex flex-row  gap-5">
+                                                <div class="flex flex-row gap-5">
                                                     <div x-data="{ tooltip: 'Edit Announcement' }">
                                                         <button
                                                             wire:click.prevent="editAnnouncement({{ $data->announcement_id }})"
                                                             x-tooltip="tooltip" type="button"
                                                             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-
                                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                                 stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                                     d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                             </svg>
-
                                                         </button>
                                                     </div>
-
                                                     @if ($data->announcement_Status == 'ACTIVE')
                                                         <div x-data="{ tooltip: 'Archive Announcement' }">
                                                             <button
@@ -236,11 +234,9 @@
                                                                         stroke-linejoin="round"
                                                                         d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0-3-3m3 3 3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                                                                 </svg>
-
                                                             </button>
                                                         </div>
                                                     @endif
-
                                                     @if ($data->announcement_Status == 'ARCHIVED' && $filter != 'Deleted')
                                                         <div x-data="{ tooltip: 'Restore Announcement' }">
                                                             <button
@@ -255,7 +251,6 @@
                                                                         stroke-linejoin="round"
                                                                         d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                                                 </svg>
-
                                                             </button>
                                                         </div>
                                                         <div x-data="{ tooltip: 'Delete Announcement' }">
@@ -272,42 +267,17 @@
                                                                         d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                                                 </svg>
 
-
                                                             </button>
                                                         </div>
                                                     @endif
-
-                                                    @if ($filter == 'Deleted')
-                                                        <div x-data="{ tooltip: 'Restore Deleted Announcement' }">
-                                                            <button
-                                                                wire:click.prevent="confirmationModal(4,{{ $data->announcement_id }})"
-                                                                x-tooltip="tooltip" type="button"
-                                                                class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="w-5 h-5"
-                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
-                                                                </svg>
-
-                                                            </button>
-                                                        </div>
-                                                    @endif
-
-
                                                 </div>
                                             </td>
-
-
                                         </tr>
                                     @endforeach
                                 @endif
-
-
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 

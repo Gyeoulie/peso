@@ -1,15 +1,15 @@
-<div class="container mx-auto py-8">
+<div wire:poll.5s class="container py-8 mx-auto">
     {{-- GRID --}}
-    <div class="grid grid-cols-4 sm:grid-cols-12 gap-4 p-3 sm:p-0">
+    <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
         {{-- TITLE --}}
-        <div class="col-span-4 sm:col-span-12">
+        <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Maintenance / PESO Branches</h1>
         </div>
 
-        <div class="col-span-4 sm:col-span-6">
+        <div class="col-span-4 lg:col-span-6">
             {{-- @livewire('admin.requirements.requirements-table') --}}
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
 
                 {{-- TITLE --}}
                 {{-- <div class="flex items-center mb-2">
@@ -18,15 +18,14 @@
 
                 <div class="relative overflow-x-auto">
 
-                    <div
-                        class="flex p-1 items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
+                    <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
                         <label for="table-search" class="sr-only">Search</label>
 
                         <div class="relative">
 
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -34,12 +33,12 @@
                                 </svg>
                             </div>
                             {{-- SEARCH --}}
-                            <input wire:model.live.prevent='search' type="text" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            <input wire:model.live='search' type="search" id="table-search-users"
+                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
                         {{-- ADD BUTTON --}}
-                        <div class="mr-3">
+                        <div class="flex flex-wrap gap-2 mr-3">
 
 
                             {{-- <x-dropdown align="right" width="48">
@@ -51,7 +50,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -88,16 +87,16 @@
                     </div>
 
                     {{-- REQUIREMENT TABLE --}}
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                    <table class="w-full text-sm text-left text-gray-500 rtl:text-right ">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
-                                <th scope="col" class="px-6 py-3 w-1/4">
+                                <th scope="col" class="w-1/4 px-6 py-3">
                                     PESO ID
                                 </th>
-                                <th scope="col" class="px-6 py-3 w-1/4">
+                                <th scope="col" class="w-1/4 px-6 py-3">
                                     Municipality
                                 </th>
-                                <th scope="col" class="px-6 py-3 w-full">
+                                <th scope="col" class="w-full px-6 py-3">
                                     PESO Manager
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -125,7 +124,7 @@
                                                 </svg>
 
                                             </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2">
+                                            <p class="mt-2 text-xl font-bold text-center text-black">
                                                 No Records Found!
                                             </p>
                                         </div>
@@ -156,7 +155,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex items-center uppercase">
                                                 @foreach ($data->peso_accounts as $account)
-                                                    <div class="text-base font-semibold text-sm uppercase">
+                                                    <div class="text-sm font-semibold uppercase">
                                                         {{ $account->peso_accounts_Fname }}
                                                         {{ $account->peso_accounts_Mname ?? '' }}
                                                         {{ $account->peso_accounts_Lname }}
@@ -169,10 +168,10 @@
                                             {{ $data->peso_accounts_count }}
                                         </td>
                                         <td class="px-6 py-4 text-center">
-                                            <div class="text-base font-light uppercase text-sm">
+                                            <div class="text-base font-light uppercase">
                                                 {{ $data->created_at->format('h:i A') }}
                                             </div>
-                                            <div class="text-base font-medium uppercase text-sm">
+                                            <div class="text-base font-medium uppercase">
                                                 {{ $data->created_at->format('F d Y') }}
                                             </div>
                                         </td>
@@ -182,8 +181,8 @@
                                                 <div x-data="{ tooltip: 'PESO Account Overview' }">
                                                     <button wire:click='selectBranch({{ $data->peso_id }})'
                                                         x-tooltip="tooltip" type="button"
-                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                        class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 24 24" fill="currentColor">
                                                             <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                             <path fill-rule="evenodd"
@@ -214,8 +213,8 @@
 
 
 
-        <div class="col-span-4 sm:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6" x-data="{
+        <div class="col-span-4 lg:col-span-6">
+            <div class="p-6 bg-white rounded-lg shadow" x-data="{
                 selectedBranch: @entangle('selectedBranch')
             }">
 
@@ -234,13 +233,13 @@
                                 <x-slot name="trigger">
                                     <button
                                         class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
-                                        <div class="w-full ml-2 text-left font-extrabold font-mono text-xl ">
+                                        <div class="w-full ml-2 font-mono text-xl font-extrabold text-left ">
                                             {{ $mun && $prov ? $mun . ', ' . $prov : 'Select a Municipality' }}
 
 
                                         </div>
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -265,7 +264,7 @@
                                         @foreach ($municipalityData as $data)
                                             <x-dropdown-link
                                                 wire:click.prevent='selectMunicipality({{ $data->municipality_id }})'
-                                                class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->municipality_Name }},
+                                                class="block px-4 py-2 uppercase cursor-pointer hover:bg-gray-100">{{ $data->municipality_Name }},
                                                 {{ $data->province->province_Name }}</x-dropdown-link>
                                         @endforeach
                                     </div>
@@ -278,38 +277,38 @@
                         <div class="mt-4">
                             <h1 class="text-lg font-bold">PESO Manager </h1>
                             <hr class="h-px my-2 bg-gray-200 border-0">
-                            <div class="flex flex-col sm:flex-row w-full gap-2 ">
-                                <div class="flex flex-col mt-2 w-full">
+                            <div class="flex flex-col w-full gap-2 lg:flex-row ">
+                                <div class="flex flex-col w-full mt-2">
                                     <x-input-label for="fname" :value="__('First Name*')" />
-                                    <x-text-input wire:model="fname" class="block mt-1 w-full" type="text" />
+                                    <x-text-input wire:model="fname" class="block w-full mt-1" type="text" />
                                     <x-input-error :messages="$errors->get('fname')" class="mt-2" />
                                 </div>
-                                <div class="flex flex-col mt-2 w-full">
+                                <div class="flex flex-col w-full mt-2">
                                     <x-input-label for="mname" :value="__('Middle Name')" />
-                                    <x-text-input wire:model="mname" class="block mt-1 w-full" type="text" />
+                                    <x-text-input wire:model="mname" class="block w-full mt-1" type="text" />
                                     <x-input-error :messages="$errors->get('mname')" class="mt-2" />
                                 </div>
-                                <div class="flex flex-col mt-2 w-full">
+                                <div class="flex flex-col w-full mt-2">
                                     <x-input-label for="lname" :value="__('Last Name*')" />
-                                    <x-text-input wire:model="lname" class="block mt-1 w-full" type="text" />
+                                    <x-text-input wire:model="lname" class="block w-full mt-1" type="text" />
                                     <x-input-error :messages="$errors->get('lname')" class="mt-2" />
                                 </div>
 
                             </div>
-                            <div class="flex flex-col sm:flex-row w-full mt-6 gap-2 ">
+                            <div class="flex flex-col w-full gap-2 mt-6 lg:flex-row ">
 
-                                <div class="flex flex-col mt-2 w-full">
+                                <div class="flex flex-col w-full mt-2">
                                     <x-input-label for="email" :value="__('Email*')" />
-                                    <x-text-input wire:model="email" class="block mt-1 w-full" type="email" />
+                                    <x-text-input wire:model="email" class="block w-full mt-1" type="email" />
                                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                 </div>
-                                <div class="flex flex-col mt-2 w-full">
+                                <div class="flex flex-col w-full mt-2">
                                     <x-input-label for="phone" :value="__('Phone Number*')" />
-                                    <x-text-input wire:model="phone" class="block mt-1 w-full" type="tel" />
+                                    <x-text-input wire:model="phone" class="block w-full mt-1" type="tel" />
                                     <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                                 </div>
                             </div>
-                            <div class="flex flex-row w-full mt-6 justify-end">
+                            <div class="flex flex-row justify-end w-full mt-6">
                                 <x-green-button wire:click.prevent='validateAccount' type="submit"
                                     class="ml-auto mr-3">
                                     {{ __('Create') }}
@@ -327,7 +326,7 @@
                             <div class="flex flex-row items-center gap-4">
                                 <button wire:click.prevent='resetValues'>
                                     <div
-                                        class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                                        class="flex items-center p-1 transition-transform rounded-full hover:bg-gray-300">
                                         <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -347,21 +346,21 @@
                             }">
                                 <div class="flex flex-row w-full gap-5">
                                     <!-- Radio button for creating new manager -->
-                                    <div class="flex w-full items-center ps-4 border border-gray-200 rounded">
+                                    <div class="flex items-center w-full border border-gray-200 rounded ps-4">
                                         <input wire:model='option' id="bordered-radio-1" type="radio"
                                             value="1" name="bordered-radio" x-model="selectedOption"
                                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                         <label for="bordered-radio-1"
-                                            class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Create New
+                                            class="w-full py-4 text-sm font-medium text-gray-900 ms-2">Create New
                                             Manager</label>
                                     </div>
                                     <!-- Radio button for selecting existing manager -->
-                                    <div class="flex w-full items-center ps-4 border border-gray-200 rounded">
+                                    <div class="flex items-center w-full border border-gray-200 rounded ps-4">
                                         <input wire:model='option' id="bordered-radio-2" type="radio"
                                             value="2" name="bordered-radio" x-model="selectedOption"
                                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                         <label for="bordered-radio-2"
-                                            class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Select Existing
+                                            class="w-full py-4 text-sm font-medium text-gray-900 ms-2">Select Existing
                                             Manager</label>
                                     </div>
                                 </div>
@@ -373,36 +372,36 @@
                                 <div x-show="selectedOption === '1'" class="mt-4">
                                     <h1 class="text-lg font-bold">Create PESO Manager</h1>
                                     <hr class="h-px my-2 bg-gray-200 border-0">
-                                    <div class="flex flex-col sm:flex-row w-full gap-2">
-                                        <div class="flex flex-col mt-2 w-full">
+                                    <div class="flex flex-col w-full gap-2 lg:flex-row">
+                                        <div class="flex flex-col w-full mt-2">
                                             <x-input-label for="fname" :value="__('First Name*')" />
-                                            <x-text-input wire:model="fname" class="block mt-1 w-full"
+                                            <x-text-input wire:model="fname" class="block w-full mt-1"
                                                 type="text" />
                                             <x-input-error :messages="$errors->get('fname')" class="mt-2" />
                                         </div>
-                                        <div class="flex flex-col mt-2 w-full">
+                                        <div class="flex flex-col w-full mt-2">
                                             <x-input-label for="mname" :value="__('Middle Name')" />
-                                            <x-text-input wire:model="mname" class="block mt-1 w-full"
+                                            <x-text-input wire:model="mname" class="block w-full mt-1"
                                                 type="text" />
                                             <x-input-error :messages="$errors->get('mname')" class="mt-2" />
                                         </div>
-                                        <div class="flex flex-col mt-2 w-full">
+                                        <div class="flex flex-col w-full mt-2">
                                             <x-input-label for="lname" :value="__('Last Name*')" />
-                                            <x-text-input wire:model="lname" class="block mt-1 w-full"
+                                            <x-text-input wire:model="lname" class="block w-full mt-1"
                                                 type="text" />
                                             <x-input-error :messages="$errors->get('lname')" class="mt-2" />
                                         </div>
                                     </div>
-                                    <div class="flex flex-col sm:flex-row w-full mt-6 gap-2">
-                                        <div class="flex flex-col mt-2 w-full">
+                                    <div class="flex flex-col w-full gap-2 mt-6 lg:flex-row">
+                                        <div class="flex flex-col w-full mt-2">
                                             <x-input-label for="email" :value="__('Email*')" />
-                                            <x-text-input wire:model="email" class="block mt-1 w-full"
+                                            <x-text-input wire:model="email" class="block w-full mt-1"
                                                 type="email" />
                                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                         </div>
-                                        <div class="flex flex-col mt-2 w-full">
+                                        <div class="flex flex-col w-full mt-2">
                                             <x-input-label for="phone" :value="__('Phone Number*')" />
-                                            <x-text-input wire:model="phone" class="block mt-1 w-full"
+                                            <x-text-input wire:model="phone" class="block w-full mt-1"
                                                 type="tel" />
                                             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                                         </div>
@@ -418,11 +417,11 @@
                                         <x-slot name="trigger">
                                             <button
                                                 class="mt-1 inline-flex h-full items-center text-gray-800 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md px-1.5 py-2 w-full">
-                                                <div class="w-full ml-2 text-left font-extrabold font-mono text-xl">
+                                                <div class="w-full ml-2 font-mono text-xl font-extrabold text-left">
                                                     {{ $pesofname && $pesolname ? $pesofname . ' ' . $pesolname : 'Select a PESO Employee' }}
                                                 </div>
                                                 <div class="ms-1">
-                                                    <svg class="fill-current h-4 w-4"
+                                                    <svg class="w-4 h-4 fill-current"
                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
                                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -446,7 +445,7 @@
                                                 @foreach ($pesoBranchAdmins as $data)
                                                     <x-dropdown-link
                                                         wire:click.prevent='selectPESO({{ $data->peso_accounts_id }})'
-                                                        class="cursor-pointer block px-4 py-2 hover:bg-gray-100 uppercase">{{ $data->peso_accounts_Fname }}
+                                                        class="block px-4 py-2 uppercase cursor-pointer hover:bg-gray-100">{{ $data->peso_accounts_Fname }}
                                                         {{ $data->peso_accounts_Lname }}</x-dropdown-link>
                                                 @endforeach
                                             </div>
@@ -454,7 +453,7 @@
                                     </x-dropdown>
                                     <x-input-error :messages="$errors->get('pesoid')" class="mt-2" />
                                 </div>
-                                <div class="flex flex-row w-full mt-6 justify-end">
+                                <div class="flex flex-row justify-end w-full mt-6">
                                     <x-green-button wire:click.prevent='validateUpdate' type="submit"
                                         class="ml-auto mr-3">
                                         {{ __('Save') }}
@@ -475,13 +474,13 @@
 
 
     <x-modal name="confirm-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ agreeBox: @entangle('agreeBox') }">
+        <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ agreeBox: @entangle('agreeBox') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to create this account?') }}
             </h2>
             <hr>
-            <div class="flex flex-col my-4 items-center justify-center">
-                <div class="flex flex-col mt-4 w-full  px-4">
+            <div class="flex flex-col items-center justify-center my-4">
+                <div class="flex flex-col w-full px-4 mt-4">
                     <div class="flex flex-col gap-4">
                         <div class="flex flex-col ">
                             <span class="text-xl font-bold ">Municipality:</span>
@@ -512,16 +511,16 @@
 
                     </div>
 
-                    <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 mt-4" role="alert">
+                    <div class="p-4 mt-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50" role="alert">
                         <span class="font-medium">Password will be generated and sent through the user's email.</span>
                     </div>
 
-                    <div class="inline-flex justify-center items-center mt-4 w-full">
+                    <div class="inline-flex items-center justify-center w-full mt-4">
                         <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="agreeBox">
                             <input wire:model="agreeBox" type="checkbox" id="agreeBox"
-                                class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                                class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                             <span
-                                class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                                class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
                                     fill="currentColor" stroke="currentColor" stroke-width="1">
                                     <path fill-rule="evenodd"
@@ -536,7 +535,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button x-on:click="agreeBox = false; $dispatch('close-modal', 'confirm-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -545,7 +544,7 @@
                     wire:click.prevent="createPESO" class="ms-3" type="button">
                     {{ __('Create') }}
                     <div wire:loading.delay.long wire:target="createPESO" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -563,13 +562,13 @@
 
     <x-modal name="new-manager-modal" focusable>
         @if ($selectedBranch)
-            <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ newBox: @entangle('newBox') }">
+            <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ newBox: @entangle('newBox') }">
                 <h2 class="text-lg font-medium text-gray-900">
                     {{ __('Are you sure you want to create this account?') }}
                 </h2>
                 <hr>
-                <div class="flex flex-col my-4 items-center justify-center">
-                    <div class="flex flex-col mt-4 w-full  px-4">
+                <div class="flex flex-col items-center justify-center my-4">
+                    <div class="flex flex-col w-full px-4 mt-4">
                         <div class="flex flex-col gap-4">
                             <div class="flex flex-col ">
                                 <span class="text-xl font-bold ">Municipality:</span>
@@ -600,17 +599,17 @@
 
                         </div>
 
-                        <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 mt-4" role="alert">
+                        <div class="p-4 mt-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50" role="alert">
                             <span class="font-medium">Password will be generated and sent through the user's
                                 email.</span>
                         </div>
 
-                        <div class="inline-flex justify-center items-center mt-4 w-full">
+                        <div class="inline-flex items-center justify-center w-full mt-4">
                             <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="newBox">
                                 <input wire:model="newBox" type="checkbox" id="newBox"
-                                    class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                                    class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                                 <span
-                                    class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                                    class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
                                         fill="currentColor" stroke="currentColor" stroke-width="1">
                                         <path fill-rule="evenodd"
@@ -625,7 +624,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-6 flex justify-between">
+                <div class="flex justify-between mt-6">
                     <x-secondary-button x-on:click="newBox = false; $dispatch('close-modal', 'create-manger-modal')">
                         {{ __('Cancel') }}
                     </x-secondary-button>
@@ -634,7 +633,7 @@
                         wire:click.prevent="newManager" class="ms-3" type="button">
                         {{ __('Create') }}
                         <div wire:loading.delay.long wire:target="newManager" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -654,13 +653,13 @@
 
     <x-modal name="existing-manager-modal" focusable>
         @if ($pesoemail)
-            <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ existingBox: @entangle('existingBox') }">
+            <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ existingBox: @entangle('existingBox') }">
                 <h2 class="text-lg font-medium text-gray-900">
                     {{ __('Are you sure you want to choose this account?') }}
                 </h2>
                 <hr>
-                <div class="flex flex-col my-4 items-center justify-center">
-                    <div class="flex flex-col mt-4 w-full  px-4">
+                <div class="flex flex-col items-center justify-center my-4">
+                    <div class="flex flex-col w-full px-4 mt-4">
                         <div class="flex flex-col gap-4">
                             <div class="flex flex-col ">
                                 <span class="text-xl font-bold ">Municipality:</span>
@@ -688,12 +687,13 @@
 
                         </div>
 
-                        <div class="inline-flex justify-center items-center mt-4 w-full">
-                            <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="existingBox">
+                        <div class="inline-flex items-center justify-center w-full mt-4">
+                            <label class="relative flex items-center p-3 rounded-full cursor-pointer"
+                                for="existingBox">
                                 <input wire:model="existingBox" type="checkbox" id="existingBox"
-                                    class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                                    class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                                 <span
-                                    class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                                    class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
                                         fill="currentColor" stroke="currentColor" stroke-width="1">
                                         <path fill-rule="evenodd"
@@ -702,14 +702,16 @@
                                     </svg>
                                 </span>
                             </label>
-                            <label class="mt-px font-light text-gray-700 cursor-pointer select-none" for="existingBox">
+                            <label class="mt-px font-light text-gray-700 cursor-pointer select-none"
+                                for="existingBox">
                                 Confirm the transaction
                             </label>
                         </div>
                     </div>
                 </div>
-                <div class="mt-6 flex justify-between">
-                    <x-secondary-button x-on:click="existingBox = false; $dispatch('close-modal', 'create-manger-modal')">
+                <div class="flex justify-between mt-6">
+                    <x-secondary-button
+                        x-on:click="existingBox = false; $dispatch('close-modal', 'create-manger-modal')">
                         {{ __('Cancel') }}
                     </x-secondary-button>
 
@@ -717,7 +719,7 @@
                         wire:click.prevent="existingManager" class="ms-3" type="button">
                         {{ __('Create') }}
                         <div wire:loading.delay.long wire:target="existingManager" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

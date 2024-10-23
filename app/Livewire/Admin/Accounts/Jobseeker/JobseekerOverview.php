@@ -6,6 +6,7 @@ use App\Helpers\AuditFormatter;
 use App\Mail\AdminDeactivationNotification;
 use App\Mail\AdminResetPasswordNotification;
 use App\Models\Barangay;
+use App\Models\Disability;
 use App\Models\Education;
 use App\Models\Employee;
 use App\Models\Industry_preference;
@@ -14,9 +15,11 @@ use App\Models\Job_Posting;
 use App\Models\Job_Preference;
 use App\Models\Program_Reg;
 use App\Models\Work_Exp;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -38,7 +41,7 @@ class JobseekerOverview extends Component
     // SETTING FIELD
     public $fname, $lname, $mname, $suffix, $birthdate, $gender, $civilstatus, $religion;
 
-    public $agreeBox = false;
+    public $agreeBox = false, $deactivateBox = false;
     public $deactRemarks, $reactRemarks;
 
     public function updatedsearchApplications()
@@ -58,19 +61,29 @@ class JobseekerOverview extends Component
     public function mount()
     {
         $user = Auth::user();
-
         $jobseeker = Employee::findOrFail($this->id);
 
-        if ($jobseeker) {
-            if ($jobseeker->barangay->municipality_id != $user->peso_accounts->peso->municipality_id) {
-                return $this->redirectRoute('dashboard');
-            }
-        } else {
+        if (!$jobseeker) {
             return $this->redirectRoute('dashboard');
-
         }
 
+        // Get the current admin's municipality ID
+        $currentAdminMunicipalityId = $user->peso_accounts->peso->municipality_id;
+
+        // Check if the jobseeker's barangay is in the current admin's municipality
+        $isInAdminMunicipality = $jobseeker->barangay->municipality_id == $currentAdminMunicipalityId;
+
+        // Check if the jobseeker has any job applications in the current admin's municipality
+        $hasJobApplication = $jobseeker->job_applicants()->whereHas('job_posting', function ($query) use ($currentAdminMunicipalityId) {
+            $query->where('peso_id', $currentAdminMunicipalityId);
+        })->exists();
+
+        // Redirect to dashboard if neither condition is true
+        if (!$isInAdminMunicipality && !$hasJobApplication) {
+            return $this->redirectRoute('dashboard');
+        }
     }
+
     public function viewFile($id, $fileToView)
     {
 
@@ -127,6 +140,23 @@ class JobseekerOverview extends Component
                 $user->disabled_at = now();
                 $user->save();
 
+                $jobseeker->job_applicants()
+                    ->whereNotIn('applicant_Status', ['ACCEPTED', 'CANCELLED', 'REJECTED'])
+                    ->update([
+                        'applicant_Status' => 'CANCELLED',
+                        'peso_Status' => 'CANCELLED',
+                        'company_Remarks' => 'Account Deactivated',
+                        'peso_Remarks' => 'Account Deactivated',
+                    ]);
+
+                $jobseeker->program_reg()
+                    ->whereHas('programs', function ($query) {
+                        $query->where('program_Status', 'ACTIVE');
+                    })
+                    ->update([
+                        'program_reg_Status' => 'CANCELLED',
+                    ]);
+
                 // Send notification email for deactivation
                 Mail::to($user->email)->queue(new AdminDeactivationNotification('deactivation'));
 
@@ -139,8 +169,7 @@ class JobseekerOverview extends Component
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction if something goes wrong
 
-            // Log the error and show a toastr message
-            // \Log::error('Error updating user status: ' . $e->getMessage());
+            Log::error('Error updating reactivation/deactivation: ' . $e->getMessage());
             toastr()->error('There was an error processing the request. Please try again.');
         }
     }
@@ -148,49 +177,48 @@ class JobseekerOverview extends Component
     public function closeModal($modal)
     {
         $this->reset('deactRemarks', 'reactRemarks');
+        $this->deactivateBox = false;
         $this->dispatch('close-modal', $modal . '-modal');
     }
 
-    public function recommendedJobs($id)
+    public function recommendedJobs($jobseeker)
     {
-        $highestEducationLevel = Education::where('employee_id', $id)
+        $highestEducationLevel = Education::where('employee_id', $jobseeker->employee_id)
             ->max('edu_Level');
 
-        $userMunicipalityId = Barangay::where('barangay_id', $id)
+        $userMunicipalityId = Barangay::where('barangay_id', $jobseeker->barangay_id)
             ->value('municipality_id');
 
-        $userJobPreferences = Job_Preference::where('employee_id', $id)
+        $userJobPreferences = Job_Preference::where('employee_id', $jobseeker->employee_id)
             ->pluck('position_id');
 
-        $userIndustryPreference = Industry_Preference::where('employee_id', $id)
+        $userIndustryPreference = Industry_Preference::where('employee_id', $jobseeker->employee_id)
             ->pluck('industry_id');
+        $userHasDisability = Disability::where('employee_id', $jobseeker->employee_id)->exists() ? 1 : 2;
 
         return Job_Posting::with(['company', 'job_tags.job_positions', 'barangay.municipality', 'peso.municipality', 'job_industry'])
-            ->select([
-                'job_posting.*',
-                DB::raw('
-                    job_Slots - COALESCE((
-                        SELECT COUNT(*)
-                        FROM job_applicants
-                        WHERE job_applicants.job_id = job_posting.job_id
-                        AND job_applicants.applicant_Status = "COMPLETED"
-                    ), 0) AS available_slots
-                '),
-            ])
             ->where('job_Status', 'ACTIVE')
             ->whereHas('peso.municipality', function ($query) use ($userMunicipalityId) {
                 $query->where('municipality_id', $userMunicipalityId);
             })
             ->where('job_Edu', '<=', $highestEducationLevel)
             ->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
-                $query->where(function ($query) use ($userJobPreferences) {
-                    $query->whereHas('job_tags', function ($query) use ($userJobPreferences) {
-                        $query->whereIn('position_id', $userJobPreferences);
-                    });
+                $query->where(function ($query) use ($userJobPreferences, $userIndustryPreference) {
+                    $query->whereHas('job_tags', function ($q) use ($userJobPreferences) {
+                        $q->whereIn('position_id', $userJobPreferences);
+                    })
+                        ->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                            $q->whereIn('industry_id', $userIndustryPreference);
+                        });
                 })
                     ->orWhere(function ($query) use ($userIndustryPreference) {
-                        $query->whereHas('job_industry', function ($query) use ($userIndustryPreference) {
-                            $query->whereIn('industry_id', $userIndustryPreference);
+                        $query->whereHas('job_industry', function ($q) use ($userIndustryPreference) {
+                            $q->whereIn('industry_id', $userIndustryPreference);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($userJobPreferences) {
+                        $query->whereHas('job_tags', function ($q) use ($userJobPreferences) {
+                            $q->whereIn('position_id', $userJobPreferences);
                         });
                     });
             })
@@ -214,15 +242,21 @@ class JobseekerOverview extends Component
                 $query->whereIn('industry_id', $userIndustryPreference);
             }])
             ->orderByRaw('
-                CASE
-                    WHEN industry_count > 0 AND job_tags_count > 0 THEN 1
-                    WHEN industry_count > 0 AND job_tags_count = 0 THEN 2
-                    WHEN industry_count = 0 AND job_tags_count > 0 THEN 3
-                    ELSE 4
-                END
-            ')
+            CASE
+                -- Prioritize jobs accepting disabilities if the user has a disability
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count > 0 THEN 1
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count > 0 AND job_tags_count = 0 THEN 2
+                WHEN job_Disability = 1 AND ? = 1 AND industry_count = 0 AND job_tags_count > 0 THEN 3
+                -- Rank jobs normally if the user has no disability
+                WHEN industry_count > 0 AND job_tags_count > 0 THEN 4
+                WHEN industry_count > 0 AND job_tags_count = 0 THEN 5
+                WHEN industry_count = 0 AND job_tags_count > 0 THEN 6
+                ELSE 7
+            END
+        ', [$userHasDisability, $userHasDisability, $userHasDisability])
             ->orderByDesc('job_tags_count')
             ->distinct()
+            ->orderBy('created_at', 'DESC')
             ->paginate(10, ['*'], 'recommended');
     }
 
@@ -260,7 +294,7 @@ class JobseekerOverview extends Component
         $this->lname = $jobseeker->lname;
         $this->mname = $jobseeker->mname;
         $this->suffix = $jobseeker->suffix;
-        $this->birthdate = $jobseeker->birthdate;
+        $this->birthdate = Carbon::parse($jobseeker->birthdate)->format('Y-m-d');
         $this->gender = $jobseeker->gender;
         $this->civilstatus = $jobseeker->civilstatus;
         $this->religion = $jobseeker->religion;
@@ -393,10 +427,16 @@ class JobseekerOverview extends Component
     }
     public function render()
     {
+        $isResident = false;
 
+        $user = Auth::user();
         $jobseeker = Employee::findOrFail($this->id);
 
-        $joblist = $this->recommendedJobs($jobseeker->employee_id);
+        if ($jobseeker->barangay->municipality_id == $user->peso_accounts->peso->municipality_id) {
+            $isResident = true;
+        }
+
+        $joblist = $this->recommendedJobs($jobseeker);
 
         $application_history = $this->applicationHistory($jobseeker->employee_id);
 
@@ -448,6 +488,7 @@ class JobseekerOverview extends Component
                 'attainment',
                 'totalExperience',
                 'audits',
-                'formattedAudits'));
+                'formattedAudits',
+                'isResident'));
     }
 }

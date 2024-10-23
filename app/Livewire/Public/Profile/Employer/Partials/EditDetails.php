@@ -18,12 +18,14 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class EditDetails extends Component
 {
 
-    use WithFileUploads;
+    use WithFileUploads, WithPagination, WithoutUrlPagination;
 
     public $empID;
 
@@ -51,8 +53,21 @@ class EditDetails extends Component
     {
         return [
             // BASIC INFORMATION
-            'companyImage' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'companyImage' => 'nullable|image|mimes:jpeg,png,jpg',
         ];
+    }
+    public function messages()
+    {
+        return [
+            'companyImage.image' => 'The file must be an image.',
+            'companyImage.mimes' => 'The image must be of type: jpeg, png, jpg.',
+            // 'pimg.max' => 'The image size must not exceed 5 MB.',
+        ];
+    }
+
+    public function updatedSearch()
+    {
+        $this->resetPage();
     }
 
     public function selectBranch($id)
@@ -312,7 +327,7 @@ class EditDetails extends Component
             $this->mun = $barangay->municipality->municipality_Name;
             $this->prov = $barangay->municipality->province->province_Name;
         }
-        $this->skipRender();
+        // $this->skipRender();
     }
 
     #[On('industrySelect')]
@@ -324,6 +339,13 @@ class EditDetails extends Component
             ->where('company_id', $this->empID)->exists();
         if ($industryExist) {
             toastr()->warning('This job industry is already selected.');
+            return;
+        }
+
+        $industryLineCount = Company_Industry_Line::where('company_id', $this->empID)->count();
+
+        if ($industryLineCount >= 3) {
+            toastr()->warning('You can only select up to 3 industries.');
             return;
         }
 
@@ -379,84 +401,16 @@ class EditDetails extends Component
         }
     }
 
-    // public function saveReq()
-    // {
-
-    //     $rules = [
-    //         'req.*' => 'nullable|file|mimes:pdf|max:5120', // Max size 5MB, PDF only
-    //     ];
-
-    //     $messages = [
-    //         'req.*.mimes' => 'Uploaded file must be a PDF.',
-    //         'req.*.max' => 'Uploaded file must be under 5MB.',
-    //     ];
-
-    //     $this->validate($rules, $messages);
-
-    //     if ($this->req) {
-
-    //         // Begin a database transaction
-    //         DB::beginTransaction();
-
-    //         // Array to keep track of paths of successfully uploaded files
-    //         $uploadedPaths = [];
-
-    //         try {
-    //             foreach ($this->req as $requirementId => $file) {
-    //                 if ($file && $file->isValid()) { // Check if file is valid
-    //                     // Retrieve the old record
-    //                     $oldRequirement = Requirements_Passed::where('company_id', $this->empID)
-    //                         ->where('requirement_id', $requirementId)
-    //                         ->first();
-
-    //                     // Store the new file
-    //                     $path = $file->store('requirements', 'public');
-    //                     $uploadedPaths[$requirementId] = $path;
-
-    //                     // Update or create the requirement record
-    //                     Requirements_Passed::updateOrCreate(
-    //                         ['company_id' => $this->empID, 'requirement_id' => $requirementId],
-    //                         ['req_passed_Input' => $path]
-    //                     );
-
-    //                     // Delete old file if a new file is uploaded
-    //                     if ($oldRequirement && $oldRequirement->req_passed_Input) {
-    //                         Storage::disk('public')->delete($oldRequirement->req_passed_Input);
-    //                     }
-    //                 }
-    //             }
-
-    //             // Commit the transaction
-    //             DB::commit();
-
-    //             toastr()->success('Requirements have been updated!');
-    //         } catch (\Exception $e) {
-    //             // Rollback the transaction if something goes wrong
-    //             DB::rollBack();
-
-    //             // Delete all successfully uploaded files if an error occurs
-    //             foreach ($uploadedPaths as $path) {
-    //                 Storage::disk('public')->delete($path);
-    //             }
-
-    //             toastr()->error('An error occurred while updating requirements.');
-    //         }
-    //     } else {
-    //         toastr()->info('No changes detected.');
-
-    //     }
-    // }
-
     public function saveReq()
     {
         // Define validation rules and messages
         $rules = [
-            'req.*' => 'nullable|file|mimes:pdf|max:5120', // Max size 5MB, PDF only
+            'req.*' => 'nullable|file|mimes:pdf|max:15360', // Max size 5MB, PDF only
         ];
 
         $messages = [
             'req.*.mimes' => 'Uploaded file must be a PDF.',
-            'req.*.max' => 'Uploaded file must be under 5MB.',
+            'req.*.max' => 'Uploaded file must be under 15MB.',
         ];
 
         $this->validate($rules, $messages);
@@ -516,6 +470,7 @@ class EditDetails extends Component
 
     public function mountData()
     {
+        // dd('hello');
 
         $employerDetails = Company::with(['company_industry_line'])
             ->findOrFail($this->empID);
@@ -554,6 +509,7 @@ class EditDetails extends Component
     {
         $user = Auth::user();
         $this->empID = $user->company->company_id;
+        $this->mountData();
     }
 
     public function viewPartnership($id)
@@ -581,6 +537,7 @@ class EditDetails extends Component
             },
         ])
             ->where('requirement_Status', 1)
+            ->where('requirement_Type', $this->empType)
             ->get();
 
         $partnerships = Partnerships::where('company_id', $this->empID)
