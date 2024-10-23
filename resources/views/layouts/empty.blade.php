@@ -59,7 +59,6 @@
     {{-- FLOWBITE --}}
     <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    @stack('scripts')
     <script>
         @if (session('login_success'))
             localStorage.removeItem('user-logged-out');
@@ -82,6 +81,7 @@
         });
     </script>
 
+    @stack('scripts')
 
 </body>
 
