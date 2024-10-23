@@ -171,11 +171,15 @@
                     ['height', ['height']],
                 ],
                 callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#qualText').summernote('code', @this.get('qualPost') || '');
+                    },
                     onChange: function(contents) {
                         if ($('#descText').summernote('isEmpty')) {
-                            @this.set('contentPost', ''); // Handle "empty" state
+                            @this.set('qualPost', ''); // Handle "empty" state
                         } else {
-                            @this.set('contentPost', contents); // Update Livewire property
+                            @this.set('qualPost', contents); // Update Livewire property
                         }
                     }
                 }

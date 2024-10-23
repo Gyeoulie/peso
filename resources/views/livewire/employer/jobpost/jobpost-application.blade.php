@@ -317,10 +317,10 @@
                         <x-input-label for="descPost">Job Description*
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='descPost' id="descText"></textarea>
+                            <textarea id="descText"></textarea>
                         </div>
 
-                       
+
                         @if ($errors->has('descPost'))
                             <x-input-error :messages="$errors->get('descPost')" class="mt-2" />
                         @endif
@@ -332,9 +332,9 @@
                         <x-input-label for="qualPost">Job Qualification*
                         </x-input-label>
                         <div wire:ignore>
-                            <textarea wire:model='qualPost' id="qualText"></textarea>
+                            <textarea id="qualText"></textarea>
                         </div>
-                       
+
                         @if ($errors->has('qualPost'))
                             <x-input-error :messages="$errors->get('qualPost')" class="mt-2" />
                         @endif
@@ -343,12 +343,12 @@
                 </div>
 
                 <div class="flex flex-col w-full mt-4">
-                    <x-input-label for="remPost">Remarks
+                    <x-input-label for="remText">Remarks
                     </x-input-label>
                     <div wire:ignore>
-                        <textarea wire:model='remPost' id="remText"></textarea>
+                        <textarea id="remText"></textarea>
                     </div>
-                  
+
                     @if ($errors->has('remPost'))
                         <x-input-error :messages="$errors->get('remPost')" class="mt-2" />
                     @endif
@@ -425,7 +425,8 @@
                             <input wire:model='agreePost' id="link-checkbox" type="checkbox" value="1"
                                 class="justify-center px-3 py-3 text-sm font-medium rounded-lg lg:mr-2">
                             <label for="link-checkbox" class="text-sm font-medium text-gray-900 ms-2 ">I
-                                agree with the <p class="text-blue-600 hover:underline">terms and
+                                agree with the <p class="hover:cursor-pointer text-blue-600 hover:underline" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'terms-modal')">terms and
                                     conditions.</p></label>
                         </div>
 
@@ -464,7 +465,96 @@
     <livewire:modals.job-position-modal />
     <livewire:modals.industry-modal />
     <livewire:modals.barangay-modal />
+    <x-modal name="terms-modal" focusable>
+        <div class="w-full max-w-4xl px-6 py-6 items-center">
+            <div class="flex flex-row justify-between">
+                <h2 class="text-lg font-medium text-gray-900">
+                    {{ __('Terms and Conditions for Job Posting') }}
+                </h2>
+                <svg class="size-6 cursor-pointer hover:text-gray-500"
+                    x-on:click="$dispatch('close-modal', 'terms-modal')" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                        clip-rule="evenodd" />
+                </svg>
+            </div>
+            <hr>
+            <div class="flex flex-col my-4">
+                <div class="flex flex-col max-h-[600px] overflow-y-auto">
+                    <div class="p-4 bg-white text-gray-800 space-y-6">
+                        <h2 class="text-2xl font-bold">Terms and Conditions for Job Posting</h2>
+    
+                        <section>
+                            <h3 class="text-lg font-semibold">1. Acceptance of Terms</h3>
+                            <p>
+                                By submitting a job posting through our platform, you, the employer, acknowledge and agree to abide by these Terms and Conditions. You affirm that all information provided in your job posting is accurate and complete.
+                            </p>
+                        </section>
+    
+                        <section>
+                            <h3 class="text-lg font-semibold">2. Purpose of Posting</h3>
+                            <p>
+                                The information contained in your job posting is intended for the consideration of potential job seekers. This content is subject to approval by the Public Employment Services Office (PESO) and is for informational purposes only. It does not constitute any form of contractual agreement between you and the job seekers.
+                            </p>
+                        </section>
+    
+                        <section>
+                            <h3 class="text-lg font-semibold">3. Responsibility of the Employer</h3>
+                            <p>
+                                As the employer, you are solely responsible for reviewing and selecting suitable job seekers for your employment needs. PESO is not liable for any decisions made based on the job postings or the candidates’ qualifications.
+                            </p>
+                        </section>
+    
+                        <section>
+                            <h3 class="text-lg font-semibold">4. Compliance with Standards</h3>
+                            <p>
+                                You agree that your job posting must comply with all applicable laws and regulations. PESO reserves the right to modify, update, or withdraw your posting if it does not adhere to established rules or guidelines.
+                            </p>
+                        </section>
+    
+                        <section>
+                            <h3 class="text-lg font-semibold">5. Accuracy and Authenticity</h3>
+                            <p>
+                                While efforts are made to ensure the accuracy and authenticity of the information presented, PESO cannot guarantee the completeness, reliability, or timeliness of the content. It is your responsibility to ensure that all details are accurate and up-to-date.
+                            </p>
+                        </section>
+    
+                        <section>
+                            <h3 class="text-lg font-semibold">6. Amendments to Job Postings</h3>
+                            <p>
+                                Please be aware that your job posting may undergo revisions or amendments by PESO to ensure compliance with regulatory standards. Any changes will be communicated to you promptly.
+                            </p>
+                        </section>
+    
+                        <section>
+                            <h3 class="text-lg font-semibold">7. Disclaimer of Liability</h3>
+                            <p>
+                                PESO shall not be held liable for any losses, damages, or issues arising from the job posting or the engagement with job seekers based on the information provided. You acknowledge that your confirmation of this disclaimer affirms your responsibility as the employer.
+                            </p>
+                        </section>
+    
+                        <section>
+                            <h3 class="text-lg font-semibold">8. Contact Information</h3>
+                            <p>
+                                For any inquiries or clarifications regarding your job posting, please contact the Public Employment Services Office or your designated employer representative.
+                            </p>
+                        </section>
+    
+                        <section>
+                            <h3 class="text-lg font-semibold">9. Agreement</h3>
+                            <p>
+                                By checking the box provided and submitting your job posting, you acknowledge that you have read, understood, and agree to these Terms and Conditions.
+                            </p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </x-modal>
+    
 </div>
+
 
 
 @push('scripts')
@@ -491,7 +581,7 @@
 
             // Initialize the description editor
             $('#descText').summernote({
-                placeholder: 'Write job description here...',
+                placeholder: 'Write training description here...',
                 tabsize: 2,
                 height: 300,
                 disableResizeEditor: true, // Optional to remove resize
@@ -501,7 +591,12 @@
                     ['para', ['ul', 'ol', 'paragraph']],
                 ],
                 callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#descText').summernote('code', @this.get('descPost') || '');
+                    },
                     onChange: function(contents) {
+                        // Only update Livewire if the content has changed
                         if ($('#descText').summernote('isEmpty')) {
                             @this.set('descPost', ''); // Handle "empty" state
                         } else {
@@ -513,7 +608,7 @@
 
             // Initialize the qualifications editor
             $('#qualText').summernote({
-                placeholder: 'Write job qualifications here...',
+                placeholder: 'Write training qualifications here...',
                 tabsize: 2,
                 height: 300,
                 disableResizeEditor: true, // Optional to remove resize
@@ -523,8 +618,12 @@
                     ['para', ['ul', 'ol', 'paragraph']],
                 ],
                 callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#qualText').summernote('code', @this.get('qualPost') || '');
+                    },
                     onChange: function(contents) {
-                        if ($('#qualText').summernote('isEmpty')) {
+                        if ($('#descText').summernote('isEmpty')) {
                             @this.set('qualPost', ''); // Handle "empty" state
                         } else {
                             @this.set('qualPost', contents); // Update Livewire property
@@ -537,7 +636,7 @@
             $('#remText').summernote({
                 placeholder: 'Write remarks here...',
                 tabsize: 2,
-                height: 120,
+                height: 200,
                 disableResizeEditor: true, // Optional to remove resize
                 disableDragAndDrop: true, // Prevent drag-and-drop for images
                 toolbar: [
@@ -545,6 +644,10 @@
                     ['para', ['ul', 'ol', 'paragraph']],
                 ],
                 callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#remText').summernote('code', @this.get('remPost') || '');
+                    },
                     onChange: function(contents) {
                         if ($('#remText').summernote('isEmpty')) {
                             @this.set('remPost', ''); // Handle "empty" state

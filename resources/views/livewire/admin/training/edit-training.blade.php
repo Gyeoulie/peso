@@ -332,7 +332,7 @@
 </div>
 
 
-{{-- @scipt --}}
+
 @push('scripts')
     <script data-navigate-once>
         document.addEventListener('livewire:load', () => {
@@ -360,6 +360,8 @@
                 placeholder: 'Write training description here...',
                 tabsize: 2,
                 height: 120,
+                disableResizeEditor: true, // Optional to remove resize
+                disableDragAndDrop: true, // Prevent drag-and-drop for images
                 toolbar: [
                     ['font', ['bold', 'underline']],
                     ['para', ['ul', 'ol', 'paragraph']],
@@ -367,12 +369,13 @@
                 callbacks: {
                     onInit: function() {
                         // Set initial content from Livewire when the editor is initialized
-                        $('#descText').summernote('code', @this.get('descPost') || '');
+                        $('#qualText').summernote('code', @this.get('qualPost') || '');
                     },
                     onChange: function(contents) {
-                        // Only update Livewire if the content has changed
-                        if (contents !== @this.get('descPost')) {
-                            @this.set('descPost', contents);
+                        if ($('#descText').summernote('isEmpty')) {
+                            @this.set('qualPost', ''); // Handle "empty" state
+                        } else {
+                            @this.set('qualPost', contents); // Update Livewire property
                         }
                     }
                 }
@@ -383,6 +386,8 @@
                 placeholder: 'Write training qualifications here...',
                 tabsize: 2,
                 height: 120,
+                disableResizeEditor: true, // Optional to remove resize
+                disableDragAndDrop: true, // Prevent drag-and-drop for images
                 toolbar: [
                     ['font', ['bold', 'underline']],
                     ['para', ['ul', 'ol', 'paragraph']],
@@ -394,8 +399,10 @@
                     },
                     onChange: function(contents) {
                         // Only update Livewire if the content has changed
-                        if (contents !== @this.get('qualPost')) {
-                            @this.set('qualPost', contents);
+                        if ($('#descText').summernote('isEmpty')) {
+                            @this.set('descPost', ''); // Handle "empty" state
+                        } else {
+                            @this.set('descPost', contents); // Update Livewire property
                         }
                     }
                 }
@@ -406,6 +413,8 @@
                 placeholder: 'Write remarks here...',
                 tabsize: 2,
                 height: 120,
+                disableResizeEditor: true, // Optional to remove resize
+                disableDragAndDrop: true, // Prevent drag-and-drop for images
                 toolbar: [
                     ['font', ['bold', 'underline']],
                     ['para', ['ul', 'ol', 'paragraph']],
@@ -417,8 +426,10 @@
                     },
                     onChange: function(contents) {
                         // Only update Livewire if the content has changed
-                        if (contents !== @this.get('remPost')) {
-                            @this.set('remPost', contents);
+                        if ($('#remText').summernote('isEmpty')) {
+                            @this.set('remPost', ''); // Handle "empty" state
+                        } else {
+                            @this.set('remPost', contents); // Update Livewire property
                         }
                     }
                 }
