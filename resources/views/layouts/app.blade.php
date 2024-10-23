@@ -28,7 +28,6 @@
     {{-- SUMMERNOTE --}}
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 
-
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -82,7 +81,6 @@
         </div>
     </footer>
 
-    {{-- SCRIPTS --}}
     @livewireChartsScripts
     @livewireScripts
 
@@ -94,15 +92,18 @@
     </script>
     </script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+    {{-- QR CODE --}}
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
     {{-- FLOWBITE --}}
     <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    @stack('scripts')
-
     <script>
         @if (session('login_success'))
             localStorage.removeItem('user-logged-out');
         @endif
+
 
         function handleLogout() {
             if (localStorage.getItem('user-logged-out') === 'true') {
@@ -119,6 +120,7 @@
         });
     </script>
 
+    @stack('scripts')
 
 </body>
 

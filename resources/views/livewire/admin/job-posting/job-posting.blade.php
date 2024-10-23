@@ -449,10 +449,10 @@
                     <table class="w-full text-sm text-center text-gray-500 rtl:text-right">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                             <tr>
-                                <th scope="col" class="w-1/4 px-4 py-2 "> <!-- Hidden on small screens -->
+                                <th scope="col" class="w-1/4 px-6 py-3"> <!-- Hidden on small screens -->
                                 </th>
                                 <th scope="col" class="px-4 py-2 uppercase">Job Industry</th>
-                                <th scope="col" class="hidden px-4 py-2 uppercase sm:table-cell">Code</th>
+                                <th scope="col" class="hidden px-6 py-3 uppercase sm:table-cell">Code</th>
                                 <!-- Hidden on small screens -->
                             </tr>
                         </thead>
@@ -499,7 +499,7 @@
                                             </span>
                                             </label>
                                         </td>
-                                        <td class="px-4 py-2">
+                                        <td class="px-6 py-4">
                                             <div class="text-base font-semibold uppercase">{{ $data->industry_Title }}
                                             </div>
                                             <!-- Additional information for mobile view -->

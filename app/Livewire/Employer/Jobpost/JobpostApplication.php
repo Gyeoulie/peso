@@ -62,8 +62,8 @@ class JobpostApplication extends Component
             $rules = [
                 'jobTitlePost' => ['required', 'string'],
                 'jobIndustryPost' => ['required'],
-                'minWagePost' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1'],
-                'maxWagePost' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1', 'gte:minWagePost', function ($attribute, $value, $fail) {
+                'minWagePost' => ['required', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1'],
+                'maxWagePost' => ['required', 'regex:/^\d+(\.\d{1,2})?$/', 'min:1', 'gte:minWagePost', function ($attribute, $value, $fail) {
                     if ($value && !$this->minWagePost) {
                         $fail('Minimum wage is required when maximum wage is provided.');
                     }
@@ -85,10 +85,10 @@ class JobpostApplication extends Component
             $messages = [
                 'jobTitlePost.required' => 'The job title is required.',
                 'jobIndustryPost.required' => 'Please select at least one industry.',
-                // 'minWagePost.required' => 'Minimum wage is required.',
+                'minWagePost.required' => 'Minimum wage is required.',
                 'minWagePost.regex' => 'Minimum wage must be a valid number with up to two decimal places.',
                 'minWagePost.min' => 'Minimum wage must be at least 1.',
-                // 'maxWagePost.required' => 'Maximum wage is required.',
+                'maxWagePost.required' => 'Maximum wage is required.',
                 'maxWagePost.regex' => 'Maximum wage must be a valid number with up to two decimal places.',
                 'maxWagePost.min' => 'Maximum wage must be at least 1.',
                 'maxWagePost.gte' => 'Maximum wage must be greater than or equal to minimum wage.',
