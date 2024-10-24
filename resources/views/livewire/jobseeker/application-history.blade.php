@@ -219,7 +219,7 @@
 
                                             @if ($data->applicant_Notif == 1)
                                                 <span
-                                                    class="absolute p-0.5 leading-none w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full -translate-y-1/2 translate-x-1/2 left-auto top-0 right-0"></span>
+                                                    class="absolute p-0.5 leading-none w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full -translate-y-1/2 translate-x-1/2 left-auto top-[5px] right-1 lg:top-0 lg:right-0"></span>
                                             @endif
                                         </div>
 

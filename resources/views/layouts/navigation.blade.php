@@ -208,6 +208,7 @@
                 @if (auth()->user()->usertype >= 4 && auth()->user()->usertype < 5)
                     <x-responsive-nav-link wire:navigate :href="route('jobseeker.application')" :active="request()->routeIs('jobseeker.application')">
                         {{ __('My Applications') }}
+                        <livewire:components.applications-notif-mobile />
 
                     </x-responsive-nav-link>
                 @endif
