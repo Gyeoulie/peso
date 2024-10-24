@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use Mews\Purifier\Casts\CleanHtml;
 
 class Programs extends Model implements Auditable
 {
@@ -43,6 +44,9 @@ class Programs extends Model implements Auditable
     ];
 
     protected $casts = [
+        'program_Description' => CleanHtml::class,
+        'program_Qualification' => CleanHtml::class,
+        'program_Remarks' => CleanHtml::class,
         'program_Datetime' => 'datetime',
         'program_Deadline' => 'datetime',
         'created_at' => 'datetime',

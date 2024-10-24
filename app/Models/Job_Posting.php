@@ -6,7 +6,10 @@ use App\Redactors\LimiterRedactor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Mews\Purifier\Casts\CleanHtml;
 use OwenIt\Auditing\Contracts\Auditable;
+use App\Casts\TrimString;
+
 
 class Job_Posting extends Model implements Auditable
 {
@@ -47,6 +50,11 @@ class Job_Posting extends Model implements Auditable
     ];
 
     protected $casts = [
+        'job_Title' => TrimString::class,
+        'job_Address' => TrimString::class,
+        'job_Description' => CleanHtml::class,
+        'job_Qualifications' => CleanHtml::class,
+        'job_Remarks' => CleanHtml::class,
         'job_Duration' => 'date',
         'responded_at' => 'datetime',
         'created_at' => 'datetime',

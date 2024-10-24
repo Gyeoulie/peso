@@ -597,10 +597,14 @@
                     },
                     onChange: function(contents) {
                         // Only update Livewire if the content has changed
-                        if ($('#descText').summernote('isEmpty')) {
-                            @this.set('descPost', ''); // Handle "empty" state
-                        } else {
-                            @this.set('descPost', contents); // Update Livewire property
+                        if (contents !== @this.get('descPost')) {
+                            if (contents.replace(/\s/g, '').toLowerCase() === '<br>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br/>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br />') {
+                                @this.set('descPost', '');
+                            } else {
+                                @this.set('descPost', contents);
+                            }
                         }
                     }
                 }
@@ -623,10 +627,15 @@
                         $('#qualText').summernote('code', @this.get('qualPost') || '');
                     },
                     onChange: function(contents) {
-                        if ($('#descText').summernote('isEmpty')) {
-                            @this.set('qualPost', ''); // Handle "empty" state
-                        } else {
-                            @this.set('qualPost', contents); // Update Livewire property
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('qualPost')) {
+                            if (contents.replace(/\s/g, '').toLowerCase() === '<br>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br/>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br />') {
+                                @this.set('qualPost', '');
+                            } else {
+                                @this.set('qualPost', contents);
+                            }
                         }
                     }
                 }
@@ -649,10 +658,15 @@
                         $('#remText').summernote('code', @this.get('remPost') || '');
                     },
                     onChange: function(contents) {
-                        if ($('#remText').summernote('isEmpty')) {
-                            @this.set('remPost', ''); // Handle "empty" state
-                        } else {
-                            @this.set('remPost', contents); // Update Livewire property
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('remPost')) {
+                            if (contents.replace(/\s/g, '').toLowerCase() === '<br>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br/>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br />') {
+                                @this.set('remPost', '');
+                            } else {
+                                @this.set('remPost', contents);
+                            }
                         }
                     }
                 }

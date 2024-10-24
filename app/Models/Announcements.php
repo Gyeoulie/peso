@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use Mews\Purifier\Casts\CleanHtml;
 
 class Announcements extends Model implements Auditable
 {
@@ -39,6 +40,7 @@ class Announcements extends Model implements Auditable
      * @var array
      */
     protected $casts = [
+        'announcement_Content' => CleanHtml::class,
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',

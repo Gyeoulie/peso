@@ -68,8 +68,8 @@
                         @endif
                     </div>
                 @endif
-
-                @if ($isResident === false)
+                    
+                {{-- @if ($isResident === false)
                     <div class="bg-yellow-100 shadow rounded-lg p-6 mt-2">
                         <div class="flex flex-row items-center justify-between">
                             <p class="text-yellow-700 font-bold  text-xl">This applicant is from a different
@@ -83,7 +83,7 @@
                             </svg>
                         </div>
                     </div>
-                @endif
+                @endif --}}
 
             </div>
 
