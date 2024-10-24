@@ -16,6 +16,6 @@ class ApplicationsNotifMobile extends Component
         $ApplicationNotif = Job_Applicants::where('employee_id', $user->employee->employee_id)
             ->where('applicant_Notif', 1)->count();
 
-        return view('livewire.components.applications-notif', compact('ApplicationNotif'));
+        return view('livewire.components.applications-notif-mobile', compact('ApplicationNotif'));
     }
 }
