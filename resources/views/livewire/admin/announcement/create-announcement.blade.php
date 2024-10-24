@@ -173,13 +173,18 @@
                 callbacks: {
                     onInit: function() {
                         // Set initial content from Livewire when the editor is initialized
-                        $('#qualText').summernote('code', @this.get('qualPost') || '');
+                        $('#descText').summernote('code', @this.get('contentPost') || '');
                     },
                     onChange: function(contents) {
-                        if ($('#descText').summernote('isEmpty')) {
-                            @this.set('qualPost', ''); // Handle "empty" state
-                        } else {
-                            @this.set('qualPost', contents); // Update Livewire property
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('contentPost')) {
+                            if (contents.replace(/\s/g, '').toLowerCase() === '<br>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br/>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br />') {
+                                @this.set('contentPost', '');
+                            } else {
+                                @this.set('contentPost', contents);
+                            }
                         }
                     }
                 }

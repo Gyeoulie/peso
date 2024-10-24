@@ -178,11 +178,20 @@
                     ['height', ['height']],
                 ],
                 callbacks: {
+                    onInit: function() {
+                        // Set initial content from Livewire when the editor is initialized
+                        $('#descText').summernote('code', @this.get('contentPost') || '');
+                    },
                     onChange: function(contents) {
-                        if ($('#descText').summernote('isEmpty')) {
-                            @this.set('contentPost', ''); // Handle "empty" state
-                        } else {
-                            @this.set('contentPost', contents); // Update Livewire property
+                        // Only update Livewire if the content has changed
+                        if (contents !== @this.get('contentPost')) {
+                            if (contents.replace(/\s/g, '').toLowerCase() === '<br>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br/>' ||
+                                contents.replace(/\s/g, '').toLowerCase() === '<br />') {
+                                @this.set('contentPost', '');
+                            } else {
+                                @this.set('contentPost', contents);
+                            }
                         }
                     }
                 }
@@ -190,3 +199,4 @@
         }
     </script>
 @endpush
+
