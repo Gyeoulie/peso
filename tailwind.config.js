@@ -30,11 +30,15 @@ export default {
         },
     },
 
-    plugins: [forms, 
+    plugins: [
+        forms,
         require("preline/plugin"),
         require("flyonui"),
         require("flyonui/plugin"),
-        require('flowbite/plugin')
+        require("flowbite/plugin"),
     ],
-    darkMode: 'false',
+    darkMode: "false",
+    flyonui: {
+        themes: ["light"],
+    },
 };

@@ -20,6 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
 
+    <link href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.6/keen-slider.min.css" rel="stylesheet" />
 
 
     <!-- Styles -->
@@ -882,7 +883,7 @@
 <body class="antialiased">
     @include('layouts.navigation-home')
 
- 
+
 
     <div
         class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
@@ -999,6 +1000,7 @@
         </div>
     </footer>
 
+    @vite(['resources/js/app.js'])
 
 </body>
 
