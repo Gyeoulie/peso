@@ -49,7 +49,7 @@ class JobPostingTrends extends Component
         $this->selectedMonths = $this->mountSelectedMonths;
         $this->selectedYear = $this->mountSelectedYear;
 
-        $this->dispatch('close-modal', 'filter-employment-trends-modal');
+        $this->dispatch('close-modal', 'filter-jobposting-trends-modal');
     }
     public function getJobPostingsTrend($municipalityId = null, $provinceId = null)
     {

@@ -45,7 +45,8 @@
                                     <button
                                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
                                         <div>
-                                            {{ $filter == 8 ? 'PESO Consultant' : ($filter == 9 ? 'PESO Officer' : 'All') }}
+                                            {{ $filter == 8 ? 'PESO Consultant' : ($filter == 9 ? 'PESO Officer' : ($filter == 10 ? 'PESO Manager' : 'All')) }}
+
                                         </div>
 
                                         <div class="ms-1">
@@ -69,11 +70,13 @@
                                         class="block px-4 py-2 hover:bg-gray-100">All</x-dropdown-link>
                                     <hr>
                                     <!-- Authentication -->
-                                    <x-dropdown-link href="#" wire:click="updateFilter('8')"
-                                        class="block px-4 py-2 hover:bg-gray-100">PESO Consultant</x-dropdown-link>
+                                    {{-- <x-dropdown-link href="#" wire:click="updateFilter('8')"
+                                        class="block px-4 py-2 hover:bg-gray-100">PESO Consultant</x-dropdown-link> --}}
 
                                     <x-dropdown-link href="#" wire:click="updateFilter('9')"
                                         class="block px-4 py-2 hover:bg-gray-100">PESO Officer</x-dropdown-link>
+                                    <x-dropdown-link href="#" wire:click="updateFilter('10')"
+                                        class="block px-4 py-2 hover:bg-gray-100">PESO Manager</x-dropdown-link>
 
                                     </form>
                                 </x-slot>
@@ -96,9 +99,9 @@
                                     <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Role
                                     </th>
-                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
+                                    {{-- <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Status
-                                    </th>
+                                    </th> --}}
                                     <th scope="col" class="hidden px-6 py-3 text-center lg:table-cell">
                                         Created
                                     </th>
@@ -147,8 +150,8 @@
                                                         <!-- Extra Info for Mobile -->
                                                         <span class="lg:hidden">
                                                             {{ $data->usertype == 8 ? 'PESO Consultant' : ($data->usertype == 9 ? 'PESO Officer' : 'PESO Manager') }}
-                                                            | Status: <!-- Replace with actual status if available -->
-                                                            {{ $data->status ?? 'N/A' }}
+                                                            {{-- | Status: <!-- Replace with actual status if available -->
+                                                            {{ $data->status ?? 'N/A' }} --}}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -167,14 +170,14 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                            {{-- <td class="hidden px-6 py-4 lg:table-cell">
                                                 Status
-                                            </td>
+                                            </td> --}}
                                             <td class="hidden px-6 py-4 text-center lg:table-cell">
-                                                <div class="text-sm text-base font-light uppercase">
+                                                <div class="text-sm font-light uppercase">
                                                     {{ $data->updated_at->format('h:i A') }}
                                                 </div>
-                                                <div class="text-sm text-base font-medium uppercase">
+                                                <div class="text-sm font-medium uppercase">
                                                     {{ $data->updated_at->format('F d Y') }}
                                                 </div>
                                             </td>
@@ -453,6 +456,8 @@
                                     PESO Consultant
                                 @elseif ($role == 9)
                                     PESO Officer
+                                @elseif ($role == 10)
+                                    PESO Manager
                                 @endif
                             </span>
                         </div>
