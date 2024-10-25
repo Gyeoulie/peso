@@ -6,6 +6,9 @@ use App\Models\Programs;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Spatie\SimpleExcel\SimpleExcelWriter;
+use Illuminate\Support\Facades\Response;
+
 
 class PopularTrainings extends Component
 {
@@ -80,6 +83,48 @@ class PopularTrainings extends Component
             ->orderBy('registration_count', 'desc')
             ->limit(5)
             ->get();
+    }
+
+    public function exportData()
+    {
+        $topPrograms = null;
+
+        if ($this->municipalityID) {
+            $topPrograms = $this->getTopPrograms($this->municipalityID);
+
+        } elseif ($this->provinceID) {
+            $topPrograms = $this->getTopPrograms(null, $this->provinceID);
+
+        }
+
+        if (!$topPrograms->isEmpty()) {
+
+            $fileName = 'Top_Programs-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+
+            $writer = SimpleExcelWriter::streamDownload($fileName);
+
+            foreach ($topPrograms as $data) {
+                $writer->addRow([
+                    'Program Title' => $data->program_Title,
+                    'Host' => $data->program_Host,
+                    'Type' => $data->program_Type,
+                    'Date Posted' => $data->created_at->format('F j, Y'),
+                    'Deadline' => $data->program_Deadline->format('F j, Y'),
+                    'Event Time' => $data->program_Datetime ? $data->program_Datetime->format('F j, Y g:i A') : null,
+                    'Status' => $data->program_Status,
+                    'Registrants' => $data->registration_count,
+                    'Total Slots' => $data->program_Slots,
+                ]);
+            }
+
+            toastr()->success('Data Exported');
+            return Response::streamDownload(function () use ($writer) {
+                $writer->close();
+            }, $fileName, ['Content-Type' => 'text/csv']);
+        }
+
+        return toastr()->warning('No data in the table to be exported.');
+
     }
 
     public function render()

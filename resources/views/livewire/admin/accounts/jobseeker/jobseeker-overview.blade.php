@@ -17,22 +17,25 @@
                 </div>
 
                 {{-- DEACTIVATE BUTTON --}}
-                @if ($isResident == true)
-                    <div class="flex flex-col ml-auto mr-0">
-                        @if ($jobseeker->user->userstatus == 1)
-                            <button type="button" x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'deactivate-modal')"
-                                class="bg-red-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-red-600 hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
-                                Deactivate Account
-                            </button>
-                        @elseif($jobseeker->user->userstatus == 2)
-                            <button type="button" x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'reactivate-modal')"
-                                class="bg-green-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-green-600 hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
-                                Reactivate Account
-                            </button>
-                        @endif
-                    </div>
+                @if (Auth::check() && Auth::user()->usertype == 10)
+
+                    @if ($isResident == true)
+                        <div class="flex flex-col ml-auto mr-0">
+                            @if ($jobseeker->user->userstatus == 1)
+                                <button type="button" x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'deactivate-modal')"
+                                    class="bg-red-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-red-600 hover:scale-105 focus:ring-4 focus:ring-red-300 focus:outline-none">
+                                    Deactivate Account
+                                </button>
+                            @elseif($jobseeker->user->userstatus == 2)
+                                <button type="button" x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'reactivate-modal')"
+                                    class="bg-green-500 text-white font-semibold rounded-lg text-md px-4 py-2 transition duration-300 ease-in-out transform hover:bg-green-600 hover:scale-105 focus:ring-4 focus:ring-green-300 focus:outline-none">
+                                    Reactivate Account
+                                </button>
+                            @endif
+                        </div>
+                    @endif
                 @endif
 
             </div>
@@ -625,8 +628,8 @@
                                                                     <span class="text-yellow-800">REGISTERED</span>
                                                                 @elseif ($data->program_reg_Status == 'COMPLETED')
                                                                     <span class="text-green-800">COMPLETED</span>
-                                                                @elseif ($data->program_reg_Status == 'REJECTED')
-                                                                    <span class="text-red-800">REJECTED</span>
+                                                                @elseif ($data->program_reg_Status == 'CANCELLED')
+                                                                    <span class="text-red-800">CANCELLED</span>
                                                                 @endif
                                                             </div>
                                                         </div>

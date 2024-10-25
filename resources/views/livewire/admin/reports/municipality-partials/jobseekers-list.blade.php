@@ -18,11 +18,11 @@
     </div>
     <div x-show="openTab === 1" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+        <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative">
-                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                <div class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                     <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -32,11 +32,11 @@
 
                 {{-- SEARCH --}}
                 <input wire:model.live='searchJobseekers' type="search"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search">
             </div>
 
-            <div class="flex flex-wrap mr-3 gap-2">
+            <div class="flex flex-wrap gap-2 mr-3">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData('jobseekers')"
                         class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
@@ -51,26 +51,26 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-jobseekers-modal')"
-                    class="py-1.5 px-5 text-xs lg:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                    class=" hover:bg-gray-100 hover:text-blue-700 focus:z-10 bg-white inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">Filter</button>
             </div>
         </div>
         <div class="overflow-x-auto">
 
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+            <table class="w-full mt-2 text-sm text-left text-gray-500 rtl:text-right">
                 <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                     <tr>
-                        <th scope="col" class="px-6 py-3 w-full">
-                            <span class="text-black font-bold text-md">Applicant Name</span>
+                        <th scope="col" class="w-full px-6 py-3">
+                            <span class="font-bold text-black text-md">Applicant Name</span>
                         </th>
-                        <th scope="col" class="hidden lg:table-cell px-6 py-3">
-                            <span class="text-black font-bold text-md">Employment Status</span>
+                        <th scope="col" class="hidden px-6 py-3 lg:table-cell">
+                            <span class="font-bold text-black text-md">Employment Status</span>
                         </th>
-                        <th scope="col" class="hidden lg:table-cell px-6 py-3 text-center">
-                            <span class="text-black font-bold text-md">Active Applications</span>
+                        <th scope="col" class="hidden px-6 py-3 text-center lg:table-cell">
+                            <span class="font-bold text-black text-md">Active Applications</span>
                         </th>
-                        <th scope="col" class="hidden lg:table-cell px-6 py-3 text-center">
-                            <span class="text-black font-bold text-md">Registered Trainings</span>
+                        <th scope="col" class="hidden px-6 py-3 text-center lg:table-cell">
+                            <span class="font-bold text-black text-md">Registered Trainings</span>
                         </th>
 
                         <th scope="col" class="px-6 py-3"></th>
@@ -89,7 +89,7 @@
                                                 d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                         </svg>
                                     </div>
-                                    <p class="text-xl font-bold text-black text-center mt-2">No Records Found!</p>
+                                    <p class="mt-2 text-xl font-bold text-center text-black">No Records Found!</p>
                                 </div>
                             </td>
                         </tr>
@@ -97,7 +97,7 @@
                         @foreach ($jobseekers as $data)
                             <tr wire:key='applicants-{{ $data->job_id }}' class="bg-white border-b hover:bg-gray-50">
                                 <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                    <img class="w-10 h-10 rounded-full object-cover"
+                                    <img class="object-cover w-10 h-10 rounded-full"
                                         src="{{ asset('storage/' . $data->pimg) }}" alt="img">
                                     <div class="ps-3 text-wrap">
                                         <div class="text-base font-semibold uppercase">
@@ -107,47 +107,47 @@
 
                                         <div class="text-sm text-gray-500 lg:hidden">
                                             <span>Active Apps: <span
-                                                    class="text-black font-bold">{{ $data->job_applications }}</span></span>
+                                                    class="font-bold text-black">{{ $data->job_applications }}</span></span>
                                         </div>
                                         <div class="text-sm text-gray-500 lg:hidden">
                                             <span>Trainings: <span
-                                                    class="text-black font-bold">{{ $data->program_reg_count }}</span></span>
+                                                    class="font-bold text-black">{{ $data->program_reg_count }}</span></span>
                                         </div>
                                         <div class="text-sm text-gray-500 lg:hidden">
                                             <span>
                                                 @if ($data->empstatus == '2')
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
+                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
                                                 @elseif ($data->empstatus == '1')
                                                     <span
-                                                        class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20">EMPLOYED</span>
+                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">EMPLOYED</span>
                                                 @endif
                                             </span>
                                         </div>
                                     </div>
                                 </th>
 
-                                <td class="hidden lg:table-cell px-6 py-4">
+                                <td class="hidden px-6 py-4 lg:table-cell">
                                     @if ($data->empstatus == '2')
                                         <span
-                                            class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
+                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">UNEMPLOYED</span>
                                     @elseif ($data->empstatus == '1')
                                         <span
-                                            class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">EMPLOYED</span>
+                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">EMPLOYED</span>
                                     @endif
                                 </td>
 
-                                <td class="hidden lg:table-cell px-6 py-4 text-center">
-                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                <td class="hidden px-6 py-4 text-center lg:table-cell">
+                                    <div class="text-sm font-normal text-gray-500 uppercase">
                                         <span
-                                            class="text-blue-500 font-bold text-md">{{ $data->job_applications }}</span>
+                                            class="font-bold text-blue-500 text-md">{{ $data->job_applications }}</span>
                                     </div>
                                 </td>
 
-                                <td class="hidden lg:table-cell px-6 py-4 text-center">
-                                    <div class="font-normal text-gray-500 text-sm uppercase">
+                                <td class="hidden px-6 py-4 text-center lg:table-cell">
+                                    <div class="text-sm font-normal text-gray-500 uppercase">
                                         <span
-                                            class="text-blue-500 font-bold text-md">{{ $data->program_reg_count }}</span>
+                                            class="font-bold text-blue-500 text-md">{{ $data->program_reg_count }}</span>
                                     </div>
                                 </td>
 
@@ -156,8 +156,8 @@
                                         <a wire:navigate
                                             href="{{ route('admin-users-jobseeker-overview', ['id' => $data->employee_id]) }}"
                                             x-tooltip="tooltip" type="button"
-                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                 <path fill-rule="evenodd"
@@ -181,11 +181,11 @@
 
     <div x-show="openTab === 2" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-cloak>
-        <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+        <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative">
-                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                <div class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                     <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -195,11 +195,11 @@
 
                 {{-- SEARCH --}}
                 <input wire:model.live='searchCompany' type="search"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search">
             </div>
 
-            <div class="flex flex-wrap mr-3 gap-2">
+            <div class="flex flex-wrap gap-2 mr-3">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData('employers')"
                         class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
@@ -214,22 +214,23 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-employers-modal')"
-                    class="py-1.5 px-5 text-xs lg:text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                    class=" hover:bg-gray-100 hover:text-blue-700 focus:z-10 bg-white inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">Filter</button>
+
             </div>
         </div>
         <div class="overflow-x-auto">
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+            <table class="w-full mt-2 text-sm text-left text-gray-500 rtl:text-right">
                 <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                     <tr>
                         <th scope="col" class="px-6 py-3 ">
-                            <span class="text-black font-bold text-md">Company Name</span>
+                            <span class="font-bold text-black text-md">Company Name</span>
                         </th>
-                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
-                            <span class="text-black font-bold text-md">Job Postings</span>
+                        <th scope="col" class="hidden px-6 py-3 lg:table-cell">
+                            <span class="font-bold text-black text-md">Job Postings</span>
                         </th>
-                        <th scope="col" class="px-6 py-3 hidden lg:table-cell">
-                            <span class="text-black font-bold text-md">Hired Applicants</span>
+                        <th scope="col" class="hidden px-6 py-3 lg:table-cell">
+                            <span class="font-bold text-black text-md">Hired Applicants</span>
                         </th>
                         <th scope="col" class="px-6 py-3"></th>
                     </tr>
@@ -247,7 +248,7 @@
                                                 d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                         </svg>
                                     </div>
-                                    <p class="text-xl font-bold text-black text-center mt-2">
+                                    <p class="mt-2 text-xl font-bold text-center text-black">
                                         No Records Found!
                                     </p>
                                 </div>
@@ -259,7 +260,7 @@
                                 class="bg-white border-b hover:bg-gray-50">
                                 <th scope="row"
                                     class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                    <img class="w-10 h-10 rounded-full object-cover"
+                                    <img class="object-cover w-10 h-10 rounded-full"
                                         src="{{ asset('storage/' . $data->company_img) }}" alt="img">
                                     <div class="ps-3 text-wrap">
                                         <div class="text-base font-semibold">
@@ -279,15 +280,15 @@
                                     </div>
                                 </th>
 
-                                <td class="px-6 py-4 hidden lg:table-cell">
-                                    <div class="font-normal text-gray-500 text-sm text-center uppercase">
-                                        <span class="text-blue-500 font-bold text-md ">
+                                <td class="hidden px-6 py-4 lg:table-cell">
+                                    <div class="text-sm font-normal text-center text-gray-500 uppercase">
+                                        <span class="font-bold text-blue-500 text-md ">
                                             {{ $data->total_job_postings }}</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 hidden lg:table-cell">
-                                    <div class="font-normal text-gray-500 text-sm text-center uppercase">
-                                        <span class="text-blue-500 font-bold text-md ">
+                                <td class="hidden px-6 py-4 lg:table-cell">
+                                    <div class="text-sm font-normal text-center text-gray-500 uppercase">
+                                        <span class="font-bold text-blue-500 text-md ">
                                             {{ $data->hired_applicants }}</span>
                                     </div>
                                 </td>
@@ -297,8 +298,8 @@
                                         <a wire:navigate
                                             href="{{ route('admin-users-employer-overview', ['id' => $data->company_id]) }}"
                                             x-tooltip="tooltip" type="button"
-                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                 <path fill-rule="evenodd"
@@ -324,119 +325,119 @@
 
 
     <x-modal name="filter-jobseekers-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Filter Job Seekers') }}
             </h2>
             <hr>
             <div class="flex flex-col w-full">
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Gender</h1>
+                    <h1 class="font-semibold text-md">Sort By Gender</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountGender' id="gender-all" type="radio" value=""
                                 name="gender" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="gender-all" class="ms-2 text-sm font-medium text-gray-900">None</label>
+                            <label for="gender-all" class="text-sm font-medium text-gray-900 ms-2">None</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountGender' id="gender-male" type="radio" value="1"
                                 name="gender"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="gender-male" class="ms-2 text-sm font-medium text-gray-900">Male</label>
+                            <label for="gender-male" class="text-sm font-medium text-gray-900 ms-2">Male</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountGender' id="gender-female" type="radio" value="2"
                                 name="gender"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="gender-female" class="ms-2 text-sm font-medium text-gray-900">Female</label>
+                            <label for="gender-female" class="text-sm font-medium text-gray-900 ms-2">Female</label>
                         </div>
                     </div>
                 </div>
                 <div class="flex flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Age</h1>
+                    <h1 class="font-semibold text-md">Sort By Age</h1>
                     <div class="flex flex-wrap gap-4">
                         <div class="flex items-center">
                             <input wire:model='mountAge' id="checkbox-18s" type="checkbox" value="18-19"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                            <label for="checkbox-18s" class="ms-2 text-sm font-medium text-gray-900">18-19</label>
+                            <label for="checkbox-18s" class="text-sm font-medium text-gray-900 ms-2">18-19</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountAge' id="checkbox-20s" type="checkbox" value="20-29"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                            <label for="checkbox-20s" class="ms-2 text-sm font-medium text-gray-900">20-29</label>
+                            <label for="checkbox-20s" class="text-sm font-medium text-gray-900 ms-2">20-29</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountAge' id="checkbox-30s" type="checkbox" value="30-39"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                            <label for="checkbox-30s" class="ms-2 text-sm font-medium text-gray-900">30-39</label>
+                            <label for="checkbox-30s" class="text-sm font-medium text-gray-900 ms-2">30-39</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountAge' id="checkbox-40s" type="checkbox" value="40-49"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                            <label for="checkbox-40s" class="ms-2 text-sm font-medium text-gray-900">40-49</label>
+                            <label for="checkbox-40s" class="text-sm font-medium text-gray-900 ms-2">40-49</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountAge' id="checkbox-50s" type="checkbox" value="50-59"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                            <label for="checkbox-50s" class="ms-2 text-sm font-medium text-gray-900">50-59</label>
+                            <label for="checkbox-50s" class="text-sm font-medium text-gray-900 ms-2">50-59</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountAge' id="checkbox-60s" type="checkbox" value="60-69"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                            <label for="checkbox-60s" class="ms-2 text-sm font-medium text-gray-900">60-69</label>
+                            <label for="checkbox-60s" class="text-sm font-medium text-gray-900 ms-2">60-69</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Employment Status</h1>
+                    <h1 class="font-semibold text-md">Sort By Employment Status</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountEmpStatus' id="emp-none" type="radio" value=""
                                 name="empStatus" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="emp-none" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            <label for="emp-none" class="text-sm font-medium text-gray-900 ms-2">All</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountEmpStatus' id="emp-emp" type="radio" value="1"
                                 name="empStatus"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="emp-emp" class="ms-2 text-sm font-medium text-gray-900">Employed</label>
+                            <label for="emp-emp" class="text-sm font-medium text-gray-900 ms-2">Employed</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountEmpStatus' id="emp-unemp" type="radio" value="2"
                                 name="empStatus"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="emp-unemp" class="ms-2 text-sm font-medium text-gray-900">Unemployed</label>
+                            <label for="emp-unemp" class="text-sm font-medium text-gray-900 ms-2">Unemployed</label>
                         </div>
                     </div>
                 </div>
 
                 {{-- <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Applications</h1>
+                    <h1 class="font-semibold text-md">Sort By Applications</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountJobseekerfilter' id="job-all" type="radio" value=""
                                 name="JobseekerFilter" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="job-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            <label for="job-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountJobseekerfilter' id="job-with" type="radio"
                                 value="with_applications" name="JobseekerFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="job-with" class="ms-2 text-sm font-medium text-gray-900">With
+                            <label for="job-with" class="text-sm font-medium text-gray-900 ms-2">With
                                 Applications</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountJobseekerfilter' id="job-without" type="radio"
                                 value="without_applications" name="JobseekerFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="job-without" class="ms-2 text-sm font-medium text-gray-900">Without
+                            <label for="job-without" class="text-sm font-medium text-gray-900 ms-2">Without
                                 Applications</label>
                         </div>
                     </div>
@@ -445,118 +446,118 @@
 
 
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Civil Status</h1>
+                    <h1 class="font-semibold text-md">Sort By Civil Status</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountCivilStatus' id="civil-all" type="radio" value=""
                                 name="civilStatus" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="civil-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            <label for="civil-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountCivilStatus' id="civil-single" type="radio" value="1"
                                 name="civilStatus" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="civil-single" class="ms-2 text-sm font-medium text-gray-900">Single</label>
+                            <label for="civil-single" class="text-sm font-medium text-gray-900 ms-2">Single</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountCivilStatus' id="civil-married" type="radio" value="2"
                                 name="civilStatus"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="civil-married" class="ms-2 text-sm font-medium text-gray-900">Married</label>
+                            <label for="civil-married" class="text-sm font-medium text-gray-900 ms-2">Married</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountCivilStatus' id="civil-widowed" type="radio" value="3"
                                 name="civilStatus"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="civil-widowed" class="ms-2 text-sm font-medium text-gray-900">Widowed</label>
+                            <label for="civil-widowed" class="text-sm font-medium text-gray-900 ms-2">Widowed</label>
                         </div>
                     </div>
                 </div>
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By OFW Record</h1>
+                    <h1 class="font-semibold text-md">Sort By OFW Record</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountOFWFilter' id="ofw-all" type="radio" value=""
                                 name="ofwFilter" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="ofw-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            <label for="ofw-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountOFWFilter' id="ofw-yes" type="radio" value="1"
                                 name="ofwFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="ofw-yes" class="ms-2 text-sm font-medium text-gray-900">OFW</label>
+                            <label for="ofw-yes" class="text-sm font-medium text-gray-900 ms-2">OFW</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountOFWFilter' id="ofw-no" type="radio" value="2"
                                 name="ofwFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="ofw-no" class="ms-2 text-sm font-medium text-gray-900">Not OFW</label>
+                            <label for="ofw-no" class="text-sm font-medium text-gray-900 ms-2">Not OFW</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By 4Ps Record</h1>
+                    <h1 class="font-semibold text-md">Sort By 4Ps Record</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountFourPFilter' id="4ps-all" type="radio" value=""
                                 name="4psFilter" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="4ps-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            <label for="4ps-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountFourPFilter' id="4ps-yes" type="radio" value="1"
                                 name="4psFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="4ps-yes" class="ms-2 text-sm font-medium text-gray-900">4Ps Member</label>
+                            <label for="4ps-yes" class="text-sm font-medium text-gray-900 ms-2">4Ps Member</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountFourPFilter' id="4ps-no" type="radio" value="2"
                                 name="4psFilter"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="4ps-no" class="ms-2 text-sm font-medium text-gray-900">Not 4Ps
+                            <label for="4ps-no" class="text-sm font-medium text-gray-900 ms-2">Not 4Ps
                                 Member</label>
                         </div>
                     </div>
                 </div>
                 @if ($crossJob == true)
                     <div class="flex-col mt-4">
-                        <h1 class="text-md font-semibold">Sort By Residency</h1>
+                        <h1 class="font-semibold text-md">Sort By Residency</h1>
 
-                        <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                        <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                             <div class="flex items-center">
                                 <input wire:model='mountMunicipalityFilter' id="mun-all" type="radio"
                                     value="" name="munFilter" checked
                                     class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                                <label for="mun-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                                <label for="mun-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
                             </div>
                             <div class="flex items-center">
                                 <input wire:model='mountMunicipalityFilter' id="mun-in" type="radio"
                                     value="1" name="munFilter"
                                     class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                                <label for="mun-in" class="ms-2 text-sm font-medium text-gray-900">Resident</label>
+                                <label for="mun-in" class="text-sm font-medium text-gray-900 ms-2">Resident</label>
                             </div>
                             <div class="flex items-center">
                                 <input wire:model='mountMunicipalityFilter' id="mun-out" type="radio"
                                     value="2" name="munFilter"
                                     class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                                <label for="mun-out" class="ms-2 text-sm font-medium text-gray-900">Not
+                                <label for="mun-out" class="text-sm font-medium text-gray-900 ms-2">Not
                                     Resident</label>
                             </div>
                         </div>
                     </div>
                 @endif
                 <div class="flex flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Date</h1>
+                    <h1 class="font-semibold text-md">Sort By Date</h1>
                     <div class="flex flex-row w-full gap-4 mt-2">
                         <!-- Dropdown for Year -->
                         <div class="flex flex-col w-full">
-                            <select wire:model="mountSelectedYear" class="block mt-1  rounded-md">
+                            <select wire:model="mountSelectedYear" class="block mt-1 rounded-md">
                                 <option value="" disabled selected>Select Year</option>
                                 @for ($year = $startYear; $year <= $currentYear; $year++)
                                     <option value="{{ $year }}">{{ $year }}</option>
@@ -574,7 +575,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -594,7 +595,7 @@
                                             <div class="flex items-center p-2">
                                                 <input wire:model='mountSelectedMonths' type="checkbox"
                                                     id="checkbox-{{ $month }}" value="{{ $month }}"
-                                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded" />
+                                                    class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
                                                 <label for="checkbox-{{ $month }}"
                                                     class="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
                                                     {{ date('F', mktime(0, 0, 0, $month, 1)) }}
@@ -612,9 +613,9 @@
                     </div>
                 </div>
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Educational Attainment</h1>
+                    <h1 class="font-semibold text-md">Sort By Educational Attainment</h1>
 
-                    <select wire:model="mountEducationAttainment" class="block mt-1 w-full rounded-md">
+                    <select wire:model="mountEducationAttainment" class="block w-full mt-1 rounded-md">
                         <option value="" selected>None</option>
                         <option value="Elementary Graduate">Elementary Graduate</option>
                         <option value="High School Level">High School Level</option>
@@ -629,7 +630,7 @@
 
 
             </div>
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'filter-jobseekers-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -642,7 +643,7 @@
                         type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="mountFilter" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -661,34 +662,34 @@
     </x-modal>
 
     <x-modal name="filter-employers-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Filter Employers') }}
             </h2>
             <hr>
             <div class="flex flex-col w-full">
                 <div class="flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort by Company Location</h1>
+                    <h1 class="font-semibold text-md">Sort by Company Location</h1>
 
-                    <div class="flex flex-col md:flex-row w-full gap-4 mt-2">
+                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
                         <div class="flex items-center">
                             <input wire:model='mountCompanyMun' id="empmun-all" type="radio" value=""
                                 name="munFil" checked
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="empmun-all" class="ms-2 text-sm font-medium text-gray-900">All</label>
+                            <label for="empmun-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountCompanyMun' id="empmun-in" type="radio"
                                 value="within_municipality" name="munFil"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="empmun-in" class="ms-2 text-sm font-medium text-gray-900">Within
+                            <label for="empmun-in" class="text-sm font-medium text-gray-900 ms-2">Within
                                 Municipality</label>
                         </div>
                         <div class="flex items-center">
                             <input wire:model='mountCompanyMun' id="empmun-out" type="radio"
                                 value="outside_municipality" name="munFil"
                                 class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="empmun-out" class="ms-2 text-sm font-medium text-gray-900">Outside
+                            <label for="empmun-out" class="text-sm font-medium text-gray-900 ms-2">Outside
                                 Municipality</label>
                         </div>
                     </div>
@@ -696,11 +697,11 @@
 
 
                 <div class="flex flex-col mt-4">
-                    <h1 class="text-md font-semibold">Sort By Date</h1>
+                    <h1 class="font-semibold text-md">Sort By Date</h1>
                     <div class="flex flex-row w-full gap-4 mt-2">
                         <!-- Dropdown for Year -->
                         <div class="flex flex-col w-full">
-                            <select wire:model="mountMunYear" class="block mt-1  rounded-md">
+                            <select wire:model="mountMunYear" class="block mt-1 rounded-md">
                                 <option value="" disabled selected>Select Year</option>
                                 @for ($year = $startYear; $year <= $currentYear; $year++)
                                     <option value="{{ $year }}">{{ $year }}</option>
@@ -718,7 +719,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -738,7 +739,7 @@
                                             <div class="flex items-center p-2">
                                                 <input wire:model='mountMunMonths' type="checkbox"
                                                     id="checkboxMun-{{ $month }}" value="{{ $month }}"
-                                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded" />
+                                                    class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
                                                 <label for="checkboxMun-{{ $month }}"
                                                     class="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
                                                     {{ date('F', mktime(0, 0, 0, $month, 1)) }}
@@ -757,7 +758,7 @@
                 </div>
 
             </div>
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'filter-employers-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -770,7 +771,7 @@
                         type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="mountFilter" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

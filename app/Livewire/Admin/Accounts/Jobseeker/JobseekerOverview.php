@@ -82,6 +82,9 @@ class JobseekerOverview extends Component
         if (!$isInAdminMunicipality && !$hasJobApplication) {
             return $this->redirectRoute('dashboard');
         }
+
+        $this->mountFields($jobseeker);
+
     }
 
     public function viewFile($id, $fileToView)
@@ -442,7 +445,7 @@ class JobseekerOverview extends Component
 
         $programHistory = $this->programHistory($jobseeker->employee_id);
 
-        $this->mountFields($jobseeker);
+        // $this->mountFields($jobseeker);
 
         $maxEduLevel = $jobseeker->education->max('edu_Level');
 
