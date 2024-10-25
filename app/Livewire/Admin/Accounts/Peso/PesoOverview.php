@@ -6,6 +6,7 @@ use App\Helpers\AuditFormatter;
 use App\Mail\AdminDeactivationNotification;
 use App\Mail\AdminResetPasswordNotification;
 use App\Models\PESO_Accounts;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -19,7 +20,7 @@ use OwenIt\Auditing\Models\Audit;
 class PesoOverview extends Component
 {
 
-    use  WithPagination, WithoutUrlPagination;
+    use WithPagination, WithoutUrlPagination;
     public $id;
 
     public $fname, $mname, $lname, $phone, $role = '';
@@ -27,6 +28,19 @@ class PesoOverview extends Component
     public $agreeBox = false;
 
     public $deactRemarks, $reactRemarks;
+
+    public function mount()
+    {
+        $pesoAccount = PESO_Accounts::findOrFail($this->id);
+
+        if (Auth::user()->peso_accounts->peso_id != $pesoAccount->peso_id) {
+            return $this->redirectRoute('dashboard');
+
+        }
+
+        $this->mountFields($pesoAccount);
+
+    }
 
     public function statusUser($type)
     {
@@ -241,10 +255,6 @@ class PesoOverview extends Component
 
         $user = PESO_Accounts::findOrFail($this->id);
 
-        if ($user) {
-            $this->mountFields($user);
-        }
-
         $audits = Audit::where('user_id', $user->user_id)
             ->latest()
             ->paginate(5);
@@ -252,7 +262,6 @@ class PesoOverview extends Component
         $formattedAudits = $audits->map(function ($audit) {
             return AuditFormatter::format($audit);
         });
-        
 
         return view('livewire.admin.accounts.peso.peso-overview', compact('user', 'audits', 'formattedAudits'));
     }

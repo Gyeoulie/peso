@@ -51,7 +51,7 @@ class ProgramRegistrantsTrends extends Component
         $this->selectedMonths = $this->mountSelectedMonths;
         $this->selectedYear = $this->mountSelectedYear;
 
-        $this->dispatch('close-modal', 'filter-employment-trends-modal');
+        $this->dispatch('close-modal', 'filter-registrant-trends-modal');
     }
 
     public function getAreaProgramRegistrationsTrend($municipalityId = null, $provinceId = null)
@@ -145,6 +145,8 @@ class ProgramRegistrantsTrends extends Component
             'fill' => [
                 'opacity' => 0.3, // Adjust the fill opacity
             ],
+            'yaxis.tickAmount' => 1,
+            'yaxis.labels.formatter' => '(val) => Math.floor(val)',
         ]);
 
         return $chart;
