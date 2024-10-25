@@ -9,6 +9,8 @@ export default {
         "./resources/views/**/*.blade.php",
         "./node_modules/flowbite/**/*.js",
         "node_modules/preline/dist/*.js",
+        "./node_modules/flyonui/dist/js/*.js",
+        "./node_modules/flyonui/dist/js/accordion.js",
     ],
 
     theme: {
@@ -28,6 +30,11 @@ export default {
         },
     },
 
-    plugins: [forms, require("preline/plugin")],
+    plugins: [forms, 
+        require("preline/plugin"),
+        require("flyonui"),
+        require("flyonui/plugin"),
+        require('flowbite/plugin')
+    ],
     darkMode: 'false',
 };

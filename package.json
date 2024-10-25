@@ -16,6 +16,8 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "flowbite": "^2.5.2",
+        "flyonui": "^1.1.0",
         "preline": "^2.1.0"
     }
 }

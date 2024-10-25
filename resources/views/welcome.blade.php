@@ -882,7 +882,7 @@
 <body class="antialiased">
     @include('layouts.navigation-home')
 
-
+ 
 
     <div
         class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
@@ -969,6 +969,9 @@
     </div>
     </div>
 
+    {{-- @livewire('homepage') --}}
+    <livewire:homepage />
+
     <footer class="bg-white rounded-lg shadowm-4 mt-auto">
         <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8 ">
             <div class="sm:flex sm:items-center sm:justify-between">
@@ -995,6 +998,8 @@
                 Reserved.</span>
         </div>
     </footer>
+
+
 </body>
 
 </html>
