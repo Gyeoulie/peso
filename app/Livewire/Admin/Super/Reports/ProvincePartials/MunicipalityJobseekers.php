@@ -19,41 +19,39 @@ class MunicipalityJobseekers extends Component
 
     public function getMunicipalityChart($provinceId)
     {
-        // Retrieve municipalities with their employee counts through the relationship chain
+        // Get employee counts per municipality
         $municipalities = Municipality::where('province_id', $provinceId)
-            ->withCount(['barangay' => function ($query) {
-                $query->withCount('employee');
-            }])
+            ->with(['barangay.employee']) // Load the barangay and its employees
             ->get()
             ->map(function ($municipality) {
-                // Sum up all employees from all barangays in this municipality
-                $employeeCount = $municipality->barangay->sum('employees_count');
-                return [
-                    'name' => $municipality->municipality_Name,
-                    'count' => $employeeCount,
-                ];
-            });
+                // Count the employees related to the barangays of this municipality
+                $employeeCount = $municipality->barangay->flatMap(function ($barangay) {
+                    return $barangay->employee;
+                })->count();
 
-        // Calculate the total count of employees
-        $totalEmployees = $municipalities->sum('count');
+                // Add employee count as a new attribute
+                $municipality->employee_count = $employeeCount;
+                return $municipality;
+            });
+            
 
         // Create a pie chart model
         $municipalityChartModel = new PieChartModel();
 
-        // Add each municipality to the pie chart
+        // Add slices only for municipalities with employees
         foreach ($municipalities as $municipality) {
-            if ($municipality['count'] > 0) {
-                // Generate a random color for each municipality
+            if ($municipality->employee_count > 0) {
                 $randomColor = '#' . substr(md5(rand()), 0, 6);
 
                 $municipalityChartModel->addSlice(
-                    $municipality['name'],
-                    $municipality['count'],
+                    $municipality->municipality_Name,
+                    $municipality->employee_count,
                     $randomColor
                 );
             }
         }
 
+        // Set chart properties
         $municipalityChartModel->setTitle('Number of Job Seekers per Municipality')
             ->setAnimated(true)
             ->setType('pie')
@@ -97,6 +95,7 @@ class MunicipalityJobseekers extends Component
 
         return $municipalityChartModel;
     }
+
     public function render()
     {
         $municipalityChartModel = $this->getMunicipalityChart($this->provinceID);
