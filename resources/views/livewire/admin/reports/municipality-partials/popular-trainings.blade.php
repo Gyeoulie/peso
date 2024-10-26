@@ -1,9 +1,9 @@
-<div class="bg-white shadow rounded-lg p-6 w-full overflow-auto">
+<div class="w-full p-6 overflow-auto bg-white rounded-lg shadow">
     <div class="mb-4">
-        <div class="flex flex-col md:flex-row w-full justify-between gap-2">
+        <div class="flex flex-col justify-between w-full gap-2 md:flex-row">
 
             <h1 class="text-2xl font-bold">Most Popular Trainings</h1>
-            <div class="flex flex-row  gap-2">
+            <div class="flex flex-row gap-2">
                 <div x-data="{ tooltip: 'Export to Excel' }">
                     <button x-tooltip='tooltip' type="button" wire:click.prevent="exportData()"
                         class="flex items-center py-1.5 px-4 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
@@ -18,26 +18,36 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-trainings-modal')"
-                    class="py-1.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                    class=" hover:bg-gray-100 text-gray-500 hover:text-blue-700 focus:z-10 bg-white inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                    <span class="flex flex-row items-center gap-2"> Filter
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                        </svg>
+                    </span>
+                </button>
             </div>
         </div>
         <hr class="h-px my-2 bg-gray-200 border-0">
     </div>
 
     <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+        <table class="w-full mt-2 text-sm text-left text-gray-500 rtl:text-right">
             <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                 <tr>
-                    <th scope="col" class="px-6 py-3 w-full">
-                        <span class="text-black font-bold text-md">Training Title</span>
+                    <th scope="col" class="w-full px-6 py-3">
+                        <span class="font-bold text-black text-md">Training Title</span>
                     </th>
-                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
-                        <span class="text-black font-bold text-md">Type</span>
+                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
+                        <span class="font-bold text-black text-md">Type</span>
                     </th>
-                    <th scope="col" class="hidden lg:table-cell px-6 py-3 text-center">
-                        <span class="text-black font-bold text-md">Registered</span>
+                    <th scope="col" class="hidden px-6 py-3 text-center lg:table-cell">
+                        <span class="font-bold text-black text-md">Registered</span>
                     </th>
-                    <th scope="col" class="px-6 py-3"></th>
+                    @if (request()->routeIs('admin-reports-municipality'))
+                        <th scope="col" class="px-6 py-3"></th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +63,7 @@
                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
-                                <p class="text-xl font-bold text-black text-center mt-2">
+                                <p class="mt-2 text-xl font-bold text-center text-black">
                                     Not enough data!
                                 </p>
                             </div>
@@ -68,7 +78,7 @@
                                 <div class="ps-3 text-wrap">
                                     <div class="text-base font-semibold">
                                         <div class="text-base font-semibold">{{ $data->program_Title }}</div>
-                                        <div class="font-normal text-gray-500 text-sm uppercase">
+                                        <div class="text-sm font-normal text-gray-500 uppercase">
                                             {{ $data->program_Host }}
                                         </div>
                                     </div>
@@ -77,39 +87,40 @@
                                     </div>
                                     <div class="text-sm text-gray-500 lg:hidden">
                                         Registrants: <span
-                                            class="text-black font-bold">{{ $data->registration_count }}</span>
+                                            class="font-bold text-black">{{ $data->registration_count }}</span>
                                     </div>
 
                                 </div>
                             </th>
 
-                            <td class="hidden lg:table-cell px-6 py-4">
+                            <td class="hidden px-6 py-4 lg:table-cell">
                                 {{ $data->program_Type }}
                             </td>
 
-                            <td class="hidden lg:table-cell px-6 py-4">
-                                <div class="font-normal text-gray-500 text-sm text-center uppercase">
-                                    <span class="text-blue-500 font-bold text-md">
+                            <td class="hidden px-6 py-4 lg:table-cell">
+                                <div class="text-sm font-normal text-center text-gray-500 uppercase">
+                                    <span class="font-bold text-blue-500 text-md">
                                         {{ $data->registration_count }}</span>
                                 </div>
                             </td>
-
-                            <td class="px-6 py-4">
-                                <div x-data="{ tooltip: 'Program Overview' }">
-                                    <a wire:navigate
-                                        href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
-                                        x-tooltip="tooltip" type="button"
-                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor">
-                                            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                            <path fill-rule="evenodd"
-                                                d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </a>
-                                </div>
-                            </td>
+                            @if (request()->routeIs('admin-reports-municipality'))
+                                <td class="px-6 py-4">
+                                    <div x-data="{ tooltip: 'Program Overview' }">
+                                        <a wire:navigate
+                                            href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
+                                            x-tooltip="tooltip" type="button"
+                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor">
+                                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 @endif
@@ -121,17 +132,17 @@
 
 
     <x-modal name="filter-trainings-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Filter Trainings') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-4">
-                <h1 class="text-md font-semibold">Sort By Date</h1>
+                <h1 class="font-semibold text-md">Sort By Date</h1>
                 <div class="flex flex-row w-full gap-4 mt-2">
                     <!-- Dropdown for Year -->
                     <div class="flex flex-col w-full">
-                        <select wire:model="mountSelectedYear" class="block mt-1  rounded-md">
+                        <select wire:model="mountSelectedYear" class="block mt-1 rounded-md">
                             <option value="" disabled selected>Select Year</option>
                             @for ($year = $startYear; $year <= $currentYear; $year++)
                                 <option value="{{ $year }}">{{ $year }}</option>
@@ -149,7 +160,7 @@
                                     </div>
 
                                     <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -170,7 +181,7 @@
                                             <input wire:model='mountSelectedMonths' type="checkbox"
                                                 id="checkboxTopTrain-{{ $month }}"
                                                 value="{{ $month }}"
-                                                class="h-4 w-4 text-blue-600 border-gray-300 rounded" />
+                                                class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
                                             <label for="checkboxTopTrain-{{ $month }}"
                                                 class="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
                                                 {{ date('F', mktime(0, 0, 0, $month, 1)) }}
@@ -189,7 +200,7 @@
             </div>
 
 
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'filter-trainings-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -202,7 +213,7 @@
                         type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="mountFilter" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

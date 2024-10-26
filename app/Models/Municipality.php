@@ -43,6 +43,10 @@ class Municipality extends Model implements Auditable
     {
         return $this->belongsTo(Province::class, 'province_id');
     }
+    public function barangay()
+    {
+        return $this->hasMany(Barangay::class, 'municipality_id');
+    }
     public function peso()
     {
         return $this->hasMany(PESO::class, 'municipality_id');

@@ -16,12 +16,31 @@ class ProvinceReports extends Component
 
     public $searchProv;
     public $selectedProv, $provTitle;
+    public $selectedAnalytics, $analyticsValue;
 
     public function mount()
     {
+        $this->selectedAnalytics = 1;
+        $this->analyticsValue = 'Jobseekers';
         $firstMun = Municipality::first();
         $this->munSelect($firstMun->municipality_id);
 
+    }
+
+    public function updateAnalytics($id)
+    {
+        $this->selectedAnalytics = $id;
+
+        if ($id == 1) {
+            $this->analyticsValue = 'Jobseekers';
+
+        } elseif ($id == 2) {
+            // dd($this->selectedAnalytics);
+            $this->analyticsValue = 'Trends';
+
+        } elseif ($id == 3) {
+            $this->analyticsValue = 'Top';
+        }
     }
 
     public function munSelect($id)

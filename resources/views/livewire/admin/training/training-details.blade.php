@@ -1,5 +1,5 @@
-<div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+<div wire:poll class="container py-8 mx-auto">
+    <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
         <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Trainings / Training List / Training Details</h1>
@@ -7,8 +7,8 @@
 
 
         <div class="col-span-4 lg:col-span-5">
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4">
-                <div class="flex flex-row justify-center items-center h-full p-5 flex-shrink-0">
+            <div class="p-4 overflow-hidden bg-white rounded-lg shadow-sm">
+                <div class="flex flex-row items-center justify-center flex-shrink-0 h-full p-5">
                     <img src="{{ asset('storage/' . $programInfo->program_pubmat) }}" alt="Default I mage"
                         class="w-[260px] h-[200px] lg:w-[600px] lg:h-[450px] bg-gray-300 rounded object-fill">
                 </div>
@@ -16,19 +16,19 @@
 
             </div>
 
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg p-4 mt-4">
+            <div class="p-4 mt-4 overflow-hidden bg-white rounded-lg shadow-sm">
                 <div class="flex flex-row w-full">
-                    <h1 class="text-xl text-blue-900 font-bold">Matched Job Seekers</h1>
+                    <h1 class="text-xl font-bold text-blue-900">Matched Job Seekers</h1>
                 </div>
-                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                 <div class="max-h-[500px] overflow-y-auto mt-4">
                     @if ($matchingEmployees->isEmpty())
                         <div>
 
 
-                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                <div class="flex  bg-gray-100 rounded-full p-1">
+                            <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                <div class="flex p-1 bg-gray-100 rounded-full">
 
                                     <svg class="w-24 h-24 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -38,37 +38,37 @@
 
                                 </div>
 
-                                <div class="text-center text-black text-xl font-semibold mt-5">
+                                <div class="mt-5 text-xl font-semibold text-center text-black">
                                     No Matched Applicants
                                 </div>
                             </div>
 
                         </div>
                     @else
-                        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
+                        <div class="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4">
                             @foreach ($matchingEmployees as $data)
                                 <div wire:key='jobseeker-{{ $data->employee_id }}'
-                                    class="flex flex-col items-center justify-center py-4 px-4 max-w-sm mx-auto bg-blue-50 rounded-xl shrink-0 grow-0 w-full hover:bg-blue-200 transition-colors duration-300">
+                                    class="flex flex-col items-center justify-center w-full max-w-sm px-4 py-4 mx-auto transition-colors duration-300 bg-blue-50 rounded-xl shrink-0 grow-0 hover:bg-blue-200">
                                     <img class="flex mx-auto w-[100px] h-[100px] object-cover rounded-full lg:mx-0 lg:grow-0 lg:shrink-0 shadow-xl"
                                         src="{{ asset('storage/' . $data->pimg) }}"
                                         alt="jobseeker-{{ $data->employee_id }}">
                                     <div
-                                        class="flex flex-col items-center justify-center text-center  lg:text-left mt-2">
+                                        class="flex flex-col items-center justify-center mt-2 text-center lg:text-left">
                                         <div class="space-y-0.5">
-                                            <p class="text-lg text-black text-center font-semibold">
+                                            <p class="text-lg font-semibold text-center text-black">
                                                 {{ $data->fname }}
                                                 {{ $data->mname ?? '' }}
                                                 {{ $data->lname }}@if (!empty($data->suffix))
                                                     , {{ $data->suffix }}
                                                 @endif
                                             </p>
-                                            <p class="text-slate-500 text-center font-medium">
+                                            <p class="font-medium text-center text-slate-500">
                                                 {{ $data->empstatus == 1 ? 'Employed' : 'Unemployed' }}
                                             </p>
                                         </div>
                                         <a wire:navigate
                                             href="{{ route('jobseeker.profile', ['id' => $data->employee_id]) }}"
-                                            class="mt-2 px-4 py-1 text-sm text-blue-600  bg-blue-300 font-semibold rounded-full border border-blue-200 hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
+                                            class="px-4 py-1 mt-2 text-sm font-semibold text-blue-600 bg-blue-300 border border-blue-200 rounded-full hover:text-white hover:bg-blue-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">Profile</a>
                                     </div>
                                 </div>
                             @endforeach
@@ -87,13 +87,13 @@
 
 
         <div class="col-span-4 lg:col-span-7">
-            <div class="bg-white overflow-hidden shadow-sm lg:rounded-lg">
+            <div class="overflow-hidden bg-white shadow-sm lg:rounded-lg">
 
 
                 <div class="flex flex-col w-full h-full p-5 space-y-2">
 
                     <div class="flex flex-row justify-between">
-                        <h1 class="text-xl text-blue-900 lg:text-2xl font-bold">Program Information
+                        <h1 class="text-xl font-bold text-blue-900 lg:text-2xl">Program Information
                         </h1>
                         <div class="flex flex-row gap-4">
                             @if ($programInfo->program_Status == 'ACTIVE')
@@ -108,49 +108,49 @@
                             @endif
                         </div>
                     </div>
-                    <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                    <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                     <div class="mt-6">
                         <div class="flex flex-col w-full h-full ">
-                            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+                            <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4">
                                 <div class="flex flex-col w-full">
                                     <x-input-label for="progTitle" :value="__('Program Title')" />
-                                    <x-text-input value="{{ $programInfo->program_Title }}" class="block mt-1 w-full"
+                                    <x-text-input value="{{ $programInfo->program_Title }}" class="block w-full mt-1"
                                         type="text" disabled />
                                 </div>
                                 <div class="flex flex-col w-full">
                                     <x-input-label for="progHost" :value="__('Program Host')" />
-                                    <x-text-input value="{{ $programInfo->program_Host }}" class="block mt-1 w-full"
+                                    <x-text-input value="{{ $programInfo->program_Host }}" class="block w-full mt-1"
                                         type="text" disabled />
                                 </div>
                             </div>
                         </div>
                         <div class="flex flex-col w-full h-full">
-                            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
-                                <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+                            <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4">
+                                <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4">
                                     <div class="flex flex-col w-full">
                                         <x-input-label for="progTitle" :value="__('Date Posted')" />
                                         <x-text-input value="{{ $programInfo->created_at->format('F j, Y') }}"
-                                            class="block mt-1 w-full" type="text" disabled />
+                                            class="block w-full mt-1" type="text" disabled />
                                     </div>
                                     <div class="flex flex-col w-full">
                                         <x-input-label for="progHost" :value="__('Registration Deadline')" />
                                         <x-text-input value="{{ $programInfo->program_Deadline->format('F j, Y') }}"
-                                            class="block mt-1 w-full" type="text" disabled />
+                                            class="block w-full mt-1" type="text" disabled />
                                     </div>
                                 </div>
                                 @if ($programInfo->program_Datetime)
-                                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+                                    <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4">
                                         <div class="flex flex-col w-full">
                                             <x-input-label for="progTitle" :value="__('Program Date')" />
                                             <x-text-input
                                                 value="{{ $programInfo->program_Datetime->format('F j, Y') }}"
-                                                class="block mt-1 w-full" type="text" disabled />
+                                                class="block w-full mt-1" type="text" disabled />
                                         </div>
                                         <div class="flex flex-col w-full">
                                             <x-input-label for="progHost" :value="__('Program Time')" />
                                             <x-text-input value="{{ $programInfo->program_Datetime->format('g:i A') }}"
-                                                class="block mt-1 w-full" type="text" disabled />
+                                                class="block w-full mt-1" type="text" disabled />
                                         </div>
                                     </div>
                                 @endif
@@ -158,37 +158,37 @@
                             </div>
                         </div>
                         <div class="flex flex-col w-full h-full">
-                            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+                            <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4">
                                 <div class="flex flex-col w-full">
                                     <x-input-label for="progTitle" :value="__('Program Type')" />
-                                    <x-text-input value="{{ $programInfo->program_Type }}" class="block mt-1 w-full"
+                                    <x-text-input value="{{ $programInfo->program_Type }}" class="block w-full mt-1"
                                         type="text" disabled />
                                 </div>
-                                <div class="flex flex-row gap-2 lg:gap-4 w-full">
+                                <div class="flex flex-row w-full gap-2 lg:gap-4">
                                     <div class="flex flex-col w-full">
                                         <x-input-label for="progHost" :value="__('Program Modality')" />
                                         <x-text-input value="{{ $programInfo->program_Modality }}"
-                                            class="block mt-1 w-full" type="text" disabled />
+                                            class="block w-full mt-1" type="text" disabled />
                                     </div>
                                     <div class="flex flex-col w-full">
                                         <x-input-label for="progHost" :value="__('Program Slots')" />
                                         <x-text-input value="{{ $programInfo->program_Slots }}"
-                                            class="block mt-1 w-full" type="text" disabled />
+                                            class="block w-full mt-1" type="text" disabled />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="flex flex-col w-full h-full">
-                            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+                            <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4">
                                 <div class="flex flex-col w-full">
                                     <x-input-label for="progTitle" :value="__('Program Location')" />
                                     <x-text-input value="{{ $programInfo->program_Location }}"
-                                        class="block mt-1 w-full" type="text" disabled />
+                                        class="block w-full mt-1" type="text" disabled />
                                 </div>
                                 <div class="flex flex-col w-full lg:w-1/3">
                                     <x-input-label for="progTitle" :value="__('Industry Tag')" />
                                     <x-text-input value="{{ $programInfo->job_industry->industry_Title }}"
-                                        class="block mt-1 w-full" type="text" disabled />
+                                        class="block w-full mt-1" type="text" disabled />
                                 </div>
 
                             </div>
@@ -213,8 +213,8 @@
 
                     <div class="mt-10">
                         <div class="Job-Description ">
-                            <h1 class="text-xl text-blue-900 font-bold">Description</h1>
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                            <h1 class="text-xl font-bold text-blue-900">Description</h1>
+                            <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
                             <div class="p-2 no-tailwindcss-base">
                                 {!! $programInfo->program_Description !!}
                             </div>
@@ -222,10 +222,10 @@
 
                         <div class="Job-Qualification">
 
-                            <h1 class="text-xl text-blue-900 font-bold">Qualification</h1>
+                            <h1 class="text-xl font-bold text-blue-900">Qualification</h1>
 
 
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                            <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                             <div class="p-2 no-tailwindcss-base">
                                 {!! $programInfo->program_Qualification !!}
@@ -234,10 +234,10 @@
 
                         <div class="Job-Remarks">
 
-                            <h1 class="text-xl text-blue-900 font-bold">Remarks</h1>
+                            <h1 class="text-xl font-bold text-blue-900">Remarks</h1>
 
 
-                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-2">
+                            <hr class="h-px mt-2 bg-gray-200 border-0 dark:bg-gray-700">
 
                             <div class="p-2 no-tailwindcss-base">
                                 {!! $programInfo->program_Remarks !!}
@@ -263,13 +263,13 @@
 
 
     <x-modal name="cancel-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center" x-data="{ agreeBox: @entangle('agreeBox') }">
+        <div class="items-center w-full max-w-4xl px-6 py-6" x-data="{ agreeBox: @entangle('agreeBox') }">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Action Confirmation') }}
             </h2>
             <hr>
             <div class="flex flex-col my-4">
-                <div class="flex flex-col mt-4 mb-4 w-full justify-center items-center px-4">
+                <div class="flex flex-col items-center justify-center w-full px-4 mt-4 mb-4">
                     <span class="text-xl font-semibold">Are you sure you want to cancel this training?</span>
                     <p class="mt-2 text-center text-gray-600">
                         You are about to cancel the training program
@@ -282,12 +282,12 @@
                     </p>
                 </div>
 
-                <div class="inline-flex justify-center items-center mt-4 w-full">
+                <div class="inline-flex items-center justify-center w-full mt-4">
                     <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="agreeBox">
                         <input wire:model="agreeBox" type="checkbox" id="agreeBox"
-                            class="h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all checked:border-blue-900 checked:bg-blue-600" />
+                            class="w-5 h-5 transition-all border rounded-md appearance-none cursor-pointer border-blue-gray-200 checked:border-blue-900 checked:bg-blue-600" />
                         <span
-                            class="absolute text-white top-2/4 left-2/4 transform -translate-x-2/4 -translate-y-2/4 opacity-0 peer-checked:opacity-100">
+                            class="absolute text-white transform opacity-0 top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 peer-checked:opacity-100">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
                                 fill="currentColor" stroke="currentColor" stroke-width="1">
                                 <path fill-rule="evenodd"
@@ -302,7 +302,7 @@
                 </div>
             </div>
 
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button x-on:click="agreeBox = false; $dispatch('close-modal', 'cancel-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -311,7 +311,7 @@
                     wire:click.prevent="cancelProgram" class="ms-3" type="button">
                     {{ __('Confirm Cancellation') }}
                     <div wire:loading.delay.long wire:target="cancelProgram" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

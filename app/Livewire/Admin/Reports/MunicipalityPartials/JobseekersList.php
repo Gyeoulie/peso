@@ -10,6 +10,7 @@ use App\Models\Work_Exp;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -20,18 +21,32 @@ class JobseekersList extends Component
 
     use WithPagination;
     use WithoutUrlPagination;
-    public $municipalityID;
+    public $municipalityID, $provinceID;
 
     public $searchJobseekers, $searchCompany;
     public $startYear, $currentYear;
 
-    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $civilStatus, $educationAttainment, $selectedMonths = [], $selectedYear, $OFWFilter, $fourPFilter, $municipalityFilter;
-    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountCivilStatus, $mountEducationAttainment, $mountSelectedMonths = [], $mountSelectedYear, $mountOFWFilter, $mountFourPFilter, $mountMunicipalityFilter;
+    public $Gender, $Age = [], $EmpStatus, $jobseekerfilter, $civilStatus, $educationAttainment, $selectedMonths = [],
+    $selectedYear, $OFWFilter, $fourPFilter, $municipalityFilter;
+    public $mountGender, $mountAge = [], $mountEmpStatus, $mountJobseekerfilter, $mountCivilStatus, $mountEducationAttainment, $mountSelectedMonths = [],
+    $mountSelectedYear, $mountOFWFilter, $mountFourPFilter, $mountMunicipalityFilter;
 
-    public $companyMun, $munYear, $munMonths = [];
-    public $mountCompanyMun, $mountMunYear, $mountMunMonths = [];
+    public $companyMun, $companyProv, $munYear, $munMonths = [];
+    public $mountCompanyMun, $mountCompanyProv, $mountMunYear, $mountMunMonths = [];
 
     public $filterOption;
+
+    #[On('updateProv')]
+    public function updateProv($id)
+    {
+        $this->provinceID = $id;
+    }
+
+    #[On('updateMun')]
+    public function updateMun($id)
+    {
+        $this->municipalityID = $id;
+    }
 
     public function updatedsearchJobseekers()
     {
@@ -53,7 +68,13 @@ class JobseekersList extends Component
     {
         if ($type == 'jobseekers') {
 
-            $jobseekers = $this->getJobseekers($this->municipalityID)->get();
+            $jobseekers = null;
+            if ($this->municipalityID) {
+                $jobseekers = $this->getJobseekers($this->municipalityID)->get();
+            } else if ($this->provinceID) {
+                $jobseekers = $this->getJobseekers(null, $this->provinceID)->get();
+
+            }
 
             if (!$jobseekers->isEmpty()) {
 
@@ -96,7 +117,13 @@ class JobseekersList extends Component
             return toastr()->warning('No data in the table to be exported.');
 
         } elseif ($type == 'employers') {
-            $employers = $this->getEmployers($this->municipalityID)->get();
+            $employers = null;
+
+            if ($this->municipalityID) {
+                $employers = $this->getEmployers($this->municipalityID)->get();
+            } elseif ($this->provinceID) {
+                $employers = $this->getEmployers(null, $this->provinceID)->get();
+            }
 
             if (!$employers->isEmpty()) {
 
@@ -180,6 +207,9 @@ class JobseekersList extends Component
         $this->companyMun = $this->mountCompanyMun;
         $this->munYear = $this->mountMunYear;
         $this->munMonths = $this->mountMunMonths;
+
+        $this->companyProv = $this->mountCompanyProv;
+
         $this->resetPage('company');
 
         $this->dispatch('close-modal', 'filter-employers-modal');
@@ -187,13 +217,13 @@ class JobseekersList extends Component
     }
     public function resetMunFilter()
     {
-        $this->reset('companyMun', 'munYear', 'munMonths', 'mountCompanyMun', 'mountMunYear', 'mountMunMonths');
+        $this->reset('companyMun', 'munYear', 'munMonths', 'mountCompanyMun', 'mountMunYear', 'companyProv', 'mountCompanyProv');
         $this->resetPage('company');
     }
 
-    private function getJobseekers($id)
+    private function getJobseekers($municipalityId = null, $provinceId = null)
     {
-        $employee = Employee::whereHas('job_applicants', function ($query) use ($id) {
+        $employee = Employee::whereHas('job_applicants', function ($query) use ($municipalityId, $provinceId) {
             // Apply year filter if provided
             if (!empty($this->selectedYear)) {
                 $query->whereYear('created_at', $this->selectedYear);
@@ -204,9 +234,18 @@ class JobseekersList extends Component
                 $query->whereIn(DB::raw('MONTH(created_at)'), $this->selectedMonths);
             }
 
-            $query->whereHas('job_posting', function ($query) use ($id) {
-                $query->whereHas('peso', function ($query) use ($id) {
-                    $query->where('municipality_id', $id);
+            // Apply municipality or province filtering logic
+            $query->whereHas('job_posting', function ($query) use ($municipalityId, $provinceId) {
+                $query->whereHas('peso', function ($query) use ($municipalityId, $provinceId) {
+                    // Check if municipality ID is provided
+                    if ($municipalityId) {
+                        $query->where('municipality_id', $municipalityId);
+                    } else {
+                        // Otherwise, apply province filtering logic
+                        $query->whereHas('municipality', function ($query) use ($municipalityId, $provinceId) {
+                            $query->where('province_id', $provinceId);
+                        });
+                    }
                 });
             });
         })
@@ -303,13 +342,13 @@ class JobseekersList extends Component
         if (isset($this->municipalityFilter)) {
             switch ($this->municipalityFilter) {
                 case 1:
-                    $employee->whereHas('barangay', function ($query) use ($id) {
-                        $query->where('municipality_id', $id);
+                    $employee->whereHas('barangay', function ($query) use ($municipalityId) {
+                        $query->where('municipality_id', $municipalityId);
                     });
                     break;
                 case 2:
-                    $employee->whereDoesntHave('barangay', function ($query) use ($id) {
-                        $query->where('municipality_id', $id);
+                    $employee->whereDoesntHave('barangay', function ($query) use ($municipalityId) {
+                        $query->where('municipality_id', $municipalityId);
                     });
                     break;
                 default:
@@ -338,25 +377,29 @@ class JobseekersList extends Component
         }
     }
 
-    private function getEmployers($adminMunicipalityId)
+    private function getEmployers($municipalityId = null, $provinceId = null)
     {
         $companiesQuery = Company::query();
 
         // Apply company municipality filter first
-        $companiesQuery->where(function ($query) use ($adminMunicipalityId) {
+        $companiesQuery->where(function ($query) use ($municipalityId) {
             switch ($this->companyMun) {
                 case 'within_municipality':
-                    // Filter companies where the associated barangay's municipality_id matches the admin's municipality
-                    $query->whereHas('barangay', function ($innerQuery) use ($adminMunicipalityId) {
-                        $innerQuery->where('municipality_id', $adminMunicipalityId);
-                    });
+                    // Filter companies where the associated barangay's municipality_id matches the provided municipality
+                    if ($municipalityId) {
+                        $query->whereHas('barangay', function ($innerQuery) use ($municipalityId) {
+                            $innerQuery->where('municipality_id', $municipalityId);
+                        });
+                    }
                     break;
                 case 'outside_municipality':
                     // Filter companies where the associated barangay's municipality_id is different or null
-                    $query->whereHas('barangay', function ($innerQuery) use ($adminMunicipalityId) {
-                        $innerQuery->where('municipality_id', '!=', $adminMunicipalityId)
-                            ->orWhereNull('municipality_id');
-                    });
+                    if ($municipalityId) {
+                        $query->whereHas('barangay', function ($innerQuery) use ($municipalityId) {
+                            $innerQuery->where('municipality_id', '!=', $municipalityId)
+                                ->orWhereNull('municipality_id');
+                        });
+                    }
                     break;
                 case 'all':
                 default:
@@ -365,27 +408,66 @@ class JobseekersList extends Component
             }
         });
 
-        // Filter job postings based on the admin's municipality
-        $companiesQuery->whereHas('job_posting', function ($query) use ($adminMunicipalityId) {
-            $query->whereHas('barangay', function ($innerQuery) use ($adminMunicipalityId) {
-                $innerQuery->where('municipality_id', $adminMunicipalityId);
+        $companiesQuery->where(function ($query) use ($provinceId) {
+            switch ($this->companyProv) {
+                case 'within_prov':
+                    // Filter companies where the associated barangay's municipality_id matches the provided municipality
+                    if ($provinceId) {
+                        $query->whereHas('barangay.municipality', function ($innerQuery) use ($provinceId) {
+                            $innerQuery->where('province_id', $provinceId);
+                        });
+                    }
+                    break;
+                case 'outside_prov':
+                    // Filter companies where the associated barangay's municipality_id is different or null
+                    if ($provinceId) {
+                        $query->whereHas('barangay.municipality', function ($innerQuery) use ($provinceId) {
+                            $innerQuery->where('province_id', '!=', $provinceId)
+                                ->orWhereNull('province_id');
+                        });
+                    }
+                    break;
+                case 'all':
+                default:
+                    // No additional filtering needed for 'all'
+                    break;
+            }
+        });
+
+        // Filter job postings based on the provided municipality or province
+        $companiesQuery->whereHas('job_posting', function ($query) use ($municipalityId, $provinceId) {
+            $query->whereHas('barangay', function ($innerQuery) use ($municipalityId, $provinceId) {
+                // If a specific municipality ID is provided, filter by that municipality
+                if ($municipalityId) {
+                    $innerQuery->where('municipality_id', $municipalityId);
+                } elseif ($provinceId) {
+                    // If a province ID is provided, filter by all municipalities within the province
+                    $innerQuery->whereHas('municipality', function ($query) use ($provinceId) {
+                        $query->where('province_id', $provinceId);
+                    });
+                }
             });
         });
 
+        // Additional filtering for job postings based on year and month
         $companiesQuery->whereHas('job_posting', function ($query) {
             // Apply year filter if provided
             if (!empty($this->munYear)) {
                 $query->whereYear('created_at', $this->munYear);
             }
 
+            // Apply month filter if provided
             if (!empty($this->munMonths) && is_array($this->munMonths)) {
                 $query->whereIn(DB::raw('MONTH(created_at)'), $this->munMonths);
             }
         });
-        // Count job postings in the admin's municipality with date and month filters
-        $companiesQuery->withCount(['job_posting as total_job_postings' => function ($query) use ($adminMunicipalityId) {
-            $query->whereHas('barangay', function ($innerQuery) use ($adminMunicipalityId) {
-                $innerQuery->where('municipality_id', $adminMunicipalityId);
+
+        // Count job postings in the municipality with date and month filters
+        $companiesQuery->withCount(['job_posting as total_job_postings' => function ($query) use ($municipalityId) {
+            $query->whereHas('barangay', function ($innerQuery) use ($municipalityId) {
+                if ($municipalityId) {
+                    $innerQuery->where('municipality_id', $municipalityId);
+                }
             });
 
             if (!empty($this->munYear)) {
@@ -431,11 +513,19 @@ class JobseekersList extends Component
         // Determine whether cross-municipality applications are enabled
         return $crossJobFeature && $crossJobFeature->feature_Status === 'enabled';
     }
+
     public function render()
     {
 
-        $jobseekers = $this->getJobseekers($this->municipalityID)->paginate(10, ['*'], 'jobseeker');
-        $employers = $this->getEmployers($this->municipalityID)->paginate(10, ['*'], 'company');
+        $jobseekers = null;
+        $employers = null;
+        if ($this->municipalityID) {
+            $jobseekers = $this->getJobseekers($this->municipalityID)->paginate(10, ['*'], 'jobseeker');
+            $employers = $this->getEmployers($this->municipalityID)->paginate(10, ['*'], 'company');
+        } elseif ($this->provinceID) {
+            $jobseekers = $this->getJobseekers(null, $this->provinceID)->paginate(10, ['*'], 'jobseeker');
+            $employers = $this->getEmployers(null, $this->provinceID)->paginate(10, ['*'], 'company');
+        }
         $crossJob = $this->getFeature();
 
         return view('livewire.admin.reports.municipality-partials.jobseekers-list', compact('jobseekers', 'employers', 'crossJob'));

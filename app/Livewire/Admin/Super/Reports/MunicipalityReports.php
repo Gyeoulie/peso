@@ -15,12 +15,30 @@ class MunicipalityReports extends Component
 
     public $searchMun;
     public $selectedMun, $munTitle;
-
+    public $selectedAnalytics, $analyticsValue;
     public function mount()
     {
+        $this->selectedAnalytics = 1;
+        $this->analyticsValue = 'Jobseekers';
         $firstMun = Municipality::first();
         $this->munSelect($firstMun->municipality_id);
 
+    }
+
+    public function updateAnalytics($id)
+    {
+        $this->selectedAnalytics = $id;
+
+        if ($id == 1) {
+            $this->analyticsValue = 'Jobseekers';
+
+        } elseif ($id == 2) {
+            // dd($this->selectedAnalytics);
+            $this->analyticsValue = 'Trends';
+
+        } elseif ($id == 3) {
+            $this->analyticsValue = 'Top';
+        }
     }
 
     public function munSelect($id)
@@ -28,7 +46,7 @@ class MunicipalityReports extends Component
         $municipality = Municipality::findOrFail($id);
 
         $this->selectedMun = $id;
-        $this->munTitle = $municipality->municipality_Name . ' ' . $municipality->province->province_Name;
+        $this->munTitle = $municipality->municipality_Name . ', ' . $municipality->province->province_Name;
         $this->dispatch('updateMun', $id);
     }
 

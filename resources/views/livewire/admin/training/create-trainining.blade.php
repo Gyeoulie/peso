@@ -1,7 +1,7 @@
-<div class="container mx-auto py-8">
+<div class="container py-8 mx-auto">
 
     {{-- GRID --}}
-    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+    <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
         {{-- TITLE --}}
         <div class="col-span-4 lg:col-span-12">
@@ -12,32 +12,32 @@
 
         <div class="col-span-4 lg:col-span-6">
 
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
                 <div class="flex flex-col w-full h-full">
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+                    <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="progTitle" :value="__('Program Title')" />
-                            <x-text-input wire:model='progTitle' class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model='progTitle' class="block w-full mt-1" type="text" />
                             <x-input-error :messages="$errors->get('progTitle')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="progHost" :value="__('Program Host')" />
-                            <x-text-input wire:model='progHost' class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model='progHost' class="block w-full mt-1" type="text" />
                             <x-input-error :messages="$errors->get('progHost')" class="mt-2" />
                         </div>
                     </div>
                 </div>
 
                 <div class="flex flex-col w-full h-full">
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="regDeadline" :value="__('Registration Deadline')" />
-                            <x-text-input wire:model='regDeadline' class="block mt-1 w-full" type="date" />
+                            <x-text-input wire:model='regDeadline' class="block w-full mt-1" type="date" />
                             <x-input-error :messages="$errors->get('regDeadline')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full">
                             <x-input-label for="progSlots" :value="__('Program Slots')" />
-                            <x-text-input wire:model='progSlots' class="block mt-1 w-full" type="number" />
+                            <x-text-input wire:model='progSlots' class="block w-full mt-1" type="number" />
                             <x-input-error :messages="$errors->get('progSlots')" class="mt-2" />
                         </div>
                     </div>
@@ -53,10 +53,10 @@
                         }
                     }
                 }">
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="progType" :value="__('Program Type')" />
-                            <select name="progType" wire:model="progType" class="block mt-1 w-full rounded-md"
+                            <select name="progType" wire:model="progType" class="block w-full mt-1 rounded-md"
                                 x-on:change="updateFields()">
                                 <option value="" disabled selected>Select Program Type</option>
                                 <option value="PESO Hosted">PESO Hosted</option>
@@ -64,16 +64,16 @@
                             </select>
                             <x-input-error :messages="$errors->get('progType')" class="mt-2" />
                         </div>
-                        <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+                        <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4">
                             <div class="flex flex-col w-full">
                                 <x-input-label for="progDate" :value="__('Program Date')" />
-                                <x-text-input wire:model="progDate" class="block mt-1 w-full" type="date"
+                                <x-text-input wire:model="progDate" class="block w-full mt-1" type="date"
                                     x-bind:disabled="progType !== 'PESO Hosted'" />
                                 <x-input-error :messages="$errors->get('progDate')" class="mt-2" />
                             </div>
                             <div class="flex flex-col w-full">
                                 <x-input-label for="progTime" :value="__('Program Time')" />
-                                <x-text-input wire:model="progTime" class="block mt-1 w-full" type="time"
+                                <x-text-input wire:model="progTime" class="block w-full mt-1" type="time"
                                     x-bind:disabled="progType !== 'PESO Hosted'" />
                                 <x-input-error :messages="$errors->get('progTime')" class="mt-2" />
                             </div>
@@ -82,15 +82,15 @@
                 </div>
 
                 <div class="flex flex-col w-full h-full">
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4 w-full">
+                    <div class="flex flex-col w-full gap-2 mt-4 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="progLoc" :value="__('Program Location')" />
-                            <x-text-input wire:model='progLoc' class="block mt-1 w-full" type="text" />
+                            <x-text-input wire:model='progLoc' class="block w-full mt-1" type="text" />
                             <x-input-error :messages="$errors->get('progLoc')" class="mt-2" />
                         </div>
                         <div class="flex flex-col w-full lg:w-1/3">
                             <x-input-label for="progModality" :value="__('Modality Type')" />
-                            <select wire:model='progModality' name="progModality" class="block mt-1 w-full rounded-md">
+                            <select wire:model='progModality' name="progModality" class="block w-full mt-1 rounded-md">
                                 <option value="" disabled selected>Select Modality Type</option>
                                 <option value="Face to Face">Face to Face</option>
                                 <option value="Online">Online</option>
@@ -111,22 +111,22 @@
 
 
 
-            <div class="bg-white shadow rounded-lg p-6 mt-4">
+            <div class="p-6 mt-4 bg-white rounded-lg shadow">
                 <div class="flex flex-col w-full h-full">
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+                    <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4">
                         <div class="flex flex-col w-full">
                             <x-input-label for="industry_tag" :value="__('Industry Tag')" />
-                            <x-text-input wire:model='jobIndustryPost' class="block mt-1 w-full" type="text" readonly
+                            <x-text-input wire:model='jobIndustryPost' class="block w-full mt-1" type="text" readonly
                                 x-data="" x-on:click.prevent="$dispatch('open-modal', 'industry-modal')"
                                 x-on:focus="$dispatch('open-modal', 'industry-modal')" />
                             <x-input-error :messages="$errors->get('jobIndustryPost')" class="mt-2" />
                         </div>
 
                     </div>
-                    <div class="flex flex-row my-4 w-full gap-4">
+                    <div class="flex flex-row w-full gap-4 my-4">
                         <div class="flex flex-col w-full">
 
-                            <div class="flex flex-row w-full items-center">
+                            <div class="flex flex-row items-center w-full">
 
                                 <x-input-label for="job_tags">Job Position
                                     Tags
@@ -149,7 +149,7 @@
                                         {{ $jobData['position_Title'] }}
                                         <button wire:click.prevent='removeTag( {{ $jobData['position_id'] }})'
                                             type="button"
-                                            class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
+                                            class="inline-flex items-center justify-center flex-shrink-0 rounded-full size-4 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 ">
                                             <span class="sr-only">Remove badge</span>
                                             <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -178,15 +178,15 @@
 
         <div class="col-span-4 lg:col-span-6">
 
-            <div class="bg-white shadow rounded-lg p-6 w-full h-full">
-                <div class="flex flex-col items-center mt-4 w-full h-full">
+            <div class="w-full h-full p-6 bg-white rounded-lg shadow">
+                <div class="flex flex-col items-center w-full h-full mt-4">
                     <x-input-label class="" for="fname" :value="__('Program Image')" />
                     <div class="flex flex-col items-center mt-4">
                         <div
                             class="w-[400px] h-[400px] bg-gray-200 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
 
                             <img id="uploadedImage"
-                                class="flex w-full-h-full uploaded-image object-cover shrink-0 grow-0"
+                                class="flex object-cover w-full-h-full uploaded-image shrink-0 grow-0"
                                 src="{{ isset($progImg) && $progImg->temporaryUrl() ? $progImg->temporaryUrl() : asset('assets/img/PESO-Logo.png') }}"
                                 alt="Uploaded Image" />
 
@@ -197,12 +197,12 @@
 
 
                     <x-input-error :messages="$errors->get('progImg')" class="mt-2" />
-                    <div class="flex h-full justify-center items-center">
+                    <div class="flex items-center justify-center h-full">
                         <label for="imageUpload" wire:loading.attr="disabled"
-                            class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md cursor-pointer hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Upload Image
                             <div wire:loading.delay.long wire:target="progImg" role="status">
-                                <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                                <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -223,9 +223,9 @@
         </div>
 
         <div class="col-span-4 lg:col-span-12">
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
 
-                <div class="flex flex-col lg:flex-row w-full gap-2 lg:gap-4 ">
+                <div class="flex flex-col w-full gap-2 lg:flex-row lg:gap-4 ">
 
                     <div class="flex flex-col w-full lg:w-1/2">
                         <x-input-label for="descPost">Program Description
@@ -266,7 +266,7 @@
 
                 <div class="flex flex-row justify-end mt-4 mb-2 ">
                     <x-green-button wire:loading.attr="disabled" wire:click.prevent='validateInput'
-                        type="button"><span class="text-lg mx-4">Post</span></x-green-button>
+                        type="button"><span class="mx-4 text-lg">Post</span></x-green-button>
                 </div>
 
 
@@ -285,17 +285,17 @@
     </div>
 
     <x-modal name="confirm-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Posting Confirmation') }}
             </h2>
             <hr>
-            <div class="flex flex-col justify-center items-center my-12">
+            <div class="flex flex-col items-center justify-center my-12">
 
                 <h1 class="text-2xl font-bold">Are you sure you want to create this training?</h1>
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'confirm-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -304,7 +304,7 @@
                     type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="saveProgram" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
