@@ -67,28 +67,25 @@
     <div class="flex flex-col w-11/12 h-5/6 p-6 sm:gap-y-4 lg:gap-y-0 lg:gap-x-4 lg:flex-row">
 
         {{-- jobseeker chart --}}
-        <div class="flex flex-col grow justify-evenly space-y-4 lg:space-y-0 lg:space-x-4 lg:flex-row">
+        <div class="flex flex-col grow justify-evenly space-y-4 lg:space-y-0 lg:space-x-4 lg:flex-row bg-green-300">
             {{-- chart ng jobseeker na most tag/industry na na-hire --}}
             <div class="flex flex-col justify-center space-y-4 grow-0 w-full h-full ">
-                <div class="flex grow ">
+                <div class="flex grow bg-red-300">
                     dito chart
                 </div>
 
-                <div class="flex justify-start h-12 ">
-                    dito tags/industry
-                </div>
             </div>
 
             {{-- chart ng matched? or narecommend na jobseeker,, top industry/tag --}}
             <div class="flex flex-col justify-center space-y-4 grow-0 w-full h-full ">
-                <div class="flex grow ">
-                    dito chart
+                <div>
+                    <h3 class="text-xl font-semibold lg:text-3xl">Popular Job Openings</h3>
+
                 </div>
 
-                <div class="flex justify-start h-12 ">
-                    dito tags/industry
+                <div class="flex h-full bg-red-300">
+                    <livewire:livewire-column-chart key="{{ $chartn->reactiveKey() }}" :column-chart-model="$chartn" />
                 </div>
-
             </div>
 
         </div>

@@ -1001,6 +1001,8 @@
     </footer>
 
     @vite(['resources/js/app.js'])
+    @livewireChartsScripts
+
 
 </body>
 
