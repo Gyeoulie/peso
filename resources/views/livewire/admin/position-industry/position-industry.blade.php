@@ -1,7 +1,7 @@
-<div wire:poll.5s class="container mx-auto py-8">
+<div wire:poll.5s class="container py-8 mx-auto">
 
     {{-- CONTIANER --}}
-    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+    <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
         {{-- TITLE --}}
         <div class="col-span-4 lg:col-span-12">
@@ -10,7 +10,7 @@
 
         {{-- JOB POSITION CONTAINER --}}
         <div class="col-span-4 lg:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
                 <div class="flex flex-row justify-between mb-4">
                     {{-- TITLE --}}
                     <div class="flex items-center">
@@ -28,7 +28,7 @@
 
                 <div class="relative overflow-x-auto ">
 
-                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+                    <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
 
                         <label for="table-search" class="sr-only">Search</label>
@@ -36,7 +36,7 @@
 
                         <div class="relative">
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -45,10 +45,10 @@
                             </div>
                             {{-- SEARCH --}}
                             <input type="search" wire:model.live='searchPosition'
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for job position">
                         </div>
-                        <div class="flex flex-wrap mr-3 gap-2">
+                        <div class="flex flex-wrap gap-2 mr-3">
                             <x-dropdown align="right" width="30">
                                 <x-slot name="trigger">
                                     <button
@@ -56,7 +56,7 @@
                                         <div>{{ $filterJob }}</div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -73,12 +73,12 @@
                                     </x-slot>
 
                                     <x-dropdown-link wire:click.prevent="updateFilter(1, 'All')"
-                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">All</x-dropdown-link>
+                                        class="block px-4 py-2 cursor-pointer hover:bg-gray-100">All</x-dropdown-link>
 
                                     <!-- Authentication -->
                                     <x-dropdown-link class="cursor-pointer"
                                         wire:click.prevent="updateFilter(1, 'Archived')"
-                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Archived</x-dropdown-link>
+                                        class="block px-4 py-2 cursor-pointer hover:bg-gray-100">Archived</x-dropdown-link>
 
                                 </x-slot>
                             </x-dropdown>
@@ -95,7 +95,7 @@
                                     <th scope="col" class="px-6 py-3 lg:w-1/3">
                                         Job Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 lg:w-full hidden lg:table-cell">
+                                    <th scope="col" class="hidden px-6 py-3 lg:w-full lg:table-cell">
                                         Position Name
                                     </th>
                                     <th scope="col" class="px-6 py-3 lg:w-1/3">
@@ -118,7 +118,7 @@
                                                     </svg>
 
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                <p class="mt-2 text-xl font-bold text-center text-black">
                                                     No Records Found!
                                                 </p>
                                             </div>
@@ -129,21 +129,21 @@
                                     @foreach ($jobpositions as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="hidden lg:block text-gray-500 font-medium text-lg uppercase">
+                                                <div class="hidden text-lg font-medium text-gray-500 uppercase lg:block">
                                                     {{ $data->position_Code }}
                                                 </div>
                                                 <div class="block lg:hidden">
-                                                    <div class="text-black font-bold text-md uppercase">
+                                                    <div class="font-bold text-black uppercase text-md">
                                                         {{ $data->position_Title }}
                                                     </div>
-                                                    <div class=" text-gray-500 font-medium text-md uppercase">
+                                                    <div class="font-medium text-gray-500 uppercase  text-md">
                                                         {{ $data->position_Code }}
                                                     </div>
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4 hidden lg:table-cell">
-                                                <div class="text-black font-bold text-lg uppercase">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                <div class="text-lg font-bold text-black uppercase">
                                                     {{ $data->position_Title }}
                                                 </div>
                                             </td>
@@ -154,8 +154,8 @@
                                                         <button
                                                             wire:click.prevent="editPosition('{{ $data->position_id }}')"
                                                             x-tooltip="tooltip" type="button"
-                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                                 stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -167,8 +167,8 @@
                                                         <div x-data="{ tooltip: 'Archive Job Position' }">
                                                             <button x-tooltip="tooltip" type="button"
                                                                 wire:click.prevent="archiveConfirmation(1, {{ $data->position_id }})"
-                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-red-700 border border-red-700 rounded-lg hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300">
+                                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                     fill="none" viewBox="0 0 24 24"
                                                                     stroke-width="1.5" stroke="currentColor">
                                                                     <path stroke-linecap="round"
@@ -183,8 +183,8 @@
                                                         <div x-data="{ tooltip: 'Restore Job Position' }">
                                                             <button x-tooltip="tooltip" type="button"
                                                                 wire:click.prevent="restoreConfirmation(1, {{ $data->position_id }})"
-                                                                class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-green-700 border border-green-700 rounded-lg hover:bg-green-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-green-300">
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                     viewBox="0 0 24 24" fill="currentColor">
                                                                     <path fill-rule="evenodd"
@@ -217,7 +217,7 @@
 
         {{-- INDUSTRY CONTAINER --}}
         <div class="col-span-4 lg:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
 
                 {{-- TITLE --}}
                 <div class="flex flex-row justify-between mb-4">
@@ -238,7 +238,7 @@
 
                 <div class="relative overflow-x-auto ">
 
-                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+                    <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
 
                         <label for="table-search" class="sr-only">Search</label>
@@ -246,7 +246,7 @@
 
                         <div class="relative">
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -255,10 +255,10 @@
                             </div>
                             {{-- SEARCH --}}
                             <input type="search" wire:model.live='searchIndustry'
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search for industry">
                         </div>
-                        <div class="flex flex-wrap mr-3 gap-2">
+                        <div class="flex flex-wrap gap-2 mr-3">
                             <x-dropdown align="right" width="30">
                                 <x-slot name="trigger">
                                     <button
@@ -266,7 +266,7 @@
                                         <div>{{ $filterIndustry }}</div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -283,11 +283,11 @@
                                     </x-slot>
 
                                     <x-dropdown-link wire:click.prevent="updateFilter(2, 'All')"
-                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">All</x-dropdown-link>
+                                        class="block px-4 py-2 cursor-pointer hover:bg-gray-100">All</x-dropdown-link>
 
                                     <!-- Authentication -->
                                     <x-dropdown-link wire:click.prevent="updateFilter(2, 'Archived')"
-                                        class="block px-4 py-2 hover:bg-gray-100 cursor-pointer">Archived</x-dropdown-link>
+                                        class="block px-4 py-2 cursor-pointer hover:bg-gray-100">Archived</x-dropdown-link>
 
                                 </x-slot>
                             </x-dropdown>
@@ -303,7 +303,7 @@
                                     <th scope="col" class="px-6 py-3 lg:w-1/3">
                                         Industry Code
                                     </th>
-                                    <th scope="col" class="px-6 py-3 lg:w-full hidden lg:table-cell">
+                                    <th scope="col" class="hidden px-6 py-3 lg:w-full lg:table-cell">
                                         Industry Title
                                     </th>
                                     <th scope="col" class="px-6 py-3 lg:w-1/3">
@@ -326,7 +326,7 @@
                                                     </svg>
 
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                <p class="mt-2 text-xl font-bold text-center text-black">
                                                     No Records Found!
                                                 </p>
                                             </div>
@@ -337,21 +337,21 @@
                                     @foreach ($industry as $data)
                                         <tr class="bg-white border-b hover:bg-gray-50">
                                             <td class="px-6 py-4">
-                                                <div class="hidden lg:block text-gray-500 font-medium text-lg uppercase">
+                                                <div class="hidden text-lg font-medium text-gray-500 uppercase lg:block">
                                                     {{ $data->industry_Code }}
                                                 </div>
                                                 <div class="block lg:hidden">
-                                                    <div class="text-black font-bold text-md uppercase">
+                                                    <div class="font-bold text-black uppercase text-md">
                                                         {{ $data->industry_Title }}
                                                     </div>
-                                                    <div class=" text-gray-500 font-medium text-md uppercase">
+                                                    <div class="font-medium text-gray-500 uppercase  text-md">
                                                         {{ $data->industry_Code }}
                                                     </div>
                                                 </div>
                                             </td>
 
-                                            <td class="px-6 py-4 hidden lg:table-cell">
-                                                <div class="text-black font-bold text-lg uppercase">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                <div class="text-lg font-bold text-black uppercase">
                                                     {{ $data->industry_Title }}
                                                 </div>
                                             </td>
@@ -362,8 +362,8 @@
                                                         <button
                                                             wire:click.prevent="editIndustry('{{ $data->industry_id }}')"
                                                             x-tooltip="tooltip" type="button"
-                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                                 stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -375,8 +375,8 @@
                                                         <div x-data="{ tooltip: 'Archive Industry' }">
                                                             <button x-tooltip="tooltip" type="button"
                                                                 wire:click.prevent="archiveConfirmation(2, {{ $data->industry_id }})"
-                                                                class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-red-700 border border-red-700 rounded-lg hover:bg-red-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-red-300">
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
                                                                     stroke="currentColor">
@@ -392,8 +392,8 @@
                                                         <div x-data="{ tooltip: 'Restore Industry' }">
                                                             <button x-tooltip="tooltip" type="button"
                                                                 wire:click.prevent="restoreConfirmation(2, {{ $data->industry_id }})"
-                                                                class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                                <svg class="h-5 w-5"
+                                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-green-700 border border-green-700 rounded-lg hover:bg-green-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-green-300">
+                                                                <svg class="w-5 h-5"
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                     viewBox="0 0 24 24" fill="currentColor">
                                                                     <path fill-rule="evenodd"
@@ -432,32 +432,32 @@
 
     {{-- JOB POSITION MODAL --}}
     <x-modal name="jobposition-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Add Job Position') }}
             </h2>
 
             <hr>
 
-            <div class="flex flex-col lg:flex-row gap-2 lg:gap-6 mt-2 w-full">
+            <div class="flex flex-col w-full gap-2 mt-2 lg:flex-row lg:gap-6">
 
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="positionPost" :value="__('Job Position Title')" />
-                    <x-text-input wire:model='positionPost' id="positionPost" class="block mt-1 w-full uppercase"
+                    <x-text-input wire:model='positionPost' id="positionPost" class="block w-full mt-1 uppercase"
                         type="text" />
                     <x-input-error :messages="$errors->get('positionPost')" class="mt-2" />
                 </div>
 
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="pcodePost" :value="__('Job Position Code')" />
-                    <x-text-input wire:model='pcodePost' id="pcodePost" class="block mt-1 w-full uppercase"
+                    <x-text-input wire:model='pcodePost' id="pcodePost" class="block w-full mt-1 uppercase"
                         type="text" />
                     <x-input-error :messages="$errors->get('pcodePost')" class="mt-2" />
                 </div>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent="close('jobposition')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -473,32 +473,32 @@
 
     {{-- INDUSTRY MODAL --}}
     <x-modal name="industry-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Add Industry') }}
             </h2>
 
             <hr>
 
-            <div class="flex flex-col lg:flex-row gap-2 lg:gap-6 mt-2 w-full">
+            <div class="flex flex-col w-full gap-2 mt-2 lg:flex-row lg:gap-6">
 
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="industryPost" :value="__('Industry Title')" />
-                    <x-text-input wire:model='industryPost' id="industryPost" class="block mt-1 w-full uppercase"
+                    <x-text-input wire:model='industryPost' id="industryPost" class="block w-full mt-1 uppercase"
                         type="text" />
                     <x-input-error :messages="$errors->get('industryPost')" class="mt-2" />
                 </div>
 
-                <div class="flex flex-col mt-2 w-full">
+                <div class="flex flex-col w-full mt-2">
                     <x-input-label for="icodePost" :value="__('Industry Code')" />
-                    <x-text-input wire:model='icodePost' id="icodePost" class="block mt-1 w-full uppercase"
+                    <x-text-input wire:model='icodePost' id="icodePost" class="block w-full mt-1 uppercase"
                         type="text" />
                     <x-input-error :messages="$errors->get('icodePost')" class="mt-2" />
                 </div>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button wire:click.prevent="close('industry')" type="button">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -511,18 +511,18 @@
     </x-modal>
 
     <x-modal name="delete-jobposition-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Action Confirmation') }}
             </h2>
             <hr>
-            <div class="flex flex-col justify-center items-center my-12">
+            <div class="flex flex-col items-center justify-center my-12">
 
                 <h1 class="text-2xl font-bold">Are you sure you want to archive this job position?</h1>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'delete-jobposition-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -531,7 +531,7 @@
                     type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="confirmArchive(1)" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -547,18 +547,18 @@
         </div>
     </x-modal>
     <x-modal name="delete-industry-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Action Confirmation') }}
             </h2>
             <hr>
-            <div class="flex flex-col justify-center items-center my-12">
+            <div class="flex flex-col items-center justify-center my-12">
 
                 <h1 class="text-2xl font-bold">Are you sure you want to archive this industry?</h1>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'delete-industry-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -567,7 +567,7 @@
                     type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="confirmArchive(2)" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -583,18 +583,18 @@
         </div>
     </x-modal>
     <x-modal name="restore-jobposition-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Action Confirmation') }}
             </h2>
             <hr>
-            <div class="flex flex-col justify-center items-center my-12">
+            <div class="flex flex-col items-center justify-center my-12">
 
                 <h1 class="text-2xl font-bold">Are you sure you want to restore this job position?</h1>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'restore-jobposition-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -603,7 +603,7 @@
                     type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="confirmRestore(1)" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -619,18 +619,18 @@
         </div>
     </x-modal>
     <x-modal name="restore-industry-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Action Confirmation') }}
             </h2>
             <hr>
-            <div class="flex flex-col justify-center items-center my-12">
+            <div class="flex flex-col items-center justify-center my-12">
 
                 <h1 class="text-2xl font-bold">Are you sure you want to restore this industry?</h1>
 
 
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="flex justify-end mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'restore-industry-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -639,7 +639,7 @@
                     type="button">
                     {{ __('Confirm') }}
                     <div wire:loading.delay.long wire:target="confirmRestore(2)" role="status">
-                        <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                        <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

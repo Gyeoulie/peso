@@ -1,4 +1,4 @@
-<div wire:poll class="container mx-auto py-8">
+<div wire:poll class="container py-8 mx-auto">
     <style>
         #QrScanner {
             position: relative;
@@ -11,7 +11,7 @@
             /* Ensure it's above the modal background but below other modal content */
         }
     </style>
-    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+    <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
         <div class="col-span-4 lg:col-span-12">
 
@@ -21,21 +21,21 @@
 
 
         <div class="col-span-4 px-2 lg:px-0">
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
 
-                <div class="flex flex-col justify-center items-center">
+                <div class="flex flex-col items-center justify-center">
                     {{-- COMPANY IMAGE --}}
                     {{-- <img src="{{ asset('storage/' . $programInfo->program_pubmat) }}"
-                        class="w-32 h-32 bg-gray-300 rounded-md mb-4  shrink-0 object-cover shadow-xl">
+                        class="object-cover w-32 h-32 mb-4 bg-gray-300 rounded-md shadow-xl shrink-0">
 
 
                     </img> --}}
 
-                    <h1 class="text-3xl text-blue-500 font-bold text-center">{{ $programInfo->program_Title }}
+                    <h1 class="text-3xl font-bold text-center text-blue-500">{{ $programInfo->program_Title }}
                     </h1>
 
-                    <div class="flex flex-row mt-6 justify-between w-full">
-                        <p class="text-md text-gray-800">{{ $programInfo->program_Type }}</p>
+                    <div class="flex flex-row justify-between w-full mt-6">
+                        <p class="text-gray-800 text-md">{{ $programInfo->program_Type }}</p>
                         <p class="text-sm text-gray-800">{{ $programInfo->created_at->format('F j, Y') }}</p>
                     </div>
 
@@ -46,7 +46,7 @@
 
                 <div class="flex flex-col">
                     {{-- JOB POSTING INFORMATION --}}
-                    <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">Event
+                    <span class="mb-2 font-bold tracking-wider text-gray-700 uppercase">Event
                         Details</span>
 
 
@@ -54,19 +54,19 @@
                     <ul>
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Program Host:</li>
-                            <p class="ms-4 break-all">{{ $programInfo->program_Host }}</p>
+                            <p class="break-all ms-4">{{ $programInfo->program_Host }}</p>
                         </div>
 
                         @if ($programInfo->program_Slots != null)
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Program Slots:</li>
-                                <p class="ms-4 break-all">
+                                <p class="break-all ms-4">
                                     {{ $programInfo->program_reg_count }}/{{ $programInfo->program_Slots }} </p>
                             </div>
                         @endif
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Registration Deadline:</li>
-                            <p class="ms-4 break-all">{{ $programInfo->program_Deadline->format('F j, Y') }}</p>
+                            <p class="break-all ms-4">{{ $programInfo->program_Deadline->format('F j, Y') }}</p>
                         </div>
 
                         @if ($programInfo->program_Datetime)
@@ -81,25 +81,25 @@
                         @endif
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Industry Tag</li>
-                            <p class="ms-4 break-all">{{ $programInfo->job_industry->industry_Title }}</p>
+                            <p class="break-all ms-4">{{ $programInfo->job_industry->industry_Title }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Program Status:</li>
-                            <p class="ms-4 break-all">{{ $programInfo->program_Status }}</p>
+                            <p class="break-all ms-4">{{ $programInfo->program_Status }}</p>
                         </div>
 
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Location:</li>
-                            <p class="ms-4 break-all">{{ $programInfo->program_Location }}</p>
+                            <p class="break-all ms-4">{{ $programInfo->program_Location }}</p>
                         </div>
 
                     </ul>
 
                     {{-- JOB POST LINK --}}
-                    <div class="mt-6 flex flex-wrap justify-center">
+                    <div class="flex flex-wrap justify-center mt-6">
                         <a wire:navigate href="{{ route('admin-view-training', ['id' => $programInfo->program_id]) }}"
-                            class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded">View Training Details</a>
+                            class="px-4 py-2 text-white bg-blue-700 rounded hover:bg-blue-800">View Training Details</a>
                     </div>
 
                 </div>
@@ -107,7 +107,7 @@
             </div>
 
 
-            <div class="bg-white shadow rounded-lg p-6 mt-4">
+            <div class="p-6 mt-4 bg-white rounded-lg shadow">
 
                 <div class="flex flex-row w-full gap-4">
 
@@ -115,10 +115,10 @@
                         <x-input-label for="fname"> </i> Job Position
                             Tags
                         </x-input-label>
-                        <hr class="h-px my-1  bg-gray-200 border-0 dark:bg-gray-700">
+                        <hr class="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700">
 
                         {{-- JOB TAG CONTAINER --}}
-                        <div id= "otherSkillRow" class="flex-inline p-1">
+                        <div id= "otherSkillRow" class="p-1 flex-inline">
 
                             @foreach ($programInfo->program_tags as $jobtags)
                                 <span
@@ -139,31 +139,31 @@
 
 
         {{-- CONTAINER FOR TABS --}}
-        <div class="col-span-4 lg:col-span-8 px-2 lg:px-0" x-data="{
+        <div class="col-span-4 px-2 lg:col-span-8 lg:px-0" x-data="{
             selectedJobseeker: @entangle('selectedJobseeker')
         }">
             {{-- APPLICATION LIST CONTAINER --}}
-            <div x-show="!selectedJobseeker" class="bg-white shadow rounded-lg p-6"
+            <div x-show="!selectedJobseeker" class="p-6 bg-white rounded-lg shadow"
                 x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                 x-transition:enter-end="opacity-100 scale-100">
                 <div class="flex flex-row justify-between">
-                    <h1 class="text-lg lg:text-2xl font-bold mb">Registrant List:
+                    <h1 class="text-lg font-bold lg:text-2xl mb">Registrant List:
                         {{ $programInfo->program_reg_count }}</h1>
-                    {{-- <h1 class="text-lg lg:text-2xl font-bold mb">Registered: {{ $programInfo->program_reg_count }}</h1> --}}
+                    {{-- <h1 class="text-lg font-bold lg:text-2xl mb">Registered: {{ $programInfo->program_reg_count }}</h1> --}}
                     <x-primary-button wire:click.prevent='scanQr'>QR Code</x-primary-button>
 
                 </div>
-                <hr class="h-px my-4  bg-gray-200 border-0 dark:bg-gray-700">
+                <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
                 <div class="relative ">
-                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+                    <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
                         <div>
 
                             <label for="table-search" class="sr-only">Search</label>
                             <div class="relative">
                                 <div
-                                    class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                     <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -173,12 +173,12 @@
 
                                 {{-- SEARCH --}}
                                 <input wire:model.live='search' type="search" id="table-search-users"
-                                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Search for Applicants">
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap mr-3 gap-2">
+                        <div class="flex flex-wrap gap-2 mr-3">
 
                             <div x-data="{ tooltip: 'Export to Excel' }">
                                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
@@ -203,7 +203,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -250,7 +250,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -281,16 +281,16 @@
 
                     {{-- APPLICANT LIST TABLE --}}
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         Name
                                     </th>
-                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Registered Date
                                     </th>
-                                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -302,8 +302,8 @@
                                 @if ($programRegistrants->isEmpty())
                                     <tr>
                                         <td colspan="4">
-                                            <div class="flex flex-col justify-center items-center mt-20 mb-20">
-                                                <div class="flex bg-gray-100 rounded-full p-1">
+                                            <div class="flex flex-col items-center justify-center mt-20 mb-20">
+                                                <div class="flex p-1 bg-gray-100 rounded-full">
                                                     <svg class="w-16 h-16 text-black" aria-hidden="true"
                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke="currentColor">
@@ -312,7 +312,7 @@
                                                             d="M21 21l-3.5-3.5m0 0a7 7 0 1 1-9-10.5 7 7 0 0 1 9 10.5z" />
                                                     </svg>
                                                 </div>
-                                                <div class="text-center text-black text-xl font-semibold mt-2">
+                                                <div class="mt-2 text-xl font-semibold text-center text-black">
                                                     No Registrants Found
                                                 </div>
                                             </div>
@@ -324,56 +324,56 @@
                                             class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full object-cover shadow-xl"
+                                                <img class="object-cover w-10 h-10 rounded-full shadow-xl"
                                                     src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                     alt="user-{{ $data->employee->employee_id }}">
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">{{ $data->employee->fname }}
                                                         {{ $data->employee->lname }}</div>
-                                                    <div class="hidden lg:flex flex-col text-gray-500 text-sm ">
+                                                    <div class="flex-col hidden text-sm text-gray-500 lg:flex ">
                                                         {{ $data->employee->barangay->barangay_Name }},
                                                         {{ $data->employee->barangay->municipality->municipality_Name }}</span>
                                                     </div>
 
-                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
+                                                    <div class="text-sm font-normal text-gray-500 uppercase lg:hidden">
                                                         {{ $data->employee->barangay->barangay_Name }},
                                                         {{ $data->employee->barangay->municipality->municipality_Name }}
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
+                                                    <div class="text-sm font-normal text-gray-500 uppercase lg:hidden">
                                                         <span>{{ $data->created_at->format('g:i A') }}</span>
                                                         <span>{{ $data->created_at->format('F j, Y') }}</span>
                                                     </div>
-                                                    <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
+                                                    <div class="text-sm font-normal text-gray-500 uppercase lg:hidden">
                                                         @if ($data->program_reg_Status == 'REGISTERED')
                                                             <span
-                                                                class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
+                                                                class="inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
                                                         @elseif ($data->program_reg_Status == 'COMPLETED')
                                                             <span
-                                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
+                                                                class="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">COMPLETED</span>
                                                         @elseif ($data->program_reg_Status == 'CANCELLED')
                                                             <span
-                                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-xs font-medium text-red-800 ring-1 ring-inset ring-red-600/20">CANCELLED</span>
+                                                                class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                                         @endif
                                                     </div>
 
                                             </th>
-                                            <td class="hidden lg:table-cell px-6 py-4">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
                                                 <div class="flex flex-col text-base uppercase">
                                                     <span>{{ $data->created_at->format('g:i A') }}</span>
                                                     <span>{{ $data->created_at->format('F j, Y') }}</span>
                                                 </div>
                                             </td>
-                                            <td class="hidden lg:table-cell px-6 py-4">
-                                                <div class="text-base text-sm">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
+                                                <div class="text-sm text-base">
                                                     @if ($data->program_reg_Status == 'REGISTERED')
                                                         <span
-                                                            class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
+                                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
                                                     @elseif ($data->program_reg_Status == 'COMPLETED')
                                                         <span
-                                                            class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
+                                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">COMPLETED</span>
                                                     @elseif ($data->program_reg_Status == 'CANCELLED')
                                                         <span
-                                                            class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">CANCELLED</span>
+                                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                                     @endif
                                                 </div>
                                             </td>
@@ -382,8 +382,8 @@
                                                     <button
                                                         wire:click.prevent="getJobseeker({{ $data->program_reg_id }})"
                                                         x-tooltip="tooltip" type="button"
-                                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                        class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 24 24" fill="currentColor">
                                                             <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                             <path fill-rule="evenodd"
@@ -411,13 +411,13 @@
 
 
 
-            <div x-show="selectedJobseeker" class="bg-white shadow rounded-lg p-6 flex flex-col"
+            <div x-show="selectedJobseeker" class="flex flex-col p-6 bg-white rounded-lg shadow"
                 x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
                 x-transition:enter-end="opacity-100 scale-100" x-cloak>
                 @if ($selectedJobseeker)
                     <div class="flex flex-row items-center gap-4">
                         <button @click="selectedJobseeker = null">
-                            <div class="flex items-center rounded-full hover:bg-gray-300 transition-transform p-1">
+                            <div class="flex items-center p-1 transition-transform rounded-full hover:bg-gray-300">
                                 <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -425,7 +425,7 @@
                                 </svg>
                             </div>
                         </button>
-                        <h2 class="text-lg lg:text-2xl font-bold">Job Seeker Information</h2>
+                        <h2 class="text-lg font-bold lg:text-2xl">Job Seeker Information</h2>
 
                     </div>
                     <div class="px-2">
@@ -435,11 +435,11 @@
                                     class="flex w-[190px] h-[150px] bg-gray-300 object-cover rounded-lg shrink-0 grow-0">
                                 </img>
                             </div>
-                            <div class="flex flex-col ml-4  justify-center">
+                            <div class="flex flex-col justify-center ml-4">
                                 <div x-data="{ tooltip: 'View Profile' }">
                                     <a x-tooltip="tooltip"
                                         href="{{ route('jobseeker.profile', ['id' => $jobseekerInfo->employee->employee_id]) }}">
-                                        <h1 class="text-2xl lg:text-4xl font-bold hover:text-blue-500">
+                                        <h1 class="text-2xl font-bold lg:text-4xl hover:text-blue-500">
                                             {{ $jobseekerInfo->employee->fname }}
                                             {{ $jobseekerInfo->employee->mname }}
                                             {{ $jobseekerInfo->employee->lname }}
@@ -452,13 +452,13 @@
                                 </h1>
 
                             </div>
-                            <div class="hidden lg:flex flex-row ml-auto mr-0 mb-auto mt-0">
+                            <div class="flex-row hidden mt-0 mb-auto ml-auto mr-0 lg:flex">
                                 @if ($isMatch === true)
                                     <span
-                                        class="inlineflex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">MATCHES</span>
+                                        class="items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md inlineflex ring-1 ring-inset ring-green-600/20">MATCHES</span>
                                 @else
                                     <span
-                                        class="inlineflex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">NOT
+                                        class="items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md inlineflex ring-1 ring-inset ring-yellow-600/20">NOT
                                         MATCH</span>
                                 @endif
                             </div>
@@ -466,14 +466,14 @@
                         <hr class="mt-4">
                         <div class="flex flex-col mt-4">
 
-                            <span class="text-gray-700 uppercase font-bold tracking-wider mb-2">Jobseeker
+                            <span class="mb-2 font-bold tracking-wider text-gray-700 uppercase">Jobseeker
                                 Details</span>
 
                             <ul>
 
                                 <div class="flex flex-row">
                                     <li class="mb-2 font-bold">Date Registered:</li>
-                                    <p class="ms-4 break-all">
+                                    <p class="break-all ms-4">
                                         {{ $jobseekerInfo->created_at->format('F j, Y') }}
                                     </p>
                                 </div>
@@ -517,7 +517,7 @@
                                 <div class="flex flex-col w-full mt-1">
                                     <li class="mb-1 font-bold">Industry Preference:</li>
                                     {{-- BADGE CONTAINER --}}
-                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                    <div id= "otherSkillRow" class="p-1 flex-inline">
                                         {{-- BADGE --}}
 
                                         @foreach ($jobseekerInfo->employee->industry_preference as $industryPref)
@@ -532,7 +532,7 @@
                                 <div class="flex flex-col w-full mt-1">
                                     <li class="mb-1 font-bold">Job Preference:</li>
                                     {{-- BADGE CONTAINER --}}
-                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                    <div id= "otherSkillRow" class="p-1 flex-inline">
                                         {{-- BADGE --}}
 
                                         @foreach ($jobseekerInfo->employee->job_preference as $jobPref)
@@ -546,7 +546,7 @@
                                 <div class="flex flex-col w-full mt-1">
                                     <li class="mb-1 font-bold">Skills:</li>
                                     {{-- BADGE CONTAINER --}}
-                                    <div id= "otherSkillRow" class="flex-inline p-1">
+                                    <div id= "otherSkillRow" class="p-1 flex-inline">
                                         {{-- BADGE --}}
 
                                         @foreach ($jobseekerInfo->employee->skills as $empSkills)
@@ -560,12 +560,12 @@
 
 
                             </ul>
-                            <div class="mt-2 flex flex-wrap gap-4 justify-center">
+                            <div class="flex flex-wrap justify-center gap-4 mt-2">
                                 <div x-data="{ tooltip: 'View Profile' }">
                                     <a wire:navigate
                                         href="{{ route('jobseeker.profile', ['id' => $jobseekerInfo->employee->employee_id]) }}"
                                         x-tooltip="tooltip" type="button"
-                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                        class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
 
                                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -580,7 +580,7 @@
                             </div>
 
                             @if ($jobseekerInfo->program_reg_Status == 'REGISTERED' && in_array($programInfo->program_Status, ['ACTIVE', 'CLOSED']))
-                                <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                                <div class="flex flex-wrap justify-center gap-4 mt-6">
 
                                     <x-danger-button
                                         wire:click.prevent="confirmReg('CANCELLED', {{ $jobseekerInfo->program_reg_id }})"
@@ -611,15 +611,15 @@
 
 
     <x-modal name="qr-scanner-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Scan a QR Code') }}
             </h2>
             <hr>
-            <div class="flex flex-col w-full h-full items-center my-4">
+            <div class="flex flex-col items-center w-full h-full my-4">
                 <div id="QrScanner" class="flex h-full"></div>
             </div>
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button wire:click.prevent='qrStop'>
                     {{ __('Cancel') }}
                 </x-secondary-button>

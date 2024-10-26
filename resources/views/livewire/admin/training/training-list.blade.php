@@ -1,12 +1,12 @@
-<div wire:poll class="container mx-auto py-8">
-    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+<div wire:poll class="container py-8 mx-auto">
+    <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
         <div class="col-span-4 lg:col-span-12">
             <h1 class="text-2xl font-bold">Trainings / Training List</h1>
         </div>
 
         <div class="col-span-4 lg:col-span-12">
-            <div class="bg-white shadow rounded-lg p-6 overflow-visible" x-data="{
+            <div class="p-6 overflow-visible bg-white rounded-lg shadow" x-data="{
                 openTab: @entangle('filter').defer || '', // Default value to 'ALL'
                 activeClasses: 'text-gray-900 bg-gray-400 active',
                 inactiveClasses: 'bg-gray-100 hover:text-gray-700 hover:bg-gray-50',
@@ -35,7 +35,7 @@
                     </div>
 
                     <!-- Desktop Tabs -->
-                    <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex mb-3">
+                    <ul class="hidden mb-3 text-sm font-medium text-center text-gray-500 rounded-lg shadow lg:flex">
                         <li class="w-full focus-within:z-10">
                             <button @click="changeFilter('')"
                                 :class="openTab === '' ? activeClasses : inactiveClasses"
@@ -55,12 +55,12 @@
                     </ul>
 
 
-                    <div class="flex flex-col lg:flex-row p-1 lg:justify-between gap-2 space-y-4 lg:space-y-0 pb-4">
+                    <div class="flex flex-col gap-2 p-1 pb-4 space-y-4 lg:flex-row lg:justify-between lg:space-y-0">
 
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative">
                             <div
-                                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                                class="absolute inset-y-0 flex items-center pointer-events-none rtl:inset-r-0 start-0 ps-3">
                                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -70,11 +70,11 @@
 
                             {{-- SEARCH --}}
                             <input wire:model.live='search' type="search" id="table-search-users"
-                                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 lg:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Search">
                         </div>
 
-                        <div class="flex flex-wrap mr-3 gap-2">
+                        <div class="flex flex-wrap gap-2 mr-3">
                             <div x-data="{ tooltip: 'Export to Excel' }">
                                 <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
                                     class="flex items-center py-1.5 px-4 text-xs lg:text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
@@ -97,7 +97,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -143,7 +143,7 @@
                                         </div>
 
                                         <div class="ms-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -171,27 +171,27 @@
                         </div>
                     </div>
 
-                    <div class="class flex overflow-x-auto">
+                    <div class="flex overflow-x-auto class">
                         {{-- TABLE --}}
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <table class="w-full text-sm text-left text-gray-500 rtl:text-right">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 ">
                                         Program Title
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Program Type
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Program Registrants
                                     </th>
-                                    <th scope="col" class="px-6 py-3 text-center hidden lg:table-cell">
+                                    <th scope="col" class="hidden px-6 py-3 text-center lg:table-cell">
                                         Date Posted
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Registration Deadline
                                     </th>
-                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">
+                                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                                         Program Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -213,7 +213,7 @@
                                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                     </svg>
                                                 </div>
-                                                <p class="text-xl font-bold text-black text-center mt-2">
+                                                <p class="mt-2 text-xl font-bold text-center text-black">
                                                     No Records Found!
                                                 </p>
                                             </div>
@@ -225,30 +225,30 @@
                                             class="bg-white border-b hover:bg-gray-50">
                                             <th scope="row"
                                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                                <img class="w-10 h-10 rounded-full object-cover shadow-xl"
+                                                <img class="object-cover w-10 h-10 rounded-full shadow-xl"
                                                     src="{{ file_exists(public_path('storage/' . $data->program_pubmat)) ? asset('storage/' . $data->program_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                                     alt="pubmat-{{ $data->program_id }}">
                                                 <div class="ps-3 text-wrap">
                                                     <div class="text-base font-semibold">{{ $data->program_Title }}
                                                     </div>
                                                     <div
-                                                        class="font-normal text-gray-500 text-sm uppercase hidden lg:block">
+                                                        class="hidden text-sm font-normal text-gray-500 uppercase lg:block">
                                                         {{ $data->program_Host }}
                                                     </div>
 
                                                     <!-- Extra information for mobile screens -->
-                                                    <div class="lg:hidden text-gray-500 text-sm">
+                                                    <div class="text-sm text-gray-500 lg:hidden">
                                                         {{ $data->program_Host }}
                                                     </div>
-                                                    <div class="lg:hidden text-gray-500 text-sm">
+                                                    <div class="text-sm text-gray-500 lg:hidden">
                                                         Registrants: <span
-                                                            class="text-black font-bold">{{ $data->program_reg_count }}</span>
+                                                            class="font-bold text-black">{{ $data->program_reg_count }}</span>
                                                     </div>
-                                                    <div class="lg:hidden text-gray-500 text-sm">
-                                                        Deadline: <span class="text-black font-bold">
+                                                    <div class="text-sm text-gray-500 lg:hidden">
+                                                        Deadline: <span class="font-bold text-black">
                                                             {{ $data->program_Deadline->format('F j, Y') }}</span>
                                                     </div>
-                                                    <div class="lg:hidden text-gray-500 text-sm">
+                                                    <div class="text-sm text-gray-500 lg:hidden">
                                                         <div class="flex items-center">
                                                             <div
                                                                 class="h-2.5 w-2.5 rounded-full {{ $data->program_Status === 'ACTIVE' ? 'bg-green-500' : ($data->program_Status === 'CLOSED' ? 'bg-cyan-500' : ($data->program_Status === 'COMPLETED' ? 'bg-blue-500' : 'bg-red-500')) }} me-2">
@@ -259,22 +259,22 @@
 
                                                 </div>
                                             </th>
-                                            <td class="px-6 py-4 hidden lg:table-cell">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
                                                 <div class="text-base font-semibold">{{ $data->program_Type }}</div>
                                             </td>
-                                            <td class="px-6 py-4 hidden lg:table-cell">{{ $data->program_reg_count }}
+                                            <td class="hidden px-6 py-4 lg:table-cell">{{ $data->program_reg_count }}
                                             </td>
-                                            <td class="px-6 py-4 text-center hidden lg:table-cell">
+                                            <td class="hidden px-6 py-4 text-center lg:table-cell">
                                                 <div class="text-base font-semibold">
                                                     {{ $data->created_at->format('g:i A') }}</div>
                                                 <div class="text-base font-semibold">
                                                     {{ $data->created_at->format('F j, Y') }}</div>
                                             </td>
-                                            <td class="px-6 py-4 hidden lg:table-cell">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
                                                 <div class="text-base font-semibold">
                                                     {{ $data->program_Deadline->format('F j, Y') }}</div>
                                             </td>
-                                            <td class="px-6 py-4 hidden lg:table-cell">
+                                            <td class="hidden px-6 py-4 lg:table-cell">
                                                 <div class="flex items-center">
                                                     <div
                                                         class="h-2.5 w-2.5 rounded-full {{ $data->program_Status === 'ACTIVE' ? 'bg-green-500' : ($data->program_Status === 'CLOSED' ? 'bg-cyan-500' : ($data->program_Status === 'COMPLETED' ? 'bg-blue-500' : 'bg-red-500')) }} me-2">
@@ -288,8 +288,8 @@
                                                         <a wire:navigate
                                                             href="{{ route('admin-view-training', ['id' => $data->program_id]) }}"
                                                             x-tooltip="tooltip" type="button"
-                                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
                                                                 viewBox="0 0 24 24" fill="currentColor">
                                                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                                 <path fill-rule="evenodd"
@@ -302,7 +302,7 @@
                                                         <a wire:navigate
                                                             href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
                                                             x-tooltip="tooltip" type="button"
-                                                            class="text-cyan-700 border border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
+                                                            class="inline-flex items-center p-1 text-sm font-medium text-center border rounded-lg text-cyan-700 border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300">
                                                             <svg class="w-5 h-5 " aria-hidden="true"
                                                                 xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" fill="none" viewBox="0 0 24 24">

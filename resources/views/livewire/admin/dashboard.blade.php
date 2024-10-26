@@ -1,13 +1,13 @@
-<div class="container mx-auto py-8">
+<div class="container py-8 mx-auto">
 
 
 
 
-    <div class="grid grid-cols-4 lg:grid-cols-12 gap-4 p-3 lg:p-0">
+    <div class="grid grid-cols-4 gap-4 p-3 lg:grid-cols-12 lg:p-0">
 
 
         {{-- <div class="col-span-2 lg:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
+            <div class="flex flex-col w-full h-full p-6 bg-white rounded-lg shadow">
                 <div id="QrScanner" class="flex w-full h-full"></div>
 
             </div>
@@ -16,12 +16,12 @@
 
 
         <div class="col-span-2 lg:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
+            <div class="flex flex-col w-full h-full p-6 bg-white rounded-lg shadow">
                 <div class="flex flex-row justify-start">
-                    <h1 class="font-thin font-mono text-sm">Job Postings</h1>
+                    <h1 class="font-mono text-sm font-thin">Job Postings</h1>
                 </div>
                 <div class="flex flex-row justify-between mb-5">
-                    <h1 class="font-extrabold font-mono text-4xl">{{ $totalJobPostings }}</h1>
+                    <h1 class="font-mono text-4xl font-extrabold">{{ $totalJobPostings }}</h1>
 
                     <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -33,7 +33,7 @@
                 </div>
                 <div class="flex flex-row justify-content">
 
-                    <h1 class="font-thin font-mono text-sm"><span
+                    <h1 class="font-mono text-sm font-thin"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
                             {{ $recentJobPostings }}</span>New Job
                         Postings
@@ -46,12 +46,12 @@
         </div>
 
         <div class="col-span-2 lg:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
+            <div class="flex flex-col w-full h-full p-6 bg-white rounded-lg shadow">
                 <div class="flex flex-row justify-start">
-                    <h1 class="font-thin font-mono text-sm">Jobseekers</h1>
+                    <h1 class="font-mono text-sm font-thin">Jobseekers</h1>
                 </div>
                 <div class="flex flex-row justify-between mb-5">
-                    <h1 class="font-extrabold font-mono text-4xl">{{ $totalJobSeekers }}</h1>
+                    <h1 class="font-mono text-4xl font-extrabold">{{ $totalJobSeekers }}</h1>
 
                     <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -62,7 +62,7 @@
                 </div>
                 <div class="flex flex-row justify-content">
 
-                    <h1 class="font-thin font-mono text-sm"><span
+                    <h1 class="font-mono text-sm font-thin"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
                             {{ $recentJobSeekers }}</span>New Job
                         Seekers
@@ -75,12 +75,12 @@
         </div>
 
         <div class="col-span-2 lg:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
+            <div class="flex flex-col w-full h-full p-6 bg-white rounded-lg shadow">
                 <div class="flex flex-row justify-start">
-                    <h1 class="font-thin font-mono text-sm">Employed Users</h1>
+                    <h1 class="font-mono text-sm font-thin">Employed Users</h1>
                 </div>
                 <div class="flex flex-row justify-between mb-5">
-                    <h1 class="font-extrabold font-mono text-4xl">{{ $totalEmployed }}</h1>
+                    <h1 class="font-mono text-4xl font-extrabold">{{ $totalEmployed }}</h1>
 
                     <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -92,7 +92,7 @@
                 </div>
                 <div class="flex flex-row justify-content">
 
-                    <h1 class="font-thin font-mono text-sm"><span
+                    <h1 class="font-mono text-sm font-thin"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
                             {{ $totalUnemployed }}</span>Unemployed
                     </h1>
@@ -104,12 +104,12 @@
         </div>
 
         <div class="col-span-2 lg:col-span-3">
-            <div class="bg-white shadow rounded-lg p-6 flex flex-col w-full h-full">
+            <div class="flex flex-col w-full h-full p-6 bg-white rounded-lg shadow">
                 <div class="flex flex-row justify-start">
-                    <h1 class="font-thin font-mono text-sm">Active Applicants</h1>
+                    <h1 class="font-mono text-sm font-thin">Active Applicants</h1>
                 </div>
                 <div class="flex flex-row justify-between mb-5">
-                    <h1 class="font-extrabold font-mono text-4xl">{{ $totalActiveApplicants }}</h1>
+                    <h1 class="font-mono text-4xl font-extrabold">{{ $totalActiveApplicants }}</h1>
 
                     <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -121,7 +121,7 @@
                 </div>
                 <div class="flex flex-row justify-content">
 
-                    <h1 class="font-thin font-mono text-sm"><span
+                    <h1 class="font-mono text-sm font-thin"><span
                             class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded">
 
                             {{ $recentActiveApplicants }}</span>New Applications
@@ -135,23 +135,23 @@
 
 
         <div class="col-span-4 lg:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6 h-full w-full">
+            <div class="w-full h-full p-6 bg-white rounded-lg shadow">
                 <h1 class="text-2xl font-bold">Recent Job Posting</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+                    <table class="w-full mt-2 text-sm text-left text-gray-500 rtl:text-right">
                         <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                             <tr>
-                                <th scope="col" class="px-2 md:px-6 py-3">
-                                    <span class="text-black font-bold text-md">Business Name</span>
+                                <th scope="col" class="px-2 py-3 md:px-6">
+                                    <span class="font-bold text-black text-md">Business Name</span>
                                 </th>
-                                <th scope="col" class="px-2 md:px-6 py-3  hidden lg:table-cell">
-                                    <span class="text-black font-bold text-md">Job Title</span>
+                                <th scope="col" class="hidden px-2 py-3 md:px-6 lg:table-cell">
+                                    <span class="font-bold text-black text-md">Job Title</span>
                                 </th>
-                                <th scope="col" class="px-2 md:px-6 py-3  hidden lg:table-cell">
-                                    <span class="text-black font-bold text-md">Date</span>
+                                <th scope="col" class="hidden px-2 py-3 md:px-6 lg:table-cell">
+                                    <span class="font-bold text-black text-md">Date</span>
                                 </th>
-                                <th scope="col" class="px-2 md:px-6 py-3">
+                                <th scope="col" class="px-2 py-3 md:px-6">
                                 </th>
                             </tr>
                         </thead>
@@ -161,14 +161,14 @@
                                     <td colspan="4">
                                         <div class="flex flex-col items-center justify-center mt-10">
                                             <div class="p-6 bg-gray-100 rounded-full">
-                                                <svg class="w-16 h-16 md:w-24 md:h-24 text-black" aria-hidden="true"
+                                                <svg class="w-16 h-16 text-black md:w-24 md:h-24" aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
                                             </div>
-                                            <p class="text-lg md:text-xl font-bold text-black text-center mt-2 mb-20">
+                                            <p class="mt-2 mb-20 text-lg font-bold text-center text-black md:text-xl">
                                                 No Recent Job Posting Found!
                                             </p>
                                         </div>
@@ -179,48 +179,48 @@
                                     <tr wire:key='jobpost-{{ $data->job_id }}'
                                         class="bg-white border-b hover:bg-gray-50">
                                         <th scope="row"
-                                            class="flex items-center px-2 md:px-6 py-4 text-gray-900 whitespace-nowrap">
-                                            <img class="select-none w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shadow-lg"
+                                            class="flex items-center px-2 py-4 text-gray-900 md:px-6 whitespace-nowrap">
+                                            <img class="object-cover w-8 h-8 rounded-full shadow-lg select-none md:w-10 md:h-10"
                                                 src="{{ asset('storage/' . $data->company->company_img) }}"
                                                 alt="company-{{ $data->job_id }}">
                                             <div class="ps-3 text-wrap">
-                                                <div class="text-sm md:text-base font-semibold uppercase">
+                                                <div class="text-sm font-semibold uppercase md:text-base">
                                                     {{ $data->company->business_Name }}
                                                 </div>
-                                                <div class="font-normal text-gray-500 text-xs md:text-sm uppercase">
+                                                <div class="text-xs font-normal text-gray-500 uppercase md:text-sm">
                                                     {{ $data->job_Address }}, {{ $data->barangay->barangay_Name }},
                                                     {{ $data->barangay->municipality->municipality_Name }}
                                                 </div>
                                                 <!-- Show Job Title on mobile view -->
                                                 <div
-                                                    class="font-normal text-gray-500 text-xs md:text-sm uppercase lg:hidden">
+                                                    class="text-xs font-normal text-gray-500 uppercase md:text-sm lg:hidden">
                                                     Job: <span
-                                                        class="text-blue-500 font-bold text-sm md:text-md">{{ $data->job_Title }}</span>
+                                                        class="text-sm font-bold text-blue-500 md:text-md">{{ $data->job_Title }}</span>
                                                 </div>
                                                 <!-- Show Date on mobile view -->
-                                                <div class="text-gray-500 text-xs lg:hidden">
+                                                <div class="text-xs text-gray-500 lg:hidden">
                                                     Posted: {{ $data->created_at->format('F j, Y') }}
                                                 </div>
                                             </div>
                                         </th>
                                         <!-- Hide Job Title on mobile view -->
-                                        <td class="px-2 md:px-6 py-4 hidden lg:table-cell">
-                                            <div class="font-normal text-gray-500 text-xs md:text-sm uppercase">
+                                        <td class="hidden px-2 py-4 md:px-6 lg:table-cell">
+                                            <div class="text-xs font-normal text-gray-500 uppercase md:text-sm">
                                                 <span
-                                                    class="text-blue-500 font-bold text-sm md:text-md">{{ $data->job_Title }}</span>
+                                                    class="text-sm font-bold text-blue-500 md:text-md">{{ $data->job_Title }}</span>
                                             </div>
                                         </td>
                                         <!-- Hide Date on mobile view -->
-                                        <td class="px-2 md:px-6 py-4 hidden lg:table-cell">
+                                        <td class="hidden px-2 py-4 md:px-6 lg:table-cell">
                                             {{ $data->created_at->format('F j, Y') }}
                                         </td>
-                                        <td class="px-2 md:px-6 py-4">
+                                        <td class="px-2 py-4 md:px-6">
                                             <div x-data="{ tooltip: 'Job Overview' }">
                                                 <a wire:navigate
                                                     href="{{ route('admin.jobpost', ['id' => $data->job_id]) }}"
                                                     x-tooltip="tooltip" type="button"
-                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
                                                         viewBox="0 0 24 24" fill="currentColor">
                                                         <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                         <path fill-rule="evenodd"
@@ -243,7 +243,7 @@
 
 
         <div class="col-span-4 lg:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6 h-full w-full ">
+            <div class="w-full h-full p-6 bg-white rounded-lg shadow ">
                 <h1 class="text-2xl font-bold">Most Preferred Job Tags</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                 <div class="flex flex-col h-[400px] lg:h-full items-end">
@@ -254,21 +254,21 @@
         </div>
 
         <div class="col-span-4 lg:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
+            <div class="w-full h-full p-6 overflow-auto bg-white rounded-lg shadow">
                 <h1 class="text-2xl font-bold">Recent Job Applications</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
                 <div class="overflow-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+                    <table class="w-full mt-2 text-sm text-left text-gray-500 rtl:text-right">
                         <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    <span class="text-black font-bold text-md">Applicant Name</span>
+                                    <span class="font-bold text-black text-md">Applicant Name</span>
                                 </th>
-                                <th scope="col" class="px-6 py-3 hidden lg:table-cell">
-                                    <span class="text-black font-bold text-md">Job Title</span>
+                                <th scope="col" class="hidden px-6 py-3 lg:table-cell">
+                                    <span class="font-bold text-black text-md">Job Title</span>
                                 </th>
-                                <th scope="col" class="px-6 py-3 hidden lg:table-cell">
-                                    <span class="text-black font-bold text-md">Date</span>
+                                <th scope="col" class="hidden px-6 py-3 lg:table-cell">
+                                    <span class="font-bold text-black text-md">Date</span>
                                 </th>
                                 <th scope="col" class="px-6 py-3"></th>
                             </tr>
@@ -287,7 +287,7 @@
                                                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                                 </svg>
                                             </div>
-                                            <p class="text-xl font-bold text-black text-center mt-2 mb-20">
+                                            <p class="mt-2 mb-20 text-xl font-bold text-center text-black">
                                                 No Recent Applicants Found!
                                             </p>
                                         </div>
@@ -299,7 +299,7 @@
                                         class="bg-white border-b hover:bg-gray-50">
                                         <th scope="row"
                                             class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                            <img class="select-none w-10 h-10 rounded-full object-cover shadow-xl"
+                                            <img class="object-cover w-10 h-10 rounded-full shadow-xl select-none"
                                                 src="{{ asset('storage/' . $data->employee->pimg) }}"
                                                 alt="applicant-{{ $data->job_id }}">
                                             <div class="ps-3 text-wrap">
@@ -307,30 +307,30 @@
                                                     {{ $data->employee->fname }} {{ $data->employee->mname }}
                                                     {{ $data->employee->lname }}
                                                 </div>
-                                                <div class="font-normal text-gray-500 text-sm uppercase">
+                                                <div class="text-sm font-normal text-gray-500 uppercase">
                                                     {{ $data->employee->address }},
                                                     {{ $data->employee->barangay->barangay_Name }},
                                                     {{ $data->employee->barangay->municipality->municipality_Name }}
                                                 </div>
                                                 <!-- Show Job Title on mobile view -->
-                                                <div class="font-normal text-gray-500 text-sm uppercase lg:hidden">
+                                                <div class="text-sm font-normal text-gray-500 uppercase lg:hidden">
                                                     Job: <span
-                                                        class="text-blue-500 font-bold text-md">{{ $data->job_posting->job_Title }}</span>
+                                                        class="font-bold text-blue-500 text-md">{{ $data->job_posting->job_Title }}</span>
                                                 </div>
                                                 <!-- Show Date on mobile view -->
-                                                <div class="text-gray-500 text-xs lg:hidden">
+                                                <div class="text-xs text-gray-500 lg:hidden">
                                                     Applied: {{ $data->created_at->format('F j, Y') }}
                                                 </div>
                                             </div>
                                         </th>
                                         <!-- Hide Job Title and Date on mobile view -->
-                                        <td class="px-6 py-4 hidden lg:table-cell">
-                                            <div class="font-normal text-gray-500 text-sm uppercase">
+                                        <td class="hidden px-6 py-4 lg:table-cell">
+                                            <div class="text-sm font-normal text-gray-500 uppercase">
                                                 <span
-                                                    class="text-blue-500 font-bold text-md">{{ $data->job_posting->job_Title }}</span>
+                                                    class="font-bold text-blue-500 text-md">{{ $data->job_posting->job_Title }}</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 hidden lg:table-cell">
+                                        <td class="hidden px-6 py-4 lg:table-cell">
                                             {{ $data->created_at->format('F j, Y') }}
                                         </td>
                                         <td class="px-6 py-4">
@@ -338,8 +338,8 @@
                                                 <a wire:navigate
                                                     href="{{ route('admin.jobpost.applicants.overview', ['id' => $data->applicant_id]) }}"
                                                     x-tooltip="tooltip" type="button"
-                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                    class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
                                                         viewBox="0 0 24 24" fill="currentColor">
                                                         <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                         <path fill-rule="evenodd"
@@ -362,10 +362,10 @@
 
 
         <div class="col-span-4 lg:col-span-6">
-            <div class="bg-white shadow rounded-lg p-6 h-full w-full items-center">
+            <div class="items-center w-full h-full p-6 bg-white rounded-lg shadow">
                 <h1 class="text-2xl font-bold">Top Job Industries</h1>
                 <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-                <div class="flex h-full items-end">
+                <div class="flex items-end h-full">
                     <livewire:livewire-pie-chart {{-- key="{{ $columnChartModel->reactiveKey() }}" --}} :pie-chart-model="$pieChartModel">
                 </div>
             </div>
