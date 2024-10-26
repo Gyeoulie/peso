@@ -19,36 +19,38 @@ class MunicipalityJobseekers extends Component
 
     public function getMunicipalityChart($provinceId)
     {
-        // Retrieve municipalities for the given province and their job seeker counts
+        // Retrieve municipalities with their employee counts through the relationship chain
         $municipalities = Municipality::where('province_id', $provinceId)
-            ->withCount(['barangay as job_seeker_count' => function ($query) {
-                $query->withCount('employee'); // Count employees in each barangay
+            ->withCount(['barangay' => function ($query) {
+                $query->withCount('employee');
             }])
-            ->get();
+            ->get()
+            ->map(function ($municipality) {
+                // Sum up all employees from all barangays in this municipality
+                $employeeCount = $municipality->barangay->sum('employees_count');
+                return [
+                    'name' => $municipality->municipality_Name,
+                    'count' => $employeeCount,
+                ];
+            });
 
-        // Calculate the total count of job seekers across all municipalities
-        $totalJobSeekers = $municipalities->sum('job_seeker_count');
+        // Calculate the total count of employees
+        $totalEmployees = $municipalities->sum('count');
 
         // Create a pie chart model
         $municipalityChartModel = new PieChartModel();
 
         // Add each municipality to the pie chart
         foreach ($municipalities as $municipality) {
-            // Generate a random color for each municipality
-            $randomColor = '#' . substr(md5(rand()), 0, 6);
+            if ($municipality['count'] > 0) {
+                // Generate a random color for each municipality
+                $randomColor = '#' . substr(md5(rand()), 0, 6);
 
-            $municipalityChartModel->addSlice(
-                $municipality->municipality_Name,
-                $municipality->job_seeker_count,
-                $randomColor // Use the random color for each municipality
-            );
-        }
-
-        // Optionally add a slice for 'Others' if there are remaining job seekers
-        if ($totalJobSeekers > 0) {
-            $otherCount = 0; // Logic for counting 'Others' can be defined if needed
-            if ($otherCount > 0) {
-                $municipalityChartModel->addSlice('Others', $otherCount, '#' . substr(md5(rand()), 0, 6)); // Random color for 'Others'
+                $municipalityChartModel->addSlice(
+                    $municipality['name'],
+                    $municipality['count'],
+                    $randomColor
+                );
             }
         }
 
@@ -60,26 +62,26 @@ class MunicipalityJobseekers extends Component
             ->setDataLabelsEnabled(true)
             ->setJsonConfig([
                 'chart' => [
-                    'width' => '100%', // Set to 100% or specify a pixel value like 400, 500, etc.
-                    'height' => '300px', // Specify the height for the chart
+                    'width' => '100%',
+                    'height' => '300px',
                 ],
                 'plotOptions' => [
                     'pie' => [
                         'dataLabels' => [
-                            'offset' => -15, // Adjust this to center the labels vertically
+                            'offset' => -15,
                             'style' => [
                                 'fontSize' => '16px',
                                 'fontFamily' => 'Helvetica, Arial, sans-serif',
                                 'fontWeight' => 'bold',
-                                'colors' => ['#FFFFFF'], // Set text color
-                                'textAlign' => 'center', // Align text in the center of each slice
+                                'colors' => ['#FFFFFF'],
+                                'textAlign' => 'center',
                             ],
                         ],
                     ],
                 ],
                 'dataLabels' => [
                     'style' => [
-                        'fontSize' => '16px', // Adjust font size for data labels
+                        'fontSize' => '16px',
                         'fontWeight' => 'bold',
                     ],
                     'dropShadow' => [
@@ -95,7 +97,6 @@ class MunicipalityJobseekers extends Component
 
         return $municipalityChartModel;
     }
-
     public function render()
     {
         $municipalityChartModel = $this->getMunicipalityChart($this->provinceID);
