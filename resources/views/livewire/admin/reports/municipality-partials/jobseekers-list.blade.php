@@ -51,7 +51,15 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-jobseekers-modal')"
-                    class=" hover:bg-gray-100 hover:text-blue-700 focus:z-10 bg-white inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">Filter</button>
+                    class=" hover:bg-gray-100 text-gray-500 hover:text-blue-700 focus:z-10 bg-white inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                    <span class="flex flex-row items-center gap-2"> Filter
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                        </svg>
+                    </span>
+                </button>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -72,8 +80,9 @@
                         <th scope="col" class="hidden px-6 py-3 text-center lg:table-cell">
                             <span class="font-bold text-black text-md">Registered Trainings</span>
                         </th>
-
-                        <th scope="col" class="px-6 py-3"></th>
+                        @if (request()->routeIs('admin-reports-municipality'))
+                            <th scope="col" class="px-6 py-3"></th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -151,22 +160,24 @@
                                     </div>
                                 </td>
 
-                                <td>
-                                    <div x-data="{ tooltip: 'Jobseeker Overview' }">
-                                        <a wire:navigate
-                                            href="{{ route('admin-users-jobseeker-overview', ['id' => $data->employee_id]) }}"
-                                            x-tooltip="tooltip" type="button"
-                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
-                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                <path fill-rule="evenodd"
-                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </td>
+                                @if (request()->routeIs('admin-reports-municipality'))
+                                    <td>
+                                        <div x-data="{ tooltip: 'Jobseeker Overview' }">
+                                            <a wire:navigate
+                                                href="{{ route('admin-users-jobseeker-overview', ['id' => $data->employee_id]) }}"
+                                                x-tooltip="tooltip" type="button"
+                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     @endif
@@ -214,7 +225,15 @@
                 </div>
                 <button type="button" x-data=""
                     x-on:click.prevent="$dispatch('open-modal', 'filter-employers-modal')"
-                    class=" hover:bg-gray-100 hover:text-blue-700 focus:z-10 bg-white inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">Filter</button>
+                    class=" hover:bg-gray-100 text-gray-500 hover:text-blue-700 focus:z-10 bg-white inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                    <span class="flex flex-row items-center gap-2"> Filter
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                        </svg>
+                    </span>
+                </button>
 
             </div>
         </div>
@@ -232,7 +251,9 @@
                         <th scope="col" class="hidden px-6 py-3 lg:table-cell">
                             <span class="font-bold text-black text-md">Hired Applicants</span>
                         </th>
-                        <th scope="col" class="px-6 py-3"></th>
+                        @if (request()->routeIs('admin-reports-municipality'))
+                            <th scope="col" class="px-6 py-3"></th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -292,23 +313,24 @@
                                             {{ $data->hired_applicants }}</span>
                                     </div>
                                 </td>
-
-                                <td class="px-6 py-4">
-                                    <div x-data="{ tooltip: 'Employer Overview' }">
-                                        <a wire:navigate
-                                            href="{{ route('admin-users-employer-overview', ['id' => $data->company_id]) }}"
-                                            x-tooltip="tooltip" type="button"
-                                            class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
-                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                <path fill-rule="evenodd"
-                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </td>
+                                @if (request()->routeIs('admin-reports-municipality'))
+                                    <td class="px-6 py-4">
+                                        <div x-data="{ tooltip: 'Employer Overview' }">
+                                            <a wire:navigate
+                                                href="{{ route('admin-users-employer-overview', ['id' => $data->company_id]) }}"
+                                                x-tooltip="tooltip" type="button"
+                                                class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     @endif
@@ -525,7 +547,7 @@
                         </div>
                     </div>
                 </div>
-                @if ($crossJob == true)
+                @if ($crossJob == true && request()->routeIs('admin-reports-municipality'))
                     <div class="flex-col mt-4">
                         <h1 class="font-semibold text-md">Sort By Residency</h1>
 
@@ -671,28 +693,53 @@
                 <div class="flex-col mt-4">
                     <h1 class="font-semibold text-md">Sort by Company Location</h1>
 
-                    <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
-                        <div class="flex items-center">
-                            <input wire:model='mountCompanyMun' id="empmun-all" type="radio" value=""
-                                name="munFil" checked
-                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="empmun-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
+                    @if (request()->routeIs('admin-reports-municipality'))
+                        <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
+                            <div class="flex items-center">
+                                <input wire:model='mountCompanyMun' id="empmun-all" type="radio" value=""
+                                    name="munFil" checked
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="empmun-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='mountCompanyMun' id="empmun-in" type="radio"
+                                    value="within_municipality" name="munFil"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="empmun-in" class="text-sm font-medium text-gray-900 ms-2">Within
+                                    Municipality</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='mountCompanyMun' id="empmun-out" type="radio"
+                                    value="outside_municipality" name="munFil"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="empmun-out" class="text-sm font-medium text-gray-900 ms-2">Outside
+                                    Municipality</label>
+                            </div>
                         </div>
-                        <div class="flex items-center">
-                            <input wire:model='mountCompanyMun' id="empmun-in" type="radio"
-                                value="within_municipality" name="munFil"
-                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="empmun-in" class="text-sm font-medium text-gray-900 ms-2">Within
-                                Municipality</label>
+                    @else
+                        <div class="flex flex-col w-full gap-4 mt-2 md:flex-row">
+                            <div class="flex items-center">
+                                <input wire:model='mountCompanyProv' id="empprov-all" type="radio" value=""
+                                    name="provFil" checked
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="empprov-all" class="text-sm font-medium text-gray-900 ms-2">All</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='mountCompanyProv' id="empprov-in" type="radio"
+                                    value="within_prov" name="provFil"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="empprov-in" class="text-sm font-medium text-gray-900 ms-2">Within
+                                    Province</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input wire:model='mountCompanyProv' id="empprov-out" type="radio"
+                                    value="outside_prov" name="provFil"
+                                    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                <label for="empprov-out" class="text-sm font-medium text-gray-900 ms-2">Outside
+                                    Province</label>
+                            </div>
                         </div>
-                        <div class="flex items-center">
-                            <input wire:model='mountCompanyMun' id="empmun-out" type="radio"
-                                value="outside_municipality" name="munFil"
-                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                            <label for="empmun-out" class="text-sm font-medium text-gray-900 ms-2">Outside
-                                Municipality</label>
-                        </div>
-                    </div>
+                    @endif
                 </div>
 
 

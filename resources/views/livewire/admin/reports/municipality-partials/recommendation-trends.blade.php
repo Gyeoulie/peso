@@ -1,17 +1,25 @@
-<div class="bg-white shadow rounded-lg p-6 w-full h-full">
+<div class="w-full h-full p-6 bg-white rounded-lg shadow">
     <div class="mb-10">
-        <div class="flex flex-col md:flex-row w-full justify-between gap-2">
+        <div class="flex flex-col justify-between w-full gap-2 md:flex-row">
 
             <h1 class="text-2xl font-bold">Recommendation Trends</h1>
 
             <button type="button" x-data=""
                 x-on:click.prevent="$dispatch('open-modal', 'filter-recommendation-trends-modal')"
-                class="py-1.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Filter</button>
+                class=" hover:bg-gray-100 text-gray-500 hover:text-blue-700 focus:z-10 bg-white inline-flex max-h-fit items-center border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5">
+                <span class="flex flex-row items-center gap-2"> Filter
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                    </svg>
+                </span>
+            </button>
 
         </div>
         <hr class="h-px my-2 bg-gray-200 border-0">
     </div>
-    <div class="flex h-full items-end">
+    <div class="flex items-end h-full">
         {{-- <livewire:livewire-column-chart key="{{ $recommendedChartModel->reactiveKey() }}" :column-chart-model="$recommendedChartModel" /> --}}
         <livewire:livewire-line-chart key="{{ $recommendedLineModel->reactiveKey() }}" :line-chart-model="$recommendedLineModel" />
 
@@ -19,17 +27,17 @@
     </div>
 
     <x-modal name="filter-recommendation-trends-modal" focusable>
-        <div class="w-full max-w-4xl px-6 py-6 items-center">
+        <div class="items-center w-full max-w-4xl px-6 py-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Filter Recommendation Trends') }}
             </h2>
             <hr>
             <div class="flex flex-col mt-4">
-                <h1 class="text-md font-semibold">Sort By Date</h1>
+                <h1 class="font-semibold text-md">Sort By Date</h1>
                 <div class="flex flex-row w-full gap-4 mt-2">
                     <!-- Dropdown for Year -->
                     <div class="flex flex-col w-full">
-                        <select wire:model="mountSelectedYear" class="block mt-1  rounded-md">
+                        <select wire:model="mountSelectedYear" class="block mt-1 rounded-md">
                             <option value="" disabled selected>Select Year</option>
                             @for ($year = $startYear; $year <= $currentYear; $year++)
                                 <option value="{{ $year }}">{{ $year }}</option>
@@ -47,7 +55,7 @@
                                     </div>
 
                                     <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -67,7 +75,7 @@
                                         <div class="flex items-center p-2">
                                             <input wire:model='mountSelectedMonths' type="checkbox"
                                                 id="checkRecTrends-{{ $month }}" value="{{ $month }}"
-                                                class="h-4 w-4 text-blue-600 border-gray-300 rounded" />
+                                                class="w-4 h-4 text-blue-600 border-gray-300 rounded" />
                                             <label for="checkRecTrends-{{ $month }}"
                                                 class="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
                                                 {{ date('F', mktime(0, 0, 0, $month, 1)) }}
@@ -86,7 +94,7 @@
             </div>
 
 
-            <div class="mt-6 flex justify-between">
+            <div class="flex justify-between mt-6">
                 <x-secondary-button x-on:click="$dispatch('close-modal', 'filter-recommendation-trends-modal')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -99,7 +107,7 @@
                         type="button">
                         {{ __('Confirm') }}
                         <div wire:loading.delay.long wire:target="mountFilter" role="status">
-                            <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-blue-600 ml-4"
+                            <svg aria-hidden="true" class="w-4 h-4 ml-4 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

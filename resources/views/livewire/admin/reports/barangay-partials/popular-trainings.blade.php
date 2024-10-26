@@ -1,20 +1,20 @@
-<div class="bg-white shadow rounded-lg p-6 h-full w-full overflow-auto">
+<div class="w-full h-full p-6 overflow-auto bg-white rounded-lg shadow">
     <div class="mb-5">
         <h1 class="text-2xl font-bold">Most Popular Trainings</h1>
         <hr class="h-px my-2 bg-gray-200 border-0">
     </div>
     <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-2">
+        <table class="w-full mt-2 text-sm text-left text-gray-500 rtl:text-right">
             <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                 <tr>
-                    <th scope="col" class="px-6 py-3 w-full">
-                        <span class="text-black font-bold text-md">Training Title</span>
+                    <th scope="col" class="w-full px-6 py-3">
+                        <span class="font-bold text-black text-md">Training Title</span>
                     </th>
-                    <th scope="col" class="hidden lg:table-cell px-6 py-3">
-                        <span class="text-black font-bold text-md">Type</span>
+                    <th scope="col" class="hidden px-6 py-3 lg:table-cell">
+                        <span class="font-bold text-black text-md">Type</span>
                     </th>
-                    <th scope="col" class="hidden lg:table-cell px-6 py-3 text-center">
-                        <span class="text-black font-bold text-md">Registered</span>
+                    <th scope="col" class="hidden px-6 py-3 text-center lg:table-cell">
+                        <span class="font-bold text-black text-md">Registered</span>
                     </th>
                     <th scope="col" class="px-6 py-3"></th>
                 </tr>
@@ -32,7 +32,7 @@
                                             d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
-                                <p class="text-xl font-bold text-black text-center mt-2">
+                                <p class="mt-2 text-xl font-bold text-center text-black">
                                     Not enough data!
                                 </p>
                             </div>
@@ -47,7 +47,7 @@
                                 <div class="ps-3 text-wrap">
                                     <div class="text-base font-semibold">
                                         <div class="text-base font-semibold">{{ $data->program_Title }}</div>
-                                        <div class="font-normal text-gray-500 text-sm uppercase">
+                                        <div class="text-sm font-normal text-gray-500 uppercase">
                                             {{ $data->program_Host }}
                                         </div>
                                     </div>
@@ -56,19 +56,19 @@
                                     </div>
                                     <div class="text-sm text-gray-500 lg:hidden">
                                         Registrants: <span
-                                            class="text-black font-bold">{{ $data->registration_count }}</span>
+                                            class="font-bold text-black">{{ $data->registration_count }}</span>
                                     </div>
 
                                 </div>
                             </th>
 
-                            <td class="hidden lg:table-cell px-6 py-4">
+                            <td class="hidden px-6 py-4 lg:table-cell">
                                 {{ $data->program_Type }}
                             </td>
 
-                            <td class="hidden lg:table-cell px-6 py-4">
-                                <div class="font-normal text-gray-500 text-sm text-center uppercase">
-                                    <span class="text-blue-500 font-bold text-md">
+                            <td class="hidden px-6 py-4 lg:table-cell">
+                                <div class="text-sm font-normal text-center text-gray-500 uppercase">
+                                    <span class="font-bold text-blue-500 text-md">
                                         {{ $data->registration_count }}</span>
                                 </div>
                             </td>
@@ -78,8 +78,8 @@
                                     <a wire:navigate
                                         href="{{ route('admin-registrants-training', ['id' => $data->program_id]) }}"
                                         x-tooltip="tooltip" type="button"
-                                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-1 text-center inline-flex items-center">
-                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        class="inline-flex items-center p-1 text-sm font-medium text-center text-blue-700 border border-blue-700 rounded-lg hover:bg-blue-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-blue-300">
+                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             fill="currentColor">
                                             <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                             <path fill-rule="evenodd"
