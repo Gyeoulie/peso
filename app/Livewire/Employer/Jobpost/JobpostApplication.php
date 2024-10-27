@@ -198,7 +198,7 @@ class JobpostApplication extends Component
                 Mail::to($jobposting->company->user->email)->queue(new JobPostApplicationNotification($jobposting));
 
                 toastr()->success('You have successfully submitted an application!');
-                $this->redirectRoute('jobpost.show', ['id' => $jobposting->job_id]);
+                $this->redirectRoute('jobpost.show', ['id' => $jobposting->job_id], navigate: true);
             }
         } catch (\Exception $e) {
 

@@ -273,6 +273,10 @@
                                                                 <div
                                                                     class="h-2 w-2 rounded-full bg-green-500 inline-block">
                                                                 </div> HIRED
+                                                            @elseif(in_array($applicants->applicant_Status, ['REJECTED', 'CANCELLED']))
+                                                                <div
+                                                                    class="h-2 w-2 rounded-full bg-green-500 inline-block">
+                                                                </div>{{ $applicants->applicant_Status }}
                                                             @endif
                                                         </span>
                                                     </div>
@@ -287,10 +291,10 @@
                                                                 <div
                                                                     class="h-2 w-2 rounded-full bg-green-500 inline-block">
                                                                 </div> RECOMMENDED
-                                                            @elseif($applicants->peso_Status == 'REJECT')
+                                                            @elseif(in_array($applicants->peso_Status, ['REJECT', 'CANCELLED']))
                                                                 <div
                                                                     class="h-2 w-2 rounded-full bg-red-500 inline-block">
-                                                                </div> REJECTED
+                                                                </div> {{ $applicants->peso_Status }}
                                                             @endif
                                                         </span>
                                                     </div>
@@ -316,6 +320,14 @@
                                                         <div
                                                             class="h-2.5 w-2.5 rounded-full bg-green-500 inline-block">
                                                         </div> HIRED
+                                                    @elseif($applicants->applicant_Status == 'HIRED')
+                                                        <div
+                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 inline-block">
+                                                        </div> HIRED
+                                                    @elseif(in_array($applicants->applicant_Status, ['REJECTED', 'CANCELLED']))
+                                                        <div
+                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 inline-block">
+                                                        </div> {{ $applicants->applicant_Status }}
                                                     @endif
                                                 </div>
                                             </td>
@@ -330,9 +342,9 @@
                                                         <div
                                                             class="h-2.5 w-2.5 rounded-full bg-green-500 inline-block">
                                                         </div> RECOMMENDED
-                                                    @elseif($applicants->peso_Status == 'REJECT')
+                                                    @elseif(in_array($applicants->peso_Status, ['REJECT', 'CANCELLED']))
                                                         <div class="h-2.5 w-2.5 rounded-full bg-red-500 inline-block">
-                                                        </div> REJECTED
+                                                        </div> {{ $applicants->peso_Status }}
                                                     @endif
                                                 </div>
                                             </td>

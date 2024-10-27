@@ -164,7 +164,7 @@ class JobseekerInformation extends Component
                         'training_From' => $trainingData['trainInstitution'],
                         'training_Cert' => $trainingData['trainCert'],
                         'training_Start' => date('Y-m-d', strtotime($trainingData['trainStart'])),
-                        'training_End' => date('Y-m-d', strtotime($trainingData['trainEnd'])),
+                        'training_End' => is_null($trainingData['trainEnd']) ? null : date('Y-m-d', strtotime($trainingData['trainEnd'])),
                         'training_Status' => $trainingData['trainStat'],
                     ]);
                 }
