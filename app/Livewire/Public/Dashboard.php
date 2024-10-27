@@ -362,6 +362,8 @@ class Dashboard extends Component
                 $query->whereNotNull('job_posting.responded_at')
                     ->orWhereNotNull('job_applicants.responded_at');
             })
+            ->where('job_applicants.applicant_Status', '!=', 'ACCEPTED')
+
             ->orderBy('job_posting.responded_at', 'desc')
             ->orderBy('job_applicants.responded_at', 'desc')
             ->get();
@@ -375,7 +377,6 @@ class Dashboard extends Component
                 'partnerships.partnership_Status as partnership_status',
                 'municipality.municipality_Name'
             )
-            ->where('job_applicants.applicant_Status', '!=', 'ACCEPTED')
             ->where('partnerships.company_id', $empID)
             ->whereNotNull('partnerships.responded_at')
             ->orderBy('partnerships.responded_at', 'desc')
