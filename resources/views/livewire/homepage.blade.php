@@ -70,10 +70,9 @@
                         Explore Exciting <span class="text-blue-600">Job Opportunities</span>
                     </h5>
                     <p class="text-gray-600 leading-relaxed text-justify">
-                        Discover job postings from local government units that align with your skills and career goals.
-                        Enhance your qualifications through <span class="text-blue-600 font-medium">skills training
-                            programs</span>
-                        that prepare you for the roles you're passionate about.
+                        Explore job postings from various companies that align with your skills and preferences. 
+                        Find roles that suit your career aspirations and connect with opportunities 
+                        <span class="text-blue-600 font-medium">tailored to match you</span>.
                     </p>
                 </div>
 

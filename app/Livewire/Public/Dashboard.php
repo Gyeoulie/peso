@@ -375,6 +375,7 @@ class Dashboard extends Component
                 'partnerships.partnership_Status as partnership_status',
                 'municipality.municipality_Name'
             )
+            ->where('job_applicants.applicant_Status', '!=', 'ACCEPTED')
             ->where('partnerships.company_id', $empID)
             ->whereNotNull('partnerships.responded_at')
             ->orderBy('partnerships.responded_at', 'desc')
