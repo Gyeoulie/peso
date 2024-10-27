@@ -370,7 +370,7 @@
                                                 </div>
                                             </td>
                                             <td class="hidden px-6 py-4 lg:table-cell">
-                                                <div class="text-sm text-base">
+                                                <div class="text-sm">
                                                     @if ($data->program_reg_Status == 'REGISTERED')
                                                         <span
                                                             class="inline-flex items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>

@@ -203,7 +203,7 @@
 
             <div class="flex flex-col-reverse lg:flex-wrap lg:flex-row lg:justify-between mt-6 text-center ">
                 <div class="flex grow-0 w-full pt-2 lg:py-0 lg:w-5/12 lg:h-80 lg:ms-11">
-                    <img src="{{ asset('assets/img/home_2.jpg') }}" alt="peso-2"
+                    <img src="{{ asset('assets/img/bg-peso-2.jpg') }}" alt="peso-2"
                         class="flex grow object-cover rounded shadow-lg border border-merino-400 ">
                 </div>
                 <div class="w-full px-6 lg:w-1/2 lg:text-center text-left">
