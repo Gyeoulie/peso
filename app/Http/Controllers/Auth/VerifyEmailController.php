@@ -31,6 +31,8 @@ class VerifyEmailController extends Controller
             } elseif ($user->usertype == 3) {
                 return redirect()->route('fill_employer');
 
+            } else {
+                return redirect()->route('dashboard');
             }
 
         }
@@ -47,6 +49,8 @@ class VerifyEmailController extends Controller
         } elseif ($user->usertype == 3) {
             return redirect()->route('fill_employer');
 
+        } else {
+            return redirect()->route('dashboard');
         }
 
     }
