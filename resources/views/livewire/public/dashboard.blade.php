@@ -652,7 +652,7 @@
 
     </div>
 
-    <div id="sticky-banner" tabindex="-1"
+    {{-- <div id="sticky-banner" tabindex="-1"
         class="fixed bottom-0 z-50 flex justify-between w-full p-4 bg-blue-500 border-b border-gray-200 start-0 lg:p-8">
         <div class="flex items-center mx-auto">
             <p class="flex items-center text-sm font-bold text-justify text-white lg:text-xl">
@@ -673,7 +673,7 @@
                 <span class="sr-only">Close banner</span>
             </button>
         </div>
-    </div>
+    </div> --}}
 
     <x-modal name="industry-filter-modal" focusable>
         <div class="items-center w-full max-w-4xl px-6 py-6">

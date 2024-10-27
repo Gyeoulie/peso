@@ -54,7 +54,7 @@ class Announcements extends Model implements Auditable
     public static function fieldMappings()
     {
         return [
-            'announcement_Title' => 'Anouncement Title',
+            'announcement_Title' => 'Announcement Title', //spelling
             'announcement_Content' => 'Announcement Content',
             'announcement_pubmat' => 'Announcement Publication Material',
             'announcement_Status' => 'Announcement Status',
