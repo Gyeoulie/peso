@@ -3,11 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\Announcements;
-use App\Models\Job_Positions;
 use App\Models\Job_Industry;
+use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use App\Models\Partnerships;
-use App\Models\Training;
+use App\Models\Programs;
 use Asantibanez\LivewireCharts\Models\ColumnChartModel;
 use Livewire\Component;
 
@@ -21,7 +21,7 @@ class Homepage extends Component
             // Ensure job postings are ACTIVE
             $query->where('job_Status', 'ACTIVE');
         })
-            // Count active job postings associated with each position
+        // Count active job postings associated with each position
             ->withCount(['job_tags as active_job_posting_count' => function ($query) {
                 $query->whereHas('job_posting', function ($subQuery) {
                     $subQuery->where('job_Status', 'ACTIVE'); // Count only active postings
@@ -121,11 +121,10 @@ class Homepage extends Component
         $employmentTrend = $this->getEmployerTrends();
 
         $openjobs = Job_Posting::where('job_Status', 'ACTIVE')->count();
-        $opentrainings = Training::where('training_Status', 'ACTIVE')->count();
+        $opentrainings = Programs::where('program_Status', 'ACTIVE')->count();
         $partners = Partnerships::where('partnership_Status', 'APPROVED')
             ->distinct('company_id')
             ->count('company_id');
-
 
         return view('livewire.homepage', compact('announ', 'chartn', 'employmentTrend', 'openjobs', 'opentrainings', 'partners'));
     }
