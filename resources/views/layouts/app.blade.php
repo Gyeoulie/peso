@@ -56,18 +56,18 @@
     <footer class="mt-auto bg-white rounded-lg shadowm-4">
         <div class="w-full max-w-screen-xl p-4 mx-auto md:py-8 ">
             <div class="lg:flex lg:items-center lg:justify-between">
-                <a href="#" class="flex items-center mb-4 space-x-3 lg:mb-0 rtl:space-x-reverse">
-                    <img src="{{ asset('assets/img/PESO-Logo.png') }}" class="h-8" alt="Flowbite Logo" />
+                <a href="https://pesocareers.com/" class="flex items-center mb-4 space-x-3 lg:mb-0 rtl:space-x-reverse">
+                    <img src="{{ asset('assets/img/PESO-Logo.png') }}" class="h-8" alt="PESO Logo" />
                     <span class="self-center text-xl font-semibold md:text-2xl whitespace-nowrap ">Public Employment
                         Service Office</span>
                 </a>
                 <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 lg:mb-0 ">
-                    <li>
+                    {{-- <li>
                         <a href="#" class="hover:underline me-4 md:me-6">About</a>
                     </li>
                     <li>
                         <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
-                    </li>
+                    </li> --}}
 
                     <li>
                         <a href="https://forms.gle/cjeY6uiV3TtUHwpi8" class="hover:underline">Report a Bug</a>

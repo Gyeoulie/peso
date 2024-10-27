@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Training;
 
+use App\Mail\ProgramCompleteNotification;
 use App\Models\Barangay;
 use App\Models\Industry_preference;
 use App\Models\Job_Preference;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -32,6 +34,8 @@ class TrainingRegistrants extends Component
     public $selectedJobseeker;
 
     public $sortDate, $filter = 'All';
+
+    public $agreeBox = false;
 
     protected $listeners = ['qrCodeScanned' => 'qrCodeScanned'];
 
@@ -53,6 +57,31 @@ class TrainingRegistrants extends Component
         } else {
             return $this->redirectRoute('dashboard');
         }
+
+    }
+
+    public function completeProgram()
+    {
+        $programInfo = Programs::find($this->id);
+        if ($programInfo) {
+            $programInfo->update(['program_Status' => 'COMPLETED']);
+
+            $registeredUsers = $programInfo->program_reg;
+            if ($registeredUsers) {
+                foreach ($registeredUsers as $jobseeker) {
+                    // Notify each user via email (assuming you have a mailable for this)
+                    Mail::to($jobseeker->employee->user->email)->queue(new ProgramCompleteNotification($jobseeker->employee, $programInfo));
+                }
+
+                // Success message
+                toastr()->success('Program has been completed. Registered users will be notified via email.');
+            }
+        } else {
+            toastr()->error('There was an error in the transaction. Please try again later.');
+
+        }
+
+        $this->dispatch('close-modal', 'complete-modal');
 
     }
 
@@ -200,47 +229,46 @@ class TrainingRegistrants extends Component
 
     }
 
-    public function isMatch($programID, $jobseekerInfo)
+    public function isMatch($programId, $jobseekerInfo)
     {
+        if (!$jobseekerInfo->employee) {
+            return false;
+        }
 
+        $employeeId = $jobseekerInfo->employee->employee_id;
+
+        // Get municipality ID
         $employeeMunicipalityId = Barangay::where('barangay_id', $jobseekerInfo->employee->barangay_id)
             ->value('municipality_id');
 
-        // Get the employee's job preferences (array of position_id)
-        $employeeJobPreferences = Job_Preference::where('employee_id', $jobseekerInfo->employee->employee_id)
-            ->pluck('position_id')->toArray();
+        // Get preferences
+        $employeeJobPreferences = Job_Preference::where('employee_id', $employeeId)
+            ->pluck('position_id')
+            ->toArray();
 
-        $employeeIndustryPreference = Industry_preference::where('employee_id', $jobseekerInfo->employee->employee_id)
-            ->pluck('industry_id')->toArray();
+        $employeeIndustryPreference = Industry_preference::where('employee_id', $employeeId)
+            ->pluck('industry_id')
+            ->toArray();
 
-        return Programs::where('program_id', $this->id)
-            ->where('program_Status', 'ACTIVE')
+        return Programs::where('program_id', $programId)
             ->whereHas('peso', function ($query) use ($employeeMunicipalityId) {
                 $query->where('municipality_id', $employeeMunicipalityId);
             })
+        // This will check if there's ANY match (either industry or position)
             ->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
-                // Match based on job preferences or industry preferences
-                $query->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
-                    // Check for job preference match
-                    $query->whereHas('program_tags.job_positions', function ($q) use ($employeeJobPreferences) {
-                        $q->whereIn('position_id', $employeeJobPreferences);
-                    })
-                    // Check for industry preference match
-                        ->whereHas('job_industry', function ($q) use ($employeeIndustryPreference) {
-                            $q->whereIn('industry_id', $employeeIndustryPreference);
-                        });
-                })
-                // Check if either industry or job preferences match individually
-                    ->orWhere(function ($query) use ($employeeIndustryPreference) {
-                        $query->whereHas('job_industry', function ($q) use ($employeeIndustryPreference) {
-                            $q->whereIn('industry_id', $employeeIndustryPreference);
-                        });
-                    })
-                    ->orWhere(function ($query) use ($employeeJobPreferences) {
-                        $query->whereHas('program_tags.job_positions', function ($q) use ($employeeJobPreferences) {
-                            $q->whereIn('position_id', $employeeJobPreferences);
-                        });
+                // Check for industry match
+                if (!empty($employeeIndustryPreference)) {
+                    $query->whereHas('job_industry', function ($q) use ($employeeIndustryPreference) {
+                        $q->whereIn('industry_id', $employeeIndustryPreference);
                     });
+                }
+
+                // Check for position match
+                if (!empty($employeeJobPreferences)) {
+                    $query->orWhereHas('program_tags', function ($q) use ($employeeJobPreferences) {
+                        $q->whereIn('position_id', $employeeJobPreferences);
+                    });
+                }
             })
             ->exists();
     }

@@ -33,7 +33,7 @@ class JobPostList extends Component
     {
         session()->put('jobpostData', $id);
 
-        $this->redirectRoute('jobpost.edit');
+        $this->redirectRoute('jobpost.edit', navigate: true);
 
     }
 
