@@ -306,7 +306,7 @@
                         <x-input-label for="qualPost">Job Qualification
                         </x-input-label>
                         <div wire:ignore>
-                            <textareaid="qualText">{!! $qualPost !!}</textareaid=>
+                            <textarea id="qualText">{!! $qualPost !!}</textarea>
                         </div>
 
                         @if ($errors->has('qualPost'))
