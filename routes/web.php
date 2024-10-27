@@ -87,8 +87,8 @@ Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.s
 //------------------------------ SIGN UP ------------------------------
 
 Route::middleware(['verified'])->group(function () {
-Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile')->middleware(['usertype:2']);
-Route::get('/employer/details', EmployerInformation::class)->name('fill_employer')->middleware(['usertype:3']);
+    Route::get('/jobseeker/details', JobseekerInformation::class)->name('fill_profile')->middleware(['usertype:2']);
+    Route::get('/employer/details', EmployerInformation::class)->name('fill_employer')->middleware(['usertype:3']);
 });
 
 //------------------------------ PUBLIC ------------------------------
@@ -139,7 +139,7 @@ Route::middleware(['auth', 'verified', 'usertype:5,6', 'google2fa'])->group(func
 Route::prefix('admin')->group(function () {
 
     Route::middleware(['auth', 'verified', 'usertype:8,9,10', 'check.user.status', 'google2fa'])->group(function () {
-    // Route::middleware(['auth', 'usertype:8,9,10', 'check.user.status', 'google2fa'])->group(function () {
+        // Route::middleware(['auth', 'usertype:8,9,10', 'check.user.status', 'google2fa'])->group(function () {
 
         Route::get('/', AdminDashboard::class)->name('admin');
 
@@ -180,7 +180,7 @@ Route::prefix('admin')->group(function () {
 
 // EVERYTHING UNDER HERE IS SUPER ADMIN
     Route::middleware(['auth', 'verified', 'usertype:11', 'check.user.status'])->group(function () {
-    // Route::middleware(['auth', 'usertype:11', 'check.user.status'])->group(function () {
+        // Route::middleware(['auth', 'usertype:11', 'check.user.status'])->group(function () {
 
         Route::get('super/', SuperDashboard::class)->name('super-dashboard');
         Route::get('super/municipality', ReportsMunicipalityReports::class)->name('super-municipality');
