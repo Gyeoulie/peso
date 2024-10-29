@@ -234,7 +234,7 @@
                                             </div>
 
                                             <div class="font-medium break-all text-md">
-                                                {{ $ProgramInfo->program_Slots - $ProgramInfo->program_reg_count }}
+                                                {{ $ProgramInfo->program_Slots - $ProgramInfo->attendedJobseekers_count }}
                                             </div>
 
                                         </div>

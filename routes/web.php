@@ -76,6 +76,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/test', function () {
+    return view('pdf.reports.sample-report');
+});
+
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
 // Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
 

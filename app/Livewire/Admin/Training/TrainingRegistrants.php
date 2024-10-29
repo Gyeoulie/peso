@@ -304,7 +304,7 @@ class TrainingRegistrants extends Component
     public function render()
     {
 
-        $programInfo = Programs::withCount('program_reg')
+        $programInfo = Programs::withCount('attendedJobseekers')
             ->findOrFail($this->id);
         $jobseekerInfo = null;
         $isMatch = false;
