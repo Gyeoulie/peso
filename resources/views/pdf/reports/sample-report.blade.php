@@ -11,7 +11,7 @@
 <body class="bg-white p-10">
 
     <div class="flex items-center mb-10">
-        <img src="{{ asset('assets/img/PESO-Logo.png') }}" alt="Logo" class="h-16 w-auto mr-4">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/img/PESO-Logo.png'))) }}" alt="Logo" class="h-16 w-auto mr-4">
         <h1 class="text-3xl font-bold text-gray-800">Public Employment Service Office</h1>
     </div>
 
@@ -33,6 +33,195 @@
                 </tr>
             </thead>
             <tbody>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">1</td>
+                    <td class="py-2 px-4 border-b">John Doe</td>
+                    <td class="py-2 px-4 border-b">Employment Officer</td>
+                    <td class="py-2 px-4 border-b">2022-01-15</td>
+                    <td class="py-2 px-4 border-b">Active</td>
+                </tr>
                 <tr class="hover:bg-gray-100">
                     <td class="py-2 px-4 border-b">1</td>
                     <td class="py-2 px-4 border-b">John Doe</td>

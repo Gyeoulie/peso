@@ -58,7 +58,11 @@ use App\Livewire\Public\Trainings;
 use App\Livewire\Public\TrainingView;
 use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
+use function Spatie\LaravelPdf\Support\pdf;
 use Illuminate\Support\Facades\Route;
+
+// use Spatie\LaravelPdf\Facades\Pdf;
+// use Spatie\Browsershot\Browsershot;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,7 +81,17 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/test', function () {
-    return view('pdf.reports.sample-report');
+    return pdf()
+        ->view('pdf.reports.sample-report')
+        ->name('test_report.pdf')
+        ->download();
+    // return Pdf::view('pdf.reports.sample-report')
+    // ->withBrowsershot(function (Browsershot $shot) {
+    //     $shot->setNodeBinary('/home/khen/.nvm/versions/node/v20.12.0/bin/node')
+    //         ->setNpmBinary('/home/khen/.nvm/versions/node/v20.12.0/bin/npm');
+    // })
+    // ->download('purchase-order.pdf');
+
 });
 
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
