@@ -61,7 +61,7 @@
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Program Slots:</li>
                                 <p class="break-all ms-4">
-                                    {{ $programInfo->program_reg_count }}/{{ $programInfo->program_Slots }} </p>
+                                    {{ $programInfo->attendedJobseekers_count }}/{{ $programInfo->program_Slots }} </p>
                             </div>
                         @endif
                         <div class="flex flex-row justify-between">
