@@ -60,9 +60,8 @@ use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
 // use function Spatie\LaravelPdf\Support\pdf;
 use Illuminate\Support\Facades\Route;
-
-use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,10 +85,10 @@ Route::get('/test', function () {
     //     ->name('test_report.pdf')
     //     ->download();
     return Pdf::view('pdf.reports.sample-report')
-    ->withBrowsershot(function (Browsershot $shot) {
-        $shot->noSandbox();
-    })
-    ->download('purchase-order.pdf');
+        ->withBrowsershot(function (Browsershot $shot) {
+            $shot->noSandbox();
+        })
+        ->download('purchase-order.pdf');
 
 });
 

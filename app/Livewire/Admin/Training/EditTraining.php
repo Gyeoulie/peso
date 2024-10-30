@@ -4,7 +4,6 @@ namespace App\Livewire\Admin\Training;
 
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
-use App\Models\Partnerships;
 use App\Models\Programs;
 use App\Models\Program_Tags;
 use Carbon\Carbon;
@@ -412,36 +411,11 @@ class EditTraining extends Component
         })->toArray();
     }
 
-    public function selectProgramHost($hostName)
-    {
-        $this->progHost = $hostName;
-    }
-
-    public function fetchCompanies()
-    {
-        $user = Auth::user();
-        // Ensure searchEmployers has a default value if not set
-        $searchEmployers = $this->progHost ?? '';
-
-        $query = Partnerships::where('peso_id', $user->peso_accounts->peso_id)
-            ->where('partnership_Status', 'APPROVED')
-            ->whereHas('company', function ($query) use ($searchEmployers) {
-                // Apply the search filter
-                $query->where(function ($q) use ($searchEmployers) {
-                    $q->where('trade_Name', 'like', '%' . $searchEmployers . '%')
-                        ->orWhere('business_Name', 'like', '%' . $searchEmployers . '%');
-                });
-            });
-
-        return $query;
-    }
-
     public function render()
     {
         $programInfo = Programs::findOrFail($this->programData);
-        $companyList = $this->fetchCompanies()->get();
 
         // dd($this->programData);
-        return view('livewire.admin.training.edit-training', compact('programInfo', 'companyList'));
+        return view('livewire.admin.training.edit-training', compact('programInfo'));
     }
 }

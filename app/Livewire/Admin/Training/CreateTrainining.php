@@ -6,7 +6,6 @@ use App\Mail\TrainingPostingNotification;
 use App\Models\Employee;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
-use App\Models\Partnerships;
 use App\Models\Programs;
 use App\Models\Program_Tags;
 use Carbon\Carbon;
@@ -302,33 +301,9 @@ class CreateTrainining extends Component
         }
     }
 
-    public function selectProgramHost($hostName)
-    {
-        $this->progHost = $hostName;
-    }
-
-    public function fetchCompanies()
-    {
-        $user = Auth::user();
-        // Ensure searchEmployers has a default value if not set
-        $searchEmployers = $this->progHost ?? '';
-
-        $query = Partnerships::where('peso_id', $user->peso_accounts->peso_id)
-            ->where('partnership_Status', 'APPROVED')
-            ->whereHas('company', function ($query) use ($searchEmployers) {
-                // Apply the search filter
-                $query->where(function ($q) use ($searchEmployers) {
-                    $q->where('trade_Name', 'like', '%' . $searchEmployers . '%')
-                        ->orWhere('business_Name', 'like', '%' . $searchEmployers . '%');
-                });
-            });
-
-        return $query;
-    }
     public function render()
     {
-        $companyList = $this->fetchCompanies()->get();
 
-        return view('livewire.admin.training.create-trainining', compact('companyList'));
+        return view('livewire.admin.training.create-trainining');
     }
 }
