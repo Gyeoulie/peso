@@ -24,9 +24,7 @@ class TrainingView extends Component
             return $this->redirectRoute('dashboard');
         } else if ($ProgramInfo->program_Status != 'ACTIVE') {
             return $this->redirectRoute('dashboard');
-
         }
-
     }
     public function register()
     {
@@ -41,10 +39,9 @@ class TrainingView extends Component
             // Handle the case where the employee is already registered for this program
             $this->dispatch('close-modal', 'register-modal');
             return toastr()->warning('You have already registered in this event.');
-
         }
 
-        if ($program->program_reg_count >= $program->program_Slots) {
+        if ($program->program_reg->whereIn('program_reg_Status', ['ATTENDEE', 'COMPLETED'])->count() >= $program->program_Slots) {
             // Close modal and show a warning if program slots are full
             $this->dispatch('close-modal', 'register-modal');
             return toastr()->error('The program is fully booked.');
@@ -58,19 +55,10 @@ class TrainingView extends Component
         ]);
 
         if ($register) {
-            toastr()->success('You have successfully registered.');
-
-            $currentRegistrations = $program->program_reg_count + 1;
-
-            // If the number of registrations has reached the slots, update the program status to "CLOSED"
-            if ($currentRegistrations >= $program->program_Slots) {
-                $program->update(['program_Status' => 'CLOSED']);
-            }
+            toastr()->success('Your registration will be reviewed. Update will be sent on your email.');
 
             $this->dispatch('close-modal', 'register-modal');
-
         }
-
     }
 
     public function registerValidate()
