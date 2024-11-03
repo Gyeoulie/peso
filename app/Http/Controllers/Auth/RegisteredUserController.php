@@ -43,6 +43,7 @@ class RegisteredUserController extends Controller
             'role' => ['required', 'in:2,3'],
             'terms' => ['required'],
             'privacy' => ['required'],
+            'g-recaptcha-response' => 'recaptcha',
 
         ], [
             'email.required' => 'Email is required.',

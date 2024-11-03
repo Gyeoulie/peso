@@ -14,12 +14,12 @@
             <div class="flex items-center">
                 <label for="jobseeker" class="mr-2">
                     <input id="jobseeker" type="radio" name="role" value="2" required autocomplete="off"
-                    {{ old('role') == '2' ? 'checked' : '' }}>
+                        {{ old('role') == '2' ? 'checked' : '' }}>
                     <span class="ml-1">{{ __('Job Seeker') }}</span>
                 </label>
                 <label for="employer" class="ml-4 mr-2">
                     <input id="employer" type="radio" name="role" value="3" required autocomplete="off"
-                    {{ old('role') == '3' ? 'checked' : '' }}>
+                        {{ old('role') == '3' ? 'checked' : '' }}>
                     <span class="ml-1">{{ __('Employer') }}</span>
                 </label>
             </div>
@@ -29,8 +29,8 @@
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
-            :value="old('email')" required autocomplete="off" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+                required autocomplete="off" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -52,6 +52,19 @@
                 name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <div class="mt-4 flex flex-col items-center">
+            <div class="flex" id="recaptcha-container">
+                {!! htmlFormSnippet() !!}
+            </div>
+
+            <div class="flex">
+                @if ($errors->has('g-recaptcha-response'))
+                    <x-input-error :messages="$errors->first('g-recaptcha-response')" class="mt-2" />
+                @endif
+
+            </div>
         </div>
 
         <div class="flex justify-center">
@@ -380,4 +393,8 @@
 
         </div>
     </x-modal>
+    
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
 </x-guest-layout>
