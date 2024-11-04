@@ -36,20 +36,18 @@
                                     class="absolute z-50 mt-1 w-full rounded shadow-lg " x-ref="dropdownContent"
                                     style="display: none;">
                                     <div class="rounded ring-1 ring-black ring-opacity-5">
-                                        @foreach ($hostssssssssss as $host)
-                                            <div class="max-h-[120px] bg-white overflow-y-auto rounded-lg">
-                                                <div
+                                        <div class="max-h-[120px] bg-white overflow-y-auto rounded-lg">
+                                            @foreach ($hostssssssssss as $host)
+                                                <div wire:click.prevent="selectHost('{{ $host->name }}')"
                                                     class="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
                                                     {{ $host->name }}
                                                 </div>
+                                            @endforeach
 
-                                            </div>
-                                        @endforeach
+
+                                        </div>
 
                                     </div>
-
-
-
                                 </div>
                             </div>
                             <x-input-error :messages="$errors->get('progHost')" class="mt-2" />

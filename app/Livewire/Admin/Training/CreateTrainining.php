@@ -241,36 +241,43 @@ class CreateTrainining extends Component
         }
     }
 
-  
+
     public function forDropdownOptions()
     {
         $peso_id = Auth::user()->peso_accounts->peso->peso_id;
 
-        $programHosts = DB::table('Programs')
-            ->join('peso', 'peso.peso_id', '=', 'Programs.peso_id')
-            ->where('Programs.peso_id', $peso_id)
+        $programHosts = Programs::where('peso_id', $peso_id)
             ->when(!empty($this->progHost), function ($query) {
-                $query->where('Programs.program_Host', 'like', '%' . $this->progHost . '%');
+                $query->where('program_Host', 'like', '%' . $this->progHost . '%');
             })
-            ->select('Programs.program_Host as name')
+            ->select('program_Host as name')
             ->distinct();
 
-        $businessNames = DB::table('company')
-            ->join('partnerships', 'partnerships.company_id', '=', 'company.company_id')
-            ->join('peso', 'peso.peso_id', '=', 'partnerships.peso_id')
+        // Fetching business names
+        $businessNames = Company::join('partnerships', 'partnerships.company_id', '=', 'company.company_id')
             ->where('partnerships.peso_id', $peso_id)
             ->where('partnerships.partnership_Status', 'APPROVED')
             ->when(!empty($this->progHost), function ($query) {
                 $query->where('company.business_Name', 'like', '%' . $this->progHost . '%');
             })
             ->select('company.business_Name as name')
-            ->groupBy('company.business_Name') // Use groupBy for distinct results
+            ->groupBy('company.business_Name')
             ->distinct();
-            $tHosts = $programHosts->union($businessNames)
-                ->orderBy('name') 
-                ->get();
+
+        // Combining the results
+        $tHosts = $programHosts->union($businessNames)
+            ->orderBy('name')
+            ->get();
 
         return $tHosts;
+
+    }
+
+
+    public function selectHost($name)
+    {
+        // dd($name);
+        $this->progHost = $name;
     }
 
 
@@ -332,7 +339,6 @@ class CreateTrainining extends Component
 
     public function render()
     {
-
         $hostssssssssss = $this->forDropdownOptions();
         // dd($hostssssssssss);
 

@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Training;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Programs;
+use App\Models\Company;
 use App\Models\Program_Tags;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -153,7 +154,6 @@ class EditTraining extends Component
         $this->validate($rules, $messages);
 
         $this->dispatch('open-modal', 'confirm-modal');
-
     }
 
     public function mountData($id)
@@ -380,7 +380,6 @@ class EditTraining extends Component
         $this->tagsToAdd[] = $newTag;
         $this->displayTags[] = $newTag;
         toastr()->success('Program tag has been added.');
-
     }
 
     public function removeTag($tagId)
@@ -411,11 +410,74 @@ class EditTraining extends Component
         })->toArray();
     }
 
+
+    public function forDropdownOptions()
+    {
+        $peso_id = Auth::user()->peso_accounts->peso->peso_id;
+
+        // $programHosts = DB::table('programs')
+        //     ->join('peso', 'peso.peso_id', '=', 'programs.peso_id')
+        //     ->where('programs.peso_id', $peso_id)
+        //     ->when(!empty($this->progHost), function ($query) {
+        //         $query->where('programs.program_Host', 'like', '%' . $this->progHost . '%');
+        //     })
+        //     ->select('programs.program_Host as name')
+        //     ->distinct();
+
+        // $businessNames = DB::table('company')
+        //     ->join('partnerships', 'partnerships.company_id', '=', 'company.company_id')
+        //     ->join('peso', 'peso.peso_id', '=', 'partnerships.peso_id')
+        //     ->where('partnerships.peso_id', $peso_id)
+        //     ->where('partnerships.partnership_Status', 'APPROVED')
+        //     ->when(!empty($this->progHost), function ($query) {
+        //         $query->where('company.business_Name', 'like', '%' . $this->progHost . '%');
+        //     })
+        //     ->select('company.business_Name as name')
+        //     ->groupBy('company.business_Name') // Use groupBy for distinct results
+        //     ->distinct();
+        //     $tHosts = $programHosts->union($businessNames)
+        //         ->orderBy('name') 
+        //         ->get();
+
+
+        $programHosts = Programs::where('peso_id', $peso_id)
+            ->when(!empty($this->progHost), function ($query) {
+                $query->where('program_Host', 'like', '%' . $this->progHost . '%');
+            })
+            ->select('program_Host as name')
+            ->distinct();
+
+        // Fetching business names
+        $businessNames = Company::join('partnerships', 'partnerships.company_id', '=', 'company.company_id')
+            ->where('partnerships.peso_id', $peso_id)
+            ->where('partnerships.partnership_Status', 'APPROVED')
+            ->when(!empty($this->progHost), function ($query) {
+                $query->where('company.business_Name', 'like', '%' . $this->progHost . '%');
+            })
+            ->select('company.business_Name as name')
+            ->groupBy('company.business_Name')
+            ->distinct();
+
+        // Combining the results
+        $tHosts = $programHosts->union($businessNames)
+            ->orderBy('name')
+            ->get();
+
+        return $tHosts;
+    }
+
+    public function selectHost($name)
+    {
+        $this->progHost = $name;
+    }
+
     public function render()
     {
         $programInfo = Programs::findOrFail($this->programData);
+        $hostssssssssss = $this->forDropdownOptions();
+
 
         // dd($this->programData);
-        return view('livewire.admin.training.edit-training', compact('programInfo'));
+        return view('livewire.admin.training.edit-training', compact('programInfo', 'hostssssssssss'));
     }
 }
