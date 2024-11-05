@@ -63,6 +63,7 @@ use Illuminate\Support\Facades\Route;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -73,6 +74,7 @@ use Spatie\LaravelPdf\Facades\Pdf;
 | be assigned to the "web" middleware group. Make something great!
 |
  */
+
 Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
 
 Route::get('/', function () {
@@ -88,12 +90,14 @@ Route::get('/test', function () {
         ->withBrowsershot(function (Browsershot $shot) {
             $shot->noSandbox();
         })
+        ->headerView('pdf.reports.pdfHeader')
+        ->footerView('pdf.reports.pdfFooter')
         ->download('purchase-order.pdf');
-
 });
 
+
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
-// Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
+    // Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
 
     Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');
@@ -109,7 +113,7 @@ Route::middleware(['verified'])->group(function () {
 
 //------------------------------ PUBLIC ------------------------------
 Route::middleware(['verifiedOrPublic', 'incomplete.user', 'check.user.status', 'google2fa'])->group(function () {
-// Route::middleware(['incomplete.user', 'check.user.status', 'google2fa'])->group(function () {
+    // Route::middleware(['incomplete.user', 'check.user.status', 'google2fa'])->group(function () {
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/trainings', Trainings::class)->name('trainings');
@@ -120,25 +124,24 @@ Route::middleware(['verifiedOrPublic', 'incomplete.user', 'check.user.status', '
 });
 //------------------------------ PUBLIC - PROFILE ------------------------------
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status'])->group(function () {
-// Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'check.user.status'])->group(function () {
+    // Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'check.user.status'])->group(function () {
 
     Route::get('/profile/jid={id}', JobseekerProfile::class)->name('jobseeker.profile')->middleware('profile.privacy');;
     Route::get('/profile/eid={id}', EmployerProfile::class)->name('employer.profile');
     Route::get('/profile/pid={id}', PesoProfile::class)->name('peso.profile');
     Route::get('/search/profile', SearchProfiles::class)->name('search.profiles');
-
 });
 
 //------------------------------ JOBSEEKER ------------------------------
 Route::middleware(['auth', 'verified', 'usertype:4', 'check.user.status', 'google2fa'])->group(function () {
-// Route::middleware(['auth', 'usertype:4', 'check.user.status', 'google2fa'])->group(function () {
+    // Route::middleware(['auth', 'usertype:4', 'check.user.status', 'google2fa'])->group(function () {
 
     Route::get('/applications/history', ApplicationHistory::class)->name('jobseeker.application');
     Route::get('/profile/edit', EditDetails::class)->name('edit.details');
 });
 
 Route::middleware(['auth', 'verified', 'usertype:6', 'check.user.status', 'google2fa'])->group(function () {
-// Route::middleware(['auth', 'usertype:6', 'check.user.status', 'google2fa'])->group(function () {
+    // Route::middleware(['auth', 'usertype:6', 'check.user.status', 'google2fa'])->group(function () {
 
     Route::get('/apply', JobpostApplication::class)->name('jobpost.apply');
     Route::get('/jobpost/details/{id}', JobPostDetails::class)->name('jobpost.details');
@@ -146,7 +149,6 @@ Route::middleware(['auth', 'verified', 'usertype:6', 'check.user.status', 'googl
 
     Route::get('/employer/jobpost', JobPostList::class)->name('employer.dashboard');
     Route::get('/applicants', JobApplicants::class)->name('jobpost.applicants');
-
 });
 Route::middleware(['auth', 'verified', 'usertype:5,6', 'google2fa'])->group(function () {
     Route::get('/employer/edit', EmployerEditDetails::class)->name('edit.details.emp');
@@ -191,10 +193,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/job/applicants/overview/{id}', ApplicantOverview::class)->name('admin.jobpost.applicants.overview');
 
         Route::get('/municipality/audits', MunicipalityAudits::class)->name('admin-municipality-audits');
-
     });
 
-// EVERYTHING UNDER HERE IS SUPER ADMIN
+    // EVERYTHING UNDER HERE IS SUPER ADMIN
     Route::middleware(['auth', 'verified', 'usertype:11', 'check.user.status'])->group(function () {
         // Route::middleware(['auth', 'usertype:11', 'check.user.status'])->group(function () {
 
@@ -219,14 +220,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/requirements', Requirements::class)->name('admin-req');
 
         Route::get('/features', Features::class)->name('admin-features');
-
     });
 });
 
 require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'google2fa'])->group(function () {
-// Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'google2fa'])->group(function () {
+    // Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'google2fa'])->group(function () {
 
     Route::post('/resume/view', [PDFView::class, 'viewResume'])->name('view.resume');
     Route::post('/recommendation/view', [PDFView::class, 'viewRecommendation'])->name('view.recommendation');

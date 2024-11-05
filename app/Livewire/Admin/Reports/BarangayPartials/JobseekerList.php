@@ -12,6 +12,9 @@ use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 use Spatie\SimpleExcel\SimpleExcelWriter;
+use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Facades\Pdf;
+
 
 class JobseekerList extends Component
 {
@@ -50,13 +53,26 @@ class JobseekerList extends Component
     public function changeMonth()
     {
         $this->mountSelectedMonths = $this->selectedMonths;
-
     }
 
     public function resetFilter()
     {
-        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountCivilStatus', 'mountEducationAttainment', 'mountOFWFilter', 'mountFourPFilter',
-            'Gender', 'Age', 'EmpStatus', 'civilStatus', 'educationAttainment', 'OFWFilter', 'fourPFilter');
+        $this->reset(
+            'mountGender',
+            'mountAge',
+            'mountEmpStatus',
+            'mountCivilStatus',
+            'mountEducationAttainment',
+            'mountOFWFilter',
+            'mountFourPFilter',
+            'Gender',
+            'Age',
+            'EmpStatus',
+            'civilStatus',
+            'educationAttainment',
+            'OFWFilter',
+            'fourPFilter'
+        );
         $this->resetPage();
     }
 
@@ -72,7 +88,6 @@ class JobseekerList extends Component
         $this->currentYear = date('Y');
         $this->startYear = 2024;
         $this->selectedYear = $this->startYear;
-
     }
 
     public function mountFilter()
@@ -87,7 +102,6 @@ class JobseekerList extends Component
 
         $this->dispatch('close-modal', 'filter-jobseekers-modal');
         $this->resetPage();
-
     }
 
     private function getJobseekers()
@@ -192,8 +206,26 @@ class JobseekerList extends Component
         }
 
         return toastr()->warning('No data in the table to be exported.');
-
     }
+
+    // public function exportPdf()
+    // {
+    //     $employees = $this->getJobseekers()->get();
+    //     if (!$employees->isEmpty()) {
+
+    //         $fileName = $this->barangayID . '-jobseekers-' . now()->format('Y-m-d-H-i-s') . '.pdf';
+
+    //         return Pdf::view('pdf.reports.sample-report')
+    //             ->withBrowsershot(function (Browsershot $shot) {
+    //                 $shot->noSandbox();
+    //             })
+    //             ->headerView('pdfHeader')
+    //             ->footerView('pdfFooter')
+    //             ->download($fileName);
+    //     }
+
+    //     return toastr()->warning('No data in the table to be exported.');
+    // }
 
     public function getFeature()
     {
