@@ -62,6 +62,9 @@ use App\Livewire\Signup\Jobseeker\JobseekerInformation;
 use Illuminate\Support\Facades\Route;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+
 
 
 /*
@@ -74,6 +77,28 @@ use Spatie\LaravelPdf\Facades\Pdf;
 | be assigned to the "web" middleware group. Make something great!
 |
  */
+// Route::get('/a', function () {
+//     return view('pdf.reports.sample-report');
+// })->name('a');
+
+
+Route::get('/test/{data}', function ($data) {
+    try {
+        $employee = json_decode(Crypt::decryptString($data));
+
+        return Pdf::view('pdf.reports.sample-report', ['employees' => $employee])
+            ->withBrowsershot(function (Browsershot $shot) {
+                $shot->noSandbox();
+            })
+            // ->headerView('pdf.reports.pdfHeader')
+            // ->footerView('pdf.reports.pdfFooter')
+            ->download('purchase-order.pdf');
+    } catch (DecryptException $e) {
+        return redirect()->back()->with('error', 'Invalid data provided');
+    }
+})->name('test');
+
+
 
 Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
 

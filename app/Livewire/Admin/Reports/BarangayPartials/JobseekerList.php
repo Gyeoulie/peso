@@ -14,6 +14,8 @@ use Livewire\WithPagination;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
+use Illuminate\Support\Facades\Crypt;
+
 
 
 class JobseekerList extends Component
@@ -208,24 +210,40 @@ class JobseekerList extends Component
         return toastr()->warning('No data in the table to be exported.');
     }
 
-    // public function exportPdf()
-    // {
-    //     $employees = $this->getJobseekers()->get();
-    //     if (!$employees->isEmpty()) {
 
-    //         $fileName = $this->barangayID . '-jobseekers-' . now()->format('Y-m-d-H-i-s') . '.pdf';
+    public function exportPdf()
+    {
+        $jobs = $this->getJobseekers()->withCount(['activeApplications', 'program_reg'])->get();
 
-    //         return Pdf::view('pdf.reports.sample-report')
-    //             ->withBrowsershot(function (Browsershot $shot) {
-    //                 $shot->noSandbox();
-    //             })
-    //             ->headerView('pdfHeader')
-    //             ->footerView('pdfFooter')
-    //             ->download($fileName);
-    //     }
 
-    //     return toastr()->warning('No data in the table to be exported.');
-    // }
+        // Check if there are any employees to export
+        if ($jobs->isEmpty()) {
+            return toastr()->warning('No data in the table to be exported.');
+        } else {
+            // Define the file name for the PDF
+            $fileName = 'jobseeker_report_' . now()->format('Y_m_d_H_i_s') . '.pdf';
+
+            // Map the employees to the necessary data, as objects
+            $employees = $jobs->map(function ($emp) use ($fileName) {
+                return [
+                    'employee_id' => $emp->employee_id,
+                    'name' => $emp->fname . ' ' . $emp->mname . ' ' . $emp->lname,
+                    'gender' => $emp->gender,
+                    // 'dob' => \Carbon\Carbon::parse($emp->birthdate)->format('M j, Y'),
+                    'empStat' => $emp->empstatus,
+                    'activeApplicationsCount' => $emp->active_applications_count,
+                    'programRegCount' => $emp->program_reg_count,
+                ];
+            });
+
+            $encryptedData = Crypt::encryptString($employees->toJson());
+
+            return redirect()->route('test', ['data' => $encryptedData, 'filename' => $fileName]);
+            // return redirect()->route('a');
+
+        }
+    }
+
 
     public function getFeature()
     {

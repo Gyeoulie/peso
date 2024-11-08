@@ -65,7 +65,7 @@
                         </svg>
                         <span class="flex">Export to Excel</span>
                     </x-dropdown-link>
-                    <x-dropdown-link wire:click.prevent="updateSort('Oldest')" x-data="{ tooltip: 'Export to PDF' }"
+                    <x-dropdown-link wire:click.prevent="exportPdf" x-data="{ tooltip: 'Export to PDF' }"
                         x-tooltip='tooltip'
                         class="cursor-pointer flex flex-row gap-2 text-sm font-medium text-gray-500 bg-white rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <svg fill="#6B7280" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
