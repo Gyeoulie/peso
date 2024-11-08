@@ -12,6 +12,11 @@ use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 use Spatie\SimpleExcel\SimpleExcelWriter;
+use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Facades\Pdf;
+use Illuminate\Support\Facades\Crypt;
+
+
 
 class JobseekerList extends Component
 {
@@ -50,13 +55,26 @@ class JobseekerList extends Component
     public function changeMonth()
     {
         $this->mountSelectedMonths = $this->selectedMonths;
-
     }
 
     public function resetFilter()
     {
-        $this->reset('mountGender', 'mountAge', 'mountEmpStatus', 'mountCivilStatus', 'mountEducationAttainment', 'mountOFWFilter', 'mountFourPFilter',
-            'Gender', 'Age', 'EmpStatus', 'civilStatus', 'educationAttainment', 'OFWFilter', 'fourPFilter');
+        $this->reset(
+            'mountGender',
+            'mountAge',
+            'mountEmpStatus',
+            'mountCivilStatus',
+            'mountEducationAttainment',
+            'mountOFWFilter',
+            'mountFourPFilter',
+            'Gender',
+            'Age',
+            'EmpStatus',
+            'civilStatus',
+            'educationAttainment',
+            'OFWFilter',
+            'fourPFilter'
+        );
         $this->resetPage();
     }
 
@@ -72,7 +90,6 @@ class JobseekerList extends Component
         $this->currentYear = date('Y');
         $this->startYear = 2024;
         $this->selectedYear = $this->startYear;
-
     }
 
     public function mountFilter()
@@ -87,7 +104,6 @@ class JobseekerList extends Component
 
         $this->dispatch('close-modal', 'filter-jobseekers-modal');
         $this->resetPage();
-
     }
 
     private function getJobseekers()
@@ -192,8 +208,42 @@ class JobseekerList extends Component
         }
 
         return toastr()->warning('No data in the table to be exported.');
-
     }
+
+
+    public function exportPdf()
+    {
+        $jobs = $this->getJobseekers()->withCount(['activeApplications', 'program_reg'])->get();
+
+
+        // Check if there are any employees to export
+        if ($jobs->isEmpty()) {
+            return toastr()->warning('No data in the table to be exported.');
+        } else {
+            // Define the file name for the PDF
+            $fileName = 'jobseeker_report_' . now()->format('Y_m_d_H_i_s') . '.pdf';
+
+            // Map the employees to the necessary data, as objects
+            $employees = $jobs->map(function ($emp) use ($fileName) {
+                return [
+                    'employee_id' => $emp->employee_id,
+                    'name' => $emp->fname . ' ' . $emp->mname . ' ' . $emp->lname,
+                    'gender' => $emp->gender,
+                    // 'dob' => \Carbon\Carbon::parse($emp->birthdate)->format('M j, Y'),
+                    'empStat' => $emp->empstatus,
+                    'activeApplicationsCount' => $emp->active_applications_count,
+                    'programRegCount' => $emp->program_reg_count,
+                ];
+            });
+
+            $encryptedData = Crypt::encryptString($employees->toJson());
+
+            return redirect()->route('test', ['data' => $encryptedData, 'filename' => $fileName]);
+            // return redirect()->route('a');
+
+        }
+    }
+
 
     public function getFeature()
     {

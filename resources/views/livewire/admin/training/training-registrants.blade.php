@@ -61,9 +61,18 @@
                             <div class="flex flex-row justify-between">
                                 <li class="mb-2 font-bold">Program Slots:</li>
                                 <p class="break-all ms-4">
-                                    {{ $programInfo->attendedJobseekers_count }}/{{ $programInfo->program_Slots }} </p>
+                                    {{ $attendeeOrCompletedCount = $programInfo->program_reg->whereIn('program_reg_Status', ['ATTENDEE', 'COMPLETED'])->count() }}/{{ $programInfo->program_Slots }}
+                                </p>
                             </div>
                         @endif
+                        {{-- @if ($programInfo->program_Status == 'CLOSED' || $programInfo->program_Status == 'COMPLETED')
+                            <div class="flex flex-row justify-between">
+                                <li class="mb-2 font-bold">Program Slots:</li>
+                                <p class="break-all ms-4">
+                                    Full
+                                </p>
+                            </div>
+                        @endif && $programInfo->program_Status == "ACTIVE" --}}
                         <div class="flex flex-row justify-between">
                             <li class="mb-2 font-bold">Registration Deadline:</li>
                             <p class="break-all ms-4">{{ $programInfo->program_Deadline->format('F j, Y') }}</p>
@@ -356,6 +365,18 @@
                                                         @elseif ($data->program_reg_Status == 'COMPLETED')
                                                             <span
                                                                 class="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">COMPLETED</span>
+                                                        @elseif ($data->program_reg_Status == 'ATTENDEE')
+                                                            @if ($programInfo->program_Status == 'COMPLETED')
+                                                                <span
+                                                                    class="inline-flex items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">
+                                                                    ATTENDEE
+                                                                </span>
+                                                            @else
+                                                                <span
+                                                                    class="inline-flex items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">
+                                                                    ATTENDEE
+                                                                </span>
+                                                            @endif
                                                         @elseif ($data->program_reg_Status == 'CANCELLED')
                                                             <span
                                                                 class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">CANCELLED</span>
@@ -373,13 +394,31 @@
                                                 <div class="text-sm">
                                                     @if ($data->program_reg_Status == 'REGISTERED')
                                                         <span
-                                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
+                                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">
+                                                            REGISTERED
+                                                        </span>
                                                     @elseif ($data->program_reg_Status == 'COMPLETED')
                                                         <span
-                                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">COMPLETED</span>
+                                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">
+                                                            COMPLETED
+                                                        </span>
+                                                    @elseif ($data->program_reg_Status == 'ATTENDEE')
+                                                        @if ($programInfo->program_Status == 'COMPLETED')
+                                                            <span
+                                                                class="inline-flex items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">
+                                                                ATTENDEE
+                                                            </span>
+                                                        @else
+                                                            <span
+                                                                class="inline-flex items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">
+                                                                ATTENDEE
+                                                            </span>
+                                                        @endif
                                                     @elseif ($data->program_reg_Status == 'CANCELLED')
                                                         <span
-                                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">CANCELLED</span>
+                                                            class="inline-flex items-center px-2 py-1 text-sm font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">
+                                                            CANCELLED
+                                                        </span>
                                                     @endif
                                                 </div>
                                             </td>
@@ -585,20 +624,30 @@
 
                             </div>
 
-                            @if ($jobseekerInfo->program_reg_Status == 'REGISTERED' && in_array($programInfo->program_Status, ['ACTIVE', 'CLOSED']))
+                            @if ($jobseekerInfo->program_reg_Status == 'REGISTERED' && $programInfo->program_Status == 'ACTIVE')
                                 <div class="flex flex-wrap justify-center gap-4 mt-6">
 
                                     <x-danger-button
                                         wire:click.prevent="confirmReg('CANCELLED', {{ $jobseekerInfo->program_reg_id }})"
-                                        type="button">Reject</x-danger-button>
+                                        type="button">Decline</x-danger-button>
 
                                     <x-green-button
-                                        wire:click.prevent="confirmReg('COMPLETED', {{ $jobseekerInfo->program_reg_id }})"
+                                        wire:click.prevent="confirmReg('ATTENDEE', {{ $jobseekerInfo->program_reg_id }})"
                                         type="button">Confirm</x-green-button>
 
 
                                 </div>
                             @endif
+                            @if ($jobseekerInfo->program_reg_Status == 'ATTENDEE' && in_array($programInfo->program_Status, ['ACTIVE', 'CLOSED']))
+                                <div class="flex flex-wrap justify-center gap-4 mt-6">
+                                    <x-green-button
+                                        wire:click.prevent="confirmReg('COMPLETED', {{ $jobseekerInfo->program_reg_id }})"
+                                        type="button">Confirm Attendance</x-green-button>
+
+
+                                </div>
+                            @endif
+
 
 
 

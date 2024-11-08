@@ -32,6 +32,9 @@
 
 
     <!-- Scripts -->
+    {!! htmlScriptTagJsApi() !!}
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+   
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -92,7 +95,6 @@
             }
         });
     </script>
-    @stack('scripts')
 
 </body>
 

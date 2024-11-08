@@ -6,9 +6,9 @@ use App\Mail\TrainingPostingNotification;
 use App\Models\Employee;
 use App\Models\Job_Industry;
 use App\Models\Job_Positions;
-use App\Models\Partnerships;
 use App\Models\Programs;
 use App\Models\Program_Tags;
+use App\Models\Company;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +31,8 @@ class CreateTrainining extends Component
 
     public $jobIndustryPost, $jobIndustryHidden;
     public $jobTags = [];
+
+    public $searchHost;
 
     #[Validate]
     public $progImg;
@@ -161,7 +163,6 @@ class CreateTrainining extends Component
         $this->validate($rules, $messages);
 
         $this->dispatch('open-modal', 'confirm-modal');
-
     }
 
     public function saveProgram()
@@ -199,7 +200,6 @@ class CreateTrainining extends Component
         if ($this->progImg) {
             $imgPath = $this->progImg->store('images/trainings', 'public');
             $data['program_pubmat'] = $imgPath;
-
         }
 
         try {
@@ -213,7 +213,6 @@ class CreateTrainining extends Component
                         'position_id' => $jobTag['position_id'],
                     ]);
                 }
-
             }
             DB::commit();
 
@@ -222,7 +221,6 @@ class CreateTrainining extends Component
             if (!empty($matchingJobseekers)) {
                 foreach ($matchingJobseekers as $employee) {
                     Mail::to($employee->user->email)->queue(new TrainingPostingNotification($employee, $trainingProgram));
-
                 }
             }
             // SendMatchedEmails::dispatch($trainingProgram->program_id);
@@ -241,8 +239,47 @@ class CreateTrainining extends Component
             // toastr()->error('There was an error in posting the program.');
             toastr()->error($e->getMessage());
         }
+    }
+
+
+    public function forDropdownOptions()
+    {
+        $peso_id = Auth::user()->peso_accounts->peso->peso_id;
+
+        $programHosts = Programs::where('peso_id', $peso_id)
+            ->when(!empty($this->progHost), function ($query) {
+                $query->where('program_Host', 'like', '%' . $this->progHost . '%');
+            })
+            ->select('program_Host as name')
+            ->distinct();
+
+        // Fetching business names
+        $businessNames = Company::join('partnerships', 'partnerships.company_id', '=', 'company.company_id')
+            ->where('partnerships.peso_id', $peso_id)
+            ->where('partnerships.partnership_Status', 'APPROVED')
+            ->when(!empty($this->progHost), function ($query) {
+                $query->where('company.business_Name', 'like', '%' . $this->progHost . '%');
+            })
+            ->select('company.business_Name as name')
+            ->groupBy('company.business_Name')
+            ->distinct();
+
+        // Combining the results
+        $tHosts = $programHosts->union($businessNames)
+            ->orderBy('name')
+            ->get();
+
+        return $tHosts;
 
     }
+
+
+    public function selectHost($name)
+    {
+        // dd($name);
+        $this->progHost = $name;
+    }
+
 
     #[On('industrySelect')]
     public function industrySelect($id)
@@ -252,11 +289,9 @@ class CreateTrainining extends Component
         if ($industry) {
             $this->jobIndustryHidden = $industry->industry_id;
             $this->jobIndustryPost = $industry->industry_Title;
-
         } else {
             toastr()->error('Could not fetch data');
         }
-
     }
 
     #[On('positionSelect')]
@@ -302,33 +337,11 @@ class CreateTrainining extends Component
         }
     }
 
-    public function selectProgramHost($hostName)
-    {
-        $this->progHost = $hostName;
-    }
-
-    public function fetchCompanies()
-    {
-        $user = Auth::user();
-        // Ensure searchEmployers has a default value if not set
-        $searchEmployers = $this->progHost ?? '';
-
-        $query = Partnerships::where('peso_id', $user->peso_accounts->peso_id)
-            ->where('partnership_Status', 'APPROVED')
-            ->whereHas('company', function ($query) use ($searchEmployers) {
-                // Apply the search filter
-                $query->where(function ($q) use ($searchEmployers) {
-                    $q->where('trade_Name', 'like', '%' . $searchEmployers . '%')
-                        ->orWhere('business_Name', 'like', '%' . $searchEmployers . '%');
-                });
-            });
-
-        return $query;
-    }
     public function render()
     {
-        $companyList = $this->fetchCompanies()->get();
+        $hostssssssssss = $this->forDropdownOptions();
+        // dd($hostssssssssss);
 
-        return view('livewire.admin.training.create-trainining', compact('companyList'));
+        return view('livewire.admin.training.create-trainining', compact('hostssssssssss'));
     }
 }
