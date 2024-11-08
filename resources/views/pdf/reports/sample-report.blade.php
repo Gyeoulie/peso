@@ -38,7 +38,7 @@
 
         footer,
         .footer-space {
-            height: 3.54cm;
+            height: 2.54cm;
         }
 
         header {
@@ -70,160 +70,151 @@
     }
 </style>
 
-<body class="flex flex-col gap-6 w-full justify-self-center items-center bg-white p-4 pb-0 content-around">
-    <div class="header-space">&nbsp;</div>
+<body class="">
 
-    <div
-        class="flex flex-col gap-3 h-1/3 w-full bg-stone-300 border border-solid rounded-md border-gray-500  shadow-md p-5">
-        <div class="flex w-full justify-end text-sm font-normal ">
-            DATE
-        </div>
-        <div class="flex w-full justify-start capitalize text-blue-500 text-xl font-bold ">
-            PESO REPORT TITLE
-        </div>
-        <div class="flex w-full text-sm justify-normal mt-4 font-normal ">
-            some report description
-        </div>
-    </div>
 
-    <div class="flex flex-col max-h-80 h-auto w-full border border-solid border-gray-500">
+    <table class="m-4">
+        <thead>
+            <tr>
+                <td>
+                    <div class="header-space">&nbsp;</div>
+                </td>
+            </tr>
+        </thead>
 
-        <table class="min-w-full bg-whiterounded-lg shadow-md">
-            {{-- <thead>
-                <tr>
-                    <td>
-                        <div class="header-space">&nbsp;</div>
-                    </td>
-                </tr>
-            </thead> --}}
-            <thead>
-                <tr class="bg-gray-200 text-gray-600 text-left">
-                    <th class="py-3 px-4 border-b">Jobseeker Name</th>
-                    <th class="py-3 px-4 border-b">Gender</th>
-                    <th class="py-3 px-4 border-b">Employment Status</th>
-                    <th class="py-3 px-4 border-b">Active Applications</th>
-                    <th class="py-3 px-4 border-b">Training Count</th>
 
-                </tr>
-            </thead>
-            <tbody>
-                @php $counter = 0; @endphp
-
-                @foreach ($employees as $data)
-                    <tr>
-                        <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                            {{ $data->name }}
-                        </td>
-                        <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                            @if ($data->gender == '2')
-                                Female
-                            @elseif ($data->gender == '1')
-                                Male
-                            @endif
-                        </td>
-                        <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                            @if ($data->empStat == '2')
-                                UNEMPLOYED
-                            @elseif ($data->empStat == '1')
-                                EMPLOYED
-                            @endif
-                        </td>
-                        <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                            {{ $data->activeApplicationsCount }}
-                        </td>
-                        <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                            {{ $data->programRegCount }}
-                        </td>
-                    </tr>
-
-                    @php
-                        $counter++; // Increment row count
-                    @endphp
-
-                    <!-- Insert a page break every 15 rows -->
-                    @if ($counter % 9 == 0)
-                        <tr class="page-break">
-                            <td colspan="5"></td> <!-- Empty row for page break -->
-                        </tr>
-                    @endif
-                @endforeach
-            </tbody>
-            {{-- <tfoot>
-                <tr>
-                    <td>
-                        <div class="footer-space">&nbsp;</div>
-                    </td>
-                </tr>
-            </tfoot> --}}
-        </table>
-        <div class="footer-space">&nbsp;</div>
-
-        <header>
-            <div class="flex flex-col h-16 gap-4 w-full">
-                <!-- Container with border, background color, and fixed height -->
-                <div class="flex flex-row gap-4 w-full border-solid border-b-2 border-blue-300">
-                    <div class="h-full flex w-28 mr-3 ml-6 justify-center pt-2 rounded-full">
-                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/img/PESO-Logo.png'))) }}" 
-                             alt="Logo" class="mb-2 object-cover" style="opacity: 0.5;">
+        <thead>
+            <tr>
+                <td colspan="5">
+                    <div
+                        class="flex flex-col w-full bg-stone-300 border border-solid rounded-md border-gray-500  shadow-md p-5 mb-6">
+                        <div class="flex w-full justify-end text-sm font-normal ">
+                            DATE
+                        </div>
+                        <div class="flex w-full justify-start capitalize text-blue-500 text-xl font-bold ">
+                            PESO REPORT TITLE
+                        </div>
+                        <div class="flex w-full text-sm justify-normal mt-4 font-normal ">
+                            some report description
+                        </div>
                     </div>
-    
-                    <div class="h-full flex flex-grow gap-y-2 flex-col border-solid border-l-2 border-blue-300 p-4 pt-2">
-                        <div class="text-lg font-bold tracking-widest uppercase text-blue-300">
-                            MUNICIPALITY OF PLARIDEL
-                        </div>
-    
-                        <div class="text-sm font-semibold uppercase tracking-wider text-blue-300">
-                            PUBLIC EMPLOYMENT SERVICES Office
-                        </div>
-    
-                        <div class="text-sm font-semibold tracking-widest text-blue-300">
-                            Province of Bulacan
-                        </div>
+                </td>
+            </tr>
+            <tr class="bg-gray-200 text-gray-600 text-left">
+                <th class="py-3 px-4 border-b">Jobseeker Name</th>
+                <th class="py-3 px-4 border-b">Gender</th>
+                <th class="py-3 px-4 border-b">Employment Status</th>
+                <th class="py-3 px-4 border-b">Active Applications</th>
+                <th class="py-3 px-4 border-b">Training Count</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($employees as $data)
+                <tr class="border-b">
+                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                        {{ $data->name }}
+                    </td>
+                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                        @if ($data->gender == '2')
+                            Female
+                        @elseif ($data->gender == '1')
+                            Male
+                        @endif
+                    </td>
+                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                        @if ($data->empStat == '2')
+                            UNEMPLOYED
+                        @elseif ($data->empStat == '1')
+                            EMPLOYED
+                        @endif
+                    </td>
+                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                        {{ $data->activeApplicationsCount }}
+                    </td>
+                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                        {{ $data->programRegCount }}
+                    </td>
+                </tr>
+            @endforeach
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <div class="footer-space">&nbsp;</div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <header>
+        <div class="flex flex-col h-16 gap-4 w-full">
+            <!-- Container with border, background color, and fixed height -->
+            <div class="flex flex-row gap-4 w-full border-solid border-b-2 border-blue-300">
+                <div class="h-full flex w-28 mr-3 ml-6 justify-center pt-2 rounded-full">
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/img/PESO-Logo.png'))) }}"
+                        alt="Logo" class="mb-2 object-cover" style="opacity: 0.5;">
+                </div>
+
+                <div
+                    class="h-full flex flex-grow gap-y-2 flex-col border-solid border-l-2 border-blue-300 p-4 pt-2 justify-center">
+                    <div class="text-2xl font-bold tracking-widest uppercase text-blue-300">
+                        PUBLIC EMPLOYMENT SERVICES OFFICE
+
+                    </div>
+
+                    <div class="text-lg font-semibold uppercase tracking-wider text-blue-300">
+                        Municipality Of Plaridel
+                    </div>
+
+                    <div class="text-lg font-semibold tracking-widest text-blue-300">
+                        Province of Bulacan
                     </div>
                 </div>
             </div>
-        </header>
-        <footer>
-            <div class="flex flex-col w-full h-24 ">
-                <div class="flex flex-row gap-x-3 w-full border-solid border-t-2 border-blue-300">
-                    <!-- Left Column for Municipality Name -->
-                    <div class="h-full flex flex-col w-3/5 gap-y-3 p-2 border-solid border-r-2 border-blue-300">
-                        <div class="text-sm font-bold uppercase tracking-wide text-blue-300">
-                            MUNICIPALITY OF PLARIDEL
-                        </div>
-    
-                        <div class="flex flex-col text-sm font-medium text-blue-300">
-                            <div class="w-full uppercase">
-                                PUBLIC EMPLOYMENT SERVICES Office
-                            </div>
-    
-                            <div class="w-full mt-2">
-                                Email Address: askfdjhsdakjhf
-                            </div>
-                        </div>
+        </div>
+    </header>
+    <footer>
+        <div class="flex flex-col w-full">
+            <div class="flex flex-row gap-x-3 w-full border-solid border-t-2 border-blue-300">
+                <!-- Left Column for Municipality Name -->
+                <div class="h-full flex flex-col w-3/5 gap-y-3 p-2 border-solid border-r-2 border-blue-300">
+                    <div class="text-sm font-bold uppercase tracking-wide text-blue-300">
+                        MUNICIPALITY OF PLARIDEL
                     </div>
-    
-                    <!-- Right Column for Contact Info -->
-                    <div class="h-full flex flex-row  p-2 justify-start">
-                        <div class="flex flex-col gap-y-2 mb-4 mt-auto text-sm font-medium text-blue-300">
-                            <div class="w-full">
-                                Phone Number: 123-456-7890
-                            </div>
-    
-                            <div class="w-full">
-                                Telephone Number: (123) 456-7890
-                            </div>
-    
-                            <div class="w-full">
-                                FAX Number: 123-456-7890
-                            </div>
+
+                    <div class="flex flex-col text-sm font-medium text-blue-300">
+                        <div class="w-full uppercase">
+                            PUBLIC EMPLOYMENT SERVICES OFFICE
                         </div>
-    
+
+                        <div class="w-full mt-2">
+                            Email Address: plaridel@pesocareers.com
+                        </div>
                     </div>
                 </div>
+
+                <!-- Right Column for Contact Info -->
+                <div class="h-full flex flex-row  p-2 justify-start">
+                    <div class="flex flex-col gap-y-2 mb-4 mt-auto text-sm font-medium text-blue-300">
+                        <div class="w-full">
+                            Phone Number: 123-456-7890
+                        </div>
+
+                        <div class="w-full">
+                            Telephone Number: (123) 456-7890
+                        </div>
+
+                        <div class="w-full">
+                            FAX Number: 123-456-7890
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </footer>
-    </div>
+        </div>
+    </footer>
 
 </body>
 
