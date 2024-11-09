@@ -118,37 +118,38 @@
 
 
             @foreach ($employees as $data)
-                <tr>
-                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                        {{ $data->name }}
-                    </td>
-                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                        @if ($data->gender == '2')
-                            Female
-                        @elseif ($data->gender == '1')
-                            Male
-                        @endif
-                    </td>
-                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                        @if ($data->empStat == '2')
-                            UNEMPLOYED
-                        @elseif ($data->empStat == '1')
-                            EMPLOYED
-                        @endif
-                    </td>
-                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                        {{ $data->activeApplicationsCount }}
-                    </td>
-                    <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
-                        {{ $data->programRegCount }}
-                    </td>
-                </tr>
-            @endforeach
+            <tr>
+                <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                    {{ $data['name'] }}
+                </td>
+                <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                    @if ($data['gender'] == '2')
+                        Female
+                    @elseif ($data['gender'] == '1')
+                        Male
+                    @endif
+                </td>
+                <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                    @if ($data['empStat'] == '2')
+                        UNEMPLOYED
+                    @elseif ($data['empStat'] == '1')
+                        EMPLOYED
+                    @endif
+                </td>
+                <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                    {{ $data['activeApplicationsCount'] }}
+                </td>
+                <td class="table-cell px-6 py-4 text-start font-normal text-gray-500 text-sm uppercase">
+                    {{ $data['programRegCount'] }}
+                </td>
+            </tr>
+        @endforeach
+        
         </tbody>
         <tfoot>
             <tr>
                 <td>
-                    <div class="footer-space  bg-red-300">&nbsp;</div>
+                    <div class="footer-space ">&nbsp;</div>
                 </td>
             </tr>
         </tfoot>
@@ -157,8 +158,74 @@
 
 
 
-    {{-- <div class="footer-space  bg-green-300">&nbsp;</div> --}}
     <header>
+        <div class="flex flex-col h-14 w-full">
+            <!-- Container with border, background color, and fixed height -->
+            <div class="flex flex-row gap-4 w-full border-solid border-b-2 border-gray-300">
+                <div class="h-20 flex w-20 mr-3 ml-6 justify-center pt-2 rounded-full">
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/img/PESO-Logo.png'))) }}"
+                        alt="Logo" class="mb-2 object-cover" style="opacity: 0.5;">
+                </div>
+    
+                <div class="h-full flex flex-grow gap-y-1 flex-col border-solid border-l-2 border-gray-300 p-4 pb-2 pt-2">
+                    <div class="text-lg font-bold tracking-widest uppercase text-gray-400">
+                        MUNICIPALITY OF {{ $peso['municipality'] ?? 'Municipality Name' }}
+                    </div>
+    
+                    <div class="text-sm font-semibold uppercase tracking-wider text-gray-400">
+                        PUBLIC EMPLOYMENT SERVICES Office
+                    </div>
+    
+                    <div class="text-sm font-semibold tracking-widest capitalize text-gray-400">
+                        Province of {{ $peso['province'] ?? 'Province Name' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <footer>
+        <div class="flex flex-col w-full h-20">
+            <div class="flex flex-row gap-x-3 w-full border-solid border-t-2 border-gray-300">
+                <!-- Left Column for Municipality Name -->
+                <div class="h-full flex flex-col w-3/5 gap-y-3 p-2 pb-1 border-solid border-r-2 border-gray-300">
+                    <div class="text-sm font-bold uppercase tracking-wide text-gray-400">
+                        Municipality of {{ $peso['municipality'] ?? 'Municipality Name' }}
+                    </div>
+    
+                    <div class="flex flex-col text-sm font-medium text-gray-400">
+                        <div class="w-full uppercase">
+                            PUBLIC EMPLOYMENT SERVICES Office
+                        </div>
+    
+                        <div class="w-full mt-2">
+                            Email Address: {{ $peso['pesoemail'] ?? 'N/A' }}
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Right Column for Contact Info -->
+                <div class="h-full flex flex-row p-2 pb-1 justify-start">
+                    <div class="flex flex-col gap-y-2 mb-1 mt-auto text-sm font-medium text-gray-400">
+                        <div class="w-full">
+                            Phone Number: {{ $peso['pesophone'] ?? 'N/A' }}
+                        </div>
+    
+                        <div class="w-full">
+                            Telephone Number: {{ !empty($peso['pesotel']) ? $peso['pesotel'] : '' }}
+                        </div>
+                        
+                        <div class="w-full">
+                            FAX Number: {{ !empty($peso['pesofax']) ? $peso['pesofax'] : '' }}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    {{-- <header>
         <div class="flex flex-col h-14 w-full">
             <!-- Container with border, background color, and fixed height -->
             <div class="flex flex-row gap-4 w-full border-solid border-b-2 border-gray-300">
@@ -223,7 +290,7 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer> --}}
 
     </div>
 

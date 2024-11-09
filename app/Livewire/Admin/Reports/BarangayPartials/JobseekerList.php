@@ -215,52 +215,49 @@ class JobseekerList extends Component
     public function exportPdf()
     {
         $jobs = $this->getJobseekers()->withCount(['activeApplications', 'program_reg'])->get();
-
-        // Check if there are any employees to export
+    
         if ($jobs->isEmpty()) {
             return toastr()->warning('No data in the table to be exported.');
         } else {
-            // Define the file name for the PDF
             $fileName = 'jobseeker_report_' . now()->format('Y_m_d_H_i_s') . '.pdf';
-            $peso = Auth::user()->peso_accounts->peso->get();
-
-            // Map the employees to the necessary data, as objects
+            $peso = Auth::user()->peso_accounts->peso;
+    
             $employees = $jobs->map(function ($emp) use ($fileName) {
                 return [
                     'employee_id' => $emp->employee_id,
                     'name' => $emp->fname . ' ' . $emp->mname . ' ' . $emp->lname,
                     'gender' => $emp->gender,
-                    // 'dob' => \Carbon\Carbon::parse($emp->birthdate)->format('M j, Y'),
                     'empStat' => $emp->empstatus,
                     'activeApplicationsCount' => $emp->active_applications_count,
                     'programRegCount' => $emp->program_reg_count,
-
                     'barangay' => $emp->barangay->barangay_Name,
-                    
+                    'province' => $emp->barangay->municipality->province->province_Name,
 
                 ];
             });
+    
+            $sendpeso = [
+                'municipality' => $peso->municipality->municipality_Name,
+                'province' => $peso->municipality->province->province_Name,
+                'pesoemail' => $peso->peso_Email,
+                'pesophone' => $peso->peso_Phone,
+                'pesotel' => $peso->peso_Tel,
+            ];
 
-            $sendpeso = $peso->map(function ($pesoinfo) {
-                return [
-                    'municipality' => $pesoinfo->municipality->municipality_Name,
-                    'province' => $pesoinfo->municipality->municipality_Name,
-                    'pesoemail' => $pesoinfo->peso_Email,
-                    'pesophone' => $pesoinfo->peso_Phone,
-                    'pesotel' => $pesoinfo->peso_Tel,
-                    'pesofax' => $pesoinfo->peso_Fax,
-
-                ];
-            });
-
-            $encryptedData = Crypt::encryptString($employees->toJson());
-            $pesoEncrypt = Crypt::encryptString($sendpeso->toJson());
-
-            return redirect()->route('test', 
-            ['data' => $encryptedData, 'filename' => $fileName, 'peso' => $pesoEncrypt]);
-
+            // dd($sendpeso);
+    
+            // Combine both datasets
+            $data = [
+                'employees' => $employees,
+                'peso' => $sendpeso
+            ];
+    
+            $encryptedData = Crypt::encryptString(json_encode($data));
+    
+            return redirect()->route('test', ['data' => $encryptedData, 'filename' => $fileName]);
         }
     }
+    
 
 
     public function getFeature()

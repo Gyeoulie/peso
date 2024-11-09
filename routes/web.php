@@ -84,20 +84,26 @@ use Illuminate\Contracts\Encryption\DecryptException;
 
 Route::get('/test/{data}', function ($data) {
     try {
-        $employee = json_decode(Crypt::decryptString($data));
+        $decryptedData = json_decode(Crypt::decryptString($data), true);
 
-        return Pdf::view('pdf.reports.sample-report', ['employees' => $employee])
-            ->withBrowsershot(function (Browsershot $shot) {
-                $shot->noSandbox();
-            })
-            // ->headerView('pdf.reports.pdfHeader')
-            // ->footerView('pdf.reports.pdfFooter')
-            ->margins(1.5, 1, 1, 1)
-            ->download('purchase-order.pdf');
+        $employees = $decryptedData['employees'];
+        $peso = $decryptedData['peso'];
+
+        return Pdf::view('pdf.reports.sample-report', [
+            'employees' => $employees,
+            'peso' => $peso
+        ])
+        ->withBrowsershot(function (Browsershot $shot) {
+            $shot->noSandbox();
+        })
+        ->margins(1.5, 1, 1, 1)
+        ->download('purchase-order.pdf');
+
     } catch (DecryptException $e) {
         return redirect()->back()->with('error', 'Invalid data provided');
     }
 })->name('test');
+
 
 
 
