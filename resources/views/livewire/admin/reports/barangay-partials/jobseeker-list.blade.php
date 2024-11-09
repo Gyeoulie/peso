@@ -18,7 +18,7 @@
                 placeholder="Search">
         </div>
 
-        <div class="flex flex-wrap gap-2 bg-red-500">
+        <div class="flex flex-wrap gap-2">
 
 
             <x-dropdown align="left" width="40">
@@ -46,7 +46,7 @@
                         max-h-[300px] bg-white
                     </x-slot>
 
-                    <x-dropdown-link wire:click.prevent='exportData' x-data="{ tooltip: 'Export to Excel' }" x-tooltip='tooltip'
+                    <x-dropdown-link wire:click.prevent='exportExcel' x-data="{ tooltip: 'Export to Excel' }" x-tooltip='tooltip'
                         class="cursor-pointer flex flex-row gap-2 text-sm font-medium text-gray-500 bg-white rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <svg width="24px" height="24px" viewBox="-4.08 -4.08 32.16 32.16"
                             xmlns="http://www.w3.org/2000/svg" fill="#6B7280" stroke="#6B7280"
@@ -65,12 +65,11 @@
                         </svg>
                         <span class="flex">Export to Excel</span>
                     </x-dropdown-link>
-                    <x-dropdown-link wire:click.prevent="exportPdf" x-data="{ tooltip: 'Export to PDF' }"
-                        x-tooltip='tooltip'
-                        class="cursor-pointer flex flex-row gap-2 text-sm font-medium text-gray-500 bg-white rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                    <x-dropdown-link wire:click.prevent="exportPdf" x-data="{ tooltip: 'Export to PDF' }" x-tooltip='tooltip'
+                        class="cursor-pointer flex flex-row gap-1 text-sm font-medium text-gray-500 bg-white rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <svg fill="#6B7280" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" stroke="#6B7280"
-                            viewBox="0 0 100.00 100.00" enable-background="new 0 0 100 100" xml:space="preserve">
+                            viewBox="-10 0 100.00 120.00" enable-background="new 0 0 100 100" xml:space="preserve">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
@@ -93,22 +92,13 @@
                                 </g>
                             </g>
                         </svg>
-                        Export to PDF
+                        <span class="ps-1">
+                            Export to PDF
+                        </span>
                     </x-dropdown-link>
                 </x-slot>
             </x-dropdown>
 
-            {{-- <div x-data="{ tooltip: 'Export to Excel' }">
-                <button x-tooltip='tooltip' type="button" wire:click.prevent='exportData'
-                    class="flex items-center py-1.5 px-4 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
-                    <span class="mr-2">Export</span>
-                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                    </svg>
-                </button>
-            </div> --}}
 
             <button type="button" x-data=""
                 x-on:click.prevent="$dispatch('open-modal', 'filter-jobseekers-modal')"

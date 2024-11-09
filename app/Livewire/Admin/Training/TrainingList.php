@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Training;
 
 use App\Models\Programs;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -45,7 +46,7 @@ class TrainingList extends Component
 
     }
 
-    public function exportData()
+    public function exportExcel()
     {
         $user = Auth::user();
 
@@ -75,6 +76,52 @@ class TrainingList extends Component
             return Response::streamDownload(function () use ($writer) {
                 $writer->close();
             }, $fileName, ['Content-Type' => 'text/csv']);
+        }
+
+        return toastr()->warning('No data in the table to be exported.');
+
+    }
+
+    public function exportPdf()
+    {
+
+        $user = Auth::user();
+
+        $programList = $this->getProgramList($user->peso_accounts->peso->municipality_id)->get();
+
+        if (!$programList->isEmpty()) {
+
+            $fileName = 'Programs-List-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+
+            $programs = $programList->map(function ($data) {
+                return [
+                    'programTitle' => $data->program_Title,
+                    'programHost' => $data->program_Host,
+                    'programType' => $data->program_Type,
+                    'datePosted' => $data->created_at->format('F j, Y'),
+                    'registrantsCount' => $data->program_reg_count,
+                ];
+            });
+
+            $sendpeso = [
+                'municipality' => $user->peso_accounts->peso->municipality->municipality_Name,
+                'province' => $user->peso_accounts->peso->municipality->province->province_Name,
+                'pesoemail' => $user->peso_accounts->peso->peso_Email,
+                'pesophone' => $user->peso_accounts->peso->peso_Phone,
+                'pesotel' => $user->peso_accounts->peso->peso_Tel,
+            ];
+
+            // Combine both datasets
+            $data = [
+                'programs' => $programs,
+                'peso' => $sendpeso,
+                'fileName' => $fileName,
+
+            ];
+
+            $encryptedData = Crypt::encryptString(json_encode($data));
+
+            return redirect()->route('export.programs', ['data' => $encryptedData]);
         }
 
         return toastr()->warning('No data in the table to be exported.');

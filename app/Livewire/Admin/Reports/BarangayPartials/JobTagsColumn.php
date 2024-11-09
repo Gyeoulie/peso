@@ -13,10 +13,17 @@ class JobTagsColumn extends Component
 
     public $barangayID;
 
+    public $filter = 'All';
+
     #[On('updateBar')]
     public function updateBar($id)
     {
         $this->barangayID = $id;
+    }
+
+    public function changeFilter($value)
+    {
+        $this->filter = $value;
     }
 
     private function createJobTagsChart()
@@ -26,6 +33,12 @@ class JobTagsColumn extends Component
                 $query->whereHas('barangay', function ($query) {
                     $query->where('barangay_id', $this->barangayID);
                 });
+                // Add the filter for empStatus based on the "filter" variable
+                if ($this->filter === 'Employed') {
+                    $query->where('empStatus', 1); // empStatus = 1 for Employed
+                } elseif ($this->filter === 'Unemployed') {
+                    $query->where('empStatus', 2); // empStatus = 2 for Unemployed
+                }
             })
             ->groupBy('position_id')
             ->orderByDesc('total_count')

@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Admin\Reports\BarangayPartials;
 
+use App\Models\Barangay;
 use App\Models\Employee;
 use App\Models\Experimental_Features;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\On;
@@ -12,11 +15,6 @@ use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 use Spatie\SimpleExcel\SimpleExcelWriter;
-use Spatie\Browsershot\Browsershot;
-use Spatie\LaravelPdf\Facades\Pdf;
-use Illuminate\Support\Facades\Crypt;
-
-
 
 class JobseekerList extends Component
 {
@@ -180,7 +178,7 @@ class JobseekerList extends Component
         }
     }
 
-    public function exportData()
+    public function exportExcel()
     {
         $employees = $this->getJobseekers()->get();
         if (!$employees->isEmpty()) {
@@ -210,40 +208,56 @@ class JobseekerList extends Component
         return toastr()->warning('No data in the table to be exported.');
     }
 
-
     public function exportPdf()
     {
         $jobs = $this->getJobseekers()->withCount(['activeApplications', 'program_reg'])->get();
 
-
-        // Check if there are any employees to export
         if ($jobs->isEmpty()) {
             return toastr()->warning('No data in the table to be exported.');
         } else {
-            // Define the file name for the PDF
             $fileName = 'jobseeker_report_' . now()->format('Y_m_d_H_i_s') . '.pdf';
+            $peso = Auth::user()->peso_accounts->peso;
 
-            // Map the employees to the necessary data, as objects
-            $employees = $jobs->map(function ($emp) use ($fileName) {
+            $barangay = Barangay::findOrFail($this->barangayID);
+
+            $employees = $jobs->map(function ($emp) {
                 return [
                     'employee_id' => $emp->employee_id,
                     'name' => $emp->fname . ' ' . $emp->mname . ' ' . $emp->lname,
                     'gender' => $emp->gender,
-                    // 'dob' => \Carbon\Carbon::parse($emp->birthdate)->format('M j, Y'),
                     'empStat' => $emp->empstatus,
                     'activeApplicationsCount' => $emp->active_applications_count,
                     'programRegCount' => $emp->program_reg_count,
+                    'barangay' => $emp->barangay->barangay_Name,
+                    'province' => $emp->barangay->municipality->province->province_Name,
+
                 ];
             });
 
-            $encryptedData = Crypt::encryptString($employees->toJson());
+            $sendpeso = [
+                'municipality' => $peso->municipality->municipality_Name,
+                'province' => $peso->municipality->province->province_Name,
+                'pesoemail' => $peso->peso_Email,
+                'pesophone' => $peso->peso_Phone,
+                'pesotel' => $peso->peso_Tel,
+                'barangay' => $barangay->barangay_Name,
+            ];
 
-            return redirect()->route('test', ['data' => $encryptedData, 'filename' => $fileName]);
-            // return redirect()->route('a');
+            // dd($sendpeso);
 
+            // Combine both datasets
+            $data = [
+                'employees' => $employees,
+                'peso' => $sendpeso,
+                'fileName' => $fileName,
+
+            ];
+
+            $encryptedData = Crypt::encryptString(json_encode($data));
+
+            return redirect()->route('export.barangay.jobseeker', ['data' => $encryptedData]);
         }
     }
-
 
     public function getFeature()
     {
