@@ -18,7 +18,7 @@
                 placeholder="Search">
         </div>
 
-        <div class="flex flex-wrap gap-2 bg-red-500">
+        <div class="flex flex-wrap gap-2">
 
 
             <x-dropdown align="left" width="40">
@@ -67,10 +67,10 @@
                     </x-dropdown-link>
                     <x-dropdown-link wire:click.prevent="exportPdf" x-data="{ tooltip: 'Export to PDF' }"
                         x-tooltip='tooltip'
-                        class="cursor-pointer flex flex-row gap-2 text-sm font-medium text-gray-500 bg-white rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        class="cursor-pointer flex flex-row gap-1 text-sm font-medium text-gray-500 bg-white rounded-lg shadow-sm hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                         <svg fill="#6B7280" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" stroke="#6B7280"
-                            viewBox="0 0 100.00 100.00" enable-background="new 0 0 100 100" xml:space="preserve">
+                            viewBox="-10 0 100.00 120.00" enable-background="new 0 0 100 100" xml:space="preserve">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
@@ -93,7 +93,9 @@
                                 </g>
                             </g>
                         </svg>
-                        Export to PDF
+                        <span class="ps-1">
+                            Export to PDF
+                        </span>
                     </x-dropdown-link>
                 </x-slot>
             </x-dropdown>

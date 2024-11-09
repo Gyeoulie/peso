@@ -15,6 +15,7 @@ use Spatie\SimpleExcel\SimpleExcelWriter;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -215,13 +216,13 @@ class JobseekerList extends Component
     {
         $jobs = $this->getJobseekers()->withCount(['activeApplications', 'program_reg'])->get();
 
-
         // Check if there are any employees to export
         if ($jobs->isEmpty()) {
             return toastr()->warning('No data in the table to be exported.');
         } else {
             // Define the file name for the PDF
             $fileName = 'jobseeker_report_' . now()->format('Y_m_d_H_i_s') . '.pdf';
+            $peso = Auth::user()->peso_accounts->peso->get();
 
             // Map the employees to the necessary data, as objects
             $employees = $jobs->map(function ($emp) use ($fileName) {
@@ -233,13 +234,30 @@ class JobseekerList extends Component
                     'empStat' => $emp->empstatus,
                     'activeApplicationsCount' => $emp->active_applications_count,
                     'programRegCount' => $emp->program_reg_count,
+
+                    'barangay' => $emp->barangay->barangay_Name,
+                    
+
+                ];
+            });
+
+            $sendpeso = $peso->map(function ($pesoinfo) {
+                return [
+                    'municipality' => $pesoinfo->municipality->municipality_Name,
+                    'province' => $pesoinfo->municipality->municipality_Name,
+                    'pesoemail' => $pesoinfo->peso_Email,
+                    'pesophone' => $pesoinfo->peso_Phone,
+                    'pesotel' => $pesoinfo->peso_Tel,
+                    'pesofax' => $pesoinfo->peso_Fax,
+
                 ];
             });
 
             $encryptedData = Crypt::encryptString($employees->toJson());
+            $pesoEncrypt = Crypt::encryptString($sendpeso->toJson());
 
-            return redirect()->route('test', ['data' => $encryptedData, 'filename' => $fileName]);
-            // return redirect()->route('a');
+            return redirect()->route('test', 
+            ['data' => $encryptedData, 'filename' => $fileName, 'peso' => $pesoEncrypt]);
 
         }
     }

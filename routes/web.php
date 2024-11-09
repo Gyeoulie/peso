@@ -92,6 +92,7 @@ Route::get('/test/{data}', function ($data) {
             })
             // ->headerView('pdf.reports.pdfHeader')
             // ->footerView('pdf.reports.pdfFooter')
+            ->margins(1.5, 1, 1, 1)
             ->download('purchase-order.pdf');
     } catch (DecryptException $e) {
         return redirect()->back()->with('error', 'Invalid data provided');
