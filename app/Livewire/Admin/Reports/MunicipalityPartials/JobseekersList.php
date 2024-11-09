@@ -8,6 +8,8 @@ use App\Models\Experimental_Features;
 use App\Models\Job_Applicants;
 use App\Models\Work_Exp;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\On;
@@ -64,7 +66,7 @@ class JobseekersList extends Component
 
     }
 
-    public function exportData($type)
+    public function exportExcel($type)
     {
         if ($type == 'jobseekers') {
 
@@ -138,7 +140,6 @@ class JobseekersList extends Component
                         'Contact Number' => $data->company_Pnum,
                         'Job Postings' => $data->total_job_postings,
                         'Hired Applicants' => $data->hired_applicants,
-
                     ]);
                 }
 
@@ -148,6 +149,104 @@ class JobseekersList extends Component
             }
 
             return toastr()->warning('No data in the table to be exported.');
+        }
+    }
+
+    public function exportPdf($type)
+    {
+        $peso = Auth::user()->peso_accounts->peso;
+        $pesoInformation = [
+            'municipality' => $peso->municipality->municipality_Name,
+            'province' => $peso->municipality->province->province_Name,
+            'pesoemail' => $peso->peso_Email,
+            'pesophone' => $peso->peso_Phone,
+            'pesotel' => $peso->peso_Tel,
+        ];
+
+        if ($type == 'jobseekers') {
+
+            $jobseekers = null;
+            if ($this->municipalityID) {
+                $jobseekers = $this->getJobseekers($this->municipalityID)->get();
+            } else if ($this->provinceID) {
+                $jobseekers = $this->getJobseekers(null, $this->provinceID)->get();
+            }
+
+            if (!$jobseekers->isEmpty()) {
+                $fileName = 'jobseeker_report_' . now()->format('Y_m_d_H_i_s') . '.pdf';
+
+                $jobseekers = $jobseekers->map(function ($jobseeker) {
+                    $maxEduLevel = $jobseeker->education->max('edu_Level');
+                    $educationAttainment = $this->mapEducationAttainment($maxEduLevel);
+                    $totalWorkExperience = Work_Exp::getTotalExperience($jobseeker->employee_id);
+
+                    return [
+                        'employee_id' => $jobseeker->employee_id,
+                        'name' => $jobseeker->fname . ' ' . $jobseeker->mname . ' ' . $jobseeker->lname,
+                        'gender' => $jobseeker->gender,
+                        'empStat' => $jobseeker->empstatus,
+                        'eduAttainment' => $educationAttainment,
+                        'workExp' => $totalWorkExperience . ' Months',
+                        'birthDate' => $jobseeker->birthdate->format('Y-m-d'),
+                        'barangay' => $jobseeker->barangay->barangay_Name,
+                        'province' => $jobseeker->barangay->municipality->province->province_Name,
+                    ];
+                });
+
+                // dd($sendpeso);
+
+                // Combine both datasets
+                $data = [
+                    'employees' => $jobseekers,
+                    'peso' => $pesoInformation,
+                    'fileName' => $fileName,
+                ];
+
+                $encryptedData = Crypt::encryptString(json_encode($data));
+
+                return redirect()->route('export.municipality.jobseeker', ['data' => $encryptedData]);
+            } else {
+                return toastr()->warning('No data in the table to be exported.');
+            }
+        } elseif ($type == 'employers') {
+            $employers = null;
+
+            if ($this->municipalityID) {
+                $employers = $this->getEmployers($this->municipalityID)->get();
+            } elseif ($this->provinceID) {
+                $employers = $this->getEmployers(null, $this->provinceID)->get();
+            }
+
+            if (!$employers->isEmpty()) {
+
+                $fileName = 'employer_report_' . now()->format('Y_m_d_H_i_s') . '.pdf';
+
+                $employers = $employers->map(function ($emp) {
+                    return [
+                        'companyName' => $emp->business_Name,
+                        'contactPerson' => $emp->contact_Person,
+                        'contactNumber' => $emp->company_Pnum,
+                        'jobPostings' => $emp->total_job_postings,
+                        'hiredApplicants' => $emp->hired_applicants,
+                    ];
+                });
+
+                // dd($sendpeso);
+
+                // Combine both datasets
+                $data = [
+                    'employer' => $employers,
+                    'peso' => $pesoInformation,
+                    'fileName' => $fileName,
+                ];
+
+                $encryptedData = Crypt::encryptString(json_encode($data));
+
+                return redirect()->route('export.employer', ['data' => $encryptedData]);
+            } else {
+                return toastr()->warning('No data in the table to be exported.');
+
+            }
         }
     }
 

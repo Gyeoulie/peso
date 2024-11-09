@@ -14,6 +14,8 @@ class TopJobPreference extends Component
 
     public $provinceID;
 
+    public $filter = 'All';
+
     #[On('updateProv')]
     public function updateProv($id)
     {
@@ -25,6 +27,10 @@ class TopJobPreference extends Component
         $this->municipalityID = $id;
     }
 
+    public function changeFilter($value)
+    {
+        $this->filter = $value;
+    }
 
     public function getTopJobPreferences($municipalityId = null, $provinceId = null)
     {
@@ -39,25 +45,30 @@ class TopJobPreference extends Component
                         });
                     }
                 });
+                if ($this->filter === 'Employed') {
+                    $query->where('empStatus', 1); // empStatus = 1 for Employed
+                } elseif ($this->filter === 'Unemployed') {
+                    $query->where('empStatus', 2); // empStatus = 2 for Unemployed
+                }
             })
             ->with('job_positions') // Eager load job_positions relationship
             ->groupBy('position_id')
             ->orderByDesc('total_count')
             ->limit(5)
             ->get();
-    
+
         // Prepare data for the column chart
         $columnChartModel = new ColumnChartModel();
         // $columnChartModel->setTitle('Top Job Preferences');
-    
+
         foreach ($query as $jobPreference) {
             // Add each job preference as a column in the chart
             $positionTitle = $jobPreference->job_positions->position_Title ?? 'Unknown'; // Get position_Title, fallback to 'Unknown'
             $totalCount = $jobPreference->total_count;
-    
+
             $columnChartModel->addColumn($positionTitle, $totalCount, '#' . substr(md5(rand()), 0, 6)); // Generate random color for each column
         }
-    
+
         // Optionally customize chart properties
         $columnChartModel
             ->setAnimated(true)
@@ -73,10 +84,9 @@ class TopJobPreference extends Component
                 'yaxis.labels.formatter' => '(val) => Math.floor(val)',
                 'xaxis.labels.show' => false,
             ]); // Adjust column width as needed
-    
+
         return $columnChartModel;
     }
-    
 
     public function render()
     {
@@ -90,8 +100,6 @@ class TopJobPreference extends Component
             $topJobPreference = $this->getTopJobPreferences(null, $this->provinceID);
 
         }
-
-
 
         return view('livewire.admin.reports.municipality-partials.top-job-preference', compact('topJobPreference'));
     }

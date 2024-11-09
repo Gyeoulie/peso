@@ -530,9 +530,9 @@
             @else
                 <div class="col-span-4 lg:col-span-3">
                     <div class="flex flex-col w-full gap-4">
-                        @if (isset($topJobTags) || isset($topJobIndustries))
+                        @if ($topJobTags->isNotEmpty() || $topJobIndustries->isNotEmpty())
                             <div class="p-4 bg-white rounded-md shadow-md">
-                                @if (isset($topJobTags))
+                                @if ($topJobTags->isNotEmpty())
                                     <h1 class="mb-4 text-2xl font-bold text-center">TOP JOB TAGS</h1>
                                     <ul>
                                         @foreach ($topJobTags as $index => $jobTag)
@@ -555,7 +555,7 @@
                                         @endforeach
                                     </ul>
                                 @endif
-                                @if (isset($topJobIndustries))
+                                @if ($topJobIndustries->isNotEmpty())
                                     <h1 class="mt-4 mb-4 text-2xl font-bold text-center">TOP JOB INDUSTRY</h1>
                                     <ul>
                                         @foreach ($topJobIndustries as $index => $jobTag)
@@ -605,13 +605,13 @@
                                     </div>
                                 @else
                                     <div
-                                        class="flex flex-row w-full gap-4 mt-2 overflow-x-auto lg:flex-col lg:overflow-visible no-scrollbar">
+                                        class="flex flex-row w-full gap-4 mt-2 overflow-x-auto lg:flex-col lg:overflow-visible text-center no-scrollbar ">
                                         @foreach ($announcements as $data)
                                             <a wire:navigate
                                                 href="{{ route('announcement.show', ['id' => $data->announcement_id]) }}"
                                                 class="flex-shrink-0 w-full lg:w-full">
                                                 <div
-                                                    class="relative flex flex-col w-full max-w-sm overflow-hidden text-gray-700 transition-transform transform bg-white rounded-lg shadow-md h-96 hover:scale-105 hover:shadow-lg">
+                                                    class="relative flex flex-col w-full max-w-sm lg:max-w-full overflow-hidden text-gray-700 transition-transform transform bg-white rounded-lg shadow-md h-96 hover:scale-105 hover:shadow-lg">
                                                     <div class="relative w-full h-56 overflow-hidden rounded-t-lg">
                                                         <img src="{{ file_exists(public_path('storage/' . $data->announcement_pubmat)) ? asset('storage/' . $data->announcement_pubmat) : asset('assets/img/PESO-Logo.png') }}"
                                                             alt="announcement-{{ $data->announcement_id }}"

@@ -3,12 +3,13 @@
 namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 
 use App\Models\Programs;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Spatie\SimpleExcel\SimpleExcelWriter;
-use Illuminate\Support\Facades\Response;
-
 
 class PopularTrainings extends Component
 {
@@ -85,7 +86,7 @@ class PopularTrainings extends Component
             ->get();
     }
 
-    public function exportData()
+    public function exportExcel()
     {
         $topPrograms = null;
 
@@ -121,6 +122,58 @@ class PopularTrainings extends Component
             return Response::streamDownload(function () use ($writer) {
                 $writer->close();
             }, $fileName, ['Content-Type' => 'text/csv']);
+        }
+
+        return toastr()->warning('No data in the table to be exported.');
+
+    }
+    public function exportPdf()
+    {
+        $topPrograms = null;
+
+        if ($this->municipalityID) {
+            $topPrograms = $this->getTopPrograms($this->municipalityID);
+
+        } elseif ($this->provinceID) {
+            $topPrograms = $this->getTopPrograms(null, $this->provinceID);
+
+        }
+
+        if (!$topPrograms->isEmpty()) {
+
+            $fileName = 'Top_Programs-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+
+            $peso = Auth::user()->peso_accounts->peso;
+
+            $programs = $topPrograms->map(function ($data) {
+                return [
+                    'programTitle' => $data->program_Title,
+                    'programHost' => $data->program_Host,
+                    'programType' => $data->program_Type,
+                    'datePosted' => $data->created_at->format('F j, Y'),
+                    'registrantsCount' => $data->registration_count,
+                ];
+            });
+
+            $sendpeso = [
+                'municipality' => $peso->municipality->municipality_Name,
+                'province' => $peso->municipality->province->province_Name,
+                'pesoemail' => $peso->peso_Email,
+                'pesophone' => $peso->peso_Phone,
+                'pesotel' => $peso->peso_Tel,
+            ];
+
+            // Combine both datasets
+            $data = [
+                'programs' => $programs,
+                'peso' => $sendpeso,
+                'fileName' => $fileName,
+
+            ];
+
+            $encryptedData = Crypt::encryptString(json_encode($data));
+
+            return redirect()->route('export.programs', ['data' => $encryptedData]);
         }
 
         return toastr()->warning('No data in the table to be exported.');

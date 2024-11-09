@@ -59,13 +59,11 @@ use App\Livewire\Public\TrainingView;
 use App\Livewire\Signup\Employer\EmployerInformation;
 use App\Livewire\Signup\Jobseeker\JobseekerInformation;
 // use function Spatie\LaravelPdf\Support\pdf;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -80,25 +78,6 @@ use Illuminate\Contracts\Encryption\DecryptException;
 // Route::get('/a', function () {
 //     return view('pdf.reports.sample-report');
 // })->name('a');
-
-
-Route::get('/test/{data}', function ($data) {
-    try {
-        $employee = json_decode(Crypt::decryptString($data));
-
-        return Pdf::view('pdf.reports.sample-report', ['employees' => $employee])
-            ->withBrowsershot(function (Browsershot $shot) {
-                $shot->noSandbox();
-            })
-            // ->headerView('pdf.reports.pdfHeader')
-            // ->footerView('pdf.reports.pdfFooter')
-            ->download('jobseeker-list.pdf');
-    } catch (DecryptException $e) {
-        return redirect()->back()->with('error', 'Invalid data provided');
-    }
-})->name('test');
-
-
 
 Route::get('/404', [ErrorController::class, 'notFound'])->name('error.404');
 
@@ -119,7 +98,6 @@ Route::get('/test', function () {
         ->footerView('pdf.reports.pdfFooter')
         ->download('purchase-order.pdf');
 });
-
 
 Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
     // Route::middleware(['auth', 'usertype:4,6,7,8,9,10,11', 'check.user.status', 'google2fa'])->group(function () {
@@ -256,4 +234,109 @@ Route::middleware(['auth', 'verified', 'usertype:4,6,7,8,9,10,11', 'google2fa'])
     Route::post('/resume/view', [PDFView::class, 'viewResume'])->name('view.resume');
     Route::post('/recommendation/view', [PDFView::class, 'viewRecommendation'])->name('view.recommendation');
     Route::post('/requirement/view', [PDFView::class, 'viewRequirement'])->name('view.requirement');
+});
+
+Route::middleware(['auth', 'verified', 'usertype:8,9,10,11', 'google2fa'])->group(function () {
+    Route::get('/export/barangay/jobseeker/pdf/{data}', function ($data) {
+        try {
+            $decryptedData = json_decode(Crypt::decryptString($data), true);
+            $employees = $decryptedData['employees'];
+            $peso = $decryptedData['peso'];
+
+            return Pdf::view('pdf.reports.barangay-jobseeker-report', [
+                'employees' => $employees,
+                'peso' => $peso,
+            ])
+                ->withBrowsershot(function (Browsershot $shot) {
+                    $shot->noSandbox();
+                })
+                ->margins(1.5, 1, 1, 1)
+                ->download($decryptedData['fileName']);
+
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Invalid data provided');
+        }
+    })->name('export.barangay.jobseeker');
+
+    Route::get('/export/municipality/jobseeker/pdf/{data}', function ($data) {
+        try {
+            $decryptedData = json_decode(Crypt::decryptString($data), true);
+            $employees = $decryptedData['employees'];
+            $peso = $decryptedData['peso'];
+
+            return Pdf::view('pdf.reports.municipality-jobseeker-report', [
+                'employees' => $employees,
+                'peso' => $peso,
+            ])
+                ->withBrowsershot(function (Browsershot $shot) {
+                    $shot->noSandbox();
+                })
+                ->margins(1.5, 1, 1, 1)
+                ->download($decryptedData['fileName']);
+
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Invalid data provided');
+        }
+    })->name('export.municipality.jobseeker');
+
+    Route::get('/export/employer/pdf/{data}', function ($data) {
+        try {
+            $decryptedData = json_decode(Crypt::decryptString($data), true);
+            $employers = $decryptedData['employer'];
+            $peso = $decryptedData['peso'];
+
+            return Pdf::view('pdf.reports.employer-report', [
+                'employers' => $employers,
+                'peso' => $peso,
+            ])
+                ->withBrowsershot(function (Browsershot $shot) {
+                    $shot->noSandbox();
+                })
+                ->margins(1.5, 1, 1, 1)
+                ->download($decryptedData['fileName']);
+
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Invalid data provided');
+        }
+    })->name('export.employer');
+    Route::get('/export/programs/pdf/{data}', function ($data) {
+        try {
+            $decryptedData = json_decode(Crypt::decryptString($data), true);
+            $programs = $decryptedData['programs'];
+            $peso = $decryptedData['peso'];
+
+            return Pdf::view('pdf.reports.program-report', [
+                'programs' => $programs,
+                'peso' => $peso,
+            ])
+                ->withBrowsershot(function (Browsershot $shot) {
+                    $shot->noSandbox();
+                })
+                ->margins(1.5, 1, 1, 1)
+                ->download($decryptedData['fileName']);
+
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Invalid data provided');
+        }
+    })->name('export.programs');
+    Route::get('/export/jobpost/pdf/{data}', function ($data) {
+        try {
+            $decryptedData = json_decode(Crypt::decryptString($data), true);
+            $jobposts = $decryptedData['jobposts'];
+            $peso = $decryptedData['peso'];
+
+            return Pdf::view('pdf.reports.jobpost-report', [
+                'jobposts' => $jobposts,
+                'peso' => $peso,
+            ])
+                ->withBrowsershot(function (Browsershot $shot) {
+                    $shot->noSandbox();
+                })
+                ->margins(1.5, 1, 1, 1)
+                ->download($decryptedData['fileName']);
+
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Invalid data provided');
+        }
+    })->name('export.jobposts');
 });

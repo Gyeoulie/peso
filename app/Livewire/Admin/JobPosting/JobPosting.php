@@ -6,6 +6,7 @@ use App\Models\Job_Industry;
 use App\Models\Job_Positions;
 use App\Models\Job_Posting;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Response;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -80,7 +81,7 @@ class JobPosting extends Component
 
     }
 
-    public function exportData()
+    public function exportExcel()
     {
         $user = Auth::user();
 
@@ -112,6 +113,55 @@ class JobPosting extends Component
             return Response::streamDownload(function () use ($writer) {
                 $writer->close();
             }, $fileName, ['Content-Type' => 'text/csv']);
+        }
+
+        return toastr()->warning('No data in the table to be exported.');
+
+    }
+
+    public function exportPdf()
+    {
+
+        $user = Auth::user();
+
+        $jobpost = $this->getJobPost($user->peso_accounts->peso->municipality_id)->get();
+        foreach ($jobpost as $jobposts) {
+            $jobposts->slotsLeft = $jobposts->slotsLeft();
+        }
+
+        if (!$jobpost->isEmpty()) {
+
+            $fileName = 'Jobpost-List-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+
+            $jobposts = $jobpost->map(function ($data) {
+                return [
+                    'companyName' => $data->company->business_Name,
+                    'jobTitle' => $data->job_Title,
+                    'empType' => $this->jobTypes[$data->job_Type],
+                    'datePosted' => $data->created_at->format('F j, Y'),
+                    'totalApplicants' => $data->job_applicants_count,
+                ];
+            });
+
+            $sendpeso = [
+                'municipality' => $user->peso_accounts->peso->municipality->municipality_Name,
+                'province' => $user->peso_accounts->peso->municipality->province->province_Name,
+                'pesoemail' => $user->peso_accounts->peso->peso_Email,
+                'pesophone' => $user->peso_accounts->peso->peso_Phone,
+                'pesotel' => $user->peso_accounts->peso->peso_Tel,
+            ];
+
+            // Combine both datasets
+            $data = [
+                'jobposts' => $jobposts,
+                'peso' => $sendpeso,
+                'fileName' => $fileName,
+
+            ];
+
+            $encryptedData = Crypt::encryptString(json_encode($data));
+
+            return redirect()->route('export.jobposts', ['data' => $encryptedData]);
         }
 
         return toastr()->warning('No data in the table to be exported.');
