@@ -143,18 +143,19 @@ class JobPosting extends Component
                 ];
             });
 
-            $sendpeso = [
-                'municipality' => $user->peso_accounts->peso->municipality->municipality_Name,
-                'province' => $user->peso_accounts->peso->municipality->province->province_Name,
-                'pesoemail' => $user->peso_accounts->peso->peso_Email,
-                'pesophone' => $user->peso_accounts->peso->peso_Phone,
-                'pesotel' => $user->peso_accounts->peso->peso_Tel,
+            $pesoInformation = [
+                'pesoMunicipality' => $user->peso_accounts->peso->municipality->municipality_Name,
+                'pesoProvince' => $user->peso_accounts->peso->municipality->province->province_Name,
+                'pesoEmail' => $user->peso_accounts->peso->peso_Email,
+                'pesoPhone' => $user->peso_accounts->peso->peso_Phone,
+                'pesoTel' => $user->peso_accounts->peso->peso_Tel,
+                'pesoFax' => $user->peso_accounts->peso->peso_Fax,
             ];
 
             // Combine both datasets
             $data = [
                 'jobposts' => $jobposts,
-                'peso' => $sendpeso,
+                'peso' => $pesoInformation,
                 'fileName' => $fileName,
 
             ];

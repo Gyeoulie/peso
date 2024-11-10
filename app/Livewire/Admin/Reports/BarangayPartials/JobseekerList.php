@@ -5,8 +5,8 @@ namespace App\Livewire\Admin\Reports\BarangayPartials;
 use App\Models\Barangay;
 use App\Models\Employee;
 use App\Models\Experimental_Features;
+use App\Models\PESO;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -106,12 +106,6 @@ class JobseekerList extends Component
 
     private function getJobseekers()
     {
-
-        // return Employee::where('barangay_id', $filters)
-        //     ->withCount(['job_applicants as active_applications' => function ($query) {
-        //         $query->whereNotIn('applicant_Status', ['REJECTED', 'COMPLETED']);
-        //     }])
-        //     ->paginate(10);
 
         $employee = Employee::where('barangay_id', $this->barangayID)
             ->withCount(['activeApplications', 'program_reg'])
@@ -216,34 +210,33 @@ class JobseekerList extends Component
             return toastr()->warning('No data in the table to be exported.');
         } else {
             $fileName = 'jobseeker_report_' . now()->format('Y_m_d_H_i_s') . '.pdf';
-            $peso = Auth::user()->peso_accounts->peso;
 
             $barangay = Barangay::findOrFail($this->barangayID);
+            $pesoBranch = PESO::where('municipality_id', $barangay->municipality_id)->first();
 
-            $employees = $jobs->map(function ($emp) {
+            $employees = $jobs->map(function ($data) {
                 return [
-                    'employee_id' => $emp->employee_id,
-                    'name' => $emp->fname . ' ' . $emp->mname . ' ' . $emp->lname,
-                    'gender' => $emp->gender,
-                    'empStat' => $emp->empstatus,
-                    'activeApplicationsCount' => $emp->active_applications_count,
-                    'programRegCount' => $emp->program_reg_count,
-                    'barangay' => $emp->barangay->barangay_Name,
-                    'province' => $emp->barangay->municipality->province->province_Name,
+                    'employee_id' => $data->employee_id,
+                    'name' => $data->fname . ' ' . $data->mname . ' ' . $data->lname,
+                    'gender' => $data->gender,
+                    'empStat' => $data->empstatus,
+                    'activeApplicationsCount' => $data->active_applications_count,
+                    'programRegCount' => $data->program_reg_count,
+                    'barangay' => $data->barangay->barangay_Name,
+                    'province' => $data->barangay->municipality->province->province_Name,
 
                 ];
             });
 
             $sendpeso = [
-                'municipality' => $peso->municipality->municipality_Name,
-                'province' => $peso->municipality->province->province_Name,
-                'pesoemail' => $peso->peso_Email,
-                'pesophone' => $peso->peso_Phone,
-                'pesotel' => $peso->peso_Tel,
+                'pesoMunicipality' => $pesoBranch->municipality->municipality_Name,
+                'pesoProvince' => $pesoBranch->municipality->province->province_Name,
+                'pesoEmail' => $pesoBranch->peso_Email,
+                'pesoPhone' => $pesoBranch->peso_Phone,
+                'pesoTel' => $pesoBranch->peso_Tel,
+                'pesoFax' => $pesoBranch->peso_Fax,
                 'barangay' => $barangay->barangay_Name,
             ];
-
-            // dd($sendpeso);
 
             // Combine both datasets
             $data = [
