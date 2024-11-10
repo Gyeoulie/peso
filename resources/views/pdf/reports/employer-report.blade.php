@@ -159,13 +159,15 @@
                         PUBLIC EMPLOYMENT SERVICES OFFICE
                     </div>
 
-                    <div class="text-sm font-semibold uppercase tracking-wider text-gray-400">
-                        MUNICIPALITY OF {{ $peso['municipality'] ?? 'Municipality Name' }}
+                    @if ($peso['pesoMunicipality'])
+                        <div class="text-sm font-semibold uppercase tracking-wider text-gray-400">
+                            MUNICIPALITY OF {{ $peso['pesoMunicipality'] ?? 'Municipality Name' }}
 
-                    </div>
+                        </div>
+                    @endif
 
                     <div class="text-sm font-semibold tracking-widest capitalize text-gray-400">
-                        PROVINCE OF {{ $peso['province'] ?? 'Province Name' }}
+                        PROVINCE OF {{ $peso['pesoProvince'] ?? 'Province Name' }}
                     </div>
                 </div>
             </div>
@@ -177,41 +179,54 @@
             <div class="flex flex-row gap-x-3 w-full border-solid border-t-2 border-gray-300">
                 <!-- Left Column for Municipality Name -->
                 <div class="h-full flex flex-col w-3/5 gap-y-3 p-2 pb-1 border-solid border-r-2 border-gray-300">
-                    <div class="text-sm font-bold uppercase tracking-wide text-gray-400">
-                        Municipality of {{ $peso['municipality'] ?? 'Municipality Name' }}
-                    </div>
-
+                    @if ($peso['pesoMunicipality'])
+                        <div class="text-sm font-bold uppercase tracking-wide text-gray-400">
+                            Municipality of {{ $peso['pesoMunicipality'] ?? 'Municipality Name' }}
+                        </div>
+                    @elseif($peso['pesoProvince'])
+                        <div class="text-sm font-bold uppercase tracking-wide text-gray-400">
+                            PROVINCE OF {{ $peso['pesoProvince'] ?? 'Province Name' }}
+                        </div>
+                    @endif
                     <div class="flex flex-col text-sm font-medium text-gray-400">
                         <div class="w-full uppercase">
                             PUBLIC EMPLOYMENT SERVICES OFFICE
                         </div>
 
-                        <div class="w-full mt-2">
-                            Email Address: {{ $peso['pesoemail'] ?? 'N/A' }}
-                        </div>
+                        @if ($peso['pesoEmail'])
+                            <div class="w-full mt-2">
+                                Email Address: {{ $peso['pesoEmail'] }}
+                            </div>
+                        @endif
+
                     </div>
                 </div>
 
                 <!-- Right Column for Contact Info -->
                 <div class="h-full flex flex-row p-2 pb-1 justify-start">
                     <div class="flex flex-col gap-y-2 mb-1 mt-auto text-sm font-medium text-gray-400">
-                        <div class="w-full">
-                            Phone Number: {{ $peso['pesophone'] ?? 'N/A' }}
-                        </div>
-
-                        <div class="w-full">
-                            Telephone Number: {{ !empty($peso['pesotel']) ? $peso['pesotel'] : '' }}
-                        </div>
-
-                        <div class="w-full">
-                            FAX Number: {{ !empty($peso['pesofax']) ? $peso['pesofax'] : '' }}
-                        </div>
+                        @if ($peso['pesoPhone'])
+                            <div class="w-full">
+                                Phone Number: {{ $peso['pesoPhone'] }}
+                            </div>
+                        @endif
+                        @if ($peso['pesoTel'])
+                            <div class="w-full">
+                                Telephone Number: {{ $peso['pesoTel'] }}
+                            </div>
+                        @endif
+                        @if ($peso['pesoFax'])
+                            <div class="w-full">
+                                FAX Number: {{ $peso['pesoFax'] }}
+                            </div>
+                        @endif
 
                     </div>
                 </div>
             </div>
         </div>
     </footer>
+
 
 
 

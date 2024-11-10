@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Admin\Reports\MunicipalityPartials;
 
+use App\Models\PESO;
 use App\Models\Programs;
+use App\Models\Province;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -130,20 +132,38 @@ class PopularTrainings extends Component
     public function exportPdf()
     {
         $topPrograms = null;
+        $pesoInformation = [];
 
         if ($this->municipalityID) {
             $topPrograms = $this->getTopPrograms($this->municipalityID);
+            $pesoBranch = PESO::where('municipality_id', $this->municipalityID)->first();
+            $pesoInformation = [
+                'pesoMunicipality' => $pesoBranch->municipality->municipality_Name,
+                'pesoProvince' => $pesoBranch->municipality->province->province_Name,
+                'pesoEmail' => $pesoBranch->peso_Email,
+                'pesoPhone' => $pesoBranch->peso_Phone,
+                'pesoTel' => $pesoBranch->peso_Tel,
+                'pesoFax' => $pesoBranch->peso_Fax,
+            ];
 
         } elseif ($this->provinceID) {
             $topPrograms = $this->getTopPrograms(null, $this->provinceID);
+            $province = Province::findOrFail($this->provinceID);
+            $pesoInformation = [
+                'pesoMunicipality' => '',
+                'pesoProvince' => $province->province_Name,
+                'pesoEmail' => '',
+                'pesoPhone' => '',
+                'pesoTel' => '',
+                'pesoFax' => '',
+            ];
 
         }
 
         if (!$topPrograms->isEmpty()) {
 
-            $fileName = 'Top_Programs-' . now()->format('Y-m-d-H-i-s') . '.xlsx';
+            $fileName = 'Top_Programs-' . now()->format('Y-m-d-H-i-s') . '.pdf';
 
-            $peso = Auth::user()->peso_accounts->peso;
 
             $programs = $topPrograms->map(function ($data) {
                 return [
@@ -155,18 +175,10 @@ class PopularTrainings extends Component
                 ];
             });
 
-            $sendpeso = [
-                'municipality' => $peso->municipality->municipality_Name,
-                'province' => $peso->municipality->province->province_Name,
-                'pesoemail' => $peso->peso_Email,
-                'pesophone' => $peso->peso_Phone,
-                'pesotel' => $peso->peso_Tel,
-            ];
-
             // Combine both datasets
             $data = [
                 'programs' => $programs,
-                'peso' => $sendpeso,
+                'peso' => $pesoInformation,
                 'fileName' => $fileName,
 
             ];

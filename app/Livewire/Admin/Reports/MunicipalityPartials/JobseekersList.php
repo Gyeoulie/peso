@@ -6,9 +6,10 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Experimental_Features;
 use App\Models\Job_Applicants;
+use App\Models\PESO;
+use App\Models\Province;
 use App\Models\Work_Exp;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -154,14 +155,29 @@ class JobseekersList extends Component
 
     public function exportPdf($type)
     {
-        $peso = Auth::user()->peso_accounts->peso;
-        $pesoInformation = [
-            'municipality' => $peso->municipality->municipality_Name,
-            'province' => $peso->municipality->province->province_Name,
-            'pesoemail' => $peso->peso_Email,
-            'pesophone' => $peso->peso_Phone,
-            'pesotel' => $peso->peso_Tel,
-        ];
+        $pesoInformation = [];
+
+        if ($this->municipalityID) {
+            $pesoBranch = PESO::where('municipality_id', $this->municipalityID)->first();
+            $pesoInformation = [
+                'pesoMunicipality' => $pesoBranch->municipality->municipality_Name,
+                'pesoProvince' => $pesoBranch->municipality->province->province_Name,
+                'pesoEmail' => $pesoBranch->peso_Email,
+                'pesoPhone' => $pesoBranch->peso_Phone,
+                'pesoTel' => $pesoBranch->peso_Tel,
+                'pesoFax' => $pesoBranch->peso_Fax,
+            ];
+        } else if ($this->provinceID) {
+            $province = Province::findOrFail($this->provinceID);
+            $pesoInformation = [
+                'pesoMunicipality' => '',
+                'pesoProvince' => $province->province_Name,
+                'pesoEmail' => '',
+                'pesoPhone' => '',
+                'pesoTel' => '',
+                'pesoFax' => '',
+            ];
+        }
 
         if ($type == 'jobseekers') {
 
