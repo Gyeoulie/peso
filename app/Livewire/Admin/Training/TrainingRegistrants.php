@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Admin\Training;
 
-use App\Mail\ProgramCompleteNotification;
 use App\Mail\ConfirmTraining;
 use App\Mail\DeclineTraining;
+use App\Mail\ProgramCompleteNotification;
 use App\Models\Barangay;
 use App\Models\Industry_preference;
 use App\Models\Job_Preference;
@@ -169,43 +169,6 @@ class TrainingRegistrants extends Component
         }
     }
 
-    // public function confirmAttendance($action, $id)
-    // {
-    //     DB::beginTransaction();
-
-    //     try {
-    //         // Retrieve the model instance using Eloquent
-    //         $programReg = Program_Reg::find($id);
-
-    //         if (!$programReg) {
-    //             toastr()->error('Job seeker not found.');
-    //             DB::rollBack();
-    //             return;
-    //         }
-
-    //         // Update the model attributes
-    //         $programReg->program_reg_Status = $action;
-    //         $programReg->responded_at = now();
-
-    //         // Check if any attributes are dirty
-    //         if ($programReg->isDirty()) {
-    //             // Save changes only if there are modifications
-    //             $programReg->save();
-    //         }
-
-    //         // Commit the transaction
-    //         DB::commit();
-
-    //         toastr()->success('Job seeker successfully updated.');
-    //     } catch (\Exception $e) {
-    //         // Rollback the transaction on error
-    //         DB::rollBack();
-
-    //         // Show error notification
-    //         toastr()->error('There was a problem updating the job seeker. Please try again.');
-    //     }
-    // }
-
     public function confirmReg($action, $id)
     {
         DB::beginTransaction();
@@ -263,7 +226,7 @@ class TrainingRegistrants extends Component
                 }
             } else {
                 toastr()->success('Job seeker successfully updated.');
-                }
+            }
         } catch (\Exception $e) {
             // Rollback the transaction on error
             DB::rollBack();
@@ -358,7 +321,7 @@ class TrainingRegistrants extends Component
             ->whereHas('peso', function ($query) use ($employeeMunicipalityId) {
                 $query->where('municipality_id', $employeeMunicipalityId);
             })
-            // This will check if there's ANY match (either industry or position)
+        // This will check if there's ANY match (either industry or position)
             ->where(function ($query) use ($employeeJobPreferences, $employeeIndustryPreference) {
                 // Check for industry match
                 if (!empty($employeeIndustryPreference)) {
