@@ -492,12 +492,22 @@
                                                                         <div class="flex items-center">
                                                                             @if ($data->program_reg_Status == 'REGISTERED')
                                                                                 <div
-                                                                                    class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                                    class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
                                                                                 </div> REGISTERED
                                                                             @elseif ($data->program_reg_Status == 'COMPLETED')
                                                                                 <div
-                                                                                    class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                                                    class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
                                                                                 </div> COMPLETED
+                                                                            @elseif ($data->program_reg_Status == 'ATTENDEE')
+                                                                                @if ($data->programs->program_Status == 'COMPLETED')
+                                                                                    <div
+                                                                                        class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                                                    </div> ATTENDEE
+                                                                                @else
+                                                                                    <div
+                                                                                        class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                                    </div> ATTENDEE
+                                                                                @endif
                                                                             @else
                                                                                 <div
                                                                                     class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
@@ -515,12 +525,22 @@
                                                                 <div class="flex items-center">
                                                                     @if ($data->program_reg_Status == 'REGISTERED')
                                                                         <div
-                                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                            class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
                                                                         </div> REGISTERED
                                                                     @elseif ($data->program_reg_Status == 'COMPLETED')
                                                                         <div
-                                                                            class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                                            class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
                                                                         </div> COMPLETED
+                                                                    @elseif ($data->program_reg_Status == 'ATTENDEE')
+                                                                        @if ($data->programs->program_Status == 'COMPLETED')
+                                                                            <div
+                                                                                class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2">
+                                                                            </div> ATTENDEE
+                                                                        @else
+                                                                            <div
+                                                                                class="h-2.5 w-2.5 rounded-full bg-green-500 me-2">
+                                                                            </div> ATTENDEE
+                                                                        @endif
                                                                     @else
                                                                         <div
                                                                             class="h-2.5 w-2.5 rounded-full bg-red-500 me-2">
@@ -570,22 +590,25 @@
                                                                             </a>
                                                                         </div>
                                                                     @endif
-                                                                    <div x-data="{ tooltip: 'View Ticket' }">
-                                                                        <button
-                                                                            wire:click.prevent='viewTicket({{ $data->program_reg_id }})'
-                                                                            x-tooltip="tooltip" type="button"
-                                                                            class="inline-flex items-center p-1 text-sm font-medium text-center border rounded-lg text-cyan-700 border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300">
-                                                                            <svg class="w-5 h-5"
-                                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                                fill="none" viewBox="0 0 24 24"
-                                                                                stroke-width="1.5"
-                                                                                stroke="currentColor">
-                                                                                <path stroke-linecap="round"
-                                                                                    stroke-linejoin="round"
-                                                                                    d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
-                                                                            </svg>
-                                                                        </button>
-                                                                    </div>
+                                                                    @if ($data->program_reg_Status === 'ATTENDEE')
+                                                                        <div x-data="{ tooltip: 'View Ticket' }">
+                                                                            <button
+                                                                                wire:click.prevent='viewTicket({{ $data->program_reg_id }})'
+                                                                                x-tooltip="tooltip" type="button"
+                                                                                class="inline-flex items-center p-1 text-sm font-medium text-center border rounded-lg text-cyan-700 border-cyan-700 hover:bg-cyan-700 hover:text-white focus:ring-2 focus:outline-none focus:ring-cyan-300">
+                                                                                <svg class="w-5 h-5"
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    fill="none" viewBox="0 0 24 24"
+                                                                                    stroke-width="1.5"
+                                                                                    stroke="currentColor">
+                                                                                    <path stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+                                                                                </svg>
+                                                                            </button>
+                                                                        </div>
+                                                                    @endif
+
                                                                 </div>
                                                             </td>
                                                         </tr>

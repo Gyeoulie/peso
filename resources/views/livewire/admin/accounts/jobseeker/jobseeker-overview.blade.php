@@ -624,12 +624,20 @@
                                                             </div>
                                                             <div class="block lg:hidden text-gray-500 text-sm">
                                                                 {{ $data->created_at->format('F m, Y') }} -
+
                                                                 @if ($data->program_reg_Status == 'REGISTERED')
                                                                     <span class="text-yellow-800">REGISTERED</span>
                                                                 @elseif ($data->program_reg_Status == 'COMPLETED')
-                                                                    <span class="text-green-800">COMPLETED</span>
-                                                                @elseif ($data->program_reg_Status == 'CANCELLED')
-                                                                    <span class="text-red-800">CANCELLED</span>
+                                                                    <span class="text-green-800">REGISTERED</span>
+                                                                @elseif ($data->program_reg_Status == 'ATTENDEE')
+                                                                    @if ($data->programs->program_Status == 'COMPLETED')
+                                                                        <span class="text-yellow-800">ATTENDEE</span>
+                                                                    @else
+                                                                        <span class="text-green-800">ATTENDEE</span>
+                                                                    @endif
+                                                                @else
+                                                                    <span
+                                                                        class="text-red-800">{{ $data->program_reg_Status }}</span>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -642,13 +650,25 @@
                                                     <td class="hidden lg:table-cell px-6 py-4">
                                                         @if ($data->program_reg_Status == 'REGISTERED')
                                                             <span
-                                                                class="inline-flex items-center rounded-md bg-yellow-200 px-2 py-1 text-sm font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
+                                                                class="inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">REGISTERED</span>
                                                         @elseif ($data->program_reg_Status == 'COMPLETED')
                                                             <span
-                                                                class="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-sm font-medium text-green-800 ring-1 ring-inset ring-green-600/20">COMPLETED</span>
-                                                        @elseif ($data->program_reg_Status == 'REJECTED')
+                                                                class="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">COMPLETED</span>
+                                                        @elseif ($data->program_reg_Status == 'ATTENDEE')
+                                                            @if ($data->programs->program_Status == 'COMPLETED')
+                                                                <span
+                                                                    class="inline-flex items-center px-2 py-1 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-600/20">
+                                                                    ATTENDEE
+                                                                </span>
+                                                            @else
+                                                                <span
+                                                                    class="inline-flex items-center px-2 py-1 text-sm font-medium text-green-800 bg-green-200 rounded-md ring-1 ring-inset ring-green-600/20">
+                                                                    ATTENDEE
+                                                                </span>
+                                                            @endif
+                                                        @elseif ($data->program_reg_Status == 'CANCELLED')
                                                             <span
-                                                                class="inline-flex items-center rounded-md bg-red-200 px-2 py-1 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-600/20">REJECTED</span>
+                                                                class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-600/20">CANCELLED</span>
                                                         @endif
                                                     </td>
                                                     <td class="px-6 py-4 text-center">

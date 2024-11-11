@@ -624,7 +624,7 @@
 
                             </div>
 
-                            @if ($jobseekerInfo->program_reg_Status == 'REGISTERED' && $programInfo->program_Status == 'ACTIVE')
+                            @if ($jobseekerInfo->program_reg_Status == 'REGISTERED' && in_array($programInfo->program_Status, ['ACTIVE', 'CLOSED']))
                                 <div class="flex flex-wrap justify-center gap-4 mt-6">
 
                                     <x-danger-button
