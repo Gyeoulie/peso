@@ -97,11 +97,25 @@
 
                 <!-- Settings Dropdown -->
                 <div class="hidden lg:flex lg:items-center lg:ms-6">
+                    @if (Auth::check() && auth()->user()->usertype == 4)
+                        <div class="rounded-full bg-red-500">
+                            <img class="object-cover w-6 h-6 rounded-full select-none md:w-10 md:h-10 shadow-lg"
+                                src="{{ asset('storage/' . auth()->user()->employee->pimg) }}" alt="profile">
+                        </div>
+                    @elseif((Auth::check() && auth()->user()->usertype == 5) || (Auth::check() && auth()->user()->usertype == 6))
+                        <img class="object-cover w-6 h-6 rounded-full select-none md:w-10 md:h-10 shadow-lg"
+                            src="{{ asset('storage/' . auth()->user()->company->company_img) }}" alt="profile">
+                    @elseif (Auth::check() && auth()->user()->usertype >= 7)
+                        <div class="rounded-full bg-red-500">
+                            <img class="object-cover w-6 h-6 rounded-full select-none md:w-10 md:h-10 shadow-lg"
+                                src="{{ asset('assets/img/PESO-Logo.png') }}" alt="profile">
+                        </div>
+                    @endif
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none">
-                                <div>{{ Auth::user()->name }}</div>
+                                class="inline-flex items-center  py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none">
+                                <div></div>
 
                                 <div class="ms-1">
                                     <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg"
