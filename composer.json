@@ -10,14 +10,13 @@
     "require": {
         "php": "^8.1",
         "asantibanez/livewire-charts": "^4.1",
-        "barryvdh/laravel-dompdf": "^2.2",
         "biscolab/laravel-recaptcha": "^6.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/breeze": "^2.0",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
-        "livewire/livewire": "3.5",
+        "livewire/livewire": "3.5.12",
         "masbug/flysystem-google-drive-ext": "^2.3",
         "mews/purifier": "^3.4",
         "owen-it/laravel-auditing": "^13.6",
@@ -32,6 +31,7 @@
         "yoeunes/toastr": "^2.3"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.14",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",

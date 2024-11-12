@@ -70,8 +70,8 @@
                         Explore Exciting <span class="text-blue-600">Job Opportunities</span>
                     </h5>
                     <p class="text-gray-600 leading-relaxed text-justify">
-                        Explore job postings from various companies that align with your skills and preferences. 
-                        Find roles that suit your career aspirations and connect with opportunities 
+                        Explore job postings from various companies that align with your skills and preferences.
+                        Find roles that suit your career aspirations and connect with opportunities
                         <span class="text-blue-600 font-medium">tailored to match you</span>.
                     </p>
                 </div>
@@ -202,7 +202,7 @@
 
             <div class="flex flex-col-reverse lg:flex-wrap lg:flex-row lg:justify-between mt-6 text-center ">
                 <div class="flex grow-0 w-full pt-2 lg:py-0 lg:w-5/12 lg:h-80 lg:ms-11">
-                    <img src="{{ asset('assets/img/bg-peso-2.jpg') }}" alt="peso-2"
+                    <img src="{{ asset('assets/img/bg-peso-3.jpeg') }}" alt="peso-3"
                         class="flex grow object-cover rounded shadow-lg border border-merino-400 ">
                 </div>
                 <div class="w-full px-6 lg:w-1/2 lg:text-center text-left">
