@@ -138,25 +138,24 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-
-                <!-- Hamburger -->
-                <div class="flex items-center -me-2 lg:hidden">
-                    <button @click="open = ! open"
-                        class="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500">
-                        <svg class="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                            <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                            <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden"
-                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
             @endif
+
+            <!-- Hamburger -->
+            <div class="flex items-center -me-2 lg:hidden">
+                <button @click="open = ! open"
+                    class="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500">
+                    <svg class="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
             @if (Auth::check() && auth()->user()->usertype <= 3)
                 <!-- Settings Dropdown -->
-                <div class="flex flex-row items-center justify-end gap-6">
+                <div class="hidden lg:flex flex-row items-center justify-end gap-6">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
@@ -168,7 +167,7 @@
 
             @if (!Auth::check())
                 <!-- Settings Dropdown -->
-                <div class="flex flex-row justify-end gap-6">
+                <div class="hidden lg:flex flex-row justify-end gap-6">
                     <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
                         {{ __('Login') }}
                     </x-nav-link>
@@ -179,16 +178,29 @@
             @endif
         </div>
     </div>
-    @if (Auth::check())
-        <!-- Responsive Navigation Menu -->
-        <div :class="{ 'block': open, 'hidden': !open }" class="relative hidden lg:hidden">
-            <div class="pt-2 pb-3 space-y-1">
+
+    <!-- Responsive Navigation Menu -->
+    <div :class="{ 'block': open, 'hidden': !open }" class="relative hidden lg:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+
+            @if (Auth::check() && auth()->user()->usertype == 2)
+                <x-responsive-nav-link :href="route('fill_profile')" :active="request()->routeIs('fill_profile')">
+                    {{ __('Complete Details') }}
+                </x-responsive-nav-link>
+            @elseif (Auth::check() && auth()->user()->usertype == 3)
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('fill_employer')">
+                    {{ __('Complete Details') }}
+                </x-responsive-nav-link>
+            @else
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('trainings')" :active="request()->routeIs('trainings')">
                     {{ __('Trainings') }}
                 </x-responsive-nav-link>
+            @endif
+            @if (Auth::check())
+
                 @if (auth()->user()->usertype == 4)
                     <x-responsive-nav-link :href="route('jobseeker.profile', ['id' => auth()->user()->employee->employee_id])" :active="request()->routeIs('jobseeker.profile')">
                         {{ __('Profile') }}
@@ -212,8 +224,8 @@
 
                     </x-responsive-nav-link>
                 @endif
-                @if (auth()->user()->usertype != 5)
-                    <div class="flex px-4 ">
+                @if (auth()->user()->usertype != 5 && auth()->user()->usertype > 3)
+                    <div class="flex px-4">
 
 
 
@@ -431,21 +443,33 @@
 
                     </div>
                 @endif
-
-
-
-
-
-            </div>
-
-
-            <!-- Responsive Settings Options -->
-            <div class="pt-4 pb-1 border-t border-gray-200">
-                <div class="px-4">
-                    <div class="text-base font-medium text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="text-sm font-medium text-gray-500">{{ Auth::user()->email }}</div>
+            @else
+                <div class="pt-4 pb-1 border-t border-gray-200">
+                    <x-responsive-nav-link wire:navigate :href="route('login')" :active="request()->routeIs('login')">
+                        {{ __('Login') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link wire:navigate :href="route('register')" :active="request()->routeIs('register')">
+                        {{ __('Register') }}
+                    </x-responsive-nav-link>
                 </div>
+            @endif
 
+
+
+
+        </div>
+
+        <!-- Responsive Settings Options -->
+        @if (Auth::check())
+
+            <div class="pt-4 pb-1 border-t border-gray-200">
+
+                @if (auth()->user()->usertype >= 4)
+                    <div class="px-4">
+                        <div class="text-base font-medium text-gray-800">{{ Auth::user()->name }}</div>
+                        <div class="text-sm font-medium text-gray-500">{{ Auth::user()->email }}</div>
+                    </div>
+                @endif
                 <div class="mt-3 space-y-1">
 
                     @if (auth()->user()->usertype >= 5 && auth()->user()->usertype < 8)
@@ -454,11 +478,11 @@
                         </x-responsive-nav-link>
                     @endif
 
-                    <x-responsive-nav-link :href="route('profile.edit')">
-                        {{ __('Settings') }}
-                    </x-responsive-nav-link>
-
-
+                    @if (auth()->user()->usertype >= 4)
+                        <x-responsive-nav-link :href="route('profile.edit')">
+                            {{ __('Settings') }}
+                        </x-responsive-nav-link>
+                    @endif
 
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">
@@ -472,6 +496,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-    @endif
+        @endif
+    </div>
 </nav>
