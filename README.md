@@ -1,9 +1,9 @@
-PESOCareers:
+# PESOCareers
 This is the code for the PESO Employment Platform, a web system built with Laravel and Livewire. It is engineered for multi-office scalability, letting several independent PESO offices use one centralized system. The main goal is to modernize employment services, fix job mismatches, and improve operations using a fast, real-time application.
 
 
 
-Key Features
+## Key Features
 The platform provides comprehensive features for Job Seekers, Employers, and PESO Administrators:
 - **Multi-Office Scalability**: Built to handle separate data for multiple PESO offices from one system instance.
 - **Matching Algorithm**: An algorithm that matches applicants to their preferred jobs and employers by analyzing skills, experience, location, and user-defined preferences to increase placement rates.
@@ -14,7 +14,7 @@ The platform provides comprehensive features for Job Seekers, Employers, and PES
 - **Skills Training Posting**: Administrators manage and post available skills training programs.
 - **PESO Data Tracking**: Admin tools for tracking and analyzing comprehensive employment data.
 
-_**Technology Stack**_
+## Technology Stack
 | Category | Technology | Purpose |
 | :--- | :--- | :--- |
 | **Backend Framework** | **Laravel** | Robust PHP framework for application logic. |
