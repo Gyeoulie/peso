@@ -18,6 +18,7 @@
     "dependencies": {
         "flowbite": "^2.5.2",
         "flyonui": "^1.1.0",
-        "preline": "^2.1.0"
+        "preline": "^2.1.0",
+        "puppeteer": "^24.23.0"
     }
 }
